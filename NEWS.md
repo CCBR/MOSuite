@@ -2,7 +2,8 @@
 
 This is the first release of MOSuite 🎉
 
-- Create a `NEWS.md` file to track changes to the package.
+- Note: at the start of development, this package was called reneeTools.
+  Later it was renamed to MOSuite. (#76, @kelly-sovacool)
 
 ## Main functions & classes
 
@@ -12,6 +13,3 @@ This is the first release of MOSuite 🎉
 - `run_deseq2()`
 - `calc_cpm()` (#38, @kelly-sovacool)
 - `filter_counts()` (#38, @kelly-sovacool)
-
-Note: at the start of development, this package was called reneeTools.
-Later it was renamed to MOSuite. ()
