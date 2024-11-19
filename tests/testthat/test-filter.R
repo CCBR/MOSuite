@@ -9,7 +9,7 @@ equal_dfs <- function(x, y) {
 
 test_that("filter_counts reproduces NIDAP results", {
   set.seed(10)
-  renee_ds <- create_reneeDataSet_from_dataframes(
+  moo <- create_multiOmicDataSet_from_dataframes(
     as.data.frame(nidap_sample_metadata),
     as.data.frame(nidap_clean_raw_counts),
     sample_id_colname = "Sample"
@@ -19,7 +19,7 @@ test_that("filter_counts reproduces NIDAP results", {
       sample_names_column = "Sample",
       gene_names_column = "Gene"
     )
-  rds_counts_filt <- renee_ds@counts$filt %>%
+  rds_counts_filt <- moo@counts$filt %>%
     dplyr::arrange(desc(Gene))
   nidap_counts_filt <- as.data.frame(nidap_filtered_counts) %>%
     dplyr::arrange(desc(Gene))
@@ -30,15 +30,15 @@ test_that("filter_counts reproduces NIDAP results", {
 # TODO get filter_counts() to work on tibbles too, not only dataframes
 
 test_that("filter_counts works on RENEE dataset", {
-  renee_ds <- create_reneeDataSet_from_files(
-    system.file("extdata", "sample_metadata.tsv.gz", package = "reneeTools"),
+  moo <- create_multiOmicDataSet_from_files(
+    system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite"),
     system.file(
       "extdata",
       "RSEM.genes.expected_count.all_samples.txt.gz",
-      package = "reneeTools"
+      package = "MOSuite"
     )
   )
-  rds2 <- renee_ds %>% filter_counts(
+  rds2 <- moo %>% filter_counts(
     gene_names_column = "gene_id",
     sample_names_column = "sample_id",
     group_column = "condition",

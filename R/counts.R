@@ -1,9 +1,9 @@
-#' Calculate counts-per-million (CPM) on raw counts in a reneeDataSet
+#' Calculate counts-per-million (CPM) on raw counts in a multiOmicDataSet
 #'
-#' @param renee_ds reneeDataSet object
+#' @param moo multiOmicDataSet object
 #' @param ... additional arguments to pass to edgeR::cpm()
 #'
-#' @return reneeDataSet with cpm-transformed counts
+#' @return multiOmicDataSet with cpm-transformed counts
 #' @export
 #'
 #' @examples
@@ -14,17 +14,17 @@
 #'     levels = c("wildtype", "knockout")
 #'   )
 #' )
-#' renee_ds <- create_reneeDataSet_from_dataframes(sample_meta, gene_counts) %>%
+#' moo <- create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts) %>%
 #'   calc_cpm()
-#' head(renee_ds@counts$cpm)
-calc_cpm <- S7::new_generic("calc_cpm", "renee_ds", function(renee_ds, ...) {
+#' head(moo@counts$cpm)
+calc_cpm <- S7::new_generic("calc_cpm", "moo", function(moo, ...) {
   S7::S7_dispatch()
 })
 
-S7::method(calc_cpm, reneeDataSet) <- function(renee_ds, gene_colname = "gene_id", ...) {
-  renee_ds@counts$cpm <- renee_ds@counts$raw %>%
+S7::method(calc_cpm, multiOmicDataSet) <- function(moo, gene_colname = "gene_id", ...) {
+  moo@counts$cpm <- moo@counts$raw %>%
     calc_cpm_df(gene_colname = gene_colname)
-  return(renee_ds)
+  return(moo)
 }
 
 #' Calculate CPM on a data frame

@@ -25,7 +25,7 @@ library(dplyr)
 library(ggplot2)
 library(glue)
 library(readr)
-library(reneeTools)
+library(MOSuite)
 ```
 
 Dataset from: <https://portal.gdc.cancer.gov/projects/TCGA-LIHC>
@@ -33,18 +33,18 @@ Dataset from: <https://portal.gdc.cancer.gov/projects/TCGA-LIHC>
 ```{r data}
 counts <- read_tsv(system.file(
   "extdata", "LIHC_HTseqCounts.txt.gz",
-  package = "reneeTools"
+  package = "MOSuite"
 )) %>%
   rename(gene_id = Gene)
 metadat <- read_tsv(system.file(
   "extdata", "LIHC_PatientData.txt.gz",
-  package = "reneeTools"
+  package = "MOSuite"
 )) %>%
   select(-sample_id) %>%
   rename(sample_id = barcode)
-renee_ds <- create_reneeDataSet_from_dataframes(metadat, counts) %>%
+moo <- create_multiOmicDataSet_from_dataframes(metadat, counts) %>%
   calc_cpm()
-renee_ds@counts$filt <- renee_ds@counts$raw
+moo@counts$filt <- moo@counts$raw
 # filter_counts(
 #   sample_names_column = "sample_id",
 #   gene_names_column = "gene_id",
@@ -57,21 +57,21 @@ renee_ds@counts$filt <- renee_ds@counts$raw
 
 
 ```{r subset}
-subset_data <- function(renee_ds, nsamples) {
-  renee_ds_subset <- renee_ds
-  renee_ds_subset@sample_meta <- renee_ds@sample_meta %>% slice_sample(n = nsamples)
-  for (count_type in names(renee_ds@counts)) {
-    renee_ds_subset@counts[[count_type]] <- renee_ds@counts[[count_type]] %>%
-      select(gene_id, all_of(renee_ds_subset@sample_meta$sample_id))
+subset_data <- function(moo, nsamples) {
+  moo_subset <- moo
+  moo_subset@sample_meta <- moo@sample_meta %>% slice_sample(n = nsamples)
+  for (count_type in names(moo@counts)) {
+    moo_subset@counts[[count_type]] <- moo@counts[[count_type]] %>%
+      select(gene_id, all_of(moo_subset@sample_meta$sample_id))
   }
-  return(renee_ds_subset)
+  return(moo_subset)
 }
 
-subset_mem <- lapply(c(10, 50, 100, 200, nrow(renee_ds@sample_meta)), function(nsamples) {
-  renee_ds_subset <- subset_data(renee_ds, nsamples)
+subset_mem <- lapply(c(10, 50, 100, 200, nrow(moo@sample_meta)), function(nsamples) {
+  moo_subset <- subset_data(moo, nsamples)
   return(tibble(
     n_samples = nsamples,
-    object_size = lobstr::obj_size(renee_ds_subset)
+    object_size = lobstr::obj_size(moo_subset)
   ))
 }) %>%
   bind_rows()
@@ -117,7 +117,7 @@ subset_mem %>%
     caption = glue(
       "The object contains sample metadata and count data as raw, CPM-transformed, and filtered counts.\n",
       "Each dataset has the same number of genes: ",
-      format(length(renee_ds@counts$raw$gene_id), big.mark = ",")
+      format(length(moo@counts$raw$gene_id), big.mark = ",")
     )
   ) +
   theme_bw() +

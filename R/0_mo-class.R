@@ -1,11 +1,11 @@
-#' reneeDataSet class
+#' multiOmicDataSet class
 #'
 #' @param sample_meta_dat sample metadata as a data frame or tibble.
 #'   Must contain a `sample_id` column.
 #' @param counts_lst named list of dataframes containing counts, e.g. expected gene counts from RSEM. Each data frame is expected to contain a `gene_id` column and a column for each sample ID in the metadata.
 #'
 #'
-reneeDataSet <- S7::new_class("renee",
+multiOmicDataSet <- S7::new_class("multiOmicDataSet",
   properties = list(
     sample_meta = S7::class_data.frame,
     counts = S7::class_list, # list of data frames
@@ -29,35 +29,35 @@ reneeDataSet <- S7::new_class("renee",
   }
 )
 
-#' Construct a reneeDataSet object from tsv files.
+#' Construct a multiOmicDataSet object from tsv files.
 #'
 #' @param sample_meta_filepath path to tsv file with sample IDs and metadata for differential analysis.
 #' @param gene_counts_filepath path to tsv file of expected gene counts from RSEM.
 #' @param count_type type to assign the values of `gene_counts_filepath` to in the `counts` slot
 #' @param sample_id_colname name of the column in `sample_meta_filepath` that contains the sample IDs
 #'
-#' @return reneeDataSet object
+#' @return multiOmicDataSet object
 #' @export
 #'
 #' @examples
-#' renee_ds <- create_reneeDataSet_from_files(
+#' moo <- create_multiOmicDataSet_from_files(
 #'   sample_meta_filepath = system.file("extdata",
 #'     "sample_metadata.tsv.gz",
-#'     package = "reneeTools"
+#'     package = "MOSuite"
 #'   ),
 #'   gene_counts_filepath = system.file("extdata",
 #'     "RSEM.genes.expected_count.all_samples.txt.gz",
-#'     package = "reneeTools"
+#'     package = "MOSuite"
 #'   )
 #' )
-#' renee_ds@counts$raw %>% head()
-#' renee_ds@sample_meta
-create_reneeDataSet_from_files <- function(sample_meta_filepath, gene_counts_filepath,
-                                           count_type = "raw",
-                                           sample_id_colname = "sample_id") {
+#' moo@counts$raw %>% head()
+#' moo@sample_meta
+create_multiOmicDataSet_from_files <- function(sample_meta_filepath, gene_counts_filepath,
+                                               count_type = "raw",
+                                               sample_id_colname = "sample_id") {
   count_dat <- readr::read_tsv(gene_counts_filepath)
   sample_meta_dat <- readr::read_tsv(sample_meta_filepath)
-  return(create_reneeDataSet_from_dataframes(
+  return(create_multiOmicDataSet_from_dataframes(
     sample_meta_dat = sample_meta_dat,
     count_dat = count_dat,
     count_type = "raw",
@@ -65,13 +65,13 @@ create_reneeDataSet_from_files <- function(sample_meta_filepath, gene_counts_fil
   ))
 }
 
-#' Construct a reneeDataSet object from data frames
+#' Construct a multiOmicDataSet object from data frames
 #'
-#' @inheritParams reneeDataSet
-#' @inheritParams create_reneeDataSet_from_files
+#' @inheritParams multiOmicDataSet
+#' @inheritParams create_multiOmicDataSet_from_files
 #' @param count_dat data frame of feature counts (e.g. expected gene counts from RSEM)
 #'
-#' @return reneeDataSet object
+#' @return multiOmicDataSet object
 #' @export
 #'
 #' @examples
@@ -82,11 +82,11 @@ create_reneeDataSet_from_files <- function(sample_meta_filepath, gene_counts_fil
 #'     levels = c("wildtype", "knockout")
 #'   )
 #' )
-#' create_reneeDataSet_from_dataframes(sample_meta, gene_counts)
-create_reneeDataSet_from_dataframes <- function(sample_meta_dat,
-                                                count_dat,
-                                                sample_id_colname = "sample_id",
-                                                count_type = "raw") {
+#' create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts)
+create_multiOmicDataSet_from_dataframes <- function(sample_meta_dat,
+                                                    count_dat,
+                                                    sample_id_colname = "sample_id",
+                                                    count_type = "raw") {
   gene_columns <- c("gene_id", "GeneName", "Gene")
   # sample IDs must be in the same order
   gene_sample_colnames <- count_dat %>%
@@ -109,5 +109,5 @@ create_reneeDataSet_from_dataframes <- function(sample_meta_dat,
   counts <- list()
   counts[[count_type]] <- count_dat
 
-  return(reneeDataSet(sample_meta_dat, counts))
+  return(multiOmicDataSet(sample_meta_dat, counts))
 }

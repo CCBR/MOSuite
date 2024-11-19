@@ -3,8 +3,8 @@
 #' This is often the first step in the QC portion of an analysis to filter out
 #' features that have very low raw counts across most or all of your samples.
 #'
-#' This function takes a reneeDataSet containing raw counts and a sample
-#' metadata table, and returns the reneeDataSet object with filtered counts.
+#' This function takes a multiOmicDataSet containing raw counts and a sample
+#' metadata table, and returns the multiOmicDataSet object with filtered counts.
 #' It also produces an image consisting of three QC plots.
 #'
 #' You can tune the threshold for tuning how low counts for a given gene are
@@ -19,8 +19,8 @@
 #' another based on unsupervised clustering.
 #'
 #'
-#' @param renee_ds reneeDataSet object (see `create_reneeDataSet_from_dataframes()`)
-#' @param count_type the type of counts to use -- must be a name in the counts slot (`renee_ds@counts`)
+#' @param moo multiOmicDataSet object (see `create_multiOmicDataSet_from_dataframes()`)
+#' @param count_type the type of counts to use -- must be a name in the counts slot (`moo@counts`)
 #' @param gene_names_column The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.
 #' @param sample_names_column The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.
 #' @param group_column The column from your input Sample Metadata table containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.). Only columns of Text type from your input Sample Metadata will be available to select for this parameter.
@@ -54,11 +54,11 @@
 #' @param interactive_plots set to TRUE to make PCA and Histogram plots interactive with `plotly`, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.
 #' @param plot_correlation_matrix_heatmap Data sets with a large number of samples may be too large to create a correlation matrix heat map. If this template takes longer than 5 minutes to run, Toggle switch to FALSE and the correlation matrix will not be be created. Default is TRUE.
 #'
-#' @return `reneeDataSet` with filtered counts
+#' @return `multiOmicDataSet` with filtered counts
 #' @export
 #'
 #' @examples
-#' renee_ds <- create_reneeDataSet_from_dataframes(
+#' moo <- create_multiOmicDataSet_from_dataframes(
 #'   as.data.frame(nidap_sample_metadata),
 #'   as.data.frame(nidap_clean_raw_counts),
 #'   sample_id_colname = "Sample"
@@ -68,9 +68,9 @@
 #'     sample_names_column = "Sample",
 #'     gene_names_column = "Gene"
 #'   )
-#' head(renee_ds@counts$filt)
+#' head(moo@counts$filt)
 #'
-filter_counts <- function(renee_ds,
+filter_counts <- function(moo,
                           count_type = "raw",
                           gene_names_column = "gene_id",
                           sample_names_column = "sample_id",
@@ -117,8 +117,8 @@ filter_counts <- function(renee_ds,
                           interactive_plots = FALSE,
                           plot_correlation_matrix_heatmap = TRUE,
                           make_plots = TRUE) {
-  counts_matrix <- renee_ds@counts[[count_type]] %>% as.data.frame() # currently, this function requires data frames
-  sample_metadata <- renee_ds@sample_meta %>% as.data.frame()
+  counts_matrix <- moo@counts[[count_type]] %>% as.data.frame() # currently, this function requires data frames
+  sample_metadata <- moo@sample_meta %>% as.data.frame()
   # TODO we should use "feature" instead of "gene" to make sure this is applicable beyond RNA-seq
 
   # TODO: just have users specify hex values directly for simplicity
@@ -304,9 +304,9 @@ filter_counts <- function(renee_ds,
   df.final <- merge(anno_tbl, df.final, by = gene_names_column, all.y = T)
   df.final[, gene_names_column] <- gsub("_[0-9]+$", "", df.final[, gene_names_column])
 
-  renee_ds@counts[["filt"]] <- df.final
+  moo@counts[["filt"]] <- df.final
 
-  return(renee_ds)
+  return(moo)
 }
 
 #' Remove low-count genes

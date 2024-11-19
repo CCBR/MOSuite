@@ -6,7 +6,7 @@ on:
     types: [published]
 
 env:
-  IMAGE_NAME: "reneeTools"
+  IMAGE_NAME: "MOSuite"
   CONTEXT: "./"
   NAMESPACE: "nciccbr"
 

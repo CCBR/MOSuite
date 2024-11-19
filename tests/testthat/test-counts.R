@@ -26,18 +26,18 @@ test_that("calc_cpm works on RENEE data", {
       levels = c("wildtype", "knockout")
     )
   )
-  renee_ds <- create_reneeDataSet_from_dataframes(
+  moo <- create_multiOmicDataSet_from_dataframes(
     sample_meta,
     gene_counts %>% dplyr::select(-GeneName)
   )
-  renee_ds <- renee_ds %>% calc_cpm()
+  moo <- moo %>% calc_cpm()
   cpm_edger <- gene_counts %>%
     dplyr::select(-GeneName) %>%
     counts_dat_to_matrix() %>%
     edgeR::cpm() %>%
     as.data.frame() %>%
     tibble::rownames_to_column("gene_id")
-  expect_equal(renee_ds@counts$cpm, cpm_edger)
+  expect_equal(moo@counts$cpm, cpm_edger)
 })
 
 test_that("calc_cpm_df works on NIDAP data", {

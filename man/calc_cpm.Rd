@@ -2,20 +2,20 @@
 % Please edit documentation in R/counts.R
 \name{calc_cpm}
 \alias{calc_cpm}
-\title{Calculate counts-per-million (CPM) on raw counts in a reneeDataSet}
+\title{Calculate counts-per-million (CPM) on raw counts in a multiOmicDataSet}
 \usage{
-calc_cpm(renee_ds, ...)
+calc_cpm(moo, ...)
 }
 \arguments{
-\item{renee_ds}{reneeDataSet object}
+\item{moo}{multiOmicDataSet object}
 
 \item{...}{additional arguments to pass to edgeR::cpm()}
 }
 \value{
-reneeDataSet with cpm-transformed counts
+multiOmicDataSet with cpm-transformed counts
 }
 \description{
-Calculate counts-per-million (CPM) on raw counts in a reneeDataSet
+Calculate counts-per-million (CPM) on raw counts in a multiOmicDataSet
 }
 \examples{
 sample_meta <- data.frame(
@@ -25,7 +25,7 @@ sample_meta <- data.frame(
     levels = c("wildtype", "knockout")
   )
 )
-renee_ds <- create_reneeDataSet_from_dataframes(sample_meta, gene_counts) \%>\%
+moo <- create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts) \%>\%
   calc_cpm()
-head(renee_ds@counts$cpm)
+head(moo@counts$cpm)
 }

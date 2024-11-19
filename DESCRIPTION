@@ -1,5 +1,5 @@
-Package: reneeTools
-Title: Helper functions for RENEE
+Package: MOSuite
+Title: R package for downstream multi-omics analysis
 Version: 0.0.0.9000
 Authors@R: c(
     person("Vishal", "Koparde", , "vishal.koparde@nih.gov", role = c("aut", "cre"),
@@ -12,9 +12,8 @@ Authors@R: c(
   )
 Description: TODO What the package does (one paragraph).
 License: MIT + file LICENSE
-URL: https://github.com/CCBR/reneeTools,
-    https://ccbr.github.io/reneeTools/
-BugReports: https://github.com/CCBR/reneeTools/issues
+URL: https://github.com/CCBR/MOSuite, https://ccbr.github.io/MOSuite/
+BugReports: https://github.com/CCBR/MOSuite/issues
 Depends:
     R (>= 2.10)
 Imports:

@@ -4,10 +4,10 @@
 # --------------------------------------------
 
 cff-version: 1.2.0
-message: 'To cite package "reneeTools" in publications use:'
+message: 'To cite package "MOSuite" in publications use:'
 type: software
 license: MIT
-title: 'reneeTools: Helper functions for RENEE'
+title: 'MOSuite: Helper functions for RENEE'
 version: 0.0.0.9000
 abstract: TODO What the package does (one paragraph).
 authors:
@@ -23,8 +23,8 @@ authors:
   given-names: Samantha
   email: samantha.chill@nih.gov
   orcid: https://orcid.org/0000-0002-8734-9875
-repository-code: https://github.com/CCBR/reneeTools
-url: https://ccbr.github.io/reneeTools/
+repository-code: https://github.com/CCBR/MOSuite
+url: https://ccbr.github.io/MOSuite/
 contact:
 - family-names: Koparde
   given-names: Vishal

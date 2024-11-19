@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(reneeTools)
+library(MOSuite)
 
-test_check("reneeTools")
+test_check("MOSuite")

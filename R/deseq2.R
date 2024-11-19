@@ -1,41 +1,41 @@
-#' Run DESeq2 on a reneeDataSet
+#' Run DESeq2 on a multiOmicDataSet
 #'
-#' @param renee_ds reneeDataSet object
+#' @param moo multiOmicDataSet object
 #' @param design   model formula for experimental design. Columns must exist in `meta_dat`.
 #' @param ...      remaining variables are forwarded to `DESeq2::DESeq()`.
 #'
-#' @return reneeDataSet object with DESeq2 slot filled
+#' @return multiOmicDataSet object with DESeq2 slot filled
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' renee_ds <- create_reneeDataSet_from_files(
+#' moo <- create_multiOmicDataSet_from_files(
 #'   system.file("extdata", "sample_metadata.tsv.gz",
-#'     package = "reneeTools"
+#'     package = "MOSuite"
 #'   ),
 #'   system.file("extdata",
 #'     "RSEM.genes.expected_count.all_samples.txt.gz",
-#'     package = "reneeTools"
+#'     package = "MOSuite"
 #'   )
 #' ) %>% filter_counts()
-#' renee_ds <- run_deseq2(renee_ds, ~condition)
+#' moo <- run_deseq2(moo, ~condition)
 #' }
-run_deseq2 <- S7::new_generic("run_deseq2", "renee_ds", function(renee_ds, design, ...) {
+run_deseq2 <- S7::new_generic("run_deseq2", "moo", function(moo, design, ...) {
   S7::S7_dispatch()
 })
 
-S7::method(run_deseq2, reneeDataSet) <- function(renee_ds, design, gene_colname = "gene_id", min_count = 10, ...) {
-  if (is.null(renee_ds@counts$filt)) {
-    stop("renee_ds must contain filtered counts for DESeq2. Hint: Did you forget to run filter_counts()?")
+S7::method(run_deseq2, multiOmicDataSet) <- function(moo, design, gene_colname = "gene_id", min_count = 10, ...) {
+  if (is.null(moo@counts$filt)) {
+    stop("moo must contain filtered counts for DESeq2. Hint: Did you forget to run filter_counts()?")
   }
   dds <- DESeq2::DESeqDataSetFromMatrix(
-    countData = renee_ds@counts$filt %>%
+    countData = moo@counts$filt %>%
       dplyr::mutate(dplyr::across(dplyr::where(is.numeric), round)) %>% # DESeq2 requires integer counts
       counts_dat_to_matrix(gene_colname = gene_colname),
-    colData = renee_ds@sample_meta,
+    colData = moo@sample_meta,
     design = design
   )
-  renee_ds@analyses$deseq2_ds <- DESeq2::DESeq(dds, ...)
-  renee_ds@analyses$deseq2_results <- DESeq2::results(renee_ds@analyses$deseq2_ds)
-  return(renee_ds)
+  moo@analyses$deseq2_ds <- DESeq2::DESeq(dds, ...)
+  moo@analyses$deseq2_results <- DESeq2::results(moo@analyses$deseq2_ds)
+  return(moo)
 }
