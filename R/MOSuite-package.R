@@ -1,6 +1,6 @@
-#' reneeTools: R helper functions for RENEE
+#' MOSuite: R helper functions for RENEE
 #'
-#' `reneeTools` implements helper functions for RENEE, a comprehensive
+#' `MOSuite` implements helper functions for RENEE, a comprehensive
 #' quality-control and quantification RNA-seq pipeline
 #'
 #' @keywords internal

@@ -1,28 +1,28 @@
 set.seed(20231228)
-renee_ds <- create_reneeDataSet_from_files(
+moo <- create_multiOmicDataSet_from_files(
   sample_meta_filepath = system.file("extdata", "sample_metadata.tsv.gz",
-    package = "reneeTools"
+    package = "MOSuite"
   ),
   gene_counts_filepath = system.file(
     "extdata",
     "RSEM.genes.expected_count.all_samples.txt.gz",
-    package = "reneeTools"
+    package = "MOSuite"
   )
 ) %>%
   suppressMessages()
-renee_ds@sample_meta <- renee_ds@sample_meta %>%
+moo@sample_meta <- moo@sample_meta %>%
   dplyr::mutate(condition = factor(condition,
     levels = c("wildtype", "knockout")
   ))
 
 test_that("run_deseq2 works", {
   expect_error(
-    run_deseq2(renee_ds, design = ~condition),
-    "renee_ds must contain filtered counts"
+    run_deseq2(moo, design = ~condition),
+    "moo must contain filtered counts"
   )
 
   min_count <- 10
-  genes_above_threshold <- renee_ds@counts$raw %>%
+  genes_above_threshold <- moo@counts$raw %>%
     tidyr::pivot_longer(!tidyselect::any_of(c("gene_id", "GeneName")),
       names_to = "sample_id", values_to = "count"
     ) %>%
@@ -30,12 +30,12 @@ test_that("run_deseq2 works", {
     dplyr::summarize(count_sum = sum(count)) %>%
     dplyr::filter(count_sum >= min_count) %>%
     dplyr::pull(gene_id)
-  renee_ds@counts$filt <- renee_ds@counts$raw %>%
+  moo@counts$filt <- moo@counts$raw %>%
     dplyr::filter(gene_id %in% (genes_above_threshold))
-  renee_ds <- renee_ds %>%
-    run_deseq2(renee_ds, design = ~condition, fitType = "local", gene_colname = "gene_id") %>%
+  moo <- moo %>%
+    run_deseq2(moo, design = ~condition, fitType = "local", gene_colname = "gene_id") %>%
     suppressMessages()
-  dds <- renee_ds@analyses$deseq2_ds
+  dds <- moo@analyses$deseq2_ds
 
   # check colData
   expect_equal(

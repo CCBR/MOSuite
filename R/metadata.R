@@ -2,7 +2,7 @@
 #'
 #' @param meta_tbl tibble with `sample_id` column
 #'
-#' @inheritParams create_reneeDataSet_from_files
+#' @inheritParams create_multiOmicDataSet_from_files
 #'
 #' @return dataframe where row names are the sample IDs
 #' @export
@@ -10,7 +10,7 @@
 #' @examples
 #' sample_meta_tbl <- readr::read_tsv(system.file("extdata",
 #'   "sample_metadata.tsv.gz",
-#'   package = "reneeTools"
+#'   package = "MOSuite"
 #' ))
 #' head(sample_meta_tbl)
 #' meta_tbl_to_dat(sample_meta_tbl)

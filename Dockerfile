@@ -91,8 +91,8 @@ RUN mamba install -c conda-forge \
   r-devtools
 
 # install R package
-COPY . /opt2/reneeTools
-RUN R -e "devtools::install_local('/opt2/reneeTools', dependencies = TRUE)"
+COPY . /opt2/MOSuite
+RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE)"
 
 # Save Dockerfile in the docker
 COPY Dockerfile /opt2/Dockerfile_${REPONAME}.${BUILD_TAG}

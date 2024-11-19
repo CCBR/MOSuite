@@ -5,7 +5,7 @@
 \title{Filter low counts}
 \usage{
 filter_counts(
-  renee_ds,
+  moo,
   count_type = "raw",
   gene_names_column = "gene_id",
   sample_names_column = "sample_id",
@@ -43,9 +43,9 @@ filter_counts(
 )
 }
 \arguments{
-\item{renee_ds}{reneeDataSet object (see \code{create_reneeDataSet_from_dataframes()})}
+\item{moo}{multiOmicDataSet object (see \code{create_multiOmicDataSet_from_dataframes()})}
 
-\item{count_type}{the type of counts to use -- must be a name in the counts slot (\code{renee_ds@counts})}
+\item{count_type}{the type of counts to use -- must be a name in the counts slot (\code{moo@counts})}
 
 \item{gene_names_column}{The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.}
 
@@ -112,15 +112,15 @@ filter_counts(
 \item{make_plots}{whether to create plots}
 }
 \value{
-\code{reneeDataSet} with filtered counts
+\code{multiOmicDataSet} with filtered counts
 }
 \description{
 This is often the first step in the QC portion of an analysis to filter out
 features that have very low raw counts across most or all of your samples.
 }
 \details{
-This function takes a reneeDataSet containing raw counts and a sample
-metadata table, and returns the reneeDataSet object with filtered counts.
+This function takes a multiOmicDataSet containing raw counts and a sample
+metadata table, and returns the multiOmicDataSet object with filtered counts.
 It also produces an image consisting of three QC plots.
 
 You can tune the threshold for tuning how low counts for a given gene are
@@ -135,7 +135,7 @@ samples; and (3) Similarity Heatmap: the overall similarity of samples to one
 another based on unsupervised clustering.
 }
 \examples{
-renee_ds <- create_reneeDataSet_from_dataframes(
+moo <- create_multiOmicDataSet_from_dataframes(
   as.data.frame(nidap_sample_metadata),
   as.data.frame(nidap_clean_raw_counts),
   sample_id_colname = "Sample"
@@ -145,6 +145,6 @@ renee_ds <- create_reneeDataSet_from_dataframes(
     sample_names_column = "Sample",
     gene_names_column = "Gene"
   )
-head(renee_ds@counts$filt)
+head(moo@counts$filt)
 
 }

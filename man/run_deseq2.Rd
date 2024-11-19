@@ -2,34 +2,34 @@
 % Please edit documentation in R/deseq2.R
 \name{run_deseq2}
 \alias{run_deseq2}
-\title{Run DESeq2 on a reneeDataSet}
+\title{Run DESeq2 on a multiOmicDataSet}
 \usage{
-run_deseq2(renee_ds, design, ...)
+run_deseq2(moo, design, ...)
 }
 \arguments{
-\item{renee_ds}{reneeDataSet object}
+\item{moo}{multiOmicDataSet object}
 
 \item{design}{model formula for experimental design. Columns must exist in \code{meta_dat}.}
 
 \item{...}{remaining variables are forwarded to \code{DESeq2::DESeq()}.}
 }
 \value{
-reneeDataSet object with DESeq2 slot filled
+multiOmicDataSet object with DESeq2 slot filled
 }
 \description{
-Run DESeq2 on a reneeDataSet
+Run DESeq2 on a multiOmicDataSet
 }
 \examples{
 \dontrun{
-renee_ds <- create_reneeDataSet_from_files(
+moo <- create_multiOmicDataSet_from_files(
   system.file("extdata", "sample_metadata.tsv.gz",
-    package = "reneeTools"
+    package = "MOSuite"
   ),
   system.file("extdata",
     "RSEM.genes.expected_count.all_samples.txt.gz",
-    package = "reneeTools"
+    package = "MOSuite"
   )
 ) \%>\% filter_counts()
-renee_ds <- run_deseq2(renee_ds, ~condition)
+moo <- run_deseq2(moo, ~condition)
 }
 }

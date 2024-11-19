@@ -4,32 +4,35 @@
 # --------------------------------------------
 
 cff-version: 1.2.0
-message: 'To cite package "reneeTools" in publications use:'
+message: 'To cite package "MOSuite" in publications use:'
 type: software
 license: MIT
-title: 'reneeTools: Helper functions for RENEE'
+title: 'MOSuite: R package for downstream multi-omics analysis'
 version: 0.0.0.9000
 abstract: TODO What the package does (one paragraph).
 authors:
-- family-names: Koparde
-  given-names: Vishal
-  email: vishal.koparde@nih.gov
-  orcid: https://orcid.org/0000-0001-8978-8495
 - family-names: Sovacool
   given-names: Kelly
   email: kelly.sovacool@nih.gov
   orcid: https://orcid.org/0000-0003-3283-829X
-- family-names: Chill
-  given-names: Samantha
-  email: samantha.chill@nih.gov
-  orcid: https://orcid.org/0000-0002-8734-9875
-repository-code: https://github.com/CCBR/reneeTools
-url: https://ccbr.github.io/reneeTools/
-contact:
+- family-names: Homan
+  given-names: Philip
+  email: philip.homan@nih.gov
 - family-names: Koparde
   given-names: Vishal
   email: vishal.koparde@nih.gov
   orcid: https://orcid.org/0000-0001-8978-8495
+- family-names: Chill
+  given-names: Samantha
+  email: samantha.chill@nih.gov
+  orcid: https://orcid.org/0000-0002-8734-9875
+repository-code: https://github.com/CCBR/MOSuite
+url: https://ccbr.github.io/MOSuite/
+contact:
+- family-names: Sovacool
+  given-names: Kelly
+  email: kelly.sovacool@nih.gov
+  orcid: https://orcid.org/0000-0003-3283-829X
 references:
 - type: software
   title: 'R: A Language and Environment for Statistical Computing'
@@ -320,7 +323,7 @@ references:
   title: S7
   abstract: 'S7: An Object Oriented System Meant to Become a Successor to S3 and S4'
   notes: Imports
-  url: https://github.com/rconsortium/S7/
+  url: https://rconsortium.github.io/S7/
   repository: https://CRAN.R-project.org/package=S7
   authors:
   - family-names: Vaughan
