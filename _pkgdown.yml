@@ -5,10 +5,12 @@ template:
 development:
   mode: auto
 authors:
-  Vishal Koparde:
-    href: "https://github.com/kopardev"
   Kelly Sovacool:
     href: "https://github.com/kelly-sovacool"
+  Philip Homan:
+    href: "https://github.com/phoman14"
+  Vishal Koparde:
+    href: "https://github.com/kopardev"
   CCR Collaborative Bioinformatics Resource:
     href: "https://github.com/CCBR"
   footer:

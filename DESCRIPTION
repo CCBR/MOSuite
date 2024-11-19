@@ -2,10 +2,11 @@ Package: MOSuite
 Title: R package for downstream multi-omics analysis
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Vishal", "Koparde", , "vishal.koparde@nih.gov", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-8978-8495")),
-    person("Kelly", "Sovacool", , "kelly.sovacool@nih.gov", role = "aut",
+    person("Kelly", "Sovacool", , "kelly.sovacool@nih.gov", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3283-829X")),
+    person("Philip", "Homan", , "philip.homan@nih.gov", role = "aut"),
+    person("Vishal", "Koparde", , "vishal.koparde@nih.gov", role = "aut",
+           comment = c(ORCID = "0000-0001-8978-8495")),
     person("Samantha", "Chill", , "samantha.chill@nih.gov", role = "aut",
            comment = c(ORCID = "0000-0002-8734-9875")),
     person("CCR Collaborative Bioinformatics Resource", role = "cph")
