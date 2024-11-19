@@ -11,14 +11,17 @@ title: 'MOSuite: R package for downstream multi-omics analysis'
 version: 0.0.0.9000
 abstract: TODO What the package does (one paragraph).
 authors:
-- family-names: Koparde
-  given-names: Vishal
-  email: vishal.koparde@nih.gov
-  orcid: https://orcid.org/0000-0001-8978-8495
 - family-names: Sovacool
   given-names: Kelly
   email: kelly.sovacool@nih.gov
   orcid: https://orcid.org/0000-0003-3283-829X
+- family-names: Homan
+  given-names: Philip
+  email: philip.homan@nih.gov
+- family-names: Koparde
+  given-names: Vishal
+  email: vishal.koparde@nih.gov
+  orcid: https://orcid.org/0000-0001-8978-8495
 - family-names: Chill
   given-names: Samantha
   email: samantha.chill@nih.gov
@@ -26,10 +29,10 @@ authors:
 repository-code: https://github.com/CCBR/MOSuite
 url: https://ccbr.github.io/MOSuite/
 contact:
-- family-names: Koparde
-  given-names: Vishal
-  email: vishal.koparde@nih.gov
-  orcid: https://orcid.org/0000-0001-8978-8495
+- family-names: Sovacool
+  given-names: Kelly
+  email: kelly.sovacool@nih.gov
+  orcid: https://orcid.org/0000-0003-3283-829X
 references:
 - type: software
   title: 'R: A Language and Environment for Statistical Computing'
