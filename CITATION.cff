@@ -7,7 +7,7 @@ cff-version: 1.2.0
 message: 'To cite package "MOSuite" in publications use:'
 type: software
 license: MIT
-title: 'MOSuite: Helper functions for RENEE'
+title: 'MOSuite: R package for downstream multi-omics analysis'
 version: 0.0.0.9000
 abstract: TODO What the package does (one paragraph).
 authors:
@@ -320,7 +320,7 @@ references:
   title: S7
   abstract: 'S7: An Object Oriented System Meant to Become a Successor to S3 and S4'
   notes: Imports
-  url: https://github.com/rconsortium/S7/
+  url: https://rconsortium.github.io/S7/
   repository: https://CRAN.R-project.org/package=S7
   authors:
   - family-names: Vaughan
