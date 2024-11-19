@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   intro: intro.html
   memory: memory.html
-last_built: 2024-10-22T18:43Z
+last_built: 2024-11-19T16:41Z
 urls:
-  reference: https://ccbr.github.io/reneeTools/reference
-  article: https://ccbr.github.io/reneeTools/articles
+  reference: https://ccbr.github.io/MOSuite/reference
+  article: https://ccbr.github.io/MOSuite/articles

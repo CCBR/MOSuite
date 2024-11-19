@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Helper functions for RENEE • reneeTools</title>
+<title>R package for downstream multi-omics analysis • MOSuite</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Helper functions for RENEE">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="R package for downstream multi-omics analysis">
 <meta name="description" content="TODO What the package does (one paragraph).">
 <meta property="og:description" content="TODO What the package does (one paragraph).">
 </head>
@@ -20,7 +20,7 @@
 
     <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="index.html">reneeTools</a>
+    <a class="navbar-brand me-2" href="index.html">MOSuite</a>
 
     <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9000</small>
 
@@ -45,7 +45,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/CCBR/reneeTools/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/CCBR/MOSuite/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -54,25 +54,26 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="reneetools">reneeTools<a class="anchor" aria-label="anchor" href="#reneetools"></a>
+<div class="page-header"><h1 id="mosuite">MOSuite<a class="anchor" aria-label="anchor" href="#mosuite"></a>
 </h1></div>
 <!-- badges: start -->
 
 <!-- badges: end -->
-<p>Helper functions for <a href="https://github.com/CCBR/renee" class="external-link">RENEE</a>: RNA sequencing analysis pipeline</p>
+<p>R package for downstream multi-omics analysis</p>
+<p>Designed for differential <a href="https://github.com/CCBR/RENEE" class="external-link">RNA-seq</a> analysis or any data represented in a counts table.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of reneeTools from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of MOSuite from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CCBR/reneeTools"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CCBR/MOSuite"</span><span class="op">)</span></span></code></pre></div>
 <!--
 ## Example
 &#10;TODO: This is a basic example which shows you how to solve a common problem:
 &#10;
 ``` r
-library(reneeTools)
+library(MOSuite)
 ## basic example code
 ```
 -->
@@ -80,14 +81,14 @@ library(reneeTools)
 <div class="section level2">
 <h2 id="help--contributing">Help &amp; Contributing<a class="anchor" aria-label="anchor" href="#help--contributing"></a>
 </h2>
-<p>Come across a <strong>bug</strong>? Open an <a href="https://github.com/CCBR/reneeTools/issues" class="external-link">issue</a> and include a minimal reproducible example.</p>
-<p>Have a <strong>question</strong>? Ask it in <a href="https://github.com/CCBR/reneeTools/discussions" class="external-link">discussions</a>.</p>
+<p>Come across a <strong>bug</strong>? Open an <a href="https://github.com/CCBR/MOSuite/issues" class="external-link">issue</a> and include a minimal reproducible example.</p>
+<p>Have a <strong>question</strong>? Ask it in <a href="https://github.com/CCBR/MOSuite/discussions" class="external-link">discussions</a>.</p>
 <p>Want to <strong>contribute</strong> to this project? Check out the <a href="CONTRIBUTING.html">contributing guidelines</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="development-roadmap">Development Roadmap<a class="anchor" aria-label="anchor" href="#development-roadmap"></a>
 </h2>
-<p><img src="./reference/figures/reneeTools-development-plan.png"></p>
+<p><img src="./reference/figures/development-plan.png"></p>
 <ul>
 <li><a href="https://nih-my.sharepoint.com/:x:/g/personal/homanpj_nih_gov/ETvHXgnwxExEpcP57Jj9_EwBHBvZBqNuZ_c3eu51w-SlnA?e=PcXKU8" class="external-link">dev spreadsheet</a></li>
 <li><a href="https://github.com/orgs/CCBR/projects/32" class="external-link">project board</a></li>
@@ -97,8 +98,8 @@ library(reneeTools)
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/CCBR/reneeTools/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/CCBR/reneeTools/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/CCBR/MOSuite/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/CCBR/MOSuite/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -120,7 +121,7 @@ library(reneeTools)
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html#citation">Citing reneeTools</a></li>
+<li><a href="authors.html#citation">Citing MOSuite</a></li>
 </ul>
 </div>
 
@@ -128,9 +129,11 @@ library(reneeTools)
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://github.com/kopardev" class="external-link">Vishal Koparde</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-8978-8495" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<a href="https://github.com/kelly-sovacool" class="external-link">Kelly Sovacool</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-3283-829X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
-<a href="https://github.com/kelly-sovacool" class="external-link">Kelly Sovacool</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-3283-829X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<a href="https://github.com/phoman14" class="external-link">Philip Homan</a> <br><small class="roles"> Author </small>  </li>
+<li>
+<a href="https://github.com/kopardev" class="external-link">Vishal Koparde</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-8978-8495" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Samantha Chill <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-8734-9875" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
@@ -139,7 +142,7 @@ library(reneeTools)
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/CCBR/reneeTools/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/CCBR/reneeTools/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://github.com/CCBR/MOSuite/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/CCBR/MOSuite/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 
