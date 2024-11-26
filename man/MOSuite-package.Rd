@@ -19,11 +19,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Vishal Koparde \email{vishal.koparde@nih.gov} (\href{https://orcid.org/0000-0001-8978-8495}{ORCID})
+\strong{Maintainer}: Kelly Sovacool \email{kelly.sovacool@nih.gov} (\href{https://orcid.org/0000-0003-3283-829X}{ORCID})
 
 Authors:
 \itemize{
-  \item Kelly Sovacool \email{kelly.sovacool@nih.gov} (\href{https://orcid.org/0000-0003-3283-829X}{ORCID})
+  \item Philip Homan \email{philip.homan@nih.gov}
+  \item Vishal Koparde \email{vishal.koparde@nih.gov} (\href{https://orcid.org/0000-0001-8978-8495}{ORCID})
   \item Samantha Chill \email{samantha.chill@nih.gov} (\href{https://orcid.org/0000-0002-8734-9875}{ORCID})
 }
 

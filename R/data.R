@@ -10,10 +10,18 @@
 #' Sample metadata for the NIDAP test dataset
 "nidap_sample_metadata"
 
-#' Clean raw counts for the NIDAP test dataset.
+#' Raw counts for the NIDAP test dataset
 #' Pairs with `nidap_sample_metadata`.
+"nidap_raw_counts"
+
+#' Clean raw counts for the NIDAP test dataset.
+#' The result of running `clean_raw_counts()` on `nidap_raw_counts`.
 "nidap_clean_raw_counts"
 
 #' Filtered counts for the NIDAP test dataset.
 #' The result of running `filter_counts()` on `nidap_clean_raw_counts`.
 "nidap_filtered_counts"
+
+#' Normalized counts for the NIDAP test dataset.
+#' The result of running `normalize_counts()` on `nidap_filtered_counts`.
+"nidap_norm_counts"

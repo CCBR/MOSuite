@@ -20,7 +20,7 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
   },
   validator = function(self) {
     # counts must only contain approved names
-    approved_counts <- c("raw", "cpm", "filt")
+    approved_counts <- c("raw", "clean", "cpm", "filt")
     if (!all(names(self@counts) %in% approved_counts)) {
       stop(glue::glue("counts can only contain data frames with these names:\n\t{paste(approved_counts, collapse = ', ')}"))
     }
