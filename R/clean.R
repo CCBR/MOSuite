@@ -1,3 +1,5 @@
+# TODO replace print() with message() or warning() where appropriate
+
 #' Clean Raw Counts
 #'
 #' @inheritParams filter_counts
@@ -39,9 +41,9 @@
 #' moo <- create_multiOmicDataSet_from_dataframes(
 #'   as.data.frame(nidap_sample_metadata),
 #'   as.data.frame(nidap_raw_counts),
-#'   sample_id_colname = "Sample"
+#'   sample_id_colname = "Sample",
 #' ) %>%
-#'   clean_raw_counts()
+#'   clean_raw_counts(sample_names_column = "Sample", gene_names_column = "GeneName")
 #' head(moo@counts$clean)
 clean_raw_counts <- function(moo,
                              sample_names_column = "Sample",
@@ -52,12 +54,6 @@ clean_raw_counts <- function(moo,
                              split_gene_name = TRUE,
                              aggregate_rows_with_duplicate_gene_names = TRUE,
                              gene_name_column_to_use_for_collapsing_duplicates = "") {
-  # TODO delete library statements, use pkg::fcn syntax
-  library(stringr)
-  library(tidyr)
-  library(dplyr)
-  library(ggplot2)
-
   raw_counts_matrix <- moo@counts[["raw"]]
   sample_metadata <- moo@sample_meta
 
@@ -148,7 +144,8 @@ clean_raw_counts <- function(moo,
     gene_names_column = gene_names_column,
     gene_name_column_to_use_for_collapsing_duplicates = gene_name_column_to_use_for_collapsing_duplicates,
     data_type = data_type,
-    aggregate_rows_with_duplicate_gene_names = aggregate_rows_with_duplicate_gene_names
+    aggregate_rows_with_duplicate_gene_names = aggregate_rows_with_duplicate_gene_names,
+    split_gene_name = split_gene_name
   )
 
   print(data_type)
@@ -178,6 +175,8 @@ strip_ensembl_version <- function(x) {
 #' @export
 #'
 plot_read_depth <- function(raw_counts_matrix) {
+  sample_names <- read_sums <- NULL
+
   # Exclude the gene column from sample columns for counts
   # TODO: do not assume the first column is the gene column
   sample_cols <- raw_counts_matrix[, -1]
@@ -191,19 +190,19 @@ plot_read_depth <- function(raw_counts_matrix) {
   )
 
   # Plotting
-  read_plot <- ggplot(sum_df, aes(x = sample_names, y = read_sums)) +
-    geom_bar(stat = "identity", fill = "blue") +
-    labs(title = "Total Reads per Sample", x = "Samples", y = "Read Count") +
-    theme_minimal() +
-    theme(
-      axis.text.x = element_text(
+  read_plot <- ggplot2::ggplot(sum_df, ggplot2::aes(x = sample_names, y = read_sums)) +
+    ggplot2::geom_bar(stat = "identity", fill = "blue") +
+    ggplot2::labs(title = "Total Reads per Sample", x = "Samples", y = "Read Count") +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(
         angle = 45,
         hjust = 1,
         size = 14
       ),
-      axis.text.y = element_text(size = 14),
-      axis.title = element_text(size = 16),
-      plot.title = element_text(size = 20)
+      axis.text.y = ggplot2::element_text(size = 14),
+      axis.title = ggplot2::element_text(size = 16),
+      plot.title = ggplot2::element_text(size = 20)
     )
 }
 
@@ -249,7 +248,8 @@ separate_gene_meta_columns <- function(raw_counts_matrix, gene_names_column = "G
   print("")
 
   if (split_gene_name == T) {
-    Ensembl_ID <- str_split_fixed(raw_counts_matrix[, gene_names_column], "_|-|:|\\|", n = 2) %>% data.frame()
+    Ensembl_ID <- stringr::str_split_fixed(raw_counts_matrix[, gene_names_column], "_|-|:|\\|", n = 2) %>%
+      data.frame()
     EnsCol <- apply(Ensembl_ID, c(1, 2), function(x) {
       grepl("^ENS[A-Z]+[0-9]+", x)
     })
@@ -263,7 +263,6 @@ separate_gene_meta_columns <- function(raw_counts_matrix, gene_names_column = "G
         colnames(raw_counts_matrix)[colnames(raw_counts_matrix) %in% gene_names_column] <- "FeatureID"
       } else {
         print("incorrect Data Type")
-        incorrect_data_type
       }
     } else {
       ## at least one column must have all ensemble ids found in EnsCol
@@ -294,7 +293,6 @@ separate_gene_meta_columns <- function(raw_counts_matrix, gene_names_column = "G
       colnames(raw_counts_matrix)[colnames(raw_counts_matrix) %in% gene_names_column] <- "FeatureID"
     } else {
       print("incorrect Data Type")
-      incorrect_data_type
     }
   }
   return(raw_counts_matrix)
@@ -310,7 +308,8 @@ separate_gene_meta_columns <- function(raw_counts_matrix, gene_names_column = "G
 aggregate_duplicate_gene_names <- function(raw_counts_matrix, gene_names_column,
                                            gene_name_column_to_use_for_collapsing_duplicates,
                                            data_type,
-                                           aggregate_rows_with_duplicate_gene_names) {
+                                           aggregate_rows_with_duplicate_gene_names,
+                                           split_gene_name) {
   ##################################
   ## If duplicate gene, aggregate information to single row
   ##################################
@@ -417,20 +416,20 @@ aggregate_duplicate_gene_names <- function(raw_counts_matrix, gene_names_column,
         gene_name_column_to_use_for_collapsing_duplicates,
         nums
       )] %>%
-        group_by_at(gene_name_column_to_use_for_collapsing_duplicates) %>%
-        summarise_all(sum)
+        dplyr::group_by_at(gene_name_column_to_use_for_collapsing_duplicates) %>%
+        dplyr::summarise_all(sum)
 
       if (ncol(raw_counts_matrix[, !names(raw_counts_matrix) %in% nums, drop = FALSE]) > 1) {
         ## collapse non-numeric columns
         dfagg2 <- raw_counts_matrix[, !names(raw_counts_matrix) %in% nums] %>%
-          group_by_at(gene_name_column_to_use_for_collapsing_duplicates) %>%
-          summarise_all(paste, collapse = ",")
+          dplyr::group_by_at(gene_name_column_to_use_for_collapsing_duplicates) %>%
+          dplyr::summarise_all(paste, collapse = ",")
 
         dfagg <- merge(
           dfagg2,
           dfagg,
           by = eval(gene_name_column_to_use_for_collapsing_duplicates),
-          sort = F
+          sort = FALSE
         ) %>% as.data.frame()
       }
       dfout <- dfagg

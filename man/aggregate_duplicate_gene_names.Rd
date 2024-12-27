@@ -9,7 +9,8 @@ aggregate_duplicate_gene_names(
   gene_names_column,
   gene_name_column_to_use_for_collapsing_duplicates,
   data_type,
-  aggregate_rows_with_duplicate_gene_names
+  aggregate_rows_with_duplicate_gene_names,
+  split_gene_name
 )
 }
 \arguments{
@@ -41,6 +42,8 @@ across duplicate Feature ID rows within each sample. Additional identifier
 columns, if present (e.g. Ensembl IDs), will be preserved and multiple
 matching identifiers in such additional columns will appear as
 comma-separated values in an aggregated row.}
+
+\item{split_gene_name}{If \code{TRUE}, split the gene name column by any of these special characters: \verb{,|_-:}}
 }
 \value{
 data frame with columns separated if possible
