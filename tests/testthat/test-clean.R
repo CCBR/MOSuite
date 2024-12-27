@@ -12,6 +12,10 @@ test_that("clean_raw_counts works", {
     sample_meta_dat = as.data.frame(nidap_sample_metadata),
     count_dat = as.data.frame(nidap_raw_counts),
     sample_id_colname = "Sample"
-  ) %>% clean_raw_counts()
+  ) %>%
+    clean_raw_counts(
+      sample_names_column = "Sample",
+      gene_names_column = "GeneName"
+    )
   expect_true(equal_dfs(moo@counts[["clean"]], as.data.frame(nidap_clean_raw_counts)))
 })
