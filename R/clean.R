@@ -1,15 +1,57 @@
-# Clean Raw Counts [CCBR] (5453b016-53cf-44c8-b09b-7efda66543af): v82
+#' Clean Raw Counts
+#'
+#' @inheritParams filter_counts
+#' @param data_type Type of data to process. Options: `c("Bulk RNAseq", "Proteomics")`
+#' @param cleanup_column_names Invalid raw counts column names can cause errors
+#'   in the downstream analysis. If this is `TRUE`, any invalid column names
+#'   will be automatically altered to a correct format. These format changes
+#'   will include adding an "X" as the first character in any column name that
+#'   began with a numeral and replacing some special characters ("-,:. ") with
+#'   underscores ("_"). Invalid sample names and any changes made will be
+#'   detailed in the template log.
+#' @param split_gene_name If `TRUE`, split the gene name column by any of these special characters: `,|_-:`
+#' @param aggregate_rows_with_duplicate_gene_names If a Feature ID (from the
+#'   "Cleanup Column Names" parameter above) is found to be duplicated on
+#'   multiple rows of the raw counts, the Log will report these Feature IDs.
+#'   Using the default behavior (`TRUE`), the counts for all rows with a
+#'   duplicate Feature IDs are aggregated into a single row. Counts are summed
+#'   across duplicate Feature ID rows within each sample. Additional identifier
+#'   columns, if present (e.g. Ensembl IDs), will be preserved and multiple
+#'   matching identifiers in such additional columns will appear as
+#'   comma-separated values in an aggregated row.
+#' @param gene_name_column_to_use_for_collapsing_duplicates Select the column
+#'   with Feature IDs to use as grouping elements to collapse the counts matrix.
+#'   The log output will list the columns available to identify duplicate row
+#'   IDs in order to aggregate information. If the `data_type` is "Bulk RNAseq", your column
+#'   selected for Feature ID will be renamed to "Gene". If the `data_type` is "Proteomics",
+#'   your column selected for Feature ID will be renamed to "Feature ID".
+#'   If left blank your "Feature ID" Column will be used to Aggregate Rows. If
+#'   "Feature ID" column can be split into multiple IDs the non Ensembl ID name
+#'   will be used to aggregate duplicate IDs. If "Feature ID" column does not
+#'   contain Ensembl IDs the split Feature IDs will be named 'Feature_id_1' and
+#'   'Feature_id_2'. For this case an error will occur and you will have
+#'   to manually enter the Column ID for this field.
+#'
+#' @returns `multiOmicDataSet` with cleaned counts
 #' @export
+#'
+#' @examples
+#' moo <- create_multiOmicDataSet_from_dataframes(
+#'   as.data.frame(nidap_sample_metadata),
+#'   as.data.frame(nidap_raw_counts),
+#'   sample_id_colname = "Sample"
+#' ) %>%
+#'   clean_raw_counts()
+#' head(moo@counts$clean)
 clean_raw_counts <- function(moo,
                              sample_names_column = "Sample",
                              gene_names_column = "GeneName",
                              samples_to_rename = c(""),
+                             data_type = "Bulk RNAseq", # TODO refactor so this param isn't needed
                              cleanup_column_names = TRUE,
                              split_gene_name = TRUE,
                              aggregate_rows_with_duplicate_gene_names = TRUE,
-                             gene_name_column_to_use_for_collapsing_duplicates = "",
-                             data_type = "Bulk RNAseq" # TODO refactor so this param isn't needed
-) {
+                             gene_name_column_to_use_for_collapsing_duplicates = "") {
   # TODO delete library statements, use pkg::fcn syntax
   library(stringr)
   library(tidyr)
@@ -128,6 +170,13 @@ strip_ensembl_version <- function(x) {
   return(unlist(lapply(stringr::str_split(x, "[.]"), "[[", 1)))
 }
 
+#' Create read depth plot
+#'
+#' @param raw_counts_matrix dataframe with raw counts data
+#'
+#' @returns ggplot object
+#' @export
+#'
 plot_read_depth <- function(raw_counts_matrix) {
   # Exclude the gene column from sample columns for counts
   # TODO: do not assume the first column is the gene column
@@ -158,7 +207,14 @@ plot_read_depth <- function(raw_counts_matrix) {
     )
 }
 
+#' check sample names in metadata & counts data
+#'
+#' @param counts dataframe containing counts data
+#' @param metadata dataframe containing sample metadata
+#' @inheritParams clean_raw_counts
+#'
 check_sample_names <- function(counts, metadata, sample_names_column) {
+  # TODO make sure this is part of mo-class validation
   raw_count_names <- colnames(counts)
   metadata_names <- metadata[, sample_names_column]
 
@@ -171,6 +227,12 @@ check_sample_names <- function(counts, metadata, sample_names_column) {
   }
 }
 
+#' Separate gene metadata column
+#'
+#' @param raw_counts_matrix dataframe with raw counts data
+#' @inheritParams clean_raw_counts
+#'
+#' @returns dataframe with metadata separated
 separate_gene_meta_columns <- function(raw_counts_matrix, gene_names_column = "GeneName", split_gene_name = TRUE, data_type = "Bulk RNAseq") {
   ## Identify and separate Gene Name Columns into multiple Gene Metadata columns
   ##################################
@@ -238,6 +300,13 @@ separate_gene_meta_columns <- function(raw_counts_matrix, gene_names_column = "G
   return(raw_counts_matrix)
 }
 
+#' Aggregate duplicate gene names
+#'
+#' @inheritParams clean_raw_counts
+#' @inheritParams separate_gene_meta_columns
+#'
+#' @returns data frame with columns separated if possible
+#'
 aggregate_duplicate_gene_names <- function(raw_counts_matrix, gene_names_column,
                                            gene_name_column_to_use_for_collapsing_duplicates,
                                            data_type,
