@@ -30,6 +30,7 @@ jobs:
         shell: Rscript {0}
         run: |
           rmarkdown::render("README.Rmd")
+          if (file.exists("README.html")) file.remove("README.html")
 
       - name: update CITATION.cff
         shell: Rscript {0}
