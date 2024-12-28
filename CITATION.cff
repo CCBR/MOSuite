@@ -2,7 +2,7 @@
 # CITATION file created with {cffr} R package
 # See also: https://docs.ropensci.org/cffr/
 # --------------------------------------------
-
+ 
 cff-version: 1.2.0
 message: 'To cite package "MOSuite" in publications use:'
 type: software
@@ -419,6 +419,31 @@ references:
   year: '2024'
   doi: 10.32614/CRAN.package.tidyselect
 - type: software
+  title: cffr
+  abstract: 'cffr: Generate Citation File Format (''cff'') Metadata for R Packages'
+  notes: Suggests
+  url: https://docs.ropensci.org/cffr/
+  repository: https://CRAN.R-project.org/package=cffr
+  authors:
+  - family-names: Hernangómez
+    given-names: Diego
+    email: diego.hernangomezherrero@gmail.com
+    orcid: https://orcid.org/0000-0001-8457-4658
+  year: '2024'
+  doi: 10.32614/CRAN.package.cffr
+- type: software
+  title: docopt
+  abstract: 'docopt: Command-Line Interface Specification Language'
+  notes: Suggests
+  url: https://github.com/docopt/docopt.R
+  repository: https://CRAN.R-project.org/package=docopt
+  authors:
+  - family-names: Jonge
+    given-names: Edwin
+    name-particle: de
+  year: '2024'
+  doi: 10.32614/CRAN.package.docopt
+- type: software
   title: glue
   abstract: 'glue: Interpreted String Literals'
   notes: Suggests
@@ -604,3 +629,17 @@ references:
     orcid: https://orcid.org/0000-0002-7840-692X
   year: '2024'
   doi: 10.32614/CRAN.package.usethis
+- type: software
+  title: V8
+  abstract: 'V8: Embedded JavaScript and WebAssembly Engine for R'
+  notes: Suggests
+  url: https://jeroen.r-universe.dev/V8
+  repository: https://CRAN.R-project.org/package=V8
+  authors:
+  - family-names: Ooms
+    given-names: Jeroen
+    email: jeroenooms@gmail.com
+    orcid: https://orcid.org/0000-0002-4035-0289
+  year: '2024'
+  doi: 10.32614/CRAN.package.V8
+
