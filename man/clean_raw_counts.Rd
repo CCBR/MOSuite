@@ -70,8 +70,8 @@ Clean Raw Counts
 moo <- create_multiOmicDataSet_from_dataframes(
   as.data.frame(nidap_sample_metadata),
   as.data.frame(nidap_raw_counts),
-  sample_id_colname = "Sample"
+  sample_id_colname = "Sample",
 ) \%>\%
-  clean_raw_counts()
+  clean_raw_counts(sample_names_column = "Sample", gene_names_column = "GeneName")
 head(moo@counts$clean)
 }
