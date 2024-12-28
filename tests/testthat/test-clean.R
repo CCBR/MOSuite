@@ -6,13 +6,13 @@ equal_dfs <- function(x, y) {
     all.equal(lapply(x, class), lapply(y, class))
   )
 }
-moo_nidap <- create_multiOmicDataSet_from_dataframes(
-  sample_meta_dat = as.data.frame(nidap_sample_metadata),
-  count_dat = as.data.frame(nidap_raw_counts),
-  sample_id_colname = "Sample"
-)
+
 test_that("clean_raw_counts works", {
-  moo_nidap_out <- moo_nidap %>%
+  moo_nidap <- create_multiOmicDataSet_from_dataframes(
+    sample_meta_dat = as.data.frame(nidap_sample_metadata),
+    count_dat = as.data.frame(nidap_raw_counts),
+    sample_id_colname = "Sample"
+  ) %>%
     clean_raw_counts(
       sample_names_column = "Sample",
       gene_names_column = "GeneName"

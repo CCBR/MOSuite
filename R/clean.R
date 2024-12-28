@@ -49,7 +49,7 @@ clean_raw_counts <- function(moo,
                              sample_names_column = "Sample",
                              gene_names_column = "GeneName",
                              samples_to_rename = c(""),
-                             data_type = "Bulk RNAseq", # TODO refactor so this param isn't needed
+                             data_type = "Bulk RNAseq", # TODO refactor so this param isn't needed -- use feature_id instead of gene always
                              cleanup_column_names = TRUE,
                              split_gene_name = TRUE,
                              aggregate_rows_with_duplicate_gene_names = TRUE,
