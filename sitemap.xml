@@ -11,12 +11,9 @@
 <url><loc>https://ccbr.github.io/MOSuite/index.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/news/index.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/MOSuite-package.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/reference/aggregate_duplicate_gene_names.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/as_integer_df.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/calc_cpm.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/calc_cpm_df.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/reference/check_sample_names.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/reference/clean_raw_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/counts_dat_to_matrix.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/create_multiOmicDataSet_from_dataframes.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/create_multiOmicDataSet_from_files.html</loc></url>
@@ -28,18 +25,13 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/multiOmicDataSet.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_clean_raw_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_filtered_counts.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/reference/nidap_norm_counts.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/reference/nidap_raw_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_sample_metadata.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_heatmap.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_pca.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/reference/plot_read_depth.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/reexports.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/remove_low_count_genes.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/rename_samples.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/run_deseq2.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/reference/separate_gene_meta_columns.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/reference/strip_ensembl_version.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/validate_sample_metadata.html</loc></url>
 </urlset>
 
