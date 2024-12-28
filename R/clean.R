@@ -54,8 +54,8 @@ clean_raw_counts <- function(moo,
                              split_gene_name = TRUE,
                              aggregate_rows_with_duplicate_gene_names = TRUE,
                              gene_name_column_to_use_for_collapsing_duplicates = "") {
-  raw_counts_matrix <- moo@counts[["raw"]]
-  sample_metadata <- moo@sample_meta
+  raw_counts_matrix <- moo@counts[["raw"]] %>% as.data.frame()
+  sample_metadata <- moo@sample_meta %>% as.data.frame()
 
   # Sample Read Counts Plot
   read_plot <- plot_read_depth(raw_counts_matrix)
@@ -215,15 +215,16 @@ plot_read_depth <- function(raw_counts_matrix) {
 check_sample_names <- function(counts, metadata, sample_names_column) {
   # TODO make sure this is part of mo-class validation
   raw_count_names <- colnames(counts)
-  metadata_names <- metadata[, sample_names_column]
+  metadata_names <- metadata %>% dplyr::pull(sample_names_column)
 
   different_names <- setdiff(metadata_names, raw_count_names)
   if (length(different_names) > 0) {
     stop(
-      "The following sample names are different in the metadata but not the raw counts: ",
+      "The following sample names are in the metadata but not the raw counts: ",
       paste(different_names, collapse = ",")
     )
   }
+  return(invisible(TRUE))
 }
 
 #' Separate gene metadata column
