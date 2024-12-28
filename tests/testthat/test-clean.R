@@ -17,7 +17,7 @@ test_that("clean_raw_counts works", {
       sample_names_column = "Sample",
       gene_names_column = "GeneName"
     )
-  expect_true(equal_dfs(moo_nidap_out@counts[["clean"]], as.data.frame(nidap_clean_raw_counts)))
+  expect_true(equal_dfs(moo_nidap@counts[["clean"]], as.data.frame(nidap_clean_raw_counts)))
 })
 
 test_that("check_sample_names works for dataframes & tibbles", {
