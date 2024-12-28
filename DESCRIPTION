@@ -38,6 +38,8 @@ Imports:
     tidyr,
     tidyselect
 Suggests:
+    cffr,
+    docopt,
     glue,
     knitr,
     lobstr,
@@ -47,7 +49,8 @@ Suggests:
     scales,
     styler,
     testthat (>= 3.0.0),
-    usethis
+    usethis,
+    V8
 VignetteBuilder:
     knitr
 biocViews:
