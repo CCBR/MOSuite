@@ -17,7 +17,8 @@ test_that("filter_counts reproduces NIDAP results", {
     calc_cpm(gene_colname = "Gene") %>%
     filter_counts(
       sample_names_column = "Sample",
-      gene_names_column = "Gene"
+      gene_names_column = "Gene",
+      count_type = "raw"
     )
   rds_counts_filt <- moo@counts$filt %>%
     dplyr::arrange(desc(Gene))
@@ -47,7 +48,8 @@ test_that("filter_counts works on RENEE dataset", {
     minimum_count_value_to_be_considered_nonzero = 1,
     minimum_number_of_samples_with_nonzero_counts_in_total = 1,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
-    make_plots = FALSE
+    make_plots = FALSE,
+    count_type = "raw"
   )
   expect_equal(
     rds2@counts$filt %>% head(),

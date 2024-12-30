@@ -4,7 +4,7 @@
 \name{nidap_clean_raw_counts}
 \alias{nidap_clean_raw_counts}
 \title{Clean raw counts for the NIDAP test dataset.
-Pairs with \code{nidap_sample_metadata}.}
+The result of running \code{clean_raw_counts()} on \code{nidap_raw_counts}.}
 \format{
 An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 43280 rows and 10 columns.
 }
@@ -13,6 +13,6 @@ nidap_clean_raw_counts
 }
 \description{
 Clean raw counts for the NIDAP test dataset.
-Pairs with \code{nidap_sample_metadata}.
+The result of running \code{clean_raw_counts()} on \code{nidap_raw_counts}.
 }
 \keyword{datasets}

@@ -5,8 +5,8 @@
 #' TODO accept new names for samples in sample metadata spreadsheet
 #'
 #'
-#' @param dat data frame containing a `sample` column
-#' @param samples_to_rename_manually TODO use sample metadata spreadsheet custom column
+#' @param dat data frame
+#' @param samples_to_rename_manually TODO use sample metadata spreadsheet custom column. Need to document the format of this object.
 #'
 #' @return data frame with samples renamed
 #' @keywords internal
@@ -19,7 +19,7 @@ rename_samples <- function(dat, samples_to_rename_manually) {
     for (x in replacements) {
       old <- strsplit(x, ": ?")[[1]][1]
       new <- strsplit(x, ": ?")[[1]][2]
-      dat$sample <- ifelse(dat$sample == old, new, dat$sample)
+      colnames(dat)[colnames(dat) %in% old] <- new
     }
   }
   return(dat)
