@@ -12,17 +12,27 @@
 R package for downstream multi-omics analysis
 
 Designed for differential [RNA-seq](https://github.com/CCBR/RENEE)
-analysis or any data represented in a counts table.
+analysis or any data represented in a counts table. See the website for
+more information, documentation, and examples:
+<https://ccbr.github.io/MOSuite/>
 
 ## Installation
 
 You can install the development version of MOSuite from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/CCBR/MOSuite) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("CCBR/MOSuite")
 ```
+
+## Usage
+
+Please see the [introductory
+vignette](https://ccbr.github.io/MOSuite/articles/intro.html) for a
+quick start tutorial. Take a look at the [reference
+documentation](https://ccbr.github.io/MOSuite/reference/index.html) for
+detailed information on each function in the package.
 
 <!--
 ## Example
@@ -30,8 +40,6 @@ devtools::install_github("CCBR/MOSuite")
 &#10;
 ``` r
 library(MOSuite)
-#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
-#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 ## basic example code
 ```
 -->
