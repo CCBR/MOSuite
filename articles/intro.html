@@ -68,6 +68,8 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CCBR/MOSuite" class="external-link">MOSuite</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
+<span><span class="co">#&gt; 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</span></span>
 <span><span class="co">#&gt; Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
 <span><span class="co">#&gt;   object 'type_sum.accel' not found</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
@@ -110,23 +112,90 @@
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
 <span></span>
-<span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/filter_counts.html">filter_counts</a></span><span class="op">(</span></span>
-<span>  group_column <span class="op">=</span> <span class="st">"condition"</span>,</span>
-<span>  label_column <span class="op">=</span> <span class="st">"sample_id"</span>,</span>
-<span>  columns_to_include <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gene_id"</span>, <span class="st">"KO_S3"</span>, <span class="st">"KO_S4"</span>, <span class="st">"WT_S1"</span>, <span class="st">"WT_S2"</span><span class="op">)</span>,</span>
-<span>  minimum_count_value_to_be_considered_nonzero <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  minimum_number_of_samples_with_nonzero_counts_in_total <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  minimum_number_of_samples_with_nonzero_counts_in_a_group <span class="op">=</span> <span class="fl">1</span>,</span>
-<span><span class="op">)</span></span>
-<span></span>
+<span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clean_raw_counts.html">clean_raw_counts</a></span><span class="op">(</span></span>
+<span>    gene_names_column <span class="op">=</span> <span class="st">"gene_id"</span>,</span>
+<span>    sample_names_column <span class="op">=</span> <span class="st">"sample_id"</span>,</span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/filter_counts.html">filter_counts</a></span><span class="op">(</span></span>
+<span>    gene_names_column <span class="op">=</span> <span class="st">"Ensembl_ID_version"</span>,</span>
+<span>    sample_names_column <span class="op">=</span> <span class="st">"sample_id"</span>,</span>
+<span>    group_column <span class="op">=</span> <span class="st">"condition"</span>,</span>
+<span>    label_column <span class="op">=</span> <span class="st">"sample_id"</span>,</span>
+<span>    columns_to_include <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ensembl_ID_version"</span>, <span class="st">"KO_S3"</span>, <span class="st">"KO_S4"</span>, <span class="st">"WT_S1"</span>, <span class="st">"WT_S2"</span><span class="op">)</span>,</span>
+<span>    minimum_count_value_to_be_considered_nonzero <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    minimum_number_of_samples_with_nonzero_counts_in_total <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    minimum_number_of_samples_with_nonzero_counts_in_a_group <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt;      .</span></span>
+<span><span class="co">#&gt;  KO_S3</span></span>
+<span><span class="co">#&gt;  KO_S4</span></span>
+<span><span class="co">#&gt;  WT_S1</span></span>
+<span><span class="co">#&gt;  WT_S2</span></span>
+<span><span class="co">#&gt; [1] ""</span></span>
+<span><span class="co">#&gt; [1] ""</span></span>
+<span><span class="co">#&gt; [1] "Columns that can be used to aggregate gene information"</span></span>
+<span><span class="co">#&gt; [1] "Ensembl_ID_version" "Gene"               "Ensembl_ID"        </span></span>
+<span><span class="co">#&gt; [1] ""</span></span>
+<span><span class="co">#&gt; [1] "Aggregating the counts for the same ID in different chromosome locations."</span></span>
+<span><span class="co">#&gt; [1] "Column used to Aggregate duplicate IDs: "</span></span>
+<span><span class="co">#&gt; [1] "Gene"</span></span>
+<span><span class="co">#&gt; [1] "Number of rows before Collapse: "</span></span>
+<span><span class="co">#&gt; [1] 58929</span></span>
+<span><span class="co">#&gt; [1] ""</span></span>
+<span><span class="co">#&gt; [1] "Duplicate IDs: "</span></span>
+<span><span class="co">#&gt;   [1] "ABCF2"          "AHRR"           "ARMCX5-GPRASP2" "ATF7"          </span></span>
+<span><span class="co">#&gt;   [5] "ATXN7"          "CCDC39"         "DIABLO"         "DUXAP8"        </span></span>
+<span><span class="co">#&gt;   [9] "GGT1"           "GOLGA8M"        "HSPA14"         "IGF2"          </span></span>
+<span><span class="co">#&gt;  [13] "ITFG2-AS1"      "LINC01238"      "LINC01505"      "LINC02203"     </span></span>
+<span><span class="co">#&gt;  [17] "MATR3"          "PDE11A"         "PINX1"          "POLR2J3"       </span></span>
+<span><span class="co">#&gt;  [21] "POLR2J4"        "PRSS50"         "RF00001"        "RF00002"       </span></span>
+<span><span class="co">#&gt;  [25] "RF00003"        "RF00004"        "RF00006"        "RF00012"       </span></span>
+<span><span class="co">#&gt;  [29] "RF00015"        "RF00017"        "RF00019"        "RF00026"       </span></span>
+<span><span class="co">#&gt;  [33] "RF00045"        "RF00056"        "RF00066"        "RF00072"       </span></span>
+<span><span class="co">#&gt;  [37] "RF00090"        "RF00091"        "RF00092"        "RF00093"       </span></span>
+<span><span class="co">#&gt;  [41] "RF00096"        "RF00100"        "RF00105"        "RF00108"       </span></span>
+<span><span class="co">#&gt;  [45] "RF00136"        "RF00139"        "RF00150"        "RF00154"       </span></span>
+<span><span class="co">#&gt;  [49] "RF00156"        "RF00157"        "RF00181"        "RF00190"       </span></span>
+<span><span class="co">#&gt;  [53] "RF00191"        "RF00212"        "RF00218"        "RF00263"       </span></span>
+<span><span class="co">#&gt;  [57] "RF00264"        "RF00271"        "RF00272"        "RF00273"       </span></span>
+<span><span class="co">#&gt;  [61] "RF00275"        "RF00278"        "RF00279"        "RF00283"       </span></span>
+<span><span class="co">#&gt;  [65] "RF00284"        "RF00285"        "RF00322"        "RF00324"       </span></span>
+<span><span class="co">#&gt;  [69] "RF00334"        "RF00340"        "RF00393"        "RF00394"       </span></span>
+<span><span class="co">#&gt;  [73] "RF00401"        "RF00402"        "RF00406"        "RF00407"       </span></span>
+<span><span class="co">#&gt;  [77] "RF00408"        "RF00409"        "RF00410"        "RF00411"       </span></span>
+<span><span class="co">#&gt;  [81] "RF00413"        "RF00416"        "RF00421"        "RF00422"       </span></span>
+<span><span class="co">#&gt;  [85] "RF00424"        "RF00425"        "RF00426"        "RF00432"       </span></span>
+<span><span class="co">#&gt;  [89] "RF00438"        "RF00440"        "RF00443"        "RF00492"       </span></span>
+<span><span class="co">#&gt;  [93] "RF00493"        "RF00494"        "RF00537"        "RF00554"       </span></span>
+<span><span class="co">#&gt;  [97] "RF00560"        "RF00561"        "RF00564"        "RF00568"       </span></span>
+<span><span class="co">#&gt; [101] "RF00571"        "RF00586"        "RF00591"        "RF00592"       </span></span>
+<span><span class="co">#&gt; [105] "RF00598"        "RF00599"        "RF00601"        "RF00602"       </span></span>
+<span><span class="co">#&gt; [109] "RF00612"        "RF00614"        "RF00619"        "RF01161"       </span></span>
+<span><span class="co">#&gt; [113] "RF01169"        "RF01210"        "RF01225"        "RF01233"       </span></span>
+<span><span class="co">#&gt; [117] "RF01241"        "RF01293"        "RF01518"        "RF01684"       </span></span>
+<span><span class="co">#&gt; [121] "RF01699"        "RF01848"        "RF01972"        "RF01973"       </span></span>
+<span><span class="co">#&gt; [125] "RF01974"        "RF02091"        "RF02105"        "RF02106"       </span></span>
+<span><span class="co">#&gt; [129] "RF02107"        "RF02108"        "RF02109"        "RF02110"       </span></span>
+<span><span class="co">#&gt; [133] "RF02116"        "RF02171"        "RF02219"        "RF02271"       </span></span>
+<span><span class="co">#&gt; [137] "RMRP"           "SCARNA4"        "SCO2"           "SFTA3"         </span></span>
+<span><span class="co">#&gt; [141] "SNORA16A"       "SNORA17B"       "SNORA50A"       "SNORD38B"      </span></span>
+<span><span class="co">#&gt; [145] "SNORD3D"        "SOD2"           "SPDYE17"        "TBCE"          </span></span>
+<span><span class="co">#&gt; [149] "TMSB15B"        "ZNF883"        </span></span>
+<span><span class="co">#&gt; [1] "Number of rows after Collapse: "</span></span>
+<span><span class="co">#&gt; [1] 57398</span></span>
+<span><span class="co">#&gt; [1] "Bulk RNAseq"</span></span></code></pre></div>
+<p><img src="intro_files/figure-html/data-1.png" width="700"></p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">filt</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                     gene_id KO_S3 KO_S4 WT_S1 WT_S2</span></span>
-<span><span class="co">#&gt; 1 ENSG00000072803.17|FBXW11     2     0     0     0</span></span>
-<span><span class="co">#&gt; 2    ENSG00000083845.9|RPS5     1     0     0     0</span></span>
-<span><span class="co">#&gt; 3 ENSG00000107371.13|EXOSC3     1     1     0     0</span></span>
-<span><span class="co">#&gt; 4  ENSG00000111639.8|MRPL51     0     1     0     0</span></span>
-<span><span class="co">#&gt; 5  ENSG00000111640.15|GAPDH     0     1     0     0</span></span>
-<span><span class="co">#&gt; 6   ENSG00000111786.9|SRSF9     0     1     0     0</span></span></code></pre></div>
+<span><span class="co">#&gt;   Ensembl_ID_version KO_S3 KO_S4 WT_S1 WT_S2</span></span>
+<span><span class="co">#&gt; 1 ENSG00000072803.17     2     0     0     0</span></span>
+<span><span class="co">#&gt; 2  ENSG00000083845.9     1     0     0     0</span></span>
+<span><span class="co">#&gt; 3 ENSG00000107371.13     1     1     0     0</span></span>
+<span><span class="co">#&gt; 4  ENSG00000111639.8     0     1     0     0</span></span>
+<span><span class="co">#&gt; 5 ENSG00000111640.15     0     1     0     0</span></span>
+<span><span class="co">#&gt; 6  ENSG00000111786.9     0     1     0     0</span></span></code></pre></div>
   </main>
 </div>
 
