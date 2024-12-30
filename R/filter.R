@@ -41,7 +41,7 @@
 #' @param label_font_size label font size for the PCA plot
 #' @param label_offset_y_ label offset y for the PCA plot
 #' @param label_offset_x_ label offset x for the PCA plot
-#' @param samples_to_rename_manually If you do not have a Plot Labels Column in your sample metadata table, you can use this parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to which new name: old_name: new_name
+#' @param samples_to_rename If you do not have a Plot Labels Column in your sample metadata table, you can use this parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to which new name: old_name: new_name
 #' @param color_histogram_by_group Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.
 #' @param set_min_max_for_x_axis_for_histogram whether to set min/max value for histogram x-axis
 #' @param minimum_for_x_axis_for_histogram x-axis minimum for histogram plot
@@ -66,12 +66,13 @@
 #'   calc_cpm(gene_colname = "Gene") %>%
 #'   filter_counts(
 #'     sample_names_column = "Sample",
-#'     gene_names_column = "Gene"
+#'     gene_names_column = "Gene",
+#'     count_type = "raw"
 #'   )
 #' head(moo@counts$filt)
 #'
 filter_counts <- function(moo,
-                          count_type = "raw",
+                          count_type = "clean",
                           gene_names_column = "gene_id",
                           sample_names_column = "sample_id",
                           group_column = "Group",
@@ -91,7 +92,7 @@ filter_counts <- function(moo,
                           label_font_size = 3,
                           label_offset_y_ = 2,
                           label_offset_x_ = 2,
-                          samples_to_rename_manually = c(""),
+                          samples_to_rename = c(""),
                           color_histogram_by_group = FALSE,
                           set_min_max_for_x_axis_for_histogram = FALSE,
                           minimum_for_x_axis_for_histogram = -1,
@@ -218,7 +219,7 @@ filter_counts <- function(moo,
       log_counts,
       sample_metadata,
       samples_to_include,
-      samples_to_rename_manually,
+      samples_to_rename,
       group_column,
       label_column,
       color_values = colorval,

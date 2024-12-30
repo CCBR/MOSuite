@@ -7,9 +7,9 @@
 rename_samples(dat, samples_to_rename_manually)
 }
 \arguments{
-\item{dat}{data frame containing a \code{sample} column}
+\item{dat}{data frame}
 
-\item{samples_to_rename_manually}{TODO use sample metadata spreadsheet custom column}
+\item{samples_to_rename_manually}{TODO use sample metadata spreadsheet custom column. Need to document the format of this object.}
 }
 \value{
 data frame with samples renamed

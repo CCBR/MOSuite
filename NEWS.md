@@ -13,3 +13,4 @@ This is the first release of MOSuite 🎉
 - `run_deseq2()`
 - `calc_cpm()` (#38, @kelly-sovacool)
 - `filter_counts()` (#38, @kelly-sovacool)
+- `clean_raw_counts()` (#79, @kelly-sovacool)

@@ -35,14 +35,21 @@ moo <- create_multiOmicDataSet_from_files(
   gene_counts_filepath = gene_counts_tsv
 )
 
-moo <- moo %>% filter_counts(
-  group_column = "condition",
-  label_column = "sample_id",
-  columns_to_include = c("gene_id", "KO_S3", "KO_S4", "WT_S1", "WT_S2"),
-  minimum_count_value_to_be_considered_nonzero = 1,
-  minimum_number_of_samples_with_nonzero_counts_in_total = 1,
-  minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
-)
+moo <- moo %>%
+  clean_raw_counts(
+    gene_names_column = "gene_id",
+    sample_names_column = "sample_id",
+  ) %>%
+  filter_counts(
+    gene_names_column = "Ensembl_ID_version",
+    sample_names_column = "sample_id",
+    group_column = "condition",
+    label_column = "sample_id",
+    columns_to_include = c("Ensembl_ID_version", "KO_S3", "KO_S4", "WT_S1", "WT_S2"),
+    minimum_count_value_to_be_considered_nonzero = 1,
+    minimum_number_of_samples_with_nonzero_counts_in_total = 1,
+    minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
+  )
 
 moo@counts$filt %>% head()
 ```

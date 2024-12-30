@@ -359,6 +359,18 @@ references:
     address: Vienna, Austria
   year: '2024'
 - type: software
+  title: stringr
+  abstract: 'stringr: Simple, Consistent Wrappers for Common String Operations'
+  notes: Imports
+  url: https://stringr.tidyverse.org
+  repository: https://CRAN.R-project.org/package=stringr
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  year: '2024'
+  doi: 10.32614/CRAN.package.stringr
+- type: software
   title: tibble
   abstract: 'tibble: Simple Data Frames'
   notes: Imports
@@ -406,6 +418,31 @@ references:
     email: hadley@posit.co
   year: '2024'
   doi: 10.32614/CRAN.package.tidyselect
+- type: software
+  title: cffr
+  abstract: 'cffr: Generate Citation File Format (''cff'') Metadata for R Packages'
+  notes: Suggests
+  url: https://docs.ropensci.org/cffr/
+  repository: https://CRAN.R-project.org/package=cffr
+  authors:
+  - family-names: Hernangómez
+    given-names: Diego
+    email: diego.hernangomezherrero@gmail.com
+    orcid: https://orcid.org/0000-0001-8457-4658
+  year: '2024'
+  doi: 10.32614/CRAN.package.cffr
+- type: software
+  title: docopt
+  abstract: 'docopt: Command-Line Interface Specification Language'
+  notes: Suggests
+  url: https://github.com/docopt/docopt.R
+  repository: https://CRAN.R-project.org/package=docopt
+  authors:
+  - family-names: Jonge
+    given-names: Edwin
+    name-particle: de
+  year: '2024'
+  doi: 10.32614/CRAN.package.docopt
 - type: software
   title: glue
   abstract: 'glue: Interpreted String Literals'
@@ -592,3 +629,16 @@ references:
     orcid: https://orcid.org/0000-0002-7840-692X
   year: '2024'
   doi: 10.32614/CRAN.package.usethis
+- type: software
+  title: V8
+  abstract: 'V8: Embedded JavaScript and WebAssembly Engine for R'
+  notes: Suggests
+  url: https://jeroen.r-universe.dev/V8
+  repository: https://CRAN.R-project.org/package=V8
+  authors:
+  - family-names: Ooms
+    given-names: Jeroen
+    email: jeroenooms@gmail.com
+    orcid: https://orcid.org/0000-0002-4035-0289
+  year: '2024'
+  doi: 10.32614/CRAN.package.V8
