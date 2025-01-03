@@ -3,7 +3,7 @@
 #' @param sample_meta_dat sample metadata as a data frame or tibble.
 #'   Must contain a `sample_id` column.
 #' @param counts_lst named list of dataframes containing counts, e.g. expected gene counts from RSEM. Each data frame is expected to contain a `gene_id` column and a column for each sample ID in the metadata.
-#'
+#' @param analyses_lst named list of analysis results, e.g. DESeq results object
 #'
 multiOmicDataSet <- S7::new_class("multiOmicDataSet",
   properties = list(
@@ -11,18 +11,18 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
     counts = S7::class_list, # list of data frames
     analyses = S7::class_list
   ),
-  constructor = function(sample_meta_dat, counts_lst) {
+  constructor = function(sample_meta_dat, counts_lst, analyses_lst = list()) {
     S7::new_object(S7::S7_object(),
       sample_meta = sample_meta_dat,
       counts = counts_lst,
-      analyses = list()
+      analyses = analyses_lst
     )
   },
   validator = function(self) {
     # counts must only contain approved names
-    approved_counts <- c("raw", "clean", "cpm", "filt")
+    approved_counts <- c("raw", "clean", "cpm", "filt", "norm")
     if (!all(names(self@counts) %in% approved_counts)) {
-      stop(glue::glue("counts can only contain data frames with these names:\n\t{paste(approved_counts, collapse = ', ')}"))
+      stop(glue::glue("counts can only contain these names:\n\t{paste(approved_counts, collapse = ', ')}"))
     }
     # all sample IDs must be in both sample_meta and raw counts
     # any sample ID in filt or norm_cpm counts must also be in sample_meta
