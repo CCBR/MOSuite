@@ -209,7 +209,7 @@ normalize <- function(moo,
 
   pcx <- paste0("PC", principal_component_on_x_axis_for_pca)
   pcy <- paste0("PC", principal_component_on_y_axis_for_pca)
-  pca.df <- as.data.frame(pca$x) %>% dplyr::select(.data[[pcx]], .data[[pcy]])
+  pca.df <- as.data.frame(pca$x) %>% dplyr::select(dplyr::all_of(c(pcx, pcy)))
   pca.df$group <- sample_metadata[[group_column]]
   pca.df$sample <- sample_metadata[[label_column]]
   perc.var <- (pca$sdev^2 / sum(pca$sdev^2)) * 100
@@ -247,7 +247,7 @@ normalize <- function(moo,
   }
   #### plot PCA
   pcaPlot <- ggplot(pca.df, aes(x = xdata, y = ydata, text = sample)) +
-    geom_point(aes(color = group), text = sample, size = point_size_for_pca) +
+    geom_point(aes(color = group), size = point_size_for_pca) +
     theme_bw() +
     theme(
       legend.position = legend_position_for_pca,
@@ -262,9 +262,9 @@ normalize <- function(moo,
       panel.border = element_rect(
         colour = "black",
         fill = NA,
-        size = 1
+        linewidth = 1
       ),
-      axis.ticks = element_line(size = 1),
+      axis.ticks = element_line(linewidth = 1),
       legend.text = element_text(size = 18)
     ) +
     coord_fixed() +
@@ -316,7 +316,7 @@ normalize <- function(moo,
     # cols<- getourrandomcolors(n)
 
     histPlot <- ggplot(df.m, aes(x = value, group = sample)) +
-      geom_density(aes(colour = colgroup), size = 1)
+      geom_density(aes(colour = colgroup), linewidth = 1)
   } else {
     df.m$sample <- sample_metadata[df.m$sample, label_column]
     n <- length(unique(df.m$sample))
@@ -324,7 +324,7 @@ normalize <- function(moo,
     # cols=colorval[1:n]
 
     histPlot <- ggplot(df.m, aes(x = value, group = sample)) +
-      geom_density(aes(colour = sample), size = 1)
+      geom_density(aes(colour = sample), linewidth = 1)
   }
   histPlot <- histPlot +
     xlab("Normalized Counts") + ylab("Density") +
@@ -339,10 +339,10 @@ normalize <- function(moo,
       panel.border = element_rect(
         colour = "black",
         fill = NA,
-        size = 0
+        linewidth = 0
       ),
-      axis.line = element_line(size = .5),
-      axis.ticks = element_line(size = 1)
+      axis.line = element_line(linewidth = .5),
+      axis.ticks = element_line(linewidth = 1)
     ) +
     # ggtitle("Frequency Histogram") +
     xlim(xmin, xmax) +
