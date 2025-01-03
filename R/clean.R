@@ -46,6 +46,7 @@
 #'   clean_raw_counts(sample_names_column = "Sample", gene_names_column = "GeneName")
 #' head(moo@counts$clean)
 clean_raw_counts <- function(moo,
+                             count_type = "raw",
                              sample_names_column = "Sample",
                              gene_names_column = "GeneName",
                              samples_to_rename = c(""),
@@ -54,7 +55,7 @@ clean_raw_counts <- function(moo,
                              split_gene_name = TRUE,
                              aggregate_rows_with_duplicate_gene_names = TRUE,
                              gene_name_column_to_use_for_collapsing_duplicates = "") {
-  raw_counts_matrix <- moo@counts[["raw"]] %>% as.data.frame()
+  raw_counts_matrix <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
 
   # Sample Read Counts Plot
