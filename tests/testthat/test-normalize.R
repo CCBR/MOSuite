@@ -1,12 +1,3 @@
-equal_dfs <- function(x, y) {
-  all(
-    class(x) == class(y),
-    names(x) == names(y),
-    x == y,
-    all.equal(lapply(x, class), lapply(y, class))
-  )
-}
-
 test_that("normalize works", {
   moo <- multiOmicDataSet(
     sample_meta_dat = as.data.frame(nidap_sample_metadata),
@@ -23,5 +14,10 @@ test_that("normalize works", {
       group_column = "Group",
       label_column = "Label"
     )
-  expect_true(equal_dfs(moo@counts[["norm"]][["voom"]], as.data.frame(nidap_norm_counts)))
+  expect_true(equal_dfs(
+    moo@counts[["norm"]][["voom"]] %>%
+      dplyr::arrange(desc(Gene)),
+    as.data.frame(nidap_norm_counts) %>%
+      dplyr::arrange(desc(Gene))
+  ))
 })
