@@ -1,9 +1,56 @@
-# Normalization [CCBR] (afc2524c-9bae-4873-98c1-e06ef8f4632b): v273
-Normalized_Counts_MOSuite <- function(Filtered_Counts, metadata_ccbr_bulk_training) {
-  ## --------- ##
-  ## Libraries ##
-  ## --------- ##
-
+#' Normalize counts
+#'
+#' @inheritParams filter_counts
+#'
+#' @return `multiOmicDataSet` with normalized counts
+#' @export
+#'
+#' @examples
+#' moo <- multiOmicDataSet(
+#'   sample_meta_dat = as.data.frame(nidap_sample_metadata),
+#'   counts_lst = list(
+#'     "raw" = as.data.frame(nidap_raw_counts),
+#'     "clean" = as.data.frame(nidap_clean_raw_counts),
+#'     "filt" = as.data.frame(nidap_filtered_counts)
+#'   )
+#' ) %>%
+#'   normalize(
+#'     gene_names_column = "Gene",
+#'     columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
+#'     sample_names_column = "Sample",
+#'     group_column = "Group",
+#'     label_column = "Label"
+#'   )
+#' head(moo@counts[["norm"]][["voom"]])
+normalize <- function(moo,
+                      count_type = "filt",
+                      gene_names_column = "Gene",
+                      columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
+                      sample_names_column = "Sample",
+                      group_column = "Group",
+                      label_column = "Label",
+                      input_in_log_counts = FALSE,
+                      normalization_method = "quantile",
+                      samples_to_rename_manually_on_pca = c(""),
+                      add_labels_to_pca = TRUE,
+                      principal_component_on_x_axis_for_pca = 1,
+                      principal_component_on_y_axis_for_pca = 2,
+                      legend_position_for_pca = "top",
+                      label_offset_x_for_pca = 2,
+                      label_offset_y_for_pca = 2,
+                      label_font_size_for_pca = 3,
+                      point_size_for_pca = 8,
+                      color_histogram_by_group = TRUE,
+                      set_min_max_for_x_axis_for_histogram = FALSE,
+                      minimum_for_x_axis_for_histogram = -1,
+                      maximum_for_x_axis_for_histogram = 1,
+                      legend_font_size_for_histogram = 10,
+                      legend_position_for_histogram = "top",
+                      number_of_histogram_legend_columns = 6,
+                      number_of_image_rows = 2,
+                      colors_for_plots = c(),
+                      make_plots_interactive = FALSE,
+                      plot_correlation_matrix_heatmap = TRUE) {
   library(limma)
   library(tidyverse)
   library(edgeR)
@@ -24,59 +71,8 @@ Normalized_Counts_MOSuite <- function(Filtered_Counts, metadata_ccbr_bulk_traini
   library(ComplexHeatmap)
   library(ggrepel)
 
-  ## -------------------------------- ##
-  ## User-Defined Template Parameters ##
-  ## -------------------------------- ##
-
-  # Basic Parameters:
-  counts_matrix <- Filtered_Counts
-  sample_metadata <- metadata_ccbr_bulk_training
-  gene_names_column <- "Gene"
-  columns_to_include <- c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3")
-  sample_names_column <- "Sample"
-  groups_column <- "Group"
-  labels_column <- "Label"
-
-
-  # Normalization Parameters:
-  input_in_log_counts <- FALSE
-  normalization_method <- "quantile"
-
-  # PCA parameters:
-  samples_to_rename_manually_on_pca <- c("")
-  add_labels_to_pca <- TRUE
-  principal_component_on_x_axis_for_pca <- 1
-  principal_component_on_y_axis_for_pca <- 2
-  legend_position_for_pca <- "top"
-  label_offset_x_for_pca <- 2
-  label_offset_y_for_pca <- 2
-  label_font_size_for_pca <- 3
-  point_size_for_pca <- 8
-
-  # Histogram parameters:
-  color_histogram_by_group <- TRUE
-  set_min_max_for_x_axis_for_histogram <- FALSE
-  minimum_for_x_axis_for_histogram <- -1
-  maximum_for_x_axis_for_histogram <- 1
-  legend_font_size_for_histogram <- 10
-  legend_position_for_histogram <- "top"
-  number_of_histogram_legend_columns <- 6
-
-  # Visualization Parameters:
-  number_of_image_rows <- 2
-  colors_for_plots <- c()
-  make_plots_interactive <- FALSE
-  plot_correlation_matrix_heatmap <- TRUE
-
-
-  ## --------------- ##
-  ## Error Messages ##
-  ## -------------- ##
-
-
-  ## --------- ##
-  ## Functions ##
-  ## --------- ##
+  counts_matrix <- moo@counts[[count_type]] %>% as.data.frame()
+  sample_metadata <- moo@sample_meta %>% as.data.frame()
 
   ### PH: START Color Picking Function
   ##################################
@@ -86,116 +82,51 @@ Normalized_Counts_MOSuite <- function(Filtered_Counts, metadata_ccbr_bulk_traini
   ### Do not Functionalize This code yet.
   ### I will make a General Color picker function to create a custom Color Palette to use for all figures
   ### I think I would also like to use the metadata table to manually set colors
-  getourrandomcolors <- function(k) {
-    seed <- 10
-    n <- 2e3
-    ourColorSpace <- colorspace::RGB(runif(n), runif(n), runif(n))
-    ourColorSpace <- as(ourColorSpace, "LAB")
-    currentColorSpace <- ourColorSpace@coords
-    # Set iter.max to 20 to avoid convergence warnings.
-    set.seed(seed)
-    km <- kmeans(currentColorSpace, k, iter.max = 20)
-    return(unname(hex(LAB(km$centers))))
-  }
-
-
   colorlist <- c(
-    "#5954d6", "#e1562c", "#b80058",
-    "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00",
-    "#796880", "#FFA500", "#878500"
+    "#5954d6",
+    "#e1562c",
+    "#b80058",
+    "#00c6f8",
+    "#d163e6",
+    "#00a76c",
+    "#ff9287",
+    "#008cf9",
+    "#006e00",
+    "#796880",
+    "#FFA500",
+    "#878500"
   )
   names(colorlist) <- c(
-    "indigo", "carrot", "lipstick",
-    "turquoise", "lavender", "jade",
-    "coral", "azure", "green",
-    "rum", "orange", "olive"
+    "indigo",
+    "carrot",
+    "lipstick",
+    "turquoise",
+    "lavender",
+    "jade",
+    "coral",
+    "azure",
+    "green",
+    "rum",
+    "orange",
+    "olive"
   )
   if (length(colors_for_plots) == 0) {
     colors_for_plots <- c(
-      "indigo", "carrot", "lipstick",
-      "turquoise", "lavender", "jade",
-      "coral", "azure", "green",
-      "rum", "orange", "olive"
+      "indigo",
+      "carrot",
+      "lipstick",
+      "turquoise",
+      "lavender",
+      "jade",
+      "coral",
+      "azure",
+      "green",
+      "rum",
+      "orange",
+      "olive"
     )
   }
-
   ### PH: END Color Picking Function
-
-
-  ### PH: START Heatmap Function (Previously created from Filter Template)
-  ################################
-  ### Heatmap Function
-  ################################
-  make_heatmap <- function(counts_matrix, sample_metadata, anno_col, anno_column) {
-    ## Annotate
-    rownames(sample_metadata) <- sample_metadata[[labels_column]]
-    annoVal <- lapply(anno_column, function(x) {
-      out <- as.factor(sample_metadata[, x]) %>% levels()
-      # names(out)=x
-      return(out)
-    }) %>% unlist()
-    col <- anno_col[1:length(annoVal)]
-    names(col) <- annoVal
-
-    cols <- lapply(anno_column, function(x) {
-      ax <- as.factor(sample_metadata[, x]) %>% levels()
-      out <- col[ax]
-      return(out)
-    })
-    names(cols) <- (anno_column)
-
-    anno <- columnAnnotation(
-      df = sample_metadata[, anno_column, drop = F],
-      col = cols
-    )
-
-
-    ## Create Correlation Matrix
-
-    old <- sample_metadata[[sample_names_column]]
-    new <- sample_metadata[[labels_column]]
-    names(old) <- new
-    counts_matrix <- rename(counts_matrix, any_of(old))
-
-    mat <- as.matrix(counts_matrix)
-    tcounts <- t(mat)
-
-
-    ## calculate correlation
-    d <- Dist(tcounts, method = "correlation", diag = TRUE)
-    m <- as.matrix(d)
-
-    ## create dendogram
-    dend <- rev(dendsort(as.dendrogram(hclust(d, method = "average"))))
-
-
-
-    ### plot
-    new.palette <- colorRampPalette(c("blue", "green", "yellow"))
-    lgd <- Legend(new.palette(20), title = "Correlation", title_position = "lefttop-rot")
-    hm <- Heatmap(m,
-      heatmap_legend_param = list(
-        title = "Correlation",
-        title_position = "leftcenter-rot"
-      ),
-      cluster_rows = dend,
-      cluster_columns = dend,
-      top_annotation = anno,
-      row_names_gp = gpar(fontsize = 15),
-      column_names_gp = gpar(fontsize = 15),
-      # heatmap_height=unit(1, "npc"),
-      # heatmap_width=unit(.5, "npc"),
-      # width = unit(.5, "npc"),
-      # height = unit(.5, "npc"),
-      col = new.palette(20)
-    )
-
-    return(hm)
-  }
-
-  ### PH: End Heatmap Function (Previously created from Filter Template)
-
 
   ## --------------- ##
   ## Main Code Block ##
@@ -227,12 +158,10 @@ Normalized_Counts_MOSuite <- function(Filtered_Counts, metadata_ccbr_bulk_traini
   gene_names <- NULL
   gene_names$GeneID <- counts_matrix[, 1]
 
-
-
-
   ##############################
   #### Input Data Validation
   ##############################
+  # TODO move this logic to S7 validator
   sample_metadata <- sample_metadata[match(colnames(df.filt), sample_metadata[[sample_names_column]]), ] # First match sample metadata to counts matrix
   sample_metadata <- sample_metadata[rowSums(is.na(sample_metadata)) != ncol(sample_metadata), ] # Remove empty rows
   sample_metadata <- sample_metadata[, colSums(is.na(sample_metadata)) == 0] # Remove empty columns
@@ -281,8 +210,8 @@ Normalized_Counts_MOSuite <- function(Filtered_Counts, metadata_ccbr_bulk_traini
   pcx <- paste0("PC", principal_component_on_x_axis_for_pca)
   pcy <- paste0("PC", principal_component_on_y_axis_for_pca)
   pca.df <- as.data.frame(pca$x) %>% dplyr::select(.data[[pcx]], .data[[pcy]])
-  pca.df$group <- sample_metadata[[groups_column]]
-  pca.df$sample <- sample_metadata[[labels_column]]
+  pca.df$group <- sample_metadata[[group_column]]
+  pca.df$sample <- sample_metadata[[label_column]]
   perc.var <- (pca$sdev^2 / sum(pca$sdev^2)) * 100
   perc.var <- formatC(perc.var, format = "g", digits = 4)
   pc.x.lab <- paste0(pcx, " ", perc.var[principal_component_on_x_axis_for_pca], "%")
@@ -310,10 +239,10 @@ Normalized_Counts_MOSuite <- function(Filtered_Counts, metadata_ccbr_bulk_traini
   colorval <- colorlist[colors_for_plots]
   colorval <- unname(colorval) # remove names which affect ggplot
 
-  if (length(unique(sample_metadata[[groups_column]])) > length(colorval)) {
+  if (length(unique(sample_metadata[[group_column]])) > length(colorval)) {
     ## Original color-picking code.
-    k <- length(unique(sample_metadata[[groups_column]])) - length(colorval)
-    more_cols <- getourrandomcolors(k)
+    k <- length(unique(sample_metadata[[group_column]])) - length(colorval)
+    more_cols <- get_random_colors(k)
     colorval <- c(colorval, more_cols)
   }
   #### plot PCA
@@ -330,7 +259,11 @@ Normalized_Counts_MOSuite <- function(Filtered_Counts, metadata_ccbr_bulk_traini
       axis.title = element_text(size = 20),
       # panel.grid.major = element_line(size = 1),
       # axis.line=element_line(size=1),
-      panel.border = element_rect(colour = "black", fill = NA, size = 1),
+      panel.border = element_rect(
+        colour = "black",
+        fill = NA,
+        size = 1
+      ),
       axis.ticks = element_line(size = 1),
       legend.text = element_text(size = 18)
     ) +
@@ -341,7 +274,8 @@ Normalized_Counts_MOSuite <- function(Filtered_Counts, metadata_ccbr_bulk_traini
 
   if (add_labels_to_pca == TRUE) {
     pcaPlot <- pcaPlot +
-      geom_text_repel(aes(label = sample, color = group),
+      geom_text_repel(
+        aes(label = sample, color = group),
         size = 7,
         show.legend = F,
         direction = c("both"),
@@ -372,7 +306,7 @@ Normalized_Counts_MOSuite <- function(Filtered_Counts, metadata_ccbr_bulk_traini
   }
 
   if (color_histogram_by_group == TRUE) {
-    df.m %>% mutate(colgroup = sample_metadata[sample, groups_column]) -> df.m
+    df.m %>% mutate(colgroup = sample_metadata[sample, group_column]) -> df.m
     df.m <- df.m[complete.cases(df.m[, "colgroup"]), ]
     df.m$colgroup <- gsub("\\s", "_", df.m$colgroup)
     df.m$colgroup <- factor(df.m$colgroup, levels = unique(df.m$colgroup))
@@ -384,7 +318,7 @@ Normalized_Counts_MOSuite <- function(Filtered_Counts, metadata_ccbr_bulk_traini
     histPlot <- ggplot(df.m, aes(x = value, group = sample)) +
       geom_density(aes(colour = colgroup), size = 1)
   } else {
-    df.m$sample <- sample_metadata[df.m$sample, labels_column]
+    df.m$sample <- sample_metadata[df.m$sample, label_column]
     n <- length(unique(df.m$sample))
     cols <- getourrandomcolors(n)
     # cols=colorval[1:n]
@@ -402,7 +336,11 @@ Normalized_Counts_MOSuite <- function(Filtered_Counts, metadata_ccbr_bulk_traini
       panel.background = element_blank(),
       axis.text = element_text(size = 18),
       axis.title = element_text(size = 20),
-      panel.border = element_rect(colour = "black", fill = NA, size = 0),
+      panel.border = element_rect(
+        colour = "black",
+        fill = NA,
+        size = 0
+      ),
       axis.line = element_line(size = .5),
       axis.ticks = element_line(size = 1)
     ) +
@@ -432,12 +370,13 @@ Normalized_Counts_MOSuite <- function(Filtered_Counts, metadata_ccbr_bulk_traini
       print(histPlot2)
     } else {
       require(gridExtra)
-      # corHM<-make_heatmap(df.filt,sample_metadata,colorval)
-      corHM <- make_heatmap(
+      corHM <- plot_heatmap(
         counts_matrix = df.filt,
         sample_metadata = sample_metadata,
         anno_col = colorval,
-        anno_column = groups_column
+        anno_column = group_column,
+        label_column = label_column,
+        sample_names_column = sample_names_column
       )
 
 
@@ -473,9 +412,9 @@ Normalized_Counts_MOSuite <- function(Filtered_Counts, metadata_ccbr_bulk_traini
   df.voom <- merge(anno_tbl, df.voom, by = gene_names_column, all.y = T)
   df.voom[, gene_names_column] <- gsub("_[0-9]+$", "", df.voom[, gene_names_column])
 
-  return(df.voom)
+  if (isFALSE("norm" %in% names(moo@counts))) {
+    moo@counts[["norm"]] <- list()
+  }
+  moo@counts[["norm"]][["voom"]] <- df.voom
+  return(moo)
 }
-
-#################################################
-## Global imports and functions included below ##
-#################################################
