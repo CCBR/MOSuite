@@ -37,7 +37,7 @@ test_that("plot_pca layers are expected", {
   p <- plot_pca(log_counts,
     sample_meta,
     samples_to_include = c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-    samples_to_rename_manually = NULL,
+    samples_to_rename = NULL,
     group_column = "Group",
     label_column = "Label",
     color_values = c(

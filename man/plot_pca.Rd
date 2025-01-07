@@ -8,7 +8,7 @@ plot_pca(
   log_counts,
   sample_metadata,
   samples_to_include,
-  samples_to_rename_manually,
+  samples_to_rename,
   group_column,
   label_column,
   color_values,
@@ -19,17 +19,24 @@ plot_pca(
   add_label_to_pca = TRUE,
   label_font_size = 3,
   label_offset_y_ = 2,
-  label_offset_x_ = 2
+  label_offset_x_ = 2,
+  make_plots_interactive = FALSE
 )
 }
 \arguments{
 \item{log_counts}{log-transformed filtered counts}
 
+\item{sample_metadata}{sample metadata as a data frame or tibble.}
+
 \item{samples_to_include}{samples in \code{sample_metadata} to include in the analysis}
+
+\item{samples_to_rename}{If you do not have a Plot Labels Column in your sample metadata table, you can use this parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to which new name: old_name: new_name}
 
 \item{group_column}{The column from your input Sample Metadata table containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.). Only columns of Text type from your input Sample Metadata will be available to select for this parameter.}
 
 \item{label_column}{The column from your input Sample Metadata table containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample.}
+
+\item{color_values}{vector of colors as hex values or names recognized by R}
 
 \item{principal_component_on_x_axis}{The principle component to plot on the x-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 1)}
 
@@ -46,11 +53,12 @@ plot_pca(
 \item{label_offset_y_}{label offset y for the PCA plot}
 
 \item{label_offset_x_}{label offset x for the PCA plot}
+
+\item{make_plots_interactive}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
 }
 \value{
-PCA plot
+ggplot object
 }
 \description{
 Perform and plot a Principal Components Analysis
 }
-\keyword{internal}

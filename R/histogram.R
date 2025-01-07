@@ -1,14 +1,15 @@
 #' Plot histogram
 #'
 #' @inheritParams filter_counts
-#' @param x_axis_label
-#' @param y_axis_label
-#' @param make_plots_interactive
+#' @param log_counts log-transformed filtered counts
+#' @param sample_metadata sample metadata as a data frame or tibble.
+#' @param x_axis_label text label for the x axis
+#' @param y_axis_label text label for the y axis
+#' @param color_values vector of colors as hex values or names recognized by R
 #'
 #' @returns ggplot object
 #' @export
 #'
-#' @examples
 plot_histogram <- function(log_counts,
                            sample_metadata,
                            gene_names_column,
@@ -82,7 +83,7 @@ plot_histogram <- function(log_counts,
     ggplot2::guides(linetype = ggplot2::guide_legend(ncol = number_of_histogram_legend_columns))
 
   if (isTRUE(make_plots_interactive)) {
-    hist_plot <- (hist_plot + theme(legend.position = "none")) %>% ggplotly(tooltip = c("sample"))
+    hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) %>% plotly::ggplotly(tooltip = c("sample"))
   }
   return(hist_plot)
 }

@@ -1,6 +1,8 @@
 #' Normalize counts
 #'
 #' @inheritParams filter_counts
+#' @param input_in_log_counts set this to `TRUE` if counts are already log2-transformed
+#' @param voom_normalization_method Normalization method to be applied to the logCPM values when using `limma::voom`
 #'
 #' @return `multiOmicDataSet` with normalized counts
 #' @export
@@ -30,7 +32,7 @@ normalize <- function(moo,
                       group_column = "Group",
                       label_column = "Label",
                       input_in_log_counts = FALSE,
-                      normalization_method = "quantile",
+                      voom_normalization_method = "quantile",
                       samples_to_rename = c(""),
                       add_label_to_pca = TRUE,
                       principal_component_on_x_axis = 1,
@@ -38,7 +40,7 @@ normalize <- function(moo,
                       legend_position_for_pca = "top",
                       label_offset_x_ = 2,
                       label_offset_y_ = 2,
-                      label_font_size_for_pca = 3,
+                      label_font_size = 3,
                       point_size_for_pca = 8,
                       color_histogram_by_group = TRUE,
                       set_min_max_for_x_axis_for_histogram = FALSE,
@@ -163,7 +165,7 @@ normalize <- function(moo,
   } else {
     x <- edgeR::DGEList(counts = df.filt, genes = gene_names)
   }
-  v <- limma::voom(x, normalize = normalization_method)
+  v <- limma::voom(x, normalize = voom_normalization_method)
   rownames(v$E) <- v$genes$GeneID
   as.data.frame(v$E) %>% tibble::rownames_to_column(gene_names_column) -> df.voom
   message(paste0("Total number of features included: ", nrow(df.voom)))
@@ -194,7 +196,7 @@ normalize <- function(moo,
     corHM <- plot_heatmap(
       counts_matrix = df.filt,
       sample_metadata = sample_metadata,
-      anno_col = colorval,
+      anno_colors = colorval,
       anno_column = group_column,
       label_column = label_column,
       sample_names_column = sample_names_column

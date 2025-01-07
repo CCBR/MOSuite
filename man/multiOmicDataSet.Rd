@@ -4,13 +4,15 @@
 \alias{multiOmicDataSet}
 \title{multiOmicDataSet class}
 \usage{
-multiOmicDataSet(sample_meta_dat, counts_lst)
+multiOmicDataSet(sample_meta_dat, counts_lst, analyses_lst = list())
 }
 \arguments{
 \item{sample_meta_dat}{sample metadata as a data frame or tibble.
 Must contain a \code{sample_id} column.}
 
 \item{counts_lst}{named list of dataframes containing counts, e.g. expected gene counts from RSEM. Each data frame is expected to contain a \code{gene_id} column and a column for each sample ID in the metadata.}
+
+\item{analyses_lst}{named list of analysis results, e.g. DESeq results object}
 }
 \description{
 multiOmicDataSet class

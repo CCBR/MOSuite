@@ -37,7 +37,7 @@ filter_counts(
   colors_for_plots = c("indigo", "carrot", "lipstick", "turquoise", "lavender", "jade",
     "coral", "azure", "green", "rum", "orange", "olive"),
   number_of_image_rows = 2,
-  interactive_plots = FALSE,
+  make_plots_interactive = FALSE,
   plot_correlation_matrix_heatmap = TRUE,
   make_plots = TRUE
 )
@@ -105,7 +105,7 @@ filter_counts(
 
 \item{number_of_image_rows}{number of rows for the plot image. 1 = side-by-side, 2 = stacked}
 
-\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
+\item{make_plots_interactive}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
 
 \item{plot_correlation_matrix_heatmap}{Data sets with a large number of samples may be too large to create a correlation matrix heat map. If this template takes longer than 5 minutes to run, Toggle switch to FALSE and the correlation matrix will not be be created. Default is TRUE.}
 

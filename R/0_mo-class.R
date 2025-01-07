@@ -4,7 +4,7 @@
 #'   Must contain a `sample_id` column.
 #' @param counts_lst named list of dataframes containing counts, e.g. expected gene counts from RSEM. Each data frame is expected to contain a `gene_id` column and a column for each sample ID in the metadata.
 #' @param analyses_lst named list of analysis results, e.g. DESeq results object
-#'
+#' @export
 multiOmicDataSet <- S7::new_class("multiOmicDataSet",
   properties = list(
     sample_meta = S7::class_data.frame,

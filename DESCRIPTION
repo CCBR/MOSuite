@@ -27,6 +27,7 @@ Imports:
     edgeR,
     ggplot2,
     ggrepel,
+    limma,
     methods,
     plotly,
     reshape2,

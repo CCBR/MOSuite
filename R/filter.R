@@ -51,7 +51,7 @@
 #' @param number_of_histogram_legend_columns number of columns for the histogram legend
 #' @param colors_for_plots Colors for the PCA and histogram will be picked, in order, from this list. If you have >12 samples or groups, program will choose from a wide range of random colors
 #' @param number_of_image_rows number of rows for the plot image. 1 = side-by-side, 2 = stacked
-#' @param interactive_plots set to TRUE to make PCA and Histogram plots interactive with `plotly`, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.
+#' @param make_plots_interactive set to TRUE to make PCA and Histogram plots interactive with `plotly`, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.
 #' @param plot_correlation_matrix_heatmap Data sets with a large number of samples may be too large to create a correlation matrix heat map. If this template takes longer than 5 minutes to run, Toggle switch to FALSE and the correlation matrix will not be be created. Default is TRUE.
 #'
 #' @return `multiOmicDataSet` with filtered counts
@@ -115,7 +115,7 @@ filter_counts <- function(moo,
                             "olive"
                           ),
                           number_of_image_rows = 2,
-                          interactive_plots = FALSE,
+                          make_plots_interactive = FALSE,
                           plot_correlation_matrix_heatmap = TRUE,
                           make_plots = TRUE) {
   counts_matrix <- moo@counts[[count_type]] %>% as.data.frame() # currently, this function requires data frames
@@ -256,7 +256,7 @@ filter_counts <- function(moo,
     ### Output Figures
     ########################
     if (plot_correlation_matrix_heatmap == TRUE) {
-      if (interactive_plots == TRUE) {
+      if (make_plots_interactive == TRUE) {
         pcaPlot1 <- (pcaPlot) %>% plotly::ggplotly(tooltip = c("sample", "group"))
         histPlot2 <- (histPlot + ggplot2::theme(legend.position = "none")) %>%
           plotly::ggplotly(tooltip = c("sample"))
@@ -283,7 +283,7 @@ filter_counts <- function(moo,
         # print(histPlot)
       }
     } else {
-      if (interactive_plots == TRUE) {
+      if (make_plots_interactive == TRUE) {
         pcaPlot1 <- (pcaPlot) %>% plotly::ggplotly(tooltip = c("sample", "group"))
         histPlot2 <- (histPlot + ggplot2::theme(legend.position = "none")) %>%
           plotly::ggplotly(tooltip = "sample")
