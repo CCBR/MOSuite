@@ -43,7 +43,7 @@ references:
   institution:
     name: R Foundation for Statistical Computing
     address: Vienna, Austria
-  year: '2024'
+  year: '2025'
   version: '>= 2.10'
 - type: software
   title: amap
@@ -54,7 +54,7 @@ references:
   - family-names: Lucas
     given-names: Antoine
     email: antoinelucas@gmail.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.amap
 - type: software
   title: colorspace
@@ -94,7 +94,7 @@ references:
     given-names: Achim
     email: Achim.Zeileis@R-project.org
     orcid: https://orcid.org/0000-0003-0918-3766
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.colorspace
 - type: software
   title: ComplexHeatmap
@@ -107,7 +107,7 @@ references:
     given-names: Zuguang
     email: z.gu@dkfz.de
     orcid: https://orcid.org/0000-0002-7395-8709
-  year: '2024'
+  year: '2025'
   doi: 10.18129/B9.bioc.ComplexHeatmap
 - type: software
   title: dendsort
@@ -122,7 +122,7 @@ references:
   - family-names: Biederstedt
     given-names: Evan
     email: evan.biederstedt@gmail.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.dendsort
 - type: software
   title: DESeq2
@@ -139,7 +139,7 @@ references:
     given-names: Simon
   - family-names: Huber
     given-names: Wolfgang
-  year: '2024'
+  year: '2025'
   doi: 10.18129/B9.bioc.DESeq2
 - type: software
   title: dplyr
@@ -164,7 +164,7 @@ references:
     given-names: Davis
     email: davis@posit.co
     orcid: https://orcid.org/0000-0003-4777-038X
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.dplyr
 - type: software
   title: edgeR
@@ -195,7 +195,7 @@ references:
     given-names: Mark D
   - family-names: Smyth
     given-names: Gordon K
-  year: '2024'
+  year: '2025'
   doi: 10.18129/B9.bioc.edgeR
 - type: software
   title: ggplot2
@@ -235,7 +235,7 @@ references:
     given-names: Teun
     name-particle: van den
     orcid: https://orcid.org/0000-0002-9335-7468
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.ggplot2
 - type: software
   title: ggrepel
@@ -248,8 +248,64 @@ references:
     given-names: Kamil
     email: kslowikowski@gmail.com
     orcid: https://orcid.org/0000-0002-2843-6370
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.ggrepel
+- type: software
+  title: limma
+  abstract: 'limma: Linear Models for Microarray and Omics Data'
+  notes: Imports
+  url: https://bioinf.wehi.edu.au/limma/
+  repository: https://bioconductor.org/
+  authors:
+  - family-names: Smyth
+    given-names: Gordon
+  - family-names: Hu
+    given-names: Yifang
+  - family-names: Ritchie
+    given-names: Matthew
+  - family-names: Silver
+    given-names: Jeremy
+  - family-names: Wettenhall
+    given-names: James
+  - family-names: McCarthy
+    given-names: Davis
+  - family-names: Wu
+    given-names: Di
+  - family-names: Shi
+    given-names: Wei
+  - family-names: Phipson
+    given-names: Belinda
+  - family-names: Lun
+    given-names: Aaron
+  - family-names: Thorne
+    given-names: Natalie
+  - family-names: Oshlack
+    given-names: Alicia
+  - family-names: Graaf
+    given-names: Carolyn
+    name-particle: de
+  - family-names: Chen
+    given-names: Yunshun
+  - family-names: Giner
+    given-names: Goknur
+  - family-names: Langaas
+    given-names: Mette
+  - family-names: Ferkingstad
+    given-names: Egil
+  - family-names: Davy
+    given-names: Marcus
+  - family-names: Pepin
+    given-names: Francois
+  - family-names: Choi
+    given-names: Dongseok
+  - family-names: Law
+    given-names: Charity
+  - family-names: Li
+    given-names: Mengbo
+  - family-names: Chen
+    given-names: Lizhong
+  year: '2025'
+  doi: 10.18129/B9.bioc.limma
 - type: software
   title: methods
   abstract: 'R: A Language and Environment for Statistical Computing'
@@ -259,7 +315,7 @@ references:
   institution:
     name: R Foundation for Statistical Computing
     address: Vienna, Austria
-  year: '2024'
+  year: '2025'
 - type: software
   title: plotly
   abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
@@ -290,7 +346,7 @@ references:
   - family-names: Despouy
     given-names: Pedro
     email: pedro@plot.ly
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.plotly
 - type: software
   title: reshape2
@@ -302,7 +358,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: h.wickham@gmail.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.reshape2
 - type: software
   title: rlang
@@ -317,7 +373,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.rlang
 - type: software
   title: S7
@@ -346,7 +402,7 @@ references:
     given-names: Hadley
     email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.S7
 - type: software
   title: stats
@@ -357,7 +413,7 @@ references:
   institution:
     name: R Foundation for Statistical Computing
     address: Vienna, Austria
-  year: '2024'
+  year: '2025'
 - type: software
   title: stringr
   abstract: 'stringr: Simple, Consistent Wrappers for Common String Operations'
@@ -368,7 +424,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.stringr
 - type: software
   title: tibble
@@ -384,7 +440,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.tibble
 - type: software
   title: tidyr
@@ -401,7 +457,7 @@ references:
     email: davis@posit.co
   - family-names: Girlich
     given-names: Maximilian
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.tidyr
 - type: software
   title: tidyselect
@@ -416,7 +472,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.tidyselect
 - type: software
   title: cffr
@@ -429,7 +485,7 @@ references:
     given-names: Diego
     email: diego.hernangomezherrero@gmail.com
     orcid: https://orcid.org/0000-0001-8457-4658
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.cffr
 - type: software
   title: docopt
@@ -441,7 +497,7 @@ references:
   - family-names: Jonge
     given-names: Edwin
     name-particle: de
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.docopt
 - type: software
   title: glue
@@ -457,7 +513,7 @@ references:
     given-names: Jennifer
     email: jenny@posit.co
     orcid: https://orcid.org/0000-0002-6983-2759
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.glue
 - type: software
   title: knitr
@@ -470,7 +526,7 @@ references:
     given-names: Yihui
     email: xie@yihui.name
     orcid: https://orcid.org/0000-0003-0645-5666
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.knitr
 - type: software
   title: lobstr
@@ -482,7 +538,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.lobstr
 - type: software
   title: RColorBrewer
@@ -493,7 +549,7 @@ references:
   - family-names: Neuwirth
     given-names: Erich
     email: erich.neuwirth@univie.ac.at
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.RColorBrewer
 - type: software
   title: readr
@@ -511,7 +567,7 @@ references:
     given-names: Jennifer
     email: jenny@posit.co
     orcid: https://orcid.org/0000-0002-6983-2759
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.readr
 - type: software
   title: rmarkdown
@@ -555,7 +611,7 @@ references:
     given-names: Richard
     email: rich@posit.co
     orcid: https://orcid.org/0000-0003-3925-190X
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.rmarkdown
 - type: software
   title: scales
@@ -573,7 +629,7 @@ references:
     orcid: https://orcid.org/0000-0002-5147-4711
   - family-names: Seidel
     given-names: Dana
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.scales
 - type: software
   title: styler
@@ -589,7 +645,7 @@ references:
   - family-names: Walthert
     given-names: Lorenz
     email: lorenz.walthert@icloud.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.styler
 - type: software
   title: testthat
@@ -601,7 +657,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.testthat
   version: '>= 3.0.0'
 - type: software
@@ -627,7 +683,7 @@ references:
     given-names: Andy
     email: andy.teucher@posit.co
     orcid: https://orcid.org/0000-0002-7840-692X
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.usethis
 - type: software
   title: V8
@@ -640,5 +696,5 @@ references:
     given-names: Jeroen
     email: jeroenooms@gmail.com
     orcid: https://orcid.org/0000-0002-4035-0289
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.V8
