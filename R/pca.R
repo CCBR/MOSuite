@@ -2,10 +2,10 @@
 #'
 #' @param log_counts log-transformed filtered counts
 #' @inheritParams filter_counts
+#' @inheritParams plot_histogram
 #' @param samples_to_include samples in `sample_metadata` to include in the analysis
 #'
-#' @return PCA plot
-#' @keywords internal
+#' @return ggplot object
 #'
 plot_pca <- function(log_counts,
                      sample_metadata,
@@ -21,7 +21,8 @@ plot_pca <- function(log_counts,
                      add_label_to_pca = TRUE,
                      label_font_size = 3,
                      label_offset_y_ = 2,
-                     label_offset_x_ = 2) {
+                     label_offset_x_ = 2,
+                     make_plots_interactive = FALSE) {
   # calculate PCA
   var <- xdata <- ydata <- group <- NULL
   tedf <- t(log_counts)
@@ -49,7 +50,7 @@ plot_pca <- function(log_counts,
   pca.df <- rename_samples(pca.df, samples_to_rename_manually)
 
   # plot PCA
-  pcaPlot <- pca.df %>%
+  pca_plot <- pca.df %>%
     ggplot2::ggplot(ggplot2::aes(x = xdata, y = ydata, text = sample)) +
     ggplot2::geom_point(ggplot2::aes(color = group),
       size = point_size_for_pca
@@ -73,7 +74,7 @@ plot_pca <- function(log_counts,
     ggplot2::ylab(pc.y.lab)
 
   if (add_label_to_pca == TRUE) {
-    pcaPlot <- pcaPlot +
+    pca_plot <- pca_plot +
       ggrepel::geom_text_repel(ggplot2::aes(label = sample, color = group),
         size = 7,
         show.legend = F,
@@ -81,5 +82,8 @@ plot_pca <- function(log_counts,
         box.padding = 1.25
       )
   }
-  return(pcaPlot)
+  if (isTRUE(make_plots_interactive)) {
+    pca_plot <- (pca_plot) %>% ggplotly(tooltip = c("sample", "group"))
+  }
+  return(pca_plot)
 }
