@@ -1,3 +1,14 @@
+#' Plot histogram
+#'
+#' @inheritParams filter_counts
+#' @param x_axis_label
+#' @param y_axis_label
+#' @param make_plots_interactive
+#'
+#' @returns ggplot object
+#' @export
+#'
+#' @examples
 plot_histogram <- function(log_counts,
                            sample_metadata,
                            gene_names_column,
@@ -10,7 +21,10 @@ plot_histogram <- function(log_counts,
                            maximum_for_x_axis_for_histogram = 1,
                            legend_position_for_histogram = "top",
                            legend_font_size_for_histogram = 10,
-                           number_of_histogram_legend_columns = 6) {
+                           number_of_histogram_legend_columns = 6,
+                           x_axis_label = "Counts",
+                           y_axis_label = "Density",
+                           make_plots_interactive = FALSE) {
   Var2 <- colgroup <- value <- NULL
   df.m <- reshape2::melt(log_counts, id.vars = c(gene_names_column))
   df.m <- dplyr::rename(df.m, sample = Var2)
@@ -33,7 +47,7 @@ plot_histogram <- function(log_counts,
     cols <- color_values[1:n]
 
     # plot Density
-    histPlot <- df.m %>%
+    hist_plot <- df.m %>%
       ggplot2::ggplot(ggplot2::aes(x = value, group = sample)) +
       ggplot2::geom_density(ggplot2::aes(colour = colgroup), linewidth = 1)
   } else {
@@ -41,14 +55,14 @@ plot_histogram <- function(log_counts,
     n <- length(unique(df.m$sample))
     cols <- get_random_colors(n)
 
-    histPlot <- df.m %>%
+    hist_plot <- df.m %>%
       ggplot2::ggplot(ggplot2::aes(x = value, group = sample)) +
       ggplot2::geom_density(ggplot2::aes(colour = sample), linewidth = 1)
   }
 
-  histPlot <- histPlot +
-    ggplot2::xlab("Normalized Counts") +
-    ggplot2::ylab("Density") +
+  hist_plot <- hist_plot +
+    ggplot2::xlab(x_axis_label) +
+    ggplot2::ylab(y_axis_label) +
     ggplot2::theme_bw() +
     ggplot2::theme(
       legend.position = legend_position_for_histogram,
@@ -67,5 +81,8 @@ plot_histogram <- function(log_counts,
     ggplot2::scale_colour_manual(values = cols) +
     ggplot2::guides(linetype = ggplot2::guide_legend(ncol = number_of_histogram_legend_columns))
 
-  return(histPlot)
+  if (isTRUE(make_plots_interactive)) {
+    hist_plot <- (hist_plot + theme(legend.position = "none")) %>% ggplotly(tooltip = c("sample"))
+  }
+  return(hist_plot)
 }
