@@ -3,14 +3,15 @@
 This is the first release of MOSuite 🎉
 
 - Note: at the start of development, this package was called reneeTools.
-  Later it was renamed to MOSuite. (#76, @kelly-sovacool)
+  Later it was renamed to MOSuite. (#76)
 
 ## Main functions & classes
 
-- `multiOmicDataSet` (#16, #28, @kelly-sovacool)
+- `multiOmicDataSet` (#16, #28)
   - `create_multiOmicDataSet_from_files()`
   - `create_multiOmicDataSet_from_dataframes()`
 - `run_deseq2()`
-- `calc_cpm()` (#38, @kelly-sovacool)
-- `filter_counts()` (#38, @kelly-sovacool)
-- `clean_raw_counts()` (#79, @kelly-sovacool)
+- `calc_cpm()` (#38)
+- `filter_counts()` (#38)
+- `clean_raw_counts()` (#79)
+- `normalize()` (#82)
