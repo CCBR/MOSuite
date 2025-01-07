@@ -1,6 +1,5 @@
 #' Perform and plot a Principal Components Analysis
 #'
-#' @param log_counts log-transformed filtered counts
 #' @inheritParams filter_counts
 #' @inheritParams plot_histogram
 #' @param samples_to_include samples in `sample_metadata` to include in the analysis
@@ -10,7 +9,7 @@
 plot_pca <- function(log_counts,
                      sample_metadata,
                      samples_to_include,
-                     samples_to_rename_manually,
+                     samples_to_rename,
                      group_column,
                      label_column,
                      color_values,
@@ -47,7 +46,7 @@ plot_pca <- function(log_counts,
   pca.df$ydata <- pca.df[[pcy]]
 
   # rename samples
-  pca.df <- rename_samples(pca.df, samples_to_rename_manually)
+  pca.df <- rename_samples(pca.df, samples_to_rename)
 
   # plot PCA
   pca_plot <- pca.df %>%
@@ -83,7 +82,7 @@ plot_pca <- function(log_counts,
       )
   }
   if (isTRUE(make_plots_interactive)) {
-    pca_plot <- (pca_plot) %>% ggplotly(tooltip = c("sample", "group"))
+    pca_plot <- (pca_plot) %>% plotly::ggplotly(tooltip = c("sample", "group"))
   }
   return(pca_plot)
 }

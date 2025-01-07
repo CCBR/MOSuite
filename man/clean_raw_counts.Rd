@@ -6,6 +6,7 @@
 \usage{
 clean_raw_counts(
   moo,
+  count_type = "raw",
   sample_names_column = "Sample",
   gene_names_column = "GeneName",
   samples_to_rename = c(""),
@@ -18,6 +19,8 @@ clean_raw_counts(
 }
 \arguments{
 \item{moo}{multiOmicDataSet object (see \code{create_multiOmicDataSet_from_dataframes()})}
+
+\item{count_type}{the type of counts to use -- must be a name in the counts slot (\code{moo@counts})}
 
 \item{sample_names_column}{The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.}
 
