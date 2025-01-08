@@ -14,4 +14,4 @@ This is the first release of MOSuite 🎉
 - `calc_cpm()` (#38)
 - `filter_counts()` (#38)
 - `clean_raw_counts()` (#79)
-- `normalize()` (#82)
+- `normalize_counts()` (#82)

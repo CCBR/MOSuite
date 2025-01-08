@@ -16,7 +16,7 @@
 #'     "filt" = as.data.frame(nidap_filtered_counts)
 #'   )
 #' ) %>%
-#'   normalize(
+#'   normalize_counts(
 #'     gene_names_column = "Gene",
 #'     columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
 #'     sample_names_column = "Sample",
@@ -24,35 +24,35 @@
 #'     label_column = "Label"
 #'   )
 #' head(moo@counts[["norm"]][["voom"]])
-normalize <- function(moo,
-                      count_type = "filt",
-                      gene_names_column = "Gene",
-                      columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-                      sample_names_column = "Sample",
-                      group_column = "Group",
-                      label_column = "Label",
-                      input_in_log_counts = FALSE,
-                      voom_normalization_method = "quantile",
-                      samples_to_rename = c(""),
-                      add_label_to_pca = TRUE,
-                      principal_component_on_x_axis = 1,
-                      principal_component_on_y_axis = 2,
-                      legend_position_for_pca = "top",
-                      label_offset_x_ = 2,
-                      label_offset_y_ = 2,
-                      label_font_size = 3,
-                      point_size_for_pca = 8,
-                      color_histogram_by_group = TRUE,
-                      set_min_max_for_x_axis_for_histogram = FALSE,
-                      minimum_for_x_axis_for_histogram = -1,
-                      maximum_for_x_axis_for_histogram = 1,
-                      legend_font_size_for_histogram = 10,
-                      legend_position_for_histogram = "top",
-                      number_of_histogram_legend_columns = 6,
-                      number_of_image_rows = 2,
-                      colors_for_plots = c(),
-                      make_plots_interactive = FALSE,
-                      plot_correlation_matrix_heatmap = TRUE) {
+normalize_counts <- function(moo,
+                             count_type = "filt",
+                             gene_names_column = "Gene",
+                             columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
+                             sample_names_column = "Sample",
+                             group_column = "Group",
+                             label_column = "Label",
+                             input_in_log_counts = FALSE,
+                             voom_normalization_method = "quantile",
+                             samples_to_rename = c(""),
+                             add_label_to_pca = TRUE,
+                             principal_component_on_x_axis = 1,
+                             principal_component_on_y_axis = 2,
+                             legend_position_for_pca = "top",
+                             label_offset_x_ = 2,
+                             label_offset_y_ = 2,
+                             label_font_size = 3,
+                             point_size_for_pca = 8,
+                             color_histogram_by_group = TRUE,
+                             set_min_max_for_x_axis_for_histogram = FALSE,
+                             minimum_for_x_axis_for_histogram = -1,
+                             maximum_for_x_axis_for_histogram = 1,
+                             legend_font_size_for_histogram = 10,
+                             legend_position_for_histogram = "top",
+                             number_of_histogram_legend_columns = 6,
+                             number_of_image_rows = 2,
+                             colors_for_plots = c(),
+                             make_plots_interactive = FALSE,
+                             plot_correlation_matrix_heatmap = TRUE) {
   counts_matrix <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
 
@@ -188,7 +188,12 @@ normalize <- function(moo,
     label_offset_x_ = label_offset_x_
   )
 
-  histPlot <- plot_histogram(v$E, sample_metadata, gene_names_column, group_column, label_column,
+  histPlot <- plot_histogram(
+    v$E,
+    sample_metadata,
+    gene_names_column,
+    group_column,
+    label_column,
     color_values = colorval,
     x_axis_label = "Normalized Counts"
   )
