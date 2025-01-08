@@ -46,6 +46,7 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">clean_raw_counts</span><span class="op">(</span></span>
 <span>  <span class="va">moo</span>,</span>
+<span>  count_type <span class="op">=</span> <span class="st">"raw"</span>,</span>
 <span>  sample_names_column <span class="op">=</span> <span class="st">"Sample"</span>,</span>
 <span>  gene_names_column <span class="op">=</span> <span class="st">"GeneName"</span>,</span>
 <span>  samples_to_rename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span>,</span>
@@ -63,6 +64,10 @@
 
 <dl><dt id="arg-moo">moo<a class="anchor" aria-label="anchor" href="#arg-moo"></a></dt>
 <dd><p>multiOmicDataSet object (see <code><a href="create_multiOmicDataSet_from_dataframes.html">create_multiOmicDataSet_from_dataframes()</a></code>)</p></dd>
+
+
+<dt id="arg-count-type">count_type<a class="anchor" aria-label="anchor" href="#arg-count-type"></a></dt>
+<dd><p>the type of counts to use – must be a name in the counts slot (<code>moo@counts</code>)</p></dd>
 
 
 <dt id="arg-sample-names-column">sample_names_column<a class="anchor" aria-label="anchor" href="#arg-sample-names-column"></a></dt>

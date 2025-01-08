@@ -68,10 +68,6 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CCBR/MOSuite" class="external-link">MOSuite</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
-<span><span class="co">#&gt; 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</span></span>
-<span><span class="co">#&gt; Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
-<span><span class="co">#&gt;   object 'type_sum.accel' not found</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
@@ -126,6 +122,13 @@
 <span>    minimum_count_value_to_be_considered_nonzero <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>    minimum_number_of_samples_with_nonzero_counts_in_total <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>    minimum_number_of_samples_with_nonzero_counts_in_a_group <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/normalize_counts.html">normalize_counts</a></span><span class="op">(</span></span>
+<span>    gene_names_column <span class="op">=</span> <span class="st">"Ensembl_ID_version"</span>,</span>
+<span>    sample_names_column <span class="op">=</span> <span class="st">"sample_id"</span>,</span>
+<span>    group_column <span class="op">=</span> <span class="st">"condition"</span>,</span>
+<span>    label_column <span class="op">=</span> <span class="st">"sample_id"</span>,</span>
+<span>    columns_to_include <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ensembl_ID_version"</span>, <span class="st">"KO_S3"</span>, <span class="st">"KO_S4"</span>, <span class="st">"WT_S1"</span>, <span class="st">"WT_S2"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt;      .</span></span>
 <span><span class="co">#&gt;  KO_S3</span></span>
@@ -186,16 +189,20 @@
 <span><span class="co">#&gt; [1] 57398</span></span>
 <span><span class="co">#&gt; [1] "Bulk RNAseq"</span></span></code></pre></div>
 <p><img src="intro_files/figure-html/data-1.png" width="700"></p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">filt</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   Ensembl_ID_version KO_S3 KO_S4 WT_S1 WT_S2</span></span>
-<span><span class="co">#&gt; 1 ENSG00000072803.17     2     0     0     0</span></span>
-<span><span class="co">#&gt; 2  ENSG00000083845.9     1     0     0     0</span></span>
-<span><span class="co">#&gt; 3 ENSG00000107371.13     1     1     0     0</span></span>
-<span><span class="co">#&gt; 4  ENSG00000111639.8     0     1     0     0</span></span>
-<span><span class="co">#&gt; 5 ENSG00000111640.15     0     1     0     0</span></span>
-<span><span class="co">#&gt; 6  ENSG00000111786.9     0     1     0     0</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; Total number of features included: 291</span></span>
+<span><span class="co">#&gt; Sample columns</span></span>
+<span><span class="co">#&gt; KO_S3KO_S4WT_S1WT_S2</span></span>
+<span><span class="co">#&gt; Feature Columns</span></span>
+<span><span class="co">#&gt; Ensembl_ID_version</span></span>
+<span></span>
+<span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">norm</span><span class="op">$</span><span class="va">voom</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   Ensembl_ID_version     KO_S3    KO_S4    WT_S1    WT_S2</span></span>
+<span><span class="co">#&gt; 1 ENSG00000072803.17 11.075196 8.816153 8.816153 8.816153</span></span>
+<span><span class="co">#&gt; 2  ENSG00000083845.9  9.608634 8.816153 8.816153 8.816153</span></span>
+<span><span class="co">#&gt; 3 ENSG00000107371.13  9.608634 9.608634 8.816153 8.816153</span></span>
+<span><span class="co">#&gt; 4  ENSG00000111639.8  8.816153 9.608634 8.816153 8.816153</span></span>
+<span><span class="co">#&gt; 5 ENSG00000111640.15  8.816153 9.608634 8.816153 8.816153</span></span>
+<span><span class="co">#&gt; 6  ENSG00000111786.9  8.816153 9.608634 8.816153 8.816153</span></span></code></pre>
   </main>
 </div>
 

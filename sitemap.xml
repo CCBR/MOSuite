@@ -31,7 +31,9 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_norm_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_raw_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_sample_metadata.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/normalize_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_heatmap.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/plot_histogram.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_pca.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_read_depth.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/reexports.html</loc></url>
