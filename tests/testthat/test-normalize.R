@@ -7,7 +7,7 @@ test_that("normalize works", {
       "filt" = as.data.frame(nidap_filtered_counts)
     )
   ) %>%
-    normalize(
+    normalize_counts(
       gene_names_column = "Gene",
       columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
       sample_names_column = "Sample",
