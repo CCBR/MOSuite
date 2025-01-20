@@ -17,7 +17,8 @@ as our collaboration process.
 Follow the steps below for detailed instructions on contributing changes to
 MOSuite.
 
-![GitHub Flow diagram](./img/GitHub-Flow_bg-white.png)
+![GitHub Flow diagram](https://raw.githubusercontent.com/CCBR/CCBR_NextflowTemplate/main/.github/img/GitHub-Flow_bg-white.png)
+
 
 ### Clone the repo
 
@@ -232,7 +233,7 @@ Once your branch is ready, create a PR on GitHub:
 
 Select the branch you just pushed:
 
-![Create a new PR from your branch](./img/new-PR.png)
+![Create a new PR from your branch](https://raw.githubusercontent.com/CCBR/CCBR_NextflowTemplate/main/.github/img/new-PR.png)
 
 Edit the PR title and description.
 The title should briefly describe the change.
@@ -240,7 +241,7 @@ Follow the comments in the template to fill out the body of the PR, and
 you can delete the comments (everything between `<!--` and `-->`) as you go.
 When you're ready, click 'Create pull request' to open it.
 
-![Open the PR after editing the title and description](./img/create-PR.png)
+![Open the PR after editing the title and description](https://raw.githubusercontent.com/CCBR/CCBR_NextflowTemplate/main/.github/img/create-PR.png)
 
 Optionally, you can mark the PR as a draft if you're not yet ready for it to
 be reviewed, then change it later when you're ready.
