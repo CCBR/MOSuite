@@ -80,10 +80,19 @@ Edit the code, write unit tests, and update the documentation as needed.
 
 #### style
 
-New code should follow the tidyverse [style guide](https://style.tidyverse.org).
+New code should follow the [tidyverse style guide](https://style.tidyverse.org).
 You can use the [styler](https://CRAN.R-project.org/package=styler) package to
 apply these styles, but please don't restyle code that has nothing to do with
 your PR.
+
+A brief overview of conventions according to the tidyverse style guide:
+
+- most object names (variables and functions) should be in [snake_case](https://style.tidyverse.org/syntax.html#sec-objectnames)
+- function names should use [verbs](https://style.tidyverse.org/functions.html#naming) where possible
+- use `<-` for assignment
+- use [pipes](https://style.tidyverse.org/pipes.html) to chain operations on a single object
+
+Please see the [tidyverse style guide](https://style.tidyverse.org) for more details.
 
 #### test
 
