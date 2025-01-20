@@ -48,7 +48,7 @@
 <h2 id="pull-request-process">Pull request process<a class="anchor" aria-label="anchor" href="#pull-request-process"></a></h2>
 <p>We use <a href="https://docs.github.com/en/get-started/using-github/github-flow" class="external-link">GitHub Flow</a> as our collaboration process. Follow the steps below for detailed instructions on contributing changes to MOSuite.</p>
 <div class="float">
-<img src="./img/GitHub-Flow_bg-white.png" alt="GitHub Flow diagram"><div class="figcaption">GitHub Flow diagram</div>
+<img src="https://raw.githubusercontent.com/CCBR/CCBR_NextflowTemplate/main/.github/img/GitHub-Flow_bg-white.png" alt="GitHub Flow diagram"><div class="figcaption">GitHub Flow diagram</div>
 </div>
 <div class="section level3">
 <h3 id="clone-the-repo">Clone the repo<a class="anchor" aria-label="anchor" href="#clone-the-repo"></a></h3>
@@ -83,7 +83,14 @@
 <p>Edit the code, write unit tests, and update the documentation as needed.</p>
 <div class="section level4">
 <h4 id="style">style<a class="anchor" aria-label="anchor" href="#style"></a></h4>
-<p>New code should follow the tidyverse <a href="https://style.tidyverse.org" class="external-link">style guide</a>. You can use the <a href="https://CRAN.R-project.org/package=styler" class="external-link">styler</a> package to apply these styles, but please don’t restyle code that has nothing to do with your PR.</p>
+<p>New code should follow the <a href="https://style.tidyverse.org" class="external-link">tidyverse style guide</a>. You can use the <a href="https://CRAN.R-project.org/package=styler" class="external-link">styler</a> package to apply these styles, but please don’t restyle code that has nothing to do with your PR.</p>
+<p>A brief overview of conventions according to the tidyverse style guide:</p>
+<ul><li>most object names (variables and functions) should be in <a href="https://style.tidyverse.org/syntax.html#sec-objectnames" class="external-link">snake_case</a>
+</li>
+<li>function names should use <a href="https://style.tidyverse.org/functions.html#naming" class="external-link">verbs</a> where possible</li>
+<li>use <code>&lt;-</code> for assignment</li>
+<li>use <a href="https://style.tidyverse.org/pipes.html" class="external-link">pipes</a> to chain operations on a single object</li>
+</ul><p>Please see the <a href="https://style.tidyverse.org" class="external-link">tidyverse style guide</a> for more details.</p>
 </div>
 <div class="section level4">
 <h4 id="test">test<a class="anchor" aria-label="anchor" href="#test"></a></h4>
@@ -130,11 +137,11 @@
 <p>Once your branch is ready, create a PR on GitHub: <a href="https://github.com/CCBR/MOSuite/pull/new/" class="external-link uri">https://github.com/CCBR/MOSuite/pull/new/</a></p>
 <p>Select the branch you just pushed:</p>
 <div class="float">
-<img src="./img/new-PR.png" alt="Create a new PR from your branch"><div class="figcaption">Create a new PR from your branch</div>
+<img src="https://raw.githubusercontent.com/CCBR/CCBR_NextflowTemplate/main/.github/img/new-PR.png" alt="Create a new PR from your branch"><div class="figcaption">Create a new PR from your branch</div>
 </div>
 <p>Edit the PR title and description. The title should briefly describe the change. Follow the comments in the template to fill out the body of the PR, and you can delete the comments (everything between <code>&lt;!--</code> and <code>--&gt;</code>) as you go. When you’re ready, click ‘Create pull request’ to open it.</p>
 <div class="float">
-<img src="./img/create-PR.png" alt="Open the PR after editing the title and description"><div class="figcaption">Open the PR after editing the title and description</div>
+<img src="https://raw.githubusercontent.com/CCBR/CCBR_NextflowTemplate/main/.github/img/create-PR.png" alt="Open the PR after editing the title and description"><div class="figcaption">Open the PR after editing the title and description</div>
 </div>
 <p>Optionally, you can mark the PR as a draft if you’re not yet ready for it to be reviewed, then change it later when you’re ready.</p>
 </div>
