@@ -4,12 +4,12 @@
 \alias{calc_cpm_df}
 \title{Calculate CPM on a data frame}
 \usage{
-calc_cpm_df(dat, gene_colname = "gene_id", ...)
+calc_cpm_df(dat, feature_id_colname = "gene_id", ...)
 }
 \arguments{
 \item{dat}{data frame of counts with a gene column}
 
-\item{gene_colname}{name of the gene column (default: "gene_id")}
+\item{feature_id_colname}{name of the column in \code{count_dat} that contains feature/gene IDs. (Default: \code{NULL} - first column in the count data will be used.)}
 
 \item{...}{additional arguments to pass to edger::cpm()}
 }

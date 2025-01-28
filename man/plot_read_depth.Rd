@@ -4,10 +4,10 @@
 \alias{plot_read_depth}
 \title{Create read depth plot}
 \usage{
-plot_read_depth(raw_counts_matrix)
+plot_read_depth(counts_matrix)
 }
 \arguments{
-\item{raw_counts_matrix}{dataframe with raw counts data}
+\item{counts_matrix}{dataframe with raw counts data}
 }
 \value{
 ggplot object

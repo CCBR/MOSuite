@@ -6,19 +6,22 @@
 \usage{
 create_multiOmicDataSet_from_files(
   sample_meta_filepath,
-  gene_counts_filepath,
+  feature_counts_filepath,
   count_type = "raw",
-  sample_id_colname = "sample_id"
+  sample_id_colname = NULL,
+  feature_id_colname = NULL
 )
 }
 \arguments{
 \item{sample_meta_filepath}{path to tsv file with sample IDs and metadata for differential analysis.}
 
-\item{gene_counts_filepath}{path to tsv file of expected gene counts from RSEM.}
+\item{feature_counts_filepath}{path to tsv file of expected feature counts (e.g. gene counts from RSEM).}
 
-\item{count_type}{type to assign the values of \code{gene_counts_filepath} to in the \code{counts} slot}
+\item{count_type}{type to assign the values of \code{count_dat} to in the \code{counts} slot}
 
-\item{sample_id_colname}{name of the column in \code{sample_meta_filepath} that contains the sample IDs}
+\item{sample_id_colname}{name of the column in \code{sample_meta_dat} that contains the sample IDs. (Default: \code{NULL} - first column in the sample metadata will be used.)}
+
+\item{feature_id_colname}{name of the column in \code{count_dat} that contains feature/gene IDs. (Default: \code{NULL} - first column in the count data will be used.)}
 }
 \value{
 multiOmicDataSet object
@@ -32,8 +35,8 @@ moo <- create_multiOmicDataSet_from_files(
     "sample_metadata.tsv.gz",
     package = "MOSuite"
   ),
-  gene_counts_filepath = system.file("extdata",
-    "RSEM.genes.expected_count.all_samples.txt.gz",
+  feature_counts_filepath = system.file("extdata",
+    "RSEM.features.expected_count.all_samples.txt.gz",
     package = "MOSuite"
   )
 )

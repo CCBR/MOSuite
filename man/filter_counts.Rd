@@ -7,12 +7,11 @@
 filter_counts(
   moo,
   count_type = "clean",
-  gene_names_column = "gene_id",
-  sample_names_column = "sample_id",
+  feature_id_colname = NULL,
+  sample_id_colname = NULL,
   group_column = "Group",
   label_column = "Label",
-  columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-  outlier_samples_to_remove = c(),
+  samples_to_include = NULL,
   minimum_count_value_to_be_considered_nonzero = 8,
   minimum_number_of_samples_with_nonzero_counts_in_total = 7,
   minimum_number_of_samples_with_nonzero_counts_in_a_group = 3,
@@ -34,8 +33,8 @@ filter_counts(
   legend_position_for_histogram = "top",
   legend_font_size_for_histogram = 10,
   number_of_histogram_legend_columns = 6,
-  colors_for_plots = c("indigo", "carrot", "lipstick", "turquoise", "lavender", "jade",
-    "coral", "azure", "green", "rum", "orange", "olive"),
+  colors_for_plots = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   number_of_image_rows = 2,
   make_plots_interactive = FALSE,
   plot_correlation_matrix_heatmap = TRUE,
@@ -47,17 +46,15 @@ filter_counts(
 
 \item{count_type}{the type of counts to use -- must be a name in the counts slot (\code{moo@counts})}
 
-\item{gene_names_column}{The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.}
+\item{feature_id_colname}{The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
-\item{sample_names_column}{The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.}
+\item{sample_id_colname}{The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter. (Default: \code{NULL} - first column in the sample metadata will be used.)}
 
 \item{group_column}{The column from your input Sample Metadata table containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.). Only columns of Text type from your input Sample Metadata will be available to select for this parameter.}
 
 \item{label_column}{The column from your input Sample Metadata table containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample.}
 
-\item{columns_to_include}{Which Columns would you like to include? Usually, you will choose to a feature ID column (e.g. gene or protein ID) and all sample columns. Columns excluded here will be removed in this step and from further analysis downstream of this step.}
-
-\item{outlier_samples_to_remove}{A list of sample names to remove from the analysis.}
+\item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
 
 \item{minimum_count_value_to_be_considered_nonzero}{Minimum count value to be considered non-zero for a sample}
 
@@ -119,7 +116,7 @@ This is often the first step in the QC portion of an analysis to filter out
 features that have very low raw counts across most or all of your samples.
 }
 \details{
-This function takes a multiOmicDataSet containing raw counts and a sample
+This function takes a multiOmicDataSet containing clean raw counts and a sample
 metadata table, and returns the multiOmicDataSet object with filtered counts.
 It also produces an image consisting of three QC plots.
 
@@ -142,8 +139,8 @@ moo <- create_multiOmicDataSet_from_dataframes(
 ) \%>\%
   calc_cpm(gene_colname = "Gene") \%>\%
   filter_counts(
-    sample_names_column = "Sample",
-    gene_names_column = "Gene",
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
     count_type = "raw"
   )
 head(moo@counts$filt)
