@@ -101,18 +101,8 @@ filter_counts <- function(moo,
                           legend_font_size_for_histogram = 10,
                           number_of_histogram_legend_columns = 6,
                           colors_for_plots = c(
-                            "indigo",
-                            "carrot",
-                            "lipstick",
-                            "turquoise",
-                            "lavender",
-                            "jade",
-                            "coral",
-                            "azure",
-                            "green",
-                            "rum",
-                            "orange",
-                            "olive"
+                            "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+                            "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
                           ),
                           number_of_image_rows = 2,
                           make_plots_interactive = FALSE,
@@ -120,39 +110,6 @@ filter_counts <- function(moo,
                           make_plots = TRUE) {
   counts_matrix <- moo@counts[[count_type]] %>% as.data.frame() # currently, this function requires data frames
   sample_metadata <- moo@sample_meta %>% as.data.frame()
-  # TODO we should use "feature" instead of "gene" to make sure this is applicable beyond RNA-seq
-
-  # TODO: just have users specify hex values directly for simplicity
-  colorlist <- c(
-    indigo = "#5954d6",
-    carrot = "#e1562c",
-    lipstick = "#b80058",
-    turquoise = "#00c6f8",
-    lavender = "#d163e6",
-    jade = "#00a76c",
-    coral = "#ff9287",
-    azure = "#008cf9",
-    green = "#006e00",
-    rum = "#796880",
-    orange = "#FFA500",
-    olive = "#878500"
-  )
-  if (length(colors_for_plots) == 0) {
-    colors_for_plots <- c(
-      "indigo",
-      "carrot",
-      "lipstick",
-      "turquoise",
-      "lavender",
-      "jade",
-      "coral",
-      "azure",
-      "green",
-      "rum",
-      "orange",
-      "olive"
-    )
-  }
 
   # purpose of this code block for samples_to_include:
   # ensure samples in metadata match columns in counts table and
@@ -200,15 +157,11 @@ filter_counts <- function(moo,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group
   )
 
-
-  colorval <- colorlist[colors_for_plots]
-  colorval <- unname(colorval) # remove names which affect ggplot
-
-  if (length(unique(sample_metadata[[group_column]])) > length(colorval)) {
+  if (length(unique(sample_metadata[[group_column]])) > length(colors_for_plots)) {
     ## Original color-picking code.
-    k <- length(unique(sample_metadata[[group_column]])) - length(colorval)
+    k <- length(unique(sample_metadata[[group_column]])) - length(colors_for_plots)
     more_cols <- get_random_colors(k)
-    colorval <- c(colorval, more_cols)
+    colors_for_plots <- c(colors_for_plots, more_cols)
   }
 
   if (isTRUE(make_plots)) {
@@ -222,7 +175,7 @@ filter_counts <- function(moo,
       samples_to_rename,
       group_column,
       label_column,
-      color_values = colorval,
+      color_values = colors_for_plots,
       principal_component_on_x_axis = principal_component_on_x_axis,
       principal_component_on_y_axis = principal_component_on_y_axis,
       legend_position_for_pca = legend_position_for_pca,
@@ -242,7 +195,7 @@ filter_counts <- function(moo,
       feature_id_colname = feature_id_colname,
       group_column = group_column,
       label_column = label_column,
-      color_values = colorval,
+      color_values = colors_for_plots,
       color_histogram_by_group = color_histogram_by_group,
       set_min_max_for_x_axis_for_histogram = set_min_max_for_x_axis_for_histogram,
       minimum_for_x_axis_for_histogram = minimum_for_x_axis_for_histogram,
@@ -272,7 +225,7 @@ filter_counts <- function(moo,
           sample_id_colname = sample_id_colname,
           label_column = label_column,
           anno_column = group_column,
-          anno_colors = colorval
+          anno_colors = colors_for_plots
         )
 
         # grid.newpage()
