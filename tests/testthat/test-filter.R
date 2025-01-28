@@ -1,12 +1,3 @@
-equal_dfs <- function(x, y) {
-  all(
-    class(x) == class(y),
-    names(x) == names(y),
-    x == y,
-    all.equal(lapply(x, class), lapply(y, class))
-  )
-}
-
 test_that("filter_counts reproduces NIDAP results", {
   set.seed(10)
   moo <- create_multiOmicDataSet_from_dataframes(
@@ -50,7 +41,7 @@ test_that("filter_counts works on RENEE dataset", {
   )
   expect_equal(dim(rds2@counts$filt), c(291, 5))
   expect_equal(
-    rds2@counts$filt %>% arrange(gene_id) %>% head(),
+    rds2@counts$filt %>% dplyr::arrange(gene_id) %>% head(),
     structure(
       list(
         gene_id = c(
@@ -71,7 +62,7 @@ test_that("filter_counts works on RENEE dataset", {
     )
   )
   expect_equal(
-    rds2@counts$filt %>% arrange(gene_id) %>% tail(),
+    rds2@counts$filt %>% dplyr::arrange(gene_id) %>% tail(),
     structure(
       list(
         gene_id = c(
