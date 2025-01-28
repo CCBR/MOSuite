@@ -125,24 +125,9 @@ filter_counts <- function(moo,
   samples_to_include <- samples_to_include[samples_to_include != "GeneName"]
   samples_to_include <- samples_to_include[samples_to_include %in% sample_metadata[[sample_id_colname]]]
 
-  ## create unique rownames to correctly add back Annocolumns at end of template
-  counts_matrix[, feature_id_colname] <- paste0(counts_matrix[, feature_id_colname], "_", 1:nrow(counts_matrix))
-
-  anno_col <- c(anno_col, feature_id_colname) %>% unique()
-  anno_tbl <- counts_matrix[, anno_col, drop = F] %>% as.data.frame()
-
   df <- counts_matrix[, c(feature_id_colname, samples_to_include)]
   gene_names <- NULL
   gene_names$GeneID <- counts_matrix[, feature_id_colname]
-
-  ### Input data validation
-  # TODO move this function call to the S7 validator
-  sample_metadata <- validate_sample_metadata(
-    counts_matrix = df,
-    sample_metadata = sample_metadata,
-    sample_id_colname = sample_id_colname,
-    group_column = group_column
-  )
 
   #### remove low count genes ########
   df.filt <- remove_low_count_genes(
@@ -255,7 +240,6 @@ filter_counts <- function(moo,
   }
   df.final <- df %>%
     dplyr::filter(!!rlang::sym(feature_id_colname) %in% df.filt[, feature_id_colname])
-  df.final <- merge(anno_tbl, df.final, by = feature_id_colname, all.y = T)
   df.final[, feature_id_colname] <- gsub("_[0-9]+$", "", df.final[, feature_id_colname])
 
   moo@counts[["filt"]] <- df.final
@@ -316,7 +300,7 @@ remove_low_count_genes <- function(counts_matrix,
     df.filt <- as.data.frame(trans.df[trans.df$isexpr1, ])
   }
 
-  # colnames(df.filt)[colnames(df.filt)==feature_id_colname] <- "Gene"
-  # print(paste0("Number of features after filtering: ", nrow(df.filt)))
+
+  message(paste0("Number of features after filtering: ", nrow(df.filt)))
   return(df.filt)
 }

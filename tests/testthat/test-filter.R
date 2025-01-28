@@ -48,8 +48,9 @@ test_that("filter_counts works on RENEE dataset", {
     make_plots = FALSE,
     count_type = "raw"
   )
+  expect_equal(dim(rds2@counts$filt), c(291, 5))
   expect_equal(
-    rds2@counts$filt %>% head(),
+    rds2@counts$filt %>% arrange(gene_id) %>% head(),
     structure(
       list(
         gene_id = c(
@@ -70,7 +71,7 @@ test_that("filter_counts works on RENEE dataset", {
     )
   )
   expect_equal(
-    rds2@counts$filt %>% tail(),
+    rds2@counts$filt %>% arrange(gene_id) %>% tail(),
     structure(
       list(
         gene_id = c(

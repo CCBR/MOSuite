@@ -27,6 +27,7 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
     if (!all(names(self@counts) %in% approved_counts)) {
       stop(glue::glue("counts can only contain these names:\n\t{paste(approved_counts, collapse = ', ')}"))
     }
+
     # TODO all sample IDs must be in both sample_meta and raw counts
     # TODO any sample ID in filt or norm_cpm counts must also be in sample_meta
     # TODO counts can only contain 1 feature name column, and all other columns are sample counts
