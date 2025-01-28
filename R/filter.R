@@ -106,6 +106,9 @@ filter_counts <- function(moo,
                           make_plots_interactive = FALSE,
                           plot_correlation_matrix_heatmap = TRUE,
                           make_plots = TRUE) {
+  if (!(count_type %in% names(moo@counts))) {
+    stop(glue::glue("count_type {count_type} not in moo@counts"))
+  }
   counts_matrix <- moo@counts[[count_type]] %>% as.data.frame() # currently, this function requires data frames
   sample_metadata <- moo@sample_meta %>% as.data.frame()
 
