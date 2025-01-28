@@ -12,12 +12,13 @@ test_that("filter_counts reproduces NIDAP results", {
   moo <- create_multiOmicDataSet_from_dataframes(
     as.data.frame(nidap_sample_metadata),
     as.data.frame(nidap_clean_raw_counts),
-    sample_id_colname = "Sample"
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene"
   ) %>%
-    calc_cpm(gene_colname = "Gene") %>%
+    calc_cpm(feature_id_colname = "Gene") %>%
     filter_counts(
-      sample_names_column = "Sample",
-      gene_names_column = "Gene",
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
       count_type = "raw"
     )
   rds_counts_filt <- moo@counts$filt %>%
@@ -31,17 +32,13 @@ test_that("filter_counts reproduces NIDAP results", {
 # TODO get filter_counts() to work on tibbles too, not only dataframes
 
 test_that("filter_counts works on RENEE dataset", {
-  moo <- create_multiOmicDataSet_from_files(
-    system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite"),
-    system.file(
-      "extdata",
-      "RSEM.genes.expected_count.all_samples.txt.gz",
-      package = "MOSuite"
-    )
+  moo <- create_multiOmicDataSet_from_dataframes(
+    readr::read_tsv(system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")),
+    gene_counts %>% glue_gene_symbols()
   )
   rds2 <- moo %>% filter_counts(
-    gene_names_column = "gene_id",
-    sample_names_column = "sample_id",
+    feature_id_colname = "gene_id",
+    sample_id_colname = "sample_id",
     group_column = "condition",
     label_column = "sample_id",
     columns_to_include = c("gene_id", "KO_S3", "KO_S4", "WT_S1", "WT_S2"),
@@ -133,7 +130,7 @@ test_that("remove_low_count_genes works", {
     remove_low_count_genes(
       counts_matrix = df,
       sample_metadata = sample_meta,
-      gene_names_column = "Gene",
+      feature_id_colname = "Gene",
       group_column = "Group",
       use_cpm_counts_to_filter = TRUE,
       use_group_based_filtering = FALSE,

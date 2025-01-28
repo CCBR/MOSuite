@@ -43,12 +43,12 @@
 #'   as.data.frame(nidap_raw_counts),
 #'   sample_id_colname = "Sample",
 #' ) %>%
-#'   clean_raw_counts(sample_names_column = "Sample", gene_names_column = "GeneName")
+#'   clean_raw_counts(sample_id_colname = "Sample", feature_id_colname = "GeneName")
 #' head(moo@counts$clean)
 clean_raw_counts <- function(moo,
                              count_type = "raw",
-                             sample_names_column = "Sample",
-                             gene_names_column = "GeneName",
+                             sample_id_colname = "Sample",
+                             feature_id_colname = "GeneName",
                              samples_to_rename = c(""),
                              data_type = "Bulk RNAseq", # TODO refactor so this param isn't needed -- use feature_id instead of gene always
                              cleanup_column_names = TRUE,
@@ -66,7 +66,7 @@ clean_raw_counts <- function(moo,
   ## check if sample names are different between raw counts
   ## and metadata tables
   # TODO move this to S7 validator
-  check_sample_names(raw_counts_matrix, sample_metadata, sample_names_column)
+  check_sample_names(raw_counts_matrix, sample_metadata, sample_id_colname)
   ##### Sample Name Check for duplicated
   ## duplicate col name
   # TODO move this to S7 validator
@@ -110,7 +110,7 @@ clean_raw_counts <- function(moo,
       colnames(raw_counts_matrix) <- cl2
     }
 
-    print(colnames(raw_counts_matrix)[!colnames(raw_counts_matrix) %in% gene_names_column] %>% as.data.frame(),
+    print(colnames(raw_counts_matrix)[!colnames(raw_counts_matrix) %in% feature_id_colname] %>% as.data.frame(),
       row.names = F
     )
     # print("Final Colnames:")
@@ -135,14 +135,14 @@ clean_raw_counts <- function(moo,
 
   # Split Ensemble + Gene name
   raw_counts_matrix <- separate_gene_meta_columns(raw_counts_matrix,
-    gene_names_column = gene_names_column,
+    feature_id_colname = feature_id_colname,
     split_gene_name = split_gene_name,
     data_type = data_type
   )
 
   # Aggregate duplicate gene names
   raw_counts_matrix <- aggregate_duplicate_gene_names(raw_counts_matrix,
-    gene_names_column = gene_names_column,
+    feature_id_colname = feature_id_colname,
     gene_name_column_to_use_for_collapsing_duplicates = gene_name_column_to_use_for_collapsing_duplicates,
     data_type = data_type,
     aggregate_rows_with_duplicate_gene_names = aggregate_rows_with_duplicate_gene_names,
@@ -213,10 +213,10 @@ plot_read_depth <- function(raw_counts_matrix) {
 #' @param metadata dataframe containing sample metadata
 #' @inheritParams clean_raw_counts
 #'
-check_sample_names <- function(counts, metadata, sample_names_column) {
+check_sample_names <- function(counts, metadata, sample_id_colname) {
   # TODO make sure this is part of mo-class validation
   raw_count_names <- colnames(counts)
-  metadata_names <- metadata %>% dplyr::pull(sample_names_column)
+  metadata_names <- metadata %>% dplyr::pull(sample_id_colname)
 
   different_names <- setdiff(metadata_names, raw_count_names)
   if (length(different_names) > 0) {
@@ -234,7 +234,7 @@ check_sample_names <- function(counts, metadata, sample_names_column) {
 #' @inheritParams clean_raw_counts
 #'
 #' @returns dataframe with metadata separated
-separate_gene_meta_columns <- function(raw_counts_matrix, gene_names_column = "GeneName", split_gene_name = TRUE, data_type = "Bulk RNAseq") {
+separate_gene_meta_columns <- function(raw_counts_matrix, feature_id_colname = "GeneName", split_gene_name = TRUE, data_type = "Bulk RNAseq") {
   ## Identify and separate Gene Name Columns into multiple Gene Metadata columns
   ##################################
   ## Split Ensemble + Gene name
@@ -245,24 +245,24 @@ separate_gene_meta_columns <- function(raw_counts_matrix, gene_names_column = "G
   ##   If one column contains Ensemble ID Assume other column is Gene names
   ## If Column does not contain Ensmeble ID name split columns Gene_ID_1 and Gene_ID_2
 
-  ## if split_Gene_name ==F then will rename gene_names_column column to either Gene(Bulk RNAseq) or FeatureID(Proteomics)
+  ## if split_Gene_name ==F then will rename feature_id_colname column to either Gene(Bulk RNAseq) or FeatureID(Proteomics)
 
   print("")
 
   if (split_gene_name == T) {
-    Ensembl_ID <- stringr::str_split_fixed(raw_counts_matrix[, gene_names_column], "_|-|:|\\|", n = 2) %>%
+    Ensembl_ID <- stringr::str_split_fixed(raw_counts_matrix[, feature_id_colname], "_|-|:|\\|", n = 2) %>%
       data.frame()
     EnsCol <- apply(Ensembl_ID, c(1, 2), function(x) {
       grepl("^ENS[A-Z]+[0-9]+", x)
     })
 
     if ("" %in% Ensembl_ID[, 1] | "" %in% Ensembl_ID[, 2]) {
-      print(paste0("Not able to identify multiple id's in ", gene_names_column))
+      print(paste0("Not able to identify multiple id's in ", feature_id_colname))
       # colnames(df)[colnames(df)%in%clm]=gene_col
       if (data_type == "Bulk RNAseq") {
-        colnames(raw_counts_matrix)[colnames(raw_counts_matrix) %in% gene_names_column] <- "Gene"
+        colnames(raw_counts_matrix)[colnames(raw_counts_matrix) %in% feature_id_colname] <- "Gene"
       } else if (data_type == "Proteomics") {
-        colnames(raw_counts_matrix)[colnames(raw_counts_matrix) %in% gene_names_column] <- "FeatureID"
+        colnames(raw_counts_matrix)[colnames(raw_counts_matrix) %in% feature_id_colname] <- "FeatureID"
       } else {
         print("incorrect Data Type")
       }
@@ -286,13 +286,13 @@ separate_gene_meta_columns <- function(raw_counts_matrix, gene_names_column = "G
         colnames(Ensembl_ID) <- c("Feature_id_1", "Feature_id_2")
         print("Could not determine ID formats from split 'Feature ID' Column")
       }
-      raw_counts_matrix <- cbind(Ensembl_ID, raw_counts_matrix[, !colnames(raw_counts_matrix) %in% gene_names_column])
+      raw_counts_matrix <- cbind(Ensembl_ID, raw_counts_matrix[, !colnames(raw_counts_matrix) %in% feature_id_colname])
     }
   } else {
     if (data_type == "Bulk RNAseq") {
-      colnames(raw_counts_matrix)[colnames(raw_counts_matrix) %in% gene_names_column] <- "Gene"
+      colnames(raw_counts_matrix)[colnames(raw_counts_matrix) %in% feature_id_colname] <- "Gene"
     } else if (data_type == "Proteomics") {
-      colnames(raw_counts_matrix)[colnames(raw_counts_matrix) %in% gene_names_column] <- "FeatureID"
+      colnames(raw_counts_matrix)[colnames(raw_counts_matrix) %in% feature_id_colname] <- "FeatureID"
     } else {
       print("incorrect Data Type")
     }
@@ -307,7 +307,7 @@ separate_gene_meta_columns <- function(raw_counts_matrix, gene_names_column = "G
 #'
 #' @returns data frame with columns separated if possible
 #'
-aggregate_duplicate_gene_names <- function(raw_counts_matrix, gene_names_column,
+aggregate_duplicate_gene_names <- function(raw_counts_matrix, feature_id_colname,
                                            gene_name_column_to_use_for_collapsing_duplicates,
                                            data_type,
                                            aggregate_rows_with_duplicate_gene_names,
@@ -317,7 +317,7 @@ aggregate_duplicate_gene_names <- function(raw_counts_matrix, gene_names_column,
   ##################################
 
   ## If user uses "Feature ID" column then switch to empty for appropriate behavior based on other parameters
-  if (gene_name_column_to_use_for_collapsing_duplicates == gene_names_column) {
+  if (gene_name_column_to_use_for_collapsing_duplicates == feature_id_colname) {
     gene_name_column_to_use_for_collapsing_duplicates <- ""
   }
   ## Use different Gene Names Column Name based on data Type
@@ -352,15 +352,15 @@ aggregate_duplicate_gene_names <- function(raw_counts_matrix, gene_names_column,
   if (gene_name_column_to_use_for_collapsing_duplicates == "") {
     if (split_gene_name == F) {
       ## If no Column name given for Aggregation then display Feature ID duplicates
-      print(paste0("genes with duplicate IDs in ", gene_names_column, ":"))
+      print(paste0("genes with duplicate IDs in ", feature_id_colname, ":"))
 
       ## Print original Column name for user Reference then use new Column name to subset table
       if (data_type == "Bulk RNAseq") {
-        gene_names_column <- "Gene"
+        feature_id_colname <- "Gene"
       } else if (data_type == "Proteomics") {
-        gene_names_column <- "FeatureID"
+        feature_id_colname <- "FeatureID"
       }
-      raw_counts_matrix[duplicated(raw_counts_matrix[, gene_names_column]), gene_names_column] %>%
+      raw_counts_matrix[duplicated(raw_counts_matrix[, feature_id_colname]), feature_id_colname] %>%
         unique() %>%
         as.character() %>%
         write(stdout())
@@ -371,11 +371,11 @@ aggregate_duplicate_gene_names <- function(raw_counts_matrix, gene_names_column,
     } else if (split_gene_name == T &
       grepl("Feature_id_1", colnames(raw_counts_matrix)) == F) {
       if (data_type == "Bulk RNAseq") {
-        gene_names_column <- "Gene"
+        feature_id_colname <- "Gene"
       } else if (data_type == "Proteomics") {
-        gene_names_column <- "FeatureID"
+        feature_id_colname <- "FeatureID"
       }
-      print(paste0("genes with duplicate IDs in ", gene_names_column, ":"))
+      print(paste0("genes with duplicate IDs in ", feature_id_colname, ":"))
 
       raw_counts_matrix[duplicated(raw_counts_matrix[, gene_name_column_to_use_for_collapsing_duplicates]), gene_name_column_to_use_for_collapsing_duplicates] %>%
         unique() %>%

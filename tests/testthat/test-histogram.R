@@ -36,7 +36,7 @@ test_that("plot_histogram works", {
   p <- plot_histogram(
     log_counts,
     sample_meta,
-    gene_names_column = "Gene",
+    feature_id_colname = "Gene",
     group_column = "Group",
     label_column = "Label",
     color_values = c(

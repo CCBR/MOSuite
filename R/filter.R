@@ -21,8 +21,8 @@
 #'
 #' @param moo multiOmicDataSet object (see `create_multiOmicDataSet_from_dataframes()`)
 #' @param count_type the type of counts to use -- must be a name in the counts slot (`moo@counts`)
-#' @param gene_names_column The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.
-#' @param sample_names_column The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.
+#' @param feature_id_colname The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.
+#' @param sample_id_colname The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.
 #' @param group_column The column from your input Sample Metadata table containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.). Only columns of Text type from your input Sample Metadata will be available to select for this parameter.
 #' @param label_column The column from your input Sample Metadata table containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample.
 #' @param columns_to_include Which Columns would you like to include? Usually, you will choose to a feature ID column (e.g. gene or protein ID) and all sample columns. Columns excluded here will be removed in this step and from further analysis downstream of this step.
@@ -65,16 +65,16 @@
 #' ) %>%
 #'   calc_cpm(gene_colname = "Gene") %>%
 #'   filter_counts(
-#'     sample_names_column = "Sample",
-#'     gene_names_column = "Gene",
+#'     sample_id_colname = "Sample",
+#'     feature_id_colname = "Gene",
 #'     count_type = "raw"
 #'   )
 #' head(moo@counts$filt)
 #'
 filter_counts <- function(moo,
                           count_type = "clean",
-                          gene_names_column = "gene_id",
-                          sample_names_column = "sample_id",
+                          feature_id_colname = "gene_id",
+                          sample_id_colname = "sample_id",
                           group_column = "Group",
                           label_column = "Label",
                           columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
@@ -158,32 +158,32 @@ filter_counts <- function(moo,
   # ensure samples in metadata match columns in counts table and
   # also exclude annotation / gene columns
   # TODO separate slots in S7 for samples, counts, annotations --> create function to validate
-  samples_to_include <- columns_to_include[columns_to_include %in% sample_metadata[, sample_names_column, drop = T]]
-  anno_col <- columns_to_include[columns_to_include %in% sample_metadata[, sample_names_column, drop = T] == F]
+  samples_to_include <- columns_to_include[columns_to_include %in% sample_metadata[, sample_id_colname, drop = T]]
+  anno_col <- columns_to_include[columns_to_include %in% sample_metadata[, sample_id_colname, drop = T] == F]
 
 
   samples_to_include <- samples_to_include[!samples_to_include %in% outlier_samples_to_remove]
-  samples_to_include <- samples_to_include[samples_to_include != gene_names_column]
+  samples_to_include <- samples_to_include[samples_to_include != feature_id_colname]
   samples_to_include <- samples_to_include[samples_to_include != "Gene"]
   samples_to_include <- samples_to_include[samples_to_include != "GeneName"]
-  samples_to_include <- samples_to_include[samples_to_include %in% sample_metadata[[sample_names_column]]]
+  samples_to_include <- samples_to_include[samples_to_include %in% sample_metadata[[sample_id_colname]]]
 
   ## create unique rownames to correctly add back Annocolumns at end of template
-  counts_matrix[, gene_names_column] <- paste0(counts_matrix[, gene_names_column], "_", 1:nrow(counts_matrix))
+  counts_matrix[, feature_id_colname] <- paste0(counts_matrix[, feature_id_colname], "_", 1:nrow(counts_matrix))
 
-  anno_col <- c(anno_col, gene_names_column) %>% unique()
+  anno_col <- c(anno_col, feature_id_colname) %>% unique()
   anno_tbl <- counts_matrix[, anno_col, drop = F] %>% as.data.frame()
 
-  df <- counts_matrix[, c(gene_names_column, samples_to_include)]
+  df <- counts_matrix[, c(feature_id_colname, samples_to_include)]
   gene_names <- NULL
-  gene_names$GeneID <- counts_matrix[, gene_names_column]
+  gene_names$GeneID <- counts_matrix[, feature_id_colname]
 
   ### Input data validation
   # TODO move this function call to the S7 validator
   sample_metadata <- validate_sample_metadata(
     counts_matrix = df,
     sample_metadata = sample_metadata,
-    sample_names_column = sample_names_column,
+    sample_id_colname = sample_id_colname,
     group_column = group_column
   )
 
@@ -191,7 +191,7 @@ filter_counts <- function(moo,
   df.filt <- remove_low_count_genes(
     counts_matrix = df,
     sample_metadata = sample_metadata,
-    gene_names_column = gene_names_column,
+    feature_id_colname = feature_id_colname,
     group_column = group_column,
     use_cpm_counts_to_filter = use_cpm_counts_to_filter,
     use_group_based_filtering = use_group_based_filtering,
@@ -239,7 +239,7 @@ filter_counts <- function(moo,
     histPlot <- plot_histogram(
       log_counts,
       sample_metadata,
-      gene_names_column = gene_names_column,
+      feature_id_colname = feature_id_colname,
       group_column = group_column,
       label_column = label_column,
       color_values = colorval,
@@ -269,7 +269,7 @@ filter_counts <- function(moo,
         corHM <- plot_heatmap(
           counts_matrix = df.filt[, samples_to_include],
           sample_metadata = sample_metadata,
-          sample_names_column = sample_names_column,
+          sample_id_colname = sample_id_colname,
           label_column = label_column,
           anno_column = group_column,
           anno_colors = colorval
@@ -301,9 +301,9 @@ filter_counts <- function(moo,
     }
   }
   df.final <- df %>%
-    dplyr::filter(!!rlang::sym(gene_names_column) %in% df.filt[, gene_names_column])
-  df.final <- merge(anno_tbl, df.final, by = gene_names_column, all.y = T)
-  df.final[, gene_names_column] <- gsub("_[0-9]+$", "", df.final[, gene_names_column])
+    dplyr::filter(!!rlang::sym(feature_id_colname) %in% df.filt[, feature_id_colname])
+  df.final <- merge(anno_tbl, df.final, by = feature_id_colname, all.y = T)
+  df.final[, feature_id_colname] <- gsub("_[0-9]+$", "", df.final[, feature_id_colname])
 
   moo@counts[["filt"]] <- df.final
 
@@ -322,7 +322,7 @@ filter_counts <- function(moo,
 #'
 remove_low_count_genes <- function(counts_matrix,
                                    sample_metadata,
-                                   gene_names_column,
+                                   feature_id_colname,
                                    group_column,
                                    use_cpm_counts_to_filter = TRUE,
                                    use_group_based_filtering = FALSE,
@@ -341,8 +341,8 @@ remove_low_count_genes <- function(counts_matrix,
   }
 
   if (use_group_based_filtering == TRUE) {
-    rownames(trans.df) <- trans.df[, gene_names_column]
-    trans.df[, gene_names_column] <- NULL
+    rownames(trans.df) <- trans.df[, feature_id_colname]
+    trans.df[, feature_id_colname] <- NULL
 
     counts <- trans.df >= minimum_count_value_to_be_considered_nonzero # boolean matrix
 
@@ -356,14 +356,14 @@ remove_low_count_genes <- function(counts_matrix,
       tidyr::pivot_wider(names_from = "variable", values_from = "sum")
     colSums(tcounts.group[(1:colnum + 1)] >= minimum_number_of_samples_with_nonzero_counts_in_a_group) >= 1 -> tcounts.keep
     df.filt <- trans.df[tcounts.keep, ]
-    df.filt %>% tibble::rownames_to_column(gene_names_column) -> df.filt
+    df.filt %>% tibble::rownames_to_column(feature_id_colname) -> df.filt
   } else {
     trans.df$isexpr1 <- rowSums(as.matrix(trans.df[, -1]) > minimum_count_value_to_be_considered_nonzero) >= minimum_number_of_samples_with_nonzero_counts_in_total
 
     df.filt <- as.data.frame(trans.df[trans.df$isexpr1, ])
   }
 
-  # colnames(df.filt)[colnames(df.filt)==gene_names_column] <- "Gene"
+  # colnames(df.filt)[colnames(df.filt)==feature_id_colname] <- "Gene"
   # print(paste0("Number of features after filtering: ", nrow(df.filt)))
   return(df.filt)
 }

@@ -8,12 +8,12 @@
 #'
 validate_sample_metadata <- function(counts_matrix,
                                      sample_metadata,
-                                     sample_names_column = "Sample",
+                                     sample_id_colname = "Sample",
                                      group_column = "Group") {
-  sample_metadata <- sample_metadata[match(colnames(counts_matrix), sample_metadata[[sample_names_column]]), ] # First match sample metadata to counts matrix
+  sample_metadata <- sample_metadata[match(colnames(counts_matrix), sample_metadata[[sample_id_colname]]), ] # First match sample metadata to counts matrix
   sample_metadata <- sample_metadata[rowSums(is.na(sample_metadata)) != ncol(sample_metadata), ] # Remove empty rows
   sample_metadata <- sample_metadata[, colSums(is.na(sample_metadata)) == 0] # Remove empty columns
-  rownames(sample_metadata) <- sample_metadata[[sample_names_column]]
+  rownames(sample_metadata) <- sample_metadata[[sample_id_colname]]
 
 
   ### Remove special characters from Metadata Column. Replace with _

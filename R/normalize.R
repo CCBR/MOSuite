@@ -17,18 +17,18 @@
 #'   )
 #' ) %>%
 #'   normalize_counts(
-#'     gene_names_column = "Gene",
+#'     feature_id_colname = "Gene",
 #'     columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-#'     sample_names_column = "Sample",
+#'     sample_id_colname = "Sample",
 #'     group_column = "Group",
 #'     label_column = "Label"
 #'   )
 #' head(moo@counts[["norm"]][["voom"]])
 normalize_counts <- function(moo,
                              count_type = "filt",
-                             gene_names_column = "Gene",
+                             feature_id_colname = "Gene",
                              columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-                             sample_names_column = "Sample",
+                             sample_id_colname = "Sample",
                              group_column = "Group",
                              label_column = "Label",
                              input_in_log_counts = FALSE,
@@ -122,19 +122,19 @@ normalize_counts <- function(moo,
   ##############################
   ## create unique rownames to correctly add back Annocolumns at end of template
 
-  samples_to_include <- columns_to_include[columns_to_include %in% sample_metadata[, sample_names_column, drop = T]]
-  anno_col <- columns_to_include[columns_to_include %in% sample_metadata[, sample_names_column, drop = T] == F]
+  samples_to_include <- columns_to_include[columns_to_include %in% sample_metadata[, sample_id_colname, drop = T]]
+  anno_col <- columns_to_include[columns_to_include %in% sample_metadata[, sample_id_colname, drop = T] == F]
 
 
-  samples_to_include <- samples_to_include[samples_to_include != gene_names_column]
+  samples_to_include <- samples_to_include[samples_to_include != feature_id_colname]
   samples_to_include <- samples_to_include[samples_to_include != "Gene"]
   samples_to_include <- samples_to_include[samples_to_include != "GeneName"]
 
   ## create unique rownames to correctly add back Annocolumns at end of template
-  counts_matrix[, gene_names_column] <- paste0(counts_matrix[, gene_names_column], "_", 1:nrow(counts_matrix))
+  counts_matrix[, feature_id_colname] <- paste0(counts_matrix[, feature_id_colname], "_", 1:nrow(counts_matrix))
 
 
-  anno_col <- c(anno_col, gene_names_column) %>% unique()
+  anno_col <- c(anno_col, feature_id_colname) %>% unique()
   anno_tbl <- counts_matrix[, anno_col, drop = F] %>% as.data.frame()
 
 
@@ -146,12 +146,12 @@ normalize_counts <- function(moo,
   #### Input Data Validation
   ##############################
   # TODO move this logic to S7 validator
-  sample_metadata <- sample_metadata[match(colnames(df.filt), sample_metadata[[sample_names_column]]), ] # First match sample metadata to counts matrix
+  sample_metadata <- sample_metadata[match(colnames(df.filt), sample_metadata[[sample_id_colname]]), ] # First match sample metadata to counts matrix
   sample_metadata <- sample_metadata[rowSums(is.na(sample_metadata)) != ncol(sample_metadata), ] # Remove empty rows
   sample_metadata <- sample_metadata[, colSums(is.na(sample_metadata)) == 0] # Remove empty columns
-  rownames(sample_metadata) <- sample_metadata[[sample_names_column]]
+  rownames(sample_metadata) <- sample_metadata[[sample_id_colname]]
 
-  df.filt <- df.filt[, match(sample_metadata[[sample_names_column]], colnames(df.filt))] # Match counts matrix columns to sample metadata
+  df.filt <- df.filt[, match(sample_metadata[[sample_id_colname]], colnames(df.filt))] # Match counts matrix columns to sample metadata
 
 
   ### PH: START Limma Normalization
@@ -167,7 +167,7 @@ normalize_counts <- function(moo,
   }
   v <- limma::voom(x, normalize = voom_normalization_method)
   rownames(v$E) <- v$genes$GeneID
-  as.data.frame(v$E) %>% tibble::rownames_to_column(gene_names_column) -> df.voom
+  as.data.frame(v$E) %>% tibble::rownames_to_column(feature_id_colname) -> df.voom
   message(paste0("Total number of features included: ", nrow(df.voom)))
   ### PH: END Limma Normalization
 
@@ -191,7 +191,7 @@ normalize_counts <- function(moo,
   histPlot <- plot_histogram(
     v$E,
     sample_metadata,
-    gene_names_column,
+    feature_id_colname,
     group_column,
     label_column,
     color_values = colorval,
@@ -204,17 +204,17 @@ normalize_counts <- function(moo,
       anno_colors = colorval,
       anno_column = group_column,
       label_column = label_column,
-      sample_names_column = sample_names_column
+      sample_id_colname = sample_id_colname
     )
   }
 
   message("Sample columns")
-  message(colnames(df.voom)[!colnames(df.voom) %in% gene_names_column])
+  message(colnames(df.voom)[!colnames(df.voom) %in% feature_id_colname])
   message("Feature Columns")
   message(colnames(anno_tbl))
 
-  df.voom <- merge(anno_tbl, df.voom, by = gene_names_column, all.y = T)
-  df.voom[, gene_names_column] <- gsub("_[0-9]+$", "", df.voom[, gene_names_column])
+  df.voom <- merge(anno_tbl, df.voom, by = feature_id_colname, all.y = T)
+  df.voom[, feature_id_colname] <- gsub("_[0-9]+$", "", df.voom[, feature_id_colname])
 
   if (isFALSE("norm" %in% names(moo@counts))) {
     moo@counts[["norm"]] <- list()

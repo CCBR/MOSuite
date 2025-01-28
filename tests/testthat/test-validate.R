@@ -30,7 +30,7 @@ test_that("validate_sample_metadata works", {
     validate_sample_metadata(
       counts_rows,
       sample_meta,
-      sample_names_column = "Sample",
+      sample_id_colname = "Sample",
       group_column = "Group"
     ),
     structure(

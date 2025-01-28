@@ -32,30 +32,30 @@ metadata_tsv <- system.file("extdata", "sample_metadata.tsv.gz",
 # create multi-omic object
 moo <- create_multiOmicDataSet_from_files(
   sample_meta_filepath = metadata_tsv,
-  gene_counts_filepath = gene_counts_tsv
+  feature_counts_filepath = gene_counts_tsv
 )
-
+# todo: obviate the need to pass feature & sample id colnames every time
 moo <- moo %>%
   clean_raw_counts(
-    gene_names_column = "gene_id",
-    sample_names_column = "sample_id",
+    feature_id_colname = "gene_id",
+    sample_id_colname = "sample_id",
   ) %>%
   filter_counts(
-    gene_names_column = "Ensembl_ID_version",
-    sample_names_column = "sample_id",
+    feature_id_colname = "Gene",
+    sample_id_colname = "sample_id",
     group_column = "condition",
     label_column = "sample_id",
-    columns_to_include = c("Ensembl_ID_version", "KO_S3", "KO_S4", "WT_S1", "WT_S2"),
+    columns_to_include = c("Gene", "KO_S3", "KO_S4", "WT_S1", "WT_S2"),
     minimum_count_value_to_be_considered_nonzero = 1,
     minimum_number_of_samples_with_nonzero_counts_in_total = 1,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
   ) %>%
   normalize_counts(
-    gene_names_column = "Ensembl_ID_version",
-    sample_names_column = "sample_id",
+    feature_id_colname = "Gene",
+    sample_id_colname = "sample_id",
     group_column = "condition",
     label_column = "sample_id",
-    columns_to_include = c("Ensembl_ID_version", "KO_S3", "KO_S4", "WT_S1", "WT_S2")
+    columns_to_include = c("Gene", "KO_S3", "KO_S4", "WT_S1", "WT_S2")
   )
 
 moo@counts$norm$voom %>% head()
