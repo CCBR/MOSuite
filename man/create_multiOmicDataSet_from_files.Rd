@@ -36,7 +36,7 @@ moo <- create_multiOmicDataSet_from_files(
     package = "MOSuite"
   ),
   feature_counts_filepath = system.file("extdata",
-    "RSEM.features.expected_count.all_samples.txt.gz",
+    "RSEM.genes.expected_count.all_samples.txt.gz",
     package = "MOSuite"
   )
 )
