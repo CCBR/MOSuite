@@ -128,8 +128,6 @@ clean_raw_counts <- function(moo,
     split_gene_name = split_gene_name
   )
 
-  print(read_plot)
-
   moo@counts[["clean"]] <- counts_matrix
   return(moo)
 }
