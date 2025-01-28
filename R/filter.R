@@ -3,7 +3,7 @@
 #' This is often the first step in the QC portion of an analysis to filter out
 #' features that have very low raw counts across most or all of your samples.
 #'
-#' This function takes a multiOmicDataSet containing raw counts and a sample
+#' This function takes a multiOmicDataSet containing clean raw counts and a sample
 #' metadata table, and returns the multiOmicDataSet object with filtered counts.
 #' It also produces an image consisting of three QC plots.
 #'
@@ -21,12 +21,11 @@
 #'
 #' @param moo multiOmicDataSet object (see `create_multiOmicDataSet_from_dataframes()`)
 #' @param count_type the type of counts to use -- must be a name in the counts slot (`moo@counts`)
-#' @param feature_id_colname The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.
-#' @param sample_id_colname The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.
+#' @param feature_id_colname The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be used.)
+#' @param sample_id_colname The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter. (Default: `NULL` - first column in the sample metadata will be used.)
 #' @param group_column The column from your input Sample Metadata table containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.). Only columns of Text type from your input Sample Metadata will be available to select for this parameter.
 #' @param label_column The column from your input Sample Metadata table containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample.
-#' @param columns_to_include Which Columns would you like to include? Usually, you will choose to a feature ID column (e.g. gene or protein ID) and all sample columns. Columns excluded here will be removed in this step and from further analysis downstream of this step.
-#' @param outlier_samples_to_remove A list of sample names to remove from the analysis.
+#' @param samples_to_include Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: `NULL` - all sample IDs in `moo@sample_meta` will be used.)
 #' @param use_cpm_counts_to_filter If no transformation has been been performed on counts matrix (eg Raw Counts) set to TRUE. If TRUE counts will be transformed to CPM and filtered based on given criteria. If gene counts matrix has been transformed (eg log2, CPM, FPKM or some form of Normalization) set to FALSE. If FALSE no further transformation will be applied and features will be filtered as is. For RNAseq data RAW counts should be transformed to CPM in order to properly filter.
 #' @param minimum_count_value_to_be_considered_nonzero Minimum count value to be considered non-zero for a sample
 #' @param minimum_number_of_samples_with_nonzero_counts_in_total Minimum number of samples (total) with non-zero counts
@@ -73,12 +72,11 @@
 #'
 filter_counts <- function(moo,
                           count_type = "clean",
-                          feature_id_colname = "gene_id",
-                          sample_id_colname = "sample_id",
+                          feature_id_colname = NULL,
+                          sample_id_colname = NULL,
                           group_column = "Group",
                           label_column = "Label",
-                          columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-                          outlier_samples_to_remove = c(),
+                          samples_to_include = NULL,
                           minimum_count_value_to_be_considered_nonzero = 8,
                           minimum_number_of_samples_with_nonzero_counts_in_total = 7,
                           minimum_number_of_samples_with_nonzero_counts_in_a_group = 3,
@@ -111,26 +109,19 @@ filter_counts <- function(moo,
   counts_matrix <- moo@counts[[count_type]] %>% as.data.frame() # currently, this function requires data frames
   sample_metadata <- moo@sample_meta %>% as.data.frame()
 
-  # purpose of this code block for samples_to_include:
-  # ensure samples in metadata match columns in counts table and
-  # also exclude annotation / gene columns
-  # TODO separate slots in S7 for samples, counts, annotations --> create function to validate
-  samples_to_include <- columns_to_include[columns_to_include %in% sample_metadata[, sample_id_colname, drop = T]]
-  anno_col <- columns_to_include[columns_to_include %in% sample_metadata[, sample_id_colname, drop = T] == F]
+  if (is.null(sample_id_colname)) {
+    sample_id_colname <- colnames(sample_metadata)[1]
+  }
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- colnames(counts_matrix)[1]
+  }
+  if (is.null(samples_to_include)) {
+    samples_to_include <- sample_metadata %>% dplyr::pull(sample_id_colname)
+  }
+  df <- counts_matrix %>% dplyr::select(tidyselect::all_of(feature_id_colname), tidyselect::all_of(samples_to_include))
 
-
-  samples_to_include <- samples_to_include[!samples_to_include %in% outlier_samples_to_remove]
-  samples_to_include <- samples_to_include[samples_to_include != feature_id_colname]
-  samples_to_include <- samples_to_include[samples_to_include != "Gene"]
-  samples_to_include <- samples_to_include[samples_to_include != "GeneName"]
-  samples_to_include <- samples_to_include[samples_to_include %in% sample_metadata[[sample_id_colname]]]
-
-  df <- counts_matrix[, c(feature_id_colname, samples_to_include)]
-  gene_names <- NULL
-  gene_names$GeneID <- counts_matrix[, feature_id_colname]
-
-  #### remove low count genes ########
-  df.filt <- remove_low_count_genes(
+  # filter out low count genes
+  df_filt <- remove_low_count_genes(
     counts_matrix = df,
     sample_metadata = sample_metadata,
     feature_id_colname = feature_id_colname,
@@ -150,8 +141,8 @@ filter_counts <- function(moo,
   }
 
   if (isTRUE(make_plots)) {
-    log_counts <- log((as.matrix(df.filt[, samples_to_include] + 0.5)))
-    rownames(log_counts) <- df.filt[, 1]
+    log_counts <- log((as.matrix(df_filt[, samples_to_include] + 0.5)))
+    rownames(log_counts) <- df_filt[, 1]
 
     pcaPlot <- plot_pca(
       log_counts,
@@ -171,9 +162,6 @@ filter_counts <- function(moo,
       label_offset_x_ = label_offset_x_
     )
 
-    ########################
-    ## Start Histogram Plot:
-    ########################
     histPlot <- plot_histogram(
       log_counts,
       sample_metadata,
@@ -190,9 +178,7 @@ filter_counts <- function(moo,
       number_of_histogram_legend_columns = number_of_histogram_legend_columns
     )
 
-    ########################
-    ### Output Figures
-    ########################
+    # Output Figures
     if (plot_correlation_matrix_heatmap == TRUE) {
       if (make_plots_interactive == TRUE) {
         pcaPlot1 <- (pcaPlot) %>% plotly::ggplotly(tooltip = c("sample", "group"))
@@ -205,7 +191,7 @@ filter_counts <- function(moo,
         # print(histPlot2)
       } else {
         corHM <- plot_heatmap(
-          counts_matrix = df.filt[, samples_to_include],
+          counts_matrix = df_filt[, samples_to_include],
           sample_metadata = sample_metadata,
           sample_id_colname = sample_id_colname,
           label_column = label_column,
@@ -238,11 +224,10 @@ filter_counts <- function(moo,
       }
     }
   }
-  df.final <- df %>%
-    dplyr::filter(!!rlang::sym(feature_id_colname) %in% df.filt[, feature_id_colname])
-  df.final[, feature_id_colname] <- gsub("_[0-9]+$", "", df.final[, feature_id_colname])
+  df_final <- df %>%
+    dplyr::filter(!!rlang::sym(feature_id_colname) %in% df_filt[, feature_id_colname])
 
-  moo@counts[["filt"]] <- df.final
+  moo@counts[["filt"]] <- df_final
 
   return(moo)
 }
@@ -271,17 +256,17 @@ remove_low_count_genes <- function(counts_matrix,
 
   df <- df[stats::complete.cases(df), ]
 
-  ## USE CPM Transformation
-  trans.df <- df
+  # USE CPM Transformation
+  trans_df <- df
   if (use_cpm_counts_to_filter == TRUE) {
-    trans.df[, -1] <- edgeR::cpm(as.matrix(df[, -1]))
+    trans_df[, -1] <- edgeR::cpm(as.matrix(df[, -1]))
   }
 
   if (use_group_based_filtering == TRUE) {
-    rownames(trans.df) <- trans.df[, feature_id_colname]
-    trans.df[, feature_id_colname] <- NULL
+    rownames(trans_df) <- trans_df[, feature_id_colname]
+    trans_df[, feature_id_colname] <- NULL
 
-    counts <- trans.df >= minimum_count_value_to_be_considered_nonzero # boolean matrix
+    counts <- trans_df >= minimum_count_value_to_be_considered_nonzero # boolean matrix
 
     tcounts <- as.data.frame(t(counts))
     colnum <- dim(counts)[1] # number of genes
@@ -292,15 +277,15 @@ remove_low_count_genes <- function(counts_matrix,
     tcounts.group <- tcounts.tot %>%
       tidyr::pivot_wider(names_from = "variable", values_from = "sum")
     colSums(tcounts.group[(1:colnum + 1)] >= minimum_number_of_samples_with_nonzero_counts_in_a_group) >= 1 -> tcounts.keep
-    df.filt <- trans.df[tcounts.keep, ]
-    df.filt %>% tibble::rownames_to_column(feature_id_colname) -> df.filt
+    df_filt <- trans_df[tcounts.keep, ]
+    df_filt %>% tibble::rownames_to_column(feature_id_colname) -> df_filt
   } else {
-    trans.df$isexpr1 <- rowSums(as.matrix(trans.df[, -1]) > minimum_count_value_to_be_considered_nonzero) >= minimum_number_of_samples_with_nonzero_counts_in_total
+    trans_df$isexpr1 <- rowSums(as.matrix(trans_df[, -1]) > minimum_count_value_to_be_considered_nonzero) >= minimum_number_of_samples_with_nonzero_counts_in_total
 
-    df.filt <- as.data.frame(trans.df[trans.df$isexpr1, ])
+    df_filt <- as.data.frame(trans_df[trans_df$isexpr1, ])
   }
 
 
-  message(paste0("Number of features after filtering: ", nrow(df.filt)))
-  return(df.filt)
+  message(paste0("Number of features after filtering: ", nrow(df_filt)))
+  return(df_filt)
 }

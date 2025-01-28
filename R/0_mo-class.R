@@ -28,7 +28,30 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
       stop(glue::glue("counts can only contain these names:\n\t{paste(approved_counts, collapse = ', ')}"))
     }
 
-    # TODO all sample IDs must be in both sample_meta and raw counts
+    # all sample IDs in sample_meta must also be in raw counts, & vice versa
+    meta_sample_colnames <- self@sample_meta %>% dplyr::pull(1)
+    feature_sample_colnames <- self@counts$raw %>%
+      dplyr::select(-1) %>%
+      colnames()
+
+    error_msg <- ""
+    not_in_meta <- setdiff(meta_sample_colnames, feature_sample_colnames)
+    if (length(not_in_meta) > 0) {
+      error_msg <- glue::glue("Not all columns after the first column in the raw counts data are sample IDs in the sample metadata:\n\t{glue::glue_collapse(not_in_meta, sep = ', ')}")
+    }
+    not_in_counts <- setdiff(feature_sample_colnames, meta_sample_colnames)
+    if (length(not_in_counts) > 0) {
+      error_msg <- glue::glue("Not all sample IDs in the sample metadata are in the raw count data:\n\t{glue::glue_collapse(not_in_counts, sep = ', ')}")
+    }
+    if (nchar(error_msg) > 0) {
+      stop(error_msg)
+    }
+
+    # sample IDs must be in the same order
+    if (!all(feature_sample_colnames == meta_sample_colnames)) {
+      stop("The sample IDs in the sample metadata do not equal the columns in the raw count data. Sample IDs must be in the same order.")
+    }
+
     # TODO any sample ID in filt or norm_cpm counts must also be in sample_meta
     # TODO counts can only contain 1 feature name column, and all other columns are sample counts
   }
@@ -39,8 +62,8 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
 #' @inheritParams multiOmicDataSet
 #' @param count_dat data frame of feature counts (e.g. expected feature counts from RSEM).
 #' @param count_type type to assign the values of `count_dat` to in the `counts` slot
-#' @param sample_id_colname name of the column in `sample_meta_dat` that contains the sample IDs
-#' @param feature_id_colname name of the column in `count_dat` that contains feature/gene IDs
+#' @param sample_id_colname name of the column in `sample_meta_dat` that contains the sample IDs. (Default: `NULL` - first column in the sample metadata will be used.)
+#' @param feature_id_colname name of the column in `count_dat` that contains feature/gene IDs. (Default: `NULL` - first column in the count data will be used.)
 #'
 #' @return multiOmicDataSet object
 #' @export
@@ -59,27 +82,30 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
 #' head(moo@annotation)
 create_multiOmicDataSet_from_dataframes <- function(sample_meta_dat,
                                                     count_dat,
-                                                    sample_id_colname = "sample_id",
-                                                    feature_id_colname = "gene_id",
+                                                    sample_id_colname = NULL,
+                                                    feature_id_colname = NULL,
                                                     count_type = "raw") {
   # move sample & feature ID columns to first
-  count_dat <- count_dat %>%
-    dplyr::relocate(!!rlang::sym(feature_id_colname))
-  sample_meta_dat <- sample_meta_dat %>%
-    dplyr::relocate(!!rlang::sym(sample_id_colname))
+  if (is.null(sample_id_colname)) {
+    sample_id_colname <- colnames(sample_meta_dat)[1]
+  } else {
+    sample_meta_dat <- sample_meta_dat %>%
+      dplyr::relocate(!!rlang::sym(sample_id_colname))
+  }
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- colnames(count_dat)[1]
+  } else {
+    count_dat <- count_dat %>%
+      dplyr::relocate(!!rlang::sym(feature_id_colname))
+  }
 
-  # make sure sample IDs are in the counts data
   meta_sample_colnames <- sample_meta_dat %>% dplyr::pull(sample_id_colname)
   if (!all(meta_sample_colnames %in% colnames(count_dat))) {
-    stop("Not all sample IDs in the sample metadata are in the count data.")
+    stop("Not all sample IDs in the sample metadata are in the count data")
   }
   feature_sample_colnames <- count_dat %>%
     dplyr::select(tidyselect::all_of(meta_sample_colnames)) %>%
     colnames()
-  # sample IDs must be in the same order
-  if (!all(feature_sample_colnames == meta_sample_colnames)) {
-    stop("Not all columns in the count data equal the rows in the first column of the sample metadata. Sample IDs must be in the same order.")
-  }
 
   # create anno_dat out of excess columns in count dat
   anno_dat <- count_dat %>%
@@ -117,8 +143,8 @@ create_multiOmicDataSet_from_dataframes <- function(sample_meta_dat,
 #' moo@sample_meta
 create_multiOmicDataSet_from_files <- function(sample_meta_filepath, feature_counts_filepath,
                                                count_type = "raw",
-                                               sample_id_colname = "sample_id",
-                                               feature_id_colname = "gene_id") {
+                                               sample_id_colname = NULL,
+                                               feature_id_colname = NULL) {
   count_dat <- readr::read_tsv(feature_counts_filepath)
   sample_meta_dat <- readr::read_tsv(sample_meta_filepath)
   return(create_multiOmicDataSet_from_dataframes(

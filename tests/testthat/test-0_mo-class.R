@@ -5,7 +5,9 @@ test_that("constructing MOO works for RENEE data", {
       "extdata",
       "RSEM.genes.expected_count.all_samples.txt.gz",
       package = "MOSuite"
-    )
+    ),
+    sample_id_colname = "sample_id",
+    feature_id_colname = "gene_id"
   )
   expect_equal(moo@sample_meta, structure(
     list(
