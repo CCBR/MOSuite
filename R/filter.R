@@ -60,12 +60,10 @@
 #' moo <- create_multiOmicDataSet_from_dataframes(
 #'   as.data.frame(nidap_sample_metadata),
 #'   as.data.frame(nidap_clean_raw_counts),
-#'   sample_id_colname = "Sample"
+#'   sample_id_colname = "Sample",
+#'   feature_id_colname = "Gene"
 #' ) %>%
-#'   calc_cpm(gene_colname = "Gene") %>%
 #'   filter_counts(
-#'     sample_id_colname = "Sample",
-#'     feature_id_colname = "Gene",
 #'     count_type = "raw"
 #'   )
 #' head(moo@counts$filt)

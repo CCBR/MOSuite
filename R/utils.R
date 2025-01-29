@@ -5,9 +5,11 @@
 #' @returns count_dat with gene_id and GeneName joined with `|` as the new gene_id column
 #' @keywords internal
 #' @examples
+#' \dontrun{
 #' gene_counts %>%
 #'   glue_gene_symbols() %>%
 #'   head()
+#' }
 glue_gene_symbols <- function(count_dat) {
   if ("gene_id" %in% colnames(count_dat) & "GeneName" %in% colnames(count_dat)) {
     count_dat <- count_dat %>%

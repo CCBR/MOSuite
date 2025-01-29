@@ -16,8 +16,10 @@ count_dat with gene_id and GeneName joined with \code{|} as the new gene_id colu
 Glue gene_id and GeneName columns into one column
 }
 \examples{
+\dontrun{
 gene_counts \%>\%
   glue_gene_symbols() \%>\%
   head()
+  }
 }
 \keyword{internal}

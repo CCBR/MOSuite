@@ -105,6 +105,7 @@ Normalize counts
 \examples{
 moo <- multiOmicDataSet(
   sample_meta_dat = as.data.frame(nidap_sample_metadata),
+  anno_dat = data.frame(),
   counts_lst = list(
     "raw" = as.data.frame(nidap_raw_counts),
     "clean" = as.data.frame(nidap_clean_raw_counts),
