@@ -27,6 +27,7 @@ Imports:
     edgeR,
     ggplot2,
     ggrepel,
+    glue,
     limma,
     methods,
     plotly,
@@ -41,7 +42,6 @@ Imports:
 Suggests:
     cffr,
     docopt,
-    glue,
     knitr,
     lobstr,
     RColorBrewer,

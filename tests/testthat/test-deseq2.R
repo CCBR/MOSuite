@@ -3,7 +3,7 @@ moo <- create_multiOmicDataSet_from_files(
   sample_meta_filepath = system.file("extdata", "sample_metadata.tsv.gz",
     package = "MOSuite"
   ),
-  gene_counts_filepath = system.file(
+  feature_counts_filepath = system.file(
     "extdata",
     "RSEM.genes.expected_count.all_samples.txt.gz",
     package = "MOSuite"
@@ -33,7 +33,7 @@ test_that("run_deseq2 works", {
   moo@counts$filt <- moo@counts$raw %>%
     dplyr::filter(gene_id %in% (genes_above_threshold))
   moo <- moo %>%
-    run_deseq2(moo, design = ~condition, fitType = "local", gene_colname = "gene_id") %>%
+    run_deseq2(moo, design = ~condition, fitType = "local", feature_id_colname = "gene_id") %>%
     suppressMessages()
   dds <- moo@analyses$deseq2_ds
 
@@ -90,9 +90,9 @@ test_that("run_deseq2 works", {
       ),
       class = "data.frame",
       row.names = c(
-        "ENSG00000185658.13|BRWD1",
-        "ENSG00000233922.2|LINC01694",
-        "ENSG00000157601.14|MX1"
+        "ENSG00000185658.13",
+        "ENSG00000233922.2",
+        "ENSG00000157601.14"
       )
     )
   )

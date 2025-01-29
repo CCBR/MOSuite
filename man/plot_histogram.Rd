@@ -7,7 +7,7 @@
 plot_histogram(
   log_counts,
   sample_metadata,
-  gene_names_column,
+  feature_id_colname,
   group_column,
   label_column,
   color_values,
@@ -28,7 +28,7 @@ plot_histogram(
 
 \item{sample_metadata}{sample metadata as a data frame or tibble.}
 
-\item{gene_names_column}{The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.}
+\item{feature_id_colname}{The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
 \item{group_column}{The column from your input Sample Metadata table containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.). Only columns of Text type from your input Sample Metadata will be available to select for this parameter.}
 
