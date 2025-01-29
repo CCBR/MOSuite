@@ -7,14 +7,14 @@
 plot_heatmap(
   counts_matrix,
   sample_metadata,
-  sample_names_column,
+  sample_id_colname,
   label_column,
   anno_column,
   anno_colors
 )
 }
 \arguments{
-\item{sample_names_column}{The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.}
+\item{sample_id_colname}{The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter. (Default: \code{NULL} - first column in the sample metadata will be used.)}
 
 \item{label_column}{The column from your input Sample Metadata table containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample.}
 

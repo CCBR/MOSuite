@@ -12,7 +12,7 @@
 #'
 plot_histogram <- function(log_counts,
                            sample_metadata,
-                           gene_names_column,
+                           feature_id_colname,
                            group_column,
                            label_column,
                            color_values,
@@ -27,7 +27,7 @@ plot_histogram <- function(log_counts,
                            y_axis_label = "Density",
                            make_plots_interactive = FALSE) {
   Var2 <- colgroup <- value <- NULL
-  df.m <- reshape2::melt(log_counts, id.vars = c(gene_names_column))
+  df.m <- reshape2::melt(log_counts, id.vars = c(feature_id_colname))
   df.m <- dplyr::rename(df.m, sample = Var2)
 
   if (set_min_max_for_x_axis_for_histogram == TRUE) {

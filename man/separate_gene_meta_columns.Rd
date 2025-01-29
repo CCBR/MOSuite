@@ -4,21 +4,12 @@
 \alias{separate_gene_meta_columns}
 \title{Separate gene metadata column}
 \usage{
-separate_gene_meta_columns(
-  raw_counts_matrix,
-  gene_names_column = "GeneName",
-  split_gene_name = TRUE,
-  data_type = "Bulk RNAseq"
-)
+separate_gene_meta_columns(counts_matrix, split_gene_name = TRUE)
 }
 \arguments{
-\item{raw_counts_matrix}{dataframe with raw counts data}
-
-\item{gene_names_column}{The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.}
+\item{counts_matrix}{dataframe with raw counts data}
 
 \item{split_gene_name}{If \code{TRUE}, split the gene name column by any of these special characters: \verb{,|_-:}}
-
-\item{data_type}{Type of data to process. Options: \code{c("Bulk RNAseq", "Proteomics")}}
 }
 \value{
 dataframe with metadata separated

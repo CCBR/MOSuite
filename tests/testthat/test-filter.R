@@ -1,23 +1,15 @@
-equal_dfs <- function(x, y) {
-  all(
-    class(x) == class(y),
-    names(x) == names(y),
-    x == y,
-    all.equal(lapply(x, class), lapply(y, class))
-  )
-}
-
 test_that("filter_counts reproduces NIDAP results", {
   set.seed(10)
   moo <- create_multiOmicDataSet_from_dataframes(
     as.data.frame(nidap_sample_metadata),
     as.data.frame(nidap_clean_raw_counts),
-    sample_id_colname = "Sample"
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene"
   ) %>%
-    calc_cpm(gene_colname = "Gene") %>%
+    calc_cpm(feature_id_colname = "Gene") %>%
     filter_counts(
-      sample_names_column = "Sample",
-      gene_names_column = "Gene",
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
       count_type = "raw"
     )
   rds_counts_filt <- moo@counts$filt %>%
@@ -31,28 +23,25 @@ test_that("filter_counts reproduces NIDAP results", {
 # TODO get filter_counts() to work on tibbles too, not only dataframes
 
 test_that("filter_counts works on RENEE dataset", {
-  moo <- create_multiOmicDataSet_from_files(
-    system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite"),
-    system.file(
-      "extdata",
-      "RSEM.genes.expected_count.all_samples.txt.gz",
-      package = "MOSuite"
-    )
+  moo <- create_multiOmicDataSet_from_dataframes(
+    readr::read_tsv(system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")),
+    gene_counts %>% glue_gene_symbols()
   )
   rds2 <- moo %>% filter_counts(
-    gene_names_column = "gene_id",
-    sample_names_column = "sample_id",
+    feature_id_colname = "gene_id",
+    sample_id_colname = "sample_id",
     group_column = "condition",
     label_column = "sample_id",
-    columns_to_include = c("gene_id", "KO_S3", "KO_S4", "WT_S1", "WT_S2"),
+    samples_to_include = c("KO_S3", "KO_S4", "WT_S1", "WT_S2"),
     minimum_count_value_to_be_considered_nonzero = 1,
     minimum_number_of_samples_with_nonzero_counts_in_total = 1,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
     make_plots = FALSE,
     count_type = "raw"
   )
+  expect_equal(dim(rds2@counts$filt), c(291, 5))
   expect_equal(
-    rds2@counts$filt %>% head(),
+    rds2@counts$filt %>% dplyr::arrange(gene_id) %>% head(),
     structure(
       list(
         gene_id = c(
@@ -73,7 +62,7 @@ test_that("filter_counts works on RENEE dataset", {
     )
   )
   expect_equal(
-    rds2@counts$filt %>% tail(),
+    rds2@counts$filt %>% dplyr::arrange(gene_id) %>% tail(),
     structure(
       list(
         gene_id = c(
@@ -133,7 +122,7 @@ test_that("remove_low_count_genes works", {
     remove_low_count_genes(
       counts_matrix = df,
       sample_metadata = sample_meta,
-      gene_names_column = "Gene",
+      feature_id_colname = "Gene",
       group_column = "Group",
       use_cpm_counts_to_filter = TRUE,
       use_group_based_filtering = FALSE,

@@ -7,9 +7,9 @@
 normalize_counts(
   moo,
   count_type = "filt",
-  gene_names_column = "Gene",
-  columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-  sample_names_column = "Sample",
+  feature_id_colname = NULL,
+  samples_to_include = NULL,
+  sample_id_colname = NULL,
   group_column = "Group",
   label_column = "Label",
   input_in_log_counts = FALSE,
@@ -31,7 +31,8 @@ normalize_counts(
   legend_position_for_histogram = "top",
   number_of_histogram_legend_columns = 6,
   number_of_image_rows = 2,
-  colors_for_plots = c(),
+  colors_for_plots = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   make_plots_interactive = FALSE,
   plot_correlation_matrix_heatmap = TRUE
 )
@@ -41,11 +42,11 @@ normalize_counts(
 
 \item{count_type}{the type of counts to use -- must be a name in the counts slot (\code{moo@counts})}
 
-\item{gene_names_column}{The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.}
+\item{feature_id_colname}{The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
-\item{columns_to_include}{Which Columns would you like to include? Usually, you will choose to a feature ID column (e.g. gene or protein ID) and all sample columns. Columns excluded here will be removed in this step and from further analysis downstream of this step.}
+\item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
 
-\item{sample_names_column}{The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.}
+\item{sample_id_colname}{The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter. (Default: \code{NULL} - first column in the sample metadata will be used.)}
 
 \item{group_column}{The column from your input Sample Metadata table containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.). Only columns of Text type from your input Sample Metadata will be available to select for this parameter.}
 
@@ -104,6 +105,7 @@ Normalize counts
 \examples{
 moo <- multiOmicDataSet(
   sample_meta_dat = as.data.frame(nidap_sample_metadata),
+  anno_dat = data.frame(),
   counts_lst = list(
     "raw" = as.data.frame(nidap_raw_counts),
     "clean" = as.data.frame(nidap_clean_raw_counts),
@@ -111,9 +113,6 @@ moo <- multiOmicDataSet(
   )
 ) \%>\%
   normalize_counts(
-    gene_names_column = "Gene",
-    columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-    sample_names_column = "Sample",
     group_column = "Group",
     label_column = "Label"
   )
