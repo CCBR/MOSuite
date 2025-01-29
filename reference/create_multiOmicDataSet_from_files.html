@@ -46,9 +46,10 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_multiOmicDataSet_from_files</span><span class="op">(</span></span>
 <span>  <span class="va">sample_meta_filepath</span>,</span>
-<span>  <span class="va">gene_counts_filepath</span>,</span>
+<span>  <span class="va">feature_counts_filepath</span>,</span>
 <span>  count_type <span class="op">=</span> <span class="st">"raw"</span>,</span>
-<span>  sample_id_colname <span class="op">=</span> <span class="st">"sample_id"</span></span>
+<span>  sample_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  feature_id_colname <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -60,16 +61,20 @@
 <dd><p>path to tsv file with sample IDs and metadata for differential analysis.</p></dd>
 
 
-<dt id="arg-gene-counts-filepath">gene_counts_filepath<a class="anchor" aria-label="anchor" href="#arg-gene-counts-filepath"></a></dt>
-<dd><p>path to tsv file of expected gene counts from RSEM.</p></dd>
+<dt id="arg-feature-counts-filepath">feature_counts_filepath<a class="anchor" aria-label="anchor" href="#arg-feature-counts-filepath"></a></dt>
+<dd><p>path to tsv file of expected feature counts (e.g. gene counts from RSEM).</p></dd>
 
 
 <dt id="arg-count-type">count_type<a class="anchor" aria-label="anchor" href="#arg-count-type"></a></dt>
-<dd><p>type to assign the values of <code>gene_counts_filepath</code> to in the <code>counts</code> slot</p></dd>
+<dd><p>type to assign the values of <code>count_dat</code> to in the <code>counts</code> slot</p></dd>
 
 
 <dt id="arg-sample-id-colname">sample_id_colname<a class="anchor" aria-label="anchor" href="#arg-sample-id-colname"></a></dt>
-<dd><p>name of the column in <code>sample_meta_filepath</code> that contains the sample IDs</p></dd>
+<dd><p>name of the column in <code>sample_meta_dat</code> that contains the sample IDs. (Default: <code>NULL</code> - first column in the sample metadata will be used.)</p></dd>
+
+
+<dt id="arg-feature-id-colname">feature_id_colname<a class="anchor" aria-label="anchor" href="#arg-feature-id-colname"></a></dt>
+<dd><p>name of the column in <code>count_dat</code> that contains feature/gene IDs. (Default: <code>NULL</code> - first column in the count data will be used.)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -84,7 +89,7 @@
 <span class="r-in"><span>    <span class="st">"sample_metadata.tsv.gz"</span>,</span></span>
 <span class="r-in"><span>    package <span class="op">=</span> <span class="st">"MOSuite"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  gene_counts_filepath <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,</span></span>
+<span class="r-in"><span>  feature_counts_filepath <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"RSEM.genes.expected_count.all_samples.txt.gz"</span>,</span></span>
 <span class="r-in"><span>    package <span class="op">=</span> <span class="st">"MOSuite"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
@@ -106,14 +111,14 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
 <span class="r-in"><span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">raw</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   gene_id                    KO_S3 KO_S4 WT_S1 WT_S2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> ENSG00000121410.11|A1BG        0     0     0     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> ENSG00000268895.5|A1BG-AS1     0     0     0     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> ENSG00000148584.15|A1CF        0     0     0     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> ENSG00000175899.14|A2M         0     0     0     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> ENSG00000245105.3|A2M-AS1      0     0     0     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> ENSG00000166535.20|A2ML1       0     0     0     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   gene_id            KO_S3 KO_S4 WT_S1 WT_S2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> ENSG00000121410.11     0     0     0     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> ENSG00000268895.5      0     0     0     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> ENSG00000148584.15     0     0     0     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> ENSG00000175899.14     0     0     0     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> ENSG00000245105.3      0     0     0     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> ENSG00000166535.20     0     0     0     0</span>
 <span class="r-in"><span><span class="va">moo</span><span class="op">@</span><span class="va">sample_meta</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   sample_id condition</span>

@@ -47,9 +47,9 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">normalize_counts</span><span class="op">(</span></span>
 <span>  <span class="va">moo</span>,</span>
 <span>  count_type <span class="op">=</span> <span class="st">"filt"</span>,</span>
-<span>  gene_names_column <span class="op">=</span> <span class="st">"Gene"</span>,</span>
-<span>  columns_to_include <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Gene"</span>, <span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"A3"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"B3"</span>, <span class="st">"C1"</span>, <span class="st">"C2"</span>, <span class="st">"C3"</span><span class="op">)</span>,</span>
-<span>  sample_names_column <span class="op">=</span> <span class="st">"Sample"</span>,</span>
+<span>  feature_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  samples_to_include <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sample_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  group_column <span class="op">=</span> <span class="st">"Group"</span>,</span>
 <span>  label_column <span class="op">=</span> <span class="st">"Label"</span>,</span>
 <span>  input_in_log_counts <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -71,7 +71,8 @@
 <span>  legend_position_for_histogram <span class="op">=</span> <span class="st">"top"</span>,</span>
 <span>  number_of_histogram_legend_columns <span class="op">=</span> <span class="fl">6</span>,</span>
 <span>  number_of_image_rows <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  colors_for_plots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  colors_for_plots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5954d6"</span>, <span class="st">"#e1562c"</span>, <span class="st">"#b80058"</span>, <span class="st">"#00c6f8"</span>, <span class="st">"#d163e6"</span>, <span class="st">"#00a76c"</span>,</span>
+<span>    <span class="st">"#ff9287"</span>, <span class="st">"#008cf9"</span>, <span class="st">"#006e00"</span>, <span class="st">"#796880"</span>, <span class="st">"#FFA500"</span>, <span class="st">"#878500"</span><span class="op">)</span>,</span>
 <span>  make_plots_interactive <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  plot_correlation_matrix_heatmap <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -89,16 +90,16 @@
 <dd><p>the type of counts to use – must be a name in the counts slot (<code>moo@counts</code>)</p></dd>
 
 
-<dt id="arg-gene-names-column">gene_names_column<a class="anchor" aria-label="anchor" href="#arg-gene-names-column"></a></dt>
-<dd><p>The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.</p></dd>
+<dt id="arg-feature-id-colname">feature_id_colname<a class="anchor" aria-label="anchor" href="#arg-feature-id-colname"></a></dt>
+<dd><p>The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: <code>NULL</code> - first column in the counts matrix will be used.)</p></dd>
 
 
-<dt id="arg-columns-to-include">columns_to_include<a class="anchor" aria-label="anchor" href="#arg-columns-to-include"></a></dt>
-<dd><p>Which Columns would you like to include? Usually, you will choose to a feature ID column (e.g. gene or protein ID) and all sample columns. Columns excluded here will be removed in this step and from further analysis downstream of this step.</p></dd>
+<dt id="arg-samples-to-include">samples_to_include<a class="anchor" aria-label="anchor" href="#arg-samples-to-include"></a></dt>
+<dd><p>Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: <code>NULL</code> - all sample IDs in <code>moo@sample_meta</code> will be used.)</p></dd>
 
 
-<dt id="arg-sample-names-column">sample_names_column<a class="anchor" aria-label="anchor" href="#arg-sample-names-column"></a></dt>
-<dd><p>The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.</p></dd>
+<dt id="arg-sample-id-colname">sample_id_colname<a class="anchor" aria-label="anchor" href="#arg-sample-id-colname"></a></dt>
+<dd><p>The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter. (Default: <code>NULL</code> - first column in the sample metadata will be used.)</p></dd>
 
 
 <dt id="arg-group-column">group_column<a class="anchor" aria-label="anchor" href="#arg-group-column"></a></dt>
@@ -206,6 +207,7 @@
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="fu"><a href="multiOmicDataSet.html">multiOmicDataSet</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  sample_meta_dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_sample_metadata</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  anno_dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  counts_lst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="st">"raw"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_raw_counts</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"clean"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_clean_raw_counts</span><span class="op">)</span>,</span></span>
@@ -213,17 +215,12 @@
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">normalize_counts</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    gene_names_column <span class="op">=</span> <span class="st">"Gene"</span>,</span></span>
-<span class="r-in"><span>    columns_to_include <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Gene"</span>, <span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"A3"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"B3"</span>, <span class="st">"C1"</span>, <span class="st">"C2"</span>, <span class="st">"C3"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    sample_names_column <span class="op">=</span> <span class="st">"Sample"</span>,</span></span>
 <span class="r-in"><span>    group_column <span class="op">=</span> <span class="st">"Group"</span>,</span></span>
 <span class="r-in"><span>    label_column <span class="op">=</span> <span class="st">"Label"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Total number of features included: 7943</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Sample columns</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> A1A2A3B1B2B3C1C2C3</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Feature Columns</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gene</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">[[</span><span class="st">"norm"</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"voom"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            Gene       A1       A2       A3       B1       B2       B3       C1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 0610007P14Rik 6.532994 6.192871 5.954869 6.375896 6.275880 6.119449 6.419913</span>

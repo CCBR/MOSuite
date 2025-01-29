@@ -50,7 +50,7 @@ TODO document <code>isexpr1</code> column in output</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">remove_low_count_genes</span><span class="op">(</span></span>
 <span>  <span class="va">counts_matrix</span>,</span>
 <span>  <span class="va">sample_metadata</span>,</span>
-<span>  <span class="va">gene_names_column</span>,</span>
+<span>  <span class="va">feature_id_colname</span>,</span>
 <span>  <span class="va">group_column</span>,</span>
 <span>  use_cpm_counts_to_filter <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  use_group_based_filtering <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -64,8 +64,8 @@ TODO document <code>isexpr1</code> column in output</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-gene-names-column">gene_names_column<a class="anchor" aria-label="anchor" href="#arg-gene-names-column"></a></dt>
-<dd><p>The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.</p></dd>
+<dl><dt id="arg-feature-id-colname">feature_id_colname<a class="anchor" aria-label="anchor" href="#arg-feature-id-colname"></a></dt>
+<dd><p>The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: <code>NULL</code> - first column in the counts matrix will be used.)</p></dd>
 
 
 <dt id="arg-group-column">group_column<a class="anchor" aria-label="anchor" href="#arg-group-column"></a></dt>

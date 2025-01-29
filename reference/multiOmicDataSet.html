@@ -44,7 +44,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multiOmicDataSet</span><span class="op">(</span><span class="va">sample_meta_dat</span>, <span class="va">counts_lst</span>, analyses_lst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multiOmicDataSet</span><span class="op">(</span><span class="va">sample_meta_dat</span>, <span class="va">anno_dat</span>, <span class="va">counts_lst</span>, analyses_lst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -53,11 +53,16 @@
 
 <dl><dt id="arg-sample-meta-dat">sample_meta_dat<a class="anchor" aria-label="anchor" href="#arg-sample-meta-dat"></a></dt>
 <dd><p>sample metadata as a data frame or tibble.
-Must contain a <code>sample_id</code> column.</p></dd>
+The first column is assumed to contain the sample IDs which must correspond to column names in the raw counts.</p></dd>
+
+
+<dt id="arg-anno-dat">anno_dat<a class="anchor" aria-label="anchor" href="#arg-anno-dat"></a></dt>
+<dd><p>data frame of feature annotations, such as gene symbols or any other information about the features in <code>counts_lst</code>.</p></dd>
 
 
 <dt id="arg-counts-lst">counts_lst<a class="anchor" aria-label="anchor" href="#arg-counts-lst"></a></dt>
-<dd><p>named list of dataframes containing counts, e.g. expected gene counts from RSEM. Each data frame is expected to contain a <code>gene_id</code> column and a column for each sample ID in the metadata.</p></dd>
+<dd><p>named list of data frames containing counts, e.g. expected feature counts from RSEM.
+Each data frame is expected to contain a <code>feature_id</code> column as the first column, and all remaining columns are sample IDs in the <code>sample_meta</code>.</p></dd>
 
 
 <dt id="arg-analyses-lst">analyses_lst<a class="anchor" aria-label="anchor" href="#arg-analyses-lst"></a></dt>

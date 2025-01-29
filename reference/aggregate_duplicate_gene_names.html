@@ -45,10 +45,8 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">aggregate_duplicate_gene_names</span><span class="op">(</span></span>
-<span>  <span class="va">raw_counts_matrix</span>,</span>
-<span>  <span class="va">gene_names_column</span>,</span>
+<span>  <span class="va">counts_matrix</span>,</span>
 <span>  <span class="va">gene_name_column_to_use_for_collapsing_duplicates</span>,</span>
-<span>  <span class="va">data_type</span>,</span>
 <span>  <span class="va">aggregate_rows_with_duplicate_gene_names</span>,</span>
 <span>  <span class="va">split_gene_name</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -58,31 +56,21 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-raw-counts-matrix">raw_counts_matrix<a class="anchor" aria-label="anchor" href="#arg-raw-counts-matrix"></a></dt>
+<dl><dt id="arg-counts-matrix">counts_matrix<a class="anchor" aria-label="anchor" href="#arg-counts-matrix"></a></dt>
 <dd><p>dataframe with raw counts data</p></dd>
-
-
-<dt id="arg-gene-names-column">gene_names_column<a class="anchor" aria-label="anchor" href="#arg-gene-names-column"></a></dt>
-<dd><p>The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.</p></dd>
 
 
 <dt id="arg-gene-name-column-to-use-for-collapsing-duplicates">gene_name_column_to_use_for_collapsing_duplicates<a class="anchor" aria-label="anchor" href="#arg-gene-name-column-to-use-for-collapsing-duplicates"></a></dt>
 <dd><p>Select the column
 with Feature IDs to use as grouping elements to collapse the counts matrix.
 The log output will list the columns available to identify duplicate row
-IDs in order to aggregate information. If the <code>data_type</code> is "Bulk RNAseq", your column
-selected for Feature ID will be renamed to "Gene". If the <code>data_type</code> is "Proteomics",
-your column selected for Feature ID will be renamed to "Feature ID".
+IDs in order to aggregate information.
 If left blank your "Feature ID" Column will be used to Aggregate Rows. If
 "Feature ID" column can be split into multiple IDs the non Ensembl ID name
 will be used to aggregate duplicate IDs. If "Feature ID" column does not
 contain Ensembl IDs the split Feature IDs will be named 'Feature_id_1' and
 'Feature_id_2'. For this case an error will occur and you will have
 to manually enter the Column ID for this field.</p></dd>
-
-
-<dt id="arg-data-type">data_type<a class="anchor" aria-label="anchor" href="#arg-data-type"></a></dt>
-<dd><p>Type of data to process. Options: <code>c("Bulk RNAseq", "Proteomics")</code></p></dd>
 
 
 <dt id="arg-aggregate-rows-with-duplicate-gene-names">aggregate_rows_with_duplicate_gene_names<a class="anchor" aria-label="anchor" href="#arg-aggregate-rows-with-duplicate-gene-names"></a></dt>

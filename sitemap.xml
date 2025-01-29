@@ -15,7 +15,6 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/as_integer_df.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/calc_cpm.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/calc_cpm_df.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/reference/check_sample_names.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/clean_raw_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/counts_dat_to_matrix.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/create_multiOmicDataSet_from_dataframes.html</loc></url>
@@ -23,6 +22,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/filter_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/gene_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/get_random_colors.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/glue_gene_symbols.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/index.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/meta_tbl_to_dat.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/multiOmicDataSet.html</loc></url>
@@ -42,6 +42,5 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/run_deseq2.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/separate_gene_meta_columns.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/strip_ensembl_version.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/reference/validate_sample_metadata.html</loc></url>
 </urlset>
 

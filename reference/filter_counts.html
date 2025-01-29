@@ -50,12 +50,11 @@ features that have very low raw counts across most or all of your samples.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">filter_counts</span><span class="op">(</span></span>
 <span>  <span class="va">moo</span>,</span>
 <span>  count_type <span class="op">=</span> <span class="st">"clean"</span>,</span>
-<span>  gene_names_column <span class="op">=</span> <span class="st">"gene_id"</span>,</span>
-<span>  sample_names_column <span class="op">=</span> <span class="st">"sample_id"</span>,</span>
+<span>  feature_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sample_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  group_column <span class="op">=</span> <span class="st">"Group"</span>,</span>
 <span>  label_column <span class="op">=</span> <span class="st">"Label"</span>,</span>
-<span>  columns_to_include <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Gene"</span>, <span class="st">"A1"</span>, <span class="st">"A2"</span>, <span class="st">"A3"</span>, <span class="st">"B1"</span>, <span class="st">"B2"</span>, <span class="st">"B3"</span>, <span class="st">"C1"</span>, <span class="st">"C2"</span>, <span class="st">"C3"</span><span class="op">)</span>,</span>
-<span>  outlier_samples_to_remove <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  samples_to_include <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  minimum_count_value_to_be_considered_nonzero <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>  minimum_number_of_samples_with_nonzero_counts_in_total <span class="op">=</span> <span class="fl">7</span>,</span>
 <span>  minimum_number_of_samples_with_nonzero_counts_in_a_group <span class="op">=</span> <span class="fl">3</span>,</span>
@@ -77,8 +76,8 @@ features that have very low raw counts across most or all of your samples.</p>
 <span>  legend_position_for_histogram <span class="op">=</span> <span class="st">"top"</span>,</span>
 <span>  legend_font_size_for_histogram <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  number_of_histogram_legend_columns <span class="op">=</span> <span class="fl">6</span>,</span>
-<span>  colors_for_plots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"indigo"</span>, <span class="st">"carrot"</span>, <span class="st">"lipstick"</span>, <span class="st">"turquoise"</span>, <span class="st">"lavender"</span>, <span class="st">"jade"</span>,</span>
-<span>    <span class="st">"coral"</span>, <span class="st">"azure"</span>, <span class="st">"green"</span>, <span class="st">"rum"</span>, <span class="st">"orange"</span>, <span class="st">"olive"</span><span class="op">)</span>,</span>
+<span>  colors_for_plots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5954d6"</span>, <span class="st">"#e1562c"</span>, <span class="st">"#b80058"</span>, <span class="st">"#00c6f8"</span>, <span class="st">"#d163e6"</span>, <span class="st">"#00a76c"</span>,</span>
+<span>    <span class="st">"#ff9287"</span>, <span class="st">"#008cf9"</span>, <span class="st">"#006e00"</span>, <span class="st">"#796880"</span>, <span class="st">"#FFA500"</span>, <span class="st">"#878500"</span><span class="op">)</span>,</span>
 <span>  number_of_image_rows <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  make_plots_interactive <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  plot_correlation_matrix_heatmap <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -98,12 +97,12 @@ features that have very low raw counts across most or all of your samples.</p>
 <dd><p>the type of counts to use – must be a name in the counts slot (<code>moo@counts</code>)</p></dd>
 
 
-<dt id="arg-gene-names-column">gene_names_column<a class="anchor" aria-label="anchor" href="#arg-gene-names-column"></a></dt>
-<dd><p>The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.</p></dd>
+<dt id="arg-feature-id-colname">feature_id_colname<a class="anchor" aria-label="anchor" href="#arg-feature-id-colname"></a></dt>
+<dd><p>The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: <code>NULL</code> - first column in the counts matrix will be used.)</p></dd>
 
 
-<dt id="arg-sample-names-column">sample_names_column<a class="anchor" aria-label="anchor" href="#arg-sample-names-column"></a></dt>
-<dd><p>The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.</p></dd>
+<dt id="arg-sample-id-colname">sample_id_colname<a class="anchor" aria-label="anchor" href="#arg-sample-id-colname"></a></dt>
+<dd><p>The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter. (Default: <code>NULL</code> - first column in the sample metadata will be used.)</p></dd>
 
 
 <dt id="arg-group-column">group_column<a class="anchor" aria-label="anchor" href="#arg-group-column"></a></dt>
@@ -114,12 +113,8 @@ features that have very low raw counts across most or all of your samples.</p>
 <dd><p>The column from your input Sample Metadata table containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample.</p></dd>
 
 
-<dt id="arg-columns-to-include">columns_to_include<a class="anchor" aria-label="anchor" href="#arg-columns-to-include"></a></dt>
-<dd><p>Which Columns would you like to include? Usually, you will choose to a feature ID column (e.g. gene or protein ID) and all sample columns. Columns excluded here will be removed in this step and from further analysis downstream of this step.</p></dd>
-
-
-<dt id="arg-outlier-samples-to-remove">outlier_samples_to_remove<a class="anchor" aria-label="anchor" href="#arg-outlier-samples-to-remove"></a></dt>
-<dd><p>A list of sample names to remove from the analysis.</p></dd>
+<dt id="arg-samples-to-include">samples_to_include<a class="anchor" aria-label="anchor" href="#arg-samples-to-include"></a></dt>
+<dd><p>Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: <code>NULL</code> - all sample IDs in <code>moo@sample_meta</code> will be used.)</p></dd>
 
 
 <dt id="arg-minimum-count-value-to-be-considered-nonzero">minimum_count_value_to_be_considered_nonzero<a class="anchor" aria-label="anchor" href="#arg-minimum-count-value-to-be-considered-nonzero"></a></dt>
@@ -232,7 +227,7 @@ features that have very low raw counts across most or all of your samples.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This function takes a multiOmicDataSet containing raw counts and a sample
+    <p>This function takes a multiOmicDataSet containing clean raw counts and a sample
 metadata table, and returns the multiOmicDataSet object with filtered counts.
 It also produces an image consisting of three QC plots.</p>
 <p>You can tune the threshold for tuning how low counts for a given gene are
@@ -251,22 +246,21 @@ another based on unsupervised clustering.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_multiOmicDataSet_from_dataframes.html">create_multiOmicDataSet_from_dataframes</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_sample_metadata</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_clean_raw_counts</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  sample_id_colname <span class="op">=</span> <span class="st">"Sample"</span></span></span>
+<span class="r-in"><span>    sample_id_colname <span class="op">=</span> <span class="st">"Sample"</span>,</span></span>
+<span class="r-in"><span>    feature_id_colname <span class="op">=</span> <span class="st">"Gene"</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="calc_cpm.html">calc_cpm</a></span><span class="op">(</span>gene_colname <span class="op">=</span> <span class="st">"Gene"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">filter_counts</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    sample_names_column <span class="op">=</span> <span class="st">"Sample"</span>,</span></span>
-<span class="r-in"><span>    gene_names_column <span class="op">=</span> <span class="st">"Gene"</span>,</span></span>
 <span class="r-in"><span>    count_type <span class="op">=</span> <span class="st">"raw"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of features after filtering: 7943</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">filt</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            Gene   A1  A2   A3   B1   B2  B3   C1  C2   C3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0610007P14Rik 1049 950  934 1068 1140 947 1393 907 1427</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0610009B22Rik  283 590  615  241  383 608  299 186  696</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0610010F05Rik  352 678 1377  958  879 616  332   0  186</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0610011F06Rik  430 565  553  462  558 688  710 826  706</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0610012G03Rik  480 589  683  324  596 673  909 933  419</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0610037L13Rik  467 570  593  558  330 423  356 198  568</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      Gene   A1   A2   A3   B1   B2   B3   C1   C2   C3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  Mrpl15 1245 1341 1476  965 1235 1784 1058 1732 1531</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  Lypla1 1483 1410 1370 1146 1422 2624  991 1101 2352</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   Tcea1 1381 2044 2051 2325 2386 1893 2391  916 2261</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Atp6v1h 1033 1959 1890 2075 2702 2150 2436 1321 1018</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  Rb1cc1  666 1397 1576  681 2040 1988  774 1921 2660</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  Pcmtd1  798  966  407  487  455  950 1710 1995 2502</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

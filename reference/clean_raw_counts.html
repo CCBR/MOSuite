@@ -47,10 +47,9 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">clean_raw_counts</span><span class="op">(</span></span>
 <span>  <span class="va">moo</span>,</span>
 <span>  count_type <span class="op">=</span> <span class="st">"raw"</span>,</span>
-<span>  sample_names_column <span class="op">=</span> <span class="st">"Sample"</span>,</span>
-<span>  gene_names_column <span class="op">=</span> <span class="st">"GeneName"</span>,</span>
+<span>  sample_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  feature_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  samples_to_rename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span>,</span>
-<span>  data_type <span class="op">=</span> <span class="st">"Bulk RNAseq"</span>,</span>
 <span>  cleanup_column_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  split_gene_name <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  aggregate_rows_with_duplicate_gene_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -70,20 +69,16 @@
 <dd><p>the type of counts to use – must be a name in the counts slot (<code>moo@counts</code>)</p></dd>
 
 
-<dt id="arg-sample-names-column">sample_names_column<a class="anchor" aria-label="anchor" href="#arg-sample-names-column"></a></dt>
-<dd><p>The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.</p></dd>
+<dt id="arg-sample-id-colname">sample_id_colname<a class="anchor" aria-label="anchor" href="#arg-sample-id-colname"></a></dt>
+<dd><p>The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter. (Default: <code>NULL</code> - first column in the sample metadata will be used.)</p></dd>
 
 
-<dt id="arg-gene-names-column">gene_names_column<a class="anchor" aria-label="anchor" href="#arg-gene-names-column"></a></dt>
-<dd><p>The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.</p></dd>
+<dt id="arg-feature-id-colname">feature_id_colname<a class="anchor" aria-label="anchor" href="#arg-feature-id-colname"></a></dt>
+<dd><p>The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: <code>NULL</code> - first column in the counts matrix will be used.)</p></dd>
 
 
 <dt id="arg-samples-to-rename">samples_to_rename<a class="anchor" aria-label="anchor" href="#arg-samples-to-rename"></a></dt>
 <dd><p>If you do not have a Plot Labels Column in your sample metadata table, you can use this parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to which new name: old_name: new_name</p></dd>
-
-
-<dt id="arg-data-type">data_type<a class="anchor" aria-label="anchor" href="#arg-data-type"></a></dt>
-<dd><p>Type of data to process. Options: <code>c("Bulk RNAseq", "Proteomics")</code></p></dd>
 
 
 <dt id="arg-cleanup-column-names">cleanup_column_names<a class="anchor" aria-label="anchor" href="#arg-cleanup-column-names"></a></dt>
@@ -116,9 +111,7 @@ comma-separated values in an aggregated row.</p></dd>
 <dd><p>Select the column
 with Feature IDs to use as grouping elements to collapse the counts matrix.
 The log output will list the columns available to identify duplicate row
-IDs in order to aggregate information. If the <code>data_type</code> is "Bulk RNAseq", your column
-selected for Feature ID will be renamed to "Gene". If the <code>data_type</code> is "Proteomics",
-your column selected for Feature ID will be renamed to "Feature ID".
+IDs in order to aggregate information.
 If left blank your "Feature ID" Column will be used to Aggregate Rows. If
 "Feature ID" column can be split into multiple IDs the non Ensembl ID name
 will be used to aggregate duplicate IDs. If "Feature ID" column does not
@@ -139,7 +132,7 @@ to manually enter the Column ID for this field.</p></dd>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_raw_counts</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  sample_id_colname <span class="op">=</span> <span class="st">"Sample"</span>,</span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">clean_raw_counts</span><span class="op">(</span>sample_names_column <span class="op">=</span> <span class="st">"Sample"</span>, gene_names_column <span class="op">=</span> <span class="st">"GeneName"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">clean_raw_counts</span><span class="op">(</span>sample_id_colname <span class="op">=</span> <span class="st">"Sample"</span>, feature_id_colname <span class="op">=</span> <span class="st">"GeneName"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  A1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  A2</span>
@@ -150,22 +143,19 @@ to manually enter the Column ID for this field.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  C1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  C2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  C3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] ""</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Not able to identify multiple id's in GeneName"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] ""</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Columns that can be used to aggregate gene information"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Gene"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "GeneName"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] ""</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Aggregating the counts for the same ID in different chromosome locations."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Column used to Aggregate duplicate IDs: "</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Gene"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "GeneName"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Number of rows before Collapse: "</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 43280</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "no duplicated IDs in Gene"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Bulk RNAseq"</span>
-<span class="r-plt img"><img src="clean_raw_counts-1.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "no duplicated IDs in GeneName"</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">clean</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            Gene A1 A2 A3 B1 B2 B3 C1 C2 C3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        GeneName A1 A2 A3 B1 B2 B3 C1 C2 C3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 RP23-271O17.1  0  0  0  0  0  0  0  0  0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       Gm26206  0  0  0  0  0  0  0  0  0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3          Xkr4  0  0  0  0  0  0  0  0  0</span>
