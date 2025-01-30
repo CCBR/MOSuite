@@ -56,7 +56,7 @@ calc_cpm_df <- function(dat, feature_id_colname = "gene_id", ...) {
 #' Convert a data frame of gene counts to a matrix
 #'
 #' @inheritParams create_multiOmicDataSet_from_dataframes
-#' @param counts_tbl expected gene counts from RSEM as a data frame or tibble.
+#' @param counts_tbl expected feature counts as a dataframe or tibble, with all columns except `feature_id_colname`
 #'
 #' @return matrix of gene counts with rows as gene IDs
 #' @keywords internal
@@ -65,16 +65,17 @@ calc_cpm_df <- function(dat, feature_id_colname = "gene_id", ...) {
 #' \dontrun{
 #' counts_dat_to_matrix(head(gene_counts))
 #' }
-counts_dat_to_matrix <- function(counts_tbl, feature_id_colname = "gene_id") {
-  feature_id_colnames <- c("gene_id", "GeneName", "gene_name", "Gene", feature_id_colname) %>%
-    unique()
+counts_dat_to_matrix <- function(counts_tbl, feature_id_colname = NULL) {
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- colnames(counts_matrix)[1]
+  }
   counts_dat <- counts_tbl %>%
     as.data.frame()
   row.names(counts_dat) <- counts_dat %>%
-    dplyr::pull(tidyselect::all_of(feature_id_colname))
+    dplyr::pull(feature_id_colname)
   # convert counts tibble to matrix
   counts_mat <- counts_dat %>%
-    dplyr::select(-tidyselect::any_of(feature_id_colnames)) %>%
+    dplyr::select(-tidyselect::any_of(feature_id_colname)) %>%
     as.matrix()
   return(counts_mat)
 }

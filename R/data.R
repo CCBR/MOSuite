@@ -25,3 +25,7 @@
 #' Normalized counts for the NIDAP test dataset.
 #' The result of running `normalize_counts()` on `nidap_filtered_counts`.
 "nidap_norm_counts"
+
+#' Batch-corrected counts for the NIDAP test dataset.
+#' The result of running `batch_correct_counts()` on `nidap_norm_counts`.
+"nidap_batch_corrected_counts"
