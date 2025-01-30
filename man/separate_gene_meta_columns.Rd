@@ -4,10 +4,10 @@
 \alias{separate_gene_meta_columns}
 \title{Separate gene metadata column}
 \usage{
-separate_gene_meta_columns(counts_matrix, split_gene_name = TRUE)
+separate_gene_meta_columns(counts_dat, split_gene_name = TRUE)
 }
 \arguments{
-\item{counts_matrix}{dataframe with raw counts data}
+\item{counts_dat}{dataframe with raw counts data}
 
 \item{split_gene_name}{If \code{TRUE}, split the gene name column by any of these special characters: \verb{,|_-:}}
 }

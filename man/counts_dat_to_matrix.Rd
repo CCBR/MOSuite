@@ -4,10 +4,10 @@
 \alias{counts_dat_to_matrix}
 \title{Convert a data frame of gene counts to a matrix}
 \usage{
-counts_dat_to_matrix(counts_tbl, feature_id_colname = "gene_id")
+counts_dat_to_matrix(counts_tbl, feature_id_colname = NULL)
 }
 \arguments{
-\item{counts_tbl}{expected gene counts from RSEM as a data frame or tibble.}
+\item{counts_tbl}{expected feature counts as a dataframe or tibble, with all columns except \code{feature_id_colname}}
 
 \item{feature_id_colname}{name of the column in \code{count_dat} that contains feature/gene IDs. (Default: \code{NULL} - first column in the count data will be used.)}
 }
