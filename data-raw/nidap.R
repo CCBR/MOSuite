@@ -50,7 +50,7 @@ moo <- multiOmicDataSet(
     sub_count_type = "voom",
     covariates_colname = "Group",
     batch_colname = "Batch",
-    label_column = "Label"
+    label_colname = "Label"
   )
 nidap_batch_corrected_counts_2 <- moo@counts[["batch"]]
 usethis::use_data(nidap_batch_corrected_counts_2, overwrite = TRUE)

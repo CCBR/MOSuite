@@ -67,7 +67,7 @@ calc_cpm_df <- function(dat, feature_id_colname = "gene_id", ...) {
 #' }
 counts_dat_to_matrix <- function(counts_tbl, feature_id_colname = NULL) {
   if (is.null(feature_id_colname)) {
-    feature_id_colname <- colnames(counts_matrix)[1]
+    feature_id_colname <- colnames(counts_tbl)[1]
   }
   counts_dat <- counts_tbl %>%
     as.data.frame()

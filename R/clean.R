@@ -51,20 +51,20 @@ clean_raw_counts <- function(moo,
                              split_gene_name = TRUE,
                              aggregate_rows_with_duplicate_gene_names = TRUE,
                              gene_name_column_to_use_for_collapsing_duplicates = "") {
-  counts_matrix <- moo@counts[[count_type]] %>% as.data.frame()
+  counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
 
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
   }
   if (is.null(feature_id_colname)) {
-    feature_id_colname <- colnames(counts_matrix)[1]
+    feature_id_colname <- colnames(counts_dat)[1]
   }
   # Sample Read Counts Plot
-  read_plot <- plot_read_depth(counts_matrix)
+  read_plot <- plot_read_depth(counts_dat)
 
   # Manually rename samples
-  counts_matrix <- rename_samples(counts_matrix, samples_to_rename)
+  counts_dat <- rename_samples(counts_dat, samples_to_rename)
 
   ### PH: START Clean up Sample Name columns
   ##################################
@@ -74,61 +74,61 @@ clean_raw_counts <- function(moo,
   ## done after Rename step so that names do not automatically change before using names in Metadata.
 
   if (cleanup_column_names) {
-    cl_og <- colnames(counts_matrix)
+    cl_og <- colnames(counts_dat)
     ## convert special charchers to _
-    cl2 <- gsub("-| |\\:", "_", colnames(counts_matrix))
-    if (length(cl2[(cl2) != colnames(counts_matrix)]) > 0) {
+    cl2 <- gsub("-| |\\:", "_", colnames(counts_dat))
+    if (length(cl2[(cl2) != colnames(counts_dat)]) > 0) {
       print("Columns had special characters relpaced with _ ")
-      # (colnames(counts_matrix)[(colnames(counts_matrix))!=cl2])
-      # print(cl2[(cl2)!=colnames(counts_matrix)])
-      colnames(counts_matrix) <- cl2
+      # (colnames(counts_dat)[(colnames(counts_dat))!=cl2])
+      # print(cl2[(cl2)!=colnames(counts_dat)])
+      colnames(counts_dat) <- cl2
     }
 
     ## if names begin with number add X
-    cl2 <- sub("^(\\d)", "X\\1", colnames(counts_matrix))
-    if (length(cl2[(cl2) != colnames(counts_matrix)]) > 0) {
+    cl2 <- sub("^(\\d)", "X\\1", colnames(counts_dat))
+    if (length(cl2[(cl2) != colnames(counts_dat)]) > 0) {
       print("Columns started with numbers and an X was added to colname :")
-      # (colnames(counts_matrix)[(colnames(counts_matrix))!=cl2])
-      # print(cl2[(cl2)!=colnames(counts_matrix)])
-      colnames(counts_matrix) <- cl2
+      # (colnames(counts_dat)[(colnames(counts_dat))!=cl2])
+      # print(cl2[(cl2)!=colnames(counts_dat)])
+      colnames(counts_dat) <- cl2
     }
 
-    print(colnames(counts_matrix)[!colnames(counts_matrix) %in% feature_id_colname] %>% as.data.frame(),
+    print(colnames(counts_dat)[!colnames(counts_dat) %in% feature_id_colname] %>% as.data.frame(),
       row.names = F
     )
     # print("Final Colnames:")
   } else {
     ## invalid name format
-    if (any(make.names(colnames(counts_matrix)) != colnames(counts_matrix))) {
+    if (any(make.names(colnames(counts_dat)) != colnames(counts_dat))) {
       print("Error: The following counts matrix column names are not valid:\n")
-      print(colnames(counts_matrix)[make.names(colnames(counts_matrix)) != colnames(counts_matrix)])
+      print(colnames(counts_dat)[make.names(colnames(counts_dat)) != colnames(counts_dat)])
       print(
         "Likely causes are columns starting with numbers or other special characters eg spaces.\n"
       )
       # stop("Bad column names.")
     }
     ## Names Contain dashes
-    if (sum(grepl("-", colnames(counts_matrix))) != 0) {
+    if (sum(grepl("-", colnames(counts_dat))) != 0) {
       print("The sample names cannot contain dashes.")
-      print(colnames(counts_matrix)[grepl("-", colnames(counts_matrix))])
+      print(colnames(counts_dat)[grepl("-", colnames(counts_dat))])
       # stop("No dashes allowed in column names")
     }
   }
   ### PH: END Clean up Sample Name columns
 
   # Split Ensemble + Gene name
-  counts_matrix <- separate_gene_meta_columns(counts_matrix,
+  counts_dat <- separate_gene_meta_columns(counts_dat,
     split_gene_name = split_gene_name
   )
 
   # Aggregate duplicate gene names
-  counts_matrix <- aggregate_duplicate_gene_names(counts_matrix,
+  counts_dat <- aggregate_duplicate_gene_names(counts_dat,
     gene_name_column_to_use_for_collapsing_duplicates = gene_name_column_to_use_for_collapsing_duplicates,
     aggregate_rows_with_duplicate_gene_names = aggregate_rows_with_duplicate_gene_names,
     split_gene_name = split_gene_name
   )
 
-  moo@counts[["clean"]] <- counts_matrix
+  moo@counts[["clean"]] <- counts_dat
   return(moo)
 }
 
@@ -146,15 +146,15 @@ strip_ensembl_version <- function(x) {
 
 #' Create read depth plot
 #'
-#' @param counts_matrix dataframe with raw counts data
+#' @param counts_dat dataframe with raw counts data
 #'
 #' @returns ggplot object
 #' @export
 #'
-plot_read_depth <- function(counts_matrix) {
+plot_read_depth <- function(counts_dat) {
   sample_names <- read_sums <- NULL
 
-  sum_df <- counts_matrix %>%
+  sum_df <- counts_dat %>%
     dplyr::summarize(dplyr::across(tidyselect::where(is.numeric), sum)) %>%
     tidyr::pivot_longer(dplyr::everything(),
       names_to = "sample_names",
@@ -181,11 +181,11 @@ plot_read_depth <- function(counts_matrix) {
 
 #' Separate gene metadata column
 #'
-#' @param counts_matrix dataframe with raw counts data
+#' @param counts_dat dataframe with raw counts data
 #' @inheritParams clean_raw_counts
 #'
 #' @returns dataframe with metadata separated
-separate_gene_meta_columns <- function(counts_matrix, split_gene_name = TRUE) {
+separate_gene_meta_columns <- function(counts_dat, split_gene_name = TRUE) {
   ## Identify and separate Gene Name Columns into multiple Gene Metadata columns
   ##################################
   ## Split Ensemble + Gene name
@@ -198,11 +198,11 @@ separate_gene_meta_columns <- function(counts_matrix, split_gene_name = TRUE) {
 
   ## if split_Gene_name ==F then will rename feature_id_colname column to either Gene(Bulk RNAseq) or FeatureID(Proteomics)
 
-  feature_id_colname <- colnames(counts_matrix)[1]
+  feature_id_colname <- colnames(counts_dat)[1]
   out_colname <- feature_id_colname
 
   if (split_gene_name == T) {
-    Ensembl_ID <- stringr::str_split_fixed(counts_matrix[, feature_id_colname], "_|-|:|\\|", n = 2) %>%
+    Ensembl_ID <- stringr::str_split_fixed(counts_dat[, feature_id_colname], "_|-|:|\\|", n = 2) %>%
       data.frame()
     EnsCol <- apply(Ensembl_ID, c(1, 2), function(x) {
       grepl("^ENS[A-Z]+[0-9]+", x)
@@ -211,7 +211,7 @@ separate_gene_meta_columns <- function(counts_matrix, split_gene_name = TRUE) {
     if ("" %in% Ensembl_ID[, 1] | "" %in% Ensembl_ID[, 2]) {
       print(paste0("Not able to identify multiple id's in ", feature_id_colname))
       # colnames(df)[colnames(df)%in%clm]=gene_col
-      colnames(counts_matrix)[colnames(counts_matrix) %in% feature_id_colname] <- out_colname
+      colnames(counts_dat)[colnames(counts_dat) %in% feature_id_colname] <- out_colname
     } else {
       ## at least one column must have all ensemble ids found in EnsCol
       if (nrow(EnsCol[EnsCol[, 1] == T, ]) == nrow(Ensembl_ID) |
@@ -229,12 +229,12 @@ separate_gene_meta_columns <- function(counts_matrix, split_gene_name = TRUE) {
         colnames(Ensembl_ID) <- c("Feature_id_1", "Feature_id_2")
         print("Could not determine ID formats from split 'Feature ID' Column")
       }
-      counts_matrix <- cbind(Ensembl_ID, counts_matrix[, !colnames(counts_matrix) %in% feature_id_colname])
+      counts_dat <- cbind(Ensembl_ID, counts_dat[, !colnames(counts_dat) %in% feature_id_colname])
     }
   } else {
-    colnames(counts_matrix)[colnames(counts_matrix) %in% feature_id_colname] <- out_colname
+    colnames(counts_dat)[colnames(counts_dat) %in% feature_id_colname] <- out_colname
   }
-  return(counts_matrix)
+  return(counts_dat)
 }
 
 #' Aggregate duplicate gene names
@@ -244,7 +244,7 @@ separate_gene_meta_columns <- function(counts_matrix, split_gene_name = TRUE) {
 #'
 #' @returns data frame with columns separated if possible
 #'
-aggregate_duplicate_gene_names <- function(counts_matrix,
+aggregate_duplicate_gene_names <- function(counts_dat,
                                            gene_name_column_to_use_for_collapsing_duplicates,
                                            aggregate_rows_with_duplicate_gene_names,
                                            split_gene_name) {
@@ -252,23 +252,23 @@ aggregate_duplicate_gene_names <- function(counts_matrix,
   ## If duplicate gene, aggregate information to single row
   ##################################
 
-  feature_id_colname <- colnames(counts_matrix)[1]
+  feature_id_colname <- colnames(counts_dat)[1]
 
   ## If user uses "Feature ID" column then switch to empty for appropriate behavior based on other parameters
   if (gene_name_column_to_use_for_collapsing_duplicates == feature_id_colname) {
     gene_name_column_to_use_for_collapsing_duplicates <- ""
   }
   if (gene_name_column_to_use_for_collapsing_duplicates == "" &
-    ("Feature_id_1" %in% colnames(counts_matrix)) == F) {
+    ("Feature_id_1" %in% colnames(counts_dat)) == F) {
     gene_name_column_to_use_for_collapsing_duplicates <- feature_id_colname
   }
 
   ## Error Check if Column is Numeric
-  nums <- unlist(lapply(counts_matrix, is.numeric))
+  nums <- unlist(lapply(counts_dat, is.numeric))
   nums <- names(nums[nums])
   print("")
   print("Columns that can be used to aggregate gene information")
-  print(counts_matrix[, !names(counts_matrix) %in% nums, drop = F] %>% colnames())
+  print(counts_dat[, !names(counts_dat) %in% nums, drop = F] %>% colnames())
 
   print("")
 
@@ -290,25 +290,25 @@ aggregate_duplicate_gene_names <- function(counts_matrix,
       ## Raw If Feature_id_1 is generated it means that "Split Ensemble + Gene name" could not recognize Gene name format (EnsembleID or GeneName)
       ## and so default is to identify duplicicates in Feature_id_1 column
     } else if (split_gene_name == T &
-      grepl("Feature_id_1", colnames(counts_matrix)) == F) {
+      grepl("Feature_id_1", colnames(counts_dat)) == F) {
       print(paste0("genes with duplicate IDs in ", feature_id_colname, ":"))
 
-      counts_matrix[duplicated(counts_matrix[, gene_name_column_to_use_for_collapsing_duplicates]), gene_name_column_to_use_for_collapsing_duplicates] %>%
+      counts_dat[duplicated(counts_dat[, gene_name_column_to_use_for_collapsing_duplicates]), gene_name_column_to_use_for_collapsing_duplicates] %>%
         unique() %>%
         as.character() %>%
         write(stdout())
     } else if (split_gene_name == T &
-      grepl("Feature_id_1", colnames(counts_matrix)) == T) {
+      grepl("Feature_id_1", colnames(counts_dat)) == T) {
       print(paste0("genes with duplicate IDs in ", "Feature_id_1", ":"))
 
-      counts_matrix[duplicated(counts_matrix[, "Feature_id_1"]), "Feature_id_1"] %>%
+      counts_dat[duplicated(counts_dat[, "Feature_id_1"]), "Feature_id_1"] %>%
         unique() %>%
         as.character() %>%
         write(stdout())
 
       print(paste0("genes with duplicate IDs in ", "Feature_id_2", ":"))
 
-      counts_matrix[duplicated(counts_matrix[, "Feature_id_2"]), "Feature_id_2"] %>%
+      counts_dat[duplicated(counts_dat[, "Feature_id_2"]), "Feature_id_2"] %>%
         unique() %>%
         as.character() %>%
         write(stdout())
@@ -323,23 +323,23 @@ aggregate_duplicate_gene_names <- function(counts_matrix,
     print("Column used to Aggregate duplicate IDs: ")
     print(gene_name_column_to_use_for_collapsing_duplicates)
     print("Number of rows before Collapse: ")
-    print(nrow(counts_matrix))
+    print(nrow(counts_dat))
 
-    if (sum(duplicated(counts_matrix[, gene_name_column_to_use_for_collapsing_duplicates])) != 0) {
+    if (sum(duplicated(counts_dat[, gene_name_column_to_use_for_collapsing_duplicates])) != 0) {
       print("")
       print("Duplicate IDs: ")
-      print(counts_matrix[duplicated(counts_matrix[, gene_name_column_to_use_for_collapsing_duplicates]), gene_name_column_to_use_for_collapsing_duplicates] %>% as.character() %>% unique())
+      print(counts_dat[duplicated(counts_dat[, gene_name_column_to_use_for_collapsing_duplicates]), gene_name_column_to_use_for_collapsing_duplicates] %>% as.character() %>% unique())
 
-      dfagg <- counts_matrix[, c(
+      dfagg <- counts_dat[, c(
         gene_name_column_to_use_for_collapsing_duplicates,
         nums
       )] %>%
         dplyr::group_by_at(gene_name_column_to_use_for_collapsing_duplicates) %>%
         dplyr::summarise_all(sum)
 
-      if (ncol(counts_matrix[, !names(counts_matrix) %in% nums, drop = FALSE]) > 1) {
+      if (ncol(counts_dat[, !names(counts_dat) %in% nums, drop = FALSE]) > 1) {
         ## collapse non-numeric columns
-        dfagg2 <- counts_matrix[, !names(counts_matrix) %in% nums] %>%
+        dfagg2 <- counts_dat[, !names(counts_dat) %in% nums] %>%
           dplyr::group_by_at(gene_name_column_to_use_for_collapsing_duplicates) %>%
           dplyr::summarise_all(paste, collapse = ",")
 
@@ -360,7 +360,7 @@ aggregate_duplicate_gene_names <- function(counts_matrix,
           gene_name_column_to_use_for_collapsing_duplicates
         )
       )
-      dfout <- counts_matrix
+      dfout <- counts_dat
     }
   } else {
     if (gene_name_column_to_use_for_collapsing_duplicates != "") {
@@ -372,7 +372,7 @@ aggregate_duplicate_gene_names <- function(counts_matrix,
           " Column:"
         )
       )
-      print(counts_matrix[duplicated(counts_matrix[, gene_name_column_to_use_for_collapsing_duplicates]), gene_name_column_to_use_for_collapsing_duplicates] %>% as.character() %>% unique())
+      print(counts_dat[duplicated(counts_dat[, gene_name_column_to_use_for_collapsing_duplicates]), gene_name_column_to_use_for_collapsing_duplicates] %>% as.character() %>% unique())
     }
 
     print("")
@@ -383,5 +383,5 @@ aggregate_duplicate_gene_names <- function(counts_matrix,
     )
   }
 
-  return(counts_matrix)
+  return(counts_dat)
 }

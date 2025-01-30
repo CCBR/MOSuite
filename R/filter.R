@@ -21,10 +21,10 @@
 #'
 #' @param moo multiOmicDataSet object (see `create_multiOmicDataSet_from_dataframes()`)
 #' @param count_type the type of counts to use -- must be a name in the counts slot (`moo@counts`)
-#' @param feature_id_colname The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be used.)
-#' @param sample_id_colname The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter. (Default: `NULL` - first column in the sample metadata will be used.)
-#' @param group_column The column from your input Sample Metadata table containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.). Only columns of Text type from your input Sample Metadata will be available to select for this parameter.
-#' @param label_column The column from your input Sample Metadata table containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample.
+#' @param feature_id_colname The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be used.)
+#' @param sample_id_colname The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: `NULL` - first column in the sample metadata will be used.)
+#' @param group_colname The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).
+#' @param label_colname The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: `NULL` -- `sample_id_colname` will be used.)
 #' @param samples_to_include Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: `NULL` - all sample IDs in `moo@sample_meta` will be used.)
 #' @param use_cpm_counts_to_filter If no transformation has been been performed on counts matrix (eg Raw Counts) set to TRUE. If TRUE counts will be transformed to CPM and filtered based on given criteria. If gene counts matrix has been transformed (eg log2, CPM, FPKM or some form of Normalization) set to FALSE. If FALSE no further transformation will be applied and features will be filtered as is. For RNAseq data RAW counts should be transformed to CPM in order to properly filter.
 #' @param minimum_count_value_to_be_considered_nonzero Minimum count value to be considered non-zero for a sample
@@ -72,8 +72,8 @@ filter_counts <- function(moo,
                           count_type = "clean",
                           feature_id_colname = NULL,
                           sample_id_colname = NULL,
-                          group_column = "Group",
-                          label_column = "Label",
+                          group_colname = "Group",
+                          label_colname = NULL,
                           samples_to_include = NULL,
                           minimum_count_value_to_be_considered_nonzero = 8,
                           minimum_number_of_samples_with_nonzero_counts_in_total = 7,
@@ -107,26 +107,29 @@ filter_counts <- function(moo,
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
   }
-  counts_matrix <- moo@counts[[count_type]] %>% as.data.frame() # currently, this function requires data frames
+  counts_dat <- moo@counts[[count_type]] %>% as.data.frame() # currently, this function requires data frames
   sample_metadata <- moo@sample_meta %>% as.data.frame()
 
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
   }
   if (is.null(feature_id_colname)) {
-    feature_id_colname <- colnames(counts_matrix)[1]
+    feature_id_colname <- colnames(counts_dat)[1]
   }
   if (is.null(samples_to_include)) {
     samples_to_include <- sample_metadata %>% dplyr::pull(sample_id_colname)
   }
-  df <- counts_matrix %>% dplyr::select(tidyselect::all_of(feature_id_colname), tidyselect::all_of(samples_to_include))
+  if (is.null(label_colname)) {
+    label_colname <- sample_id_colname
+  }
+  df <- counts_dat %>% dplyr::select(tidyselect::all_of(feature_id_colname), tidyselect::all_of(samples_to_include))
 
   # filter out low count genes
   df_filt <- remove_low_count_genes(
-    counts_matrix = df,
+    counts_dat = df,
     sample_metadata = sample_metadata,
     feature_id_colname = feature_id_colname,
-    group_column = group_column,
+    group_colname = group_colname,
     use_cpm_counts_to_filter = use_cpm_counts_to_filter,
     use_group_based_filtering = use_group_based_filtering,
     minimum_count_value_to_be_considered_nonzero = minimum_count_value_to_be_considered_nonzero,
@@ -134,9 +137,9 @@ filter_counts <- function(moo,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group
   )
 
-  if (length(unique(sample_metadata[[group_column]])) > length(colors_for_plots)) {
+  if (length(unique(sample_metadata[[group_colname]])) > length(colors_for_plots)) {
     ## Original color-picking code.
-    k <- length(unique(sample_metadata[[group_column]])) - length(colors_for_plots)
+    k <- length(unique(sample_metadata[[group_colname]])) - length(colors_for_plots)
     more_cols <- get_random_colors(k)
     colors_for_plots <- c(colors_for_plots, more_cols)
   }
@@ -150,8 +153,8 @@ filter_counts <- function(moo,
       sample_metadata,
       samples_to_include,
       samples_to_rename,
-      group_column,
-      label_column,
+      group_colname,
+      label_colname,
       color_values = colors_for_plots,
       principal_component_on_x_axis = principal_component_on_x_axis,
       principal_component_on_y_axis = principal_component_on_y_axis,
@@ -167,8 +170,8 @@ filter_counts <- function(moo,
       log_counts,
       sample_metadata,
       feature_id_colname = feature_id_colname,
-      group_column = group_column,
-      label_column = label_column,
+      group_colname = group_colname,
+      label_colname = label_colname,
       color_values = colors_for_plots,
       color_histogram_by_group = color_histogram_by_group,
       set_min_max_for_x_axis_for_histogram = set_min_max_for_x_axis_for_histogram,
@@ -192,11 +195,11 @@ filter_counts <- function(moo,
         # print(histPlot2)
       } else {
         corHM <- plot_heatmap(
-          counts_matrix = df_filt[, samples_to_include],
+          counts_dat = df_filt[, samples_to_include],
           sample_metadata = sample_metadata,
           sample_id_colname = sample_id_colname,
-          label_column = label_column,
-          anno_column = group_column,
+          label_colname = label_colname,
+          anno_column = group_colname,
           anno_colors = colors_for_plots
         )
 
@@ -243,17 +246,17 @@ filter_counts <- function(moo,
 #' @return counts matrix with low-count genes removed
 #' @keywords internal
 #'
-remove_low_count_genes <- function(counts_matrix,
+remove_low_count_genes <- function(counts_dat,
                                    sample_metadata,
                                    feature_id_colname,
-                                   group_column,
+                                   group_colname,
                                    use_cpm_counts_to_filter = TRUE,
                                    use_group_based_filtering = FALSE,
                                    minimum_count_value_to_be_considered_nonzero = 8,
                                    minimum_number_of_samples_with_nonzero_counts_in_total = 7,
                                    minimum_number_of_samples_with_nonzero_counts_in_a_group = 3) {
   value <- NULL
-  df <- counts_matrix
+  df <- counts_dat
 
   df <- df[stats::complete.cases(df), ]
 
@@ -271,10 +274,10 @@ remove_low_count_genes <- function(counts_matrix,
 
     tcounts <- as.data.frame(t(counts))
     colnum <- dim(counts)[1] # number of genes
-    tcounts <- merge(sample_metadata[group_column], tcounts, by = "row.names")
+    tcounts <- merge(sample_metadata[group_colname], tcounts, by = "row.names")
     tcounts$Row.names <- NULL
-    melted <- reshape2::melt(tcounts, id.vars = group_column)
-    tcounts.tot <- dplyr::summarise(dplyr::group_by_at(melted, c(group_column, "variable")), sum = sum(value))
+    melted <- reshape2::melt(tcounts, id.vars = group_colname)
+    tcounts.tot <- dplyr::summarise(dplyr::group_by_at(melted, c(group_colname, "variable")), sum = sum(value))
     tcounts.group <- tcounts.tot %>%
       tidyr::pivot_wider(names_from = "variable", values_from = "sum")
     colSums(tcounts.group[(1:colnum + 1)] >= minimum_number_of_samples_with_nonzero_counts_in_a_group) >= 1 -> tcounts.keep

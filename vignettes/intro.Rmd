@@ -35,18 +35,19 @@ moo <- create_multiOmicDataSet_from_files(
   feature_counts_filepath = gene_counts_tsv
 )
 
+
 moo <- moo %>%
   clean_raw_counts() %>%
   filter_counts(
-    group_column = "condition",
-    label_column = "sample_id",
+    group_colname = "condition",
+    label_colname = "sample_id",
     minimum_count_value_to_be_considered_nonzero = 1,
     minimum_number_of_samples_with_nonzero_counts_in_total = 1,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
   ) %>%
   normalize_counts(
-    group_column = "condition",
-    label_column = "sample_id"
+    group_colname = "condition",
+    label_colname = "sample_id"
   )
 
 moo@counts$norm$voom %>% head()

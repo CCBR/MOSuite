@@ -13,8 +13,8 @@
 plot_histogram <- function(log_counts,
                            sample_metadata,
                            feature_id_colname,
-                           group_column,
-                           label_column,
+                           group_colname,
+                           label_colname,
                            color_values,
                            color_histogram_by_group = FALSE,
                            set_min_max_for_x_axis_for_histogram = FALSE,
@@ -39,7 +39,7 @@ plot_histogram <- function(log_counts,
   }
 
   if (color_histogram_by_group == TRUE) {
-    df.m <- df.m %>% dplyr::mutate(colgroup = sample_metadata[sample, group_column])
+    df.m <- df.m %>% dplyr::mutate(colgroup = sample_metadata[sample, group_colname])
     df.m <- df.m[stats::complete.cases(df.m[, "colgroup"]), ]
     df.m$colgroup <- gsub("\\s", "_", df.m$colgroup)
     df.m$colgroup <- factor(df.m$colgroup, levels = unique(df.m$colgroup))
@@ -52,7 +52,7 @@ plot_histogram <- function(log_counts,
       ggplot2::ggplot(ggplot2::aes(x = value, group = sample)) +
       ggplot2::geom_density(ggplot2::aes(colour = colgroup), linewidth = 1)
   } else {
-    df.m$sample <- sample_metadata[df.m$sample, label_column]
+    df.m$sample <- sample_metadata[df.m$sample, label_colname]
     n <- length(unique(df.m$sample))
     cols <- get_random_colors(n)
 

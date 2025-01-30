@@ -15,6 +15,7 @@
 #' get_random_colors(5)
 #' }
 get_random_colors <- function(num_colors, n = 2e3) {
+  abort_packages_not_installed("colorspace")
   if (num_colors < 1) {
     stop("num_colors must be at least 1")
   }

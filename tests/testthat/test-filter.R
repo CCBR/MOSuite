@@ -30,8 +30,8 @@ test_that("filter_counts works on RENEE dataset", {
   rds2 <- moo %>% filter_counts(
     feature_id_colname = "gene_id",
     sample_id_colname = "sample_id",
-    group_column = "condition",
-    label_column = "sample_id",
+    group_colname = "condition",
+    label_colname = "sample_id",
     samples_to_include = c("KO_S3", "KO_S4", "WT_S1", "WT_S2"),
     minimum_count_value_to_be_considered_nonzero = 1,
     minimum_number_of_samples_with_nonzero_counts_in_total = 1,
@@ -120,10 +120,10 @@ test_that("remove_low_count_genes works", {
   # test default params
   expect_equal(
     remove_low_count_genes(
-      counts_matrix = df,
+      counts_dat = df,
       sample_metadata = sample_meta,
       feature_id_colname = "Gene",
-      group_column = "Group",
+      group_colname = "Group",
       use_cpm_counts_to_filter = TRUE,
       use_group_based_filtering = FALSE,
       minimum_count_value_to_be_considered_nonzero = 8,
