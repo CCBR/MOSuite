@@ -44,86 +44,7 @@ references:
     name: R Foundation for Statistical Computing
     address: Vienna, Austria
   year: '2025'
-  version: '>= 2.10'
-- type: software
-  title: amap
-  abstract: 'amap: Another Multidimensional Analysis Package'
-  notes: Imports
-  repository: https://CRAN.R-project.org/package=amap
-  authors:
-  - family-names: Lucas
-    given-names: Antoine
-    email: antoinelucas@gmail.com
-  year: '2025'
-  doi: 10.32614/CRAN.package.amap
-- type: software
-  title: colorspace
-  abstract: 'colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes'
-  notes: Imports
-  url: https://colorspace.R-Forge.R-project.org/
-  repository: https://CRAN.R-project.org/package=colorspace
-  authors:
-  - family-names: Ihaka
-    given-names: Ross
-    email: ihaka@stat.auckland.ac.nz
-  - family-names: Murrell
-    given-names: Paul
-    email: paul@stat.auckland.ac.nz
-    orcid: https://orcid.org/0000-0002-3224-8858
-  - family-names: Hornik
-    given-names: Kurt
-    email: Kurt.Hornik@R-project.org
-    orcid: https://orcid.org/0000-0003-4198-9911
-  - family-names: Fisher
-    given-names: Jason C.
-    email: jfisher@usgs.gov
-    orcid: https://orcid.org/0000-0001-9032-8912
-  - family-names: Stauffer
-    given-names: Reto
-    email: Reto.Stauffer@uibk.ac.at
-    orcid: https://orcid.org/0000-0002-3798-5507
-  - family-names: Wilke
-    given-names: Claus O.
-    email: wilke@austin.utexas.edu
-    orcid: https://orcid.org/0000-0002-7470-9261
-  - family-names: McWhite
-    given-names: Claire D.
-    email: claire.mcwhite@utmail.utexas.edu
-    orcid: https://orcid.org/0000-0001-7346-3047
-  - family-names: Zeileis
-    given-names: Achim
-    email: Achim.Zeileis@R-project.org
-    orcid: https://orcid.org/0000-0003-0918-3766
-  year: '2025'
-  doi: 10.32614/CRAN.package.colorspace
-- type: software
-  title: ComplexHeatmap
-  abstract: 'ComplexHeatmap: Make Complex Heatmaps'
-  notes: Imports
-  url: https://jokergoo.github.io/ComplexHeatmap-reference/book/
-  repository: https://bioconductor.org/
-  authors:
-  - family-names: Gu
-    given-names: Zuguang
-    email: z.gu@dkfz.de
-    orcid: https://orcid.org/0000-0002-7395-8709
-  year: '2025'
-  doi: 10.18129/B9.bioc.ComplexHeatmap
-- type: software
-  title: dendsort
-  abstract: 'dendsort: Modular Leaf Ordering Methods for Dendrogram Nodes'
-  notes: Imports
-  url: https://github.com/evanbiederstedt/dendsort
-  repository: https://CRAN.R-project.org/package=dendsort
-  authors:
-  - family-names: Sakai
-    given-names: Ryo
-    email: ryo@vda-lab.be
-  - family-names: Biederstedt
-    given-names: Evan
-    email: evan.biederstedt@gmail.com
-  year: '2025'
-  doi: 10.32614/CRAN.package.dendsort
+  version: '>= 3.5'
 - type: software
   title: DESeq2
   abstract: 'DESeq2: Differential gene expression analysis based on the negative binomial
@@ -323,6 +244,21 @@ references:
   year: '2025'
   doi: 10.18129/B9.bioc.limma
 - type: software
+  title: magrittr
+  abstract: 'magrittr: A Forward-Pipe Operator for R'
+  notes: Imports
+  url: https://magrittr.tidyverse.org
+  repository: https://CRAN.R-project.org/package=magrittr
+  authors:
+  - family-names: Bache
+    given-names: Stefan Milton
+    email: stefan@stefanbache.dk
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@rstudio.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.magrittr
+- type: software
   title: methods
   abstract: 'R: A Language and Environment for Statistical Computing'
   notes: Imports
@@ -491,6 +427,17 @@ references:
   year: '2025'
   doi: 10.32614/CRAN.package.tidyselect
 - type: software
+  title: amap
+  abstract: 'amap: Another Multidimensional Analysis Package'
+  notes: Suggests
+  repository: https://CRAN.R-project.org/package=amap
+  authors:
+  - family-names: Lucas
+    given-names: Antoine
+    email: antoinelucas@gmail.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.amap
+- type: software
   title: cffr
   abstract: 'cffr: Generate Citation File Format (''cff'') Metadata for R Packages'
   notes: Suggests
@@ -503,6 +450,74 @@ references:
     orcid: https://orcid.org/0000-0001-8457-4658
   year: '2025'
   doi: 10.32614/CRAN.package.cffr
+- type: software
+  title: colorspace
+  abstract: 'colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes'
+  notes: Suggests
+  url: https://colorspace.R-Forge.R-project.org/
+  repository: https://CRAN.R-project.org/package=colorspace
+  authors:
+  - family-names: Ihaka
+    given-names: Ross
+    email: ihaka@stat.auckland.ac.nz
+  - family-names: Murrell
+    given-names: Paul
+    email: paul@stat.auckland.ac.nz
+    orcid: https://orcid.org/0000-0002-3224-8858
+  - family-names: Hornik
+    given-names: Kurt
+    email: Kurt.Hornik@R-project.org
+    orcid: https://orcid.org/0000-0003-4198-9911
+  - family-names: Fisher
+    given-names: Jason C.
+    email: jfisher@usgs.gov
+    orcid: https://orcid.org/0000-0001-9032-8912
+  - family-names: Stauffer
+    given-names: Reto
+    email: Reto.Stauffer@uibk.ac.at
+    orcid: https://orcid.org/0000-0002-3798-5507
+  - family-names: Wilke
+    given-names: Claus O.
+    email: wilke@austin.utexas.edu
+    orcid: https://orcid.org/0000-0002-7470-9261
+  - family-names: McWhite
+    given-names: Claire D.
+    email: claire.mcwhite@utmail.utexas.edu
+    orcid: https://orcid.org/0000-0001-7346-3047
+  - family-names: Zeileis
+    given-names: Achim
+    email: Achim.Zeileis@R-project.org
+    orcid: https://orcid.org/0000-0003-0918-3766
+  year: '2025'
+  doi: 10.32614/CRAN.package.colorspace
+- type: software
+  title: ComplexHeatmap
+  abstract: 'ComplexHeatmap: Make Complex Heatmaps'
+  notes: Suggests
+  url: https://jokergoo.github.io/ComplexHeatmap-reference/book/
+  repository: https://bioconductor.org/
+  authors:
+  - family-names: Gu
+    given-names: Zuguang
+    email: z.gu@dkfz.de
+    orcid: https://orcid.org/0000-0002-7395-8709
+  year: '2025'
+  doi: 10.18129/B9.bioc.ComplexHeatmap
+- type: software
+  title: dendsort
+  abstract: 'dendsort: Modular Leaf Ordering Methods for Dendrogram Nodes'
+  notes: Suggests
+  url: https://github.com/evanbiederstedt/dendsort
+  repository: https://CRAN.R-project.org/package=dendsort
+  authors:
+  - family-names: Sakai
+    given-names: Ryo
+    email: ryo@vda-lab.be
+  - family-names: Biederstedt
+    given-names: Evan
+    email: evan.biederstedt@gmail.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.dendsort
 - type: software
   title: docopt
   abstract: 'docopt: Command-Line Interface Specification Language'
@@ -647,6 +662,38 @@ references:
     email: lorenz.walthert@icloud.com
   year: '2025'
   doi: 10.32614/CRAN.package.styler
+- type: software
+  title: sva
+  abstract: 'sva: Surrogate Variable Analysis'
+  notes: Suggests
+  repository: https://bioconductor.org/
+  authors:
+  - family-names: Leek
+    given-names: Jeffrey T.
+    email: jtleek@gmail.com
+  - family-names: Johnson
+    given-names: W. Evan
+    email: wej@bu.edu
+  - family-names: Parker
+    given-names: Hilary S.
+    email: hiparker@jhsph.edu
+  - family-names: Fertig
+    given-names: Elana J.
+    email: ejfertig@jhmi.edu
+  - family-names: Jaffe
+    given-names: Andrew E.
+    email: ajaffe@jhsph.edu
+  - family-names: Zhang
+    given-names: Yuqing
+    email: zhangyuqing.pkusms@gmail.com
+  - family-names: Storey
+    given-names: John D.
+    email: jstorey@princeton.edu
+  - family-names: Torres
+    given-names: Leonardo Collado
+    email: lcolladotor@gmail.com
+  year: '2025'
+  doi: 10.18129/B9.bioc.sva
 - type: software
   title: testthat
   abstract: 'testthat: Unit Testing for R'
