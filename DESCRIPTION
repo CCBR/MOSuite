@@ -18,10 +18,6 @@ BugReports: https://github.com/CCBR/MOSuite/issues
 Depends:
     R (>= 3.5)
 Imports:
-    amap,
-    colorspace,
-    ComplexHeatmap,
-    dendsort,
     DESeq2,
     dplyr,
     edgeR,
@@ -29,6 +25,7 @@ Imports:
     ggrepel,
     glue,
     limma,
+    magrittr,
     methods,
     plotly,
     reshape2,
@@ -36,12 +33,15 @@ Imports:
     S7,
     stats,
     stringr,
-    sva,
     tibble,
     tidyr,
     tidyselect
 Suggests:
+    amap,
     cffr,
+    colorspace,
+    ComplexHeatmap,
+    dendsort,
     docopt,
     knitr,
     lobstr,
@@ -50,6 +50,7 @@ Suggests:
     rmarkdown,
     scales,
     styler,
+    sva,
     testthat (>= 3.0.0),
     usethis,
     V8
