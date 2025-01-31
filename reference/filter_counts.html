@@ -52,8 +52,8 @@ features that have very low raw counts across most or all of your samples.</p>
 <span>  count_type <span class="op">=</span> <span class="st">"clean"</span>,</span>
 <span>  feature_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sample_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  group_column <span class="op">=</span> <span class="st">"Group"</span>,</span>
-<span>  label_column <span class="op">=</span> <span class="st">"Label"</span>,</span>
+<span>  group_colname <span class="op">=</span> <span class="st">"Group"</span>,</span>
+<span>  label_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  samples_to_include <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  minimum_count_value_to_be_considered_nonzero <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>  minimum_number_of_samples_with_nonzero_counts_in_total <span class="op">=</span> <span class="fl">7</span>,</span>
@@ -98,19 +98,19 @@ features that have very low raw counts across most or all of your samples.</p>
 
 
 <dt id="arg-feature-id-colname">feature_id_colname<a class="anchor" aria-label="anchor" href="#arg-feature-id-colname"></a></dt>
-<dd><p>The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: <code>NULL</code> - first column in the counts matrix will be used.)</p></dd>
+<dd><p>The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: <code>NULL</code> - first column in the counts matrix will be used.)</p></dd>
 
 
 <dt id="arg-sample-id-colname">sample_id_colname<a class="anchor" aria-label="anchor" href="#arg-sample-id-colname"></a></dt>
-<dd><p>The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter. (Default: <code>NULL</code> - first column in the sample metadata will be used.)</p></dd>
+<dd><p>The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: <code>NULL</code> - first column in the sample metadata will be used.)</p></dd>
 
 
-<dt id="arg-group-column">group_column<a class="anchor" aria-label="anchor" href="#arg-group-column"></a></dt>
-<dd><p>The column from your input Sample Metadata table containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.). Only columns of Text type from your input Sample Metadata will be available to select for this parameter.</p></dd>
+<dt id="arg-group-colname">group_colname<a class="anchor" aria-label="anchor" href="#arg-group-colname"></a></dt>
+<dd><p>The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).</p></dd>
 
 
-<dt id="arg-label-column">label_column<a class="anchor" aria-label="anchor" href="#arg-label-column"></a></dt>
-<dd><p>The column from your input Sample Metadata table containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample.</p></dd>
+<dt id="arg-label-colname">label_colname<a class="anchor" aria-label="anchor" href="#arg-label-colname"></a></dt>
+<dd><p>The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: <code>NULL</code> – <code>sample_id_colname</code> will be used.)</p></dd>
 
 
 <dt id="arg-samples-to-include">samples_to_include<a class="anchor" aria-label="anchor" href="#arg-samples-to-include"></a></dt>
@@ -246,8 +246,8 @@ another based on unsupervised clustering.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_multiOmicDataSet_from_dataframes.html">create_multiOmicDataSet_from_dataframes</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_sample_metadata</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_clean_raw_counts</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    sample_id_colname <span class="op">=</span> <span class="st">"Sample"</span>,</span></span>
-<span class="r-in"><span>    feature_id_colname <span class="op">=</span> <span class="st">"Gene"</span></span></span>
+<span class="r-in"><span>  sample_id_colname <span class="op">=</span> <span class="st">"Sample"</span>,</span></span>
+<span class="r-in"><span>  feature_id_colname <span class="op">=</span> <span class="st">"Gene"</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">filter_counts</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    count_type <span class="op">=</span> <span class="st">"raw"</span></span></span>
