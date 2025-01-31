@@ -5,10 +5,10 @@
 \title{Remove low-count genes}
 \usage{
 remove_low_count_genes(
-  counts_matrix,
+  counts_dat,
   sample_metadata,
   feature_id_colname,
-  group_column,
+  group_colname,
   use_cpm_counts_to_filter = TRUE,
   use_group_based_filtering = FALSE,
   minimum_count_value_to_be_considered_nonzero = 8,
@@ -17,9 +17,9 @@ remove_low_count_genes(
 )
 }
 \arguments{
-\item{feature_id_colname}{The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
+\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
-\item{group_column}{The column from your input Sample Metadata table containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.). Only columns of Text type from your input Sample Metadata will be available to select for this parameter.}
+\item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).}
 
 \item{use_cpm_counts_to_filter}{If no transformation has been been performed on counts matrix (eg Raw Counts) set to TRUE. If TRUE counts will be transformed to CPM and filtered based on given criteria. If gene counts matrix has been transformed (eg log2, CPM, FPKM or some form of Normalization) set to FALSE. If FALSE no further transformation will be applied and features will be filtered as is. For RNAseq data RAW counts should be transformed to CPM in order to properly filter.}
 

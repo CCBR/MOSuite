@@ -16,12 +16,8 @@ License: MIT + file LICENSE
 URL: https://github.com/CCBR/MOSuite, https://ccbr.github.io/MOSuite/
 BugReports: https://github.com/CCBR/MOSuite/issues
 Depends:
-    R (>= 2.10)
+    R (>= 3.5)
 Imports:
-    amap,
-    colorspace,
-    ComplexHeatmap,
-    dendsort,
     DESeq2,
     dplyr,
     edgeR,
@@ -29,6 +25,7 @@ Imports:
     ggrepel,
     glue,
     limma,
+    magrittr,
     methods,
     plotly,
     reshape2,
@@ -40,7 +37,11 @@ Imports:
     tidyr,
     tidyselect
 Suggests:
+    amap,
     cffr,
+    colorspace,
+    ComplexHeatmap,
+    dendsort,
     docopt,
     knitr,
     lobstr,
@@ -49,6 +50,7 @@ Suggests:
     rmarkdown,
     scales,
     styler,
+    sva,
     testthat (>= 3.0.0),
     usethis,
     V8

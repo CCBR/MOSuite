@@ -38,8 +38,8 @@ test_that("plot_pca layers are expected", {
     sample_meta,
     samples_to_include = c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
     samples_to_rename = NULL,
-    group_column = "Group",
-    label_column = "Label",
+    group_colname = "Group",
+    label_colname = "Label",
     color_values = c(
       "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
       "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"

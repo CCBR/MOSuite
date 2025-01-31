@@ -1,6 +1,9 @@
 test_that("counts_dat_to_matrix works", {
   expect_equal(
-    counts_dat_to_matrix(head(gene_counts)),
+    gene_counts %>%
+      dplyr::select(-GeneName) %>%
+      head() %>%
+      counts_dat_to_matrix(),
     structure(
       c(
         0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L,

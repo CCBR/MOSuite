@@ -7,9 +7,10 @@
 #' @return heatmap ggproto object
 #' @keywords internal
 #'
-plot_heatmap <- function(counts_matrix, sample_metadata, sample_id_colname, label_column, anno_column, anno_colors) {
+plot_heatmap <- function(counts_dat, sample_metadata, sample_id_colname, label_colname, anno_column, anno_colors) {
+  abort_packages_not_installed("amap", "ComplexHeatmap", "dendsort")
   ## Annotate
-  rownames(sample_metadata) <- sample_metadata[[label_column]]
+  rownames(sample_metadata) <- sample_metadata[[label_colname]]
   annoVal <- lapply(anno_column, function(x) {
     # TODO this only works on dataframes, not tibbles
     out <- as.factor(sample_metadata[, x]) %>% levels()
@@ -35,11 +36,11 @@ plot_heatmap <- function(counts_matrix, sample_metadata, sample_id_colname, labe
   ## Create Correlation Matrix
 
   old <- sample_metadata[[sample_id_colname]]
-  new <- sample_metadata[[label_column]]
+  new <- sample_metadata[[label_colname]]
   names(old) <- new
-  counts_matrix <- dplyr::rename(counts_matrix, tidyselect::any_of(old))
+  counts_dat <- dplyr::rename(counts_dat, tidyselect::any_of(old))
 
-  mat <- as.matrix(counts_matrix)
+  mat <- as.matrix(counts_dat)
   tcounts <- t(mat)
 
 

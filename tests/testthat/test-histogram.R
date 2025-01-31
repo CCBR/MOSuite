@@ -37,8 +37,8 @@ test_that("plot_histogram works", {
     log_counts,
     sample_meta,
     feature_id_colname = "Gene",
-    group_column = "Group",
-    label_column = "Label",
+    group_colname = "Group",
+    label_colname = "Label",
     color_values = c(
       indigo = "#5954d6", carrot = "#e1562c", lipstick = "#b80058",
       turquoise = "#00c6f8", lavender = "#d163e6", jade = "#00a76c",

@@ -20,6 +20,6 @@ Glue gene_id and GeneName columns into one column
 gene_counts \%>\%
   glue_gene_symbols() \%>\%
   head()
-  }
+}
 }
 \keyword{internal}

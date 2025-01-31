@@ -5,14 +5,14 @@
 \title{Aggregate duplicate gene names}
 \usage{
 aggregate_duplicate_gene_names(
-  counts_matrix,
+  counts_dat,
   gene_name_column_to_use_for_collapsing_duplicates,
   aggregate_rows_with_duplicate_gene_names,
   split_gene_name
 )
 }
 \arguments{
-\item{counts_matrix}{dataframe with raw counts data}
+\item{counts_dat}{dataframe with raw counts data}
 
 \item{gene_name_column_to_use_for_collapsing_duplicates}{Select the column
 with Feature IDs to use as grouping elements to collapse the counts matrix.

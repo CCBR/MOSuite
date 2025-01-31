@@ -18,8 +18,8 @@
 #'   )
 #' ) %>%
 #'   normalize_counts(
-#'     group_column = "Group",
-#'     label_column = "Label"
+#'     group_colname = "Group",
+#'     label_colname = "Label"
 #'   )
 #' head(moo@counts[["norm"]][["voom"]])
 normalize_counts <- function(moo,
@@ -27,8 +27,8 @@ normalize_counts <- function(moo,
                              feature_id_colname = NULL,
                              samples_to_include = NULL,
                              sample_id_colname = NULL,
-                             group_column = "Group",
-                             label_column = "Label",
+                             group_colname = "Group",
+                             label_colname = NULL,
                              input_in_log_counts = FALSE,
                              voom_normalization_method = "quantile",
                              samples_to_rename = c(""),
@@ -54,19 +54,22 @@ normalize_counts <- function(moo,
                              ),
                              make_plots_interactive = FALSE,
                              plot_correlation_matrix_heatmap = TRUE) {
-  counts_matrix <- moo@counts[[count_type]] %>% as.data.frame()
+  counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
 
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
   }
   if (is.null(feature_id_colname)) {
-    feature_id_colname <- colnames(counts_matrix)[1]
+    feature_id_colname <- colnames(counts_dat)[1]
   }
   if (is.null(samples_to_include)) {
     samples_to_include <- sample_metadata %>% dplyr::pull(sample_id_colname)
   }
-  df.filt <- counts_matrix %>%
+  if (is.null(label_colname)) {
+    label_colname <- sample_id_colname
+  }
+  df.filt <- counts_dat %>%
     dplyr::select(tidyselect::all_of(samples_to_include))
 
 
@@ -74,7 +77,7 @@ normalize_counts <- function(moo,
   ## Main Code Block ##
   ## --------------- ##
   gene_names <- NULL
-  gene_names$feature_id <- counts_matrix %>% dplyr::pull(feature_id_colname)
+  gene_names$feature_id <- counts_dat %>% dplyr::pull(feature_id_colname)
 
   ### PH: START Limma Normalization
   ##############################
@@ -97,8 +100,8 @@ normalize_counts <- function(moo,
     sample_metadata,
     samples_to_include,
     samples_to_rename,
-    group_column,
-    label_column,
+    group_colname,
+    label_colname,
     color_values = colors_for_plots,
     principal_component_on_x_axis = principal_component_on_x_axis,
     principal_component_on_y_axis = principal_component_on_y_axis,
@@ -114,18 +117,18 @@ normalize_counts <- function(moo,
     v$E,
     sample_metadata,
     feature_id_colname,
-    group_column,
-    label_column,
+    group_colname,
+    label_colname,
     color_values = colors_for_plots,
     x_axis_label = "Normalized Counts"
   )
   if (isTRUE(plot_correlation_matrix_heatmap)) {
     corHM <- plot_heatmap(
-      counts_matrix = df.filt,
+      counts_dat = df.filt,
       sample_metadata = sample_metadata,
       anno_colors = colors_for_plots,
-      anno_column = group_column,
-      label_column = label_column,
+      anno_column = group_colname,
+      label_colname = label_colname,
       sample_id_colname = sample_id_colname
     )
   }

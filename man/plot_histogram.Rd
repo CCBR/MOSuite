@@ -8,8 +8,8 @@ plot_histogram(
   log_counts,
   sample_metadata,
   feature_id_colname,
-  group_column,
-  label_column,
+  group_colname,
+  label_colname,
   color_values,
   color_histogram_by_group = FALSE,
   set_min_max_for_x_axis_for_histogram = FALSE,
@@ -28,11 +28,11 @@ plot_histogram(
 
 \item{sample_metadata}{sample metadata as a data frame or tibble.}
 
-\item{feature_id_colname}{The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
+\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
-\item{group_column}{The column from your input Sample Metadata table containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.). Only columns of Text type from your input Sample Metadata will be available to select for this parameter.}
+\item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).}
 
-\item{label_column}{The column from your input Sample Metadata table containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample.}
+\item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: \code{NULL} -- \code{sample_id_colname} will be used.)}
 
 \item{color_values}{vector of colors as hex values or names recognized by R}
 
