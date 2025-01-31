@@ -21,22 +21,64 @@ log_counts <- structure(
     c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3")
   )
 )
-sample_meta <- structure(
-  list(
-    Sample = c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-    Group = c("A", "A", "A", "B", "B", "B", "C", "C", "C"),
-    Replicate = c(1, 2, 3, 1, 2, 3, 1, 2, 3),
-    Batch = c(1, 2, 2, 1, 1, 2, 1, 2, 2),
-    Label = c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3")
-  ),
-  row.names = c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-  class = "data.frame"
-)
+
+test_that("calc_pca works", {
+  pca_dat <- calc_pca(log_counts, nidap_sample_metadata) %>%
+    dplyr::filter(PC %in% c(1, 2))
+  expect_equal(
+    pca_dat,
+    structure(list(Sample = c(
+      "A1", "A1", "A2", "A2", "A3", "A3",
+      "B1", "B1", "B2", "B2", "B3", "B3", "C1", "C1", "C2", "C2", "C3",
+      "C3"
+    ), PC = c(
+      1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2,
+      1, 2
+    ), value = c(
+      -0.625327686779601, 0.332172588867532, 0.170062753468686,
+      -0.461719530070859, 0.602876666746681, -0.521332184334467, 2.26852599229862,
+      -0.0712212634068397, 1.28202183728272, -1.11476048450708, -1.26024756707554,
+      -1.88932302965891, 2.0413590536365, 1.97442901461429, -2.47264101096028,
+      1.5131783715171, -2.00663003861778, 0.238576516979229
+    ), std.dev = c(
+      1.71278628619538,
+      1.20714607589957, 1.71278628619538, 1.20714607589957, 1.71278628619538,
+      1.20714607589957, 1.71278628619538, 1.20714607589957, 1.71278628619538,
+      1.20714607589957, 1.71278628619538, 1.20714607589957, 1.71278628619538,
+      1.20714607589957, 1.71278628619538, 1.20714607589957, 1.71278628619538,
+      1.20714607589957
+    ), percent = c(
+      48.894, 24.287, 48.894, 24.287,
+      48.894, 24.287, 48.894, 24.287, 48.894, 24.287, 48.894, 24.287,
+      48.894, 24.287, 48.894, 24.287, 48.894, 24.287
+    ), cumulative = c(
+      0.48894,
+      0.73181, 0.48894, 0.73181, 0.48894, 0.73181, 0.48894, 0.73181,
+      0.48894, 0.73181, 0.48894, 0.73181, 0.48894, 0.73181, 0.48894,
+      0.73181, 0.48894, 0.73181
+    ), Group = c(
+      "A", "A", "A", "A", "A",
+      "A", "B", "B", "B", "B", "B", "B", "C", "C", "C", "C", "C", "C"
+    ), Replicate = c(
+      1, 1, 2, 2, 3, 3, 1, 1, 2, 2, 3, 3, 1, 1, 2,
+      2, 3, 3
+    ), Batch = c(
+      1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1,
+      2, 2, 2, 2
+    ), Label = c(
+      "A1", "A1", "A2", "A2", "A3", "A3", "B1",
+      "B1", "B2", "B2", "B3", "B3", "C1", "C1", "C2", "C2", "C3", "C3"
+    )), class = c("tbl_df", "tbl", "data.frame"), row.names = c(
+      NA,
+      -18L
+    ))
+  )
+})
 
 test_that("plot_pca layers are expected", {
-  p <- plot_pca(log_counts,
-    sample_meta,
-    samples_to_include = c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
+  p <- plot_pca(
+    log_counts,
+    nidap_sample_metadata,
     samples_to_rename = NULL,
     group_colname = "Group",
     label_colname = "Label",
@@ -44,8 +86,7 @@ test_that("plot_pca layers are expected", {
       "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
       "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
     ),
-    principal_component_on_x_axis = 1,
-    principal_component_on_y_axis = 2,
+    principal_components = c(1, 2),
     legend_position_for_pca = "top",
     point_size_for_pca = 1,
     add_label_to_pca = TRUE,
@@ -56,4 +97,8 @@ test_that("plot_pca layers are expected", {
 
   expect_s3_class(p$layers[[1]], "ggproto")
   expect_s3_class(p$layers[[1]]$geom, "GeomPoint")
+})
+
+test_that("3DPCA works", {
+
 })

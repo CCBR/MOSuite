@@ -38,6 +38,7 @@ Imports:
     tidyselect
 Suggests:
     amap,
+    broom,
     cffr,
     colorspace,
     ComplexHeatmap,

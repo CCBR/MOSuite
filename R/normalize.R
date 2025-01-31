@@ -96,15 +96,15 @@ normalize_counts <- function(moo,
   message(paste0("Total number of features included: ", nrow(df.voom)))
   ### PH: END Limma Normalization
 
-  pca_plot <- plot_pca(v$E,
-    sample_metadata,
-    samples_to_include,
-    samples_to_rename,
-    group_colname,
-    label_colname,
+  pca_plot <- plot_pca(
+    counts_dat = v$E,
+    sample_metadata = sample_metadata,
+    sample_id_colname = sample_id_colname,
+    samples_to_rename = samples_to_rename,
+    group_colname = group_colname,
+    label_colname = label_colname,
     color_values = colors_for_plots,
-    principal_component_on_x_axis = principal_component_on_x_axis,
-    principal_component_on_y_axis = principal_component_on_y_axis,
+    principal_components = c(principal_component_on_x_axis, principal_component_on_y_axis),
     legend_position_for_pca = legend_position_for_pca,
     point_size_for_pca = point_size_for_pca,
     add_label_to_pca = add_label_to_pca,
