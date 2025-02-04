@@ -14,7 +14,7 @@
 rename_samples <- function(dat, samples_to_rename_manually) {
   replacements <- samples_to_rename_manually
 
-  if (!is.null(replacements) && length(replacements) > 0 && nchar(replacements) > 0) {
+  if (!is.null(replacements) && (length(replacements) > 0) && (nchar(replacements) > 0)) {
     # TODO: refactor with dplyr::rename for simplicity
     for (x in replacements) {
       old <- strsplit(x, ": ?")[[1]][1]

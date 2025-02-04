@@ -1,28 +1,35 @@
 calc_pca <- function(counts_dat,
                      sample_metadata,
-                     sample_id_colname = NULL) {
+                     sample_id_colname = NULL,
+                     feature_id_colname = NULL) {
   var <- xdata <- ydata <- group <- row <- NULL
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
   }
-  if (sample_id_colname %in% counts_dat) {
-    counts_dat %<>% tibble::column_to_rownames(sample_id_colname)
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- colnames(counts_dat)[1]
   }
+  counts_dat %<>% as.data.frame() %>%
+    tibble::remove_rownames() %>%
+    tibble::column_to_rownames(feature_id_colname)
   # sample-wise PCA
   tedf <- t(counts_dat)
   # remove samples with all NAs
-  tedf <- tedf[, colSums(is.na(tedf)) != nrow(tedf)]
+  tedf_filt <- tedf[, colSums(is.na(tedf)) != nrow(tedf)]
   # remove samples with zero variance
-  tedf_var <- tedf[, apply(tedf, 2, var) != 0]
+  tedf_var <- tedf_filt[, apply(tedf_filt, 2, var) != 0]
   # calculate PCA
   pca_fit <- stats::prcomp(tedf_var, scale = T)
   pca_df <- pca_fit %>%
     broom::tidy() %>%
     dplyr::rename(!!rlang::sym(sample_id_colname) := row) %>%
-    dplyr::left_join(pca_fit %>%
-      broom::tidy(matrix = "eigenvalues") %>%
-      dplyr::mutate(percent = percent * 100)) %>%
-    dplyr::left_join(sample_metadata)
+    dplyr::left_join(
+      pca_fit %>%
+        broom::tidy(matrix = "eigenvalues") %>%
+        dplyr::mutate(percent = percent * 100),
+      by = "PC"
+    ) %>%
+    dplyr::left_join(sample_metadata, by = sample_id_colname)
   return(pca_df)
 }
 
@@ -36,10 +43,14 @@ calc_pca <- function(counts_dat,
 plot_pca <- function(counts_dat,
                      sample_metadata,
                      sample_id_colname = NULL,
+                     feature_id_colname = NULL,
                      samples_to_rename = NULL,
                      group_colname = "Group",
                      label_colname = "Label",
-                     color_values = c(),
+                     color_values = c(
+                       "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+                       "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
+                     ),
                      principal_components = c(1, 2),
                      legend_position_for_pca = "top",
                      point_size_for_pca = 1,
@@ -47,31 +58,36 @@ plot_pca <- function(counts_dat,
                      label_font_size = 3,
                      label_offset_x_ = 2,
                      label_offset_y_ = 2,
-                     make_plots_interactive = FALSE) {
-  if (length(principal_components) < 2 || length(principal_components) > 3) {
-    stop(glue::glue("principal_components must contain 2 or 3 values: {principal_components}"))
+                     interactive_plots = FALSE) {
+  if (length(principal_components) != 2) {
+    stop(glue::glue("principal_components must contain 2 values: {principal_components}"))
   }
 
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
+  }
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- colnames(counts_dat)[1]
   }
 
   # calculate PCA
   pca_df <- calc_pca(
     counts_dat = counts_dat,
     sample_metadata = sample_metadata,
-    sample_id_colname = sample_id_colname
-  ) %>%
-    dplyr::filter(PC %in% principal_components) %>%
-    # TODO consider redesigning to make this unnecessary. Use Label column instead?
+    sample_id_colname = sample_id_colname,
+    feature_id_colname = feature_id_colname
+  ) %>% dplyr::filter(PC %in% principal_components) %>%
+    # TODO consider redesigning to make rename_samples() unnecessary. Use Label column instead?
     rename_samples(samples_to_rename_manually = samples_to_rename)
+
   pca_wide <- pca_df %>%
-    select(-c(std.dev, percent, cumulative)) %>%
+    dplyr::select(-c(std.dev, percent, cumulative)) %>%
     tidyr::pivot_wider(names_from = "PC", names_prefix = "PC", values_from = "value")
   prin_comp_x <- principal_components[1]
   prin_comp_y <- principal_components[2]
   # plot PCA
   pca_plot <- pca_wide %>%
+    dplyr::mutate(!!rlang::sym(group_colname) := as.character(!!rlang::sym(group_colname))) %>%
     ggplot2::ggplot(ggplot2::aes(
       x = !!rlang::sym(glue::glue("PC{prin_comp_x}")),
       y = !!rlang::sym(glue::glue("PC{prin_comp_y}")),
@@ -115,11 +131,64 @@ plot_pca <- function(counts_dat,
         box.padding = 1.25
       )
   }
-  if (isTRUE(make_plots_interactive)) {
+  if (isTRUE(interactive_plots)) {
     pca_plot <- (pca_plot) %>%
       plotly::ggplotly(tooltip = c(sample_id_colname, group_colname))
   }
   return(pca_plot)
+}
+
+plot_pca_3d <- function(counts_dat,
+                        sample_metadata,
+                        sample_id_colname = NULL,
+                        samples_to_rename = NULL,
+                        group_colname = "Group",
+                        label_colname = "Label",
+                        principal_components = c(1, 2, 3),
+                        point_size = 8,
+                        label_font_size = 24,
+                        color_values = c(
+                          "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+                          "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
+                        ),
+                        plot_title = "PCA 3D") {
+  if (length(principal_components) < 2 || length(principal_components) > 3) {
+    stop(glue::glue("principal_components must contain 2 or 3 values: {principal_components}"))
+  }
+
+  if (is.null(sample_id_colname)) {
+    sample_id_colname <- colnames(sample_metadata)[1]
+  }
+
+  # calculate PCA
+  pca_df <- calc_pca(
+    counts_dat = counts_dat,
+    sample_metadata = sample_metadata,
+    sample_id_colname = sample_id_colname
+  ) %>%
+    dplyr::filter(PC %in% principal_components)
+  pca_wide <- pca_df %>%
+    select(-c(std.dev, percent, cumulative)) %>%
+    tidyr::pivot_wider(names_from = "PC", names_prefix = "PC", values_from = "value")
+  prin_comp_x <- principal_components[1]
+  prin_comp_y <- principal_components[2]
+  prin_comp_z <- principal_components[3]
+
+  fig <- plotly::plot_ly(
+    pca_wide,
+    x = stats::as.formula(paste0("~ PC", prin_comp_x)),
+    y = ~ stats::as.formula(paste0("~ PC", prin_comp_y)),
+    z = ~ stats::as.formula(paste0("~ PC", prin_comp_z)),
+    # color = stats::as.formula(paste("~",group_colname)),
+    # colors = color_values,
+    type = "scatter3d",
+    mode = "markers",
+    marker = list(size = point_size),
+    # hoverinfo = 'text',
+    # text = stats::as.formula(paste("~",sample_id_colname)),
+    size = label_font_size
+  )
+  return(fig)
 }
 
 get_pc_percent_lab <- function(pca_df, pc) {

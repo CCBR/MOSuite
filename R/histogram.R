@@ -1,7 +1,7 @@
 #' Plot histogram
 #'
 #' @inheritParams filter_counts
-#' @param log_counts log-transformed filtered counts
+#' @param counts_dat log-transformed filtered counts
 #' @param sample_metadata sample metadata as a data frame or tibble.
 #' @param x_axis_label text label for the x axis
 #' @param y_axis_label text label for the y axis
@@ -10,12 +10,16 @@
 #' @returns ggplot object
 #' @export
 #'
-plot_histogram <- function(log_counts,
+plot_histogram <- function(counts_dat,
                            sample_metadata,
-                           feature_id_colname,
-                           group_colname,
-                           label_colname,
-                           color_values,
+                           sample_id_colname = NULL,
+                           feature_id_colname = NULL,
+                           group_colname = "Group",
+                           label_colname = "Label",
+                           color_values = c(
+                             "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+                             "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
+                           ),
                            color_histogram_by_group = FALSE,
                            set_min_max_for_x_axis_for_histogram = FALSE,
                            minimum_for_x_axis_for_histogram = -1,
@@ -25,40 +29,53 @@ plot_histogram <- function(log_counts,
                            number_of_histogram_legend_columns = 6,
                            x_axis_label = "Counts",
                            y_axis_label = "Density",
-                           make_plots_interactive = FALSE) {
-  Var2 <- colgroup <- value <- NULL
-  df.m <- reshape2::melt(log_counts, id.vars = c(feature_id_colname))
-  df.m <- dplyr::rename(df.m, sample = Var2)
+                           interactive_plots = FALSE) {
+  count <- NULL
+
+  if (is.null(sample_id_colname)) {
+    sample_id_colname <- colnames(sample_metadata)[1]
+  }
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- colnames(counts_dat)[1]
+  }
+
+  df_long <- counts_dat %>%
+    tidyr::pivot_longer(-tidyselect::all_of(feature_id_colname),
+      names_to = sample_id_colname,
+      values_to = "count"
+    ) %>%
+    dplyr::left_join(sample_metadata, by = sample_id_colname)
 
   if (set_min_max_for_x_axis_for_histogram == TRUE) {
     xmin <- minimum_for_x_axis_for_histogram
     xmax <- maximum_for_x_axis_for_histogram
   } else {
-    xmin <- min(df.m$value)
-    xmax <- max(df.m$value)
+    xmin <- min(df_long %>% dplyr::pull(count))
+    xmax <- max(df_long %>% dplyr::pull(count))
   }
 
   if (color_histogram_by_group == TRUE) {
-    df.m <- df.m %>% dplyr::mutate(colgroup = sample_metadata[sample, group_colname])
-    df.m <- df.m[stats::complete.cases(df.m[, "colgroup"]), ]
-    df.m$colgroup <- gsub("\\s", "_", df.m$colgroup)
-    df.m$colgroup <- factor(df.m$colgroup, levels = unique(df.m$colgroup))
-    ## print(unique(df.m$sample))
-    n <- length(levels(df.m$colgroup))
-    cols <- color_values[1:n]
+    df_long %<>%
+      dplyr::mutate(!!rlang::sym(group_colname) := as.factor(!!rlang.sym(group_colname))) %>%
+      dplyr::filter(!is.na(group_colname))
+    n <- df_long %>%
+      dplyr::pull(group_colname) %>%
+      levels() %>%
+      length()
 
     # plot Density
-    hist_plot <- df.m %>%
-      ggplot2::ggplot(ggplot2::aes(x = value, group = sample)) +
-      ggplot2::geom_density(ggplot2::aes(colour = colgroup), linewidth = 1)
+    hist_plot <- df_long %>%
+      ggplot2::ggplot(ggplot2::aes(x = count, group = !!rlang::sym(sample_id_colname))) +
+      ggplot2::geom_density(ggplot2::aes(colour = !!rlang::sym(group_colname)), linewidth = 1)
   } else {
-    df.m$sample <- sample_metadata[df.m$sample, label_colname]
-    n <- length(unique(df.m$sample))
-    cols <- get_random_colors(n)
+    n <- df_long %>%
+      dplyr::pull(sample_id_colname) %>%
+      unique() %>%
+      length()
 
-    hist_plot <- df.m %>%
-      ggplot2::ggplot(ggplot2::aes(x = value, group = sample)) +
-      ggplot2::geom_density(ggplot2::aes(colour = sample), linewidth = 1)
+    hist_plot <- df_long %>%
+      ggplot2::ggplot(ggplot2::aes(x = count, group = !!rlang::sym(sample_id_colname))) +
+      ggplot2::geom_density(ggplot2::aes(colour = !!rlang::sym(sample_id_colname)), linewidth = 1)
   }
 
   hist_plot <- hist_plot +
@@ -76,14 +93,15 @@ plot_histogram <- function(log_counts,
       axis.line = ggplot2::element_line(linewidth = .5),
       axis.ticks = ggplot2::element_line(linewidth = 1)
     ) +
-    # ggtitle("Frequency Histogram") +
+    ggplot2::ggtitle("Frequency Histogram") +
     ggplot2::xlim(xmin, xmax) +
     # scale_linetype_manual(values=rep(c('solid', 'dashed','dotted','twodash'),n)) +
-    ggplot2::scale_colour_manual(values = cols) +
+    ggplot2::scale_colour_manual(values = color_values[1:n]) +
     ggplot2::guides(linetype = ggplot2::guide_legend(ncol = number_of_histogram_legend_columns))
 
-  if (isTRUE(make_plots_interactive)) {
-    hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) %>% plotly::ggplotly(tooltip = c("sample"))
+  if (isTRUE(interactive_plots)) {
+    hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) %>%
+      plotly::ggplotly(tooltip = c(sample_id_colname))
   }
   return(hist_plot)
 }

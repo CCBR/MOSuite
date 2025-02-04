@@ -22,8 +22,8 @@ test_that("heatmap works", {
     sample_metadata = as.data.frame(nidap_sample_metadata),
     sample_id_colname = "Sample",
     label_colname = "Label",
-    anno_column = "Group",
-    anno_colors = colors_vec
+    group_colname = "Group",
+    color_values = colors_vec
   )
   expect_s4_class(p, "Heatmap")
   expect_equal(p@matrix, structure(
@@ -126,7 +126,7 @@ test_that("heatmap works", {
 #     sample_metadata = nidap_sample_metadata,
 #     sample_id_colname = "Sample",
 #     label_colname = "Label",
-#     anno_column = "Group",
-#     anno_colors = colors_vec
+#     group_column = "Group",
+#     color_values = colors_vec
 #   )
 # })

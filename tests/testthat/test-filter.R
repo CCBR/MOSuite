@@ -10,7 +10,8 @@ test_that("filter_counts reproduces NIDAP results", {
     filter_counts(
       sample_id_colname = "Sample",
       feature_id_colname = "Gene",
-      count_type = "raw"
+      count_type = "raw",
+      print_plots = TRUE
     )
   rds_counts_filt <- moo@counts$filt %>%
     dplyr::arrange(desc(Gene))
@@ -36,7 +37,7 @@ test_that("filter_counts works on RENEE dataset", {
     minimum_count_value_to_be_considered_nonzero = 1,
     minimum_number_of_samples_with_nonzero_counts_in_total = 1,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
-    make_plots = FALSE,
+    print_plots = TRUE,
     count_type = "raw"
   )
   expect_equal(dim(rds2@counts$filt), c(291, 5))
@@ -191,10 +192,9 @@ test_that("remove_low_count_genes works", {
           27717.4985204182,
           761811.994476228,
           1232.98480962715
-        ),
-        isexpr1 = c(TRUE, TRUE, TRUE, TRUE)
+        )
       ),
-      row.names = c(5L, 6L, 8L, 10L),
+      row.names = 1:4,
       class = "data.frame"
     )
   )

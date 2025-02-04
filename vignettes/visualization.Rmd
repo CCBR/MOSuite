@@ -1,0 +1,39 @@
+---
+title: "visualization"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{visualization}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(MOSuite)
+```
+
+## NIDAP dataset
+
+```{r nidap_data}
+moo_nidap <- create_multiOmicDataSet_from_dataframes(
+  sample_meta_dat = as.data.frame(nidap_sample_metadata),
+  count_dat = as.data.frame(nidap_raw_counts)
+) %>%
+  clean_raw_counts() %>%
+  filter_counts(group_colname = "Group", print_plots = TRUE) %>%
+  normalize_counts(group_colname = "Group", print_plots = TRUE) %>%
+  batch_correct_counts(
+    covariates_colname = "Group",
+    batch_colname = "Batch",
+    label_colname = "Label",
+    print_plots = TRUE
+  )
+
+# plot_pca(moo_nidap@counts$norm$voom, moo_nidap@sample_meta)
+```

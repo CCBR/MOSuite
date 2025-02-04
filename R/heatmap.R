@@ -1,34 +1,40 @@
 #' Make a heatmap
 #'
 #' @inheritParams filter_counts
-#' @param anno_colors vector of colors for annotation column
-#' @param anno_column annotation (group) column
 #'
 #' @return heatmap ggproto object
 #' @keywords internal
 #'
-plot_heatmap <- function(counts_dat, sample_metadata, sample_id_colname, label_colname, anno_column, anno_colors) {
+plot_heatmap <- function(counts_dat, sample_metadata,
+                         sample_id_colname = NULL,
+                         feature_id_colname = NULL,
+                         group_colname = "Group",
+                         label_colname = "Label",
+                         color_values = c(
+                           "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+                           "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
+                         )) {
   abort_packages_not_installed("amap", "ComplexHeatmap", "dendsort")
   ## Annotate
   rownames(sample_metadata) <- sample_metadata[[label_colname]]
-  annoVal <- lapply(anno_column, function(x) {
+  annoVal <- lapply(group_colname, function(x) {
     # TODO this only works on dataframes, not tibbles
     out <- as.factor(sample_metadata[, x]) %>% levels()
     # names(out)=x
     return(out)
   }) %>% unlist()
-  col <- anno_colors[1:length(annoVal)]
+  col <- color_values[1:length(annoVal)]
   names(col) <- annoVal
 
-  cols <- lapply(anno_column, function(x) {
+  cols <- lapply(group_colname, function(x) {
     ax <- as.factor(sample_metadata[, x]) %>% levels()
     out <- col[ax]
     return(out)
   })
-  names(cols) <- (anno_column)
+  names(cols) <- (group_colname)
 
   anno <- ComplexHeatmap::columnAnnotation(
-    df = sample_metadata[, anno_column, drop = F],
+    df = sample_metadata[, group_colname, drop = F],
     col = cols
   )
 

@@ -1,5 +1,5 @@
 ---
-title: "intro"
+title: "Introduction to MultiOmicsSuite"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{intro}
@@ -19,6 +19,8 @@ library(MOSuite)
 library(dplyr)
 ```
 
+## RENEE dataset
+
 ```{r data}
 # replace these lines with the actual paths to your files
 gene_counts_tsv <- system.file("extdata",
@@ -35,7 +37,6 @@ moo <- create_multiOmicDataSet_from_files(
   feature_counts_filepath = gene_counts_tsv
 )
 
-
 moo <- moo %>%
   clean_raw_counts() %>%
   filter_counts(
@@ -51,4 +52,21 @@ moo <- moo %>%
   )
 
 moo@counts$norm$voom %>% head()
+```
+
+## NIDAP dataset
+
+```{r nidap_data}
+moo_nidap <- create_multiOmicDataSet_from_dataframes(
+  sample_meta_dat = as.data.frame(nidap_sample_metadata),
+  count_dat = as.data.frame(nidap_raw_counts)
+) %>%
+  clean_raw_counts() %>%
+  filter_counts(group_colname = "Group") %>%
+  normalize_counts(group_colname = "Group") %>%
+  batch_correct_counts(
+    covariates_colname = "Group",
+    batch_colname = "Batch",
+    label_colname = "Label"
+  )
 ```
