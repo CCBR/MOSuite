@@ -19,7 +19,7 @@ Get label for Principal Component with percent of variation
 }
 \examples{
 \dontrun{
-data.frame(PC = c(1,2,3), percent = c(40,10,0.5)) \%>\%
+data.frame(PC = c(1, 2, 3), percent = c(40, 10, 0.5)) \%>\%
   get_pc_percent_lab(2)
 }
 }

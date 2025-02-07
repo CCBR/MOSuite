@@ -192,7 +192,7 @@ filter_counts <- function(moo,
       legend_font_size = legend_font_size_for_histogram,
       number_of_legend_columns = number_of_histogram_legend_columns
     ) + ggplot2::labs(caption = "filtered counts")
-    corHM <- plot_heatmap(
+    corHM <- plot_corr_heatmap(
       counts_dat = df_filt[, samples_to_include],
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,

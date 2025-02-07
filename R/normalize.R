@@ -137,7 +137,7 @@ normalize_counts <- function(moo,
       legend_font_size = legend_font_size_for_histogram
     ) + ggplot2::labs(caption = "normalized counts")
     print(hist_plot)
-    corHM_plot <- plot_heatmap(
+    corHM_plot <- plot_corr_heatmap(
       counts_dat = df.filt,
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,

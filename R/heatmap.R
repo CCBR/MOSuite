@@ -5,16 +5,16 @@
 #' @return heatmap ggproto object
 #' @keywords internal
 #'
-plot_heatmap <- function(counts_dat,
-                         sample_metadata,
-                         sample_id_colname = NULL,
-                         feature_id_colname = NULL,
-                         group_colname = "Group",
-                         label_colname = "Label",
-                         color_values = c(
-                           "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-                           "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
-                         )) {
+plot_corr_heatmap <- function(counts_dat,
+                              sample_metadata,
+                              sample_id_colname = NULL,
+                              feature_id_colname = NULL,
+                              group_colname = "Group",
+                              label_colname = "Label",
+                              color_values = c(
+                                "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+                                "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
+                              )) {
   abort_packages_not_installed("amap", "ComplexHeatmap", "dendsort")
 
   if (is.null(sample_id_colname)) {
