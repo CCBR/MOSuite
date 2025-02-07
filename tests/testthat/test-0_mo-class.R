@@ -58,7 +58,7 @@ test_that("constructing MOO works for RENEE data", {
   )
 })
 
-test_that("annotation minmially contains feature id column", {
+test_that("annotation minimally contains feature id column", {
   moo <- create_multiOmicDataSet_from_dataframes(
     readr::read_tsv(
       system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")

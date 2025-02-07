@@ -15,6 +15,9 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
     analyses = S7::class_list
   ),
   constructor = function(sample_meta_dat, anno_dat, counts_lst, analyses_lst = list()) {
+    if (!("colors" %in% names(analyses_lst))) {
+      analyses_lst[["colors"]] <- set_colors(sample_meta_dat)
+    }
     S7::new_object(S7::S7_object(),
       sample_meta = sample_meta_dat,
       annotation = anno_dat,
