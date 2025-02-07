@@ -187,6 +187,10 @@ plot_pca_3d <- function(counts_dat,
     sample_id_colname <- colnames(sample_metadata)[1]
   }
 
+  # if (is.null(color_values)) {
+  #   color_values <- moo_nidap@analyses[['colors']][['Group']]
+  # }
+
   # calculate PCA
   pca_df <- calc_pca(
     counts_dat = counts_dat,
