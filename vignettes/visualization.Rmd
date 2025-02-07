@@ -1,5 +1,5 @@
 ---
-title: "visualization"
+title: "Visualization with built-in plots"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{visualization}
@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 5,
+  fig.height = 4
 )
 ```
 
@@ -18,22 +20,38 @@ knitr::opts_chunk$set(
 library(MOSuite)
 ```
 
-## NIDAP dataset
+## Default plots from each step
 
-```{r nidap_data}
+### filter
+
+```{r nidap_data_filter}
 moo_nidap <- create_multiOmicDataSet_from_dataframes(
   sample_meta_dat = as.data.frame(nidap_sample_metadata),
   count_dat = as.data.frame(nidap_raw_counts)
 ) %>%
   clean_raw_counts() %>%
-  filter_counts(group_colname = "Group", print_plots = TRUE) %>%
-  normalize_counts(group_colname = "Group", print_plots = TRUE) %>%
-  batch_correct_counts(
-    covariates_colname = "Group",
-    batch_colname = "Batch",
-    label_colname = "Label",
-    print_plots = TRUE
-  )
-
-# plot_pca(moo_nidap@counts$norm$voom, moo_nidap@sample_meta)
+  filter_counts(group_colname = "Group", print_plots = TRUE)
 ```
+
+### normalize
+
+```{r nidap_norm}
+moo_nidap %<>%
+  normalize_counts(group_colname = "Group", print_plots = TRUE)
+```
+
+### batch correct
+
+```{r nidap_batch}
+moo_nidap %<>% batch_correct_counts(
+  covariates_colname = "Group",
+  batch_colname = "Batch",
+  label_colname = "Label",
+  print_plots = TRUE
+)
+```
+
+
+## Customize plots
+
+TODO show how to use individual plotting functions and how to customize ggplot objects
