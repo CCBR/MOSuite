@@ -1,3 +1,12 @@
+#' Perform principal components analysis
+#'
+#' @inheritParams plot_pca
+#'
+#' @returns data frame with statistics for each principal component
+#' @export
+#'
+#' @examples
+#' calc_pca(nidap_raw_counts, sample_metadata) %>% head()
 calc_pca <- function(counts_dat,
                      sample_metadata,
                      sample_id_colname = NULL,
@@ -37,9 +46,10 @@ calc_pca <- function(counts_dat,
 #'
 #' @inheritParams filter_counts
 #' @inheritParams plot_histogram
+#' @param principal_components vector with numbered principal components to plot (Default: `c(1,2)`)
 #'
 #' @return ggplot object
-#'
+#' plot_pca(nidap_raw_counts, sample_metadata)
 plot_pca <- function(counts_dat,
                      sample_metadata,
                      sample_id_colname = NULL,
@@ -52,9 +62,9 @@ plot_pca <- function(counts_dat,
                        "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
                      ),
                      principal_components = c(1, 2),
-                     legend_position_for_pca = "top",
-                     point_size_for_pca = 1,
-                     add_label_to_pca = TRUE,
+                     legend_position = "top",
+                     point_size = 1,
+                     add_label = TRUE,
                      label_font_size = 3,
                      label_offset_x_ = 2,
                      label_offset_y_ = 2,
@@ -138,6 +148,17 @@ plot_pca <- function(counts_dat,
   return(pca_plot)
 }
 
+#' Plot 3-Dimensional PCA with plotly
+#'
+#' @inheritParams plot_pca
+#' @param principal_components vector with numbered principal components to plot (Default: `c(1,2,3)`)
+#' @param plot_title title for the plot
+#'
+#' @returns `plotly::plot_ly` figure
+#' @export
+#'
+#' @examples
+#' plot_pca(nidap_raw_counts, sample_metadata)
 plot_pca_3d <- function(counts_dat,
                         sample_metadata,
                         sample_id_colname = NULL,
@@ -152,8 +173,8 @@ plot_pca_3d <- function(counts_dat,
                           "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
                         ),
                         plot_title = "PCA 3D") {
-  if (length(principal_components) < 2 || length(principal_components) > 3) {
-    stop(glue::glue("principal_components must contain 2 or 3 values: {principal_components}"))
+  if (length(principal_components) != 3) {
+    stop(glue::glue("principal_components must contain 3 values: {principal_components}"))
   }
 
   if (is.null(sample_id_colname)) {
@@ -177,15 +198,15 @@ plot_pca_3d <- function(counts_dat,
   fig <- plotly::plot_ly(
     pca_wide,
     x = stats::as.formula(paste0("~ PC", prin_comp_x)),
-    y = ~ stats::as.formula(paste0("~ PC", prin_comp_y)),
-    z = ~ stats::as.formula(paste0("~ PC", prin_comp_z)),
-    # color = stats::as.formula(paste("~",group_colname)),
-    # colors = color_values,
+    y = stats::as.formula(paste0("~ PC", prin_comp_y)),
+    z = stats::as.formula(paste0("~ PC", prin_comp_z)),
+    color = stats::as.formula(paste("~", group_colname)),
+    colors = color_values,
     type = "scatter3d",
     mode = "markers",
     marker = list(size = point_size),
-    # hoverinfo = 'text',
-    # text = stats::as.formula(paste("~",sample_id_colname)),
+    hoverinfo = "text",
+    text = stats::as.formula(paste("~", sample_id_colname)),
     size = label_font_size
   )
   return(fig)

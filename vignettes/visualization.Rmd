@@ -55,3 +55,13 @@ moo_nidap %<>% batch_correct_counts(
 ## Customize plots
 
 TODO show how to use individual plotting functions and how to customize ggplot objects
+
+### 3D PCA
+
+```{r pca_3D}
+plot_pca_3d(moo_nidap@counts$batch,
+  moo_nidap@sample_meta,
+  group_colname = "Group",
+  label_colname = "Label"
+)
+```
