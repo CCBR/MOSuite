@@ -23,14 +23,17 @@ library(MOSuite)
 
 ## Default plots from each step
 
-### filter
+### clean
 
-```{r nidap_data_filter}
+```{r nidap_data_clean}
 moo_nidap <- create_multiOmicDataSet_from_dataframes(
   sample_meta_dat = as.data.frame(nidap_sample_metadata),
   count_dat = as.data.frame(nidap_raw_counts)
 ) %>%
-  clean_raw_counts() %>%
+  clean_raw_counts(print_plots = TRUE)
+```
+```{r nidap_filter}
+moo_nidap %<>%
   filter_counts(group_colname = "Group", print_plots = TRUE)
 ```
 
@@ -63,6 +66,7 @@ TODO show how to use individual plotting functions and how to customize ggplot o
 plot_pca_3d(moo_nidap@counts$batch,
   moo_nidap@sample_meta,
   group_colname = "Group",
-  label_colname = "Label"
+  label_colname = "Label",
+  color_values = moo_nidap@analyses[["colors"]][["Group"]]
 )
 ```
