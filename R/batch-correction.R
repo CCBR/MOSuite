@@ -35,7 +35,7 @@
 #'   batch_correct_counts(
 #'     count_type = "norm",
 #'     sub_count_type = "voom",
-#'     covariates_colname = "Group",
+#'     covariates_colnames = "Group",
 #'     batch_colname = "Batch",
 #'     label_colname = "Label"
 #'   )
@@ -160,9 +160,10 @@ batch_correct_counts <- function(moo,
       counts_dat = combat_edata,
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,
+      feature_id_colname = feature_id_colname,
+      group_colname = group_colname,
       label_colname = label_colname,
-      anno_column = group_colname,
-      anno_colors = colors_for_plots
+      color_values = colors_for_plots
     ) + ggplot2::labs(caption = "batch-corrected counts")
 
     print(pca_plot)

@@ -127,11 +127,12 @@ normalize_counts <- function(moo,
     ) + ggplot2::labs(caption = "normalized counts")
     print(pca_plot)
     hist_plot <- plot_histogram(
-      df.voom,
-      sample_metadata,
-      feature_id_colname,
-      group_colname,
-      label_colname,
+      counts_dat = df.voom,
+      sample_metadata = sample_metadata,
+      sample_id_colname = sample_id_colname,
+      feature_id_colname = feature_id_colname,
+      group_colname = group_colname,
+      label_colname = label_colname,
       color_values = colors_for_plots,
       x_axis_label = "Normalized Counts"
     ) + ggplot2::labs(caption = "normalized counts")
@@ -139,10 +140,11 @@ normalize_counts <- function(moo,
     corHM_plot <- plot_heatmap(
       counts_dat = df.filt,
       sample_metadata = sample_metadata,
-      anno_colors = colors_for_plots,
-      anno_column = group_colname,
+      sample_id_colname = sample_id_colname,
+      feature_id_colname = feature_id_colname,
+      group_colname = group_colname,
       label_colname = label_colname,
-      sample_id_colname = sample_id_colname
+      color_values = colors_for_plots
     ) + ggplot2::labs(caption = "normalized counts")
     print(corHM_plot)
   }

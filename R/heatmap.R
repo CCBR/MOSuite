@@ -5,7 +5,8 @@
 #' @return heatmap ggproto object
 #' @keywords internal
 #'
-plot_heatmap <- function(counts_dat, sample_metadata,
+plot_heatmap <- function(counts_dat,
+                         sample_metadata,
                          sample_id_colname = NULL,
                          feature_id_colname = NULL,
                          group_colname = "Group",
@@ -44,7 +45,11 @@ plot_heatmap <- function(counts_dat, sample_metadata,
   old <- sample_metadata[[sample_id_colname]]
   new <- sample_metadata[[label_colname]]
   names(old) <- new
-  counts_dat <- dplyr::rename(counts_dat, tidyselect::any_of(old))
+  counts_dat %<>% dplyr::rename(tidyselect::any_of(old))
+  if (feature_id_colname %in% colnames(counts_dat)) {
+    counts_dat %<>%
+      tibble::column_to_rownames(var = feature_id_colname)
+  }
 
   mat <- as.matrix(counts_dat)
   tcounts <- t(mat)
