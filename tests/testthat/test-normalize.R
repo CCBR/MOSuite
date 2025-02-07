@@ -28,7 +28,7 @@ test_that("normalize works for RENEE", {
       minimum_count_value_to_be_considered_nonzero = 1,
       minimum_number_of_samples_with_nonzero_counts_in_total = 1,
       minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
-      make_plots = FALSE
+      print_plots = FALSE
     ) %>%
     normalize_counts(group_colname = "condition", label_colname = "sample_id")
   expect_equal(

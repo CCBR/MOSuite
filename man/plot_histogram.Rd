@@ -5,28 +5,32 @@
 \title{Plot histogram}
 \usage{
 plot_histogram(
-  log_counts,
+  counts_dat,
   sample_metadata,
-  feature_id_colname,
-  group_colname,
-  label_colname,
-  color_values,
-  color_histogram_by_group = FALSE,
-  set_min_max_for_x_axis_for_histogram = FALSE,
-  minimum_for_x_axis_for_histogram = -1,
-  maximum_for_x_axis_for_histogram = 1,
-  legend_position_for_histogram = "top",
-  legend_font_size_for_histogram = 10,
-  number_of_histogram_legend_columns = 6,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = "Label",
+  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_by_group = FALSE,
+  set_min_max_for_x_axis = FALSE,
+  minimum_for_x_axis = -1,
+  maximum_for_x_axis = 1,
+  legend_position = "top",
+  legend_font_size = 10,
+  number_of_legend_columns = 6,
   x_axis_label = "Counts",
   y_axis_label = "Density",
-  make_plots_interactive = FALSE
+  interactive_plots = FALSE
 )
 }
 \arguments{
-\item{log_counts}{log-transformed filtered counts}
+\item{counts_dat}{counts data}
 
 \item{sample_metadata}{sample metadata as a data frame or tibble.}
+
+\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first column in the sample metadata will be used.)}
 
 \item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
@@ -36,25 +40,25 @@ plot_histogram(
 
 \item{color_values}{vector of colors as hex values or names recognized by R}
 
-\item{color_histogram_by_group}{Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.}
+\item{color_by_group}{Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.}
 
-\item{set_min_max_for_x_axis_for_histogram}{whether to set min/max value for histogram x-axis}
+\item{set_min_max_for_x_axis}{whether to override the default for \code{ggplot2::xlim()} (default: \code{FALSE})}
 
-\item{minimum_for_x_axis_for_histogram}{x-axis minimum for histogram plot}
+\item{minimum_for_x_axis}{value to override default \code{min} for \code{ggplot2::xlim()}}
 
-\item{maximum_for_x_axis_for_histogram}{x-axis maximum for histogram plot}
+\item{maximum_for_x_axis}{value to override default \code{max} for \code{ggplot2::xlim()}}
 
-\item{legend_position_for_histogram}{legend position for the histogram plot. consider setting to 'none' for a large number of samples.}
+\item{legend_position}{passed to in \code{legend.position} \code{ggplot2::theme()}}
 
-\item{legend_font_size_for_histogram}{legend font size for the histogram plot}
+\item{legend_font_size}{passed to \code{ggplot2::element_text()} via \code{ggplot2::theme()}}
 
-\item{number_of_histogram_legend_columns}{number of columns for the histogram legend}
+\item{number_of_legend_columns}{passed to \code{ncol} in \code{ggplot2::guide_legend()}}
 
-\item{x_axis_label}{text label for the x axis}
+\item{x_axis_label}{text label for the x axis \code{ggplot2::xlab()}}
 
-\item{y_axis_label}{text label for the y axis}
+\item{y_axis_label}{text label for the y axis \code{ggplot2::ylab()}}
 
-\item{make_plots_interactive}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
+\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive_plots with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
 }
 \value{
 ggplot object

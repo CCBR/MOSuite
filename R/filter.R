@@ -31,9 +31,9 @@
 #' @param minimum_number_of_samples_with_nonzero_counts_in_total Minimum number of samples (total) with non-zero counts
 #' @param use_group_based_filtering If TRUE, only keeps features (e.g. genes) that have at least a certain number of samples with nonzero CPM counts in at least one group
 #' @param minimum_number_of_samples_with_nonzero_counts_in_a_group Only keeps genes that have at least this number of samples with nonzero CPM counts in at least one group
-#' @param make_plots whether to create plots
-#' @param principal_component_on_x_axis The principle component to plot on the x-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 1)
-#' @param principal_component_on_y_axis The principle component to plot on the y-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 2)
+#' @param print_plots whether to create plots and print them
+#' @param principal_component_on_x_axis The principal component to plot on the x-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 1)
+#' @param principal_component_on_y_axis The principal component to plot on the y-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 2)
 #' @param legend_position_for_pca legend position for the PCA plot
 #' @param point_size_for_pca geom point size for the PCA plot
 #' @param add_label_to_pca label points on the PCA plot
@@ -49,10 +49,7 @@
 #' @param legend_font_size_for_histogram legend font size for the histogram plot
 #' @param number_of_histogram_legend_columns number of columns for the histogram legend
 #' @param colors_for_plots Colors for the PCA and histogram will be picked, in order, from this list. If you have >12 samples or groups, program will choose from a wide range of random colors
-#' @param number_of_image_rows number of rows for the plot image. 1 = side-by-side, 2 = stacked
-#' @param make_plots_interactive set to TRUE to make PCA and Histogram plots interactive with `plotly`, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.
-#' @param plot_correlation_matrix_heatmap Data sets with a large number of samples may be too large to create a correlation matrix heat map. If this template takes longer than 5 minutes to run, Toggle switch to FALSE and the correlation matrix will not be be created. Default is TRUE.
-#'
+#' @param interactive_plots set to TRUE to make PCA and Histogram plots interactive_plots with `plotly`, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.
 #' @return `multiOmicDataSet` with filtered counts
 #' @export
 #'
@@ -97,13 +94,21 @@ filter_counts <- function(moo,
                           legend_font_size_for_histogram = 10,
                           number_of_histogram_legend_columns = 6,
                           colors_for_plots = c(
-                            "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-                            "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
+                            "#5954d6",
+                            "#e1562c",
+                            "#b80058",
+                            "#00c6f8",
+                            "#d163e6",
+                            "#00a76c",
+                            "#ff9287",
+                            "#008cf9",
+                            "#006e00",
+                            "#796880",
+                            "#FFA500",
+                            "#878500"
                           ),
-                          number_of_image_rows = 2,
-                          make_plots_interactive = FALSE,
-                          plot_correlation_matrix_heatmap = TRUE,
-                          make_plots = TRUE) {
+                          print_plots = FALSE,
+                          interactive_plots = FALSE) {
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
   }
@@ -122,7 +127,10 @@ filter_counts <- function(moo,
   if (is.null(label_colname)) {
     label_colname <- sample_id_colname
   }
-  df <- counts_dat %>% dplyr::select(tidyselect::all_of(feature_id_colname), tidyselect::all_of(samples_to_include))
+  df <- counts_dat %>% dplyr::select(
+    tidyselect::all_of(feature_id_colname),
+    tidyselect::all_of(samples_to_include)
+  )
 
   # filter out low count genes
   df_filt <- remove_low_count_genes(
@@ -144,89 +152,64 @@ filter_counts <- function(moo,
     colors_for_plots <- c(colors_for_plots, more_cols)
   }
 
-  if (isTRUE(make_plots)) {
-    log_counts <- log((as.matrix(df_filt[, samples_to_include] + 0.5)))
-    rownames(log_counts) <- df_filt[, 1]
-
-    pcaPlot <- plot_pca(
-      log_counts,
-      sample_metadata,
-      samples_to_include,
-      samples_to_rename,
-      group_colname,
-      label_colname,
+  if (isTRUE(print_plots)) {
+    log_counts <- df_filt %>%
+      dplyr::mutate(dplyr::across(tidyselect::all_of(samples_to_include), ~ log(.x + 0.5)))
+    pca_plot <- plot_pca(
+      counts_dat = log_counts,
+      sample_metadata = sample_metadata,
+      sample_id_colname = sample_id_colname,
+      feature_id_colname = feature_id_colname,
+      samples_to_rename = samples_to_rename,
+      group_colname = group_colname,
+      label_colname = label_colname,
       color_values = colors_for_plots,
-      principal_component_on_x_axis = principal_component_on_x_axis,
-      principal_component_on_y_axis = principal_component_on_y_axis,
-      legend_position_for_pca = legend_position_for_pca,
-      point_size_for_pca = point_size_for_pca,
-      add_label_to_pca = add_label_to_pca,
+      principal_components = c(
+        principal_component_on_x_axis,
+        principal_component_on_y_axis
+      ),
+      legend_position = legend_position_for_pca,
+      point_size = point_size_for_pca,
+      add_label = add_label_to_pca,
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
-      label_offset_x_ = label_offset_x_
-    )
+      label_offset_x_ = label_offset_x_,
+    ) + ggplot2::labs(caption = "filtered counts")
 
-    histPlot <- plot_histogram(
+    hist_plot <- plot_histogram(
       log_counts,
       sample_metadata,
+      sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,
       group_colname = group_colname,
       label_colname = label_colname,
       color_values = colors_for_plots,
-      color_histogram_by_group = color_histogram_by_group,
-      set_min_max_for_x_axis_for_histogram = set_min_max_for_x_axis_for_histogram,
-      minimum_for_x_axis_for_histogram = minimum_for_x_axis_for_histogram,
-      maximum_for_x_axis_for_histogram = maximum_for_x_axis_for_histogram,
-      legend_position_for_histogram = legend_position_for_histogram,
-      legend_font_size_for_histogram = legend_font_size_for_histogram,
-      number_of_histogram_legend_columns = number_of_histogram_legend_columns
-    )
+      color_by_group = color_histogram_by_group,
+      set_min_max_for_x_axis = set_min_max_for_x_axis_for_histogram,
+      minimum_for_x_axis = minimum_for_x_axis_for_histogram,
+      maximum_for_x_axis = maximum_for_x_axis_for_histogram,
+      legend_position = legend_position_for_histogram,
+      legend_font_size = legend_font_size_for_histogram,
+      number_of_legend_columns = number_of_histogram_legend_columns
+    ) + ggplot2::labs(caption = "filtered counts")
+    corHM <- plot_corr_heatmap(
+      counts_dat = df_filt[, samples_to_include],
+      sample_metadata = sample_metadata,
+      sample_id_colname = sample_id_colname,
+      feature_id_colname = feature_id_colname,
+      label_colname = label_colname,
+      group_colname = group_colname,
+      color_values = colors_for_plots
+    ) + ggplot2::labs(caption = "filtered counts")
 
-    # Output Figures
-    if (plot_correlation_matrix_heatmap == TRUE) {
-      if (make_plots_interactive == TRUE) {
-        pcaPlot1 <- (pcaPlot) %>% plotly::ggplotly(tooltip = c("sample", "group"))
-        histPlot2 <- (histPlot + ggplot2::theme(legend.position = "none")) %>%
-          plotly::ggplotly(tooltip = c("sample"))
-
-        grid::grid.newpage()
-        # print(pcaPlot1)
-        grid::grid.newpage()
-        # print(histPlot2)
-      } else {
-        corHM <- plot_heatmap(
-          counts_dat = df_filt[, samples_to_include],
-          sample_metadata = sample_metadata,
-          sample_id_colname = sample_id_colname,
-          label_colname = label_colname,
-          anno_column = group_colname,
-          anno_colors = colors_for_plots
-        )
-
-        # grid.newpage()
-        # print(pcaPlot)
-        grid::grid.newpage()
-        # print(corHM)
-        grid::grid.newpage()
-        # print(histPlot)
-      }
-    } else {
-      if (make_plots_interactive == TRUE) {
-        pcaPlot1 <- (pcaPlot) %>% plotly::ggplotly(tooltip = c("sample", "group"))
-        histPlot2 <- (histPlot + ggplot2::theme(legend.position = "none")) %>%
-          plotly::ggplotly(tooltip = "sample")
-
-        grid::grid.newpage()
-        # print(pcaPlot1)
-        grid::grid.newpage()
-        # print(histPlot2)
-      } else {
-        grid::grid.newpage()
-        # print(pcaPlot)
-        grid::grid.newpage()
-        # print(histPlot)
-      }
+    if (isTRUE(interactive_plots)) {
+      pca_plot %<>% plotly::ggplotly(tooltip = c("sample", "group"))
+      hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) %>%
+        plotly::ggplotly(tooltip = c("sample"))
     }
+    print(pca_plot)
+    print(hist_plot)
+    print(corHM)
   }
   df_final <- df %>%
     dplyr::filter(!!rlang::sym(feature_id_colname) %in% df_filt[, feature_id_colname])
@@ -239,7 +222,6 @@ filter_counts <- function(moo,
 #' Remove low-count genes
 #'
 #' TODO this function also transforms raw counts to CPM, but that should be a separate function before this step, before filter_counts function()
-#' TODO document `isexpr1` column in output
 #'
 #' @inheritParams filter_counts
 #'
@@ -255,7 +237,8 @@ remove_low_count_genes <- function(counts_dat,
                                    minimum_count_value_to_be_considered_nonzero = 8,
                                    minimum_number_of_samples_with_nonzero_counts_in_total = 7,
                                    minimum_number_of_samples_with_nonzero_counts_in_a_group = 3) {
-  value <- NULL
+  # TODO refactor with tidyverse
+  value <- isexpr1 <- NULL
   df <- counts_dat
 
   df <- df[stats::complete.cases(df), ]
@@ -281,14 +264,14 @@ remove_low_count_genes <- function(counts_dat,
     tcounts.group <- tcounts.tot %>%
       tidyr::pivot_wider(names_from = "variable", values_from = "sum")
     colSums(tcounts.group[(1:colnum + 1)] >= minimum_number_of_samples_with_nonzero_counts_in_a_group) >= 1 -> tcounts.keep
-    df_filt <- trans_df[tcounts.keep, ]
-    df_filt %>% tibble::rownames_to_column(feature_id_colname) -> df_filt
+    df_filt <- trans_df[tcounts.keep, ] %>%
+      tibble::rownames_to_column(feature_id_colname)
   } else {
     trans_df$isexpr1 <- rowSums(as.matrix(trans_df[, -1]) > minimum_count_value_to_be_considered_nonzero) >= minimum_number_of_samples_with_nonzero_counts_in_total
-
-    df_filt <- as.data.frame(trans_df[trans_df$isexpr1, ])
+    df_filt <- trans_df %>%
+      dplyr::filter(isexpr1) %>%
+      dplyr::select(-isexpr1)
   }
-
 
   message(paste0("Number of features after filtering: ", nrow(df_filt)))
   return(df_filt)

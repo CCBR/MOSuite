@@ -13,7 +13,10 @@ batch_correct_counts(
   samples_to_include = NULL,
   covariates_colnames = "Group",
   batch_colname = "Batch",
-  label_colname = NULL
+  label_colname = NULL,
+  colors_for_plots = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  print_plots = FALSE
 )
 }
 \arguments{
@@ -43,6 +46,10 @@ If your data set has no batches, you can provide a batch column with the same
 value in every row to skip batch correction (alternatively, simply do not run this function).}
 
 \item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: \code{NULL} -- \code{sample_id_colname} will be used.)}
+
+\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list. If you have >12 samples or groups, program will choose from a wide range of random colors}
+
+\item{print_plots}{whether to create plots and print them}
 }
 \value{
 \code{multiOmicDataSet} with batch-corrected counts
@@ -66,7 +73,7 @@ moo <- multiOmicDataSet(
   batch_correct_counts(
     count_type = "norm",
     sub_count_type = "voom",
-    covariates_colname = "Group",
+    covariates_colnames = "Group",
     batch_colname = "Batch",
     label_colname = "Label"
   )

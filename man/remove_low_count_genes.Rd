@@ -36,6 +36,5 @@ counts matrix with low-count genes removed
 }
 \description{
 TODO this function also transforms raw counts to CPM, but that should be a separate function before this step, before filter_counts function()
-TODO document \code{isexpr1} column in output
 }
 \keyword{internal}

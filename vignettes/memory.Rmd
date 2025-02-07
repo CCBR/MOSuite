@@ -9,6 +9,7 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+options(rmarkdown.html_vignette.check_title = FALSE)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -49,8 +50,7 @@ run_mosuite <- function(metadat, counts) {
     calc_cpm() %>%
     filter_counts(
       group_colname = "treatments_radiation_treatment_type",
-      label_colname = "sample",
-      make_plots = FALSE
+      label_colname = "sample"
     )
 }
 moo <- run_mosuite(metadat, counts)

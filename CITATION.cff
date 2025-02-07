@@ -438,6 +438,26 @@ references:
   year: '2025'
   doi: 10.32614/CRAN.package.amap
 - type: software
+  title: broom
+  abstract: 'broom: Convert Statistical Objects into Tidy Tibbles'
+  notes: Suggests
+  url: https://broom.tidymodels.org/
+  repository: https://CRAN.R-project.org/package=broom
+  authors:
+  - family-names: Robinson
+    given-names: David
+    email: admiral.david@gmail.com
+  - family-names: Hayes
+    given-names: Alex
+    email: alexpghayes@gmail.com
+    orcid: https://orcid.org/0000-0002-4985-5160
+  - family-names: Couch
+    given-names: Simon
+    email: simon.couch@posit.co
+    orcid: https://orcid.org/0000-0001-5676-5107
+  year: '2025'
+  doi: 10.32614/CRAN.package.broom
+- type: software
   title: cffr
   abstract: 'cffr: Generate Citation File Format (''cff'') Metadata for R Packages'
   notes: Suggests

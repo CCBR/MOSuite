@@ -46,14 +46,22 @@ normalize_counts <- function(moo,
                              maximum_for_x_axis_for_histogram = 1,
                              legend_font_size_for_histogram = 10,
                              legend_position_for_histogram = "top",
-                             number_of_histogram_legend_columns = 6,
-                             number_of_image_rows = 2,
                              colors_for_plots = c(
-                               "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-                               "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
+                               "#5954d6",
+                               "#e1562c",
+                               "#b80058",
+                               "#00c6f8",
+                               "#d163e6",
+                               "#00a76c",
+                               "#ff9287",
+                               "#008cf9",
+                               "#006e00",
+                               "#796880",
+                               "#FFA500",
+                               "#878500"
                              ),
-                             make_plots_interactive = FALSE,
-                             plot_correlation_matrix_heatmap = TRUE) {
+                             print_plots = FALSE,
+                             interactive_plots = FALSE) {
   counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
 
@@ -95,46 +103,53 @@ normalize_counts <- function(moo,
   df.voom <- as.data.frame(v$E) %>% tibble::rownames_to_column(feature_id_colname)
   message(paste0("Total number of features included: ", nrow(df.voom)))
   ### PH: END Limma Normalization
-
-  pca_plot <- plot_pca(v$E,
-    sample_metadata,
-    samples_to_include,
-    samples_to_rename,
-    group_colname,
-    label_colname,
-    color_values = colors_for_plots,
-    principal_component_on_x_axis = principal_component_on_x_axis,
-    principal_component_on_y_axis = principal_component_on_y_axis,
-    legend_position_for_pca = legend_position_for_pca,
-    point_size_for_pca = point_size_for_pca,
-    add_label_to_pca = add_label_to_pca,
-    label_font_size = label_font_size,
-    label_offset_y_ = label_offset_y_,
-    label_offset_x_ = label_offset_x_
-  )
-
-  histPlot <- plot_histogram(
-    v$E,
-    sample_metadata,
-    feature_id_colname,
-    group_colname,
-    label_colname,
-    color_values = colors_for_plots,
-    x_axis_label = "Normalized Counts"
-  )
-  if (isTRUE(plot_correlation_matrix_heatmap)) {
-    corHM <- plot_heatmap(
+  if (isTRUE(print_plots)) {
+    pca_plot <- plot_pca(
+      counts_dat = df.voom,
+      sample_metadata = sample_metadata,
+      sample_id_colname = sample_id_colname,
+      samples_to_rename = samples_to_rename,
+      group_colname = group_colname,
+      label_colname = label_colname,
+      color_values = colors_for_plots,
+      principal_components = c(
+        principal_component_on_x_axis,
+        principal_component_on_y_axis
+      ),
+      legend_position = legend_position_for_pca,
+      point_size = point_size_for_pca,
+      add_label = add_label_to_pca,
+      label_font_size = label_font_size,
+      label_offset_y_ = label_offset_y_,
+      label_offset_x_ = label_offset_x_
+    ) + ggplot2::labs(caption = "normalized counts")
+    print(pca_plot)
+    hist_plot <- plot_histogram(
+      counts_dat = df.voom,
+      sample_metadata = sample_metadata,
+      sample_id_colname = sample_id_colname,
+      feature_id_colname = feature_id_colname,
+      group_colname = group_colname,
+      label_colname = label_colname,
+      color_values = colors_for_plots,
+      x_axis_label = "Normalized Counts",
+      legend_position = legend_position_for_histogram,
+      legend_font_size = legend_font_size_for_histogram
+    ) + ggplot2::labs(caption = "normalized counts")
+    print(hist_plot)
+    corHM_plot <- plot_corr_heatmap(
       counts_dat = df.filt,
       sample_metadata = sample_metadata,
-      anno_colors = colors_for_plots,
-      anno_column = group_colname,
+      sample_id_colname = sample_id_colname,
+      feature_id_colname = feature_id_colname,
+      group_colname = group_colname,
       label_colname = label_colname,
-      sample_id_colname = sample_id_colname
-    )
+      color_values = colors_for_plots
+    ) + ggplot2::labs(caption = "normalized counts")
+    print(corHM_plot)
   }
 
-  message("Sample columns")
-  message(colnames(df.voom)[!colnames(df.voom) %in% feature_id_colname])
+  message(paste("Sample columns:", paste(colnames(df.voom)[!colnames(df.voom) %in% feature_id_colname]), collapse = ", "))
 
   if (isFALSE("norm" %in% names(moo@counts))) {
     moo@counts[["norm"]] <- list()

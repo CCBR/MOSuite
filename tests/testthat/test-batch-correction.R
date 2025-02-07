@@ -14,9 +14,10 @@ test_that("batch_correction works for NIDAP", {
     batch_correct_counts(
       count_type = "norm",
       sub_count_type = "voom",
-      covariates_colname = "Group",
+      covariates_colnames = "Group",
       batch_colname = "Batch",
-      label_colname = "Label"
+      label_colname = "Label",
+      print_plots = TRUE
     )
   # TODO: getting different results than nidap_batch_corrected_counts
   expect_true(all.equal(

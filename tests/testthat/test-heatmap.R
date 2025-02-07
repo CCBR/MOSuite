@@ -13,7 +13,7 @@ colors_vec <- c(
   "#878500"
 )
 test_that("heatmap works", {
-  p <- plot_heatmap(
+  p <- plot_corr_heatmap(
     counts_dat = nidap_filtered_counts %>%
       dplyr::select(tidyselect::all_of(
         c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3")
@@ -22,8 +22,8 @@ test_that("heatmap works", {
     sample_metadata = as.data.frame(nidap_sample_metadata),
     sample_id_colname = "Sample",
     label_colname = "Label",
-    anno_column = "Group",
-    anno_colors = colors_vec
+    group_colname = "Group",
+    color_values = colors_vec
   )
   expect_s4_class(p, "Heatmap")
   expect_equal(p@matrix, structure(
@@ -120,13 +120,13 @@ test_that("heatmap works", {
 
 # TODO get heatmap working on tibbles also
 # test_that("heatmap works", {
-#   corHM <- plot_heatmap(
+#   corHM <- plot_corr_heatmap(
 #     counts_dat = nidap_filtered_counts %>%
 #       dplyr::select(tidyselect::all_of(c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"))),
 #     sample_metadata = nidap_sample_metadata,
 #     sample_id_colname = "Sample",
 #     label_colname = "Label",
-#     anno_column = "Group",
-#     anno_colors = colors_vec
+#     group_column = "Group",
+#     color_values = colors_vec
 #   )
 # })

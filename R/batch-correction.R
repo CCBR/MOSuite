@@ -35,7 +35,7 @@
 #'   batch_correct_counts(
 #'     count_type = "norm",
 #'     sub_count_type = "voom",
-#'     covariates_colname = "Group",
+#'     covariates_colnames = "Group",
 #'     batch_colname = "Batch",
 #'     label_colname = "Label"
 #'   )
@@ -50,7 +50,22 @@ batch_correct_counts <- function(moo,
                                  samples_to_include = NULL,
                                  covariates_colnames = "Group",
                                  batch_colname = "Batch",
-                                 label_colname = NULL) {
+                                 label_colname = NULL,
+                                 colors_for_plots = c(
+                                   "#5954d6",
+                                   "#e1562c",
+                                   "#b80058",
+                                   "#00c6f8",
+                                   "#d163e6",
+                                   "#00a76c",
+                                   "#ff9287",
+                                   "#008cf9",
+                                   "#006e00",
+                                   "#796880",
+                                   "#FFA500",
+                                   "#878500"
+                                 ),
+                                 print_plots = FALSE) {
   abort_packages_not_installed("sva")
   # select correct counts matrix
   if (!(count_type %in% names(moo@counts))) {
@@ -95,17 +110,16 @@ batch_correct_counts <- function(moo,
       "Batch column ({batch_colname}) cannot be included in covariates."
     ))
   }
-  counts_matr <- counts_dat %>%
-    counts_dat_to_matrix(feature_id_colname = feature_id_colname)
-
   if (length(unique(batch_vctr)) <= 1) {
-    combat_edata <- counts_matr
+    combat_edata <- counts_dat
     warning(
       glue::glue(
         "Batch column {batch_column} contains only 1 unique value; skipping batch correction"
       )
     )
   } else {
+    counts_matr <- counts_dat %>%
+      counts_dat_to_matrix(feature_id_colname = feature_id_colname)
     # coerce covariate columns to factors
     sample_metadata %<>%
       dplyr::mutate(dplyr::across(tidyselect::all_of(covariates_colnames), ~ as.factor(.x)))
@@ -118,23 +132,49 @@ batch_correct_counts <- function(moo,
       )), data = sample_metadata),
       par.prior = TRUE,
       prior.plots = FALSE
-    )
+    ) %>%
+      as.data.frame() %>%
+      tibble::rownames_to_column(feature_id_colname)
   }
 
-  combat_edata <- as.data.frame(combat_edata) %>%
-    tibble::rownames_to_column(feature_id_colname)
+  if (isTRUE(print_plots)) {
+    group_colname <- batch_colname
+    pca_plot <- plot_pca(
+      counts_dat = combat_edata,
+      sample_metadata = sample_metadata,
+      sample_id_colname = sample_id_colname,
+      feature_id_colname = feature_id_colname,
+      group_colname = group_colname,
+      label_colname = label_colname,
+    ) + ggplot2::labs(caption = "batch-corrected counts")
+
+    hist_plot <- plot_histogram(
+      combat_edata,
+      sample_metadata,
+      sample_id_colname = sample_id_colname,
+      feature_id_colname = feature_id_colname,
+      group_colname = group_colname,
+      label_colname = label_colname,
+    ) + ggplot2::labs(caption = "batch-corrected counts")
+    corHM <- plot_corr_heatmap(
+      counts_dat = combat_edata,
+      sample_metadata = sample_metadata,
+      sample_id_colname = sample_id_colname,
+      feature_id_colname = feature_id_colname,
+      group_colname = group_colname,
+      label_colname = label_colname,
+      color_values = colors_for_plots
+    ) + ggplot2::labs(caption = "batch-corrected counts")
+
+    print(pca_plot)
+    print(hist_plot)
+    print(corHM)
+  }
 
   message(glue::glue("The total number of features in output: {nrow(combat_edata)}"))
-  message(
-    glue::glue(
-      "Samples:\n\t{colnames(combat_edata[, !colnames(combat_edata) %in% feature_id_colname])}"
-    )
-  )
-  message(
-    glue::glue(
-      "Number of samples after batch correction: {length(samples_to_include)}"
-    )
-  )
+  message(glue::glue(
+    "Number of samples after batch correction: {ncol(combat_edata)}"
+  ))
 
   moo@counts[["batch"]] <- combat_edata
   return(moo)

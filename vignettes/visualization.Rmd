@@ -1,0 +1,68 @@
+---
+title: "Visualization with built-in plots"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{visualization}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+options(rmarkdown.html_vignette.check_title = FALSE)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 5,
+  fig.height = 4
+)
+```
+
+```{r setup}
+library(MOSuite)
+```
+
+## Default plots from each step
+
+### filter
+
+```{r nidap_data_filter}
+moo_nidap <- create_multiOmicDataSet_from_dataframes(
+  sample_meta_dat = as.data.frame(nidap_sample_metadata),
+  count_dat = as.data.frame(nidap_raw_counts)
+) %>%
+  clean_raw_counts() %>%
+  filter_counts(group_colname = "Group", print_plots = TRUE)
+```
+
+### normalize
+
+```{r nidap_norm}
+moo_nidap %<>%
+  normalize_counts(group_colname = "Group", print_plots = TRUE)
+```
+
+### batch correct
+
+```{r nidap_batch}
+moo_nidap %<>% batch_correct_counts(
+  covariates_colname = "Group",
+  batch_colname = "Batch",
+  label_colname = "Label",
+  print_plots = TRUE
+)
+```
+
+
+## Customize plots
+
+TODO show how to use individual plotting functions and how to customize ggplot objects
+
+### 3D PCA
+
+```{r pca_3D}
+plot_pca_3d(moo_nidap@counts$batch,
+  moo_nidap@sample_meta,
+  group_colname = "Group",
+  label_colname = "Label"
+)
+```

@@ -1,5 +1,3 @@
-# TODO replace print() with message() or warning() where appropriate
-
 #' Clean Raw Counts
 #'
 #' @inheritParams filter_counts
@@ -51,6 +49,7 @@ clean_raw_counts <- function(moo,
                              split_gene_name = TRUE,
                              aggregate_rows_with_duplicate_gene_names = TRUE,
                              gene_name_column_to_use_for_collapsing_duplicates = "") {
+  message(glue::glue("* cleaning {count_type} counts"))
   counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
 
@@ -78,40 +77,34 @@ clean_raw_counts <- function(moo,
     ## convert special charchers to _
     cl2 <- gsub("-| |\\:", "_", colnames(counts_dat))
     if (length(cl2[(cl2) != colnames(counts_dat)]) > 0) {
-      print("Columns had special characters relpaced with _ ")
-      # (colnames(counts_dat)[(colnames(counts_dat))!=cl2])
-      # print(cl2[(cl2)!=colnames(counts_dat)])
+      message(glue::glue(
+        "Columns had special characters relpaced with underscore: ",
+        glue::glue_collapse(colnames(counts_dat)[(colnames(counts_dat)) != cl2], sep = ", ")
+      ))
       colnames(counts_dat) <- cl2
     }
 
     ## if names begin with number add X
     cl2 <- sub("^(\\d)", "X\\1", colnames(counts_dat))
     if (length(cl2[(cl2) != colnames(counts_dat)]) > 0) {
-      print("Columns started with numbers and an X was added to colname :")
-      # (colnames(counts_dat)[(colnames(counts_dat))!=cl2])
-      # print(cl2[(cl2)!=colnames(counts_dat)])
+      message("Columns started with numbers and an X was added to colname :")
       colnames(counts_dat) <- cl2
     }
-
-    print(colnames(counts_dat)[!colnames(counts_dat) %in% feature_id_colname] %>% as.data.frame(),
-      row.names = F
-    )
-    # print("Final Colnames:")
   } else {
     ## invalid name format
     if (any(make.names(colnames(counts_dat)) != colnames(counts_dat))) {
-      print("Error: The following counts matrix column names are not valid:\n")
-      print(colnames(counts_dat)[make.names(colnames(counts_dat)) != colnames(counts_dat)])
-      print(
-        "Likely causes are columns starting with numbers or other special characters eg spaces.\n"
-      )
-      # stop("Bad column names.")
+      message(paste("Error: The following counts matrix column names are not valid:",
+        paste(colnames(counts_dat)[make.names(colnames(counts_dat)) != colnames(counts_dat)], collapse = ", "),
+        "Likely causes are columns starting with numbers or other special characters eg spaces.",
+        .sep = "\n"
+      ))
     }
     ## Names Contain dashes
     if (sum(grepl("-", colnames(counts_dat))) != 0) {
-      print("The sample names cannot contain dashes.")
-      print(colnames(counts_dat)[grepl("-", colnames(counts_dat))])
-      # stop("No dashes allowed in column names")
+      message(paste(
+        "The sample names cannot contain dashes:",
+        paste(colnames(counts_dat)[grepl("-", colnames(counts_dat))], collapse = ", ")
+      ))
     }
   }
   ### PH: END Clean up Sample Name columns
@@ -209,7 +202,7 @@ separate_gene_meta_columns <- function(counts_dat, split_gene_name = TRUE) {
     })
 
     if ("" %in% Ensembl_ID[, 1] | "" %in% Ensembl_ID[, 2]) {
-      print(paste0("Not able to identify multiple id's in ", feature_id_colname))
+      message(glue::glue("\nNot able to identify multiple id's in {feature_id_colname}"))
       # colnames(df)[colnames(df)%in%clm]=gene_col
       colnames(counts_dat)[colnames(counts_dat) %in% feature_id_colname] <- out_colname
     } else {
@@ -227,7 +220,7 @@ separate_gene_meta_columns <- function(counts_dat, split_gene_name = TRUE) {
         }
       } else {
         colnames(Ensembl_ID) <- c("Feature_id_1", "Feature_id_2")
-        print("Could not determine ID formats from split 'Feature ID' Column")
+        message("Could not determine ID formats from split feature ID column")
       }
       counts_dat <- cbind(Ensembl_ID, counts_dat[, !colnames(counts_dat) %in% feature_id_colname])
     }
@@ -266,11 +259,11 @@ aggregate_duplicate_gene_names <- function(counts_dat,
   ## Error Check if Column is Numeric
   nums <- unlist(lapply(counts_dat, is.numeric))
   nums <- names(nums[nums])
-  print("")
-  print("Columns that can be used to aggregate gene information")
-  print(counts_dat[, !names(counts_dat) %in% nums, drop = F] %>% colnames())
+  message(paste(
+    "Columns that can be used to aggregate gene information",
+    paste(counts_dat[, !names(counts_dat) %in% nums, drop = F] %>% colnames(), sep = ", ")
+  ))
 
-  print("")
 
   ##########
   ## This section will Print duplicate row names when Aggregation column is not Specified.
@@ -284,34 +277,31 @@ aggregate_duplicate_gene_names <- function(counts_dat,
   if (gene_name_column_to_use_for_collapsing_duplicates == "") {
     if (split_gene_name == F) {
       ## If no Column name given for Aggregation then display Feature ID duplicates
-      print(paste0("genes with duplicate IDs in ", feature_id_colname, ":"))
+      message(paste0("genes with duplicate IDs in ", feature_id_colname))
 
       ## if Gene Name column is split then select Column Names generated from "Split Ensemble + Gene name"
       ## Raw If Feature_id_1 is generated it means that "Split Ensemble + Gene name" could not recognize Gene name format (EnsembleID or GeneName)
       ## and so default is to identify duplicicates in Feature_id_1 column
     } else if (split_gene_name == T &
       grepl("Feature_id_1", colnames(counts_dat)) == F) {
-      print(paste0("genes with duplicate IDs in ", feature_id_colname, ":"))
-
-      counts_dat[duplicated(counts_dat[, gene_name_column_to_use_for_collapsing_duplicates]), gene_name_column_to_use_for_collapsing_duplicates] %>%
+      x <- counts_dat[duplicated(counts_dat[, gene_name_column_to_use_for_collapsing_duplicates]), gene_name_column_to_use_for_collapsing_duplicates] %>%
         unique() %>%
         as.character() %>%
-        write(stdout())
+        glue::glue_collapse(sep = ", ")
+      message(glue::glue("genes with duplicate IDs in {feature_id_colname}: {x}"))
     } else if (split_gene_name == T &
       grepl("Feature_id_1", colnames(counts_dat)) == T) {
-      print(paste0("genes with duplicate IDs in ", "Feature_id_1", ":"))
-
-      counts_dat[duplicated(counts_dat[, "Feature_id_1"]), "Feature_id_1"] %>%
+      x <- counts_dat[duplicated(counts_dat[, "Feature_id_1"]), "Feature_id_1"] %>%
         unique() %>%
         as.character() %>%
-        write(stdout())
+        glue::glue_collapse(sep = ", ")
+      message(glue::glue("genes with duplicate IDs in {Feature_id_1}: {x}"))
 
-      print(paste0("genes with duplicate IDs in ", "Feature_id_2", ":"))
-
-      counts_dat[duplicated(counts_dat[, "Feature_id_2"]), "Feature_id_2"] %>%
+      x <- counts_dat[duplicated(counts_dat[, "Feature_id_2"]), "Feature_id_2"] %>%
         unique() %>%
         as.character() %>%
-        write(stdout())
+        glue::glue_collapse(sep = ", ")
+      message(glue::glue("genes with duplicate IDs in {Feature_id_2}: {x}"))
     }
   }
 
@@ -319,16 +309,18 @@ aggregate_duplicate_gene_names <- function(counts_dat,
   ## This section Aggregates duplicate Row names based on selected Annotation Column name
   #######
   if (aggregate_rows_with_duplicate_gene_names == TRUE) {
-    print("Aggregating the counts for the same ID in different chromosome locations.")
-    print("Column used to Aggregate duplicate IDs: ")
-    print(gene_name_column_to_use_for_collapsing_duplicates)
-    print("Number of rows before Collapse: ")
-    print(nrow(counts_dat))
+    message(glue::glue("Aggregating the counts for the same ID in different chromosome locations.",
+      "Column used to Aggregate duplicate IDs: {gene_name_column_to_use_for_collapsing_duplicates}",
+      "Number of rows before Collapse: {nrow(counts_dat)}",
+      .sep = "\n"
+    ))
 
     if (sum(duplicated(counts_dat[, gene_name_column_to_use_for_collapsing_duplicates])) != 0) {
-      print("")
-      print("Duplicate IDs: ")
-      print(counts_dat[duplicated(counts_dat[, gene_name_column_to_use_for_collapsing_duplicates]), gene_name_column_to_use_for_collapsing_duplicates] %>% as.character() %>% unique())
+      x <- counts_dat[duplicated(counts_dat[, gene_name_column_to_use_for_collapsing_duplicates]), gene_name_column_to_use_for_collapsing_duplicates] %>%
+        as.character() %>%
+        unique() %>%
+        glue::glue_collapse(sep = ", ")
+      message(glue::glue("Duplicate IDs: {x}"))
 
       dfagg <- counts_dat[, c(
         gene_name_column_to_use_for_collapsing_duplicates,
@@ -351,35 +343,30 @@ aggregate_duplicate_gene_names <- function(counts_dat,
         ) %>% as.data.frame()
       }
       dfout <- dfagg
-      print("Number of rows after Collapse: ")
-      print(nrow(dfout))
+      message(glue::glue("Number of rows after Collapse: {nrow(dfout)}"))
     } else {
-      print(
-        paste0(
-          "no duplicated IDs in ",
-          gene_name_column_to_use_for_collapsing_duplicates
+      message(
+        glue::glue(
+          "no duplicated IDs in {gene_name_column_to_use_for_collapsing_duplicates}"
         )
       )
       dfout <- counts_dat
     }
   } else {
     if (gene_name_column_to_use_for_collapsing_duplicates != "") {
-      print("")
-      print(
-        paste0(
-          "Duplicate IDs in ",
-          gene_name_column_to_use_for_collapsing_duplicates,
-          " Column:"
+      message(
+        glue::glue(
+          "Duplicate IDs in {gene_name_column_to_use_for_collapsing_duplicates} Column:",
+          glue::glue_collapse(counts_dat[duplicated(counts_dat[, gene_name_column_to_use_for_collapsing_duplicates]), gene_name_column_to_use_for_collapsing_duplicates] %>% as.character() %>% unique(),
+            sep = ", "
+          ),
+          .sep = "\n"
         )
       )
-      print(counts_dat[duplicated(counts_dat[, gene_name_column_to_use_for_collapsing_duplicates]), gene_name_column_to_use_for_collapsing_duplicates] %>% as.character() %>% unique())
     }
 
-    print("")
-    print(
-      paste0(
-        "If you desire to Aggregate row feature information select appropriate Column to use for collapsing duplicates"
-      )
+    message(
+      "If you desire to Aggregate row feature information select appropriate Column to use for collapsing duplicates"
     )
   }
 

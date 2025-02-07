@@ -29,12 +29,10 @@ normalize_counts(
   maximum_for_x_axis_for_histogram = 1,
   legend_font_size_for_histogram = 10,
   legend_position_for_histogram = "top",
-  number_of_histogram_legend_columns = 6,
-  number_of_image_rows = 2,
   colors_for_plots = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
-  make_plots_interactive = FALSE,
-  plot_correlation_matrix_heatmap = TRUE
+  print_plots = FALSE,
+  interactive_plots = FALSE
 )
 }
 \arguments{
@@ -60,9 +58,9 @@ normalize_counts(
 
 \item{add_label_to_pca}{label points on the PCA plot}
 
-\item{principal_component_on_x_axis}{The principle component to plot on the x-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 1)}
+\item{principal_component_on_x_axis}{The principal component to plot on the x-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 1)}
 
-\item{principal_component_on_y_axis}{The principle component to plot on the y-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 2)}
+\item{principal_component_on_y_axis}{The principal component to plot on the y-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 2)}
 
 \item{legend_position_for_pca}{legend position for the PCA plot}
 
@@ -86,15 +84,11 @@ normalize_counts(
 
 \item{legend_position_for_histogram}{legend position for the histogram plot. consider setting to 'none' for a large number of samples.}
 
-\item{number_of_histogram_legend_columns}{number of columns for the histogram legend}
-
-\item{number_of_image_rows}{number of rows for the plot image. 1 = side-by-side, 2 = stacked}
-
 \item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list. If you have >12 samples or groups, program will choose from a wide range of random colors}
 
-\item{make_plots_interactive}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
+\item{print_plots}{whether to create plots and print them}
 
-\item{plot_correlation_matrix_heatmap}{Data sets with a large number of samples may be too large to create a correlation matrix heat map. If this template takes longer than 5 minutes to run, Toggle switch to FALSE and the correlation matrix will not be be created. Default is TRUE.}
+\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive_plots with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
 }
 \value{
 \code{multiOmicDataSet} with normalized counts
