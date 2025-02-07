@@ -127,6 +127,7 @@ normalize_counts <- function(moo,
       group_colname = group_colname,
       label_colname = label_colname,
       color_values = colors_for_histogram,
+      color_by_group = color_histogram_by_group,
       x_axis_label = "Normalized Counts",
       legend_position = legend_position_for_histogram,
       legend_font_size = legend_font_size_for_histogram
