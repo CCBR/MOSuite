@@ -7,3 +7,8 @@ dplyr::`%>%`
 #' @importFrom magrittr %<>%
 #' @export
 magrittr::`%<>%`
+
+#' walrus operator
+#' @importFrom rlang :=
+#' @export
+rlang::`:=`

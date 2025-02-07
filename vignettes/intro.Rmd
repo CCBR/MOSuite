@@ -8,6 +8,7 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+options(rmarkdown.html_vignette.check_title = FALSE)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -37,6 +38,11 @@ moo <- create_multiOmicDataSet_from_files(
   feature_counts_filepath = gene_counts_tsv
 )
 
+head(moo@counts$raw)
+head(moo@sample_meta)
+head(moo@annotation)
+```
+```{r analysis}
 moo <- moo %>%
   clean_raw_counts() %>%
   filter_counts(

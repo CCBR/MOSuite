@@ -49,7 +49,7 @@ clean_raw_counts <- function(moo,
                              split_gene_name = TRUE,
                              aggregate_rows_with_duplicate_gene_names = TRUE,
                              gene_name_column_to_use_for_collapsing_duplicates = "") {
-  message(glue::glue("∙ cleaning {count_type} counts"))
+  message(glue::glue("* cleaning {count_type} counts"))
   counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
 

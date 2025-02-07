@@ -6,12 +6,12 @@
 #' @export
 #'
 #' @examples
-#' calc_pca(nidap_raw_counts, sample_metadata) %>% head()
+#' calc_pca(nidap_raw_counts, nidap_sample_metadata) %>% head()
 calc_pca <- function(counts_dat,
                      sample_metadata,
                      sample_id_colname = NULL,
                      feature_id_colname = NULL) {
-  var <- xdata <- ydata <- group <- row <- NULL
+  var <- xdata <- ydata <- group <- row <- percent <- NULL
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
   }
@@ -47,9 +47,13 @@ calc_pca <- function(counts_dat,
 #' @inheritParams filter_counts
 #' @inheritParams plot_histogram
 #' @param principal_components vector with numbered principal components to plot (Default: `c(1,2)`)
+#' @param point_size size for `ggplot2::geom_point()`
+#' @param add_label whether to add text labels for the points
+#' @export
 #'
 #' @return ggplot object
-#' plot_pca(nidap_raw_counts, sample_metadata)
+#' @examples
+#' plot_pca(nidap_raw_counts, nidap_sample_metadata)
 plot_pca <- function(counts_dat,
                      sample_metadata,
                      sample_id_colname = NULL,
@@ -69,6 +73,7 @@ plot_pca <- function(counts_dat,
                      label_offset_x_ = 2,
                      label_offset_y_ = 2,
                      interactive_plots = FALSE) {
+  PC <- std.dev <- percent <- cumulative <- NULL
   if (length(principal_components) != 2) {
     stop(glue::glue("principal_components must contain 2 values: {principal_components}"))
   }
@@ -104,11 +109,11 @@ plot_pca <- function(counts_dat,
       text = !!rlang::sym(sample_id_colname)
     )) +
     ggplot2::geom_point(ggplot2::aes(color = !!rlang::sym(group_colname)),
-      size = point_size_for_pca
+      size = point_size
     ) +
     ggplot2::theme_bw() +
     ggplot2::theme(
-      legend.position = legend_position_for_pca,
+      legend.position = legend_position,
       legend.title = ggplot2::element_blank(),
       panel.grid.major = ggplot2::element_blank(),
       panel.grid.minor = ggplot2::element_blank(),
@@ -128,7 +133,7 @@ plot_pca <- function(counts_dat,
     ggplot2::xlab(get_pc_percent_lab(pca_df, prin_comp_x)) +
     ggplot2::ylab(get_pc_percent_lab(pca_df, prin_comp_y))
 
-  if (add_label_to_pca == TRUE) {
+  if (add_label == TRUE) {
     pca_plot <- pca_plot +
       ggrepel::geom_text_repel(
         ggplot2::aes(
@@ -158,7 +163,7 @@ plot_pca <- function(counts_dat,
 #' @export
 #'
 #' @examples
-#' plot_pca(nidap_raw_counts, sample_metadata)
+#' plot_pca_3d(nidap_raw_counts, nidap_sample_metadata)
 plot_pca_3d <- function(counts_dat,
                         sample_metadata,
                         sample_id_colname = NULL,
@@ -173,6 +178,7 @@ plot_pca_3d <- function(counts_dat,
                           "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
                         ),
                         plot_title = "PCA 3D") {
+  PC <- std.dev <- percent <- cumulative <- NULL
   if (length(principal_components) != 3) {
     stop(glue::glue("principal_components must contain 3 values: {principal_components}"))
   }
@@ -189,7 +195,7 @@ plot_pca_3d <- function(counts_dat,
   ) %>%
     dplyr::filter(PC %in% principal_components)
   pca_wide <- pca_df %>%
-    select(-c(std.dev, percent, cumulative)) %>%
+    dplyr::select(-c(std.dev, percent, cumulative)) %>%
     tidyr::pivot_wider(names_from = "PC", names_prefix = "PC", values_from = "value")
   prin_comp_x <- principal_components[1]
   prin_comp_y <- principal_components[2]
@@ -212,8 +218,20 @@ plot_pca_3d <- function(counts_dat,
   return(fig)
 }
 
+#' Get label for Principal Component with percent of variation
+#'
+#' @param pca_df data frame from `calc_pca()`
+#' @param pc which principal component to report (e.g. `1`)
+#'
+#' @returns glue string formatted with PC's percent of variation
+#' @keywords internal
+#' @examples
+#' \dontrun{
+#' data.frame(PC = c(1, 2, 3), percent = c(40, 10, 0.5)) %>%
+#'   get_pc_percent_lab(2)
+#' }
 get_pc_percent_lab <- function(pca_df, pc) {
-  PC <- NULL
+  PC <- percent <- NULL
   perc <- pca_df %>%
     dplyr::filter(PC == pc) %>%
     dplyr::pull(percent) %>%

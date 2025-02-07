@@ -16,6 +16,11 @@ plot_heatmap <- function(counts_dat,
                            "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
                          )) {
   abort_packages_not_installed("amap", "ComplexHeatmap", "dendsort")
+
+  if (is.null(sample_id_colname)) {
+    sample_id_colname <- colnames(sample_metadata)[1]
+  }
+
   ## Annotate
   rownames(sample_metadata) <- sample_metadata[[label_colname]]
   annoVal <- lapply(group_colname, function(x) {
@@ -46,7 +51,7 @@ plot_heatmap <- function(counts_dat,
   new <- sample_metadata[[label_colname]]
   names(old) <- new
   counts_dat %<>% dplyr::rename(tidyselect::any_of(old))
-  if (feature_id_colname %in% colnames(counts_dat)) {
+  if (!is.null(feature_id_colname) && feature_id_colname %in% colnames(counts_dat)) {
     counts_dat %<>%
       tibble::column_to_rownames(var = feature_id_colname)
   }

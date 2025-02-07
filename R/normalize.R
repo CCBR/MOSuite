@@ -46,8 +46,6 @@ normalize_counts <- function(moo,
                              maximum_for_x_axis_for_histogram = 1,
                              legend_font_size_for_histogram = 10,
                              legend_position_for_histogram = "top",
-                             number_of_histogram_legend_columns = 6,
-                             number_of_image_rows = 2,
                              colors_for_plots = c(
                                "#5954d6",
                                "#e1562c",
@@ -134,7 +132,9 @@ normalize_counts <- function(moo,
       group_colname = group_colname,
       label_colname = label_colname,
       color_values = colors_for_plots,
-      x_axis_label = "Normalized Counts"
+      x_axis_label = "Normalized Counts",
+      legend_position = legend_position_for_histogram,
+      legend_font_size = legend_font_size_for_histogram
     ) + ggplot2::labs(caption = "normalized counts")
     print(hist_plot)
     corHM_plot <- plot_heatmap(

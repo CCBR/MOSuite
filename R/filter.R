@@ -184,13 +184,13 @@ filter_counts <- function(moo,
       group_colname = group_colname,
       label_colname = label_colname,
       color_values = colors_for_plots,
-      color_histogram_by_group = color_histogram_by_group,
-      set_min_max_for_x_axis_for_histogram = set_min_max_for_x_axis_for_histogram,
-      minimum_for_x_axis_for_histogram = minimum_for_x_axis_for_histogram,
-      maximum_for_x_axis_for_histogram = maximum_for_x_axis_for_histogram,
-      legend_position_for_histogram = legend_position_for_histogram,
-      legend_font_size_for_histogram = legend_font_size_for_histogram,
-      number_of_histogram_legend_columns = number_of_histogram_legend_columns
+      color_by_group = color_histogram_by_group,
+      set_min_max_for_x_axis = set_min_max_for_x_axis_for_histogram,
+      minimum_for_x_axis = minimum_for_x_axis_for_histogram,
+      maximum_for_x_axis = maximum_for_x_axis_for_histogram,
+      legend_position = legend_position_for_histogram,
+      legend_font_size = legend_font_size_for_histogram,
+      number_of_legend_columns = number_of_histogram_legend_columns
     ) + ggplot2::labs(caption = "filtered counts")
     corHM <- plot_heatmap(
       counts_dat = df_filt[, samples_to_include],
@@ -238,7 +238,7 @@ remove_low_count_genes <- function(counts_dat,
                                    minimum_number_of_samples_with_nonzero_counts_in_total = 7,
                                    minimum_number_of_samples_with_nonzero_counts_in_a_group = 3) {
   # TODO refactor with tidyverse
-  value <- NULL
+  value <- isexpr1 <- NULL
   df <- counts_dat
 
   df <- df[stats::complete.cases(df), ]

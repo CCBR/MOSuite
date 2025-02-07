@@ -66,9 +66,9 @@ test_that("plot_pca layers are expected", {
       "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
     ),
     principal_components = c(1, 2),
-    legend_position_for_pca = "top",
-    point_size_for_pca = 1,
-    add_label_to_pca = TRUE,
+    legend_position = "top",
+    point_size = 1,
+    add_label = TRUE,
     label_font_size = 3,
     label_offset_y_ = 2,
     label_offset_x_ = 2

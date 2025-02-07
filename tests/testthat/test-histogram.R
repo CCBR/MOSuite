@@ -46,13 +46,13 @@ test_that("plot_histogram works with rownames", {
       coral = "#ff9287", azure = "#008cf9", green = "#006e00", rum = "#796880",
       orange = "#FFA500", olive = "#878500"
     ),
-    color_histogram_by_group = FALSE,
-    set_min_max_for_x_axis_for_histogram = FALSE,
-    minimum_for_x_axis_for_histogram = -1,
-    maximum_for_x_axis_for_histogram = 1,
-    legend_position_for_histogram = "top",
-    legend_font_size_for_histogram = 10,
-    number_of_histogram_legend_columns = 6
+    color_by_group = FALSE,
+    set_min_max_for_x_axis = FALSE,
+    minimum_for_x_axis = -1,
+    maximum_for_x_axis = 1,
+    legend_position = "top",
+    legend_font_size = 10,
+    number_of_legend_columns = 6
   )
 
   expect_s3_class(p$layers[[1]], "ggproto")
@@ -145,13 +145,13 @@ test_that("plot_histogram works with tibbles", {
       "#FFA500",
       "#878500"
     ),
-    color_histogram_by_group = FALSE,
-    set_min_max_for_x_axis_for_histogram = FALSE,
-    minimum_for_x_axis_for_histogram = -1,
-    maximum_for_x_axis_for_histogram = 1,
-    legend_position_for_histogram = "top",
-    legend_font_size_for_histogram = 10,
-    number_of_histogram_legend_columns = 6
+    color_by_group = FALSE,
+    set_min_max_for_x_axis = FALSE,
+    minimum_for_x_axis = -1,
+    maximum_for_x_axis = 1,
+    legend_position = "top",
+    legend_font_size = 10,
+    number_of_legend_columns = 6
   )
   expect_s3_class(p$layers[[1]], "ggproto")
   expect_s3_class(p$layers[[1]]$geom, "GeomArea")
