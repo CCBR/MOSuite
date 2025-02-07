@@ -29,8 +29,7 @@ normalize_counts(
   maximum_for_x_axis_for_histogram = 1,
   legend_font_size_for_histogram = 10,
   legend_position_for_histogram = "top",
-  colors_for_plots = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  colors_for_plots = NULL,
   print_plots = FALSE,
   interactive_plots = FALSE
 )
