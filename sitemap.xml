@@ -7,6 +7,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/articles/index.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/articles/intro.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/articles/memory.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/articles/visualization.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/authors.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/index.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/news/index.html</loc></url>
@@ -17,6 +18,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/batch_correct_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/calc_cpm.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/calc_cpm_df.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/calc_pca.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/check_packages_installed.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/clean_raw_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/counts_dat_to_matrix.html</loc></url>
@@ -24,6 +26,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/create_multiOmicDataSet_from_files.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/filter_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/gene_counts.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/get_pc_percent_lab.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/get_random_colors.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/glue_gene_symbols.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/index.html</loc></url>
@@ -37,9 +40,10 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_raw_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_sample_metadata.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/normalize_counts.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/reference/plot_heatmap.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_histogram.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_pca.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/plot_pca_3d.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_read_depth.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/reexports.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/remove_low_count_genes.html</loc></url>

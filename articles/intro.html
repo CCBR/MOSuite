@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>intro • MOSuite</title>
+<title>Introduction to MultiOmicsSuite • MOSuite</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="intro">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to MultiOmicsSuite">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -33,8 +33,9 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/intro.html">intro</a></li>
+<li><a class="dropdown-item" href="../articles/intro.html">Introduction to MultiOmicsSuite</a></li>
     <li><a class="dropdown-item" href="../articles/memory.html">Memory Usage</a></li>
+    <li><a class="dropdown-item" href="../articles/visualization.html">Visualization with built-in plots</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -57,7 +58,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>intro</h1>
+      <h1>Introduction to MultiOmicsSuite</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/main/vignettes/intro.Rmd" class="external-link"><code>vignettes/intro.Rmd</code></a></small>
@@ -79,6 +80,9 @@
 <span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span></code></pre></div>
+<div class="section level2">
+<h2 id="renee-dataset">RENEE dataset<a class="anchor" aria-label="anchor" href="#renee-dataset"></a>
+</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># replace these lines with the actual paths to your files</span></span>
 <span><span class="va">gene_counts_tsv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,</span>
@@ -110,8 +114,36 @@
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
 <span></span>
-<span></span>
-<span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">raw</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
+<span><span class="co">#&gt;   gene_id            KO_S3 KO_S4 WT_S1 WT_S2</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> ENSG00000121410.11     0     0     0     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> ENSG00000268895.5      0     0     0     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> ENSG00000148584.15     0     0     0     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> ENSG00000175899.14     0     0     0     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> ENSG00000245105.3      0     0     0     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> ENSG00000166535.20     0     0     0     0</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">moo</span><span class="op">@</span><span class="va">sample_meta</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 2</span></span></span>
+<span><span class="co">#&gt;   sample_id condition</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> KO_S3     knockout </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> KO_S4     knockout </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> WT_S1     wildtype </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> WT_S2     wildtype</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">moo</span><span class="op">@</span><span class="va">annotation</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
+<span><span class="co">#&gt;   gene_id            GeneName</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> ENSG00000121410.11 A1BG    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> ENSG00000268895.5  A1BG-AS1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> ENSG00000148584.15 A1CF    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> ENSG00000175899.14 A2M     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> ENSG00000245105.3  A2M-AS1 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> ENSG00000166535.20 A2ML1</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/clean_raw_counts.html">clean_raw_counts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/filter_counts.html">filter_counts</a></span><span class="op">(</span></span>
 <span>    group_colname <span class="op">=</span> <span class="st">"condition"</span>,</span>
@@ -124,26 +156,16 @@
 <span>    group_colname <span class="op">=</span> <span class="st">"condition"</span>,</span>
 <span>    label_colname <span class="op">=</span> <span class="st">"sample_id"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt;      .</span></span>
-<span><span class="co">#&gt;  KO_S3</span></span>
-<span><span class="co">#&gt;  KO_S4</span></span>
-<span><span class="co">#&gt;  WT_S1</span></span>
-<span><span class="co">#&gt;  WT_S2</span></span>
-<span><span class="co">#&gt; [1] "Not able to identify multiple id's in gene_id"</span></span>
-<span><span class="co">#&gt; [1] ""</span></span>
-<span><span class="co">#&gt; [1] "Columns that can be used to aggregate gene information"</span></span>
-<span><span class="co">#&gt; [1] "gene_id"</span></span>
-<span><span class="co">#&gt; [1] ""</span></span>
-<span><span class="co">#&gt; [1] "Aggregating the counts for the same ID in different chromosome locations."</span></span>
-<span><span class="co">#&gt; [1] "Column used to Aggregate duplicate IDs: "</span></span>
-<span><span class="co">#&gt; [1] "gene_id"</span></span>
-<span><span class="co">#&gt; [1] "Number of rows before Collapse: "</span></span>
-<span><span class="co">#&gt; [1] 58929</span></span>
-<span><span class="co">#&gt; [1] "no duplicated IDs in gene_id"</span></span>
+<span><span class="co">#&gt; * cleaning raw counts</span></span>
+<span><span class="co">#&gt; Not able to identify multiple id's in gene_id</span></span>
+<span><span class="co">#&gt; Columns that can be used to aggregate gene information gene_id</span></span>
+<span><span class="co">#&gt; Aggregating the counts for the same ID in different chromosome locations.</span></span>
+<span><span class="co">#&gt; Column used to Aggregate duplicate IDs: gene_id</span></span>
+<span><span class="co">#&gt; Number of rows before Collapse: 58929</span></span>
+<span><span class="co">#&gt; no duplicated IDs in gene_id</span></span>
 <span><span class="co">#&gt; Number of features after filtering: 291</span></span>
 <span><span class="co">#&gt; Total number of features included: 291</span></span>
-<span><span class="co">#&gt; Sample columns</span></span>
-<span><span class="co">#&gt; KO_S3KO_S4WT_S1WT_S2</span></span>
+<span><span class="co">#&gt; Sample columns: KO_S3, Sample columns: KO_S4, Sample columns: WT_S1, Sample columns: WT_S2</span></span>
 <span></span>
 <span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">norm</span><span class="op">$</span><span class="va">voom</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;              gene_id     KO_S3     KO_S4     WT_S1     WT_S2</span></span>
@@ -153,7 +175,44 @@
 <span><span class="co">#&gt; 4  ENSG00000282393.1  8.816153  9.608634  8.816153  8.816153</span></span>
 <span><span class="co">#&gt; 5  ENSG00000286104.1  9.608634  8.816153  8.816153  8.816153</span></span>
 <span><span class="co">#&gt; 6  ENSG00000274422.1  8.816153  9.608634  8.816153  8.816153</span></span></code></pre></div>
-  </main>
+</div>
+<div class="section level2">
+<h2 id="nidap-dataset">NIDAP dataset<a class="anchor" aria-label="anchor" href="#nidap-dataset"></a>
+</h2>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">moo_nidap</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_multiOmicDataSet_from_dataframes.html">create_multiOmicDataSet_from_dataframes</a></span><span class="op">(</span></span>
+<span>  sample_meta_dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_sample_metadata</span><span class="op">)</span>,</span>
+<span>  count_dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_raw_counts</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/clean_raw_counts.html">clean_raw_counts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/filter_counts.html">filter_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/normalize_counts.html">normalize_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/batch_correct_counts.html">batch_correct_counts</a></span><span class="op">(</span></span>
+<span>    covariates_colname <span class="op">=</span> <span class="st">"Group"</span>,</span>
+<span>    batch_colname <span class="op">=</span> <span class="st">"Batch"</span>,</span>
+<span>    label_colname <span class="op">=</span> <span class="st">"Label"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; * cleaning raw counts</span></span>
+<span><span class="co">#&gt; Not able to identify multiple id's in GeneName</span></span>
+<span><span class="co">#&gt; Columns that can be used to aggregate gene information GeneName</span></span>
+<span><span class="co">#&gt; Aggregating the counts for the same ID in different chromosome locations.</span></span>
+<span><span class="co">#&gt; Column used to Aggregate duplicate IDs: GeneName</span></span>
+<span><span class="co">#&gt; Number of rows before Collapse: 43280</span></span>
+<span><span class="co">#&gt; no duplicated IDs in GeneName</span></span>
+<span><span class="co">#&gt; Number of features after filtering: 7943</span></span>
+<span><span class="co">#&gt; Total number of features included: 7943</span></span>
+<span><span class="co">#&gt; Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3</span></span>
+<span><span class="co">#&gt; Found2batches</span></span>
+<span><span class="co">#&gt; Adjusting for2covariate(s) or covariate level(s)</span></span>
+<span><span class="co">#&gt; Standardizing Data across genes</span></span>
+<span><span class="co">#&gt; Fitting L/S model and finding priors</span></span>
+<span><span class="co">#&gt; Finding parametric adjustments</span></span>
+<span><span class="co">#&gt; Adjusting the Data</span></span>
+<span><span class="co">#&gt; The total number of features in output: 7943</span></span>
+<span><span class="co">#&gt; Number of samples after batch correction: 10</span></span></code></pre></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

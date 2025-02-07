@@ -4,7 +4,8 @@ pkgdown_sha: ~
 articles:
   intro: intro.html
   memory: memory.html
-last_built: 2025-01-31T14:27Z
+  visualization: visualization.html
+last_built: 2025-02-07T20:36Z
 urls:
   reference: https://ccbr.github.io/MOSuite/reference
   article: https://ccbr.github.io/MOSuite/articles
