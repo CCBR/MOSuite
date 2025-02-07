@@ -118,9 +118,9 @@ normalize_counts <- function(moo,
         principal_component_on_x_axis,
         principal_component_on_y_axis
       ),
-      legend_position_for_pca = legend_position_for_pca,
-      point_size_for_pca = point_size_for_pca,
-      add_label_to_pca = add_label_to_pca,
+      legend_position = legend_position_for_pca,
+      point_size = point_size_for_pca,
+      add_label = add_label_to_pca,
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_

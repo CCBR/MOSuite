@@ -32,8 +32,8 @@
 #' @param use_group_based_filtering If TRUE, only keeps features (e.g. genes) that have at least a certain number of samples with nonzero CPM counts in at least one group
 #' @param minimum_number_of_samples_with_nonzero_counts_in_a_group Only keeps genes that have at least this number of samples with nonzero CPM counts in at least one group
 #' @param print_plots whether to create plots and print them
-#' @param principal_component_on_x_axis The principle component to plot on the x-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 1)
-#' @param principal_component_on_y_axis The principle component to plot on the y-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 2)
+#' @param principal_component_on_x_axis The principal component to plot on the x-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 1)
+#' @param principal_component_on_y_axis The principal component to plot on the y-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 2)
 #' @param legend_position_for_pca legend position for the PCA plot
 #' @param point_size_for_pca geom point size for the PCA plot
 #' @param add_label_to_pca label points on the PCA plot
@@ -168,9 +168,9 @@ filter_counts <- function(moo,
         principal_component_on_x_axis,
         principal_component_on_y_axis
       ),
-      legend_position_for_pca = legend_position_for_pca,
-      point_size_for_pca = point_size_for_pca,
-      add_label_to_pca = add_label_to_pca,
+      legend_position = legend_position_for_pca,
+      point_size = point_size_for_pca,
+      add_label = add_label_to_pca,
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_,
