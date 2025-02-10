@@ -3,7 +3,7 @@
 #' @inheritParams filter_counts
 #'
 #' @return heatmap ggproto object
-#' @keywords internal
+#' @export
 #'
 plot_corr_heatmap <- function(counts_dat,
                               sample_metadata,
@@ -91,88 +91,143 @@ plot_corr_heatmap <- function(counts_dat,
 }
 
 
-# Expression Heatmap [CCBR] (89a32987-10d9-4233-91c3-e9adf3dcc517): v571
-plot_expr_heatmap <- function(NormalizedCounts, metadata_ccbr_bulk_training) {
+#' Plot expression heatmap
+#'
+#' @inheritParams filter_counts
+#' @inheritParams batch_correct_counts
+#'
+#' @param include_all_genes
+#' @param filter_top_genes_by_variance
+#' @param top_genes_by_variance_to_include
+#' @param specific_genes_to_include_in_heatmap
+#' @param cluster_genes
+#' @param gene_distance_metric
+#' @param gene_clustering_method
+#' @param display_gene_dendrograms
+#' @param display_gene_names
+#' @param center_and_rescale_expression
+#' @param cluster_samples
+#' @param arrange_sample_columns
+#' @param order_by_gene_expression
+#' @param gene_to_order_columns
+#' @param gene_expression_order
+#' @param smpl_distance_metric
+#' @param smpl_clustering_method
+#' @param display_smpl_dendrograms
+#' @param reorder_dendrogram
+#' @param reorder_dendrogram_order
+#' @param display_sample_names
+#' @param cluster_samples
+#' @param arrange_sample_columns
+#' @param order_by_gene_expression
+#' @param gene_to_order_columns
+#' @param gene_expression_order
+#' @param smpl_distance_metric
+#' @param smpl_clustering_method
+#' @param display_smpl_dendrograms
+#' @param reorder_dendrogram
+#' @param reorder_dendrogram_order
+#' @param display_sample_names
+#' @param group_columns
+#' @param assign_group_colors
+#' @param assign_color_to_sample_groups
+#' @param group_colors
+#' @param heatmap_color_scheme
+#' @param autoscale_heatmap_color
+#' @param set_min_heatmap_color
+#' @param set_max_heatmap_color
+#' @param aspect_ratio
+#' @param legend_font_size
+#' @param gene_name_font_size
+#' @param sample_name_font_size
+#' @param display_numbers
+#'
+#' @returns heatmap from `ComplexHeatmap::pheatmap()`
+#' @export
+#'
+plot_expr_heatmap <- function(moo,
+                              count_type = "norm",
+                              sub_count_type = "voom",
+                              sample_id_colname = NULL,
+                              feature_id_colname = NULL,
+                              group_colname = "Group",
+                              label_colname = NULL,
+                              samples_to_include = NULL,
+                              color_values = c(
+                                "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+                                "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
+                              ),
+                              include_all_genes = FALSE,
+                              filter_top_genes_by_variance = TRUE,
+                              top_genes_by_variance_to_include = 500,
+                              specific_genes_to_include_in_heatmap = "None",
+                              cluster_genes = TRUE,
+                              gene_distance_metric = "correlation",
+                              gene_clustering_method = "average",
+                              display_gene_dendrograms = TRUE,
+                              display_gene_names = FALSE,
+                              center_and_rescale_expression = TRUE,
+                              cluster_samples = FALSE,
+                              arrange_sample_columns = TRUE,
+                              order_by_gene_expression = FALSE,
+                              gene_to_order_columns = " ",
+                              gene_expression_order = "low_to_high",
+                              smpl_distance_metric = "correlation",
+                              smpl_clustering_method = "average",
+                              display_smpl_dendrograms = TRUE,
+                              reorder_dendrogram = FALSE,
+                              reorder_dendrogram_order = c(),
+                              display_sample_names = TRUE,
+                              group_columns = c("Group", "Replicate", "Batch"),
+                              assign_group_colors = FALSE,
+                              assign_color_to_sample_groups = c(),
+                              group_colors = c("indigo", "carrot", "lipstick", "turquoise", "lavender", "jade", "coral", "azure", "green", "rum", "orange", "olive"),
+                              heatmap_color_scheme = "Default",
+                              autoscale_heatmap_color = TRUE,
+                              set_min_heatmap_color = -2,
+                              set_max_heatmap_color = 2,
+                              aspect_ratio = "Auto",
+                              legend_font_size = 10,
+                              gene_name_font_size = 4,
+                              sample_name_font_size = 8,
+                              display_numbers = FALSE) {
   ## This function uses pheatmap to draw a heatmap, scaling first by rows
   ## (with samples in columns and genes in rows)
 
-  ## --------- ##
-  ## Libraries ##
-  ## --------- ##
+  if (!(count_type %in% names(moo@counts))) {
+    stop(glue::glue("count_type {count_type} not in moo@counts"))
+  }
+  counts_dat <- moo@counts[[count_type]]
+  if (!is.null(sub_count_type)) {
+    if (!(inherits(counts_dat, "list"))) {
+      stop(
+        glue::glue(
+          "{count_type} counts is not a named list. To use {count_type} counts, set sub_count_type to NULL"
+        )
+      )
+    } else if (!(sub_count_type %in% names(counts_dat))) {
+      stop(
+        glue::glue(
+          "sub_count_type {sub_count_type} is not in moo@counts[[{count_type}]]"
+        )
+      )
+    }
+    counts_dat <- moo@counts[[count_type]][[sub_count_type]]
+  }
+  sample_metadata <- moo@sample_meta
 
-  library(colorspace)
-  library(dendsort)
-  library(ComplexHeatmap)
-  library(dendextend)
-  library(tibble)
-  library(stringr)
-  library(RColorBrewer)
-  library(dplyr)
-  library(grid)
-  library(gtable)
-  library(gridExtra)
-  library(gridGraphics)
-
-  ## -------------------------------- ##
-  ## User-Defined Template Parameters ##
-  ## -------------------------------- ##
-
-  # Basic Parameters:
-  counts_matrix <- NormalizedCounts
-  sample_metadata <- metadata_ccbr_bulk_training
-  gene_column_name <- "Gene"
-  sample_name_column <- "Sample"
-  sample_label_column <- "Sample"
-  samples_to_include <- c("A1", "B1", "C1", "A2", "B2", "C2", "A3", "B3", "C3")
-
-  # Gene Parameters
-  include_all_genes <- FALSE
-  filter_top_genes_by_variance <- TRUE
-  top_genes_by_variance_to_include <- 500
-  specific_genes_to_include_in_heatmap <- "None"
-  cluster_genes <- TRUE
-  gene_distance_metric <- "correlation"
-  gene_clustering_method <- "average"
-  display_gene_dendrograms <- TRUE
-  display_gene_names <- FALSE
-  center_and_rescale_expression <- TRUE
-
-
-  # Sample Parameters
-  cluster_samples <- FALSE
-  arrange_sample_columns <- TRUE
-  order_by_gene_expression <- FALSE
-  gene_to_order_columns <- " "
-  gene_expression_order <- "low_to_high"
-  smpl_distance_metric <- "correlation"
-  smpl_clustering_method <- "average"
-  display_smpl_dendrograms <- TRUE
-  reorder_dendrogram <- FALSE
-  reorder_dendrogram_order <- c()
-  display_sample_names <- TRUE
-  manually_rename_samples <- FALSE
-  samples_to_rename <- c("")
-
-  # Annotation
-  group_columns <- c("Group", "Replicate", "Batch")
-  assign_group_colors <- FALSE
-  assign_color_to_sample_groups <- c()
-  group_colors <- c("indigo", "carrot", "lipstick", "turquoise", "lavender", "jade", "coral", "azure", "green", "rum", "orange", "olive")
-
-  # Visual Parameters:
-  heatmap_color_scheme <- "Default"
-  autoscale_heatmap_color <- TRUE
-  set_min_heatmap_color <- -2
-  set_max_heatmap_color <- 2
-  aspect_ratio <- "Auto"
-  legend_font_size <- 10
-  gene_name_font_size <- 4
-  sample_name_font_size <- 8
-  display_numbers <- FALSE
-
-  # Advanced Parameters
-  return_z_scores <- TRUE
-
+  if (is.null(sample_id_colname)) {
+    sample_id_colname <- colnames(sample_metadata)[1]
+  }
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- colnames(counts_dat)[1]
+  }
+  if (is.null(label_colname)) {
+    label_colname <- sample_id_colname
+  }
+  if (is.null(samples_to_include)) {
+    samples_to_include <- sample_metadata %>% dplyr::pull(sample_id_colname)
+  }
 
   ## --------------- ##
   ## Error Messages ##
@@ -187,27 +242,7 @@ plot_expr_heatmap <- function(NormalizedCounts, metadata_ccbr_bulk_training) {
     stop("ERROR: Choose only one of 'Cluster Samples', 'Arrange sample columns', or 'order by gene expression' as TRUE")
   }
 
-  ## --------- ##
-  ## Functions ##
-  ## --------- ##
-  ### PH: START Color Picking Function for annotations. Similar to Color Picking Function from Filtering + Normalization Template
-
-  getourrandomcolors <- function(k) {
-    seed <- 10
-    n <- 2e3
-    ourColorSpace <- colorspace::RGB(runif(n), runif(n), runif(n))
-    ourColorSpace <- as(ourColorSpace, "LAB")
-    currentColorSpace <- ourColorSpace@coords
-    # Set iter.max to 20 to avoid convergence warnings.
-    set.seed(seed)
-    km <- kmeans(currentColorSpace, k, iter.max = 20)
-    return(unname(hex(LAB(km$centers))))
-  }
-  ### PH: END Color Picking Function for annotations. Similar to Color Picking Function from Filtering + Normalization Template
-
-
   ### PH: START palette function for heatmap scale
-
   ## Begin pal() color palette function∂:
   pal <- function(n, h = c(237, 43), c = 100, l = c(70, 90), power = 1, fixup = TRUE, gamma = NULL, alpha = 1, ...) {
     if (n < 1L) {
@@ -218,8 +253,8 @@ plot_expr_heatmap <- function(NormalizedCounts, metadata_ccbr_bulk_training) {
     l <- rep(l, length.out = 2L)
     power <- rep(power, length.out = 2L)
     rval <- seq(1, -1, length = n)
-    rval <- hex(
-      polarLUV(
+    rval <- colorspace::hex(
+      colorspace::polarLUV(
         L = l[2L] - diff(l) * abs(rval)^power[2L],
         C = c * abs(rval)^power[1L],
         H = ifelse(rval > 0, h[1L], h[2L])
@@ -261,13 +296,13 @@ plot_expr_heatmap <- function(NormalizedCounts, metadata_ccbr_bulk_training) {
     breaks <- sapply(breaks, signif, 4)
     legbreaks <- sapply(legbreaks, signif, 4)
     # Run cluster method using
-    hcrow <- hclust(dist(dat), method = gene_clustering_method)
-    hc <- hclust(dist(t(dat)), method = smpl_clustering_method)
+    hcrow <- stats::hclust(stats::dist(dat), method = gene_clustering_method)
+    hc <- stats::hclust(stats::dist(t(dat)), method = smpl_clustering_method)
 
     if (FALSE) {
-      sort_hclust <- function(...) as.hclust(rev(dendsort(as.dendrogram(...))))
+      sort_hclust <- function(...) stats::as.hclust(rev(dendsort::dendsort(stats::as.dendrogram(...))))
     } else {
-      sort_hclust <- function(...) as.hclust(dendsort(as.dendrogram(...)))
+      sort_hclust <- function(...) stats::as.hclust(dendsort::dendsort(stats::as.dendrogram(...)))
     }
     if (clus) {
       colclus <- sort_hclust(hc)
@@ -320,7 +355,7 @@ plot_expr_heatmap <- function(NormalizedCounts, metadata_ccbr_bulk_training) {
     )
     mat <- t(dat)
     callback <- function(hc, mat) {
-      dend <- rev(dendsort(as.dendrogram(hc)))
+      dend <- rev(dendsort::dendsort(as.dendrogram(hc)))
       if (reorder_dendrogram == TRUE) {
         dend %>% dendextend::rotate(reorder_dendrogram_order) -> dend
       } else {
@@ -331,7 +366,7 @@ plot_expr_heatmap <- function(NormalizedCounts, metadata_ccbr_bulk_training) {
     ### PH: END SET up heatmap function for do.call
 
     ## Make Heatmap
-    phm <- do.call("pheatmap", c(hm.parameters, list(clustering_callback = callback)))
+    phm <- do.call(ComplexHeatmap::pheatmap, c(hm.parameters, list(clustering_callback = callback)))
   }
   # End doheatmap() function.
 
@@ -340,14 +375,12 @@ plot_expr_heatmap <- function(NormalizedCounts, metadata_ccbr_bulk_training) {
   ## --------------- ##
 
   ### PH: START  Build different color spectra options for heatmap:
-
-
   np0 <- pal(100)
-  np1 <- diverge_hcl(100, c = 100, l = c(30, 80), power = 1) # Blue to Red
-  np2 <- heat_hcl(100, c = c(80, 30), l = c(30, 90), power = c(1 / 5, 2)) # Red to Vanilla
-  np3 <- rev(heat_hcl(100, h = c(0, -100), c = c(40, 80), l = c(75, 40), power = 1)) # Violet to Pink
-  np4 <- rev(colorRampPalette(brewer.pal(10, "RdYlBu"))(100)) # Red to yellow to blue
-  np5 <- colorRampPalette(c("steelblue", "white", "red"))(100) # Steelblue to White to Red
+  np1 <- colorspace::diverge_hcl(100, c = 100, l = c(30, 80), power = 1) # Blue to Red
+  np2 <- colorspace::heat_hcl(100, c = c(80, 30), l = c(30, 90), power = c(1 / 5, 2)) # Red to Vanilla
+  np3 <- rev(colorspace::heat_hcl(100, h = c(0, -100), c = c(40, 80), l = c(75, 40), power = 1)) # Violet to Pink
+  np4 <- rev(grDevices::colorRampPalette(RColorBrewer::brewer.pal(10, "RdYlBu"))(100)) # Red to yellow to blue
+  np5 <- grDevices::colorRampPalette(c("steelblue", "white", "red"))(100) # Steelblue to White to Red
 
   ## Gather list of color spectra and give them names for the GUI to show.
   np <- list(np0, np1, np2, np3, np4, np5)
@@ -363,29 +396,24 @@ plot_expr_heatmap <- function(NormalizedCounts, metadata_ccbr_bulk_training) {
   ##############
 
   ## Parse input counts matrix. Subset by samples.
-  df1 <- counts_matrix
+  df1 <- counts_dat
   # Swap out Gene Name column name, if it's not 'Gene'.
-  if (gene_column_name != "Gene") {
+  # TODO: refactor to avoid renaming gene column
+  if (feature_id_colname != "Gene") {
     # Drop original Gene column
     df1 <- df1[, !(colnames(df1) %in% c("Gene"))]
     # Rename column to Gene
-    colnames(df1)[which(colnames(df1) == gene_column_name)] <- "Gene"
+    colnames(df1)[which(colnames(df1) == feature_id_colname)] <- "Gene"
   }
-  # Get sample columns - Do not select Gene Annotation columns
-  samples_to_include <- samples_to_include[samples_to_include != gene_column_name]
-  samples_to_include <- samples_to_include[samples_to_include != "Gene"]
-  samples_to_include <- samples_to_include[samples_to_include != "GeneName"]
-
   # Build new counts matrix containing only sample subset chosen by user.
-  df1 <- df1[, append("Gene", samples_to_include)]
   df.orig <- df1
   df.orig %>%
     dplyr::group_by(Gene) %>%
-    summarise_all(funs(mean)) -> df
+    dplyr::summarise_all(mean) -> df
   df.mat <- df[, (colnames(df) != "Gene")] %>% as.data.frame()
   # df %>% dplyr::mutate(Gene = stringr::str_replace_all(Gene, "_", " ")) -> df
   row.names(df.mat) <- df$Gene
-  rownames(df.mat) <- str_wrap(rownames(df.mat), 30) # for really long geneset names
+  rownames(df.mat) <- stringr::str_wrap(rownames(df.mat), 30) # for really long geneset names
   df.mat <- as.data.frame(df.mat)
 
   ##############
@@ -408,7 +436,7 @@ plot_expr_heatmap <- function(NormalizedCounts, metadata_ccbr_bulk_training) {
       rownames(df) <- rownames(df.final)
       df.final <- df
       df.final$var <- var
-      df.final %>% rownames_to_column("Gene") -> df.final
+      df.final %>% tibble::rownames_to_column("Gene") -> df.final
       df.final %>% dplyr::arrange(desc(var)) -> df.final
       df.final.extra.genes <- dplyr::filter(df.final, Gene %in% genes_to_include_parsed)
       df.final <- df.final[1:top_genes_by_variance_to_include, ]
@@ -465,16 +493,16 @@ plot_expr_heatmap <- function(NormalizedCounts, metadata_ccbr_bulk_training) {
   ## Parse input sample metadata and add annotation tracks to top of heatmap.
   annot <- sample_metadata
   # Filter to only samples user requests.
-  annot <- annot %>% dplyr::filter(.data[[sample_name_column]] %in% samples_to_include)
+  annot <- annot %>% dplyr::filter(.data[[sample_id_colname]] %in% samples_to_include)
 
   # Arrange sample options.
   if (arrange_sample_columns) {
-    annot <- annot[match(samples_to_include, annot[[sample_name_column]]), ]
+    annot <- annot[match(samples_to_include, annot[[sample_id_colname]]), ]
     for (x in group_columns) {
       annot[, x] <- factor(annot[, x], levels = unique(annot[, x]))
     }
     annot <- annot %>% dplyr::arrange_(.dots = group_columns, .by_group = TRUE)
-    df.final <- df.final[, match(annot[[sample_name_column]], colnames(df.final))]
+    df.final <- df.final[, match(annot[[sample_id_colname]], colnames(df.final))]
   }
 
 
@@ -483,7 +511,7 @@ plot_expr_heatmap <- function(NormalizedCounts, metadata_ccbr_bulk_training) {
   names(colorlist) <- c("indigo", "carrot", "lipstick", "turquoise", "lavender", "jade", "coral", "azure", "green", "rum", "orange", "olive")
   group_colors <- colorlist[group_colors]
 
-  annot %>% dplyr::select(group_columns) -> annotation_col
+  annot %>% dplyr::select(tidyselect::all_of(group_columns)) -> annotation_col
   annotation_col <- as.data.frame(unclass(annotation_col))
   annotation_col[] <- lapply(annotation_col, factor)
   x <- length(unlist(lapply(annotation_col, levels)))
@@ -492,7 +520,7 @@ plot_expr_heatmap <- function(NormalizedCounts, metadata_ccbr_bulk_training) {
     more_cols <- getourrandomcolors(k)
     group_colors <- c(group_colors, more_cols)
   }
-  rownames(annotation_col) <- annot[[sample_label_column]]
+  rownames(annotation_col) <- annot[[label_colname]]
   annot_col <- list()
   b <- 1
   i <- 1
@@ -529,32 +557,11 @@ plot_expr_heatmap <- function(NormalizedCounts, metadata_ccbr_bulk_training) {
   # colnames(df.final)%>%print
   # df.final=df.final[,c(samples_to_include)]
 
-  if (manually_rename_samples == TRUE) {
-    # Use user-provided names to rename samples.
-    replacements <- samples_to_rename
-    old <- c()
-    new <- c()
-    labels_col <- colnames(df.final)
-    for (i in 1:length(replacements)) {
-      old <- strsplit(replacements[i], ": ?")[[1]][1]
-      new <- strsplit(replacements[i], ": ?")[[1]][2]
-      old <- gsub("^[[:space:]]+|[[:space:]]+$", "", old)
-      new <- gsub("^[[:space:]]+|[[:space:]]+$", "", new)
-      labels_col[labels_col == old] <- new
-    }
-  } else {
-    # annot=annot[match(colnames(df.final),annot[[sample_name_column]]),]
-    # print(annot[[sample_label_column]])
-    # print(colnames(df.final))
-    # colnames(df.final)=annot[[sample_label_column]]
-
-    old <- annot[[sample_name_column]]
-    new <- annot[[sample_label_column]]
-    names(old) <- new
-    df.final <- rename(df.final, any_of(old))
-    labels_col <- colnames(df.final)
-  }
-  ### PH: END Use rename_samples previously generated for Filter Function.
+  old <- annot[[sample_id_colname]]
+  new <- annot[[label_colname]]
+  names(old) <- new
+  df.final <- dplyr::rename(df.final, tidyselect::any_of(old))
+  labels_col <- colnames(df.final)
 
 
   ## Print number of genes to log.
@@ -565,18 +572,19 @@ plot_expr_heatmap <- function(NormalizedCounts, metadata_ccbr_bulk_training) {
   p@matrix_color_mapping@name <- " "
   p@matrix_legend_param$at <- as.numeric(formatC(p@matrix_legend_param$at, 2))
   p@column_title_param$gp$fontsize <- 10
-  print(p)
+  # print(p)
 
   ## PH: Output heatmap counts table.
   ## If user sets toggle to TRUE, return Z-scores.
   ## Else return input counts matrix by default (toggle FALSE).
   ## Returned matrix includes only genes & samples used in heatmap.
-  if (return_z_scores) {
-    df.new <- data.frame(tmean.scale) # Convert to Z-scores.
-    df.new %>% rownames_to_column("Gene") -> df.new
-    return(df.new)
-  } else {
-    df.final %>% rownames_to_column("Gene") -> df.new
-    return(df.new)
-  }
+  # if (return_z_scores) {
+  #   df.new <- data.frame(tmean.scale) # Convert to Z-scores.
+  #   df.new %>% tibble::rownames_to_column("Gene") -> df.new
+  #   return(df.new)
+  # } else {
+  #   df.final %>% tibble::rownames_to_column("Gene") -> df.new
+  #   return(df.new)
+  # }
+  return(p)
 }

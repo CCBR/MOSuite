@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 options(rmarkdown.html_vignette.check_title = FALSE)
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r load}
 library(MOSuite)
 ```
 
@@ -77,5 +77,6 @@ plot_pca_3d(moo@counts$batch,
 ## Expression Heatmap
 
 ```{r expr_heatmap}
-plot_expr_heatmap(moo@counts[["norm"]][["voom"]], moo@sample_meta)
+p <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
+print(p)
 ```
