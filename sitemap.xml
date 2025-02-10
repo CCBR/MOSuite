@@ -26,6 +26,8 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/create_multiOmicDataSet_from_files.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/filter_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/gene_counts.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/get_colors_lst.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/get_colors_vctr.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/get_pc_percent_lab.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/get_random_colors.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/glue_gene_symbols.html</loc></url>
@@ -41,6 +43,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_sample_metadata.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/normalize_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/plot_expr_heatmap.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_histogram.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_pca.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_pca_3d.html</loc></url>
@@ -50,7 +53,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/rename_samples.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/run_deseq2.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/separate_gene_meta_columns.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/reference/set_colors.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/set_color_pal.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/strip_ensembl_version.html</loc></url>
 </urlset>
 
