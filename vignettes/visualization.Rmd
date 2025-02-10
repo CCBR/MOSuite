@@ -23,28 +23,31 @@ library(MOSuite)
 
 ## Default plots from each step
 
-### filter
+### clean
 
-```{r nidap_data_filter}
-moo_nidap <- create_multiOmicDataSet_from_dataframes(
-  sample_meta_dat = as.data.frame(nidap_sample_metadata),
-  count_dat = as.data.frame(nidap_raw_counts)
+```{r nidap_data_clean}
+moo <- create_multiOmicDataSet_from_dataframes(
+  sample_metadata = as.data.frame(nidap_sample_metadata),
+  counts_dat = as.data.frame(nidap_raw_counts)
 ) %>%
-  clean_raw_counts() %>%
+  clean_raw_counts(print_plots = TRUE)
+```
+```{r nidap_filter}
+moo %<>%
   filter_counts(group_colname = "Group", print_plots = TRUE)
 ```
 
 ### normalize
 
 ```{r nidap_norm}
-moo_nidap %<>%
+moo %<>%
   normalize_counts(group_colname = "Group", print_plots = TRUE)
 ```
 
 ### batch correct
 
 ```{r nidap_batch}
-moo_nidap %<>% batch_correct_counts(
+moo %<>% batch_correct_counts(
   covariates_colname = "Group",
   batch_colname = "Batch",
   label_colname = "Label",
@@ -60,9 +63,10 @@ TODO show how to use individual plotting functions and how to customize ggplot o
 ### 3D PCA
 
 ```{r pca_3D}
-plot_pca_3d(moo_nidap@counts$batch,
-  moo_nidap@sample_meta,
+plot_pca_3d(moo@counts$batch,
+  moo@sample_meta,
   group_colname = "Group",
-  label_colname = "Label"
+  label_colname = "Label",
+  color_values = moo@analyses[["colors"]][["Group"]]
 )
 ```

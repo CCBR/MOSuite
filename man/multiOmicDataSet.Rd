@@ -4,10 +4,10 @@
 \alias{multiOmicDataSet}
 \title{multiOmicDataSet class}
 \usage{
-multiOmicDataSet(sample_meta_dat, anno_dat, counts_lst, analyses_lst = list())
+multiOmicDataSet(sample_metadata, anno_dat, counts_lst, analyses_lst = list())
 }
 \arguments{
-\item{sample_meta_dat}{sample metadata as a data frame or tibble.
+\item{sample_metadata}{sample metadata as a data frame or tibble.
 The first column is assumed to contain the sample IDs which must correspond to column names in the raw counts.}
 
 \item{anno_dat}{data frame of feature annotations, such as gene symbols or any other information about the features in \code{counts_lst}.}

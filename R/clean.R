@@ -48,7 +48,8 @@ clean_raw_counts <- function(moo,
                              cleanup_column_names = TRUE,
                              split_gene_name = TRUE,
                              aggregate_rows_with_duplicate_gene_names = TRUE,
-                             gene_name_column_to_use_for_collapsing_duplicates = "") {
+                             gene_name_column_to_use_for_collapsing_duplicates = "",
+                             print_plots = FALSE) {
   message(glue::glue("* cleaning {count_type} counts"))
   counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
@@ -60,7 +61,10 @@ clean_raw_counts <- function(moo,
     feature_id_colname <- colnames(counts_dat)[1]
   }
   # Sample Read Counts Plot
-  read_plot <- plot_read_depth(counts_dat)
+  if (isTRUE(print_plots)) {
+    read_plot <- plot_read_depth(counts_dat)
+    print(read_plot)
+  }
 
   # Manually rename samples
   counts_dat <- rename_samples(counts_dat, samples_to_rename)
@@ -135,41 +139,6 @@ clean_raw_counts <- function(moo,
 #'
 strip_ensembl_version <- function(x) {
   return(unlist(lapply(stringr::str_split(x, "[.]"), "[[", 1)))
-}
-
-#' Create read depth plot
-#'
-#' @param counts_dat dataframe with raw counts data
-#'
-#' @returns ggplot object
-#' @export
-#'
-plot_read_depth <- function(counts_dat) {
-  sample_names <- read_sums <- NULL
-
-  sum_df <- counts_dat %>%
-    dplyr::summarize(dplyr::across(tidyselect::where(is.numeric), sum)) %>%
-    tidyr::pivot_longer(dplyr::everything(),
-      names_to = "sample_names",
-      values_to = "column_sums"
-    )
-
-  # Plotting
-  read_plot <- ggplot2::ggplot(sum_df, ggplot2::aes(x = sample_names, y = read_sums)) +
-    ggplot2::geom_bar(stat = "identity", fill = "blue") +
-    ggplot2::labs(title = "Total Reads per Sample", x = "Samples", y = "Read Count") +
-    ggplot2::scale_y_continuous(labels = scales::label_comma())
-  ggplot2::theme_minimal() +
-    ggplot2::theme(
-      axis.text.x = ggplot2::element_text(
-        angle = 45,
-        hjust = 1,
-        size = 14
-      ),
-      axis.text.y = ggplot2::element_text(size = 14),
-      axis.title = ggplot2::element_text(size = 16),
-      plot.title = ggplot2::element_text(size = 20)
-    )
 }
 
 #' Separate gene metadata column

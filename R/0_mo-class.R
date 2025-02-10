@@ -1,6 +1,6 @@
 #' multiOmicDataSet class
 #'
-#' @param sample_meta_dat sample metadata as a data frame or tibble.
+#' @param sample_metadata sample metadata as a data frame or tibble.
 #'   The first column is assumed to contain the sample IDs which must correspond to column names in the raw counts.
 #' @param anno_dat data frame of feature annotations, such as gene symbols or any other information about the features in `counts_lst`.
 #' @param counts_lst named list of data frames containing counts, e.g. expected feature counts from RSEM.
@@ -14,9 +14,12 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
     counts = S7::class_list, # list of data frames
     analyses = S7::class_list
   ),
-  constructor = function(sample_meta_dat, anno_dat, counts_lst, analyses_lst = list()) {
+  constructor = function(sample_metadata, anno_dat, counts_lst, analyses_lst = list()) {
+    if (!("colors" %in% names(analyses_lst))) {
+      analyses_lst[["colors"]] <- set_colors(sample_metadata)
+    }
     S7::new_object(S7::S7_object(),
-      sample_meta = sample_meta_dat,
+      sample_meta = sample_metadata,
       annotation = anno_dat,
       counts = counts_lst,
       analyses = analyses_lst
@@ -61,10 +64,10 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
 #' Construct a multiOmicDataSet object from data frames
 #'
 #' @inheritParams multiOmicDataSet
-#' @param count_dat data frame of feature counts (e.g. expected feature counts from RSEM).
-#' @param count_type type to assign the values of `count_dat` to in the `counts` slot
-#' @param sample_id_colname name of the column in `sample_meta_dat` that contains the sample IDs. (Default: `NULL` - first column in the sample metadata will be used.)
-#' @param feature_id_colname name of the column in `count_dat` that contains feature/gene IDs. (Default: `NULL` - first column in the count data will be used.)
+#' @param counts_dat data frame of feature counts (e.g. expected feature counts from RSEM).
+#' @param count_type type to assign the values of `counts_dat` to in the `counts` slot
+#' @param sample_id_colname name of the column in `sample_metadata` that contains the sample IDs. (Default: `NULL` - first column in the sample metadata will be used.)
+#' @param feature_id_colname name of the column in `counts_dat` that contains feature/gene IDs. (Default: `NULL` - first column in the count data will be used.)
 #'
 #' @return multiOmicDataSet object
 #' @export
@@ -81,43 +84,43 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
 #' head(moo@sample_meta)
 #' head(moo@counts$raw)
 #' head(moo@annotation)
-create_multiOmicDataSet_from_dataframes <- function(sample_meta_dat,
-                                                    count_dat,
+create_multiOmicDataSet_from_dataframes <- function(sample_metadata,
+                                                    counts_dat,
                                                     sample_id_colname = NULL,
                                                     feature_id_colname = NULL,
                                                     count_type = "raw") {
   # move sample & feature ID columns to first
   if (is.null(sample_id_colname)) {
-    sample_id_colname <- colnames(sample_meta_dat)[1]
+    sample_id_colname <- colnames(sample_metadata)[1]
   } else {
-    sample_meta_dat <- sample_meta_dat %>%
+    sample_metadata <- sample_metadata %>%
       dplyr::relocate(!!rlang::sym(sample_id_colname))
   }
   if (is.null(feature_id_colname)) {
-    feature_id_colname <- colnames(count_dat)[1]
+    feature_id_colname <- colnames(counts_dat)[1]
   } else {
-    count_dat <- count_dat %>%
+    counts_dat <- counts_dat %>%
       dplyr::relocate(!!rlang::sym(feature_id_colname))
   }
 
-  meta_sample_colnames <- sample_meta_dat %>% dplyr::pull(sample_id_colname)
-  if (!all(meta_sample_colnames %in% colnames(count_dat))) {
+  meta_sample_colnames <- sample_metadata %>% dplyr::pull(sample_id_colname)
+  if (!all(meta_sample_colnames %in% colnames(counts_dat))) {
     stop("Not all sample IDs in the sample metadata are in the count data")
   }
-  feature_sample_colnames <- count_dat %>%
+  feature_sample_colnames <- counts_dat %>%
     dplyr::select(tidyselect::all_of(meta_sample_colnames)) %>%
     colnames()
 
   # create anno_dat out of excess columns in count dat
-  anno_dat <- count_dat %>%
+  anno_dat <- counts_dat %>%
     dplyr::select(-tidyselect::all_of(meta_sample_colnames))
-  count_dat <- count_dat %>%
+  counts_dat <- counts_dat %>%
     dplyr::select(!!rlang::sym(feature_id_colname), tidyselect::all_of(meta_sample_colnames))
 
   counts <- list()
-  counts[[count_type]] <- count_dat
+  counts[[count_type]] <- counts_dat
 
-  return(multiOmicDataSet(sample_meta_dat, anno_dat, counts))
+  return(multiOmicDataSet(sample_metadata, anno_dat, counts))
 }
 
 #' Construct a multiOmicDataSet object from tsv files.
@@ -146,11 +149,11 @@ create_multiOmicDataSet_from_files <- function(sample_meta_filepath, feature_cou
                                                count_type = "raw",
                                                sample_id_colname = NULL,
                                                feature_id_colname = NULL) {
-  count_dat <- readr::read_tsv(feature_counts_filepath)
-  sample_meta_dat <- readr::read_tsv(sample_meta_filepath)
+  counts_dat <- readr::read_tsv(feature_counts_filepath)
+  sample_metadata <- readr::read_tsv(sample_meta_filepath)
   return(create_multiOmicDataSet_from_dataframes(
-    sample_meta_dat = sample_meta_dat,
-    count_dat = count_dat,
+    sample_metadata = sample_metadata,
+    counts_dat = counts_dat,
     count_type = "raw",
     sample_id_colname = sample_id_colname,
     feature_id_colname = feature_id_colname

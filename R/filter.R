@@ -18,7 +18,6 @@
 #' samples; and (3) Similarity Heatmap: the overall similarity of samples to one
 #' another based on unsupervised clustering.
 #'
-#'
 #' @param moo multiOmicDataSet object (see `create_multiOmicDataSet_from_dataframes()`)
 #' @param count_type the type of counts to use -- must be a name in the counts slot (`moo@counts`)
 #' @param feature_id_colname The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be used.)
@@ -93,20 +92,7 @@ filter_counts <- function(moo,
                           legend_position_for_histogram = "top",
                           legend_font_size_for_histogram = 10,
                           number_of_histogram_legend_columns = 6,
-                          colors_for_plots = c(
-                            "#5954d6",
-                            "#e1562c",
-                            "#b80058",
-                            "#00c6f8",
-                            "#d163e6",
-                            "#00a76c",
-                            "#ff9287",
-                            "#008cf9",
-                            "#006e00",
-                            "#796880",
-                            "#FFA500",
-                            "#878500"
-                          ),
+                          colors_for_plots = NULL,
                           print_plots = FALSE,
                           interactive_plots = FALSE) {
   if (!(count_type %in% names(moo@counts))) {
@@ -145,14 +131,17 @@ filter_counts <- function(moo,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group
   )
 
-  if (length(unique(sample_metadata[[group_colname]])) > length(colors_for_plots)) {
-    ## Original color-picking code.
-    k <- length(unique(sample_metadata[[group_colname]])) - length(colors_for_plots)
-    more_cols <- get_random_colors(k)
-    colors_for_plots <- c(colors_for_plots, more_cols)
-  }
-
   if (isTRUE(print_plots)) {
+    # use consistent colors
+    if (is.null(colors_for_plots)) {
+      colors_for_plots <- moo@analyses[["colors"]][[group_colname]]
+    }
+    if (isTRUE(color_histogram_by_group)) {
+      colors_for_histogram <- colors_for_plots
+    } else {
+      colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
+    }
+
     log_counts <- df_filt %>%
       dplyr::mutate(dplyr::across(tidyselect::all_of(samples_to_include), ~ log(.x + 0.5)))
     pca_plot <- plot_pca(
@@ -183,7 +172,7 @@ filter_counts <- function(moo,
       feature_id_colname = feature_id_colname,
       group_colname = group_colname,
       label_colname = label_colname,
-      color_values = colors_for_plots,
+      color_values = colors_for_histogram,
       color_by_group = color_histogram_by_group,
       set_min_max_for_x_axis = set_min_max_for_x_axis_for_histogram,
       minimum_for_x_axis = minimum_for_x_axis_for_histogram,

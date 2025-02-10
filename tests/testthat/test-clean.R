@@ -1,7 +1,7 @@
 test_that("clean_raw_counts works for NIDAP data", {
   moo_nidap <- create_multiOmicDataSet_from_dataframes(
-    sample_meta_dat = as.data.frame(nidap_sample_metadata),
-    count_dat = as.data.frame(nidap_raw_counts)
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    counts_dat = as.data.frame(nidap_raw_counts)
   ) %>%
     clean_raw_counts()
   expect_true(equal_dfs(

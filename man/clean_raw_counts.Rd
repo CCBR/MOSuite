@@ -13,7 +13,8 @@ clean_raw_counts(
   cleanup_column_names = TRUE,
   split_gene_name = TRUE,
   aggregate_rows_with_duplicate_gene_names = TRUE,
-  gene_name_column_to_use_for_collapsing_duplicates = ""
+  gene_name_column_to_use_for_collapsing_duplicates = "",
+  print_plots = FALSE
 )
 }
 \arguments{
@@ -57,6 +58,8 @@ will be used to aggregate duplicate IDs. If "Feature ID" column does not
 contain Ensembl IDs the split Feature IDs will be named 'Feature_id_1' and
 'Feature_id_2'. For this case an error will occur and you will have
 to manually enter the Column ID for this field.}
+
+\item{print_plots}{whether to create plots and print them}
 }
 \value{
 \code{multiOmicDataSet} with cleaned counts

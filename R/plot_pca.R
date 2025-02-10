@@ -44,8 +44,10 @@ calc_pca <- function(counts_dat,
 
 #' Perform and plot a Principal Components Analysis
 #'
-#' @inheritParams filter_counts
+#' @inheritParams create_multiOmicDataSet_from_dataframes
 #' @inheritParams plot_histogram
+#' @inheritParams filter_counts
+#'
 #' @param principal_components vector with numbered principal components to plot (Default: `c(1,2)`)
 #' @param point_size size for `ggplot2::geom_point()`
 #' @param add_label whether to add text labels for the points
@@ -156,6 +158,8 @@ plot_pca <- function(counts_dat,
 #' Plot 3-Dimensional PCA with plotly
 #'
 #' @inheritParams plot_pca
+#' @inheritParams filter_counts
+#'
 #' @param principal_components vector with numbered principal components to plot (Default: `c(1,2,3)`)
 #' @param plot_title title for the plot
 #'
@@ -186,6 +190,10 @@ plot_pca_3d <- function(counts_dat,
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
   }
+
+  # if (is.null(color_values)) {
+  #   color_values <- moo_nidap@analyses[['colors']][['Group']]
+  # }
 
   # calculate PCA
   pca_df <- calc_pca(

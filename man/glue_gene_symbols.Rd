@@ -4,13 +4,13 @@
 \alias{glue_gene_symbols}
 \title{Glue gene_id and GeneName columns into one column}
 \usage{
-glue_gene_symbols(count_dat)
+glue_gene_symbols(counts_dat)
 }
 \arguments{
-\item{count_dat}{data frame containing gene_id and GeneName columns}
+\item{counts_dat}{data frame containing gene_id and GeneName columns}
 }
 \value{
-count_dat with gene_id and GeneName joined with \code{|} as the new gene_id column
+counts_dat with gene_id and GeneName joined with \code{|} as the new gene_id column
 }
 \description{
 Glue gene_id and GeneName columns into one column

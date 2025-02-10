@@ -21,7 +21,7 @@
 #'
 #' @examples
 #' moo <- multiOmicDataSet(
-#'   sample_meta_dat = as.data.frame(nidap_sample_metadata),
+#'   sample_metadata = as.data.frame(nidap_sample_metadata),
 #'   anno_dat = data.frame(),
 #'   counts_lst = list(
 #'     "raw" = as.data.frame(nidap_raw_counts),
@@ -51,20 +51,7 @@ batch_correct_counts <- function(moo,
                                  covariates_colnames = "Group",
                                  batch_colname = "Batch",
                                  label_colname = NULL,
-                                 colors_for_plots = c(
-                                   "#5954d6",
-                                   "#e1562c",
-                                   "#b80058",
-                                   "#00c6f8",
-                                   "#d163e6",
-                                   "#00a76c",
-                                   "#ff9287",
-                                   "#008cf9",
-                                   "#006e00",
-                                   "#796880",
-                                   "#FFA500",
-                                   "#878500"
-                                 ),
+                                 colors_for_plots = NULL,
                                  print_plots = FALSE) {
   abort_packages_not_installed("sva")
   # select correct counts matrix
@@ -138,14 +125,17 @@ batch_correct_counts <- function(moo,
   }
 
   if (isTRUE(print_plots)) {
-    group_colname <- batch_colname
+    if (is.null(colors_for_plots)) {
+      colors_for_plots <- moo@analyses[["colors"]][[batch_colname]]
+    }
     pca_plot <- plot_pca(
       counts_dat = combat_edata,
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,
-      group_colname = group_colname,
+      group_colname = batch_colname,
       label_colname = label_colname,
+      color_values = colors_for_plots
     ) + ggplot2::labs(caption = "batch-corrected counts")
 
     hist_plot <- plot_histogram(
@@ -153,15 +143,17 @@ batch_correct_counts <- function(moo,
       sample_metadata,
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,
-      group_colname = group_colname,
+      group_colname = batch_colname,
       label_colname = label_colname,
+      color_values = colors_for_plots,
+      color_by_group = TRUE
     ) + ggplot2::labs(caption = "batch-corrected counts")
     corHM <- plot_corr_heatmap(
       counts_dat = combat_edata,
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,
-      group_colname = group_colname,
+      group_colname = batch_colname,
       label_colname = label_colname,
       color_values = colors_for_plots
     ) + ggplot2::labs(caption = "batch-corrected counts")
