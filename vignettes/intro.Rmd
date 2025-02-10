@@ -43,7 +43,7 @@ head(moo@sample_meta)
 head(moo@annotation)
 ```
 ```{r analysis}
-moo <- moo %>%
+moo %<>%
   clean_raw_counts() %>%
   filter_counts(
     group_colname = "condition",

@@ -1,6 +1,8 @@
 #' Normalize counts
 #'
 #' @inheritParams filter_counts
+#' @inheritParams option_params
+#'
 #' @param input_in_log_counts set this to `TRUE` if counts are already log2-transformed
 #' @param voom_normalization_method Normalization method to be applied to the logCPM values when using `limma::voom`
 #'
@@ -47,7 +49,7 @@ normalize_counts <- function(moo,
                              legend_font_size_for_histogram = 10,
                              legend_position_for_histogram = "top",
                              colors_for_plots = NULL,
-                             print_plots = FALSE,
+                             print_plots = options::opt("print_plots"),
                              interactive_plots = FALSE) {
   counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
