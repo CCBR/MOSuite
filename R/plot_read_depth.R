@@ -6,7 +6,7 @@
 #' @export
 #'
 plot_read_depth <- function(counts_dat) {
-  sample_names <- read_sums <- NULL
+  sample_names <- read_sums <- column_sums <- NULL
 
   sum_df <- counts_dat %>%
     dplyr::summarize(dplyr::across(tidyselect::where(is.numeric), sum)) %>%

@@ -1,8 +1,8 @@
 #' Plot histogram
 #'
+#' @inheritParams create_multiOmicDataSet_from_dataframes
 #' @inheritParams filter_counts
-#' @param counts_dat counts data
-#' @param sample_metadata sample metadata as a data frame or tibble.
+#'
 #' @param x_axis_label text label for the x axis `ggplot2::xlab()`
 #' @param y_axis_label text label for the y axis `ggplot2::ylab()`
 #' @param color_values vector of colors as hex values or names recognized by R

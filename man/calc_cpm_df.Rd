@@ -9,7 +9,7 @@ calc_cpm_df(dat, feature_id_colname = "gene_id", ...)
 \arguments{
 \item{dat}{data frame of counts with a gene column}
 
-\item{feature_id_colname}{name of the column in \code{count_dat} that contains feature/gene IDs. (Default: \code{NULL} - first column in the count data will be used.)}
+\item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first column in the count data will be used.)}
 
 \item{...}{additional arguments to pass to edger::cpm()}
 }

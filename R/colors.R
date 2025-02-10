@@ -31,8 +31,9 @@ get_random_colors <- function(num_colors, n = 2e3) {
 
 #' Create named list of default colors for plotting
 #'
-#' @inheritParams filter_counts
-#' @param palette_fun Function for selecting colors. Assumed to contain `n` for the number of colors. Default: `palette.colors()`
+#' @inheritParams create_multiOmicDataSet_from_dataframes
+#'
+#' @param palette_fun Function for selecting colors. Assumed to contain `n` for the number of colors. Default: `grDevices::palette.colors()`
 #' @param ... additional arguments forwarded to `palette_fun`
 #'
 #' @returns named list, with each column in `sample_metadata` containing entry with a named vector of colors
@@ -43,7 +44,7 @@ get_random_colors <- function(num_colors, n = 2e3) {
 #' \dontrun{
 #' set_colors(nidap_sample_metadata, palette_fun = RColorBrewer::brewer.pal, name = "Set3")
 #' }
-set_colors <- function(sample_metadata, palette_fun = palette.colors, ...) {
+set_colors <- function(sample_metadata, palette_fun = grDevices::palette.colors, ...) {
   dat_colnames <- colnames(sample_metadata)
   color_lists <- dat_colnames %>% lapply(function(colname, dat = sample_metadata) {
     obs <- dat %>%

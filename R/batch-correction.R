@@ -21,7 +21,7 @@
 #'
 #' @examples
 #' moo <- multiOmicDataSet(
-#'   sample_meta_dat = as.data.frame(nidap_sample_metadata),
+#'   sample_metadata = as.data.frame(nidap_sample_metadata),
 #'   anno_dat = data.frame(),
 #'   counts_lst = list(
 #'     "raw" = as.data.frame(nidap_raw_counts),

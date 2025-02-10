@@ -18,7 +18,6 @@
 #' samples; and (3) Similarity Heatmap: the overall similarity of samples to one
 #' another based on unsupervised clustering.
 #'
-#'
 #' @param moo multiOmicDataSet object (see `create_multiOmicDataSet_from_dataframes()`)
 #' @param count_type the type of counts to use -- must be a name in the counts slot (`moo@counts`)
 #' @param feature_id_colname The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be used.)

@@ -4,10 +4,13 @@
 \alias{set_colors}
 \title{Create named list of default colors for plotting}
 \usage{
-set_colors(sample_metadata, palette_fun = palette.colors, ...)
+set_colors(sample_metadata, palette_fun = grDevices::palette.colors, ...)
 }
 \arguments{
-\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default: \code{palette.colors()}}
+\item{sample_metadata}{sample metadata as a data frame or tibble.
+The first column is assumed to contain the sample IDs which must correspond to column names in the raw counts.}
+
+\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default: \code{grDevices::palette.colors()}}
 
 \item{...}{additional arguments forwarded to \code{palette_fun}}
 }
