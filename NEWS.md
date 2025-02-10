@@ -21,6 +21,7 @@ This is the first release of MOSuite 🎉
 
 - `plot_histogram()`
 - `plot_corr_heatmap()`
+- `plot_expr_heatmap()` (#90)
 - `plot_pca()`
 - `plot_pca_3d()` (#88)
 
