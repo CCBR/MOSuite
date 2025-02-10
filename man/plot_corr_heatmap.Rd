@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_heatmap.R
 \name{plot_corr_heatmap}
 \alias{plot_corr_heatmap}
-\title{Make a heatmap}
+\title{Make a correlation heatmap}
 \usage{
 plot_corr_heatmap(
   counts_dat,
@@ -28,6 +28,5 @@ plot_corr_heatmap(
 heatmap ggproto object
 }
 \description{
-Make a heatmap
+Make a correlation heatmap
 }
-\keyword{internal}
