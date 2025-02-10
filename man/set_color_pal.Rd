@@ -15,6 +15,9 @@ set_color_pal(moo, colname, palette_fun = grDevices::palette.colors, ...)
 
 \item{...}{additional arguments forwarded to \code{palette_fun}}
 }
+\value{
+\code{moo} with colors updated at \code{moo@analyses$colors$colname}
+}
 \description{
 This allows you to set custom palettes individually for groups in the dataset
 }

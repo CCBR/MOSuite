@@ -1,8 +1,9 @@
 #' Make a correlation heatmap
 #'
 #' @inheritParams filter_counts
+#' @inheritParams plot_histogram
 #'
-#' @return heatmap ggproto object
+#' @returns heatmap from `ComplexHeatmap::Heatmap()`
 #' @export
 #'
 plot_corr_heatmap <- function(counts_dat,
@@ -93,54 +94,49 @@ plot_corr_heatmap <- function(counts_dat,
 
 #' Plot expression heatmap
 #'
+#' By default, the samples (i.e. the columns) are allowed to cluster in an unsupervised fashion based on how similar their expression profiles are across the included genes. This can help identify samples that are non clustering with their group as you might expect based on the experimental design.
+#'
+#' Again, by default, the top 500 genes by variance are used, as these are generally going to include those genes that most distinguish your samples from one another. You can change this as well as many other parameters about this heatmap if you explore the advanced options.
+#'
+#' @inheritParams create_multiOmicDataSet_from_dataframes
 #' @inheritParams filter_counts
+#' @inheritParams plot_histogram
 #' @inheritParams batch_correct_counts
 #'
-#' @param include_all_genes
-#' @param filter_top_genes_by_variance
-#' @param top_genes_by_variance_to_include
-#' @param specific_genes_to_include_in_heatmap
-#' @param cluster_genes
-#' @param gene_distance_metric
-#' @param gene_clustering_method
-#' @param display_gene_dendrograms
-#' @param display_gene_names
-#' @param center_and_rescale_expression
-#' @param cluster_samples
-#' @param arrange_sample_columns
-#' @param order_by_gene_expression
-#' @param gene_to_order_columns
-#' @param gene_expression_order
-#' @param smpl_distance_metric
-#' @param smpl_clustering_method
-#' @param display_smpl_dendrograms
-#' @param reorder_dendrogram
-#' @param reorder_dendrogram_order
-#' @param display_sample_names
-#' @param cluster_samples
-#' @param arrange_sample_columns
-#' @param order_by_gene_expression
-#' @param gene_to_order_columns
-#' @param gene_expression_order
-#' @param smpl_distance_metric
-#' @param smpl_clustering_method
-#' @param display_smpl_dendrograms
-#' @param reorder_dendrogram
-#' @param reorder_dendrogram_order
-#' @param display_sample_names
-#' @param group_columns
-#' @param assign_group_colors
-#' @param assign_color_to_sample_groups
-#' @param group_colors
-#' @param heatmap_color_scheme
-#' @param autoscale_heatmap_color
-#' @param set_min_heatmap_color
-#' @param set_max_heatmap_color
-#' @param aspect_ratio
-#' @param legend_font_size
-#' @param gene_name_font_size
-#' @param sample_name_font_size
-#' @param display_numbers
+#' @param include_all_genes Set to TRUE if all genes are to be included. Set to FALSE if you want to filter genes by variance and/or provide a list of specific genes that will appear in the heatmap.
+#' @param filter_top_genes_by_variance Set to TRUE if you want to only include the top genes by variance. Set to FALSE if you do not want to filter genes by variance.
+#' @param top_genes_by_variance_to_include The number of genes to include if filtering genes by variance. This parameter is ignored if "Filter top genes by variance" is set to FALSE.
+#' @param specific_genes_to_include_in_heatmap Enter the gene symbols to be included in the heatmap, with each gene symbol separated with a space from the others. Alternatively, paste in a column of gene names from any spreadsheet application. This parameter is ignored if "Include all genes" is set to TRUE.
+#' @param cluster_genes Choose whether to cluster the rows (genes). If TRUE, rows will have clustering applied. If FALSE, clustering will not be applied to rows.
+#' @param gene_distance_metric Distance metric to be used in clustering genes. (TODO document options)
+#' @param gene_clustering_method Clustering method metric to be used in clustering samples. (TODO document options)
+#' @param display_gene_dendrograms Set to TRUE to show gene dendrograms. Set to FALSE to hide dendrograms.
+#' @param display_gene_names Set to TRUE to display gene names on the right side of the heatmap. Set to FALSE to hide gene names.
+#' @param center_and_rescale_expression Center and rescale expression for each gene across all included samples.
+#' @param cluster_samples Choose whether to cluster the columns (samples). If TRUE, columns will have clustering applied. If FALSE, clustering will not be applied to columns.
+#' @param arrange_sample_columns If TRUE, arranges columns by annotation groups. If FALSE, and "Cluster Samples" is FALSE, samples will appear in the order of input (samples to include)
+#' @param order_by_gene_expression If TRUE, set gene name below and direction for ordering
+#' @param gene_to_order_columns Gene to order columns by expression levels
+#' @param gene_expression_order Choose direction for gene order
+#' @param smpl_distance_metric Distance metric to be used in clustering samples.  (TODO document options)
+#' @param smpl_clustering_method Clustering method to be used in clustering samples.  (TODO document options)
+#' @param display_smpl_dendrograms Set to TRUE to show sample dendrograms. Set to FALSE to hide dendrogram.
+#' @param reorder_dendrogram If TRUE, set the order of the dendrogram (below)
+#' @param reorder_dendrogram_order Reorder the samples (columns) of the dendrogram by name, e.g. “sample2”,“sample3",“sample1".
+#' @param display_sample_names Set to TRUE if you want sample names to be displayed on the plot. Set to FALSE to hide sample names.
+#' @param group_columns Columns containing the sample groups for annotation tracks
+#' @param assign_group_colors If TRUE, set the groups assigned colors (below)
+#' @param assign_color_to_sample_groups Enter each sample to color in the format: group_name: color This parameter is ignored if "Assign Colors" is set to FALSE.
+#' @param group_colors Set group annotation colors.
+#' @param heatmap_color_scheme color scheme (TODO document options)
+#' @param autoscale_heatmap_color Set to TRUE to autoscale the heatmap colors between the maximum and minimum heatmap color parameters. If FALSE, set the heatmap colors between "Set max heatmap color" and "Set min heatmap color" (below).
+#' @param set_min_heatmap_color If Autoscale heatmap color is set to FALSE, set the minimum heatmap z-score value
+#' @param set_max_heatmap_color If Autoscale heatmap color is set to FALSE, set the maximum heatmap z-score value.
+#' @param aspect_ratio Set figure Aspect Ratio. Ratio refers to entire figure including legend. If set to Auto figure size is based on number of rows and columns form counts matrix. default - Auto
+#' @param legend_font_size Set Font size for figure legend. Default is 10.
+#' @param gene_name_font_size Font size for gene names. If you don't want gene labels to show, toggle "Display Gene Names" below to FALSE
+#' @param sample_name_font_size Font size for sample names. If you don't want to display samples names, toggle "Display sample names" (below) to FALSE
+#' @param display_numbers Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if you want to see these numbers on the plot.
 #'
 #' @returns heatmap from `ComplexHeatmap::pheatmap()`
 #' @export
@@ -193,7 +189,7 @@ plot_expr_heatmap <- function(moo,
                               display_numbers = FALSE) {
   ## This function uses pheatmap to draw a heatmap, scaling first by rows
   ## (with samples in columns and genes in rows)
-
+  Gene <- NULL
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
   }
@@ -355,13 +351,13 @@ plot_expr_heatmap <- function(moo,
     )
     mat <- t(dat)
     callback <- function(hc, mat) {
-      dend <- rev(dendsort::dendsort(as.dendrogram(hc)))
+      dend <- rev(dendsort::dendsort(stats::as.dendrogram(hc)))
       if (reorder_dendrogram == TRUE) {
         dend %>% dendextend::rotate(reorder_dendrogram_order) -> dend
       } else {
-        dend %>% dendextend::rotate(c(1:nobs(dend)))
+        dend %>% dendextend::rotate(c(1:stats::nobs(dend)))
       }
-      as.hclust(dend)
+      stats::as.hclust(dend)
     }
     ### PH: END SET up heatmap function for do.call
 
@@ -437,10 +433,10 @@ plot_expr_heatmap <- function(moo,
       df.final <- df
       df.final$var <- var
       df.final %>% tibble::rownames_to_column("Gene") -> df.final
-      df.final %>% dplyr::arrange(desc(var)) -> df.final
+      df.final %>% dplyr::arrange(dplyr::desc(var)) -> df.final
       df.final.extra.genes <- dplyr::filter(df.final, Gene %in% genes_to_include_parsed)
       df.final <- df.final[1:top_genes_by_variance_to_include, ]
-      df.final <- df.final[complete.cases(df.final), ]
+      df.final <- df.final[stats::complete.cases(df.final), ]
       # Rbind user gene list to variance-filtered gene list and deduplicate.
       df.final <- rbind(df.final, df.final.extra.genes)
       df.final <- df.final[!duplicated(df.final), ]
@@ -467,7 +463,7 @@ plot_expr_heatmap <- function(moo,
   if (center_and_rescale_expression == TRUE) {
     tmean.scale <- t(scale(t(df.final)))
     tmean.scale <- tmean.scale[!is.infinite(rowSums(tmean.scale)), ]
-    tmean.scale <- na.omit(tmean.scale)
+    tmean.scale <- stats::na.omit(tmean.scale)
   } else {
     tmean.scale <- df.final
   }
@@ -517,7 +513,7 @@ plot_expr_heatmap <- function(moo,
   x <- length(unlist(lapply(annotation_col, levels)))
   if (x > length(group_colors)) {
     k <- x - length(group_colors)
-    more_cols <- getourrandomcolors(k)
+    more_cols <- get_random_colors(k)
     group_colors <- c(group_colors, more_cols)
   }
   rownames(annotation_col) <- annot[[label_colname]]
@@ -525,13 +521,13 @@ plot_expr_heatmap <- function(moo,
   b <- 1
   i <- 1
   while (i <= length(group_columns)) {
-    nam <- group_columns[i]
+    cnam <- group_columns[i]
     grp <- as.factor(annotation_col[, i])
     c <- b + length(levels(grp)) - 1
     col <- group_colors[b:c]
     names(col) <- levels(grp)
-    assign(nam, col)
-    annot_col <- append(annot_col, mget(nam))
+    assign(cnam, col)
+    annot_col <- append(annot_col, mget(cnam))
     b <- c + 1
     i <- i + 1
   }
@@ -547,15 +543,6 @@ plot_expr_heatmap <- function(moo,
     annot_col[[1]][groupname] <- groupcol
   }
   ### PH: End  Build Annotation Columns
-
-
-  ### PH: START Use rename_samples previously generated for Filter Function.
-  ### Shold this function be part of all ploting functions or a step in processing the input table before plotting?
-  ## Setting labels_col for pheatmap column labels.
-
-  ## Set order of columns based on smaple name input
-  # colnames(df.final)%>%print
-  # df.final=df.final[,c(samples_to_include)]
 
   old <- annot[[sample_id_colname]]
   new <- annot[[label_colname]]

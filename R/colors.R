@@ -98,7 +98,7 @@ get_colors_vctr <- function(dat,
 #' @param moo multiOmicDataSet object (see `create_multiOmicDataSet_from_dataframes()`)
 #' @param colname group column name to set the palette for
 #'
-#' @returns
+#' @returns `moo` with colors updated at `moo@analyses$colors$colname`
 #' @export
 #'
 #' @examples
