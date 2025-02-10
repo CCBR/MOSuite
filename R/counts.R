@@ -21,41 +21,42 @@ calc_cpm <- S7::new_generic("calc_cpm", "moo", function(moo, ...) {
   S7::S7_dispatch()
 })
 
-S7::method(calc_cpm, multiOmicDataSet) <- function(moo, gene_colname = "gene_id", ...) {
+S7::method(calc_cpm, multiOmicDataSet) <- function(moo, feature_id_colname = "gene_id", ...) {
   moo@counts$cpm <- moo@counts$raw %>%
-    calc_cpm_df(gene_colname = gene_colname)
+    calc_cpm_df(feature_id_colname = feature_id_colname)
   return(moo)
 }
 
 #' Calculate CPM on a data frame
 #'
+#' @inheritParams create_multiOmicDataSet_from_dataframes
 #' @param dat data frame of counts with a gene column
-#' @param gene_colname name of the gene column (default: "gene_id")
 #' @param ... additional arguments to pass to edger::cpm()
 #'
 #' @return cpm-transformed counts as a data frame
 #' @keywords internal
 #'
-calc_cpm_df <- function(dat, gene_colname = "gene_id", ...) {
-  gene_ids <- dat %>% dplyr::pull(gene_colname)
+calc_cpm_df <- function(dat, feature_id_colname = "gene_id", ...) {
+  gene_ids <- dat %>% dplyr::pull(feature_id_colname)
   row_names <- rownames(dat)
   dat_cpm <- dat %>%
-    dplyr::select(-tidyselect::any_of(gene_colname)) %>%
+    dplyr::select(-tidyselect::any_of(feature_id_colname)) %>%
     as.matrix() %>%
     edgeR::cpm(...) %>%
     as.data.frame()
-  dat_cpm[[gene_colname]] <- gene_ids
+  dat_cpm[[feature_id_colname]] <- gene_ids
   rownames(dat_cpm) <- if (suppressWarnings(all(!is.na(as.integer(row_names))))) {
     as.integer(row_names)
   } else {
     col
   }
-  return(dat_cpm %>% dplyr::relocate(tidyselect::all_of(gene_colname)))
+  return(dat_cpm %>% dplyr::relocate(tidyselect::all_of(feature_id_colname)))
 }
 
 #' Convert a data frame of gene counts to a matrix
 #'
-#' @param counts_tbl expected gene counts from RSEM as a data frame or tibble.
+#' @inheritParams create_multiOmicDataSet_from_dataframes
+#' @param counts_tbl expected feature counts as a dataframe or tibble, with all columns except `feature_id_colname`
 #'
 #' @return matrix of gene counts with rows as gene IDs
 #' @keywords internal
@@ -64,16 +65,17 @@ calc_cpm_df <- function(dat, gene_colname = "gene_id", ...) {
 #' \dontrun{
 #' counts_dat_to_matrix(head(gene_counts))
 #' }
-counts_dat_to_matrix <- function(counts_tbl, gene_colname = "gene_id") {
-  gene_colnames <- c("gene_id", "GeneName", "gene_name", "Gene", gene_colname) %>%
-    unique()
+counts_dat_to_matrix <- function(counts_tbl, feature_id_colname = NULL) {
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- colnames(counts_tbl)[1]
+  }
   counts_dat <- counts_tbl %>%
     as.data.frame()
   row.names(counts_dat) <- counts_dat %>%
-    dplyr::pull(tidyselect::all_of(gene_colname))
+    dplyr::pull(feature_id_colname)
   # convert counts tibble to matrix
   counts_mat <- counts_dat %>%
-    dplyr::select(-tidyselect::any_of(gene_colnames)) %>%
+    dplyr::select(-tidyselect::any_of(feature_id_colname)) %>%
     as.matrix()
   return(counts_mat)
 }

@@ -7,11 +7,11 @@
 normalize_counts(
   moo,
   count_type = "filt",
-  gene_names_column = "Gene",
-  columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-  sample_names_column = "Sample",
-  group_column = "Group",
-  label_column = "Label",
+  feature_id_colname = NULL,
+  samples_to_include = NULL,
+  sample_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = NULL,
   input_in_log_counts = FALSE,
   voom_normalization_method = "quantile",
   samples_to_rename = c(""),
@@ -29,11 +29,9 @@ normalize_counts(
   maximum_for_x_axis_for_histogram = 1,
   legend_font_size_for_histogram = 10,
   legend_position_for_histogram = "top",
-  number_of_histogram_legend_columns = 6,
-  number_of_image_rows = 2,
-  colors_for_plots = c(),
-  make_plots_interactive = FALSE,
-  plot_correlation_matrix_heatmap = TRUE
+  colors_for_plots = NULL,
+  print_plots = FALSE,
+  interactive_plots = FALSE
 )
 }
 \arguments{
@@ -41,15 +39,15 @@ normalize_counts(
 
 \item{count_type}{the type of counts to use -- must be a name in the counts slot (\code{moo@counts})}
 
-\item{gene_names_column}{The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.}
+\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
-\item{columns_to_include}{Which Columns would you like to include? Usually, you will choose to a feature ID column (e.g. gene or protein ID) and all sample columns. Columns excluded here will be removed in this step and from further analysis downstream of this step.}
+\item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
 
-\item{sample_names_column}{The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.}
+\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first column in the sample metadata will be used.)}
 
-\item{group_column}{The column from your input Sample Metadata table containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.). Only columns of Text type from your input Sample Metadata will be available to select for this parameter.}
+\item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).}
 
-\item{label_column}{The column from your input Sample Metadata table containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample.}
+\item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: \code{NULL} -- \code{sample_id_colname} will be used.)}
 
 \item{input_in_log_counts}{set this to \code{TRUE} if counts are already log2-transformed}
 
@@ -59,9 +57,9 @@ normalize_counts(
 
 \item{add_label_to_pca}{label points on the PCA plot}
 
-\item{principal_component_on_x_axis}{The principle component to plot on the x-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 1)}
+\item{principal_component_on_x_axis}{The principal component to plot on the x-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 1)}
 
-\item{principal_component_on_y_axis}{The principle component to plot on the y-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 2)}
+\item{principal_component_on_y_axis}{The principal component to plot on the y-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 2)}
 
 \item{legend_position_for_pca}{legend position for the PCA plot}
 
@@ -85,15 +83,11 @@ normalize_counts(
 
 \item{legend_position_for_histogram}{legend position for the histogram plot. consider setting to 'none' for a large number of samples.}
 
-\item{number_of_histogram_legend_columns}{number of columns for the histogram legend}
-
-\item{number_of_image_rows}{number of rows for the plot image. 1 = side-by-side, 2 = stacked}
-
 \item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list. If you have >12 samples or groups, program will choose from a wide range of random colors}
 
-\item{make_plots_interactive}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
+\item{print_plots}{whether to create plots and print them}
 
-\item{plot_correlation_matrix_heatmap}{Data sets with a large number of samples may be too large to create a correlation matrix heat map. If this template takes longer than 5 minutes to run, Toggle switch to FALSE and the correlation matrix will not be be created. Default is TRUE.}
+\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive_plots with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
 }
 \value{
 \code{multiOmicDataSet} with normalized counts
@@ -103,7 +97,8 @@ Normalize counts
 }
 \examples{
 moo <- multiOmicDataSet(
-  sample_meta_dat = as.data.frame(nidap_sample_metadata),
+  sample_metadata = as.data.frame(nidap_sample_metadata),
+  anno_dat = data.frame(),
   counts_lst = list(
     "raw" = as.data.frame(nidap_raw_counts),
     "clean" = as.data.frame(nidap_clean_raw_counts),
@@ -111,11 +106,8 @@ moo <- multiOmicDataSet(
   )
 ) \%>\%
   normalize_counts(
-    gene_names_column = "Gene",
-    columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-    sample_names_column = "Sample",
-    group_column = "Group",
-    label_column = "Label"
+    group_colname = "Group",
+    label_colname = "Label"
   )
 head(moo@counts[["norm"]][["voom"]])
 }

@@ -9,6 +9,7 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+options(rmarkdown.html_vignette.check_title = FALSE)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -42,33 +43,27 @@ metadat <- read_tsv(system.file(
 )) %>%
   select(-sample_id) %>%
   rename(sample_id = barcode)
-moo <- create_multiOmicDataSet_from_dataframes(metadat, counts) %>%
-  calc_cpm()
-moo@counts$filt <- moo@counts$raw
-# filter_counts(
-#   sample_names_column = "sample_id",
-#   gene_names_column = "gene_id",
-#   group_column = "treatments_radiation_treatment_type",
-#   label_column = "sample",
-#   columns_to_include = c("gene_id", metadat %>% pull("sample_id")),
-#   make_plots = FALSE
-# )
+
+run_mosuite <- function(metadat, counts) {
+  create_multiOmicDataSet_from_dataframes(metadat, counts) %>%
+    clean_raw_counts() %>%
+    calc_cpm() %>%
+    filter_counts(
+      group_colname = "treatments_radiation_treatment_type",
+      label_colname = "sample"
+    )
+}
+moo <- run_mosuite(metadat, counts)
 ```
 
 
 ```{r subset}
-subset_data <- function(moo, nsamples) {
-  moo_subset <- moo
-  moo_subset@sample_meta <- moo@sample_meta %>% slice_sample(n = nsamples)
-  for (count_type in names(moo@counts)) {
-    moo_subset@counts[[count_type]] <- moo@counts[[count_type]] %>%
-      select(gene_id, all_of(moo_subset@sample_meta$sample_id))
-  }
-  return(moo_subset)
-}
-
 subset_mem <- lapply(c(10, 50, 100, 200, nrow(moo@sample_meta)), function(nsamples) {
-  moo_subset <- subset_data(moo, nsamples)
+  samples_subset <- moo@sample_meta %>% slice_sample(n = nsamples)
+  counts_subset <- moo@counts$raw %>%
+    dplyr::select(gene_id, tidyselect::all_of(samples_subset %>% dplyr::pull(sample_id)))
+
+  moo_subset <- run_mosuite(samples_subset, counts_subset)
   return(tibble(
     n_samples = nsamples,
     object_size = lobstr::obj_size(moo_subset)

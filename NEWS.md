@@ -15,3 +15,17 @@ This is the first release of MOSuite 🎉
 - `filter_counts()` (#38)
 - `clean_raw_counts()` (#79)
 - `normalize_counts()` (#82)
+- `batch_correct_counts()` (#87)
+
+### visualization
+
+- `plot_histogram()`
+- `plot_corr_heatmap()`
+- `plot_pca()`
+- `plot_pca_3d()` (#88)
+
+## vignettes
+
+- `intro`
+- `visualization`
+- `memory`

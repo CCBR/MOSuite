@@ -9,7 +9,8 @@
 #'
 #' @examples
 #' moo <- multiOmicDataSet(
-#'   sample_meta_dat = as.data.frame(nidap_sample_metadata),
+#'   sample_metadata = as.data.frame(nidap_sample_metadata),
+#'   anno_dat = data.frame(),
 #'   counts_lst = list(
 #'     "raw" = as.data.frame(nidap_raw_counts),
 #'     "clean" = as.data.frame(nidap_clean_raw_counts),
@@ -17,20 +18,17 @@
 #'   )
 #' ) %>%
 #'   normalize_counts(
-#'     gene_names_column = "Gene",
-#'     columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-#'     sample_names_column = "Sample",
-#'     group_column = "Group",
-#'     label_column = "Label"
+#'     group_colname = "Group",
+#'     label_colname = "Label"
 #'   )
 #' head(moo@counts[["norm"]][["voom"]])
 normalize_counts <- function(moo,
                              count_type = "filt",
-                             gene_names_column = "Gene",
-                             columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-                             sample_names_column = "Sample",
-                             group_column = "Group",
-                             label_column = "Label",
+                             feature_id_colname = NULL,
+                             samples_to_include = NULL,
+                             sample_id_colname = NULL,
+                             group_colname = "Group",
+                             label_colname = NULL,
                              input_in_log_counts = FALSE,
                              voom_normalization_method = "quantile",
                              samples_to_rename = c(""),
@@ -48,111 +46,33 @@ normalize_counts <- function(moo,
                              maximum_for_x_axis_for_histogram = 1,
                              legend_font_size_for_histogram = 10,
                              legend_position_for_histogram = "top",
-                             number_of_histogram_legend_columns = 6,
-                             number_of_image_rows = 2,
-                             colors_for_plots = c(),
-                             make_plots_interactive = FALSE,
-                             plot_correlation_matrix_heatmap = TRUE) {
-  counts_matrix <- moo@counts[[count_type]] %>% as.data.frame()
+                             colors_for_plots = NULL,
+                             print_plots = FALSE,
+                             interactive_plots = FALSE) {
+  counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
 
-  ### PH: START Color Picking Function
-  ##################################
-  ##### Color Picking Function
-  ##################################
-
-  ### Do not Functionalize This code yet.
-  ### I will make a General Color picker function to create a custom Color Palette to use for all figures
-  ### I think I would also like to use the metadata table to manually set colors
-  colorlist <- c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  )
-  names(colorlist) <- c(
-    "indigo",
-    "carrot",
-    "lipstick",
-    "turquoise",
-    "lavender",
-    "jade",
-    "coral",
-    "azure",
-    "green",
-    "rum",
-    "orange",
-    "olive"
-  )
-  if (length(colors_for_plots) == 0) {
-    colors_for_plots <- c(
-      "indigo",
-      "carrot",
-      "lipstick",
-      "turquoise",
-      "lavender",
-      "jade",
-      "coral",
-      "azure",
-      "green",
-      "rum",
-      "orange",
-      "olive"
-    )
+  if (is.null(sample_id_colname)) {
+    sample_id_colname <- colnames(sample_metadata)[1]
   }
-  colorval <- colorlist[colors_for_plots]
-  colorval <- unname(colorval) # remove names which affect ggplot
-  ### PH: END Color Picking Function
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- colnames(counts_dat)[1]
+  }
+  if (is.null(samples_to_include)) {
+    samples_to_include <- sample_metadata %>% dplyr::pull(sample_id_colname)
+  }
+  if (is.null(label_colname)) {
+    label_colname <- sample_id_colname
+  }
+  df.filt <- counts_dat %>%
+    dplyr::select(tidyselect::all_of(samples_to_include))
+
 
   ## --------------- ##
   ## Main Code Block ##
   ## --------------- ##
-
-
-  ##############################
-  #### Create Generic Row names
-  ##############################
-  ## create unique rownames to correctly add back Annocolumns at end of template
-
-  samples_to_include <- columns_to_include[columns_to_include %in% sample_metadata[, sample_names_column, drop = T]]
-  anno_col <- columns_to_include[columns_to_include %in% sample_metadata[, sample_names_column, drop = T] == F]
-
-
-  samples_to_include <- samples_to_include[samples_to_include != gene_names_column]
-  samples_to_include <- samples_to_include[samples_to_include != "Gene"]
-  samples_to_include <- samples_to_include[samples_to_include != "GeneName"]
-
-  ## create unique rownames to correctly add back Annocolumns at end of template
-  counts_matrix[, gene_names_column] <- paste0(counts_matrix[, gene_names_column], "_", 1:nrow(counts_matrix))
-
-
-  anno_col <- c(anno_col, gene_names_column) %>% unique()
-  anno_tbl <- counts_matrix[, anno_col, drop = F] %>% as.data.frame()
-
-
-  df.filt <- counts_matrix[, samples_to_include]
   gene_names <- NULL
-  gene_names$GeneID <- counts_matrix[, 1]
-
-  ##############################
-  #### Input Data Validation
-  ##############################
-  # TODO move this logic to S7 validator
-  sample_metadata <- sample_metadata[match(colnames(df.filt), sample_metadata[[sample_names_column]]), ] # First match sample metadata to counts matrix
-  sample_metadata <- sample_metadata[rowSums(is.na(sample_metadata)) != ncol(sample_metadata), ] # Remove empty rows
-  sample_metadata <- sample_metadata[, colSums(is.na(sample_metadata)) == 0] # Remove empty columns
-  rownames(sample_metadata) <- sample_metadata[[sample_names_column]]
-
-  df.filt <- df.filt[, match(sample_metadata[[sample_names_column]], colnames(df.filt))] # Match counts matrix columns to sample metadata
-
+  gene_names$feature_id <- counts_dat %>% dplyr::pull(feature_id_colname)
 
   ### PH: START Limma Normalization
   ##############################
@@ -166,55 +86,66 @@ normalize_counts <- function(moo,
     x <- edgeR::DGEList(counts = df.filt, genes = gene_names)
   }
   v <- limma::voom(x, normalize = voom_normalization_method)
-  rownames(v$E) <- v$genes$GeneID
-  as.data.frame(v$E) %>% tibble::rownames_to_column(gene_names_column) -> df.voom
+  rownames(v$E) <- v$genes$feature_id
+  df.voom <- as.data.frame(v$E) %>% tibble::rownames_to_column(feature_id_colname)
   message(paste0("Total number of features included: ", nrow(df.voom)))
   ### PH: END Limma Normalization
-
-  pca_plot <- plot_pca(v$E,
-    sample_metadata,
-    samples_to_include,
-    samples_to_rename,
-    group_column,
-    label_column,
-    color_values = colorval,
-    principal_component_on_x_axis = principal_component_on_x_axis,
-    principal_component_on_y_axis = principal_component_on_y_axis,
-    legend_position_for_pca = legend_position_for_pca,
-    point_size_for_pca = point_size_for_pca,
-    add_label_to_pca = add_label_to_pca,
-    label_font_size = label_font_size,
-    label_offset_y_ = label_offset_y_,
-    label_offset_x_ = label_offset_x_
-  )
-
-  histPlot <- plot_histogram(
-    v$E,
-    sample_metadata,
-    gene_names_column,
-    group_column,
-    label_column,
-    color_values = colorval,
-    x_axis_label = "Normalized Counts"
-  )
-  if (plot_correlation_matrix_heatmap == TRUE) {
-    corHM <- plot_heatmap(
-      counts_matrix = df.filt,
+  if (isTRUE(print_plots)) {
+    if (is.null(colors_for_plots)) {
+      colors_for_plots <- moo@analyses[["colors"]][[group_colname]]
+    }
+    if (isTRUE(color_histogram_by_group)) {
+      colors_for_histogram <- colors_for_plots
+    } else {
+      colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
+    }
+    pca_plot <- plot_pca(
+      counts_dat = df.voom,
       sample_metadata = sample_metadata,
-      anno_colors = colorval,
-      anno_column = group_column,
-      label_column = label_column,
-      sample_names_column = sample_names_column
-    )
+      sample_id_colname = sample_id_colname,
+      samples_to_rename = samples_to_rename,
+      group_colname = group_colname,
+      label_colname = label_colname,
+      color_values = colors_for_plots,
+      principal_components = c(
+        principal_component_on_x_axis,
+        principal_component_on_y_axis
+      ),
+      legend_position = legend_position_for_pca,
+      point_size = point_size_for_pca,
+      add_label = add_label_to_pca,
+      label_font_size = label_font_size,
+      label_offset_y_ = label_offset_y_,
+      label_offset_x_ = label_offset_x_
+    ) + ggplot2::labs(caption = "normalized counts")
+    print(pca_plot)
+    hist_plot <- plot_histogram(
+      counts_dat = df.voom,
+      sample_metadata = sample_metadata,
+      sample_id_colname = sample_id_colname,
+      feature_id_colname = feature_id_colname,
+      group_colname = group_colname,
+      label_colname = label_colname,
+      color_values = colors_for_histogram,
+      color_by_group = color_histogram_by_group,
+      x_axis_label = "Normalized Counts",
+      legend_position = legend_position_for_histogram,
+      legend_font_size = legend_font_size_for_histogram
+    ) + ggplot2::labs(caption = "normalized counts")
+    print(hist_plot)
+    corHM_plot <- plot_corr_heatmap(
+      counts_dat = df.filt,
+      sample_metadata = sample_metadata,
+      sample_id_colname = sample_id_colname,
+      feature_id_colname = feature_id_colname,
+      group_colname = group_colname,
+      label_colname = label_colname,
+      color_values = colors_for_plots
+    ) + ggplot2::labs(caption = "normalized counts")
+    print(corHM_plot)
   }
 
-  message("Sample columns")
-  message(colnames(df.voom)[!colnames(df.voom) %in% gene_names_column])
-  message("Feature Columns")
-  message(colnames(anno_tbl))
-
-  df.voom <- merge(anno_tbl, df.voom, by = gene_names_column, all.y = T)
-  df.voom[, gene_names_column] <- gsub("_[0-9]+$", "", df.voom[, gene_names_column])
+  message(paste("Sample columns:", paste(colnames(df.voom)[!colnames(df.voom) %in% feature_id_colname]), collapse = ", "))
 
   if (isFALSE("norm" %in% names(moo@counts))) {
     moo@counts[["norm"]] <- list()

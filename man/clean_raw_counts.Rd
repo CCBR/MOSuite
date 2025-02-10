@@ -7,14 +7,14 @@
 clean_raw_counts(
   moo,
   count_type = "raw",
-  sample_names_column = "Sample",
-  gene_names_column = "GeneName",
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
   samples_to_rename = c(""),
-  data_type = "Bulk RNAseq",
   cleanup_column_names = TRUE,
   split_gene_name = TRUE,
   aggregate_rows_with_duplicate_gene_names = TRUE,
-  gene_name_column_to_use_for_collapsing_duplicates = ""
+  gene_name_column_to_use_for_collapsing_duplicates = "",
+  print_plots = FALSE
 )
 }
 \arguments{
@@ -22,13 +22,11 @@ clean_raw_counts(
 
 \item{count_type}{the type of counts to use -- must be a name in the counts slot (\code{moo@counts})}
 
-\item{sample_names_column}{The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.}
+\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first column in the sample metadata will be used.)}
 
-\item{gene_names_column}{The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.}
+\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
 \item{samples_to_rename}{If you do not have a Plot Labels Column in your sample metadata table, you can use this parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to which new name: old_name: new_name}
-
-\item{data_type}{Type of data to process. Options: \code{c("Bulk RNAseq", "Proteomics")}}
 
 \item{cleanup_column_names}{Invalid raw counts column names can cause errors
 in the downstream analysis. If this is \code{TRUE}, any invalid column names
@@ -53,15 +51,15 @@ comma-separated values in an aggregated row.}
 \item{gene_name_column_to_use_for_collapsing_duplicates}{Select the column
 with Feature IDs to use as grouping elements to collapse the counts matrix.
 The log output will list the columns available to identify duplicate row
-IDs in order to aggregate information. If the \code{data_type} is "Bulk RNAseq", your column
-selected for Feature ID will be renamed to "Gene". If the \code{data_type} is "Proteomics",
-your column selected for Feature ID will be renamed to "Feature ID".
+IDs in order to aggregate information.
 If left blank your "Feature ID" Column will be used to Aggregate Rows. If
 "Feature ID" column can be split into multiple IDs the non Ensembl ID name
 will be used to aggregate duplicate IDs. If "Feature ID" column does not
 contain Ensembl IDs the split Feature IDs will be named 'Feature_id_1' and
 'Feature_id_2'. For this case an error will occur and you will have
 to manually enter the Column ID for this field.}
+
+\item{print_plots}{whether to create plots and print them}
 }
 \value{
 \code{multiOmicDataSet} with cleaned counts
@@ -75,6 +73,6 @@ moo <- create_multiOmicDataSet_from_dataframes(
   as.data.frame(nidap_raw_counts),
   sample_id_colname = "Sample",
 ) \%>\%
-  clean_raw_counts(sample_names_column = "Sample", gene_names_column = "GeneName")
+  clean_raw_counts(sample_id_colname = "Sample", feature_id_colname = "GeneName")
 head(moo@counts$clean)
 }

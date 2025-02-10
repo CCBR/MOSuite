@@ -1,5 +1,5 @@
 ---
-title: "intro"
+title: "Introduction to MultiOmicsSuite"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{intro}
@@ -8,6 +8,7 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+options(rmarkdown.html_vignette.check_title = FALSE)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -18,6 +19,8 @@ knitr::opts_chunk$set(
 library(MOSuite)
 library(dplyr)
 ```
+
+## RENEE dataset
 
 ```{r data}
 # replace these lines with the actual paths to your files
@@ -32,31 +35,44 @@ metadata_tsv <- system.file("extdata", "sample_metadata.tsv.gz",
 # create multi-omic object
 moo <- create_multiOmicDataSet_from_files(
   sample_meta_filepath = metadata_tsv,
-  gene_counts_filepath = gene_counts_tsv
+  feature_counts_filepath = gene_counts_tsv
 )
 
+head(moo@counts$raw)
+head(moo@sample_meta)
+head(moo@annotation)
+```
+```{r analysis}
 moo <- moo %>%
-  clean_raw_counts(
-    gene_names_column = "gene_id",
-    sample_names_column = "sample_id",
-  ) %>%
+  clean_raw_counts() %>%
   filter_counts(
-    gene_names_column = "Ensembl_ID_version",
-    sample_names_column = "sample_id",
-    group_column = "condition",
-    label_column = "sample_id",
-    columns_to_include = c("Ensembl_ID_version", "KO_S3", "KO_S4", "WT_S1", "WT_S2"),
+    group_colname = "condition",
+    label_colname = "sample_id",
     minimum_count_value_to_be_considered_nonzero = 1,
     minimum_number_of_samples_with_nonzero_counts_in_total = 1,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
   ) %>%
   normalize_counts(
-    gene_names_column = "Ensembl_ID_version",
-    sample_names_column = "sample_id",
-    group_column = "condition",
-    label_column = "sample_id",
-    columns_to_include = c("Ensembl_ID_version", "KO_S3", "KO_S4", "WT_S1", "WT_S2")
+    group_colname = "condition",
+    label_colname = "sample_id"
   )
 
 moo@counts$norm$voom %>% head()
+```
+
+## NIDAP dataset
+
+```{r nidap_data}
+moo_nidap <- create_multiOmicDataSet_from_dataframes(
+  sample_metadata = as.data.frame(nidap_sample_metadata),
+  counts_dat = as.data.frame(nidap_raw_counts)
+) %>%
+  clean_raw_counts() %>%
+  filter_counts(group_colname = "Group") %>%
+  normalize_counts(group_colname = "Group") %>%
+  batch_correct_counts(
+    covariates_colname = "Group",
+    batch_colname = "Batch",
+    label_colname = "Label"
+  )
 ```

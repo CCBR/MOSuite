@@ -5,21 +5,24 @@
 \title{Construct a multiOmicDataSet object from data frames}
 \usage{
 create_multiOmicDataSet_from_dataframes(
-  sample_meta_dat,
-  count_dat,
-  sample_id_colname = "sample_id",
+  sample_metadata,
+  counts_dat,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
   count_type = "raw"
 )
 }
 \arguments{
-\item{sample_meta_dat}{sample metadata as a data frame or tibble.
-Must contain a \code{sample_id} column.}
+\item{sample_metadata}{sample metadata as a data frame or tibble.
+The first column is assumed to contain the sample IDs which must correspond to column names in the raw counts.}
 
-\item{count_dat}{data frame of feature counts (e.g. expected gene counts from RSEM)}
+\item{counts_dat}{data frame of feature counts (e.g. expected feature counts from RSEM).}
 
-\item{sample_id_colname}{name of the column in \code{sample_meta_filepath} that contains the sample IDs}
+\item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} - first column in the sample metadata will be used.)}
 
-\item{count_type}{type to assign the values of \code{gene_counts_filepath} to in the \code{counts} slot}
+\item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first column in the count data will be used.)}
+
+\item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
 }
 \value{
 multiOmicDataSet object
@@ -35,5 +38,8 @@ sample_meta <- data.frame(
     levels = c("wildtype", "knockout")
   )
 )
-create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts)
+moo <- create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts)
+head(moo@sample_meta)
+head(moo@counts$raw)
+head(moo@annotation)
 }

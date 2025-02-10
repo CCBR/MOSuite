@@ -1,6 +1,9 @@
 test_that("counts_dat_to_matrix works", {
   expect_equal(
-    counts_dat_to_matrix(head(gene_counts)),
+    gene_counts %>%
+      dplyr::select(-GeneName) %>%
+      head() %>%
+      counts_dat_to_matrix(),
     structure(
       c(
         0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L,
@@ -46,7 +49,7 @@ test_that("calc_cpm_df works on NIDAP data", {
   trans.df[, -1] <- edgeR::cpm(as.matrix(df[, -1]))
 
   expect_equal(
-    calc_cpm_df(df, gene_colname = "Gene"),
+    calc_cpm_df(df, feature_id_colname = "Gene"),
     trans.df
   )
 })
@@ -58,7 +61,7 @@ test_that("calc_cpm_df preserves rownames", {
   trans.df[, -1] <- edgeR::cpm(as.matrix(df[, -1]))
 
   expect_equal(
-    calc_cpm_df(df, gene_colname = "Gene"),
+    calc_cpm_df(df, feature_id_colname = "Gene"),
     trans.df
   )
 })
