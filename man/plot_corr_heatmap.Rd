@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_heatmap.R
 \name{plot_corr_heatmap}
 \alias{plot_corr_heatmap}
-\title{Make a heatmap}
+\title{Make a correlation heatmap}
 \usage{
 plot_corr_heatmap(
   counts_dat,
@@ -16,6 +16,11 @@ plot_corr_heatmap(
 )
 }
 \arguments{
+\item{counts_dat}{data frame of feature counts (e.g. expected feature counts from RSEM).}
+
+\item{sample_metadata}{sample metadata as a data frame or tibble.
+The first column is assumed to contain the sample IDs which must correspond to column names in the raw counts.}
+
 \item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first column in the sample metadata will be used.)}
 
 \item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
@@ -23,11 +28,12 @@ plot_corr_heatmap(
 \item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).}
 
 \item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: \code{NULL} -- \code{sample_id_colname} will be used.)}
+
+\item{color_values}{vector of colors as hex values or names recognized by R}
 }
 \value{
-heatmap ggproto object
+heatmap from \code{ComplexHeatmap::Heatmap()}
 }
 \description{
-Make a heatmap
+Make a correlation heatmap
 }
-\keyword{internal}

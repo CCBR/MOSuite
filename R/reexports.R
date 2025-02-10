@@ -12,3 +12,8 @@ magrittr::`%<>%`
 #' @importFrom rlang :=
 #' @export
 rlang::`:=`
+
+#' rlang data pronoun
+#' @importFrom rlang .data
+#' @export
+rlang::.data

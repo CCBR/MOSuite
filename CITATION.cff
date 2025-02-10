@@ -46,6 +46,22 @@ references:
   year: '2025'
   version: '>= 3.5'
 - type: software
+  title: dendextend
+  abstract: 'dendextend: Extending ''dendrogram'' Functionality in R'
+  notes: Imports
+  url: https://talgalili.github.io/dendextend/
+  repository: https://CRAN.R-project.org/package=dendextend
+  authors:
+  - family-names: Galili
+    given-names: Tal
+    email: tal.galili@gmail.com
+    website: https://www.r-statistics.com
+  - family-names: Jefferis
+    given-names: Gregory
+    email: jefferis@gmail.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.dendextend
+- type: software
   title: DESeq2
   abstract: 'DESeq2: Differential gene expression analysis based on the negative binomial
     distribution'
@@ -259,6 +275,19 @@ references:
   year: '2025'
   doi: 10.32614/CRAN.package.magrittr
 - type: software
+  title: matrixStats
+  abstract: 'matrixStats: Functions that Apply to Rows and Columns of Matrices (and
+    to Vectors)'
+  notes: Imports
+  url: https://github.com/HenrikBengtsson/matrixStats
+  repository: https://CRAN.R-project.org/package=matrixStats
+  authors:
+  - family-names: Bengtsson
+    given-names: Henrik
+    email: henrikb@braju.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.matrixStats
+- type: software
   title: methods
   abstract: 'R: A Language and Environment for Statistical Computing'
   notes: Imports
@@ -300,6 +329,22 @@ references:
     email: pedro@plot.ly
   year: '2025'
   doi: 10.32614/CRAN.package.plotly
+- type: software
+  title: purrr
+  abstract: 'purrr: Functional Programming Tools'
+  notes: Imports
+  url: https://purrr.tidyverse.org/
+  repository: https://CRAN.R-project.org/package=purrr
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+    orcid: https://orcid.org/0000-0003-4757-117X
+  - family-names: Henry
+    given-names: Lionel
+    email: lionel@posit.co
+  year: '2025'
+  doi: 10.32614/CRAN.package.purrr
 - type: software
   title: reshape2
   abstract: 'reshape2: Flexibly Reshape Data: A Reboot of the Reshape Package'
