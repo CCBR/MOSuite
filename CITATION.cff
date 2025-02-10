@@ -298,6 +298,18 @@ references:
     address: Vienna, Austria
   year: '2025'
 - type: software
+  title: options
+  abstract: 'options: Simple, Consistent Package Options'
+  notes: Imports
+  url: https://dgkf.github.io/options/
+  repository: https://CRAN.R-project.org/package=options
+  authors:
+  - family-names: Kelkhoff
+    given-names: Doug
+    email: doug.kelkhoff@gmail.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.options
+- type: software
   title: plotly
   abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
   notes: Imports
