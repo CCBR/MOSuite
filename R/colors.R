@@ -40,30 +40,77 @@ get_random_colors <- function(num_colors, n = 2e3) {
 #' @export
 #'
 #' @examples
-#' set_colors(nidap_sample_metadata)
+#' get_colors_lst(nidap_sample_metadata)
 #' \dontrun{
-#' set_colors(nidap_sample_metadata, palette_fun = RColorBrewer::brewer.pal, name = "Set3")
+#' get_colors_lst(nidap_sample_metadata, palette_fun = RColorBrewer::brewer.pal, name = "Set3")
 #' }
-set_colors <- function(sample_metadata, palette_fun = grDevices::palette.colors, ...) {
+get_colors_lst <- function(sample_metadata,
+                           palette_fun = grDevices::palette.colors,
+                           ...) {
   dat_colnames <- colnames(sample_metadata)
-  color_lists <- dat_colnames %>% lapply(function(colname, dat = sample_metadata) {
-    obs <- dat %>%
-      dplyr::pull(colname) %>%
-      unique()
-    withCallingHandlers(
-      warning = function(cnd) {
-        message(glue::glue('Warning raised in set_colors() for column "{colname}"'))
-      },
-      colors_vctr <- palette_fun(n = length(obs), ...)
+  color_lists <- dat_colnames %>%
+    purrr::map(
+      .f = get_colors_vctr,
+      dat = sample_metadata,
+      palette_fun = palette_fun,
+      ...
     )
-
-    # if more colors are returned than are in the observations, truncate the vector.
-    # this occurs when using RColorBrewer::brewer.pal with n < 3
-    colors_vctr <- colors_vctr[1:length(obs)]
-
-    names(colors_vctr) <- obs
-    return(colors_vctr)
-  })
   names(color_lists) <- dat_colnames
   return(color_lists)
+}
+
+#' Get vector of colors for observations in one column of a data frame
+#'
+#' @inheritParams get_colors_lst
+#' @param dat data frame
+#' @param colname column name in `dat`
+#' @returns named vector of colors for each unique observation in `dat$colname`
+#' @export
+#'
+get_colors_vctr <- function(dat,
+                            colname,
+                            palette_fun = grDevices::palette.colors,
+                            ...) {
+  obs <- dat %>%
+    dplyr::pull(colname) %>%
+    unique()
+  withCallingHandlers(
+    warning = function(cnd) {
+      message(glue::glue('Warning raised in get_color_vctr() for column "{colname}"'))
+    },
+    colors_vctr <- palette_fun(n = length(obs), ...)
+  )
+
+  # if more colors are returned than are in the observations, truncate the vector.
+  # this occurs when using RColorBrewer::brewer.pal with n < 3
+  colors_vctr <- colors_vctr[1:length(obs)]
+
+  names(colors_vctr) <- obs
+  return(colors_vctr)
+}
+
+#' Set color palette for a single group/column
+#'
+#' This allows you to set custom palettes individually for groups in the dataset
+#'
+#' @inheritParams get_colors_lst
+#'
+#' @param moo multiOmicDataSet object (see `create_multiOmicDataSet_from_dataframes()`)
+#' @param colname group column name to set the palette for
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+#' moo <- create_multiOmicDataSet_from_dataframes(
+#'   sample_metadata = as.data.frame(nidap_sample_metadata),
+#'   counts_dat = as.data.frame(nidap_raw_counts)
+#' )
+#' moo@analyses$colors$Group
+#' moo %<>% set_color_pal("Group", palette_fun = RColorBrewer::brewer.pal, name = "Set2")
+#' moo@analyses$colors$Group
+set_color_pal <- function(moo, colname, palette_fun = grDevices::palette.colors,
+                          ...) {
+  moo@analyses[["colors"]][[colname]] <- get_colors_vctr(dat = moo@sample_meta, colname = colname, palette_fun = palette_fun, ...)
+  return(moo)
 }

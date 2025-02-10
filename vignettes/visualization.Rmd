@@ -58,7 +58,10 @@ moo %<>% batch_correct_counts(
 
 ## Customize plots
 
-TODO show how to use individual plotting functions and how to customize ggplot objects
+TODO
+- show how to use individual plotting functions
+- how to customize & override default color palettes
+- how to customize ggplot objects
 
 ### 3D PCA
 
@@ -69,4 +72,10 @@ plot_pca_3d(moo@counts$batch,
   label_colname = "Label",
   color_values = moo@analyses[["colors"]][["Group"]]
 )
+```
+
+## Expression Heatmap
+
+```{r expr_heatmap}
+plot_expr_heatmap(moo@counts[["norm"]][["voom"]], moo@sample_meta)
 ```
