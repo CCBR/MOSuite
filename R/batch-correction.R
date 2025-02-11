@@ -3,6 +3,8 @@
 #' using `sva::ComBat()`
 #'
 #' @inheritParams filter_counts
+#' @inheritParams option_params
+#'
 #' @param sub_count_type if `count_type` is a list, specify the sub count type within the list. (Default: `"voom"`)
 #' @param covariates_colnames The column name(s) from the sample metadata
 #'   containing variable(s) of interest, such as phenotype.
@@ -52,7 +54,7 @@ batch_correct_counts <- function(moo,
                                  batch_colname = "Batch",
                                  label_colname = NULL,
                                  colors_for_plots = NULL,
-                                 print_plots = FALSE) {
+                                 print_plots = options::opt("print_plots")) {
   abort_packages_not_installed("sva")
   # select correct counts matrix
   if (!(count_type %in% names(moo@counts))) {

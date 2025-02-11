@@ -18,6 +18,8 @@
 #' samples; and (3) Similarity Heatmap: the overall similarity of samples to one
 #' another based on unsupervised clustering.
 #'
+#' @inheritParams option_params
+#'
 #' @param moo multiOmicDataSet object (see `create_multiOmicDataSet_from_dataframes()`)
 #' @param count_type the type of counts to use -- must be a name in the counts slot (`moo@counts`)
 #' @param feature_id_colname The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be used.)
@@ -30,7 +32,6 @@
 #' @param minimum_number_of_samples_with_nonzero_counts_in_total Minimum number of samples (total) with non-zero counts
 #' @param use_group_based_filtering If TRUE, only keeps features (e.g. genes) that have at least a certain number of samples with nonzero CPM counts in at least one group
 #' @param minimum_number_of_samples_with_nonzero_counts_in_a_group Only keeps genes that have at least this number of samples with nonzero CPM counts in at least one group
-#' @param print_plots whether to create plots and print them
 #' @param principal_component_on_x_axis The principal component to plot on the x-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 1)
 #' @param principal_component_on_y_axis The principal component to plot on the y-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 2)
 #' @param legend_position_for_pca legend position for the PCA plot
@@ -93,7 +94,7 @@ filter_counts <- function(moo,
                           legend_font_size_for_histogram = 10,
                           number_of_histogram_legend_columns = 6,
                           colors_for_plots = NULL,
-                          print_plots = FALSE,
+                          print_plots = options::opt("print_plots"),
                           interactive_plots = FALSE) {
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))

@@ -29,6 +29,7 @@ Imports:
     magrittr,
     matrixStats,
     methods,
+    options,
     plotly,
     purrr,
     reshape2,

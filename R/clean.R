@@ -1,6 +1,8 @@
 #' Clean Raw Counts
 #'
 #' @inheritParams filter_counts
+#' @inheritParams option_params
+#'
 #' @param cleanup_column_names Invalid raw counts column names can cause errors
 #'   in the downstream analysis. If this is `TRUE`, any invalid column names
 #'   will be automatically altered to a correct format. These format changes
@@ -49,7 +51,7 @@ clean_raw_counts <- function(moo,
                              split_gene_name = TRUE,
                              aggregate_rows_with_duplicate_gene_names = TRUE,
                              gene_name_column_to_use_for_collapsing_duplicates = "",
-                             print_plots = FALSE) {
+                             print_plots = options::opt("print_plots")) {
   message(glue::glue("* cleaning {count_type} counts"))
   counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
