@@ -43,7 +43,6 @@ head(moo@sample_meta)
 head(moo@annotation)
 ```
 ```{r analysis}
-options(print_plots = FALSE)
 moo %<>%
   clean_raw_counts() %>%
   filter_counts(
@@ -64,7 +63,7 @@ moo@counts$norm$voom %>% head()
 ## NIDAP dataset
 
 ```{r nidap_data}
-options(print_plots = TRUE)
+options(moo_print_plots = TRUE)
 
 moo_nidap <- create_multiOmicDataSet_from_dataframes(
   sample_metadata = as.data.frame(nidap_sample_metadata),
