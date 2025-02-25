@@ -54,8 +54,11 @@ batch_correct_counts <- function(moo,
                                  batch_colname = "Batch",
                                  label_colname = NULL,
                                  colors_for_plots = NULL,
-                                 print_plots = options::opt("print_plots")) {
+                                 print_plots = options::opt("print_plots"),
+                                 save_plots = options::opt("save_plots"),
+                                 plots_subdir = "batch") {
   abort_packages_not_installed("sva")
+  message(glue::glue("* batch-correcting {glue::glue_collapse(c(count_type, sub_count_type),sep='-')} counts"))
   # select correct counts matrix
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
@@ -126,7 +129,7 @@ batch_correct_counts <- function(moo,
       tibble::rownames_to_column(feature_id_colname)
   }
 
-  if (isTRUE(print_plots)) {
+  if (isTRUE(print_plots) | isTRUE(save_plots)) {
     if (is.null(colors_for_plots)) {
       colors_for_plots <- moo@analyses[["colors"]][[batch_colname]]
     }
@@ -150,7 +153,7 @@ batch_correct_counts <- function(moo,
       color_values = colors_for_plots,
       color_by_group = TRUE
     ) + ggplot2::labs(caption = "batch-corrected counts")
-    corHM <- plot_corr_heatmap(
+    corHM_plot <- plot_corr_heatmap(
       counts_dat = combat_edata,
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,
@@ -160,9 +163,18 @@ batch_correct_counts <- function(moo,
       color_values = colors_for_plots
     ) + ggplot2::labs(caption = "batch-corrected counts")
 
-    print(pca_plot)
-    print(hist_plot)
-    print(corHM)
+    print_or_save_plot(pca_plot,
+      filename = file.path(plots_subdir, "pca.png"),
+      print_plots = print_plots, save_plots = save_plots
+    )
+    print_or_save_plot(hist_plot,
+      filename = file.path(plots_subdir, "histogram.png"),
+      print_plots = print_plots, save_plots = save_plots
+    )
+    print_or_save_plot(corHM_plot,
+      filename = file.path(plots_subdir, "corr_heatmap.png"),
+      print_plots = print_plots, save_plots = save_plots
+    )
   }
 
   message(glue::glue("The total number of features in output: {nrow(combat_edata)}"))
