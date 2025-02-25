@@ -15,7 +15,9 @@ batch_correct_counts(
   batch_colname = "Batch",
   label_colname = NULL,
   colors_for_plots = NULL,
-  print_plots = options::opt("print_plots")
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "batch"
 )
 }
 \arguments{
@@ -48,7 +50,11 @@ value in every row to skip batch correction (alternatively, simply do not run th
 
 \item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list. If you have >12 samples or groups, program will choose from a wide range of random colors}
 
-\item{print_plots}{Whether to print plots during analysis (Defaults to \code{TRUE}, overwritable using option 'MOSuite.print_plots' or environment variable 'R_MOSUITE_PRINT_PLOTS')}
+\item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
+
+\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+
+\item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \value{
 \code{multiOmicDataSet} with batch-corrected counts

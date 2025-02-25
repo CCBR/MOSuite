@@ -4,10 +4,14 @@
 \name{MOSuite-package}
 \alias{MOSuite}
 \alias{MOSuite-package}
-\title{MOSuite: R helper functions for RENEE}
+\title{MOSuite: R package for downstream multi-omics analysis}
 \description{
-\code{MOSuite} implements helper functions for RENEE, a comprehensive
-quality-control and quantification RNA-seq pipeline
+Designed for differential \href{https://github.com/CCBR/RENEE}{RNA-seq} analysis
+or any data represented in a counts table.
+}
+\details{
+See the website for more information, documentation, and examples:
+\url{https://ccbr.github.io/MOSuite}
 }
 \seealso{
 Useful links:
