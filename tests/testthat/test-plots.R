@@ -1,3 +1,4 @@
+set.seed(20250225)
 test_that("save_or_print_plot works for ComplexHeatmap", {
   p <- plot_corr_heatmap(
     counts_dat = nidap_filtered_counts %>%
@@ -37,7 +38,7 @@ test_that("save_or_print_plot works for ggplot", {
   expect_snapshot_file(
     print_or_save_plot(p,
       filename = "read_depth.png",
-      print_plots = TRUE, save_plots = TRUE, plots_dir = NULL
+      print_plots = FALSE, save_plots = TRUE, plots_dir = NULL
     ),
     "read_depth.png"
   )
