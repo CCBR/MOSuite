@@ -3,6 +3,7 @@
 #' @inheritParams filter_counts
 #' @inheritParams option_params
 #'
+#' @param norm_type normalization type. Default: "voom" which uses `limma::voom`.
 #' @param input_in_log_counts set this to `TRUE` if counts are already log2-transformed
 #' @param voom_normalization_method Normalization method to be applied to the logCPM values when using `limma::voom`
 #'
@@ -26,6 +27,7 @@
 #' head(moo@counts[["norm"]][["voom"]])
 normalize_counts <- function(moo,
                              count_type = "filt",
+                             norm_type = "voom",
                              feature_id_colname = NULL,
                              samples_to_include = NULL,
                              sample_id_colname = NULL,
@@ -50,10 +52,13 @@ normalize_counts <- function(moo,
                              legend_position_for_histogram = "top",
                              colors_for_plots = NULL,
                              print_plots = options::opt("print_plots"),
-                             interactive_plots = FALSE) {
+                             save_plots = options::opt("save_plots"),
+                             interactive_plots = FALSE,
+                             plots_subdir = "norm") {
+  message(glue::glue("* normalizing {count_type} counts"))
   counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
-
+  plots_subdir <- file.path(plots_subdir, norm_type)
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
   }
@@ -92,7 +97,7 @@ normalize_counts <- function(moo,
   df.voom <- as.data.frame(v$E) %>% tibble::rownames_to_column(feature_id_colname)
   message(paste0("Total number of features included: ", nrow(df.voom)))
   ### PH: END Limma Normalization
-  if (isTRUE(print_plots)) {
+  if (isTRUE(print_plots) | isTRUE(save_plots)) {
     if (is.null(colors_for_plots)) {
       colors_for_plots <- moo@analyses[["colors"]][[group_colname]]
     }
@@ -120,7 +125,6 @@ normalize_counts <- function(moo,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_
     ) + ggplot2::labs(caption = "normalized counts")
-    print(pca_plot)
     hist_plot <- plot_histogram(
       counts_dat = df.voom,
       sample_metadata = sample_metadata,
@@ -134,7 +138,6 @@ normalize_counts <- function(moo,
       legend_position = legend_position_for_histogram,
       legend_font_size = legend_font_size_for_histogram
     ) + ggplot2::labs(caption = "normalized counts")
-    print(hist_plot)
     corHM_plot <- plot_corr_heatmap(
       counts_dat = df.filt,
       sample_metadata = sample_metadata,
@@ -144,7 +147,19 @@ normalize_counts <- function(moo,
       label_colname = label_colname,
       color_values = colors_for_plots
     ) + ggplot2::labs(caption = "normalized counts")
-    print(corHM_plot)
+
+    print_or_save_plot(pca_plot,
+      filename = file.path(plots_subdir, "pca.png"),
+      print_plots = print_plots, save_plots = save_plots
+    )
+    print_or_save_plot(hist_plot,
+      filename = file.path(plots_subdir, "histogram.png"),
+      print_plots = print_plots, save_plots = save_plots
+    )
+    print_or_save_plot(corHM_plot,
+      filename = file.path(plots_subdir, "corr_heatmap.png"),
+      print_plots = print_plots, save_plots = save_plots
+    )
   }
 
   message(paste("Sample columns:", paste(colnames(df.voom)[!colnames(df.voom) %in% feature_id_colname]), collapse = ", "))
@@ -152,6 +167,6 @@ normalize_counts <- function(moo,
   if (isFALSE("norm" %in% names(moo@counts))) {
     moo@counts[["norm"]] <- list()
   }
-  moo@counts[["norm"]][["voom"]] <- df.voom
+  moo@counts[["norm"]][[norm_type]] <- df.voom
   return(moo)
 }
