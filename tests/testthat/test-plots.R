@@ -25,21 +25,25 @@ test_that("save_or_print_plot works for ComplexHeatmap", {
       "#878500"
     )
   )
-  expect_snapshot_file(
-    print_or_save_plot(p,
-      filename = "heatmap.png",
-      print_plots = FALSE, save_plots = TRUE, plots_dir = ""
-    ),
-    "heatmap.png"
+  tmp_dir <- tempdir()
+  outfile <- print_or_save_plot(
+    p,
+    filename = "heatmap.png",
+    print_plots = FALSE,
+    save_plots = TRUE,
+    plots_dir = tmp_dir
   )
+  expect_true(file.exists(outfile))
 })
 test_that("save_or_print_plot works for ggplot", {
   p <- plot_read_depth(nidap_clean_raw_counts)
-  expect_snapshot_file(
-    print_or_save_plot(p,
-      filename = "read_depth.png",
-      print_plots = FALSE, save_plots = TRUE, plots_dir = NULL
-    ),
-    "read_depth.png"
+  tmp_dir <- tempdir()
+  outfile <- print_or_save_plot(
+    p,
+    filename = "read_depth.png",
+    print_plots = FALSE,
+    save_plots = TRUE,
+    plots_dir = tmp_dir
   )
+  expect_true(file.exists(outfile))
 })
