@@ -56,7 +56,9 @@
 <span>  batch_colname <span class="op">=</span> <span class="st">"Batch"</span>,</span>
 <span>  label_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  colors_for_plots <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span></span>
+<span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span>,</span>
+<span>  save_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"save_plots"</span><span class="op">)</span>,</span>
+<span>  plots_subdir <span class="op">=</span> <span class="st">"batch"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -114,7 +116,15 @@ value in every row to skip batch correction (alternatively, simply do not run th
 
 
 <dt id="arg-print-plots">print_plots<a class="anchor" aria-label="anchor" href="#arg-print-plots"></a></dt>
-<dd><p>Whether to print plots during analysis (Defaults to <code>TRUE</code>, overwritable using option 'MOSuite.print_plots' or environment variable 'R_MOSUITE_PRINT_PLOTS')</p></dd>
+<dd><p>Whether to print plots during analysis (Defaults to <code>FALSE</code>, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')</p></dd>
+
+
+<dt id="arg-save-plots">save_plots<a class="anchor" aria-label="anchor" href="#arg-save-plots"></a></dt>
+<dd><p>Whether to save plots to files during analysis (Defaults to <code>FALSE</code>, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')</p></dd>
+
+
+<dt id="arg-plots-subdir">plots_subdir<a class="anchor" aria-label="anchor" href="#arg-plots-subdir"></a></dt>
+<dd><p>subdirectory in where plots will be saved if <code>save_plots</code> is <code>TRUE</code></p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -143,6 +153,7 @@ value in every row to skip batch correction (alternatively, simply do not run th
 <span class="r-in"><span>    batch_colname <span class="op">=</span> <span class="st">"Batch"</span>,</span></span>
 <span class="r-in"><span>    label_colname <span class="op">=</span> <span class="st">"Label"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> * batch-correcting norm-voom counts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found2batches</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Adjusting for2covariate(s) or covariate level(s)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Standardizing Data across genes</span>

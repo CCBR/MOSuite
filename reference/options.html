@@ -35,7 +35,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>MOSuite Options</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/main/R/1_options.R" class="external-link"><code>R/1_options.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/main/R/options.R" class="external-link"><code>R/options.R</code></a></small>
       <div class="d-none name"><code>options.Rd</code></div>
     </div>
 
@@ -61,13 +61,43 @@ accessed by passing the package name to <code>env</code>.</p>
 <dl><dt>print_plots</dt>
 <dd><dl>
 Whether to print plots during analysis<dt>default: </dt>
-<dd><div class="sourceCode"><pre><code><span><span class="cn">TRUE</span></span></code></pre></div></dd>
+<dd><div class="sourceCode"><pre><code><span><span class="cn">FALSE</span></span></code></pre></div></dd>
 
 <dt>option: </dt>
-<dd><p>MOSuite.print_plots</p></dd>
+<dd><p>moo_print_plots</p></dd>
 
 <dt>envvar: </dt>
-<dd><p>R_MOSUITE_PRINT_PLOTS (evaluated if possible, raw string otherwise)</p></dd>
+<dd><p>MOO_PRINT_PLOTS (evaluated if possible, raw string otherwise)</p></dd>
+
+
+</dl></dd>
+
+
+<dt>save_plots</dt>
+<dd><dl>
+Whether to save plots to files during analysis<dt>default: </dt>
+<dd><div class="sourceCode"><pre><code><span><span class="cn">FALSE</span></span></code></pre></div></dd>
+
+<dt>option: </dt>
+<dd><p>moo_save_plots</p></dd>
+
+<dt>envvar: </dt>
+<dd><p>MOO_SAVE_PLOTS (evaluated if possible, raw string otherwise)</p></dd>
+
+
+</dl></dd>
+
+
+<dt>plots_dir</dt>
+<dd><dl>
+Path where plots are saved when moo_save_plots is TRUE<dt>default: </dt>
+<dd><div class="sourceCode"><pre><code><span><span class="st">"figures/"</span></span></code></pre></div></dd>
+
+<dt>option: </dt>
+<dd><p>moo_plots_dir</p></dd>
+
+<dt>envvar: </dt>
+<dd><p>MOO_PLOTS_DIR (evaluated if possible, raw string otherwise)</p></dd>
 
 
 </dl></dd>

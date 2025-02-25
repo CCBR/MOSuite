@@ -79,7 +79,9 @@ features that have very low raw counts across most or all of your samples.</p>
 <span>  number_of_histogram_legend_columns <span class="op">=</span> <span class="fl">6</span>,</span>
 <span>  colors_for_plots <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span>,</span>
-<span>  interactive_plots <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  save_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"save_plots"</span><span class="op">)</span>,</span>
+<span>  interactive_plots <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  plots_subdir <span class="op">=</span> <span class="st">"filt"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -204,11 +206,19 @@ features that have very low raw counts across most or all of your samples.</p>
 
 
 <dt id="arg-print-plots">print_plots<a class="anchor" aria-label="anchor" href="#arg-print-plots"></a></dt>
-<dd><p>Whether to print plots during analysis (Defaults to <code>TRUE</code>, overwritable using option 'MOSuite.print_plots' or environment variable 'R_MOSUITE_PRINT_PLOTS')</p></dd>
+<dd><p>Whether to print plots during analysis (Defaults to <code>FALSE</code>, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')</p></dd>
+
+
+<dt id="arg-save-plots">save_plots<a class="anchor" aria-label="anchor" href="#arg-save-plots"></a></dt>
+<dd><p>Whether to save plots to files during analysis (Defaults to <code>FALSE</code>, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')</p></dd>
 
 
 <dt id="arg-interactive-plots">interactive_plots<a class="anchor" aria-label="anchor" href="#arg-interactive-plots"></a></dt>
 <dd><p>set to TRUE to make PCA and Histogram plots interactive_plots with <code>plotly</code>, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.</p></dd>
+
+
+<dt id="arg-plots-subdir">plots_subdir<a class="anchor" aria-label="anchor" href="#arg-plots-subdir"></a></dt>
+<dd><p>subdirectory in where plots will be saved if <code>save_plots</code> is <code>TRUE</code></p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -242,6 +252,7 @@ another based on unsupervised clustering.</p>
 <span class="r-in"><span>  <span class="fu">filter_counts</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    count_type <span class="op">=</span> <span class="st">"raw"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> * filtering raw counts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of features after filtering: 7943</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">filt</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Gene   A1   A2   A3   B1   B2   B3   C1   C2   C3</span>
