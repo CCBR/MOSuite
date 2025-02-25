@@ -50,6 +50,8 @@
 #' @param number_of_histogram_legend_columns number of columns for the histogram legend
 #' @param colors_for_plots Colors for the PCA and histogram will be picked, in order, from this list. If you have >12 samples or groups, program will choose from a wide range of random colors
 #' @param interactive_plots set to TRUE to make PCA and Histogram plots interactive_plots with `plotly`, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.
+#' @param plots_subdir subdirectory in where plots will be saved if `save_plots` is `TRUE`
+#'
 #' @return `multiOmicDataSet` with filtered counts
 #' @export
 #'
@@ -95,7 +97,10 @@ filter_counts <- function(moo,
                           number_of_histogram_legend_columns = 6,
                           colors_for_plots = NULL,
                           print_plots = options::opt("print_plots"),
-                          interactive_plots = FALSE) {
+                          save_plots = options::opt("save_plots"),
+                          interactive_plots = FALSE,
+                          plots_subdir = "filt") {
+  message(glue::glue("* filtering {count_type} counts"))
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
   }
@@ -132,7 +137,7 @@ filter_counts <- function(moo,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group
   )
 
-  if (isTRUE(print_plots)) {
+  if (isTRUE(print_plots) | isTRUE(save_plots)) {
     # use consistent colors
     if (is.null(colors_for_plots)) {
       colors_for_plots <- moo@analyses[["colors"]][[group_colname]]
@@ -197,9 +202,18 @@ filter_counts <- function(moo,
       hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) %>%
         plotly::ggplotly(tooltip = c("sample"))
     }
-    print(pca_plot)
-    print(hist_plot)
-    print(corHM)
+    print_or_save_plot(pca_plot,
+      filename = file.path(plots_subdir, "pca.png"),
+      print_plots = print_plots, save_plots = save_plots
+    )
+    print_or_save_plot(hist_plot,
+      filename = file.path(plots_subdir, "histogram.png"),
+      print_plots = print_plots, save_plots = save_plots
+    )
+    print_or_save_plot(corHM,
+      filename = file.path(plots_subdir, "corr_heatmap.png"),
+      print_plots = print_plots, save_plots = save_plots
+    )
   }
   df_final <- df %>%
     dplyr::filter(!!rlang::sym(feature_id_colname) %in% df_filt[, feature_id_colname])

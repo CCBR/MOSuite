@@ -14,7 +14,8 @@ clean_raw_counts(
   split_gene_name = TRUE,
   aggregate_rows_with_duplicate_gene_names = TRUE,
   gene_name_column_to_use_for_collapsing_duplicates = "",
-  print_plots = options::opt("print_plots")
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots")
 )
 }
 \arguments{
@@ -59,7 +60,9 @@ contain Ensembl IDs the split Feature IDs will be named 'Feature_id_1' and
 'Feature_id_2'. For this case an error will occur and you will have
 to manually enter the Column ID for this field.}
 
-\item{print_plots}{Whether to print plots during analysis (Defaults to \code{TRUE}, overwritable using option 'MOSuite.print_plots' or environment variable 'R_MOSUITE_PRINT_PLOTS')}
+\item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
+
+\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 }
 \value{
 \code{multiOmicDataSet} with cleaned counts

@@ -51,7 +51,8 @@ clean_raw_counts <- function(moo,
                              split_gene_name = TRUE,
                              aggregate_rows_with_duplicate_gene_names = TRUE,
                              gene_name_column_to_use_for_collapsing_duplicates = "",
-                             print_plots = options::opt("print_plots")) {
+                             print_plots = options::opt("print_plots"),
+                             save_plots = options::opt("save_plots")) {
   message(glue::glue("* cleaning {count_type} counts"))
   counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
@@ -63,9 +64,12 @@ clean_raw_counts <- function(moo,
     feature_id_colname <- colnames(counts_dat)[1]
   }
   # Sample Read Counts Plot
-  if (isTRUE(print_plots)) {
+  if (isTRUE(print_plots) | isTRUE(save_plots)) {
     read_plot <- plot_read_depth(counts_dat)
-    print(read_plot)
+    print_or_save_plot(read_plot,
+      filename = "clean/read_depth.png",
+      print_plots = print_plots, save_plots = save_plots
+    )
   }
 
   # Manually rename samples
