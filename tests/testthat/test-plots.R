@@ -1,13 +1,11 @@
 set.seed(20250225)
 test_that("save_or_print_plot works for ComplexHeatmap", {
   p <- plot_corr_heatmap(
-    counts_dat = nidap_filtered_counts %>%
-      dplyr::select(tidyselect::all_of(
-        c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3")
-      )) %>%
+    nidap_filtered_counts %>%
       as.data.frame(),
     sample_metadata = as.data.frame(nidap_sample_metadata),
     sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
     label_colname = "Label",
     group_colname = "Group",
     color_values = c(
@@ -25,25 +23,21 @@ test_that("save_or_print_plot works for ComplexHeatmap", {
       "#878500"
     )
   )
-  tmp_dir <- tempdir()
-  outfile <- print_or_save_plot(
+  expect_snapshot_file(print_or_save_plot(
     p,
     filename = "heatmap.png",
     print_plots = FALSE,
     save_plots = TRUE,
-    plots_dir = tmp_dir
-  )
-  expect_true(file.exists(outfile))
+    plots_dir = "."
+  ), "heatmap.png")
 })
 test_that("save_or_print_plot works for ggplot", {
   p <- plot_read_depth(nidap_clean_raw_counts)
-  tmp_dir <- tempdir()
-  outfile <- print_or_save_plot(
+  expect_snapshot_file(print_or_save_plot(
     p,
     filename = "read_depth.png",
     print_plots = FALSE,
     save_plots = TRUE,
-    plots_dir = tmp_dir
-  )
-  expect_true(file.exists(outfile))
+    plots_dir = "."
+  ), "read_depth.png")
 })
