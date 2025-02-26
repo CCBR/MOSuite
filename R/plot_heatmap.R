@@ -18,7 +18,7 @@
 #' @export
 #' @returns heatmap from `ComplexHeatmap::Heatmap()`
 #' @examples
-#' # plot corr_heatmap for a counts slot in a multiOmicDataset Object
+#' # plot correlation heatmap for a counts slot in a multiOmicDataset Object
 #' moo <- multiOmicDataSet(
 #'   sample_metadata = nidap_sample_metadata,
 #'   anno_dat = data.frame(),
@@ -26,7 +26,7 @@
 #' )
 #' p <- plot_corr_heatmap(moo, count_type = "raw")
 #'
-#' # plot corr_heatmap for a counts dataframe
+#' # plot correlation heatmap for a counts dataframe
 #' counts_dat <- moo@counts$raw
 #' plot_corr_heatmap(
 #'   counts_dat,
@@ -165,18 +165,88 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(moo_counts,
   return(hm)
 }
 
-
 #' Plot expression heatmap
+#'
+#' The first argument can be a `multiOmicDataset` object (`moo`) or a `data.frame` containing counts.
+#' For a `moo`, choose which counts slot to use with `count_type` & `sub_count_type`.
+#'
+#' # Methods
+#'
+#'  See documentation below for method-specific arguments
+#'
+#'   | method                   | class of `moo_counts` |
+#'   |--------------------------|--------------------|
+#'   | [plot_expr_heatmap_moo]     | `multiOmicDataset` |
+#'   | [plot_expr_heatmap_dat]     | `data.frame`       |
+#'
+#' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
+#' @param ... remaining arguments are forwarded to the method
+#'
+#' @export
+#' @returns heatmap from `ComplexHeatmap::Heatmap()`
+#' @examples
+#' # plot expression heatmap for a counts slot in a multiOmicDataset Object
+#' moo <- multiOmicDataSet(
+#'   sample_metadata = nidap_sample_metadata,
+#'   anno_dat = data.frame(),
+#'   counts_lst = list("raw" = nidap_raw_counts)
+#' )
+#' p <- plot_expr_heatmap(moo, count_type = "raw")
+#'
+#' # plot expression heatmap for a counts dataframe
+#' counts_dat <- moo@counts$raw
+#' plot_expr_heatmap(
+#'   counts_dat,
+#'   sample_metadata = nidap_sample_metadata,
+#'   sample_id_colname = "Sample",
+#'   feature_id_colname = "Gene",
+#'   group_colname = "Group",
+#'   label_colname = "Label"
+#' )
+#'
+#' @rdname plot_expr_heatmap
+#' @family plotters
+#' @family heatmaps
+plot_expr_heatmap <- S7::new_generic("plot_expr_heatmap", "moo_counts")
+
+
+#' Plot expression heatmap for multiOmicDataSet
+#'
+#' @param moo_counts multiOmicDataSet containing `count_type` & `sub_count_type` in the counts slot
+#' @param count_type the type of counts to use -- must be a name in the counts slot (`moo@counts`)
+#' @param sub_count_type if `count_type` is a list, specify the sub count type within the list
+#' @param ... remaining arguments forwarded to the plotter
+#'
+#' @returns heatmap from `ComplexHeatmap::Heatmap()`
+#'
+#' @name plot_expr_heatmap_moo
+#' @method plot_expr_heatmap multiOmicDataSet
+#' @seealso [plot_expr_heatmap] generic
+#' @family plotters for multiOmicDataSets
+S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(moo_counts,
+                                                            count_type,
+                                                            sub_count_type = NULL,
+                                                            ...) {
+  counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  plot_expr_heatmap(counts_dat, sample_metadata = moo_counts@sample_meta, ...)
+}
+
+
+#' Plot expression heatmap for counts dataframe
 #'
 #' By default, the samples (i.e. the columns) are allowed to cluster in an unsupervised fashion based on how similar their expression profiles are across the included genes. This can help identify samples that are non clustering with their group as you might expect based on the experimental design.
 #'
 #' Again, by default, the top 500 genes by variance are used, as these are generally going to include those genes that most distinguish your samples from one another. You can change this as well as many other parameters about this heatmap if you explore the advanced options.
 #'
-#' @inheritParams create_multiOmicDataSet_from_dataframes
-#' @inheritParams filter_counts
-#' @inheritParams plot_histogram
-#' @inheritParams batch_correct_counts
 #'
+#' @param moo_counts counts [data.frame], e.g. from the counts slot of a [multiOmicDataSet]
+#' @param sample_metadata sample metadata as a data frame or tibble.
+#' @param sample_id_colname The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: `NULL` - first column in the sample metadata will be used.)
+#' @param feature_id_colname The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be used.)
+#' @param group_colname The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).
+#' @param label_colname The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: `NULL` -- `sample_id_colname` will be used.)
+#' @param color_values vector of colors as hex values or names recognized by R
+#' @param samples_to_include Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: `NULL` - all sample IDs in `moo@sample_meta` will be used.)
 #' @param include_all_genes Set to TRUE if all genes are to be included. Set to FALSE if you want to filter genes by variance and/or provide a list of specific genes that will appear in the heatmap.
 #' @param filter_top_genes_by_variance Set to TRUE if you want to only include the top genes by variance. Set to FALSE if you do not want to filter genes by variance.
 #' @param top_genes_by_variance_to_include The number of genes to include if filtering genes by variance. This parameter is ignored if "Filter top genes by variance" is set to FALSE.
@@ -213,80 +283,61 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(moo_counts,
 #' @param display_numbers Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if you want to see these numbers on the plot.
 #'
 #' @returns heatmap from `ComplexHeatmap::pheatmap()`
-#' @export
 #'
+#' @name plot_expr_heatmap_dat
+#' @seealso [plot_expr_heatmap] generic
 #' @family heatmaps
-#'
-plot_expr_heatmap <- function(moo,
-                              count_type = "norm",
-                              sub_count_type = "voom",
-                              sample_id_colname = NULL,
-                              feature_id_colname = NULL,
-                              group_colname = "Group",
-                              label_colname = NULL,
-                              samples_to_include = NULL,
-                              color_values = c(
-                                "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-                                "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
-                              ),
-                              include_all_genes = FALSE,
-                              filter_top_genes_by_variance = TRUE,
-                              top_genes_by_variance_to_include = 500,
-                              specific_genes_to_include_in_heatmap = "None",
-                              cluster_genes = TRUE,
-                              gene_distance_metric = "correlation",
-                              gene_clustering_method = "average",
-                              display_gene_dendrograms = TRUE,
-                              display_gene_names = FALSE,
-                              center_and_rescale_expression = TRUE,
-                              cluster_samples = FALSE,
-                              arrange_sample_columns = TRUE,
-                              order_by_gene_expression = FALSE,
-                              gene_to_order_columns = " ",
-                              gene_expression_order = "low_to_high",
-                              smpl_distance_metric = "correlation",
-                              smpl_clustering_method = "average",
-                              display_smpl_dendrograms = TRUE,
-                              reorder_dendrogram = FALSE,
-                              reorder_dendrogram_order = c(),
-                              display_sample_names = TRUE,
-                              group_columns = c("Group", "Replicate", "Batch"),
-                              assign_group_colors = FALSE,
-                              assign_color_to_sample_groups = c(),
-                              group_colors = c("indigo", "carrot", "lipstick", "turquoise", "lavender", "jade", "coral", "azure", "green", "rum", "orange", "olive"),
-                              heatmap_color_scheme = "Default",
-                              autoscale_heatmap_color = TRUE,
-                              set_min_heatmap_color = -2,
-                              set_max_heatmap_color = 2,
-                              aspect_ratio = "Auto",
-                              legend_font_size = 10,
-                              gene_name_font_size = 4,
-                              sample_name_font_size = 8,
-                              display_numbers = FALSE) {
+#' @family plotters for counts dataframes
+S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(moo_counts,
+                                                                sample_metadata,
+                                                                sample_id_colname = NULL,
+                                                                feature_id_colname = NULL,
+                                                                group_colname = "Group",
+                                                                label_colname = NULL,
+                                                                samples_to_include = NULL,
+                                                                color_values = c(
+                                                                  "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+                                                                  "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
+                                                                ),
+                                                                include_all_genes = FALSE,
+                                                                filter_top_genes_by_variance = TRUE,
+                                                                top_genes_by_variance_to_include = 500,
+                                                                specific_genes_to_include_in_heatmap = "None",
+                                                                cluster_genes = TRUE,
+                                                                gene_distance_metric = "correlation",
+                                                                gene_clustering_method = "average",
+                                                                display_gene_dendrograms = TRUE,
+                                                                display_gene_names = FALSE,
+                                                                center_and_rescale_expression = TRUE,
+                                                                cluster_samples = FALSE,
+                                                                arrange_sample_columns = TRUE,
+                                                                order_by_gene_expression = FALSE,
+                                                                gene_to_order_columns = " ",
+                                                                gene_expression_order = "low_to_high",
+                                                                smpl_distance_metric = "correlation",
+                                                                smpl_clustering_method = "average",
+                                                                display_smpl_dendrograms = TRUE,
+                                                                reorder_dendrogram = FALSE,
+                                                                reorder_dendrogram_order = c(),
+                                                                display_sample_names = TRUE,
+                                                                group_columns = c("Group", "Replicate", "Batch"),
+                                                                assign_group_colors = FALSE,
+                                                                assign_color_to_sample_groups = c(),
+                                                                group_colors = c("indigo", "carrot", "lipstick", "turquoise", "lavender", "jade", "coral", "azure", "green", "rum", "orange", "olive"),
+                                                                heatmap_color_scheme = "Default",
+                                                                autoscale_heatmap_color = TRUE,
+                                                                set_min_heatmap_color = -2,
+                                                                set_max_heatmap_color = 2,
+                                                                aspect_ratio = "Auto",
+                                                                legend_font_size = 10,
+                                                                gene_name_font_size = 4,
+                                                                sample_name_font_size = 8,
+                                                                display_numbers = FALSE) {
   ## This function uses pheatmap to draw a heatmap, scaling first by rows
   ## (with samples in columns and genes in rows)
   Gene <- NULL
-  if (!(count_type %in% names(moo@counts))) {
-    stop(glue::glue("count_type {count_type} not in moo@counts"))
-  }
-  counts_dat <- moo@counts[[count_type]]
-  if (!is.null(sub_count_type)) {
-    if (!(inherits(counts_dat, "list"))) {
-      stop(
-        glue::glue(
-          "{count_type} counts is not a named list. To use {count_type} counts, set sub_count_type to NULL"
-        )
-      )
-    } else if (!(sub_count_type %in% names(counts_dat))) {
-      stop(
-        glue::glue(
-          "sub_count_type {sub_count_type} is not in moo@counts[[{count_type}]]"
-        )
-      )
-    }
-    counts_dat <- moo@counts[[count_type]][[sub_count_type]]
-  }
-  sample_metadata <- moo@sample_meta
+  counts_dat <- moo_counts
+
 
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]

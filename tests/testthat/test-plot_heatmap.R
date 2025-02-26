@@ -170,13 +170,18 @@ test_that("plot_expr_heatmap works", {
   # TODO refactor plot_expr_heatmap to avoid triggering warnings
   expect_warning(
     expect_warning(
-      expect_warning(
-        p <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
-      )
+      expect_warning({
+        set.seed(20250226)
+        p_moo <- plot_expr_heatmap(moo,
+          count_type = "norm",
+          sub_count_type = "voom",
+          feature_id_colname = "Gene"
+        )
+      })
     )
   )
   expect_equal(
-    head(p@matrix),
+    head(p_moo@matrix),
     structure(c(
       -0.469646298150098, -0.999122775178692, -1.63914985230916,
       -1.11065487632401, 1.06508157716121, 0.129357631742822, -1.6308124461643,
@@ -199,5 +204,19 @@ test_that("plot_expr_heatmap works", {
       "Il2rb", "Rora", "Tcrg-C1", "Pdcd1", "Dntt",
       "Eya2"
     ), c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3")))
+  )
+
+  expect_warning(expect_warning(expect_warning({
+    set.seed(20250226)
+    p_dat <- plot_expr_heatmap(
+      as.data.frame(nidap_norm_counts),
+      sample_metadata = as.data.frame(nidap_sample_metadata),
+      feature_id_colname = "Gene"
+    )
+  })))
+
+  expect_equal(
+    p_moo@matrix,
+    p_dat@matrix
   )
 })
