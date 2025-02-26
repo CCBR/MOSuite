@@ -5,7 +5,7 @@
 #'
 #' # Methods
 #'
-#'  See documentation below for method-specific for arguments
+#'  See documentation below for method-specific arguments
 #'
 #'   | method                   | class of `moo_counts` |
 #'   |--------------------------|--------------------|
@@ -45,7 +45,7 @@ plot_histogram <- S7::new_generic("plot_histogram", dispatch_args = "moo_counts"
 
 #' Plot histogram for multiOmicDataSet
 #'
-#' @param moo_counts multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
+#' @param moo_counts multiOmicDataSet containing `count_type` & `sub_count_type` in the counts slot
 #' @param count_type the type of counts to use -- must be a name in the counts slot (`moo@counts`)
 #' @param sub_count_type if `count_type` is a list, specify the sub count type within the list
 #' @param ... remaining arguments forwarded to the `plot_histogram` method for `data.frame`s (see `?plot_histogram_dat`)
@@ -64,39 +64,18 @@ plot_histogram <- S7::new_generic("plot_histogram", dispatch_args = "moo_counts"
 #' @name plot_histogram_moo
 #' @method plot_histogram multiOmicDataSet
 #' @seealso [plot_histogram] generic
+#' @family plotters for multiOmicDataSets
 S7::method(plot_histogram, multiOmicDataSet) <- function(moo_counts,
                                                          count_type,
                                                          sub_count_type = NULL,
                                                          ...) {
-  moo <- moo_counts
-  # select correct counts matrix
-  if (!(count_type %in% names(moo@counts))) {
-    stop(glue::glue("count_type {count_type} not in moo@counts"))
-  }
-  counts_dat <- moo@counts[[count_type]]
-  if (!is.null(sub_count_type)) {
-    if (!(inherits(counts_dat, "list"))) {
-      stop(
-        glue::glue(
-          "{count_type} counts is not a named list. To use {count_type} counts, set sub_count_type to NULL"
-        )
-      )
-    } else if (!(sub_count_type %in% names(counts_dat))) {
-      stop(
-        glue::glue(
-          "sub_count_type {sub_count_type} is not in moo@counts[[{count_type}]]"
-        )
-      )
-    }
-    counts_dat <- moo@counts[[count_type]][[sub_count_type]]
-  }
-  sample_metadata <- moo@sample_meta
-  plot_histogram(counts_dat, sample_metadata = sample_metadata, ...)
+  counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  plot_histogram(counts_dat, sample_metadata = moo_counts@sample_meta, ...)
 }
 
 #' Plot histogram for counts dataframe
 #'
-#' @param moo_counts counts [data.frame], i.e. from counts slot of a [multiOmicDataSet]
+#' @param moo_counts counts [data.frame], e.g. from the counts slot of a [multiOmicDataSet]
 #' @param sample_metadata sample metadata as a data frame or tibble.
 #' @param sample_id_colname The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: `NULL` - first column in the sample metadata will be used.)
 #' @param feature_id_colname The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be used.)
@@ -128,6 +107,7 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(moo_counts,
 #' @name plot_histogram_dat
 #' @method plot_histogram data.frame
 #' @seealso [plot_histogram] generic
+#' @family plotters for counts dataframes
 S7::method(plot_histogram, S7::class_data.frame) <- function(moo_counts,
                                                              sample_metadata,
                                                              sample_id_colname = NULL,

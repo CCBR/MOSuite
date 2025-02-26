@@ -34,11 +34,13 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
       stop(glue::glue("counts can only contain these names:\n\t{paste(approved_counts, collapse = ', ')}"))
     }
 
-    # all sample IDs in sample_meta must also be in raw counts, & vice versa
     meta_sample_colnames <- self@sample_meta %>% dplyr::pull(1)
-    feature_sample_colnames <- self@counts$raw %>%
-      dplyr::select(-1) %>%
-      colnames()
+    # all sample IDs in sample_meta must also be in raw counts, & vice versa
+    if ("raw" %in% names(self@counts)) {
+      feature_sample_colnames <- self@counts$raw %>%
+        dplyr::select(-1) %>%
+        colnames()
+    }
 
     error_msg <- ""
     not_in_meta <- setdiff(meta_sample_colnames, feature_sample_colnames)
