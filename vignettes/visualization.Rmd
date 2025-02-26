@@ -77,15 +77,16 @@ TODO
 ### 3D PCA
 
 ```{r pca_3D}
-plot_pca_3d(moo@counts$batch,
+plot_pca(moo@counts$batch,
   moo@sample_meta,
+  principal_components = c(1, 2, 3),
   group_colname = "Group",
   label_colname = "Label",
   color_values = moo@analyses[["colors"]][["Group"]]
 )
 ```
 
-## Expression Heatmap
+### Expression Heatmap
 
 ```{r expr_heatmap}
 p <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
