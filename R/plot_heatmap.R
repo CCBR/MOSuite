@@ -1,26 +1,104 @@
-#' Make a correlation heatmap
+#' Plot correlation heatmap
 #'
-#' @inheritParams filter_counts
-#' @inheritParams plot_histogram
+#' The first argument can be a `multiOmicDataset` object (`moo`) or a `data.frame` containing counts.
+#' For a `moo`, choose which counts slot to use with `count_type` & `sub_count_type`.
+#'
+#' # Methods
+#'
+#'  See documentation below for method-specific arguments
+#'
+#'   | method                   | class of `moo_counts` |
+#'   |--------------------------|--------------------|
+#'   | [plot_corr_heatmap_moo]     | `multiOmicDataset` |
+#'   | [plot_corr_heatmap_dat]     | `data.frame`       |
+#'
+#' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
+#' @param ... remaining arguments are forwarded to the method
+#'
+#' @export
+#' @returns heatmap from `ComplexHeatmap::Heatmap()`
+#' @examples
+#' # plot corr_heatmap for a counts slot in a multiOmicDataset Object
+#' moo <- multiOmicDataSet(
+#'   sample_metadata = nidap_sample_metadata,
+#'   anno_dat = data.frame(),
+#'   counts_lst = list("raw" = nidap_raw_counts)
+#' )
+#' p <- plot_corr_heatmap(moo, count_type = "raw")
+#'
+#' # plot corr_heatmap for a counts dataframe
+#' counts_dat <- moo@counts$raw
+#' plot_corr_heatmap(
+#'   counts_dat,
+#'   sample_metadata = nidap_sample_metadata,
+#'   sample_id_colname = "Sample",
+#'   feature_id_colname = "Gene",
+#'   group_colname = "Group",
+#'   label_colname = "Label"
+#' )
+#'
+#' @rdname plot_corr_heatmap
+#' @family plotters
+#' @family heatmaps
+plot_corr_heatmap <- S7::new_generic("plot_corr_heatmap", "moo_counts")
+
+#' Plot correlation heatmap for multiOmicDataSet
+#'
+#' @param moo_counts multiOmicDataSet containing `count_type` & `sub_count_type` in the counts slot
+#' @param count_type the type of counts to use -- must be a name in the counts slot (`moo@counts`)
+#' @param sub_count_type if `count_type` is a list, specify the sub count type within the list
+#' @param ... remaining arguments forwarded to the plotter
 #'
 #' @returns heatmap from `ComplexHeatmap::Heatmap()`
-#' @export
 #'
-plot_corr_heatmap <- function(counts_dat,
-                              sample_metadata,
-                              sample_id_colname = NULL,
-                              feature_id_colname = NULL,
-                              group_colname = "Group",
-                              label_colname = "Label",
-                              color_values = c(
-                                "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-                                "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
-                              )) {
-  abort_packages_not_installed("amap", "ComplexHeatmap", "dendsort")
+#' @name plot_corr_heatmap_moo
+#' @method plot_corr_heatmap multiOmicDataSet
+#' @seealso [plot_corr_heatmap] generic
+#' @family plotters for multiOmicDataSets
+S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(moo_counts,
+                                                            count_type,
+                                                            sub_count_type = NULL,
+                                                            ...) {
+  counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  plot_corr_heatmap(counts_dat, sample_metadata = moo_counts@sample_meta, ...)
+}
 
+#' Plot correlation heatmap for counts dataframe
+#'
+#' @param moo_counts counts [data.frame], e.g. from the counts slot of a [multiOmicDataSet]
+#' @param sample_metadata sample metadata as a data frame or tibble.
+#' @param sample_id_colname The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: `NULL` - first column in the sample metadata will be used.)
+#' @param feature_id_colname The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be used.)
+#' @param group_colname The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).
+#' @param label_colname The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: `NULL` -- `sample_id_colname` will be used.)
+#' @param color_values vector of colors as hex values or names recognized by R
+#'
+#' @returns heatmap from `ComplexHeatmap::Heatmap()`
+#'
+#' @seealso [plot_corr_heatmap] generic
+#' @name plot_corr_heatmap_dat
+#' @family plotters for counts dataframes
+S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(moo_counts,
+                                                                sample_metadata,
+                                                                sample_id_colname = NULL,
+                                                                feature_id_colname = NULL,
+                                                                group_colname = "Group",
+                                                                label_colname = "Label",
+                                                                color_values = c(
+                                                                  "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+                                                                  "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
+                                                                )) {
+  abort_packages_not_installed("amap", "ComplexHeatmap", "dendsort")
+  counts_dat <- moo_counts
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
   }
+  if (!is.null(feature_id_colname) && feature_id_colname %in% colnames(counts_dat)) {
+    counts_dat %<>%
+      tibble::column_to_rownames(var = feature_id_colname)
+  }
+  # drop non-numeric columns
+  counts_dat %<>% dplyr::select(tidyselect::where(is.numeric))
 
   ## Annotate
   rownames(sample_metadata) <- sample_metadata[[label_colname]]
@@ -52,10 +130,6 @@ plot_corr_heatmap <- function(counts_dat,
   new <- sample_metadata[[label_colname]]
   names(old) <- new
   counts_dat %<>% dplyr::rename(tidyselect::any_of(old))
-  if (!is.null(feature_id_colname) && feature_id_colname %in% colnames(counts_dat)) {
-    counts_dat %<>%
-      tibble::column_to_rownames(var = feature_id_colname)
-  }
 
   mat <- as.matrix(counts_dat)
   tcounts <- t(mat)
@@ -140,6 +214,8 @@ plot_corr_heatmap <- function(counts_dat,
 #'
 #' @returns heatmap from `ComplexHeatmap::pheatmap()`
 #' @export
+#'
+#' @family heatmaps
 #'
 plot_expr_heatmap <- function(moo,
                               count_type = "norm",

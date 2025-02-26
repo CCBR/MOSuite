@@ -14,7 +14,7 @@ colors_vec <- c(
 )
 test_that("correlation heatmap works", {
   p <- plot_corr_heatmap(
-    counts_dat = nidap_filtered_counts %>%
+    nidap_filtered_counts %>%
       dplyr::select(tidyselect::all_of(
         c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3")
       )) %>%
@@ -116,6 +116,29 @@ test_that("correlation heatmap works", {
       c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3")
     )
   ))
+})
+
+test_that("plot_corr_heatmap method dispatch works", {
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts),
+      "norm" = list(
+        "voom" = as.data.frame(nidap_norm_counts)
+      )
+    )
+  )
+  expect_equal(
+    plot_corr_heatmap(moo, "filt")@matrix,
+    plot_corr_heatmap(
+      as.data.frame(nidap_filtered_counts),
+      sample_metadata = as.data.frame(nidap_sample_metadata),
+      feature_id_colname = "Gene"
+    )@matrix
+  )
 })
 
 # TODO get heatmap working on tibbles also
