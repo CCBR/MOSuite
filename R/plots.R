@@ -13,7 +13,7 @@
 #'
 #' @return invisibly returns the path where the plot image was saved to the disk
 #' @export
-#'
+#' @family plotters
 print_or_save_plot <- function(plot_obj,
                                filename,
                                print_plots = options::opt("print_plots"),

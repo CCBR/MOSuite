@@ -1,6 +1,6 @@
 #' Perform principal components analysis
 #'
-#' @param counts_dat data frame of feature counts (e.g. expected feature counts from RSEM).
+#' @param counts_dat data frame of feature counts (e.g. from the counts slot of a `multiOmicDataSet`).
 #' @param sample_metadata sample metadata as a data frame or tibble.
 #' @param sample_id_colname The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: `NULL` - first column in the sample metadata will be used.)
 #' @param feature_id_colname The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be used.)
@@ -48,26 +48,21 @@ calc_pca <- function(counts_dat,
 
 #' Perform and plot a Principal Components Analysis
 #'
-#' The first argument can be a `multiOmicDataset` object (`moo`) or a `data.frame` containing counts.
-#' For a `moo`, choose which counts slot to use with `count_type` & `sub_count_type`.
-#'
-#' # Methods
-#'
-#'  See documentation below for method-specific arguments
-#'
-#'   | method                   | class of `moo_counts` |
-#'   |--------------------------|--------------------|
-#'   | [plot_pca_moo]     | `multiOmicDataset` |
-#'   | [plot_pca_dat]     | `data.frame`       |
-#'
-#' ## low-level functions
-#'
-#'  - [plot_pca_2d] - called by [plot_pca_dat] when there are **2** principal components
-#'  - [plot_pca_3d] - called by [plot_pca_dat] when there are **3** principal components
+#' @inherit moo_counts description
 #'
 #' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
+#' @param count_type **Required** if `moo_counts` is a `multiOmicDataSet`: the type of counts to use -- must be a name in the counts slot (`moo@counts`).
+#' @param sub_count_type Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub count type within the list
+#' @param sample_metadata **Required** if `moo_counts` is a `data.frame`: sample metadata as a data frame or tibble.
 #' @param principal_components vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3 for a 3D pca with plotly. (Default: `c(1,2)`)
-#' @param ... remaining arguments are forwarded to the method
+#'
+#' @details
+#'
+#'  See the low-level function docs for additional arguments depending on whether you're plotting 2 or 3 PCs
+#'
+#'  - [plot_pca_2d] - used when there are **2** principal components
+#'  - [plot_pca_3d] - used when there are **3** principal components
+#'
 #' @export
 #' @return PCA plot (2D or 3D depending on the number of `principal_components`)
 #'
@@ -76,12 +71,6 @@ calc_pca <- function(counts_dat,
 plot_pca <- S7::new_generic("plot_pca", "moo_counts")
 
 #' Plot 2D or 3D PCA for multiOmicDataset
-#'
-#' @param moo_counts multiOmicDataSet containing `count_type` & `sub_count_type` in the counts slot
-#' @param count_type the type of counts to use -- must be a name in the counts slot (`moo@counts[[count_type]]`)
-#' @param sub_count_type if `count_type` is a list, specify the sub count type within the list (`moo@counts[[count_type]][[sub_count_type]]`)
-#' @param principal_components vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3 for a 3D pca with plotly. (Default: `c(1,2)`)
-#' @param ... remaining arguments forwarded to the plotter
 #'
 #' @returns PCA plot
 #' @examples
@@ -105,11 +94,6 @@ S7::method(plot_pca, multiOmicDataSet) <- function(moo_counts,
 }
 
 #' Plot 2D or 3D PCA for counts dataframe
-#'
-#' @param moo_counts counts dataframe
-#' @param sample_metadata sample metadata as a data frame or tibble.
-#' @param principal_components vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3 for a 3D pca with plotly. (Default: `c(1,2)`)
-#' @param ... remaining arguments are forwarded to the method
 #'
 #' @name plot_pca_dat
 #' @seealso [plot_pca] generic
@@ -151,7 +135,6 @@ S7::method(plot_pca, S7::class_data.frame) <- function(moo_counts,
 #' @examples
 #' plot_pca(nidap_raw_counts, nidap_sample_metadata)
 #'
-#' @family PCA functions
 plot_pca_2d <- function(counts_dat,
                         sample_metadata,
                         sample_id_colname = NULL,
@@ -266,7 +249,6 @@ plot_pca_2d <- function(counts_dat,
 #' @examples
 #' plot_pca_3d(nidap_raw_counts, nidap_sample_metadata)
 #'
-#' @family PCA functions
 plot_pca_3d <- function(counts_dat,
                         sample_metadata,
                         sample_id_colname = NULL,

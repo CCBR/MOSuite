@@ -49,7 +49,7 @@
 #' @param legend_font_size_for_histogram legend font size for the histogram plot
 #' @param number_of_histogram_legend_columns number of columns for the histogram legend
 #' @param colors_for_plots Colors for the PCA and histogram will be picked, in order, from this list. If you have >12 samples or groups, program will choose from a wide range of random colors
-#' @param interactive_plots set to TRUE to make PCA and Histogram plots interactive_plots with `plotly`, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.
+#' @param interactive_plots set to TRUE to make PCA and Histogram plots interactive with `plotly`, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.
 #' @param plots_subdir subdirectory in where plots will be saved if `save_plots` is `TRUE`
 #'
 #' @return `multiOmicDataSet` with filtered counts
@@ -151,7 +151,7 @@ filter_counts <- function(moo,
     log_counts <- df_filt %>%
       dplyr::mutate(dplyr::across(tidyselect::all_of(samples_to_include), ~ log(.x + 0.5)))
     pca_plot <- plot_pca(
-      counts_dat = log_counts,
+      log_counts,
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,
@@ -188,7 +188,7 @@ filter_counts <- function(moo,
       number_of_legend_columns = number_of_histogram_legend_columns
     ) + ggplot2::labs(caption = "filtered counts")
     corHM <- plot_corr_heatmap(
-      counts_dat = df_filt[, samples_to_include],
+      df_filt[, samples_to_include],
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,
