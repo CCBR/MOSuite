@@ -24,7 +24,7 @@ create_multiOmicDataSet_from_files(
 \item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first column in the count data will be used.)}
 }
 \value{
-multiOmicDataSet object
+\link{multiOmicDataSet} object
 }
 \description{
 Construct a multiOmicDataSet object from tsv files.
@@ -42,4 +42,11 @@ moo <- create_multiOmicDataSet_from_files(
 )
 moo@counts$raw \%>\% head()
 moo@sample_meta
+
 }
+\seealso{
+Other moo constructors: 
+\code{\link{create_multiOmicDataSet_from_dataframes}()},
+\code{\link{multiOmicDataSet}()}
+}
+\concept{moo constructors}

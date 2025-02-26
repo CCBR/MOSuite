@@ -2,28 +2,40 @@
 % Please edit documentation in R/plot_heatmap.R
 \name{plot_corr_heatmap}
 \alias{plot_corr_heatmap}
-\title{Make a correlation heatmap}
+\title{Plot correlation heatmap}
 \usage{
-plot_corr_heatmap(
-  counts_dat,
+# multiOmicDataSet
+plot_corr_heatmap(moo_counts,
+  count_type,
+  sub_count_type = NULL,
+  ...)
+
+# dataframe
+plot_corr_heatmap(moo_counts,
   sample_metadata,
   sample_id_colname = NULL,
   feature_id_colname = NULL,
   group_colname = "Group",
   label_colname = "Label",
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500")
-)
+  color_values = c(
+    "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
+  ))
 }
 \arguments{
-\item{counts_dat}{data frame of feature counts (e.g. expected feature counts from RSEM).}
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
 
-\item{sample_metadata}{sample metadata as a data frame or tibble.
-The first column is assumed to contain the sample IDs which must correspond to column names in the raw counts.}
+\item{...}{arguments forwarded to low-level plotter}
+
+\item{count_type}{\strong{Required} if \code{moo_counts} is a \code{multiOmicDataSet}: the type of counts to use -- must be a name in the counts slot (\code{moo@counts}).}
+
+\item{sub_count_type}{Used if \code{moo_counts} is a \code{multiOmicDataSet} AND if \code{count_type} is a list, specify the sub count type within the list}
+
+\item{sample_metadata}{\strong{Required} if \code{moo_counts} is a \code{data.frame}: sample metadata as a data frame or tibble.}
 
 \item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first column in the sample metadata will be used.)}
 
-\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
+\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
 \item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).}
 
@@ -35,5 +47,42 @@ The first column is assumed to contain the sample IDs which must correspond to c
 heatmap from \code{ComplexHeatmap::Heatmap()}
 }
 \description{
-Make a correlation heatmap
+The first argument can be a \code{multiOmicDataset} object (\code{moo}) or a \code{data.frame} containing counts.
+For a \code{moo}, choose which counts slot to use with \code{count_type} & (optionally) \code{sub_count_type}.
+For a \code{data.frame}, you must also set \code{sample_metadata}.
+All other arguments are optional.
 }
+\examples{
+# plot correlation heatmap for a counts slot in a multiOmicDataset Object
+moo <- multiOmicDataSet(
+  sample_metadata = as.data.frame(nidap_sample_metadata),
+  anno_dat = data.frame(),
+  counts_lst = list("raw" = as.data.frame(nidap_raw_counts))
+)
+p <- plot_corr_heatmap(moo, count_type = "raw")
+
+# plot correlation heatmap for a counts dataframe
+plot_corr_heatmap(
+  moo@counts$raw,
+  sample_metadata = moo@sample_meta,
+  sample_id_colname = "Sample",
+  feature_id_colname = "Gene",
+  group_colname = "Group",
+  label_colname = "Label"
+)
+
+}
+\seealso{
+Other plotters: 
+\code{\link{plot_expr_heatmap}()},
+\code{\link{plot_histogram}()},
+\code{\link{plot_pca}()},
+\code{\link{plot_read_depth}()},
+\code{\link{print_or_save_plot}()}
+
+Other heatmaps: 
+\code{\link{plot_expr_heatmap}()},
+\code{\link{plot_expr_heatmap_dat}}
+}
+\concept{heatmaps}
+\concept{plotters}

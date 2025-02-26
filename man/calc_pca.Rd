@@ -12,14 +12,13 @@ calc_pca(
 )
 }
 \arguments{
-\item{counts_dat}{data frame of feature counts (e.g. expected feature counts from RSEM).}
+\item{counts_dat}{data frame of feature counts (e.g. from the counts slot of a \code{multiOmicDataSet}).}
 
-\item{sample_metadata}{sample metadata as a data frame or tibble.
-The first column is assumed to contain the sample IDs which must correspond to column names in the raw counts.}
+\item{sample_metadata}{sample metadata as a data frame or tibble.}
 
-\item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} - first column in the sample metadata will be used.)}
+\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first column in the sample metadata will be used.)}
 
-\item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first column in the count data will be used.)}
+\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 }
 \value{
 data frame with statistics for each principal component
@@ -30,3 +29,8 @@ Perform principal components analysis
 \examples{
 calc_pca(nidap_raw_counts, nidap_sample_metadata) \%>\% head()
 }
+\seealso{
+Other PCA functions: 
+\code{\link{plot_pca}()}
+}
+\concept{PCA functions}

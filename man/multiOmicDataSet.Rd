@@ -20,3 +20,9 @@ Each data frame is expected to contain a \code{feature_id} column as the first c
 \description{
 multiOmicDataSet class
 }
+\seealso{
+Other moo constructors: 
+\code{\link{create_multiOmicDataSet_from_dataframes}()},
+\code{\link{create_multiOmicDataSet_from_files}()}
+}
+\concept{moo constructors}

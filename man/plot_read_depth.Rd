@@ -2,16 +2,53 @@
 % Please edit documentation in R/plot_read_depth.R
 \name{plot_read_depth}
 \alias{plot_read_depth}
-\title{Create read depth plot}
+\title{Plot read depth as a bar plot}
 \usage{
-plot_read_depth(counts_dat)
+# multiOmicDataset
+plot_read_depth(moo_counts,
+  count_type,
+  sub_count_type = NULL,
+  ...)
+
+# dataframe
+plot_read_depth(moo_counts)
 }
 \arguments{
-\item{counts_dat}{dataframe with raw counts data}
-}
-\value{
-ggplot object
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
+
+\item{...}{arguments forwarded to low-level plotter}
+
+\item{count_type}{Required if \code{moo_counts} is a \code{multiOmicDataSet}: the type of counts to use -- must be a name in the counts slot (\code{moo@counts}).}
+
+\item{sub_count_type}{Used if \code{moo_counts} is a \code{multiOmicDataSet} AND if \code{count_type} is a list, specify the sub count type within the list}
 }
 \description{
-Create read depth plot
+The first argument can be a \code{multiOmicDataset} object (\code{moo}) or a \code{data.frame} containing counts.
+For a \code{moo}, choose which counts slot to use with \code{count_type} & (optionally) \code{sub_count_type}.
 }
+\examples{
+moo <- multiOmicDataSet(
+  sample_metadata = nidap_sample_metadata,
+  anno_dat = data.frame(),
+  counts_lst = list(
+    "raw" = nidap_raw_counts,
+    "clean" = nidap_clean_raw_counts
+  )
+)
+
+# multiOmicDataSet
+plot_read_depth(moo)
+
+# dataframe
+plot_read_depth(nidap_clean_raw_counts)
+
+}
+\seealso{
+Other plotters: 
+\code{\link{plot_corr_heatmap}()},
+\code{\link{plot_expr_heatmap}()},
+\code{\link{plot_histogram}()},
+\code{\link{plot_pca}()},
+\code{\link{print_or_save_plot}()}
+}
+\concept{plotters}

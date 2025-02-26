@@ -4,17 +4,24 @@
 \alias{plot_expr_heatmap}
 \title{Plot expression heatmap}
 \usage{
-plot_expr_heatmap(
-  moo,
-  count_type = "norm",
-  sub_count_type = "voom",
+# multiOmicDataset
+plot_expr_heatmap(moo_counts,
+  count_type,
+  sub_count_type = NULL,
+  ...)
+
+# dataframe
+plot_expr_heatmap(moo_counts,
+  sample_metadata,
   sample_id_colname = NULL,
   feature_id_colname = NULL,
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = c(
+    "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
+  ),
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -39,8 +46,8 @@ plot_expr_heatmap(
   group_columns = c("Group", "Replicate", "Batch"),
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
-  group_colors = c("indigo", "carrot", "lipstick", "turquoise", "lavender", "jade",
-    "coral", "azure", "green", "rum", "orange", "olive"),
+  group_colors = c("indigo", "carrot", "lipstick", "turquoise", "lavender",
+    "jade", "coral", "azure", "green", "rum", "orange", "olive"),
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
   set_min_heatmap_color = -2,
@@ -49,27 +56,30 @@ plot_expr_heatmap(
   legend_font_size = 10,
   gene_name_font_size = 4,
   sample_name_font_size = 8,
-  display_numbers = FALSE
-)
+  display_numbers = FALSE)
 }
 \arguments{
-\item{moo}{multiOmicDataSet object (see \code{create_multiOmicDataSet_from_dataframes()})}
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
 
-\item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
+\item{...}{arguments forwarded to low-level plotter}
 
-\item{sub_count_type}{if \code{count_type} is a list, specify the sub count type within the list. (Default: \code{"voom"})}
+\item{count_type}{Required if \code{moo_counts} is a \code{multiOmicDataSet}: the type of counts to use -- must be a name in the counts slot (\code{moo@counts}).}
 
-\item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} - first column in the sample metadata will be used.)}
+\item{sub_count_type}{Used if \code{moo_counts} is a \code{multiOmicDataSet} AND if \code{count_type} is a list, specify the sub count type within the list}
 
-\item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first column in the count data will be used.)}
+\item{sample_metadata}{Required if \code{moo_counts} is a \code{data.frame}: sample metadata as a data frame or tibble.}
+
+\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first column in the sample metadata will be used.)}
+
+\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
 \item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).}
 
 \item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: \code{NULL} -- \code{sample_id_colname} will be used.)}
 
-\item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
-
 \item{color_values}{vector of colors as hex values or names recognized by R}
+
+\item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
 
 \item{include_all_genes}{Set to TRUE if all genes are to be included. Set to FALSE if you want to filter genes by variance and/or provide a list of specific genes that will appear in the heatmap.}
 
@@ -140,11 +150,58 @@ plot_expr_heatmap(
 \item{display_numbers}{Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if you want to see these numbers on the plot.}
 }
 \value{
-heatmap from \code{ComplexHeatmap::pheatmap()}
+heatmap from \code{ComplexHeatmap::Heatmap()}
 }
 \description{
-By default, the samples (i.e. the columns) are allowed to cluster in an unsupervised fashion based on how similar their expression profiles are across the included genes. This can help identify samples that are non clustering with their group as you might expect based on the experimental design.
+The first argument can be a \code{multiOmicDataset} object (\code{moo}) or a \code{data.frame} containing counts.
+For a \code{moo}, choose which counts slot to use with \code{count_type} & (optionally) \code{sub_count_type}.
+For a \code{data.frame}, you must also set \code{sample_metadata}.
+All other arguments are optional.
 }
 \details{
-Again, by default, the top 500 genes by variance are used, as these are generally going to include those genes that most distinguish your samples from one another. You can change this as well as many other parameters about this heatmap if you explore the advanced options.
+By default, the samples (i.e. the columns) are allowed to cluster in an
+unsupervised fashion based on how similar their expression profiles are
+across the included genes. This can help identify samples that are non
+clustering with their group as you might expect based on the experimental
+design.
+
+Again, by default, the top 500 genes by variance are used, as these are
+generally going to include those genes that most distinguish your samples
+from one another. You can change this as well as many other parameters about
+this heatmap if you explore the advanced options.
 }
+\examples{
+# plot expression heatmap for a counts slot in a multiOmicDataset Object
+moo <- multiOmicDataSet(
+  sample_metadata = nidap_sample_metadata,
+  anno_dat = data.frame(),
+  counts_lst = list("raw" = nidap_raw_counts)
+)
+p <- plot_expr_heatmap(moo, count_type = "raw")
+
+# plot expression heatmap for a counts dataframe
+counts_dat <- moo@counts$raw
+plot_expr_heatmap(
+  counts_dat,
+  sample_metadata = nidap_sample_metadata,
+  sample_id_colname = "Sample",
+  feature_id_colname = "Gene",
+  group_colname = "Group",
+  label_colname = "Label"
+)
+
+}
+\seealso{
+Other plotters: 
+\code{\link{plot_corr_heatmap}()},
+\code{\link{plot_histogram}()},
+\code{\link{plot_pca}()},
+\code{\link{plot_read_depth}()},
+\code{\link{print_or_save_plot}()}
+
+Other heatmaps: 
+\code{\link{plot_corr_heatmap}()},
+\code{\link{plot_expr_heatmap_dat}}
+}
+\concept{heatmaps}
+\concept{plotters}
