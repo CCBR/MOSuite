@@ -56,8 +56,9 @@ test_that("calc_pca works", {
 
 test_that("plot_pca layers are expected", {
   p <- plot_pca(
-    counts_dat = nidap_filtered_counts,
+    moo_counts = nidap_filtered_counts,
     sample_metadata = nidap_sample_metadata,
+    principal_components = c(1, 2),
     samples_to_rename = NULL,
     group_colname = "Group",
     label_colname = "Label",
@@ -65,7 +66,6 @@ test_that("plot_pca layers are expected", {
       "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
       "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
     ),
-    principal_components = c(1, 2),
     legend_position = "top",
     point_size = 1,
     add_label = TRUE,
@@ -90,4 +90,42 @@ test_that("3DPCA works", {
     ),
     principal_components = c(1, 2, 3),
   )
+})
+
+
+test_that("2D & 3D PCA method dispatch works", {
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts)
+    )
+  )
+  expect_equal(
+    plot_pca(
+      moo,
+      count_type = "filt",
+      principal_components = c(1, 2)
+    ),
+    plot_pca(
+      moo@counts$filt,
+      moo@sample_meta,
+      principal_components = c(1, 2)
+    )
+  )
+
+  # 3D PCA
+  p1 <- plot_pca(
+    moo,
+    count_type = "filt",
+    principal_components = c(1, 2, 3)
+  )
+  p2 <- plot_pca(
+    moo@counts$filt,
+    moo@sample_meta,
+    principal_components = c(1, 2, 3)
+  )
+  # see compare_proxy.plotly
+  # expect_equal(p1, p2)
 })
