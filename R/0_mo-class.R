@@ -171,7 +171,10 @@ create_multiOmicDataSet_from_files <- function(sample_meta_filepath, feature_cou
 
 #' Extract count data
 #'
-#' @param moo_counts multiOmicDataSet containing `count_type` & `sub_count_type` in the counts slot
+#' @usage
+#' extract_counts(moo, count_type, sub_count_type = NULL)
+#'
+#' @param moo multiOmicDataSet containing `count_type` & `sub_count_type` in the counts slot
 #' @param count_type the type of counts to use -- must be a name in the counts slot (`moo@counts[[count_type]]`)
 #' @param sub_count_type if `count_type` is a list, specify the sub count type within the list (`moo@counts[[count_type]][[sub_count_type]]`). (Default: `NULL`)
 #'
@@ -198,7 +201,9 @@ create_multiOmicDataSet_from_files <- function(sample_meta_filepath, feature_cou
 #'   extract_counts("norm", "voom") %>%
 #'   head()
 #'
-extract_counts <- S7::new_generic("extract_counts", "moo")
+extract_counts <- S7::new_generic("extract_counts", "moo", function(moo, count_type, sub_count_type = NULL) {
+  S7::S7_dispatch()
+})
 
 S7::method(extract_counts, multiOmicDataSet) <- function(moo, count_type, sub_count_type = NULL) {
   # select correct counts matrix

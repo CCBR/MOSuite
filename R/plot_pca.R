@@ -50,11 +50,25 @@ calc_pca <- function(counts_dat,
 #'
 #' @inherit moo_counts description
 #'
+#' @usage
+#' plot_pca(moo_counts,
+#'   count_type,
+#'   sub_count_type = NULL,
+#'   principal_components = c(1, 2),
+#'   ...)
+#'
+#' plot_pca(moo_counts,
+#'   sample_metadata,
+#'   principal_components = c(1, 2),
+#'   ...)
+#'
+#'
 #' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
 #' @param count_type **Required** if `moo_counts` is a `multiOmicDataSet`: the type of counts to use -- must be a name in the counts slot (`moo@counts`).
 #' @param sub_count_type Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub count type within the list
 #' @param sample_metadata **Required** if `moo_counts` is a `data.frame`: sample metadata as a data frame or tibble.
 #' @param principal_components vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3 for a 3D pca with plotly. (Default: `c(1,2)`)
+#' @param ... arguments forwarded to low-level plotter
 #'
 #' @details
 #'

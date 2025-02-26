@@ -3,16 +3,30 @@
 #' The first argument can be a `multiOmicDataset` object (`moo`) or a `data.frame` containing counts.
 #' For a `moo`, choose which counts slot to use with `count_type` & (optionally) `sub_count_type`.
 #'
+#' @usage
+#' # multiOmicDataset
+#' plot_read_depth(moo_counts,
+#'   count_type,
+#'   sub_count_type = NULL,
+#'   ...)
+#'
+#' # dataframe
+#' plot_read_depth(moo_counts)
+#'
 #' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
 #' @param count_type Required if `moo_counts` is a `multiOmicDataSet`: the type of counts to use -- must be a name in the counts slot (`moo@counts`).
 #' @param sub_count_type Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub count type within the list
+#' @param ... arguments forwarded to low-level plotter
 #'
 #' @export
 #' @examples
 #' moo <- multiOmicDataSet(
 #'   sample_metadata = nidap_sample_metadata,
 #'   anno_dat = data.frame(),
-#'   counts_lst = list("raw" = nidap_raw_counts)
+#'   counts_lst = list(
+#'     "raw" = nidap_raw_counts,
+#'     "clean" = nidap_clean_raw_counts
+#'   )
 #' )
 #'
 #' # multiOmicDataSet

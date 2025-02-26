@@ -2,6 +2,44 @@
 #'
 #' @inherit moo_counts description
 #'
+#' @usage
+#' # multiOmicDataSet
+#' plot_histogram(moo_counts,
+#'   count_type,
+#'   sub_count_type = NULL,
+#'   ...)
+#' # dataframe
+#' plot_histogram(moo_counts,
+#'     sample_metadata,
+#'     sample_id_colname = NULL,
+#'     feature_id_colname = NULL,
+#'     group_colname = "Group",
+#'     label_colname = "Label",
+#'     color_values = c(
+#'       "#5954d6",
+#'       "#e1562c",
+#'       "#b80058",
+#'       "#00c6f8",
+#'       "#d163e6",
+#'       "#00a76c",
+#'       "#ff9287",
+#'       "#008cf9",
+#'       "#006e00",
+#'       "#796880",
+#'       "#FFA500",
+#'       "#878500"
+#'     ),
+#'     color_by_group = FALSE,
+#'     set_min_max_for_x_axis = FALSE,
+#'     minimum_for_x_axis = -1,
+#'     maximum_for_x_axis = 1,
+#'     x_axis_label = "Counts",
+#'     y_axis_label = "Density",
+#'     legend_position = "top",
+#'     legend_font_size = 10,
+#'     number_of_legend_columns = 6,
+#'     interactive_plots = FALSE)
+#'
 #' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
 #' @param count_type Required if `moo_counts` is a `multiOmicDataSet`: the type of counts to use -- must be a name in the counts slot (`moo@counts`).
 #' @param sub_count_type Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub count type within the list
@@ -21,6 +59,7 @@
 #' @param legend_font_size passed to `ggplot2::element_text()` via `ggplot2::theme()`
 #' @param number_of_legend_columns passed to `ncol` in `ggplot2::guide_legend()`
 #' @param interactive_plots set to TRUE to make the plot interactive with `plotly`, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.
+#' @param ... arguments forwarded to low-level plotter
 #'
 #' @returns ggplot object
 #' @export
