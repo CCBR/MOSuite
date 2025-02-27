@@ -18,11 +18,13 @@ dataframe where row names are the sample IDs
 Convert sample metadata from a tibble to a dataframe with sample IDs as row names
 }
 \examples{
+\dontrun{
 sample_meta_tbl <- readr::read_tsv(system.file("extdata",
   "sample_metadata.tsv.gz",
   package = "MOSuite"
 ))
 head(sample_meta_tbl)
 meta_tbl_to_dat(sample_meta_tbl)
+}
 }
 \keyword{internal}
