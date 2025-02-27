@@ -3,8 +3,32 @@
 \name{plot_read_depth_moo}
 \alias{plot_read_depth_moo}
 \title{Plot read depth for multiOmicDataSet}
+\arguments{
+\item{moo_counts}{\code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
+
+\item{count_type}{the type of counts to use. Must be a name in the counts slot (\code{names(moo@counts)}).}
+
+\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list. Must be a name in \code{names(moo@counts[[count_type]])}.}
+}
+\value{
+ggplot barplot
+}
 \description{
 Plot read depth for multiOmicDataSet
+}
+\examples{
+# multiOmicDataSet
+moo <- multiOmicDataSet(
+  sample_metadata = nidap_sample_metadata,
+  anno_dat = data.frame(),
+  counts_lst = list(
+    "raw" = nidap_raw_counts,
+    "clean" = nidap_clean_raw_counts
+  )
+)
+
+plot_read_depth(moo, count_type = 'clean')
+
 }
 \seealso{
 \link{plot_read_depth} generic

@@ -3,8 +3,32 @@
 \name{plot_histogram_moo}
 \alias{plot_histogram_moo}
 \title{Plot histogram for multiOmicDataSet}
+\arguments{
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
+
+\item{count_type}{Required if \code{moo_counts} is a \code{multiOmicDataSet}: the type of counts to use -- must be a name in the counts slot (\code{moo@counts}).}
+
+\item{sub_count_type}{Used if \code{moo_counts} is a \code{multiOmicDataSet} AND if \code{count_type} is a list, specify the sub count type within the list}
+
+\item{...}{arguments forwarded to method: \link{plot_histogram_dat}}
+}
 \description{
 Plot histogram for multiOmicDataSet
+}
+\examples{
+# plot histogram for a counts slot in a multiOmicDataset Object
+moo <- multiOmicDataSet(
+  sample_metadata = nidap_sample_metadata,
+  anno_dat = data.frame(),
+  counts_lst = list("raw" = nidap_raw_counts)
+)
+p <- plot_histogram(moo, count_type = "raw")
+
+# customize the plot
+plot_histogram(moo, count_type = "raw",
+  group_colname = "Gene", color_by_group = TRUE
+  )
+
 }
 \seealso{
 \link{plot_histogram} generic

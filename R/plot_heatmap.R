@@ -2,35 +2,9 @@
 #'
 #' @inherit moo_counts description
 #'
-#' @usage
-#' # multiOmicDataSet
-#' plot_corr_heatmap(moo_counts,
-#'   count_type,
-#'   sub_count_type = NULL,
-#'   ...)
-#'
-#' # dataframe
-#' plot_corr_heatmap(moo_counts,
-#'   sample_metadata,
-#'   sample_id_colname = NULL,
-#'   feature_id_colname = NULL,
-#'   group_colname = "Group",
-#'   label_colname = "Label",
-#'   color_values = c(
-#'     "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-#'     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
-#'   ))
 #'
 #' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
-#' @param count_type **Required** if `moo_counts` is a `multiOmicDataSet`: the type of counts to use -- must be a name in the counts slot (`moo@counts`).
-#' @param sub_count_type Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub count type within the list
-#' @param sample_metadata **Required** if `moo_counts` is a `data.frame`: sample metadata as a data frame or tibble.
-#' @param sample_id_colname The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: `NULL` - first column in the sample metadata will be used.)
-#' @param feature_id_colname The column from the counts data containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be used.)
-#' @param group_colname The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).
-#' @param label_colname The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: `NULL` -- `sample_id_colname` will be used.)
-#' @param color_values vector of colors as hex values or names recognized by R
-#' @param ... arguments forwarded to low-level plotter
+#' @param ... arguments forwarded to method [plot_corr_heatmap_dat]
 #'
 #' @export
 #' @returns heatmap from `ComplexHeatmap::Heatmap()`
@@ -52,6 +26,36 @@
 #'   group_colname = "Group",
 #'   label_colname = "Label"
 #' )
+#' @details
+#'
+#' # Methods
+#'
+#' | link to docs  | class  |
+#' |---|---|
+#' | [plot_corr_heatmap_moo] | `multiOmicDataSet` |
+#' | [plot_corr_heatmap_dat] | `data.frame`       |
+#'
+#' ## Method Usage
+#'
+#' ```
+#' # multiOmicDataSet
+#' plot_corr_heatmap(moo_counts,
+#'   count_type,
+#'   sub_count_type = NULL,
+#'   ...)
+#'
+#' # dataframe
+#' plot_corr_heatmap(moo_counts,
+#'   sample_metadata,
+#'   sample_id_colname = NULL,
+#'   feature_id_colname = NULL,
+#'   group_colname = "Group",
+#'   label_colname = "Label",
+#'   color_values = c(
+#'     "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+#'     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
+#'   ))
+#' ```
 #'
 #' @rdname plot_corr_heatmap
 #' @family plotters
@@ -59,6 +63,11 @@
 plot_corr_heatmap <- S7::new_generic("plot_corr_heatmap", "moo_counts")
 
 #' Plot correlation heatmap for multiOmicDataSet
+#'
+#' @param moo_counts `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
+#' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
+#' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list. Must be a name in `names(moo@counts[[count_type]])`.
+#' @param ... arguments forwarded to method [plot_corr_heatmap_dat]
 #'
 #' @name plot_corr_heatmap_moo
 #' @method plot_corr_heatmap multiOmicDataSet
@@ -73,6 +82,14 @@ S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(moo_counts,
 }
 
 #' Plot correlation heatmap for counts dataframe
+#'
+#' @param moo_counts counts dataframe (**Required**)
+#' @param sample_metadata sample metadata as a data frame or tibble (**Required**)
+#' @param sample_id_colname The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: `NULL` - first column in the sample metadata will be used.)
+#' @param feature_id_colname The column from the counts data containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be used.)
+#' @param group_colname The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).
+#' @param label_colname The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: `NULL` -- `sample_id_colname` will be used.)
+#' @param color_values vector of colors as hex values or names recognized by R
 #'
 #' @name plot_corr_heatmap_dat
 #' @seealso [plot_corr_heatmap] generic
@@ -168,7 +185,107 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(moo_counts,
 #'
 #' @inherit moo_counts description
 #'
-#' @usage
+#' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
+#' @param sample_metadata Required if `moo_counts` is a `data.frame`: sample metadata as a data frame or tibble.
+#' @param sample_id_colname The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: `NULL` - first column in the sample metadata will be used.)
+#' @param feature_id_colname The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be used.)
+#' @param group_colname The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).
+#' @param label_colname The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: `NULL` -- `sample_id_colname` will be used.)
+#' @param color_values vector of colors as hex values or names recognized by R
+#' @param samples_to_include Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: `NULL` - all sample IDs in `moo@sample_meta` will be used.)
+#' @param include_all_genes Set to TRUE if all genes are to be included. Set to FALSE if you want to filter genes by variance and/or provide a list of specific genes that will appear in the heatmap.
+#' @param filter_top_genes_by_variance Set to TRUE if you want to only include the top genes by variance. Set to FALSE if you do not want to filter genes by variance.
+#' @param top_genes_by_variance_to_include The number of genes to include if filtering genes by variance. This parameter is ignored if "Filter top genes by variance" is set to FALSE.
+#' @param specific_genes_to_include_in_heatmap Enter the gene symbols to be included in the heatmap, with each gene symbol separated with a space from the others. Alternatively, paste in a column of gene names from any spreadsheet application. This parameter is ignored if "Include all genes" is set to TRUE.
+#' @param cluster_genes Choose whether to cluster the rows (genes). If TRUE, rows will have clustering applied. If FALSE, clustering will not be applied to rows.
+#' @param gene_distance_metric Distance metric to be used in clustering genes. (TODO document options)
+#' @param gene_clustering_method Clustering method metric to be used in clustering samples. (TODO document options)
+#' @param display_gene_dendrograms Set to TRUE to show gene dendrograms. Set to FALSE to hide dendrograms.
+#' @param display_gene_names Set to TRUE to display gene names on the right side of the heatmap. Set to FALSE to hide gene names.
+#' @param center_and_rescale_expression Center and rescale expression for each gene across all included samples.
+#' @param cluster_samples Choose whether to cluster the columns (samples). If TRUE, columns will have clustering applied. If FALSE, clustering will not be applied to columns.
+#' @param arrange_sample_columns If TRUE, arranges columns by annotation groups. If FALSE, and "Cluster Samples" is FALSE, samples will appear in the order of input (samples to include)
+#' @param order_by_gene_expression If TRUE, set gene name below and direction for ordering
+#' @param gene_to_order_columns Gene to order columns by expression levels
+#' @param gene_expression_order Choose direction for gene order
+#' @param smpl_distance_metric Distance metric to be used in clustering samples.  (TODO document options)
+#' @param smpl_clustering_method Clustering method to be used in clustering samples.  (TODO document options)
+#' @param display_smpl_dendrograms Set to TRUE to show sample dendrograms. Set to FALSE to hide dendrogram.
+#' @param reorder_dendrogram If TRUE, set the order of the dendrogram (below)
+#' @param reorder_dendrogram_order Reorder the samples (columns) of the dendrogram by name, e.g. “sample2”,“sample3",“sample1".
+#' @param display_sample_names Set to TRUE if you want sample names to be displayed on the plot. Set to FALSE to hide sample names.
+#' @param group_columns Columns containing the sample groups for annotation tracks
+#' @param assign_group_colors If TRUE, set the groups assigned colors (below)
+#' @param assign_color_to_sample_groups Enter each sample to color in the format: group_name: color This parameter is ignored if "Assign Colors" is set to FALSE.
+#' @param group_colors Set group annotation colors.
+#' @param heatmap_color_scheme color scheme (TODO document options)
+#' @param autoscale_heatmap_color Set to TRUE to autoscale the heatmap colors between the maximum and minimum heatmap color parameters. If FALSE, set the heatmap colors between "Set max heatmap color" and "Set min heatmap color" (below).
+#' @param set_min_heatmap_color If Autoscale heatmap color is set to FALSE, set the minimum heatmap z-score value
+#' @param set_max_heatmap_color If Autoscale heatmap color is set to FALSE, set the maximum heatmap z-score value.
+#' @param aspect_ratio Set figure Aspect Ratio. Ratio refers to entire figure including legend. If set to Auto figure size is based on number of rows and columns form counts matrix. default - Auto
+#' @param legend_font_size Set Font size for figure legend. Default is 10.
+#' @param gene_name_font_size Font size for gene names. If you don't want gene labels to show, toggle "Display Gene Names" below to FALSE
+#' @param sample_name_font_size Font size for sample names. If you don't want to display samples names, toggle "Display sample names" (below) to FALSE
+#' @param display_numbers Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if you want to see these numbers on the plot.
+#' @param ... arguments forwarded to method
+#'
+#' @export
+#' @returns heatmap from `ComplexHeatmap::Heatmap()`
+#'
+#' @examples
+#' # plot expression heatmap for a counts slot in a multiOmicDataset Object
+#' moo <- multiOmicDataSet(
+#'   sample_metadata = as.data.frame(nidap_sample_metadata),
+#'   anno_dat = data.frame(),
+#'   counts_lst = list(
+#'     "raw" = nidap_raw_counts,
+#'     "norm" = list(
+#'       "voom" = as.data.frame(nidap_norm_counts)
+#'     )
+#'   )
+#' )
+#' p <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
+#'
+#' # customize the plot
+#' plot_expr_heatmap(moo,
+#'   count_type = "norm", sub_count_type = "voom",
+#'   top_genes_by_variance_to_include = 100
+#' )
+#'
+#' # plot expression heatmap for a counts dataframe
+#' counts_dat <- moo@counts$norm$voom
+#' plot_expr_heatmap(
+#'   counts_dat,
+#'   sample_metadata = nidap_sample_metadata,
+#'   sample_id_colname = "Sample",
+#'   feature_id_colname = "Gene",
+#'   group_colname = "Group",
+#'   label_colname = "Label",
+#'   top_genes_by_variance_to_include = 100
+#' )
+#'
+#' @details
+#'
+#' The samples (i.e. the columns) are clustered in an unsupervised fashion based
+#' on how similar their expression profiles are across the included genes. This
+#' can help identify samples that are non clustering with their group as you
+#' might expect based on the experimental design.
+#'
+#' By default, the top 500 genes by variance are used, as these are
+#' generally going to include those genes that most distinguish your samples
+#' from one another. You can change this as well as many other parameters about
+#' this heatmap if you explore the advanced options (see [plot_expr_heatmap_dat]).
+#'
+#' # Methods
+#'
+#' | link to docs  | class  |
+#' |---|---|
+#' | [plot_expr_heatmap_moo] | `multiOmicDataSet` |
+#' | [plot_expr_heatmap_dat] | `data.frame`       |
+#'
+#' ## Method Usage
+#'
+#' ```
 #' # multiOmicDataset
 #' plot_expr_heatmap(moo_counts,
 #'   count_type,
@@ -222,11 +339,38 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(moo_counts,
 #'   gene_name_font_size = 4,
 #'   sample_name_font_size = 8,
 #'   display_numbers = FALSE)
+#' ```
 #'
-#' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
-#' @param count_type Required if `moo_counts` is a `multiOmicDataSet`: the type of counts to use -- must be a name in the counts slot (`moo@counts`).
-#' @param sub_count_type Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub count type within the list
-#' @param sample_metadata Required if `moo_counts` is a `data.frame`: sample metadata as a data frame or tibble.
+#' @rdname plot_expr_heatmap
+#' @family plotters
+#' @family heatmaps
+plot_expr_heatmap <- S7::new_generic("plot_expr_heatmap", "moo_counts")
+
+
+#' Plot expression heatmap for multiOmicDataSet
+#'
+#' @param moo_counts `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
+#' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
+#' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list. Must be a name in `names(moo@counts[[count_type]])`.
+#' @param ... arguments forwarded to method: [plot_expr_heatmap_dat]
+#'
+#' @name plot_expr_heatmap_moo
+#' @method plot_expr_heatmap multiOmicDataSet
+#' @seealso [plot_expr_heatmap] generic
+#' @family plotters for multiOmicDataSets
+S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(moo_counts,
+                                                            count_type,
+                                                            sub_count_type = NULL,
+                                                            ...) {
+  counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  plot_expr_heatmap(counts_dat, sample_metadata = moo_counts@sample_meta, ...)
+}
+
+
+#' Plot expression heatmap for counts dataframe
+#'
+#' @param moo_counts counts dataframe (**Required**)
+#' @param sample_metadata sample metadata as a data frame or tibble  (**Required**)
 #' @param sample_id_colname The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: `NULL` - first column in the sample metadata will be used.)
 #' @param feature_id_colname The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be used.)
 #' @param group_colname The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).
@@ -267,70 +411,6 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(moo_counts,
 #' @param gene_name_font_size Font size for gene names. If you don't want gene labels to show, toggle "Display Gene Names" below to FALSE
 #' @param sample_name_font_size Font size for sample names. If you don't want to display samples names, toggle "Display sample names" (below) to FALSE
 #' @param display_numbers Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if you want to see these numbers on the plot.
-#' @param ... arguments forwarded to low-level plotter
-#'
-#' @export
-#' @returns heatmap from `ComplexHeatmap::Heatmap()`
-#' @examples
-#' # plot expression heatmap for a counts slot in a multiOmicDataset Object
-#' moo <- multiOmicDataSet(
-#'   sample_metadata = as.data.frame(nidap_sample_metadata),
-#'   anno_dat = data.frame(),
-#'   counts_lst = list(
-#'     "raw" = nidap_raw_counts,
-#'     "norm" = list(
-#'       "voom" = as.data.frame(nidap_norm_counts)
-#'     )
-#'   )
-#' )
-#' p <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
-#'
-#' # plot expression heatmap for a counts dataframe
-#' counts_dat <- moo@counts$norm$voom
-#' plot_expr_heatmap(
-#'   counts_dat,
-#'   sample_metadata = nidap_sample_metadata,
-#'   sample_id_colname = "Sample",
-#'   feature_id_colname = "Gene",
-#'   group_colname = "Group",
-#'   label_colname = "Label"
-#' )
-#'
-#' @details
-#'
-#' By default, the samples (i.e. the columns) are allowed to cluster in an
-#' unsupervised fashion based on how similar their expression profiles are
-#' across the included genes. This can help identify samples that are non
-#' clustering with their group as you might expect based on the experimental
-#' design.
-#'
-#' Again, by default, the top 500 genes by variance are used, as these are
-#' generally going to include those genes that most distinguish your samples
-#' from one another. You can change this as well as many other parameters about
-#' this heatmap if you explore the advanced options.
-#'
-#' @rdname plot_expr_heatmap
-#' @family plotters
-#' @family heatmaps
-plot_expr_heatmap <- S7::new_generic("plot_expr_heatmap", "moo_counts")
-
-
-#' Plot expression heatmap for multiOmicDataSet
-#'
-#' @name plot_expr_heatmap_moo
-#' @method plot_expr_heatmap multiOmicDataSet
-#' @seealso [plot_expr_heatmap] generic
-#' @family plotters for multiOmicDataSets
-S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(moo_counts,
-                                                            count_type,
-                                                            sub_count_type = NULL,
-                                                            ...) {
-  counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
-  plot_expr_heatmap(counts_dat, sample_metadata = moo_counts@sample_meta, ...)
-}
-
-
-#' Plot expression heatmap for counts dataframe
 #'
 #' @name plot_expr_heatmap_dat
 #' @seealso [plot_expr_heatmap] generic

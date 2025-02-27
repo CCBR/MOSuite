@@ -3,8 +3,19 @@
 \name{plot_read_depth_dat}
 \alias{plot_read_depth_dat}
 \title{Plot read depth for \code{data.frame}}
+\arguments{
+\item{moo_counts}{counts dataframe}
+}
+\value{
+ggplot barplot
+}
 \description{
 Plot read depth for \code{data.frame}
+}
+\examples{
+# dataframe
+plot_read_depth(nidap_clean_raw_counts)
+
 }
 \seealso{
 \link{plot_read_depth} generic

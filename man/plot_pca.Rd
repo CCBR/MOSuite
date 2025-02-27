@@ -4,29 +4,14 @@
 \alias{plot_pca}
 \title{Perform and plot a Principal Components Analysis}
 \usage{
-plot_pca(moo_counts,
-  count_type,
-  sub_count_type = NULL,
-  principal_components = c(1, 2),
-  ...)
-
-plot_pca(moo_counts,
-  sample_metadata,
-  principal_components = c(1, 2),
-  ...)
+plot_pca(moo_counts, principal_components = c(1, 2), ...)
 }
 \arguments{
 \item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
 
-\item{...}{arguments forwarded to low-level plotter}
-
-\item{count_type}{\strong{Required} if \code{moo_counts} is a \code{multiOmicDataSet}: the type of counts to use -- must be a name in the counts slot (\code{moo@counts}).}
-
-\item{sub_count_type}{Used if \code{moo_counts} is a \code{multiOmicDataSet} AND if \code{count_type} is a list, specify the sub count type within the list}
-
-\item{sample_metadata}{\strong{Required} if \code{moo_counts} is a \code{data.frame}: sample metadata as a data frame or tibble.}
-
 \item{principal_components}{vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3 for a 3D pca with plotly. (Default: \code{c(1,2)})}
+
+\item{...}{additional arguments forwarded to method (see Details below)}
 }
 \value{
 PCA plot (2D or 3D depending on the number of \code{principal_components})
@@ -38,11 +23,42 @@ For a \code{data.frame}, you must also set \code{sample_metadata}.
 All other arguments are optional.
 }
 \details{
-See the low-level function docs for additional arguments depending on whether you're plotting 2 or 3 PCs
+See the low-level function docs for additional arguments
+depending on whether you're plotting 2 or 3 PCs:
 \itemize{
 \item \link{plot_pca_2d} - used when there are \strong{2} principal components
 \item \link{plot_pca_3d} - used when there are \strong{3} principal components
 }
+}
+\section{Methods}{
+\tabular{ll}{
+   link to docs \tab class \cr
+   \link{plot_pca_moo} \tab \code{multiOmicDataSet} \cr
+   \link{plot_pca_dat} \tab \code{data.frame} \cr
+}
+}
+
+\examples{
+# multiOmicDataSet
+moo <- multiOmicDataSet(
+  sample_metadata = nidap_sample_metadata,
+  anno_dat = data.frame(),
+  counts_lst = list(
+    "raw" = nidap_raw_counts,
+    "clean" = nidap_clean_raw_counts
+  )
+)
+plot_pca(moo, count_type = 'clean', principal_components = c(1,2))
+
+# 3D
+plot_pca(moo, count_type = 'clean', principal_components = c(1,2,3))
+
+# dataframe
+plot_pca(nidap_clean_raw_counts,
+         sample_metadata = nidap_sample_metadata,
+         principal_components = c(1,2)
+)
+
 }
 \seealso{
 Other plotters: 

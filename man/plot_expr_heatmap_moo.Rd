@@ -3,6 +3,15 @@
 \name{plot_expr_heatmap_moo}
 \alias{plot_expr_heatmap_moo}
 \title{Plot expression heatmap for multiOmicDataSet}
+\arguments{
+\item{moo_counts}{\code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
+
+\item{count_type}{the type of counts to use. Must be a name in the counts slot (\code{names(moo@counts)}).}
+
+\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list. Must be a name in \code{names(moo@counts[[count_type]])}.}
+
+\item{...}{arguments forwarded to method: \link{plot_expr_heatmap_dat}}
+}
 \description{
 Plot expression heatmap for multiOmicDataSet
 }

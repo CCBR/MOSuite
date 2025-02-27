@@ -3,6 +3,17 @@
 \name{plot_pca_moo}
 \alias{plot_pca_moo}
 \title{Plot 2D or 3D PCA for multiOmicDataset}
+\arguments{
+\item{moo_counts}{\code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
+
+\item{count_type}{the type of counts to use. Must be a name in the counts slot (\code{names(moo@counts)}).}
+
+\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list. Must be a name in \code{names(moo@counts[[count_type]])}.}
+
+\item{principal_components}{vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3 for a 3D pca with plotly. (Default: \code{c(1,2)})}
+
+\item{...}{additional arguments forwarded to \code{\link[=plot_pca_2d]{plot_pca_2d()}} (if 2 PCs) or \code{\link[=plot_pca_3d]{plot_pca_3d()}} (if 3 PCs).}
+}
 \value{
 PCA plot
 }

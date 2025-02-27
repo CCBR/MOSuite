@@ -4,83 +4,16 @@
 \alias{plot_histogram}
 \title{Plot histogram}
 \usage{
-# multiOmicDataSet
-plot_histogram(moo_counts,
-  count_type,
-  sub_count_type = NULL,
-  ...)
-# dataframe
-plot_histogram(moo_counts,
-    sample_metadata,
-    sample_id_colname = NULL,
-    feature_id_colname = NULL,
-    group_colname = "Group",
-    label_colname = "Label",
-    color_values = c(
-      "#5954d6",
-      "#e1562c",
-      "#b80058",
-      "#00c6f8",
-      "#d163e6",
-      "#00a76c",
-      "#ff9287",
-      "#008cf9",
-      "#006e00",
-      "#796880",
-      "#FFA500",
-      "#878500"
-    ),
-    color_by_group = FALSE,
-    set_min_max_for_x_axis = FALSE,
-    minimum_for_x_axis = -1,
-    maximum_for_x_axis = 1,
-    x_axis_label = "Counts",
-    y_axis_label = "Density",
-    legend_position = "top",
-    legend_font_size = 10,
-    number_of_legend_columns = 6,
-    interactive_plots = FALSE)
+plot_histogram(moo_counts, ...)
 }
 \arguments{
 \item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
 
-\item{...}{arguments forwarded to low-level plotter}
+\item{...}{arguments forwarded to method}
 
 \item{count_type}{Required if \code{moo_counts} is a \code{multiOmicDataSet}: the type of counts to use -- must be a name in the counts slot (\code{moo@counts}).}
 
 \item{sub_count_type}{Used if \code{moo_counts} is a \code{multiOmicDataSet} AND if \code{count_type} is a list, specify the sub count type within the list}
-
-\item{sample_metadata}{Required if \code{moo_counts} is a \code{data.frame}: sample metadata as a data frame or tibble.}
-
-\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first column in the sample metadata will be used.)}
-
-\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
-
-\item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).}
-
-\item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: \code{NULL} -- \code{sample_id_colname} will be used.)}
-
-\item{color_values}{vector of colors as hex values or names recognized by R}
-
-\item{color_by_group}{Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.}
-
-\item{set_min_max_for_x_axis}{whether to override the default for \code{ggplot2::xlim()} (default: \code{FALSE})}
-
-\item{minimum_for_x_axis}{value to override default \code{min} for \code{ggplot2::xlim()}}
-
-\item{maximum_for_x_axis}{value to override default \code{max} for \code{ggplot2::xlim()}}
-
-\item{x_axis_label}{text label for the x axis \code{ggplot2::xlab()}}
-
-\item{y_axis_label}{text label for the y axis \code{ggplot2::ylab()}}
-
-\item{legend_position}{passed to in \code{legend.position} \code{ggplot2::theme()}}
-
-\item{legend_font_size}{passed to \code{ggplot2::element_text()} via \code{ggplot2::theme()}}
-
-\item{number_of_legend_columns}{passed to \code{ncol} in \code{ggplot2::guide_legend()}}
-
-\item{interactive_plots}{set to TRUE to make the plot interactive with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
 }
 \value{
 ggplot object
@@ -91,6 +24,14 @@ For a \code{moo}, choose which counts slot to use with \code{count_type} & (opti
 For a \code{data.frame}, you must also set \code{sample_metadata}.
 All other arguments are optional.
 }
+\section{Methods}{
+\tabular{ll}{
+   link to docs \tab class \cr
+   \link{plot_histogram_moo} \tab \code{multiOmicDataSet} \cr
+   \link{plot_histogram_dat} \tab \code{data.frame} \cr
+}
+}
+
 \examples{
 # plot histogram for a counts slot in a multiOmicDataset Object
 moo <- multiOmicDataSet(
@@ -100,14 +41,18 @@ moo <- multiOmicDataSet(
 )
 p <- plot_histogram(moo, count_type = "raw")
 
-# plot histogram for a counts dataframe
+# customize the plot
+plot_histogram(moo, count_type = "raw",
+  group_colname = "GeneName", color_by_group = TRUE
+  )
+
+# plot histogram for a counts dataframe directly
 counts_dat <- moo@counts$raw
 plot_histogram(
   counts_dat,
   sample_metadata = nidap_sample_metadata,
   sample_id_colname = "Sample",
-  feature_id_colname = "Gene",
-  group_colname = "Group",
+  feature_id_colname = "GeneName",
   label_colname = "Label"
 )
 

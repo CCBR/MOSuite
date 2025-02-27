@@ -4,68 +4,12 @@
 \alias{plot_expr_heatmap}
 \title{Plot expression heatmap}
 \usage{
-# multiOmicDataset
-plot_expr_heatmap(moo_counts,
-  count_type,
-  sub_count_type = NULL,
-  ...)
-
-# dataframe
-plot_expr_heatmap(moo_counts,
-  sample_metadata,
-  sample_id_colname = NULL,
-  feature_id_colname = NULL,
-  group_colname = "Group",
-  label_colname = NULL,
-  samples_to_include = NULL,
-  color_values = c(
-    "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
-  ),
-  include_all_genes = FALSE,
-  filter_top_genes_by_variance = TRUE,
-  top_genes_by_variance_to_include = 500,
-  specific_genes_to_include_in_heatmap = "None",
-  cluster_genes = TRUE,
-  gene_distance_metric = "correlation",
-  gene_clustering_method = "average",
-  display_gene_dendrograms = TRUE,
-  display_gene_names = FALSE,
-  center_and_rescale_expression = TRUE,
-  cluster_samples = FALSE,
-  arrange_sample_columns = TRUE,
-  order_by_gene_expression = FALSE,
-  gene_to_order_columns = " ",
-  gene_expression_order = "low_to_high",
-  smpl_distance_metric = "correlation",
-  smpl_clustering_method = "average",
-  display_smpl_dendrograms = TRUE,
-  reorder_dendrogram = FALSE,
-  reorder_dendrogram_order = c(),
-  display_sample_names = TRUE,
-  group_columns = c("Group", "Replicate", "Batch"),
-  assign_group_colors = FALSE,
-  assign_color_to_sample_groups = c(),
-  group_colors = c("indigo", "carrot", "lipstick", "turquoise", "lavender",
-    "jade", "coral", "azure", "green", "rum", "orange", "olive"),
-  heatmap_color_scheme = "Default",
-  autoscale_heatmap_color = TRUE,
-  set_min_heatmap_color = -2,
-  set_max_heatmap_color = 2,
-  aspect_ratio = "Auto",
-  legend_font_size = 10,
-  gene_name_font_size = 4,
-  sample_name_font_size = 8,
-  display_numbers = FALSE)
+plot_expr_heatmap(moo_counts, ...)
 }
 \arguments{
 \item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
 
-\item{...}{arguments forwarded to low-level plotter}
-
-\item{count_type}{Required if \code{moo_counts} is a \code{multiOmicDataSet}: the type of counts to use -- must be a name in the counts slot (\code{moo@counts}).}
-
-\item{sub_count_type}{Used if \code{moo_counts} is a \code{multiOmicDataSet} AND if \code{count_type} is a list, specify the sub count type within the list}
+\item{...}{arguments forwarded to method}
 
 \item{sample_metadata}{Required if \code{moo_counts} is a \code{data.frame}: sample metadata as a data frame or tibble.}
 
@@ -159,35 +103,111 @@ For a \code{data.frame}, you must also set \code{sample_metadata}.
 All other arguments are optional.
 }
 \details{
-By default, the samples (i.e. the columns) are allowed to cluster in an
-unsupervised fashion based on how similar their expression profiles are
-across the included genes. This can help identify samples that are non
-clustering with their group as you might expect based on the experimental
-design.
+The samples (i.e. the columns) are clustered in an unsupervised fashion based
+on how similar their expression profiles are across the included genes. This
+can help identify samples that are non clustering with their group as you
+might expect based on the experimental design.
 
-Again, by default, the top 500 genes by variance are used, as these are
+By default, the top 500 genes by variance are used, as these are
 generally going to include those genes that most distinguish your samples
 from one another. You can change this as well as many other parameters about
-this heatmap if you explore the advanced options.
+this heatmap if you explore the advanced options (see \link{plot_expr_heatmap_dat}).
 }
+\section{Methods}{
+\tabular{ll}{
+   link to docs \tab class \cr
+   \link{plot_expr_heatmap_moo} \tab \code{multiOmicDataSet} \cr
+   \link{plot_expr_heatmap_dat} \tab \code{data.frame} \cr
+}
+
+\subsection{Method Usage}{
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{# multiOmicDataset
+plot_expr_heatmap(moo_counts,
+  count_type,
+  sub_count_type = NULL,
+  ...)
+
+# dataframe
+plot_expr_heatmap(moo_counts,
+  sample_metadata,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = NULL,
+  samples_to_include = NULL,
+  color_values = c(
+    "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
+  ),
+  include_all_genes = FALSE,
+  filter_top_genes_by_variance = TRUE,
+  top_genes_by_variance_to_include = 500,
+  specific_genes_to_include_in_heatmap = "None",
+  cluster_genes = TRUE,
+  gene_distance_metric = "correlation",
+  gene_clustering_method = "average",
+  display_gene_dendrograms = TRUE,
+  display_gene_names = FALSE,
+  center_and_rescale_expression = TRUE,
+  cluster_samples = FALSE,
+  arrange_sample_columns = TRUE,
+  order_by_gene_expression = FALSE,
+  gene_to_order_columns = " ",
+  gene_expression_order = "low_to_high",
+  smpl_distance_metric = "correlation",
+  smpl_clustering_method = "average",
+  display_smpl_dendrograms = TRUE,
+  reorder_dendrogram = FALSE,
+  reorder_dendrogram_order = c(),
+  display_sample_names = TRUE,
+  group_columns = c("Group", "Replicate", "Batch"),
+  assign_group_colors = FALSE,
+  assign_color_to_sample_groups = c(),
+  group_colors = c("indigo", "carrot", "lipstick", "turquoise", "lavender",
+    "jade", "coral", "azure", "green", "rum", "orange", "olive"),
+  heatmap_color_scheme = "Default",
+  autoscale_heatmap_color = TRUE,
+  set_min_heatmap_color = -2,
+  set_max_heatmap_color = 2,
+  aspect_ratio = "Auto",
+  legend_font_size = 10,
+  gene_name_font_size = 4,
+  sample_name_font_size = 8,
+  display_numbers = FALSE)
+}\if{html}{\out{</div>}}
+}
+}
+
 \examples{
 # plot expression heatmap for a counts slot in a multiOmicDataset Object
 moo <- multiOmicDataSet(
-  sample_metadata = nidap_sample_metadata,
+  sample_metadata = as.data.frame(nidap_sample_metadata),
   anno_dat = data.frame(),
-  counts_lst = list("raw" = nidap_raw_counts)
+  counts_lst = list(
+    "raw" = nidap_raw_counts,
+    "norm" = list(
+      "voom" = as.data.frame(nidap_norm_counts)
+    )
+  )
 )
-p <- plot_expr_heatmap(moo, count_type = "raw")
+p <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
+
+# customize the plot
+plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom",
+  top_genes_by_variance_to_include = 100
+)
 
 # plot expression heatmap for a counts dataframe
-counts_dat <- moo@counts$raw
+counts_dat <- moo@counts$norm$voom
 plot_expr_heatmap(
   counts_dat,
   sample_metadata = nidap_sample_metadata,
   sample_id_colname = "Sample",
   feature_id_colname = "Gene",
   group_colname = "Group",
-  label_colname = "Label"
+  label_colname = "Label",
+  top_genes_by_variance_to_include = 100
 )
 
 }

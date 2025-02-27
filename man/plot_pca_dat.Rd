@@ -3,6 +3,15 @@
 \name{plot_pca_dat}
 \alias{plot_pca_dat}
 \title{Plot 2D or 3D PCA for counts dataframe}
+\arguments{
+\item{moo_counts}{counts dataframe}
+
+\item{sample_metadata}{\strong{Required} if \code{moo_counts} is a \code{data.frame}: sample metadata as a data frame or tibble.}
+
+\item{principal_components}{vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3 for a 3D pca with plotly. (Default: \code{c(1,2)})}
+
+\item{...}{additional arguments forwarded to \code{\link[=plot_pca_2d]{plot_pca_2d()}} (if 2 PCs) or \code{\link[=plot_pca_3d]{plot_pca_3d()}} (if 3 PCs).}
+}
 \description{
 Plot 2D or 3D PCA for counts dataframe
 }

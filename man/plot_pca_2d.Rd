@@ -43,8 +43,6 @@ plot_pca_2d(
 
 \item{principal_components}{vector with numbered principal components to plot (Default: \code{c(1,2)})}
 
-\item{legend_position}{passed to in \code{legend.position} \code{ggplot2::theme()}}
-
 \item{point_size}{size for \code{ggplot2::geom_point()}}
 
 \item{add_label}{whether to add text labels for the points}
@@ -55,7 +53,7 @@ plot_pca_2d(
 
 \item{label_offset_y_}{label offset y for the PCA plot}
 
-\item{interactive_plots}{set to TRUE to make the plot interactive with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
+\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
 }
 \value{
 ggplot object

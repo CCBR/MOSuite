@@ -4,29 +4,30 @@
 \alias{plot_read_depth}
 \title{Plot read depth as a bar plot}
 \usage{
-# multiOmicDataset
-plot_read_depth(moo_counts,
-  count_type,
-  sub_count_type = NULL,
-  ...)
-
-# dataframe
-plot_read_depth(moo_counts)
+plot_read_depth(moo_counts, ...)
 }
 \arguments{
 \item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
 
-\item{...}{arguments forwarded to low-level plotter}
-
-\item{count_type}{Required if \code{moo_counts} is a \code{multiOmicDataSet}: the type of counts to use -- must be a name in the counts slot (\code{moo@counts}).}
-
-\item{sub_count_type}{Used if \code{moo_counts} is a \code{multiOmicDataSet} AND if \code{count_type} is a list, specify the sub count type within the list}
+\item{...}{arguments forwarded to method}
+}
+\value{
+ggplot barplot
 }
 \description{
 The first argument can be a \code{multiOmicDataset} object (\code{moo}) or a \code{data.frame} containing counts.
 For a \code{moo}, choose which counts slot to use with \code{count_type} & (optionally) \code{sub_count_type}.
 }
+\section{Methods}{
+\tabular{ll}{
+   link to docs \tab class \cr
+   \link{plot_read_depth_moo} \tab \code{multiOmicDataSet} \cr
+   \link{plot_read_depth_dat} \tab \code{data.frame} \cr
+}
+}
+
 \examples{
+# multiOmicDataSet
 moo <- multiOmicDataSet(
   sample_metadata = nidap_sample_metadata,
   anno_dat = data.frame(),
@@ -36,8 +37,7 @@ moo <- multiOmicDataSet(
   )
 )
 
-# multiOmicDataSet
-plot_read_depth(moo)
+plot_read_depth(moo, count_type = 'clean')
 
 # dataframe
 plot_read_depth(nidap_clean_raw_counts)
