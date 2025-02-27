@@ -274,14 +274,19 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(moo_counts,
 #' @examples
 #' # plot expression heatmap for a counts slot in a multiOmicDataset Object
 #' moo <- multiOmicDataSet(
-#'   sample_metadata = nidap_sample_metadata,
+#'   sample_metadata = as.data.frame(nidap_sample_metadata),
 #'   anno_dat = data.frame(),
-#'   counts_lst = list("raw" = nidap_raw_counts)
+#'   counts_lst = list(
+#'     "raw" = nidap_raw_counts,
+#'     "norm" = list(
+#'       "voom" = as.data.frame(nidap_norm_counts)
+#'     )
+#'   )
 #' )
-#' p <- plot_expr_heatmap(moo, count_type = "raw")
+#' p <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
 #'
 #' # plot expression heatmap for a counts dataframe
-#' counts_dat <- moo@counts$raw
+#' counts_dat <- moo@counts$norm$voom
 #' plot_expr_heatmap(
 #'   counts_dat,
 #'   sample_metadata = nidap_sample_metadata,
@@ -379,7 +384,9 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(moo_counts,
   ## This function uses pheatmap to draw a heatmap, scaling first by rows
   ## (with samples in columns and genes in rows)
   Gene <- NULL
-  counts_dat <- moo_counts
+  # TODO support tibbles; currently these must be dataframes
+  counts_dat <- as.data.frame(moo_counts)
+  sample_metadata <- as.data.frame(sample_metadata)
 
 
   if (is.null(sample_id_colname)) {
