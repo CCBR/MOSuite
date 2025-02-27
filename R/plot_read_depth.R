@@ -35,6 +35,8 @@
 #' | [plot_read_depth_dat] | `data.frame`       |
 #'
 #' @family plotters
+#' @keywords plotters
+#' @family moo methods
 plot_read_depth <- S7::new_generic("plot_read_depth", dispatch_args = "moo_counts")
 
 #' Plot read depth for multiOmicDataSet

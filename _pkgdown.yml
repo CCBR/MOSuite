@@ -14,9 +14,7 @@ template:
     pkgdown-nav-height: 78px
 footer:
   structure:
-    left: [logo, developed_by]
-  components:
-    logo: '<a href="https://frederick.cancer.gov/research/science-areas/bioinformatics-and-computational-science/advanced-biomedical-computational-science"><img src="https://raw.githubusercontent.com/CCBR/Tools/2118f5ed5997cb679e45937a859c183131905899/src/ccbr_tools/templates/_extensions/fnl/fnl-logo-dark.png" alt="FNLCR logo" class="img-fluid" style="max-width: 120px; margin-right: 20px;"></a>'
+    left: [developed_by]
 
 development:
   mode: auto
@@ -32,3 +30,33 @@ authors:
   footer:
     roles: [cph, fnd]
     text: "Created by the"
+
+reference:
+  - title: multiOmicDataSet
+    contents: contains("multiOmicDataSet")
+  - title: Main functions
+    desc: See `vignette('intro')` for recommended usage
+    contents:
+      - ends_with("_counts")
+      - -has_keyword("data")
+  - title: Visualization
+    contents:
+      - has_keyword("plotters")
+  - subtitle: Color selectors
+    contents:
+      - contains("color")
+  - title: Misc. helpers
+    contents:
+      - starts_with('calc_')
+  - title: Datasets
+    contents:
+      - has_keyword('data')
+  - title: Options
+    contents:
+      - options
+  - subtitle: Low-level plot helpers
+    desc: |
+      These functions are called by the main visualization functions.
+    contents:
+      - starts_with("plot_")
+      - -has_keyword("plotters")

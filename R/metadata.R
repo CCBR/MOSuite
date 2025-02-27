@@ -5,7 +5,7 @@
 #' @inheritParams create_multiOmicDataSet_from_files
 #'
 #' @return dataframe where row names are the sample IDs
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' sample_meta_tbl <- readr::read_tsv(system.file("extdata",

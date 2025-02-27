@@ -141,6 +141,20 @@ Other plotters:
 Other heatmaps: 
 \code{\link{plot_corr_heatmap}()},
 \code{\link{plot_expr_heatmap_dat}}
+
+Other moo methods: 
+\code{\link{batch_correct_counts}()},
+\code{\link{clean_raw_counts}()},
+\code{\link{filter_counts}()},
+\code{\link{normalize_counts}()},
+\code{\link{plot_corr_heatmap}()},
+\code{\link{plot_histogram}()},
+\code{\link{plot_pca}()},
+\code{\link{plot_read_depth}()},
+\code{\link{run_deseq2}()},
+\code{\link{set_color_pal}()}
 }
 \concept{heatmaps}
+\concept{moo methods}
 \concept{plotters}
+\keyword{plotters}

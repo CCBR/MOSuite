@@ -63,3 +63,12 @@ ggplot object
 \description{
 Perform and plot a 2D Principal Components Analysis
 }
+\seealso{
+\link{plot_pca} generic
+
+Other PCA functions: 
+\code{\link{calc_pca}()},
+\code{\link{plot_pca}()},
+\code{\link{plot_pca_3d}()}
+}
+\concept{PCA functions}

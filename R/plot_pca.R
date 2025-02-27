@@ -47,6 +47,8 @@
 #'
 #' @family plotters
 #' @family PCA functions
+#' @keywords plotters
+#' @family moo methods
 plot_pca <- S7::new_generic("plot_pca", "moo_counts", function(moo_counts,
                                                                principal_components = c(1, 2),
                                                                ...) {
@@ -120,6 +122,9 @@ S7::method(plot_pca, S7::class_data.frame) <- function(moo_counts,
 #'
 #' @export
 #' @return ggplot object
+#'
+#' @seealso [plot_pca] generic
+#' @family PCA functions
 #'
 plot_pca_2d <- function(counts_dat,
                         sample_metadata,
@@ -232,6 +237,8 @@ plot_pca_2d <- function(counts_dat,
 #' @export
 #' @returns `plotly::plot_ly` figure
 #'
+#' @seealso [plot_pca] generic
+#' @family PCA functions
 #'
 plot_pca_3d <- function(counts_dat,
                         sample_metadata,

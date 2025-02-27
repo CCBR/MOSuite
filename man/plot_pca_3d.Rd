@@ -48,3 +48,12 @@ plot_pca_3d(
 \description{
 3D PCA for counts dataframe
 }
+\seealso{
+\link{plot_pca} generic
+
+Other PCA functions: 
+\code{\link{calc_pca}()},
+\code{\link{plot_pca}()},
+\code{\link{plot_pca_2d}()}
+}
+\concept{PCA functions}

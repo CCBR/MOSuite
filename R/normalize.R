@@ -25,6 +25,7 @@
 #'     label_colname = "Label"
 #'   )
 #' head(moo@counts[["norm"]][["voom"]])
+#' @family moo methods
 normalize_counts <- function(moo,
                              count_type = "filt",
                              norm_type = "voom",

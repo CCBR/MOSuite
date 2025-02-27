@@ -47,3 +47,4 @@ Other plotters:
 \code{\link{plot_read_depth}()}
 }
 \concept{plotters}
+\keyword{plotters}

@@ -46,6 +46,8 @@
 #' @name plot_histogram
 #' @rdname plot_histogram
 #' @family plotters
+#' @keywords plotters
+#' @family moo methods
 plot_histogram <- S7::new_generic("plot_histogram", dispatch_args = "moo_counts")
 
 #' Plot histogram for multiOmicDataSet

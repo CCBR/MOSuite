@@ -20,4 +20,4 @@ gene_counts
 \description{
 RSEM expected gene counts
 }
-\keyword{datasets}
+\keyword{data}

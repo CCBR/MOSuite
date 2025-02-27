@@ -67,6 +67,7 @@
 #'   )
 #' head(moo@counts$filt)
 #'
+#' @family moo methods
 filter_counts <- function(moo,
                           count_type = "clean",
                           feature_id_colname = NULL,

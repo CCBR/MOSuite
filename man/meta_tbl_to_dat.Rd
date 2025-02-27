@@ -25,3 +25,4 @@ sample_meta_tbl <- readr::read_tsv(system.file("extdata",
 head(sample_meta_tbl)
 meta_tbl_to_dat(sample_meta_tbl)
 }
+\keyword{internal}

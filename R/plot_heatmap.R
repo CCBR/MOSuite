@@ -60,6 +60,8 @@
 #' @rdname plot_corr_heatmap
 #' @family plotters
 #' @family heatmaps
+#' @keywords plotters
+#' @family moo methods
 plot_corr_heatmap <- S7::new_generic("plot_corr_heatmap", "moo_counts")
 
 #' Plot correlation heatmap for multiOmicDataSet
@@ -303,6 +305,8 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(moo_counts,
 #' @rdname plot_expr_heatmap
 #' @family plotters
 #' @family heatmaps
+#' @keywords plotters
+#' @family moo methods
 plot_expr_heatmap <- S7::new_generic("plot_expr_heatmap", "moo_counts")
 
 

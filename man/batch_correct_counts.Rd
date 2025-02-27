@@ -86,3 +86,17 @@ moo <- multiOmicDataSet(
 head(moo@counts[["batch"]])
 
 }
+\seealso{
+Other moo methods: 
+\code{\link{clean_raw_counts}()},
+\code{\link{filter_counts}()},
+\code{\link{normalize_counts}()},
+\code{\link{plot_corr_heatmap}()},
+\code{\link{plot_expr_heatmap}()},
+\code{\link{plot_histogram}()},
+\code{\link{plot_pca}()},
+\code{\link{plot_read_depth}()},
+\code{\link{run_deseq2}()},
+\code{\link{set_color_pal}()}
+}
+\concept{moo methods}

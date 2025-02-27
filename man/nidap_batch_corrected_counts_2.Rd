@@ -15,4 +15,4 @@ nidap_batch_corrected_counts_2
 Batch-corrected counts for the NIDAP test dataset.
 The result of running \code{batch_correct_counts()} on \code{nidap_norm_counts}.
 }
-\keyword{datasets}
+\keyword{data}

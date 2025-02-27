@@ -44,6 +44,7 @@
 #'
 #' head(moo@counts[["batch"]])
 #'
+#' @family moo methods
 batch_correct_counts <- function(moo,
                                  count_type = "norm",
                                  sub_count_type = "voom",

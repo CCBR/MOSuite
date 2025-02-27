@@ -13,4 +13,4 @@ nidap_sample_metadata
 \description{
 Sample metadata for the NIDAP test dataset
 }
-\keyword{datasets}
+\keyword{data}
