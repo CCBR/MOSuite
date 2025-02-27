@@ -48,15 +48,15 @@ moo <- multiOmicDataSet(
     "clean" = nidap_clean_raw_counts
   )
 )
-plot_pca(moo, count_type = 'clean', principal_components = c(1,2))
+plot_pca(moo, count_type = "clean", principal_components = c(1, 2))
 
 # 3D
-plot_pca(moo, count_type = 'clean', principal_components = c(1,2,3))
+plot_pca(moo, count_type = "clean", principal_components = c(1, 2, 3))
 
 # dataframe
 plot_pca(nidap_clean_raw_counts,
-         sample_metadata = nidap_sample_metadata,
-         principal_components = c(1,2)
+  sample_metadata = nidap_sample_metadata,
+  principal_components = c(1, 2)
 )
 
 }

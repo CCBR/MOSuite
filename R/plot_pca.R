@@ -62,13 +62,6 @@ plot_pca <- S7::new_generic("plot_pca", "moo_counts", function(moo_counts,
 #' @param ... additional arguments forwarded to [plot_pca_2d()] (if 2 PCs) or [plot_pca_3d()] (if 3 PCs).
 #'
 #' @returns PCA plot
-#' @examples
-#' moo <- multiOmicDataSet(
-#'   sample_metadata = nidap_sample_metadata,
-#'   anno_dat = data.frame(),
-#'   counts_lst = list("raw" = nidap_raw_counts)
-#' )
-#' plot_pca(moo, "raw")
 #'
 #' @name plot_pca_moo
 #' @seealso [plot_pca] generic
@@ -121,13 +114,12 @@ S7::method(plot_pca, S7::class_data.frame) <- function(moo_counts,
 #' @param samples_to_rename If you do not have a Plot Labels Column in your sample metadata table, you can use this parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to which new name: old_name: new_name
 #' @param color_values vector of colors as hex values or names recognized by R
 #' @param principal_components vector with numbered principal components to plot (Default: `c(1,2)`)
+#' @param legend_position passed to in `legend.position` `ggplot2::theme()`
 #' @param point_size size for `ggplot2::geom_point()`
 #' @param add_label whether to add text labels for the points
 #'
 #' @export
 #' @return ggplot object
-#' @examples
-#' plot_pca(nidap_raw_counts, nidap_sample_metadata)
 #'
 plot_pca_2d <- function(counts_dat,
                         sample_metadata,
@@ -240,8 +232,6 @@ plot_pca_2d <- function(counts_dat,
 #' @export
 #' @returns `plotly::plot_ly` figure
 #'
-#' @examples
-#' plot_pca_3d(nidap_raw_counts, nidap_sample_metadata)
 #'
 plot_pca_3d <- function(counts_dat,
                         sample_metadata,

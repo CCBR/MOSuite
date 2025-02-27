@@ -48,7 +48,3 @@ plot_pca_3d(
 \description{
 3D PCA for counts dataframe
 }
-\examples{
-plot_pca_3d(nidap_raw_counts, nidap_sample_metadata)
-
-}

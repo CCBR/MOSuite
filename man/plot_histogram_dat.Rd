@@ -44,21 +44,20 @@ Plot histogram for counts dataframe
 \examples{
 
 # plot histogram for a counts dataframe directly
-counts_dat <- moo@counts$raw
 plot_histogram(
-  counts_dat,
+  nidap_clean_raw_counts,
   sample_metadata = nidap_sample_metadata,
   sample_id_colname = "Sample",
-  feature_id_colname = "GeneName",
+  feature_id_colname = "Gene",
   label_colname = "Label"
 )
 
 # customize the plot
 plot_histogram(
-  counts_dat,
+  nidap_clean_raw_counts,
   sample_metadata = nidap_sample_metadata,
   sample_id_colname = "Sample",
-  feature_id_colname = "GeneName",
+  feature_id_colname = "Gene",
   group_colname = "Group",
   color_by_group = TRUE
 )

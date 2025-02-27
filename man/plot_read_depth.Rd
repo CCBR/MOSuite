@@ -37,7 +37,7 @@ moo <- multiOmicDataSet(
   )
 )
 
-plot_read_depth(moo, count_type = 'clean')
+plot_read_depth(moo, count_type = "clean")
 
 # dataframe
 plot_read_depth(nidap_clean_raw_counts)

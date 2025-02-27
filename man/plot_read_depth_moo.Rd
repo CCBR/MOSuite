@@ -27,7 +27,7 @@ moo <- multiOmicDataSet(
   )
 )
 
-plot_read_depth(moo, count_type = 'clean')
+plot_read_depth(moo, count_type = "clean")
 
 }
 \seealso{

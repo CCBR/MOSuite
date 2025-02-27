@@ -4,8 +4,6 @@
 #'
 #'
 #' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
-#' @param count_type Required if `moo_counts` is a `multiOmicDataSet`: the type of counts to use -- must be a name in the counts slot (`moo@counts`).
-#' @param sub_count_type Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub count type within the list
 #' @param ... arguments forwarded to method
 #'
 #' @returns ggplot object
@@ -23,7 +21,7 @@
 #' # customize the plot
 #' plot_histogram(moo,
 #'   count_type = "raw",
-#'   group_colname = "GeneName", color_by_group = TRUE
+#'   group_colname = "Group", color_by_group = TRUE
 #' )
 #'
 #' # plot histogram for a counts dataframe directly
@@ -68,7 +66,7 @@ plot_histogram <- S7::new_generic("plot_histogram", dispatch_args = "moo_counts"
 #' # customize the plot
 #' plot_histogram(moo,
 #'   count_type = "raw",
-#'   group_colname = "Gene", color_by_group = TRUE
+#'   group_colname = "Group", color_by_group = TRUE
 #' )
 #'
 #' @name plot_histogram_moo
@@ -105,21 +103,20 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(moo_counts,
 #' @examples
 #'
 #' # plot histogram for a counts dataframe directly
-#' counts_dat <- moo@counts$raw
 #' plot_histogram(
-#'   counts_dat,
+#'   nidap_clean_raw_counts,
 #'   sample_metadata = nidap_sample_metadata,
 #'   sample_id_colname = "Sample",
-#'   feature_id_colname = "GeneName",
+#'   feature_id_colname = "Gene",
 #'   label_colname = "Label"
 #' )
 #'
 #' # customize the plot
 #' plot_histogram(
-#'   counts_dat,
+#'   nidap_clean_raw_counts,
 #'   sample_metadata = nidap_sample_metadata,
 #'   sample_id_colname = "Sample",
-#'   feature_id_colname = "GeneName",
+#'   feature_id_colname = "Gene",
 #'   group_colname = "Group",
 #'   color_by_group = TRUE
 #' )

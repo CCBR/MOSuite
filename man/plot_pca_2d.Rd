@@ -43,6 +43,8 @@ plot_pca_2d(
 
 \item{principal_components}{vector with numbered principal components to plot (Default: \code{c(1,2)})}
 
+\item{legend_position}{passed to in \code{legend.position} \code{ggplot2::theme()}}
+
 \item{point_size}{size for \code{ggplot2::geom_point()}}
 
 \item{add_label}{whether to add text labels for the points}
@@ -60,8 +62,4 @@ ggplot object
 }
 \description{
 Perform and plot a 2D Principal Components Analysis
-}
-\examples{
-plot_pca(nidap_raw_counts, nidap_sample_metadata)
-
 }

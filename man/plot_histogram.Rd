@@ -10,10 +10,6 @@ plot_histogram(moo_counts, ...)
 \item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
 
 \item{...}{arguments forwarded to method}
-
-\item{count_type}{Required if \code{moo_counts} is a \code{multiOmicDataSet}: the type of counts to use -- must be a name in the counts slot (\code{moo@counts}).}
-
-\item{sub_count_type}{Used if \code{moo_counts} is a \code{multiOmicDataSet} AND if \code{count_type} is a list, specify the sub count type within the list}
 }
 \value{
 ggplot object
@@ -42,9 +38,10 @@ moo <- multiOmicDataSet(
 p <- plot_histogram(moo, count_type = "raw")
 
 # customize the plot
-plot_histogram(moo, count_type = "raw",
-  group_colname = "GeneName", color_by_group = TRUE
-  )
+plot_histogram(moo,
+  count_type = "raw",
+  group_colname = "Group", color_by_group = TRUE
+)
 
 # plot histogram for a counts dataframe directly
 counts_dat <- moo@counts$raw

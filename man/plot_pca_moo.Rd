@@ -20,15 +20,6 @@ PCA plot
 \description{
 Plot 2D or 3D PCA for multiOmicDataset
 }
-\examples{
-moo <- multiOmicDataSet(
-  sample_metadata = nidap_sample_metadata,
-  anno_dat = data.frame(),
-  counts_lst = list("raw" = nidap_raw_counts)
-)
-plot_pca(moo, "raw")
-
-}
 \seealso{
 \link{plot_pca} generic
 

@@ -25,9 +25,10 @@ moo <- multiOmicDataSet(
 p <- plot_histogram(moo, count_type = "raw")
 
 # customize the plot
-plot_histogram(moo, count_type = "raw",
-  group_colname = "Gene", color_by_group = TRUE
-  )
+plot_histogram(moo,
+  count_type = "raw",
+  group_colname = "Group", color_by_group = TRUE
+)
 
 }
 \seealso{
