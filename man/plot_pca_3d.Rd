@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_pca.R
 \name{plot_pca_3d}
 \alias{plot_pca_3d}
-\title{Plot 3-Dimensional PCA with plotly}
+\title{3D PCA for counts dataframe}
 \usage{
 plot_pca_3d(
   counts_dat,
@@ -22,10 +22,9 @@ plot_pca_3d(
 \arguments{
 \item{counts_dat}{data frame of feature counts (e.g. expected feature counts from RSEM).}
 
-\item{sample_metadata}{sample metadata as a data frame or tibble.
-The first column is assumed to contain the sample IDs which must correspond to column names in the raw counts.}
+\item{sample_metadata}{sample metadata as a data frame or tibble.}
 
-\item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} - first column in the sample metadata will be used.)}
+\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first column in the sample metadata will be used.)}
 
 \item{samples_to_rename}{If you do not have a Plot Labels Column in your sample metadata table, you can use this parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to which new name: old_name: new_name}
 
@@ -47,8 +46,14 @@ The first column is assumed to contain the sample IDs which must correspond to c
 \code{plotly::plot_ly} figure
 }
 \description{
-Plot 3-Dimensional PCA with plotly
+3D PCA for counts dataframe
 }
-\examples{
-plot_pca_3d(nidap_raw_counts, nidap_sample_metadata)
+\seealso{
+\link{plot_pca} generic
+
+Other PCA functions: 
+\code{\link{calc_pca}()},
+\code{\link{plot_pca}()},
+\code{\link{plot_pca_2d}()}
 }
+\concept{PCA functions}

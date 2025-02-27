@@ -15,4 +15,4 @@ nidap_raw_counts
 Raw counts for the NIDAP test dataset
 Pairs with \code{nidap_sample_metadata}.
 }
-\keyword{datasets}
+\keyword{data}

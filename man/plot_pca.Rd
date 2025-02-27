@@ -4,66 +4,88 @@
 \alias{plot_pca}
 \title{Perform and plot a Principal Components Analysis}
 \usage{
-plot_pca(
-  counts_dat,
-  sample_metadata,
-  sample_id_colname = NULL,
-  feature_id_colname = NULL,
-  samples_to_rename = NULL,
-  group_colname = "Group",
-  label_colname = "Label",
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
-  principal_components = c(1, 2),
-  legend_position = "top",
-  point_size = 1,
-  add_label = TRUE,
-  label_font_size = 3,
-  label_offset_x_ = 2,
-  label_offset_y_ = 2,
-  interactive_plots = FALSE
-)
+plot_pca(moo_counts, principal_components = c(1, 2), ...)
 }
 \arguments{
-\item{counts_dat}{data frame of feature counts (e.g. expected feature counts from RSEM).}
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
 
-\item{sample_metadata}{sample metadata as a data frame or tibble.
-The first column is assumed to contain the sample IDs which must correspond to column names in the raw counts.}
+\item{principal_components}{vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3 for a 3D pca with plotly. (Default: \code{c(1,2)})}
 
-\item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} - first column in the sample metadata will be used.)}
-
-\item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first column in the count data will be used.)}
-
-\item{samples_to_rename}{If you do not have a Plot Labels Column in your sample metadata table, you can use this parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to which new name: old_name: new_name}
-
-\item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).}
-
-\item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: \code{NULL} -- \code{sample_id_colname} will be used.)}
-
-\item{color_values}{vector of colors as hex values or names recognized by R}
-
-\item{principal_components}{vector with numbered principal components to plot (Default: \code{c(1,2)})}
-
-\item{legend_position}{passed to in \code{legend.position} \code{ggplot2::theme()}}
-
-\item{point_size}{size for \code{ggplot2::geom_point()}}
-
-\item{add_label}{whether to add text labels for the points}
-
-\item{label_font_size}{label font size for the PCA plot}
-
-\item{label_offset_x_}{label offset x for the PCA plot}
-
-\item{label_offset_y_}{label offset y for the PCA plot}
-
-\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive_plots with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
+\item{...}{additional arguments forwarded to method (see Details below)}
 }
 \value{
-ggplot object
+PCA plot (2D or 3D depending on the number of \code{principal_components})
 }
 \description{
-Perform and plot a Principal Components Analysis
+The first argument can be a \code{multiOmicDataset} object (\code{moo}) or a \code{data.frame} containing counts.
+For a \code{moo}, choose which counts slot to use with \code{count_type} & (optionally) \code{sub_count_type}.
+For a \code{data.frame}, you must also set \code{sample_metadata}.
+All other arguments are optional.
 }
+\details{
+See the low-level function docs for additional arguments
+depending on whether you're plotting 2 or 3 PCs:
+\itemize{
+\item \link{plot_pca_2d} - used when there are \strong{2} principal components
+\item \link{plot_pca_3d} - used when there are \strong{3} principal components
+}
+}
+\section{Methods}{
+\tabular{ll}{
+   link to docs \tab class \cr
+   \link{plot_pca_moo} \tab \code{multiOmicDataSet} \cr
+   \link{plot_pca_dat} \tab \code{data.frame} \cr
+}
+}
+
 \examples{
-plot_pca(nidap_raw_counts, nidap_sample_metadata)
+# multiOmicDataSet
+moo <- multiOmicDataSet(
+  sample_metadata = nidap_sample_metadata,
+  anno_dat = data.frame(),
+  counts_lst = list(
+    "raw" = nidap_raw_counts,
+    "clean" = nidap_clean_raw_counts
+  )
+)
+plot_pca(moo, count_type = "clean", principal_components = c(1, 2))
+
+# 3D
+plot_pca(moo, count_type = "clean", principal_components = c(1, 2, 3))
+
+# dataframe
+plot_pca(nidap_clean_raw_counts,
+  sample_metadata = nidap_sample_metadata,
+  principal_components = c(1, 2)
+)
+
 }
+\seealso{
+Other plotters: 
+\code{\link{plot_corr_heatmap}()},
+\code{\link{plot_expr_heatmap}()},
+\code{\link{plot_histogram}()},
+\code{\link{plot_read_depth}()},
+\code{\link{print_or_save_plot}()}
+
+Other PCA functions: 
+\code{\link{calc_pca}()},
+\code{\link{plot_pca_2d}()},
+\code{\link{plot_pca_3d}()}
+
+Other moo methods: 
+\code{\link{batch_correct_counts}()},
+\code{\link{clean_raw_counts}()},
+\code{\link{filter_counts}()},
+\code{\link{normalize_counts}()},
+\code{\link{plot_corr_heatmap}()},
+\code{\link{plot_expr_heatmap}()},
+\code{\link{plot_histogram}()},
+\code{\link{plot_read_depth}()},
+\code{\link{run_deseq2}()},
+\code{\link{set_color_pal}()}
+}
+\concept{PCA functions}
+\concept{moo methods}
+\concept{plotters}
+\keyword{plotters}

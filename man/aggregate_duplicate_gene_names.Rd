@@ -43,3 +43,4 @@ data frame with columns separated if possible
 \description{
 Aggregate duplicate gene names
 }
+\keyword{internal}

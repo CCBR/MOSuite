@@ -7,7 +7,7 @@
 set_color_pal(moo, colname, palette_fun = grDevices::palette.colors, ...)
 }
 \arguments{
-\item{moo}{multiOmicDataSet object (see \code{create_multiOmicDataSet_from_dataframes()})}
+\item{moo}{\code{multiOmicDataSet} object (see \code{create_multiOmicDataSet_from_dataframes()})}
 
 \item{colname}{group column name to set the palette for}
 
@@ -29,4 +29,19 @@ moo <- create_multiOmicDataSet_from_dataframes(
 moo@analyses$colors$Group
 moo \%<>\% set_color_pal("Group", palette_fun = RColorBrewer::brewer.pal, name = "Set2")
 moo@analyses$colors$Group
+
 }
+\seealso{
+Other moo methods: 
+\code{\link{batch_correct_counts}()},
+\code{\link{clean_raw_counts}()},
+\code{\link{filter_counts}()},
+\code{\link{normalize_counts}()},
+\code{\link{plot_corr_heatmap}()},
+\code{\link{plot_expr_heatmap}()},
+\code{\link{plot_histogram}()},
+\code{\link{plot_pca}()},
+\code{\link{plot_read_depth}()},
+\code{\link{run_deseq2}()}
+}
+\concept{moo methods}

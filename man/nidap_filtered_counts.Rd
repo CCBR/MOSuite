@@ -15,4 +15,4 @@ nidap_filtered_counts
 Filtered counts for the NIDAP test dataset.
 The result of running \code{filter_counts()} on \code{nidap_clean_raw_counts}.
 }
-\keyword{datasets}
+\keyword{data}

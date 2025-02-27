@@ -25,6 +25,7 @@
 #'     label_colname = "Label"
 #'   )
 #' head(moo@counts[["norm"]][["voom"]])
+#' @family moo methods
 normalize_counts <- function(moo,
                              count_type = "filt",
                              norm_type = "voom",
@@ -107,7 +108,7 @@ normalize_counts <- function(moo,
       colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
     }
     pca_plot <- plot_pca(
-      counts_dat = df.voom,
+      df.voom,
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,
       samples_to_rename = samples_to_rename,
@@ -126,7 +127,7 @@ normalize_counts <- function(moo,
       label_offset_x_ = label_offset_x_
     ) + ggplot2::labs(caption = "normalized counts")
     hist_plot <- plot_histogram(
-      counts_dat = df.voom,
+      df.voom,
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,
@@ -139,7 +140,7 @@ normalize_counts <- function(moo,
       legend_font_size = legend_font_size_for_histogram
     ) + ggplot2::labs(caption = "normalized counts")
     corHM_plot <- plot_corr_heatmap(
-      counts_dat = df.filt,
+      df.filt,
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,

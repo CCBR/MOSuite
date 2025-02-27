@@ -44,6 +44,7 @@
 #'
 #' head(moo@counts[["batch"]])
 #'
+#' @family moo methods
 batch_correct_counts <- function(moo,
                                  count_type = "norm",
                                  sub_count_type = "voom",
@@ -134,7 +135,7 @@ batch_correct_counts <- function(moo,
       colors_for_plots <- moo@analyses[["colors"]][[batch_colname]]
     }
     pca_plot <- plot_pca(
-      counts_dat = combat_edata,
+      combat_edata,
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,
@@ -154,7 +155,7 @@ batch_correct_counts <- function(moo,
       color_by_group = TRUE
     ) + ggplot2::labs(caption = "batch-corrected counts")
     corHM_plot <- plot_corr_heatmap(
-      counts_dat = combat_edata,
+      combat_edata,
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,

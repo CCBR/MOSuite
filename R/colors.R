@@ -95,7 +95,7 @@ get_colors_vctr <- function(dat,
 #'
 #' @inheritParams get_colors_lst
 #'
-#' @param moo multiOmicDataSet object (see `create_multiOmicDataSet_from_dataframes()`)
+#' @param moo `multiOmicDataSet` object (see `create_multiOmicDataSet_from_dataframes()`)
 #' @param colname group column name to set the palette for
 #'
 #' @returns `moo` with colors updated at `moo@analyses$colors$colname`
@@ -109,8 +109,15 @@ get_colors_vctr <- function(dat,
 #' moo@analyses$colors$Group
 #' moo %<>% set_color_pal("Group", palette_fun = RColorBrewer::brewer.pal, name = "Set2")
 #' moo@analyses$colors$Group
-set_color_pal <- function(moo, colname, palette_fun = grDevices::palette.colors,
-                          ...) {
+#'
+#' @family moo methods
+set_color_pal <- S7::new_generic("set_color_pal", "moo", function(moo, colname, palette_fun = grDevices::palette.colors,
+                                                                  ...) {
+  S7::S7_dispatch()
+})
+
+S7::method(set_color_pal, multiOmicDataSet) <- function(moo, colname, palette_fun = grDevices::palette.colors,
+                                                        ...) {
   moo@analyses[["colors"]][[colname]] <- get_colors_vctr(dat = moo@sample_meta, colname = colname, palette_fun = palette_fun, ...)
   return(moo)
 }

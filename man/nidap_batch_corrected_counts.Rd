@@ -13,4 +13,4 @@ nidap_batch_corrected_counts
 \description{
 Batch-corrected counts for the NIDAP test dataset.
 }
-\keyword{datasets}
+\keyword{data}

@@ -125,7 +125,7 @@ test_that("plot_histogram works with rownames", {
 
 test_that("plot_histogram works with tibbles", {
   p <- plot_histogram(
-    counts_dat = nidap_filtered_counts,
+    nidap_filtered_counts,
     sample_metadata = nidap_sample_metadata,
     sample_id_colname = "Sample",
     feature_id_colname = "Gene",
@@ -174,4 +174,16 @@ test_that("plot_histogram works with tibbles", {
     "tbl_df",
     "tbl", "data.frame"
   )))
+})
+
+test_that("plot_histogram result is the same for MOO or dataframe", {
+  moo <- multiOmicDataSet(
+    sample_metadata = nidap_sample_metadata,
+    anno_dat = data.frame(),
+    counts_lst = list("raw" = nidap_raw_counts)
+  )
+  expect_equal(
+    plot_histogram(moo, count_type = "raw"),
+    plot_histogram(nidap_raw_counts, sample_meta = nidap_sample_metadata)
+  )
 })

@@ -42,6 +42,7 @@
 #' ) %>%
 #'   clean_raw_counts(sample_id_colname = "Sample", feature_id_colname = "GeneName")
 #' head(moo@counts$clean)
+#' @family moo methods
 clean_raw_counts <- function(moo,
                              count_type = "raw",
                              sample_id_colname = NULL,
@@ -140,8 +141,8 @@ clean_raw_counts <- function(moo,
 #' @param x vector of IDs
 #'
 #' @return IDs without version numbers
-#' @export
 #'
+#' @keywords internal
 #'
 strip_ensembl_version <- function(x) {
   return(unlist(lapply(stringr::str_split(x, "[.]"), "[[", 1)))
@@ -153,6 +154,7 @@ strip_ensembl_version <- function(x) {
 #' @inheritParams clean_raw_counts
 #'
 #' @returns dataframe with metadata separated
+#' @keywords internal
 separate_gene_meta_columns <- function(counts_dat, split_gene_name = TRUE) {
   ## Identify and separate Gene Name Columns into multiple Gene Metadata columns
   ##################################
@@ -211,7 +213,7 @@ separate_gene_meta_columns <- function(counts_dat, split_gene_name = TRUE) {
 #' @inheritParams separate_gene_meta_columns
 #'
 #' @returns data frame with columns separated if possible
-#'
+#' @keywords internal
 aggregate_duplicate_gene_names <- function(counts_dat,
                                            gene_name_column_to_use_for_collapsing_duplicates,
                                            aggregate_rows_with_duplicate_gene_names,

@@ -33,3 +33,18 @@ moo <- create_multiOmicDataSet_from_files(
 moo <- run_deseq2(moo, ~condition)
 }
 }
+\seealso{
+Other moo methods: 
+\code{\link{batch_correct_counts}()},
+\code{\link{clean_raw_counts}()},
+\code{\link{filter_counts}()},
+\code{\link{normalize_counts}()},
+\code{\link{plot_corr_heatmap}()},
+\code{\link{plot_expr_heatmap}()},
+\code{\link{plot_histogram}()},
+\code{\link{plot_pca}()},
+\code{\link{plot_read_depth}()},
+\code{\link{set_color_pal}()}
+}
+\concept{moo methods}
+\keyword{internal}

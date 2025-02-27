@@ -38,3 +38,13 @@ If \code{save_plots} is \code{TRUE}, the plot will be saved as an image to the p
 If \code{plot_obj} is a ggplot, \code{ggplot2::ggsave()} is used to save the image.
 Otherwise, \code{graphics_device} is used (\code{grDevice::png()} by default).
 }
+\seealso{
+Other plotters: 
+\code{\link{plot_corr_heatmap}()},
+\code{\link{plot_expr_heatmap}()},
+\code{\link{plot_histogram}()},
+\code{\link{plot_pca}()},
+\code{\link{plot_read_depth}()}
+}
+\concept{plotters}
+\keyword{plotters}

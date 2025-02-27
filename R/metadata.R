@@ -5,15 +5,17 @@
 #' @inheritParams create_multiOmicDataSet_from_files
 #'
 #' @return dataframe where row names are the sample IDs
-#' @export
+#' @keywords internal
 #'
 #' @examples
+#' \dontrun{
 #' sample_meta_tbl <- readr::read_tsv(system.file("extdata",
 #'   "sample_metadata.tsv.gz",
 #'   package = "MOSuite"
 #' ))
 #' head(sample_meta_tbl)
 #' meta_tbl_to_dat(sample_meta_tbl)
+#' }
 meta_tbl_to_dat <- function(meta_tbl, sample_id_colname = sample_id) {
   sample_id <- NULL
   meta_dat <- meta_tbl %>%

@@ -25,7 +25,7 @@ The first column is assumed to contain the sample IDs which must correspond to c
 \item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
 }
 \value{
-multiOmicDataSet object
+\link{multiOmicDataSet} object
 }
 \description{
 Construct a multiOmicDataSet object from data frames
@@ -42,4 +42,11 @@ moo <- create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts)
 head(moo@sample_meta)
 head(moo@counts$raw)
 head(moo@annotation)
+
 }
+\seealso{
+Other moo constructors: 
+\code{\link{create_multiOmicDataSet_from_files}()},
+\code{\link{multiOmicDataSet}()}
+}
+\concept{moo constructors}

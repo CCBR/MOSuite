@@ -7,6 +7,8 @@
 #'   Each data frame is expected to contain a `feature_id` column as the first column, and all remaining columns are sample IDs in the `sample_meta`.
 #' @param analyses_lst named list of analysis results, e.g. DESeq results object
 #' @export
+#'
+#' @family moo constructors
 multiOmicDataSet <- S7::new_class("multiOmicDataSet",
   properties = list(
     sample_meta = S7::class_data.frame,
@@ -32,12 +34,15 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
       stop(glue::glue("counts can only contain these names:\n\t{paste(approved_counts, collapse = ', ')}"))
     }
 
-    # all sample IDs in sample_meta must also be in raw counts, & vice versa
+    if (!("raw" %in% names(self@counts))) {
+      stop("counts must contain at least 'raw' counts")
+    }
     meta_sample_colnames <- self@sample_meta %>% dplyr::pull(1)
     feature_sample_colnames <- self@counts$raw %>%
       dplyr::select(-1) %>%
       colnames()
 
+    # all sample IDs in sample_meta must also be in raw counts, & vice versa
     error_msg <- ""
     not_in_meta <- setdiff(meta_sample_colnames, feature_sample_colnames)
     if (length(not_in_meta) > 0) {
@@ -69,7 +74,7 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
 #' @param sample_id_colname name of the column in `sample_metadata` that contains the sample IDs. (Default: `NULL` - first column in the sample metadata will be used.)
 #' @param feature_id_colname name of the column in `counts_dat` that contains feature/gene IDs. (Default: `NULL` - first column in the count data will be used.)
 #'
-#' @return multiOmicDataSet object
+#' @return [multiOmicDataSet] object
 #' @export
 #'
 #' @examples
@@ -84,6 +89,8 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
 #' head(moo@sample_meta)
 #' head(moo@counts$raw)
 #' head(moo@annotation)
+#'
+#' @family moo constructors
 create_multiOmicDataSet_from_dataframes <- function(sample_metadata,
                                                     counts_dat,
                                                     sample_id_colname = NULL,
@@ -129,7 +136,7 @@ create_multiOmicDataSet_from_dataframes <- function(sample_metadata,
 #' @inheritParams create_multiOmicDataSet_from_dataframes
 #' @param sample_meta_filepath path to tsv file with sample IDs and metadata for differential analysis.
 #' @param feature_counts_filepath path to tsv file of expected feature counts (e.g. gene counts from RSEM).
-#' @return multiOmicDataSet object
+#' @return [multiOmicDataSet] object
 #' @export
 #'
 #' @examples
@@ -145,6 +152,8 @@ create_multiOmicDataSet_from_dataframes <- function(sample_metadata,
 #' )
 #' moo@counts$raw %>% head()
 #' moo@sample_meta
+#'
+#' @family moo constructors
 create_multiOmicDataSet_from_files <- function(sample_meta_filepath, feature_counts_filepath,
                                                count_type = "raw",
                                                sample_id_colname = NULL,
@@ -159,3 +168,78 @@ create_multiOmicDataSet_from_files <- function(sample_meta_filepath, feature_cou
     feature_id_colname = feature_id_colname
   ))
 }
+
+#' Extract count data
+#'
+#' @usage
+#' extract_counts(moo, count_type, sub_count_type = NULL)
+#'
+#' @param moo multiOmicDataSet containing `count_type` & `sub_count_type` in the counts slot
+#' @param count_type the type of counts to use -- must be a name in the counts slot (`moo@counts[[count_type]]`)
+#' @param sub_count_type if `count_type` is a list, specify the sub count type within the list (`moo@counts[[count_type]][[sub_count_type]]`). (Default: `NULL`)
+#'
+#' @export
+#' @examples
+#' moo <- multiOmicDataSet(
+#'   sample_metadata = as.data.frame(nidap_sample_metadata),
+#'   anno_dat = data.frame(),
+#'   counts_lst = list(
+#'     "raw" = as.data.frame(nidap_raw_counts),
+#'     "clean" = as.data.frame(nidap_clean_raw_counts),
+#'     "filt" = as.data.frame(nidap_filtered_counts),
+#'     "norm" = list(
+#'       "voom" = as.data.frame(nidap_norm_counts)
+#'     )
+#'   )
+#' )
+#'
+#' moo %>%
+#'   extract_counts("filt") %>%
+#'   head()
+#'
+#' moo %>%
+#'   extract_counts("norm", "voom") %>%
+#'   head()
+#'
+extract_counts <- S7::new_generic("extract_counts", "moo", function(moo, count_type, sub_count_type = NULL) {
+  S7::S7_dispatch()
+})
+
+S7::method(extract_counts, multiOmicDataSet) <- function(moo, count_type, sub_count_type = NULL) {
+  # select correct counts matrix
+  if (!(count_type %in% names(moo@counts))) {
+    stop(glue::glue("count_type {count_type} not in moo@counts. Count types: {glue::glue_collapse(names(moo@counts), sep = ', ')}"))
+  }
+  counts_dat <- moo@counts[[count_type]]
+  if (!is.null(sub_count_type)) {
+    if (!(inherits(counts_dat, "list"))) {
+      stop(
+        glue::glue(
+          "{count_type} counts does not contain subtypes. To use {count_type} counts, set sub_count_type to NULL"
+        )
+      )
+    } else if (!(sub_count_type %in% names(counts_dat))) {
+      stop(
+        glue::glue(
+          "sub_count_type {sub_count_type} is not in moo@counts[[{count_type}]]"
+        )
+      )
+    }
+    counts_dat <- moo@counts[[count_type]][[sub_count_type]]
+  } else if (inherits(counts_dat, "list")) {
+    stop(glue::glue(
+      "{count_type} counts contains subtypes. You must set sub_count_type to extract a subtype"
+    ))
+  }
+  return(counts_dat)
+}
+
+#' @name moo_counts
+#'
+#' @description
+#'
+#' The first argument can be a `multiOmicDataset` object (`moo`) or a `data.frame` containing counts.
+#' For a `moo`, choose which counts slot to use with `count_type` & (optionally) `sub_count_type`.
+#' For a `data.frame`, you must also set `sample_metadata`.
+#' All other arguments are optional.
+NULL
