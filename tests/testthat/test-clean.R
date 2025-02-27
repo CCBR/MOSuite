@@ -3,7 +3,7 @@ test_that("clean_raw_counts works for NIDAP data", {
     sample_metadata = as.data.frame(nidap_sample_metadata),
     counts_dat = as.data.frame(nidap_raw_counts)
   ) %>%
-    clean_raw_counts()
+    clean_raw_counts(print_plots = TRUE)
   expect_true(equal_dfs(
     moo_nidap@counts[["clean"]] %>%
       dplyr::rename(Gene = GeneName),

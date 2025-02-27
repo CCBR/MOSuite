@@ -8,7 +8,7 @@ test_that("normalize works for NIDAP", {
       "filt" = as.data.frame(nidap_filtered_counts)
     )
   ) %>%
-    normalize_counts(group_colname = "Group", label_colname = "Label")
+    normalize_counts(group_colname = "Group", label_colname = "Label", print_plots = TRUE)
   expect_true(equal_dfs(
     moo@counts[["norm"]][["voom"]] %>%
       dplyr::arrange(desc(Gene)),
