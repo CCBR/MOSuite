@@ -58,25 +58,31 @@
 
 
 <dl><dt id="arg-counts-dat">counts_dat<a class="anchor" aria-label="anchor" href="#arg-counts-dat"></a></dt>
-<dd><p>data frame of feature counts (e.g. expected feature counts from RSEM).</p></dd>
+<dd><p>data frame of feature counts (e.g. from the counts slot of a <code>multiOmicDataSet</code>).</p></dd>
 
 
 <dt id="arg-sample-metadata">sample_metadata<a class="anchor" aria-label="anchor" href="#arg-sample-metadata"></a></dt>
-<dd><p>sample metadata as a data frame or tibble.
-The first column is assumed to contain the sample IDs which must correspond to column names in the raw counts.</p></dd>
+<dd><p>sample metadata as a data frame or tibble.</p></dd>
 
 
 <dt id="arg-sample-id-colname">sample_id_colname<a class="anchor" aria-label="anchor" href="#arg-sample-id-colname"></a></dt>
-<dd><p>name of the column in <code>sample_metadata</code> that contains the sample IDs. (Default: <code>NULL</code> - first column in the sample metadata will be used.)</p></dd>
+<dd><p>The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: <code>NULL</code> - first column in the sample metadata will be used.)</p></dd>
 
 
 <dt id="arg-feature-id-colname">feature_id_colname<a class="anchor" aria-label="anchor" href="#arg-feature-id-colname"></a></dt>
-<dd><p>name of the column in <code>counts_dat</code> that contains feature/gene IDs. (Default: <code>NULL</code> - first column in the count data will be used.)</p></dd>
+<dd><p>The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: <code>NULL</code> - first column in the counts matrix will be used.)</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>data frame with statistics for each principal component</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other PCA functions:
+<code><a href="plot_pca.html">plot_pca</a>()</code>,
+<code><a href="plot_pca_2d.html">plot_pca_2d</a>()</code>,
+<code><a href="plot_pca_3d.html">plot_pca_3d</a>()</code></p></div>
     </div>
 
     <div class="section level2">
@@ -100,7 +106,7 @@ The first column is assumed to contain the sample IDs which must correspond to c
    </div>
   <footer><div class="container">
   <div class="pkgdown-footer-left">
-  <p><a href="https://frederick.cancer.gov/research/science-areas/bioinformatics-and-computational-science/advanced-biomedical-computational-science" class="external-link"><img src="https://raw.githubusercontent.com/CCBR/Tools/2118f5ed5997cb679e45937a859c183131905899/src/ccbr_tools/templates/_extensions/fnl/fnl-logo-dark.png" alt="FNLCR logo" class="img-fluid" style="max-width: 120px; margin-right: 20px;"></a> Created by the <a href="https://github.com/CCBR" class="external-link">CCR Collaborative Bioinformatics Resource</a>.</p>
+  <p>Created by the <a href="https://github.com/CCBR" class="external-link">CCR Collaborative Bioinformatics Resource</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
