@@ -6,7 +6,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/CCBR/MOSuite/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CCBR/MOSuite/actions/workflows/R-CMD-check.yaml)
-
+[![codecov](https://codecov.io/gh/CCBR/MOSuite/graph/badge.svg?token=730OAPA4NU)](https://codecov.io/gh/CCBR/MOSuite)
+[![docs](https://img.shields.io/badge/-docs-blue?logo=readthedocs)](https://ccbr.github.io/MOSuite/)
 <!-- badges: end -->
 
 R package for downstream multi-omics analysis
