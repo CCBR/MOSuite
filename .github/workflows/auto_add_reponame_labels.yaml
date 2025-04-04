@@ -8,6 +8,10 @@ on:
     types:
       - opened
 
+permissions:
+  issues: write
+  pull-requests: write
+
 jobs:
   add_label:
     uses: CCBR/.github/.github/workflows/add_reponame_issue_label.yml@v0.2.0
