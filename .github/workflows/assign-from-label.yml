@@ -12,6 +12,10 @@ on:
 env:
   GH_TOKEN: ${{ github.token }}
 
+permissions:
+  issues: write
+  pull-requests: write
+
 jobs:
   assign-from-label:
     runs-on: ubuntu-latest
