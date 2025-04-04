@@ -605,6 +605,8 @@ references:
   - family-names: Jonge
     given-names: Edwin
     name-particle: de
+    email: edwindjonge@gmail.com
+    orcid: https://orcid.org/0000-0002-6580-4718
   year: '2025'
   doi: 10.32614/CRAN.package.docopt
 - type: software
