@@ -54,3 +54,6 @@ moo <- multiOmicDataSet(
   )
 nidap_batch_corrected_counts_2 <- moo@counts[["batch"]]
 usethis::use_data(nidap_batch_corrected_counts_2, overwrite = TRUE)
+
+nidap_deg_analysis <- readr::read_csv(system.file("extdata", "nidap", "DEG_Analysis.csv.gz", package = "MOSuite"))
+usethis::use_data(nidap_deg_analysis, overwrite = TRUE)
