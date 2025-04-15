@@ -1,19 +1,42 @@
-# https://nidap.nih.gov/workspace/vector/view/ri.vector.main.workbook.db4b90af-0c04-4759-84ce-7f76bafe6b27?branch=Phil_MOWorkflow&table=b0f19d19-08cb-4f28-acba-73c00864ff30
-# DEG Analysis [CCBR] (de953b9c-b7f3-49ac-b883-55070d759e5d): v191
-unnamed_4 <- function(moo,
-                      count_type = "norm",
-                      sub_count_type = "voom",
-                      sample_id_colname = NULL,
-                      feature_id_colname = NULL,
-                      samples_to_include = NULL,
-                      covariates_colnames = "Group") {
-  # TODO remove library statements
-  library(limma)
-  library(tidyverse)
-  library(edgeR)
-  library(stringr)
-  library(grid)
-  library(gridExtra)
+#' Title
+#'
+#' @inheritParams filter_counts
+#' @inheritParams batch_correct_counts
+#' @inheritParams option_params
+#'
+#' @param moo
+#' @param count_type
+#' @param sub_count_type
+#' @param sample_id_colname
+#' @param feature_id_colname
+#' @param samples_to_include
+#' @param columns_to_include
+#' @param covariates_colnames
+#' @param contrast_colname
+#' @param contrasts
+#' @param input_in_log_counts
+#' @param return_mean_and_sd
+#' @param return_normalized_counts
+#' @param voom_normalization_method
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+analyze_diff_counts <- function(moo,
+                                count_type = "filt",
+                                sub_count_type = NULL,
+                                sample_id_colname = "Sample",
+                                feature_id_colname = "Gene",
+                                samples_to_include = NULL,
+                                columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C3"),
+                                covariates_colnames = c("Group", "Batch"),
+                                contrast_colname = c("Group"),
+                                contrasts = c("B-A", "C-A", "B-C"),
+                                input_in_log_counts = FALSE,
+                                return_mean_and_sd = FALSE,
+                                return_normalized_counts = TRUE,
+                                voom_normalization_method = "quantile") {
   # select correct counts matrix
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
@@ -35,25 +58,7 @@ unnamed_4 <- function(moo,
     }
     counts_dat <- moo@counts[[count_type]][[sub_count_type]]
   }
-  counts_dat
   sample_metadata <- moo@sample_meta
-
-
-  # Basic Parameters:
-  gene_names_column <- "Gene"
-  sample_name_column <- "Sample"
-  columns_to_include <- c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C3")
-  covariates_columns <- c("Group", "Batch")
-
-  # Contrasts Parameters:
-  contrast_variable_column <- c("Group")
-  contrasts <- c("B-A", "C-A", "B-C")
-
-  # Advanced Parameters:
-  input_in_log_counts <- FALSE
-  return_mean_and_sd <- FALSE
-  return_normalized_counts <- TRUE
-  voom_normalization_method <- "quantile"
 
 
   ## --------------- ##
@@ -65,16 +70,16 @@ unnamed_4 <- function(moo,
   ################################
   ### PH: START Select subset of data columns
 
-  samples_to_include <- columns_to_include[columns_to_include %in% sample_metadata[, sample_name_column,
+  samples_to_include <- columns_to_include[columns_to_include %in% sample_metadata[, sample_id_colname,
     drop =
       T
   ]]
-  anno_col <- columns_to_include[columns_to_include %in% sample_metadata[, sample_name_column,
+  anno_col <- columns_to_include[columns_to_include %in% sample_metadata[, sample_id_colname,
     drop =
       T
   ] == F]
   ## make sure that Gene Anno columns are not included in analysis
-  samples_to_include <- samples_to_include[samples_to_include != gene_names_column]
+  samples_to_include <- samples_to_include[samples_to_include != feature_id_colname]
   samples_to_include <- samples_to_include[samples_to_include != "Gene"]
   samples_to_include <- samples_to_include[samples_to_include != "GeneName"]
 
@@ -83,24 +88,24 @@ unnamed_4 <- function(moo,
 
   ### PH: START Check Rownames - from Filtering + Normalization Template
   ## create unique rownames to correctly add back Annocolumns at end of template
-  counts_dat[, gene_names_column] <- paste0(counts_dat[, gene_names_column], "_", 1:nrow(counts_dat))
+  counts_dat[, feature_id_colname] <- paste0(counts_dat[, feature_id_colname], "_", 1:nrow(counts_dat))
 
-  anno_col <- c(anno_col, gene_names_column) %>% unique()
+  anno_col <- c(anno_col, feature_id_colname) %>% unique()
   anno_tbl <- counts_dat[, anno_col, drop = F] %>% as.data.frame()
 
-  df.m <- counts_dat[, c(gene_names_column, samples_to_include)]
+  df.m <- counts_dat[, c(feature_id_colname, samples_to_include)]
   gene_names <- NULL
-  gene_names$GeneID <- counts_dat[, gene_names_column]
+  gene_names$GeneID <- counts_dat[, feature_id_colname]
   ### PH: END Check Rownames - from Filtering + Normalization Template
 
   ### PH: START Input Data Validation - from Filtering + Normalization Template
   ### This code block does input data validation
-  sample_metadata <- sample_metadata[match(colnames(df.m), sample_metadata[, sample_name_column]), ]
+  sample_metadata <- sample_metadata[match(colnames(df.m), sample_metadata[, sample_id_colname]), ]
   sample_metadata <- sample_metadata[rowSums(is.na(sample_metadata)) != ncol(sample_metadata), ]
   # Remove samples that are not in the contrast groups:
   groups <- unique(unlist(strsplit(contrasts, "-")))
-  sample_metadata <- sample_metadata %>% filter(.data[[contrast_variable_column]] %in% groups)
-  df.m <- df.m[, match(sample_metadata[, sample_name_column], colnames(df.m))]
+  sample_metadata <- sample_metadata %>% dplyr::filter(.data[[contrast_colname]] %in% groups)
+  df.m <- df.m[, match(sample_metadata[, sample_id_colname], colnames(df.m))]
   ### PH: END Input Data Validation - from Filtering + Normalization Template
 
 
@@ -109,20 +114,20 @@ unnamed_4 <- function(moo,
   ################################
   ### PH: START Create Design Formula/Table
   # Put covariates in order
-  covariates_columns <- covariates_columns[order(covariates_columns != contrast_variable_column)]
+  covariates_colnames <- covariates_colnames[order(covariates_colnames != contrast_colname)]
 
-  for (ocv in covariates_columns) {
+  for (ocv in covariates_colnames) {
     sample_metadata[, ocv] <- gsub(" ", "_", sample_metadata[, ocv])
   }
 
   contrasts <- gsub(" ", "_", contrasts)
-  cov <- covariates_columns[!covariates_columns %in% contrast_variable_column]
+  cov <- covariates_colnames[!covariates_colnames %in% contrast_colname]
 
   # Combine columns if 2-factor analysis
-  if (length(contrast_variable_column) > 1) {
-    sample_metadata %>% dplyr::mutate(contmerge = paste0(.data[[contrast_variable_column[1]]], ".", .data[[contrast_variable_column[2]]])) -> sample_metadata
+  if (length(contrast_colname) > 1) {
+    sample_metadata %>% dplyr::mutate(contmerge = paste0(.data[[contrast_colname[1]]], ".", .data[[contrast_colname[2]]])) -> sample_metadata
   } else {
-    sample_metadata %>% dplyr::mutate(contmerge = .data[[contrast_variable_column]]) -> sample_metadata
+    sample_metadata %>% dplyr::mutate(contmerge = .data[[contrast_colname]]) -> sample_metadata
   }
 
   contrast_var <- factor(sample_metadata$contmerge)
@@ -146,18 +151,18 @@ unnamed_4 <- function(moo,
   ### PH: START Limma Normalization - Same as in Normalize Counts
   # Create DGEList object from counts - counts should not be Log scale
   if (input_in_log_counts == TRUE) {
-    x <- DGEList(counts = 2^df.m, genes = gene_names)
+    x <- edgeR::DGEList(counts = 2^df.m, genes = gene_names)
   } else {
-    x <- DGEList(counts = df.m, genes = gene_names)
+    x <- edgeR::DGEList(counts = df.m, genes = gene_names)
   }
 
   # TODO add this to existing norm function
   if (voom_normalization_method %in% c("TMM", "TMMwzp", "RLE", "upperquartile")) {
-    x <- calcNormFactors(x, method = voom_normalization_method)
+    x <- edgeR::calcNormFactors(x, method = voom_normalization_method)
     rownames(x) <- x$genes$GeneID
-    v <- voom(x, design = design, normalize = "none")
+    v <- limma::voom(x, design = design, normalize = "none")
   } else {
-    v <- voom(x,
+    v <- limma::voom(x,
       design = design,
       normalize = voom_normalization_method,
       save.plot = TRUE
@@ -167,9 +172,9 @@ unnamed_4 <- function(moo,
 
   ### PH: START Linear Fit and and extract df.voom table. Could be added to Limma Normalization function above with an option to run lmFit
   rownames(v$E) <- v$genes$GeneID
-  as.data.frame(v$E) %>% rownames_to_column("Gene") -> df.voom
-  fit <- lmFit(v, design)
-  cm <- makeContrasts(contrasts = contrasts, levels = design)
+  as.data.frame(v$E) %>% tibble::rownames_to_column("Gene") -> df.voom
+  fit <- limma::lmFit(v, design)
+  cm <- limma::makeContrasts(contrasts = contrasts, levels = design)
   ### PH: END Linear Fit and and extract df.voom table.
 
 
@@ -179,8 +184,8 @@ unnamed_4 <- function(moo,
   #                    -cm from Make Contrasts
 
   # Run Contrasts
-  fit2 <- contrasts.fit(fit, cm)
-  fit2 <- eBayes(fit2)
+  fit2 <- limma::contrasts.fit(fit, cm)
+  fit2 <- limma::eBayes(fit2)
   logFC <- fit2$coefficients
   colnames(logFC) <- paste(colnames(logFC), "logFC", sep = "_")
   tstat <- fit2$t
@@ -215,13 +220,13 @@ unnamed_4 <- function(moo,
   if (return_mean_and_sd == TRUE) {
     tve <- t(v$E)
     mean.df <- as.data.frame(tve) %>%
-      rownames_to_column("Sample") %>%
+      tibble::rownames_to_column("Sample") %>%
       dplyr::mutate(
         group =
-          sample_metadata[sample_metadata[, sample_name_column] == Sample, contrast_variable_column]
+          sample_metadata[sample_metadata[, sample_id_colname] == Sample, contrast_colname]
       ) %>%
-      group_by(group) %>%
-      summarise_all(funs(mean)) %>%
+      dplyr::group_by(group) %>%
+      dplyr::summarise_all(dplyr::funs(mean)) %>%
       as.data.frame()
     mean.df[, -c(1, 2)] %>%
       as.matrix() %>%
@@ -231,13 +236,13 @@ unnamed_4 <- function(moo,
     colnames(mean) <- gsub("\\.", "_", colnames(mean))
 
     sd.df <- as.data.frame(tve) %>%
-      rownames_to_column("Sample") %>%
+      tibble::rownames_to_column("Sample") %>%
       dplyr::mutate(
         group =
-          sample_metadata[sample_metadata[, sample_name_column] == Sample, contrast_variable_column]
+          sample_metadata[sample_metadata[, sample_id_colname] == Sample, contrast_colname]
       ) %>%
-      group_by(group) %>%
-      summarise_all(funs(sd)) %>%
+      dplyr::group_by(group) %>%
+      dplyr::summarise_all(dplyr::funs(sd)) %>%
       as.data.frame()
     sd.df[, -c(1, 2)] %>%
       as.matrix() %>%
@@ -254,23 +259,24 @@ unnamed_4 <- function(moo,
     finalres <- as.data.frame(cbind(finalres, v$E))
   }
 
-  finalres %>% rownames_to_column("Gene") -> finalres
+  finalres %>% tibble::rownames_to_column("Gene") -> finalres
   print(paste0("Total number of genes included: ", nrow(finalres)))
 
   ### add back Anno columns and Remove row number from Feature Column
-  colnames(finalres)[colnames(finalres) %in% "Gene"] <- gene_names_column
+  colnames(finalres)[colnames(finalres) %in% "Gene"] <- feature_id_colname
 
   finalres <- merge(anno_tbl, finalres,
-    by = gene_names_column, all.y =
+    by = feature_id_colname, all.y =
       T
   )
-  finalres[, gene_names_column] <- gsub("_[0-9]+$", "", finalres[, gene_names_column])
+  finalres[, feature_id_colname] <- gsub("_[0-9]+$", "", finalres[, feature_id_colname])
 
 
   call_me_alias <- colnames(finalres)
   colnames(finalres) <- gsub("\\(|\\)", "", call_me_alias)
-  df.final <- createDataFrame(finalres)
-
+  # TODO: which package is createDataFrame from?
+  # df.final <- createDataFrame(finalres)
+  df.final <- finalres
   ### PH: END Create DEG Table
 
 
@@ -301,60 +307,16 @@ unnamed_4 <- function(moo,
   footnotetext <- paste(contrast, contrastsize, sep = " : ", collapse = "\n")
   footnotetext <- paste("\n\n\nContrasts:\n", footnotetext)
 
-  ## PH: I think Lets keep output as table and we can do this in NIDAP
-  textall <- textGrob(paste0(titleall, footnotetext), gp = gpar(
-    fontsize =
-      10
-  ))
   ### PH: END contrast summary table
 
   ### PH: START Identify DEG genes input:
   #                                   -finalres from Create DEG Table
   ## Output should be table With # of DEGs per contrast with different cutoffs
 
-  getgenelists <- function(FClimit, pvallimit, pval) {
-    upreggenes <- list()
-    downreggenes <- list()
-    for (i in 1:length(contrasts)) {
-      if (pval == "pval") {
-        finalres %>%
-          dplyr::filter(.data[[colnames(FC)[i]]] > FClimit &
-            .data[[colnames(pvalall)[i]]] < pvallimit) %>%
-          pull(Gene) %>%
-          length() -> upreggenes[[i]]
-        finalres %>%
-          dplyr::filter(.data[[colnames(FC)[i]]] < -FClimit &
-            .data[[colnames(pvalall)[i]]] < pvallimit) %>%
-          pull(Gene) %>%
-          length() -> downreggenes[[i]]
-      } else {
-        finalres %>%
-          dplyr::filter(.data[[colnames(FC)[i]]] > FClimit &
-            .data[[colnames(pvaladjall)[i]]] < pvallimit) %>%
-          pull(Gene) %>%
-          length() -> upreggenes[[i]]
-        finalres %>%
-          dplyr::filter(.data[[colnames(FC)[i]]] < -FClimit &
-            .data[[colnames(pvaladjall)[i]]] < pvallimit) %>%
-          pull(Gene) %>%
-          length() -> downreggenes[[i]]
-      }
-    }
-    names(upreggenes) <- contrasts
-    names(downreggenes) <- contrasts
-    allreggenes <- rbind(unlist(upreggenes), unlist(downreggenes))
-    rownames(allreggenes) <- c(
-      paste0("upreg>", FClimit, ", ", pval, "<", pvallimit),
-      paste0("downreg<-", FClimit, ", ", pval, "<", pvallimit)
-    )
-    return(allreggenes)
-  }
-
-
-  FCpval1 <- getgenelists(FClimit = 1.2, pvallimit = 0.05, "pval")
-  FCpval2 <- getgenelists(FClimit = 1.2, pvallimit = 0.01, "pval")
-  FCadjpval1 <- getgenelists(FClimit = 1.2, pvallimit = 0.05, "adjpval")
-  FCadjpval2 <- getgenelists(FClimit = 1.2, pvallimit = 0.01, "adjpval")
+  FCpval1 <- get_gene_lists(FClimit = 1.2, pvallimit = 0.05, "pval")
+  FCpval2 <- get_gene_lists(FClimit = 1.2, pvallimit = 0.01, "pval")
+  FCadjpval1 <- get_gene_lists(FClimit = 1.2, pvallimit = 0.05, "adjpval")
+  FCadjpval2 <- get_gene_lists(FClimit = 1.2, pvallimit = 0.01, "adjpval")
 
   ### PH: END Identify DEG genes
 
@@ -369,66 +331,61 @@ unnamed_4 <- function(moo,
   xyplot <- as.data.frame(cbind(sx, sy))
   voomline <- as.data.frame(cbind(x = v$voom.line$x, y = v$voom.line$y))
 
-  g <- ggplot() +
-    geom_point(data = xyplot, aes(x = sx, y = sy), size = 1) +
-    theme_bw() +
-    geom_smooth(data = voomline, aes(x = x, y = y), color = "red") +
-    ggtitle("voom: Mean-variance trend") +
-    xlab(v$voom.xy$xlab) +
-    ylab(v$voom.xy$ylab) +
-    theme(
-      axis.title = element_text(size = 12),
-      plot.title = element_text(
+  g <- ggplot2::ggplot() +
+    ggplot2::geom_point(data = xyplot, ggplot2::aes(x = sx, y = sy), size = 1) +
+    ggplot2::theme_bw() +
+    ggplot2::geom_smooth(data = voomline, ggplot2::aes(x = x, y = y), color = "red") +
+    ggplot2::ggtitle("voom: Mean-variance trend") +
+    ggplot2::xlab(v$voom.xy$xlab) +
+    ggplot2::ylab(v$voom.xy$ylab) +
+    ggplot2::theme(
+      axis.title = ggplot2::element_text(size = 12),
+      plot.title = ggplot2::element_text(
         size = 14,
         face = "bold",
         hjust = 0.5
       )
     )
   ### PH: END Mean-variance Plot. requires voom object
+  moo@analyses[["diff"]] <- df.final
+  return(moo)
+}
 
 
-
-
-
-
-  ### PH: START Create figure from Identify DEG Genes table
-  ### (I thnk keep this in NIDAP and we just use "Identify DEG genes" to create a DEGgenes Table output)
-
-  wraplines <- function(y) {
-    j <- unlist(strsplit(y, "-"))
-    k <- strwrap(j, width = 10)
-    l <- paste(k, collapse = "\n-")
-    return(l)
+get_gene_lists <- function(FClimit, pvallimit, pval) {
+  upreg_genes <- list()
+  downreg_genes <- list()
+  for (i in 1:length(contrasts)) {
+    if (pval == "pval") {
+      finalres %>%
+        dplyr::filter(.data[[colnames(FC)[i]]] > FClimit &
+          .data[[colnames(pvalall)[i]]] < pvallimit) %>%
+        dplyr::pull(Gene) %>%
+        length() -> upreg_genes[[i]]
+      finalres %>%
+        dplyr::filter(.data[[colnames(FC)[i]]] < -FClimit &
+          .data[[colnames(pvalall)[i]]] < pvallimit) %>%
+        dplyr::pull(Gene) %>%
+        length() -> downreg_genes[[i]]
+    } else {
+      finalres %>%
+        dplyr::filter(.data[[colnames(FC)[i]]] > FClimit &
+          .data[[colnames(pvaladjall)[i]]] < pvallimit) %>%
+        dplyr::pull(Gene) %>%
+        length() -> upreg_genes[[i]]
+      finalres %>%
+        dplyr::filter(.data[[colnames(FC)[i]]] < -FClimit &
+          .data[[colnames(pvaladjall)[i]]] < pvallimit) %>%
+        dplyr::pull(Gene) %>%
+        length() -> downreg_genes[[i]]
+    }
   }
-
-  pvaltab <- rbind(FCpval1, FCpval2, FCadjpval1, FCadjpval2)
-  colnames(pvaltab) <- sapply(colnames(pvaltab), function(x) {
-    wraplines(x)
-  })
-  table2 <- tableGrob(pvaltab, theme = ttheme_default(base_size = 10))
-  table2$layout$clip <- "off"
-
-
-  ### PH: END Create figure from Identify DEG Genes table (I thnk keep this in NIDAP and we just use "Identify DEG genes" to create a DEGgenes Table output)
-
-  ### PH START NIDAP ONLY
-  layout <- rbind(c(1, 2), c(1, 2), c(3, 3))
-
-
-  # Printing all together (tables and plot)
-  grid.newpage()
-  grid.arrange(textall, g, table2, layout_matrix = layout)
-
-  # Printing in brand new multiviz
-  grid.newpage()
-  print(g)
-  grid.newpage()
-  grid.draw(textall)
-  grid.newpage()
-  grid.draw(table2)
-
-  ### PH END NIDAP ONLY
-
-
-  return(df.final)
+  names(upreg_genes) <- contrasts
+  names(downreg_genes) <- contrasts
+  allreggenes <- rbind(unlist(upreg_genes), unlist(downreg_genes))
+  rownames(allreggenes) <- c(
+    paste0("upreg>", FClimit, ", ", pval, "<", pvallimit),
+    paste0("downreg<-", FClimit, ", ", pval, "<", pvallimit)
+  )
+  return(allreggenes)
 }
