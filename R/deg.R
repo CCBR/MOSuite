@@ -1,42 +1,59 @@
-#' Title
+#' Differential expression analysis
 #'
 #' @inheritParams filter_counts
 #' @inheritParams batch_correct_counts
-#' @inheritParams option_params
+#' @inheritParams normalize_counts
 #'
-#' @param moo
-#' @param count_type
-#' @param sub_count_type
-#' @param sample_id_colname
-#' @param feature_id_colname
-#' @param samples_to_include
-#' @param columns_to_include
-#' @param covariates_colnames
-#' @param contrast_colname
-#' @param contrasts
-#' @param input_in_log_counts
-#' @param return_mean_and_sd
-#' @param return_normalized_counts
-#' @param voom_normalization_method
+#' @param sub_count_type if `count_type` is a list, specify the sub count type within the list. (Default: `NULL`)
+#' @param columns_to_include Select the sample columns from the input counts matrix that you want to process. Only numeric columns can be selected.
+#' @param covariates_colnames The column name(s) from the sample metadata
+#'   containing variable(s) of interest, such as phenotype.
+#'   Most commonly this will be the same column selected for your Groups Column.
+#'   Some experimental designs may require that you add additional covariate columns here.
+#' @param contrast_colname The column in the metadata that contains the group variables you wish to find differential expression between. Up to 2 columns (2-factor analysis) can be used.
+#' @param contrasts Specify each contrast in the format group1-group2, e.g. treated-control
+#' @param covariates_colnames Columns to be used as covariates in linear modeling. Must include column from "Contrast Variable". Most commonly your covariate will be group and batch (if you have different batches in your data).
+#' @param return_mean_and_sd if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for contrast(s)
+#' @param return_normalized_counts if TRUE, return normalized counts for samples included in the limma model
 #'
-#' @returns
+#' @returns `multiOmicDataSet` with `diff` added to the `analyses` slot (i.e. `moo@analyses$diff`)
 #' @export
 #'
 #' @examples
-analyze_diff_counts <- function(moo,
-                                count_type = "filt",
-                                sub_count_type = NULL,
-                                sample_id_colname = "Sample",
-                                feature_id_colname = "Gene",
-                                samples_to_include = NULL,
-                                columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C3"),
-                                covariates_colnames = c("Group", "Batch"),
-                                contrast_colname = c("Group"),
-                                contrasts = c("B-A", "C-A", "B-C"),
-                                input_in_log_counts = FALSE,
-                                return_mean_and_sd = FALSE,
-                                return_normalized_counts = TRUE,
-                                voom_normalization_method = "quantile") {
+#' moo <- multiOmicDataSet(
+#'   sample_metadata = as.data.frame(nidap_sample_metadata),
+#'   anno_dat = data.frame(),
+#'   counts_lst = list(
+#'     "raw" = as.data.frame(nidap_raw_counts),
+#'     "clean" = as.data.frame(nidap_clean_raw_counts),
+#'     "filt" = as.data.frame(nidap_filtered_counts)
+#'   )
+#' ) %>%
+#'   diff_counts(
+#'     count_type = "filt",
+#'     sub_count_type = NULL,
+#'     covariates_colnames = c("Group", "Batch"),
+#'     contrast_colname = c("Group"),
+#'     contrasts = c("B-A", "C-A", "B-C"),
+#'     voom_normalization_method = "quantile",
+#'   )
+#' head(moo@analyses$diff)
+diff_counts <- function(moo,
+                        count_type = "filt",
+                        sub_count_type = NULL,
+                        sample_id_colname = "Sample",
+                        feature_id_colname = "Gene",
+                        samples_to_include = NULL,
+                        columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C3"),
+                        covariates_colnames = c("Group", "Batch"),
+                        contrast_colname = c("Group"),
+                        contrasts = c("B-A", "C-A", "B-C"),
+                        input_in_log_counts = FALSE,
+                        return_mean_and_sd = FALSE,
+                        return_normalized_counts = TRUE,
+                        voom_normalization_method = "quantile") {
+  Sample <- group <- y <- Gene <- NULL
+
   # select correct counts matrix
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
@@ -134,15 +151,15 @@ analyze_diff_counts <- function(moo,
 
   ## create Design table
   if (length(cov) > 0) {
-    dm.formula <- as.formula(paste("~0 +", paste(
+    dm.formula <- stats::as.formula(paste("~0 +", paste(
       "contmerge", paste(cov, sep = "+", collapse = "+"),
       sep = "+"
     )))
-    design <- model.matrix(dm.formula, sample_metadata)
+    design <- stats::model.matrix(dm.formula, sample_metadata)
     colnames(design) <- gsub("contmerge", "", colnames(design))
   } else {
-    dm.formula <- as.formula(~ 0 + contmerge)
-    design <- model.matrix(dm.formula, sample_metadata)
+    dm.formula <- stats::as.formula(~ 0 + contmerge)
+    design <- stats::model.matrix(dm.formula, sample_metadata)
     colnames(design) <- levels(contrast_var)
   }
   ### PH: End Create Design Formula/Table
@@ -196,7 +213,7 @@ analyze_diff_counts <- function(moo,
   pvalall <- fit2$p.value
   colnames(pvalall) <- paste(colnames(pvalall), "pval", sep = "_")
   pvaladjall <- apply(pvalall, 2, function(x) {
-    p.adjust(x, "BH")
+    stats::p.adjust(x, "BH")
   })
   colnames(pvaladjall) <- paste(colnames(fit2$coefficients), "adjpval",
     sep =
@@ -313,10 +330,10 @@ analyze_diff_counts <- function(moo,
   #                                   -finalres from Create DEG Table
   ## Output should be table With # of DEGs per contrast with different cutoffs
 
-  FCpval1 <- get_gene_lists(FClimit = 1.2, pvallimit = 0.05, "pval")
-  FCpval2 <- get_gene_lists(FClimit = 1.2, pvallimit = 0.01, "pval")
-  FCadjpval1 <- get_gene_lists(FClimit = 1.2, pvallimit = 0.05, "adjpval")
-  FCadjpval2 <- get_gene_lists(FClimit = 1.2, pvallimit = 0.01, "adjpval")
+  FCpval1 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.05, "pval")
+  FCpval2 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.01, "pval")
+  FCadjpval1 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.05, "adjpval")
+  FCadjpval2 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.01, "adjpval")
 
   ### PH: END Identify DEG genes
 
@@ -352,7 +369,8 @@ analyze_diff_counts <- function(moo,
 }
 
 
-get_gene_lists <- function(FClimit, pvallimit, pval) {
+get_gene_lists <- function(finalres, FC, pvalall, pvaladjall, contrasts, FClimit, pvallimit, pval) {
+  Gene <- NULL
   upreg_genes <- list()
   downreg_genes <- list()
   for (i in 1:length(contrasts)) {
