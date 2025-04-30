@@ -1,13 +1,94 @@
-#' Create read depth plot
+#' Plot read depth as a bar plot
 #'
-#' @param counts_dat dataframe with raw counts data
+#' The first argument can be a `multiOmicDataset` object (`moo`) or a `data.frame` containing counts.
+#' For a `moo`, choose which counts slot to use with `count_type` & (optionally) `sub_count_type`.
 #'
-#' @returns ggplot object
+#' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
+#' @param ... arguments forwarded to method
+#'
+#' @return ggplot barplot
+#'
 #' @export
+#' @examples
+#' # multiOmicDataSet
+#' moo <- multiOmicDataSet(
+#'   sample_metadata = nidap_sample_metadata,
+#'   anno_dat = data.frame(),
+#'   counts_lst = list(
+#'     "raw" = nidap_raw_counts,
+#'     "clean" = nidap_clean_raw_counts
+#'   )
+#' )
 #'
-plot_read_depth <- function(counts_dat) {
-  sample_names <- read_sums <- column_sums <- NULL
+#' plot_read_depth(moo, count_type = "clean")
+#'
+#' # dataframe
+#' plot_read_depth(nidap_clean_raw_counts)
+#'
+#' @details
+#'
+#' # Methods
+#'
+#' | link to docs  | class  |
+#' |---|---|
+#' | [plot_read_depth_moo] | `multiOmicDataSet` |
+#' | [plot_read_depth_dat] | `data.frame`       |
+#'
+#' @family plotters
+#' @keywords plotters
+#' @family moo methods
+plot_read_depth <- S7::new_generic("plot_read_depth", dispatch_args = "moo_counts")
 
+#' Plot read depth for multiOmicDataSet
+#'
+#' @name plot_read_depth_moo
+#'
+#' @param moo_counts `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
+#' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
+#' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list. Must be a name in `names(moo@counts[[count_type]])`.
+#'
+#' @return ggplot barplot
+#'
+#' @examples
+#' # multiOmicDataSet
+#' moo <- multiOmicDataSet(
+#'   sample_metadata = nidap_sample_metadata,
+#'   anno_dat = data.frame(),
+#'   counts_lst = list(
+#'     "raw" = nidap_raw_counts,
+#'     "clean" = nidap_clean_raw_counts
+#'   )
+#' )
+#'
+#' plot_read_depth(moo, count_type = "clean")
+#'
+#' @seealso [plot_read_depth] generic
+#' @family plotters for multiOmicDataSets
+S7::method(plot_read_depth, multiOmicDataSet) <- function(moo_counts,
+                                                          count_type,
+                                                          sub_count_type = NULL,
+                                                          ...) {
+  counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  plot_read_depth(counts_dat, ...)
+}
+
+#' Plot read depth for `data.frame`
+#'
+#' @name plot_read_depth_dat
+#'
+#' @param moo_counts counts dataframe
+#'
+#' @return ggplot barplot
+#'
+#' @examples
+#' # dataframe
+#' plot_read_depth(nidap_clean_raw_counts)
+#'
+#' @seealso [plot_read_depth] generic
+#' @family plotters for counts dataframes
+S7::method(plot_read_depth, S7::class_data.frame) <- function(moo_counts) {
+  sample_names <- read_sums <- column_sums <- NULL
+  counts_dat <- moo_counts
   sum_df <- counts_dat %>%
     dplyr::summarize(dplyr::across(tidyselect::where(is.numeric), sum)) %>%
     tidyr::pivot_longer(dplyr::everything(),

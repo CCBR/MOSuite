@@ -15,4 +15,4 @@ nidap_norm_counts
 Normalized counts for the NIDAP test dataset.
 The result of running \code{normalize_counts()} on \code{nidap_filtered_counts}.
 }
-\keyword{datasets}
+\keyword{data}

@@ -5,7 +5,7 @@
 #' @param ...      remaining variables are forwarded to `DESeq2::DESeq()`.
 #'
 #' @return multiOmicDataSet object with DESeq2 slot filled
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -20,6 +20,7 @@
 #' ) %>% filter_counts()
 #' moo <- run_deseq2(moo, ~condition)
 #' }
+#' @family moo methods
 run_deseq2 <- S7::new_generic("run_deseq2", "moo", function(moo, design, ...) {
   S7::S7_dispatch()
 })

@@ -7,6 +7,7 @@
 normalize_counts(
   moo,
   count_type = "filt",
+  norm_type = "voom",
   feature_id_colname = NULL,
   samples_to_include = NULL,
   sample_id_colname = NULL,
@@ -31,13 +32,17 @@ normalize_counts(
   legend_position_for_histogram = "top",
   colors_for_plots = NULL,
   print_plots = options::opt("print_plots"),
-  interactive_plots = FALSE
+  save_plots = options::opt("save_plots"),
+  interactive_plots = FALSE,
+  plots_subdir = "norm"
 )
 }
 \arguments{
 \item{moo}{multiOmicDataSet object (see \code{create_multiOmicDataSet_from_dataframes()})}
 
 \item{count_type}{the type of counts to use -- must be a name in the counts slot (\code{moo@counts})}
+
+\item{norm_type}{normalization type. Default: "voom" which uses \code{limma::voom}.}
 
 \item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
@@ -87,7 +92,11 @@ normalize_counts(
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
-\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive_plots with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
+\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+
+\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
+
+\item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \value{
 \code{multiOmicDataSet} with normalized counts
@@ -111,3 +120,17 @@ moo <- multiOmicDataSet(
   )
 head(moo@counts[["norm"]][["voom"]])
 }
+\seealso{
+Other moo methods: 
+\code{\link{batch_correct_counts}()},
+\code{\link{clean_raw_counts}()},
+\code{\link{filter_counts}()},
+\code{\link{plot_corr_heatmap}()},
+\code{\link{plot_expr_heatmap}()},
+\code{\link{plot_histogram}()},
+\code{\link{plot_pca}()},
+\code{\link{plot_read_depth}()},
+\code{\link{run_deseq2}()},
+\code{\link{set_color_pal}()}
+}
+\concept{moo methods}

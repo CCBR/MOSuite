@@ -15,4 +15,4 @@ nidap_clean_raw_counts
 Clean raw counts for the NIDAP test dataset.
 The result of running \code{clean_raw_counts()} on \code{nidap_raw_counts}.
 }
-\keyword{datasets}
+\keyword{data}

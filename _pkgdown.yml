@@ -1,7 +1,21 @@
 url: https://ccbr.github.io/MOSuite/
 template:
   bootstrap: 5
-  bootswatch: yeti
+  bslib:
+    bootswatch: yeti
+    primary: "#296b7f"
+    secondary: "#7cc349"
+    base_font: {google: "Roboto"}
+    heading_font: {google: "Roboto"}
+    code_font: {google: "Roboto Mono"}
+    border-radius: 0
+    btn-border-radius: 3px
+    grid-gutter-width: 3rem
+    pkgdown-nav-height: 78px
+footer:
+  structure:
+    left: [developed_by]
+
 development:
   mode: auto
 authors:
@@ -15,4 +29,34 @@ authors:
     href: "https://github.com/CCBR"
   footer:
     roles: [cph, fnd]
-    text: "Created by"
+    text: "Created by the"
+
+reference:
+  - title: multiOmicDataSet
+    contents: contains("multiOmicDataSet")
+  - title: Main functions
+    desc: See `vignette('intro')` for recommended usage
+    contents:
+      - ends_with("_counts")
+      - -has_keyword("data")
+  - title: Visualization
+    contents:
+      - has_keyword("plotters")
+  - subtitle: Color selectors
+    contents:
+      - contains("color")
+  - title: Misc. helpers
+    contents:
+      - starts_with('calc_')
+  - title: Datasets
+    contents:
+      - has_keyword('data')
+  - title: Options
+    contents:
+      - options
+  - subtitle: Low-level plot helpers
+    desc: |
+      These functions are called by the main visualization functions.
+    contents:
+      - starts_with("plot_")
+      - -has_keyword("plotters")

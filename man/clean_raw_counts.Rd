@@ -14,7 +14,8 @@ clean_raw_counts(
   split_gene_name = TRUE,
   aggregate_rows_with_duplicate_gene_names = TRUE,
   gene_name_column_to_use_for_collapsing_duplicates = "",
-  print_plots = options::opt("print_plots")
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots")
 )
 }
 \arguments{
@@ -60,6 +61,8 @@ contain Ensembl IDs the split Feature IDs will be named 'Feature_id_1' and
 to manually enter the Column ID for this field.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
+
+\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 }
 \value{
 \code{multiOmicDataSet} with cleaned counts
@@ -76,3 +79,17 @@ moo <- create_multiOmicDataSet_from_dataframes(
   clean_raw_counts(sample_id_colname = "Sample", feature_id_colname = "GeneName")
 head(moo@counts$clean)
 }
+\seealso{
+Other moo methods: 
+\code{\link{batch_correct_counts}()},
+\code{\link{filter_counts}()},
+\code{\link{normalize_counts}()},
+\code{\link{plot_corr_heatmap}()},
+\code{\link{plot_expr_heatmap}()},
+\code{\link{plot_histogram}()},
+\code{\link{plot_pca}()},
+\code{\link{plot_read_depth}()},
+\code{\link{run_deseq2}()},
+\code{\link{set_color_pal}()}
+}
+\concept{moo methods}

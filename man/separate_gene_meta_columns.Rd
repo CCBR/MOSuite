@@ -17,3 +17,4 @@ dataframe with metadata separated
 \description{
 Separate gene metadata column
 }
+\keyword{internal}

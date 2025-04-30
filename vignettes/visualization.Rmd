@@ -23,6 +23,18 @@ library(MOSuite)
 
 ## Default plots from each step
 
+Default plots can be printed to the screen and/or saved to the disk.
+
+```{r options}
+# set options to print & save the plots
+options(moo_print_plots = TRUE)
+options(moo_save_plots = TRUE)
+# when moo_save_plots is TRUE, plots are saved to this directory:
+options(moo_plots_dir = "./figures")
+```
+
+See `?MOSuite::options` for more information.
+
 ### clean
 
 ```{r nidap_data_clean}
@@ -30,18 +42,18 @@ moo <- create_multiOmicDataSet_from_dataframes(
   sample_metadata = as.data.frame(nidap_sample_metadata),
   counts_dat = as.data.frame(nidap_raw_counts)
 ) %>%
-  clean_raw_counts(print_plots = TRUE)
+  clean_raw_counts()
 ```
 ```{r nidap_filter}
 moo %<>%
-  filter_counts(group_colname = "Group", print_plots = TRUE)
+  filter_counts(group_colname = "Group")
 ```
 
 ### normalize
 
 ```{r nidap_norm}
 moo %<>%
-  normalize_counts(group_colname = "Group", print_plots = TRUE)
+  normalize_counts(group_colname = "Group")
 ```
 
 ### batch correct
@@ -50,8 +62,7 @@ moo %<>%
 moo %<>% batch_correct_counts(
   covariates_colname = "Group",
   batch_colname = "Batch",
-  label_colname = "Label",
-  print_plots = TRUE
+  label_colname = "Label"
 )
 ```
 
@@ -66,15 +77,16 @@ TODO
 ### 3D PCA
 
 ```{r pca_3D}
-plot_pca_3d(moo@counts$batch,
+plot_pca(moo@counts$batch,
   moo@sample_meta,
+  principal_components = c(1, 2, 3),
   group_colname = "Group",
   label_colname = "Label",
   color_values = moo@analyses[["colors"]][["Group"]]
 )
 ```
 
-## Expression Heatmap
+### Expression Heatmap
 
 ```{r expr_heatmap}
 p <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")

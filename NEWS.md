@@ -19,11 +19,10 @@ This is the first release of MOSuite 🎉
 
 ### visualization
 
-- `plot_histogram()`
-- `plot_corr_heatmap()`
-- `plot_expr_heatmap()` (#90)
-- `plot_pca()`
-- `plot_pca_3d()` (#88)
+- `plot_histogram()` (#96)
+- `plot_corr_heatmap()` (#96)
+- `plot_expr_heatmap()` (#90, #96)
+- `plot_pca()` (#88, #96)
 
 ## vignettes
 

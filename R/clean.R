@@ -42,6 +42,7 @@
 #' ) %>%
 #'   clean_raw_counts(sample_id_colname = "Sample", feature_id_colname = "GeneName")
 #' head(moo@counts$clean)
+#' @family moo methods
 clean_raw_counts <- function(moo,
                              count_type = "raw",
                              sample_id_colname = NULL,
@@ -51,7 +52,8 @@ clean_raw_counts <- function(moo,
                              split_gene_name = TRUE,
                              aggregate_rows_with_duplicate_gene_names = TRUE,
                              gene_name_column_to_use_for_collapsing_duplicates = "",
-                             print_plots = options::opt("print_plots")) {
+                             print_plots = options::opt("print_plots"),
+                             save_plots = options::opt("save_plots")) {
   message(glue::glue("* cleaning {count_type} counts"))
   counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
@@ -63,9 +65,12 @@ clean_raw_counts <- function(moo,
     feature_id_colname <- colnames(counts_dat)[1]
   }
   # Sample Read Counts Plot
-  if (isTRUE(print_plots)) {
+  if (isTRUE(print_plots) | isTRUE(save_plots)) {
     read_plot <- plot_read_depth(counts_dat)
-    print(read_plot)
+    print_or_save_plot(read_plot,
+      filename = "clean/read_depth.png",
+      print_plots = print_plots, save_plots = save_plots
+    )
   }
 
   # Manually rename samples
@@ -136,8 +141,8 @@ clean_raw_counts <- function(moo,
 #' @param x vector of IDs
 #'
 #' @return IDs without version numbers
-#' @export
 #'
+#' @keywords internal
 #'
 strip_ensembl_version <- function(x) {
   return(unlist(lapply(stringr::str_split(x, "[.]"), "[[", 1)))
@@ -149,6 +154,7 @@ strip_ensembl_version <- function(x) {
 #' @inheritParams clean_raw_counts
 #'
 #' @returns dataframe with metadata separated
+#' @keywords internal
 separate_gene_meta_columns <- function(counts_dat, split_gene_name = TRUE) {
   ## Identify and separate Gene Name Columns into multiple Gene Metadata columns
   ##################################
@@ -207,7 +213,7 @@ separate_gene_meta_columns <- function(counts_dat, split_gene_name = TRUE) {
 #' @inheritParams separate_gene_meta_columns
 #'
 #' @returns data frame with columns separated if possible
-#'
+#' @keywords internal
 aggregate_duplicate_gene_names <- function(counts_dat,
                                            gene_name_column_to_use_for_collapsing_duplicates,
                                            aggregate_rows_with_duplicate_gene_names,
