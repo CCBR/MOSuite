@@ -42,9 +42,9 @@ diff_counts <- function(moo,
                         count_type = "filt",
                         sub_count_type = NULL,
                         sample_id_colname = "Sample",
-                        feature_id_colname = "Gene",
+                        feature_id_colname = "GeneName",
                         samples_to_include = NULL,
-                        columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C3"),
+                        columns_to_include = c("GeneName", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C3"),
                         covariates_colnames = c("Group", "Batch"),
                         contrast_colname = c("Group"),
                         contrasts = c("B-A", "C-A", "B-C"),
@@ -54,6 +54,7 @@ diff_counts <- function(moo,
                         voom_normalization_method = "quantile") {
   Sample <- group <- y <- Gene <- NULL
 
+  sample_metadata <- moo@sample_meta
   # select correct counts matrix
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
@@ -75,9 +76,17 @@ diff_counts <- function(moo,
     }
     counts_dat <- moo@counts[[count_type]][[sub_count_type]]
   }
-  sample_metadata <- moo@sample_meta
 
 
+  if (is.null(sample_id_colname)) {
+    sample_id_colname <- colnames(sample_metadata)[1]
+  }
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- colnames(counts_dat)[1]
+  }
+  if (is.null(samples_to_include)) {
+    samples_to_include <- sample_metadata %>% dplyr::pull(sample_id_colname)
+  }
   ## --------------- ##
   ## Main Code Block ##
   ## --------------- ##
@@ -189,7 +198,7 @@ diff_counts <- function(moo,
 
   ### PH: START Linear Fit and and extract df.voom table. Could be added to Limma Normalization function above with an option to run lmFit
   rownames(v$E) <- v$genes$GeneID
-  as.data.frame(v$E) %>% tibble::rownames_to_column("Gene") -> df.voom
+  as.data.frame(v$E) %>% tibble::rownames_to_column(feature_id_colname) -> df.voom
   fit <- limma::lmFit(v, design)
   cm <- limma::makeContrasts(contrasts = contrasts, levels = design)
   ### PH: END Linear Fit and and extract df.voom table.
@@ -276,11 +285,11 @@ diff_counts <- function(moo,
     finalres <- as.data.frame(cbind(finalres, v$E))
   }
 
-  finalres %>% tibble::rownames_to_column("Gene") -> finalres
+  finalres %>% tibble::rownames_to_column(feature_id_colname) -> finalres
   print(paste0("Total number of genes included: ", nrow(finalres)))
 
   ### add back Anno columns and Remove row number from Feature Column
-  colnames(finalres)[colnames(finalres) %in% "Gene"] <- feature_id_colname
+  colnames(finalres)[colnames(finalres) %in% feature_id_colname] <- feature_id_colname
 
   finalres <- merge(anno_tbl, finalres,
     by = feature_id_colname, all.y =
@@ -330,10 +339,10 @@ diff_counts <- function(moo,
   #                                   -finalres from Create DEG Table
   ## Output should be table With # of DEGs per contrast with different cutoffs
 
-  FCpval1 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.05, "pval")
-  FCpval2 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.01, "pval")
-  FCadjpval1 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.05, "adjpval")
-  FCadjpval2 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.01, "adjpval")
+  FCpval1 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.05, pval = "pval", feature_id_colname = feature_id_colname)
+  FCpval2 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.01, pval = "pval", feature_id_colname = feature_id_colname)
+  FCadjpval1 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.05, pval = "adjpval", feature_id_colname = feature_id_colname)
+  FCadjpval2 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.01, pval = "adjpval", feature_id_colname = feature_id_colname)
 
   ### PH: END Identify DEG genes
 
@@ -369,8 +378,7 @@ diff_counts <- function(moo,
 }
 
 
-get_gene_lists <- function(finalres, FC, pvalall, pvaladjall, contrasts, FClimit, pvallimit, pval) {
-  Gene <- NULL
+get_gene_lists <- function(finalres, FC, pvalall, pvaladjall, contrasts, FClimit, pvallimit, pval, feature_id_colname = "Gene") {
   upreg_genes <- list()
   downreg_genes <- list()
   for (i in 1:length(contrasts)) {
@@ -378,23 +386,23 @@ get_gene_lists <- function(finalres, FC, pvalall, pvaladjall, contrasts, FClimit
       finalres %>%
         dplyr::filter(.data[[colnames(FC)[i]]] > FClimit &
           .data[[colnames(pvalall)[i]]] < pvallimit) %>%
-        dplyr::pull(Gene) %>%
+        dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
         length() -> upreg_genes[[i]]
       finalres %>%
         dplyr::filter(.data[[colnames(FC)[i]]] < -FClimit &
           .data[[colnames(pvalall)[i]]] < pvallimit) %>%
-        dplyr::pull(Gene) %>%
+        dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
         length() -> downreg_genes[[i]]
     } else {
       finalres %>%
         dplyr::filter(.data[[colnames(FC)[i]]] > FClimit &
           .data[[colnames(pvaladjall)[i]]] < pvallimit) %>%
-        dplyr::pull(Gene) %>%
+        dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
         length() -> upreg_genes[[i]]
       finalres %>%
         dplyr::filter(.data[[colnames(FC)[i]]] < -FClimit &
           .data[[colnames(pvaladjall)[i]]] < pvallimit) %>%
-        dplyr::pull(Gene) %>%
+        dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
         length() -> downreg_genes[[i]]
     }
   }

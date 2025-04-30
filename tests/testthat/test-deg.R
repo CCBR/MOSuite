@@ -11,6 +11,9 @@ test_that("differential analysis works for NIDAP", {
     diff_counts(
       count_type = "filt",
       sub_count_type = NULL,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C3"),
       covariates_colnames = c("Group", "Batch"),
       contrast_colname = c("Group"),
       contrasts = c("B-A", "C-A", "B-C"),
