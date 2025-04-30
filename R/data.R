@@ -39,3 +39,12 @@
 #' The result of running `batch_correct_counts()` on `nidap_norm_counts`.
 #' @keywords data
 "nidap_batch_corrected_counts_2"
+
+
+#' Differential gene expression analysis for the NIDAP test dataset.
+"nidap_deg_analysis"
+
+
+#' Differential gene expression analysis for the NIDAP test dataset.
+#' The result of running `diff_counts()` on `nidap_filtered_counts`.
+"nidap_deg_analysis_2"
