@@ -97,7 +97,7 @@ filter_counts(
 
 \item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list. If you have >12 samples or groups, program will choose from a wide range of random colors}
 
-\item{print_plots}{Whether to print plots during analysis (Defaults to \code{TRUE}, overwritable using option 'MOSuite.print_plots' or environment variable 'R_MOSUITE_PRINT_PLOTS')}
+\item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
 \item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive_plots with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
 }

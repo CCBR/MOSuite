@@ -59,7 +59,7 @@ contain Ensembl IDs the split Feature IDs will be named 'Feature_id_1' and
 'Feature_id_2'. For this case an error will occur and you will have
 to manually enter the Column ID for this field.}
 
-\item{print_plots}{Whether to print plots during analysis (Defaults to \code{TRUE}, overwritable using option 'MOSuite.print_plots' or environment variable 'R_MOSUITE_PRINT_PLOTS')}
+\item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 }
 \value{
 \code{multiOmicDataSet} with cleaned counts

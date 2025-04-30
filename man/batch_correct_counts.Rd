@@ -48,7 +48,7 @@ value in every row to skip batch correction (alternatively, simply do not run th
 
 \item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list. If you have >12 samples or groups, program will choose from a wide range of random colors}
 
-\item{print_plots}{Whether to print plots during analysis (Defaults to \code{TRUE}, overwritable using option 'MOSuite.print_plots' or environment variable 'R_MOSUITE_PRINT_PLOTS')}
+\item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 }
 \value{
 \code{multiOmicDataSet} with batch-corrected counts
