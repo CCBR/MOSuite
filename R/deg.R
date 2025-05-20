@@ -56,6 +56,7 @@ diff_counts <- function(moo,
                         print_plots = options::opt("print_plots"),
                         save_plots = options::opt("save_plots"),
                         plots_subdir = "diff") {
+  message("* differential counts")
   Sample <- group <- y <-
     sample_metadata <- moo@sample_meta
   # select correct counts matrix
@@ -277,7 +278,7 @@ diff_counts <- function(moo,
     )
   }
 
-  print(paste0("Total number of genes included: ", nrow(finalres)))
+  message(paste0("Total number of genes included: ", nrow(finalres)))
 
   ### add back Anno columns and Remove row number from Feature Column
   finalres[, feature_id_colname] <- gsub("_[0-9]+$", "", finalres[, feature_id_colname])
