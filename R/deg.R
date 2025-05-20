@@ -210,12 +210,9 @@ diff_counts <- function(moo,
   cm <- limma::makeContrasts(contrasts = contrasts, levels = design)
   ### PH: END Linear Fit and and extract df.voom table.
 
-
-
   ### PH: START Run Contrasts (eBays) input:
   #                    -fit from LMfit
   #                    -cm from Make Contrasts
-
   # Run Contrasts
   fit2 <- limma::contrasts.fit(fit, cm)
   fit2 <- limma::eBayes(fit2)
@@ -303,13 +300,8 @@ diff_counts <- function(moo,
       T
   )
   finalres[, feature_id_colname] <- gsub("_[0-9]+$", "", finalres[, feature_id_colname])
-
-
   call_me_alias <- colnames(finalres)
   colnames(finalres) <- gsub("\\(|\\)", "", call_me_alias)
-  # TODO: which package is createDataFrame from?
-  # df.final <- createDataFrame(finalres)
-  df.final <- finalres
   ### PH: END Create DEG Table
 
 
@@ -339,58 +331,27 @@ diff_counts <- function(moo,
   })
   footnotetext <- paste(contrast, contrastsize, sep = " : ", collapse = "\n")
   footnotetext <- paste("\n\n\nContrasts:\n", footnotetext)
-
   ### PH: END contrast summary table
 
   ### PH: START Identify DEG genes input:
   #                                   -finalres from Create DEG Table
   ## Output should be table With # of DEGs per contrast with different cutoffs
-
+  # TODO: currently these are not used anywhere downstream
   FCpval1 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.05, pval = "pval", feature_id_colname = feature_id_colname)
   FCpval2 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.01, pval = "pval", feature_id_colname = feature_id_colname)
   FCadjpval1 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.05, pval = "adjpval", feature_id_colname = feature_id_colname)
   FCadjpval2 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.01, pval = "adjpval", feature_id_colname = feature_id_colname)
-
   ### PH: END Identify DEG genes
+
+  # Mean-variance Plot.
   mv_plot <- plot_mean_variance(voom_elist = v)
   print_or_save_plot(mv_plot,
     filename = file.path(plots_subdir, "mean-variance.png"),
     print_plots = print_plots, save_plots = save_plots
   )
 
-
-  ### PH: START Mean-variance Plot. Input:
-  #                                   -VoomObject from Limma Normalization
-  ## Output is figure
-  # Print Mean-variance Plot
-  ### PH: END Mean-variance Plot. requires voom object
-  moo@analyses[["diff"]] <- df.final
+  moo@analyses[["diff"]] <- finalres
   return(moo)
-}
-
-plot_mean_variance <- function(voom_elist) {
-  v <- voom_elist
-  sx <- v$voom.xy$x
-  sy <- v$voom.xy$y
-  xyplot <- as.data.frame(cbind(sx, sy))
-  voomline <- as.data.frame(cbind(x = v$voom.line$x, y = v$voom.line$y))
-
-  g <- ggplot2::ggplot() +
-    ggplot2::geom_point(data = xyplot, ggplot2::aes(x = sx, y = sy), size = 1) +
-    ggplot2::theme_bw() +
-    ggplot2::geom_smooth(data = voomline, ggplot2::aes(x = x, y = y), color = "red") +
-    ggplot2::ggtitle("voom: Mean-variance trend") +
-    ggplot2::xlab(v$voom.xy$xlab) +
-    ggplot2::ylab(v$voom.xy$ylab) +
-    ggplot2::theme(
-      axis.title = ggplot2::element_text(size = 12),
-      plot.title = ggplot2::element_text(
-        size = 14,
-        face = "bold",
-        hjust = 0.5
-      )
-    )
-  return(g)
 }
 
 
@@ -430,4 +391,31 @@ get_gene_lists <- function(finalres, FC, pvalall, pvaladjall, contrasts, FClimit
     paste0("downreg<-", FClimit, ", ", pval, "<", pvallimit)
   )
   return(allreggenes)
+}
+
+
+plot_mean_variance <- function(voom_elist) {
+  x <- y <- NULL
+  v <- voom_elist
+  sx <- v$voom.xy$x
+  sy <- v$voom.xy$y
+  xyplot <- as.data.frame(cbind(sx, sy))
+  voomline <- as.data.frame(cbind(x = v$voom.line$x, y = v$voom.line$y))
+
+  g <- ggplot2::ggplot() +
+    ggplot2::geom_point(data = xyplot, ggplot2::aes(x = sx, y = sy), size = 1) +
+    ggplot2::theme_bw() +
+    ggplot2::geom_smooth(data = voomline, ggplot2::aes(x = x, y = y), color = "red") +
+    ggplot2::ggtitle("voom: Mean-variance trend") +
+    ggplot2::xlab(v$voom.xy$xlab) +
+    ggplot2::ylab(v$voom.xy$ylab) +
+    ggplot2::theme(
+      axis.title = ggplot2::element_text(size = 12),
+      plot.title = ggplot2::element_text(
+        size = 14,
+        face = "bold",
+        hjust = 0.5
+      )
+    )
+  return(g)
 }
