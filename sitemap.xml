@@ -24,6 +24,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/counts_dat_to_matrix.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/create_multiOmicDataSet_from_dataframes.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/create_multiOmicDataSet_from_files.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/diff_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/extract_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/filter_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/gene_counts.html</loc></url>
@@ -38,6 +39,8 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_batch_corrected_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_batch_corrected_counts_2.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_clean_raw_counts.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/nidap_deg_analysis.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/nidap_deg_analysis_2.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_filtered_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_norm_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_raw_counts.html</loc></url>

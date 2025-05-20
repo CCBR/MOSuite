@@ -152,10 +152,13 @@
 <span>    minimum_number_of_samples_with_nonzero_counts_in_total <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>    minimum_number_of_samples_with_nonzero_counts_in_a_group <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/normalize_counts.html">normalize_counts</a></span><span class="op">(</span></span>
-<span>    group_colname <span class="op">=</span> <span class="st">"condition"</span>,</span>
-<span>    label_colname <span class="op">=</span> <span class="st">"sample_id"</span></span>
+<span>  <span class="fu"><a href="../reference/normalize_counts.html">normalize_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"condition"</span>, label_colname <span class="op">=</span> <span class="st">"sample_id"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/diff_counts.html">diff_counts</a></span><span class="op">(</span></span>
+<span>    covariates_colnames <span class="op">=</span> <span class="st">"condition"</span>,</span>
+<span>    contrast_colname <span class="op">=</span> <span class="st">"condition"</span>,</span>
+<span>    contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"knockout-wildtype"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; * differential counts</span></span>
 <span><span class="co">#&gt; * normalizing filt counts</span></span>
 <span><span class="co">#&gt; * filtering clean counts</span></span>
 <span><span class="co">#&gt; * cleaning raw counts</span></span>
@@ -168,6 +171,8 @@
 <span><span class="co">#&gt; Number of features after filtering: 291</span></span>
 <span><span class="co">#&gt; Total number of features included: 291</span></span>
 <span><span class="co">#&gt; Sample columns: KO_S3, Sample columns: KO_S4, Sample columns: WT_S1, Sample columns: WT_S2</span></span>
+<span><span class="co">#&gt; Setting first column of `counts` as gene annotation.</span></span>
+<span><span class="co">#&gt; Total number of genes included: 291</span></span>
 <span></span>
 <span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">norm</span><span class="op">$</span><span class="va">voom</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;              gene_id     KO_S3     KO_S4     WT_S1     WT_S2</span></span>
@@ -195,7 +200,21 @@
 <span>    covariates_colname <span class="op">=</span> <span class="st">"Group"</span>,</span>
 <span>    batch_colname <span class="op">=</span> <span class="st">"Batch"</span>,</span>
 <span>    label_colname <span class="op">=</span> <span class="st">"Label"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/diff_counts.html">diff_counts</a></span><span class="op">(</span></span>
+<span>    count_type <span class="op">=</span> <span class="st">"filt"</span>,</span>
+<span>    sub_count_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    sample_id_colname <span class="op">=</span> <span class="st">"Sample"</span>,</span>
+<span>    feature_id_colname <span class="op">=</span> <span class="st">"GeneName"</span>,</span>
+<span>    covariates_colnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group"</span>, <span class="st">"Batch"</span><span class="op">)</span>,</span>
+<span>    contrast_colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group"</span><span class="op">)</span>,</span>
+<span>    contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B-A"</span>, <span class="st">"C-A"</span>, <span class="st">"B-C"</span><span class="op">)</span>,</span>
+<span>    input_in_log_counts <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    return_mean_and_sd <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    return_normalized_counts <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    voom_normalization_method <span class="op">=</span> <span class="st">"quantile"</span>,</span>
 <span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; * differential counts</span></span>
 <span><span class="co">#&gt; * batch-correcting norm-voom counts</span></span>
 <span><span class="co">#&gt; * normalizing filt counts</span></span>
 <span><span class="co">#&gt; * filtering clean counts</span></span>
@@ -222,7 +241,35 @@
 <span><span class="co">#&gt; Adjusting the Data</span></span></code></pre>
 <p><img src="intro_files/figure-html/nidap_data-8.png" width="700"><img src="intro_files/figure-html/nidap_data-9.png" width="700"><img src="intro_files/figure-html/nidap_data-10.png" width="700"></p>
 <pre><code><span><span class="co">#&gt; The total number of features in output: 7943</span></span>
-<span><span class="co">#&gt; Number of samples after batch correction: 10</span></span></code></pre>
+<span><span class="co">#&gt; Number of samples after batch correction: 10</span></span>
+<span><span class="co">#&gt; Setting first column of `counts` as gene annotation.</span></span>
+<span><span class="co">#&gt; Total number of genes included: 7943</span></span>
+<span><span class="co">#&gt; `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</span></span></code></pre>
+<p><img src="intro_files/figure-html/nidap_data-11.png" width="700"></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">moo</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;              gene_id knockout-wildtype_FC knockout-wildtype_logFC</span></span>
+<span><span class="co">#&gt; 1  ENSG00000215458.8             4.691304               2.2299891</span></span>
+<span><span class="co">#&gt; 2 ENSG00000160179.18            -2.128750              -1.0900064</span></span>
+<span><span class="co">#&gt; 3  ENSG00000258017.1             1.316074               0.3962406</span></span>
+<span><span class="co">#&gt; 4  ENSG00000282393.1             1.316074               0.3962406</span></span>
+<span><span class="co">#&gt; 5  ENSG00000286104.1             1.316074               0.3962406</span></span>
+<span><span class="co">#&gt; 6  ENSG00000274422.1             1.316074               0.3962406</span></span>
+<span><span class="co">#&gt;   knockout-wildtype_tstat knockout-wildtype_pval knockout-wildtype_adjpval</span></span>
+<span><span class="co">#&gt; 1               2.9562937             0.06477088                 0.1847875</span></span>
+<span><span class="co">#&gt; 2              -0.9568884             0.41350792                 0.6575454</span></span>
+<span><span class="co">#&gt; 3               0.5569575             0.61881824                 0.6897068</span></span>
+<span><span class="co">#&gt; 4               0.5569575             0.61881824                 0.6897068</span></span>
+<span><span class="co">#&gt; 5               0.5569575             0.61881824                 0.6897068</span></span>
+<span><span class="co">#&gt; 6               0.5569575             0.61881824                 0.6897068</span></span>
+<span><span class="co">#&gt;       KO_S3     KO_S4     WT_S1     WT_S2</span></span>
+<span><span class="co">#&gt; 1 11.075196 12.348091  8.816153 10.004874</span></span>
+<span><span class="co">#&gt; 2  9.608634 12.770317 12.348091 12.236996</span></span>
+<span><span class="co">#&gt; 3  9.608634  8.816153  8.816153  8.816153</span></span>
+<span><span class="co">#&gt; 4  8.816153  9.608634  8.816153  8.816153</span></span>
+<span><span class="co">#&gt; 5  9.608634  8.816153  8.816153  8.816153</span></span>
+<span><span class="co">#&gt; 6  8.816153  9.608634  8.816153  8.816153</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -237,7 +284,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
   </div></footer>
