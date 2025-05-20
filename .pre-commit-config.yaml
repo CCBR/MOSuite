@@ -5,7 +5,8 @@ exclude: |
       ^assets/|
       ^docs/.*.html|
       ^inst/extdata|
-      ^man/
+      ^man/|
+      ^tests/testthat/_snaps/
    )
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
