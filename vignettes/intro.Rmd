@@ -34,5 +34,20 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     covariates_colname = "Group",
     batch_colname = "Batch",
     label_colname = "Label"
+  ) %>%
+  diff_counts(
+    count_type = "filt",
+    sub_count_type = NULL,
+    sample_id_colname = "Sample",
+    feature_id_colname = "GeneName",
+    covariates_colnames = c("Group", "Batch"),
+    contrast_colname = c("Group"),
+    contrasts = c("B-A", "C-A", "B-C"),
+    input_in_log_counts = FALSE,
+    return_mean_and_sd = FALSE,
+    return_normalized_counts = TRUE,
+    voom_normalization_method = "quantile",
   )
+
+moo@analyses$diff %>% head()
 ```

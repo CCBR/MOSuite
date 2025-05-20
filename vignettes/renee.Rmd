@@ -56,6 +56,11 @@ moo %<>%
   normalize_counts(
     group_colname = "condition",
     label_colname = "sample_id"
+  ) %>%
+  diff_counts(
+    covariates_colnames = "condition",
+    contrast_colname = "condition",
+    contrasts = c("knockout-wildtype")
   )
 
 moo@counts$norm$voom %>% head()
