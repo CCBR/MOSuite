@@ -6,7 +6,7 @@
 \title{Differential gene expression analysis for the NIDAP test dataset.
 The result of running \code{diff_counts()} on \code{nidap_filtered_counts}.}
 \format{
-An object of class \code{data.frame} with 7943 rows and 24 columns.
+An object of class \code{data.frame} with 7943 rows and 25 columns.
 }
 \usage{
 nidap_deg_analysis_2
@@ -15,4 +15,4 @@ nidap_deg_analysis_2
 Differential gene expression analysis for the NIDAP test dataset.
 The result of running \code{diff_counts()} on \code{nidap_filtered_counts}.
 }
-\keyword{datasets}
+\keyword{data}

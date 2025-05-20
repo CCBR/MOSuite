@@ -67,9 +67,11 @@ moo <- multiOmicDataSet(
     "filt" = as.data.frame(nidap_filtered_counts)
   )
 ) %>%
-  analyze_diff_counts(
+  diff_counts(
     count_type = "filt",
     sub_count_type = NULL,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
     covariates_colnames = c("Group", "Batch"),
     contrast_colname = c("Group"),
     contrasts = c("B-A", "C-A", "B-C"),

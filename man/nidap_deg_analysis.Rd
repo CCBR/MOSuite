@@ -13,4 +13,4 @@ nidap_deg_analysis
 \description{
 Differential gene expression analysis for the NIDAP test dataset.
 }
-\keyword{datasets}
+\keyword{data}
