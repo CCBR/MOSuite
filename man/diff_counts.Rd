@@ -55,8 +55,6 @@ diff_counts(
 \item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 
 \item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
-
-\item{columns_to_include}{Select the sample columns from the input counts matrix that you want to process. Only numeric columns can be selected.}
 }
 \value{
 \code{multiOmicDataSet} with \code{diff} added to the \code{analyses} slot (i.e. \code{moo@analyses$diff})
@@ -79,7 +77,6 @@ moo <- multiOmicDataSet(
     sub_count_type = NULL,
     sample_id_colname = "Sample",
     feature_id_colname = "Gene",
-    columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C3"),
     covariates_colnames = c("Group", "Batch"),
     contrast_colname = c("Group"),
     contrasts = c("B-A", "C-A", "B-C"),
