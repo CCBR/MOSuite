@@ -45,7 +45,7 @@ test_that("diff_counts works for RENEE", {
   options(moo_print_plots = FALSE)
   moo_renee <- create_multiOmicDataSet_from_dataframes(readr::read_tsv(
     system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
-  ) %>% mutate(condition2 = c(1, 2, 1, 2)), gene_counts) %>%
+  ), counts_dat = gene_counts) %>%
     clean_raw_counts() %>%
     filter_counts(
       group_colname = "condition",
