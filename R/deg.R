@@ -45,11 +45,10 @@
 diff_counts <- function(moo,
                         count_type = "filt",
                         sub_count_type = NULL,
-                        sample_id_colname = "Sample",
-                        feature_id_colname = "GeneName",
+                        sample_id_colname = NULL,
+                        feature_id_colname = NULL,
                         samples_to_include = NULL,
-                        columns_to_include = c("GeneName", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C3"),
-                        covariates_colnames = c("Group", "Batch"),
+                        covariates_colnames = c("Group", "Batch"), # TODO better defaults for covariates & contrasts
                         contrast_colname = c("Group"),
                         contrasts = c("B-A", "C-A", "B-C"),
                         input_in_log_counts = FALSE,
@@ -59,9 +58,8 @@ diff_counts <- function(moo,
                         print_plots = options::opt("print_plots"),
                         save_plots = options::opt("save_plots"),
                         plots_subdir = "diff") {
-  Sample <- group <- y <- Gene <- NULL
-
-  sample_metadata <- moo@sample_meta
+  Sample <- group <- y <-
+    sample_metadata <- moo@sample_meta
   # select correct counts matrix
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
@@ -83,6 +81,8 @@ diff_counts <- function(moo,
     }
     counts_dat <- moo@counts[[count_type]][[sub_count_type]]
   }
+  # TODO support tibbles
+  counts_dat %<>% as.data.frame()
 
 
   if (is.null(sample_id_colname)) {
@@ -91,54 +91,28 @@ diff_counts <- function(moo,
   if (is.null(feature_id_colname)) {
     feature_id_colname <- colnames(counts_dat)[1]
   }
-  if (is.null(samples_to_include)) {
-    samples_to_include <- sample_metadata %>% dplyr::pull(sample_id_colname)
-  }
   ## --------------- ##
   ## Main Code Block ##
   ## --------------- ##
-
-  ####################################
-  ### Input Validation (should be Same as previous Templates)
-  ################################
-  ### PH: START Select subset of data columns
-
-  samples_to_include <- columns_to_include[columns_to_include %in% sample_metadata[, sample_id_colname,
-    drop =
-      T
-  ]]
-  anno_col <- columns_to_include[columns_to_include %in% sample_metadata[, sample_id_colname,
-    drop =
-      T
-  ] == F]
-  ## make sure that Gene Anno columns are not included in analysis
-  samples_to_include <- samples_to_include[samples_to_include != feature_id_colname]
-  samples_to_include <- samples_to_include[samples_to_include != "Gene"]
-  samples_to_include <- samples_to_include[samples_to_include != "GeneName"]
-
-  ### PH: END Select subset of data columns
-
 
   ### PH: START Check Rownames - from Filtering + Normalization Template
   ## create unique rownames to correctly add back Annocolumns at end of template
   counts_dat[, feature_id_colname] <- paste0(counts_dat[, feature_id_colname], "_", 1:nrow(counts_dat))
 
-  anno_col <- c(anno_col, feature_id_colname) %>% unique()
-  anno_tbl <- counts_dat[, anno_col, drop = F] %>% as.data.frame()
-
-  df.m <- counts_dat[, c(feature_id_colname, samples_to_include)]
+  df.m <- counts_dat
   gene_names <- NULL
   gene_names$GeneID <- counts_dat[, feature_id_colname]
   ### PH: END Check Rownames - from Filtering + Normalization Template
 
   ### PH: START Input Data Validation - from Filtering + Normalization Template
   ### This code block does input data validation
-  sample_metadata <- sample_metadata[match(colnames(df.m), sample_metadata[, sample_id_colname]), ]
-  sample_metadata <- sample_metadata[rowSums(is.na(sample_metadata)) != ncol(sample_metadata), ]
   # Remove samples that are not in the contrast groups:
   groups <- unique(unlist(strsplit(contrasts, "-")))
   sample_metadata <- sample_metadata %>% dplyr::filter(.data[[contrast_colname]] %in% groups)
-  df.m <- df.m[, match(sample_metadata[, sample_id_colname], colnames(df.m))]
+  df.m %<>% dplyr::select(tidyr::all_of(c(
+    feature_id_colname,
+    sample_metadata %>% dplyr::pull(sample_id_colname)
+  )))
   ### PH: END Input Data Validation - from Filtering + Normalization Template
 
 
@@ -149,10 +123,10 @@ diff_counts <- function(moo,
   # Put covariates in order
   covariates_colnames <- covariates_colnames[order(covariates_colnames != contrast_colname)]
 
+  # TODO: refactor - function to sub spaces with underscores
   for (ocv in covariates_colnames) {
-    sample_metadata[, ocv] <- gsub(" ", "_", sample_metadata[, ocv])
+    sample_metadata[[ocv]] <- gsub(" ", "_", sample_metadata %>% dplyr::pull(ocv))
   }
-
   contrasts <- gsub(" ", "_", contrasts)
   cov <- covariates_colnames[!covariates_colnames %in% contrast_colname]
 
@@ -189,7 +163,7 @@ diff_counts <- function(moo,
     x <- edgeR::DGEList(counts = df.m, genes = gene_names)
   }
 
-  # TODO add this to existing norm function
+  # TODO add this to existing norm function & document options
   if (voom_normalization_method %in% c("TMM", "TMMwzp", "RLE", "upperquartile")) {
     x <- edgeR::calcNormFactors(x, method = voom_normalization_method)
     rownames(x) <- x$genes$GeneID
@@ -250,55 +224,63 @@ diff_counts <- function(moo,
   if (return_mean_and_sd == TRUE) {
     tve <- t(v$E)
     mean.df <- as.data.frame(tve) %>%
-      tibble::rownames_to_column("Sample") %>%
-      dplyr::mutate(
-        group =
-          sample_metadata[sample_metadata[, sample_id_colname] == Sample, contrast_colname]
+      tibble::rownames_to_column(sample_id_colname) %>%
+      dplyr::left_join(sample_metadata %>% dplyr::select(tidyr::all_of(c(sample_id_colname, contrast_colname))),
+        by = sample_id_colname
       ) %>%
+      dplyr::rename(group = tidyr::all_of(contrast_colname)) %>%
       dplyr::group_by(group) %>%
-      dplyr::summarise_all(dplyr::funs(mean)) %>%
+      dplyr::summarise(dplyr::across(dplyr::where(is.numeric), ~ base::mean(.x))) %>%
       as.data.frame()
-    mean.df[, -c(1, 2)] %>%
+    mat_mean <- mean.df[, -c(1, 2)] %>%
       as.matrix() %>%
-      t() -> mean
-    colnames(mean) <- mean.df[, 1]
-    colnames(mean) <- paste(colnames(mean), "mean", sep = "_")
-    colnames(mean) <- gsub("\\.", "_", colnames(mean))
+      t()
+    colnames(mat_mean) <- mean.df[, 1]
+    colnames(mat_mean) <- paste(colnames(mat_mean), "mean", sep = "_")
+    colnames(mat_mean) <- gsub("\\.", "_", colnames(mat_mean))
+    # mat_mean %<>% as.data.frame() %>% tibble::rownames_to_column(feature_id_colname)
 
     sd.df <- as.data.frame(tve) %>%
-      tibble::rownames_to_column("Sample") %>%
-      dplyr::mutate(
-        group =
-          sample_metadata[sample_metadata[, sample_id_colname] == Sample, contrast_colname]
+      tibble::rownames_to_column(sample_id_colname) %>%
+      dplyr::left_join(sample_metadata %>% dplyr::select(tidyr::all_of(c(sample_id_colname, contrast_colname))),
+        by = sample_id_colname
       ) %>%
+      dplyr::rename(group = tidyr::all_of(contrast_colname)) %>%
       dplyr::group_by(group) %>%
-      dplyr::summarise_all(dplyr::funs(sd)) %>%
+      dplyr::summarise(dplyr::across(dplyr::where(is.numeric), ~ stats::sd(.x))) %>%
       as.data.frame()
-    sd.df[, -c(1, 2)] %>%
+    mat_sd <- sd.df[, -c(1, 2)] %>%
       as.matrix() %>%
-      t() -> sd
-    colnames(sd) <- sd.df[, 1]
-    colnames(sd) <- paste(colnames(sd), "sd", sep = "_")
-    colnames(sd) <- gsub("\\.", "_", colnames(sd))
-    finalres <- as.data.frame(cbind(mean, sd, FC, logFC, tstat, pvalall, pvaladjall))
+      t()
+    colnames(mat_sd) <- sd.df[, 1]
+    colnames(mat_sd) <- paste(colnames(mat_sd), "sd", sep = "_")
+    colnames(mat_sd) <- gsub("\\.", "_", colnames(mat_sd))
+    # mat_sd %<>% as.data.frame() %>% tibble::rownames_to_column(feature_id_colname)
+
+    finalres <- purrr::map(list(mat_mean, mat_sd, FC, logFC, tstat, pvalall, pvaladjall), \(mat) {
+      mat %>%
+        as.data.frame() %>%
+        tibble::rownames_to_column(feature_id_colname)
+    }) %>%
+      purrr::reduce(dplyr::left_join, by = feature_id_colname)
   } else {
-    finalres <- as.data.frame(cbind(FC, logFC, tstat, pvalall, pvaladjall))
+    finalres <- purrr::map(list(FC, logFC, tstat, pvalall, pvaladjall), \(mat) {
+      mat %>%
+        as.data.frame() %>%
+        tibble::rownames_to_column(feature_id_colname)
+    }) %>%
+      purrr::reduce(dplyr::left_join, by = feature_id_colname)
   }
 
   if (return_normalized_counts == TRUE) {
-    finalres <- as.data.frame(cbind(finalres, v$E))
+    finalres %<>% dplyr::left_join(v$E %>% as.data.frame() %>% tibble::rownames_to_column(feature_id_colname),
+      by = feature_id_colname
+    )
   }
 
-  finalres %>% tibble::rownames_to_column(feature_id_colname) -> finalres
   print(paste0("Total number of genes included: ", nrow(finalres)))
 
   ### add back Anno columns and Remove row number from Feature Column
-  colnames(finalres)[colnames(finalres) %in% feature_id_colname] <- feature_id_colname
-
-  finalres <- merge(anno_tbl, finalres,
-    by = feature_id_colname, all.y =
-      T
-  )
   finalres[, feature_id_colname] <- gsub("_[0-9]+$", "", finalres[, feature_id_colname])
   call_me_alias <- colnames(finalres)
   colnames(finalres) <- gsub("\\(|\\)", "", call_me_alias)

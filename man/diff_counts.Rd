@@ -8,10 +8,9 @@ diff_counts(
   moo,
   count_type = "filt",
   sub_count_type = NULL,
-  sample_id_colname = "Sample",
-  feature_id_colname = "GeneName",
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
   samples_to_include = NULL,
-  columns_to_include = c("GeneName", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C3"),
   covariates_colnames = c("Group", "Batch"),
   contrast_colname = c("Group"),
   contrasts = c("B-A", "C-A", "B-C"),
@@ -37,8 +36,6 @@ diff_counts(
 
 \item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
 
-\item{columns_to_include}{Select the sample columns from the input counts matrix that you want to process. Only numeric columns can be selected.}
-
 \item{covariates_colnames}{Columns to be used as covariates in linear modeling. Must include column from "Contrast Variable". Most commonly your covariate will be group and batch (if you have different batches in your data).}
 
 \item{contrast_colname}{The column in the metadata that contains the group variables you wish to find differential expression between. Up to 2 columns (2-factor analysis) can be used.}
@@ -58,6 +55,8 @@ diff_counts(
 \item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 
 \item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
+
+\item{columns_to_include}{Select the sample columns from the input counts matrix that you want to process. Only numeric columns can be selected.}
 }
 \value{
 \code{multiOmicDataSet} with \code{diff} added to the \code{analyses} slot (i.e. \code{moo@analyses$diff})
