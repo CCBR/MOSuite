@@ -70,7 +70,7 @@ test_that("diff_counts works for RENEE", {
     )
   actual <- head(moo_renee@analyses$diff) %>%
     dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, digits = 1)))
-  expected <- tibble(gene_id = c(
+  expected <- tibble::tibble(gene_id = c(
     "ENSG00000160179.18", "ENSG00000258017.1",
     "ENSG00000282393.1", "ENSG00000286104.1", "ENSG00000274422.1",
     "ENSG00000154734.15"
