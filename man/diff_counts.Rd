@@ -18,7 +18,10 @@ diff_counts(
   input_in_log_counts = FALSE,
   return_mean_and_sd = FALSE,
   return_normalized_counts = TRUE,
-  voom_normalization_method = "quantile"
+  voom_normalization_method = "quantile",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff"
 )
 }
 \arguments{
@@ -49,6 +52,12 @@ diff_counts(
 \item{return_normalized_counts}{if TRUE, return normalized counts for samples included in the limma model}
 
 \item{voom_normalization_method}{Normalization method to be applied to the logCPM values when using \code{limma::voom}}
+
+\item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
+
+\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+
+\item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \value{
 \code{multiOmicDataSet} with \code{diff} added to the \code{analyses} slot (i.e. \code{moo@analyses$diff})
@@ -69,6 +78,9 @@ moo <- multiOmicDataSet(
   diff_counts(
     count_type = "filt",
     sub_count_type = NULL,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C3"),
     covariates_colnames = c("Group", "Batch"),
     contrast_colname = c("Group"),
     contrasts = c("B-A", "C-A", "B-C"),

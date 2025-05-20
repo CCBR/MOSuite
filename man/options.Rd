@@ -24,7 +24,6 @@ options::opt(x, default, env = "MOSuite")
 Whether to print plots during analysis\item{default: }{\preformatted{FALSE}}
 \item{option: }{moo_print_plots}
 \item{envvar: }{MOO_PRINT_PLOTS (evaluated if possible, raw string otherwise)}
-
 }}
 
 \item{save_plots}{\describe{
@@ -37,7 +36,6 @@ Whether to save plots to files during analysis\item{default: }{\preformatted{FAL
 Path where plots are saved when \code{moo_save_plots} is \code{TRUE}\item{default: }{\preformatted{"figures/"}}
 \item{option: }{moo_plots_dir}
 \item{envvar: }{MOO_PLOTS_DIR (evaluated if possible, raw string otherwise)}
-
 }}
 
 }

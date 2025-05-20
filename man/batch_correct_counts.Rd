@@ -55,7 +55,6 @@ value in every row to skip batch correction (alternatively, simply do not run th
 \item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 
 \item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
-
 }
 \value{
 \code{multiOmicDataSet} with batch-corrected counts
