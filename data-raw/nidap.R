@@ -54,3 +54,31 @@ moo <- multiOmicDataSet(
   )
 nidap_batch_corrected_counts_2 <- moo@counts[["batch"]]
 usethis::use_data(nidap_batch_corrected_counts_2, overwrite = TRUE)
+
+nidap_deg_analysis <- readr::read_csv(system.file("extdata", "nidap", "DEG_Analysis.csv.gz", package = "MOSuite"))
+usethis::use_data(nidap_deg_analysis, overwrite = TRUE)
+
+moo <- multiOmicDataSet(
+  sample_metadata = as.data.frame(nidap_sample_metadata),
+  anno_dat = data.frame(),
+  counts_lst = list(
+    "raw" = as.data.frame(nidap_raw_counts),
+    "clean" = as.data.frame(nidap_clean_raw_counts),
+    "filt" = as.data.frame(nidap_filtered_counts)
+  )
+) %>%
+  diff_counts(
+    count_type = "filt",
+    sub_count_type = NULL,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    covariates_colnames = c("Group", "Batch"),
+    contrast_colname = c("Group"),
+    contrasts = c("B-A", "C-A", "B-C"),
+    voom_normalization_method = "quantile",
+  )
+nidap_deg_analysis_2 <- moo@analyses$diff
+usethis::use_data(nidap_deg_analysis_2, overwrite = TRUE)
+
+## re-compress Rda files
+# tools::resaveRdaFiles('data')
