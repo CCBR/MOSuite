@@ -3,6 +3,7 @@
 #' @inheritParams filter_counts
 #' @inheritParams batch_correct_counts
 #' @inheritParams normalize_counts
+#' @inheritParams option_params
 #'
 #' @param sub_count_type if `count_type` is a list, specify the sub count type within the list. (Default: `NULL`)
 #' @param columns_to_include Select the sample columns from the input counts matrix that you want to process. Only numeric columns can be selected.
@@ -32,6 +33,9 @@
 #'   diff_counts(
 #'     count_type = "filt",
 #'     sub_count_type = NULL,
+#'     sample_id_colname = "Sample",
+#'     feature_id_colname = "Gene",
+#'     columns_to_include = c("Gene", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C3"),
 #'     covariates_colnames = c("Group", "Batch"),
 #'     contrast_colname = c("Group"),
 #'     contrasts = c("B-A", "C-A", "B-C"),
@@ -51,7 +55,10 @@ diff_counts <- function(moo,
                         input_in_log_counts = FALSE,
                         return_mean_and_sd = FALSE,
                         return_normalized_counts = TRUE,
-                        voom_normalization_method = "quantile") {
+                        voom_normalization_method = "quantile",
+                        print_plots = options::opt("print_plots"),
+                        save_plots = options::opt("save_plots"),
+                        plots_subdir = "diff") {
   Sample <- group <- y <- Gene <- NULL
 
   sample_metadata <- moo@sample_meta
@@ -345,13 +352,24 @@ diff_counts <- function(moo,
   FCadjpval2 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.01, pval = "adjpval", feature_id_colname = feature_id_colname)
 
   ### PH: END Identify DEG genes
-
+  mv_plot <- plot_mean_variance(voom_elist = v)
+  print_or_save_plot(mv_plot,
+    filename = file.path(plots_subdir, "mean-variance.png"),
+    print_plots = print_plots, save_plots = save_plots
+  )
 
 
   ### PH: START Mean-variance Plot. Input:
   #                                   -VoomObject from Limma Normalization
   ## Output is figure
   # Print Mean-variance Plot
+  ### PH: END Mean-variance Plot. requires voom object
+  moo@analyses[["diff"]] <- df.final
+  return(moo)
+}
+
+plot_mean_variance <- function(voom_elist) {
+  v <- voom_elist
   sx <- v$voom.xy$x
   sy <- v$voom.xy$y
   xyplot <- as.data.frame(cbind(sx, sy))
@@ -372,9 +390,7 @@ diff_counts <- function(moo,
         hjust = 0.5
       )
     )
-  ### PH: END Mean-variance Plot. requires voom object
-  moo@analyses[["diff"]] <- df.final
-  return(moo)
+  return(g)
 }
 
 
