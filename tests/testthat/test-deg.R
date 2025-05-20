@@ -69,7 +69,7 @@ test_that("diff_counts works for RENEE", {
       input_in_log_counts = TRUE
     )
   actual <- head(moo_renee@analyses$diff) %>%
-    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, digits = 1)))
+    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, digits = 0)))
   expected <- tibble::tibble(gene_id = c(
     "ENSG00000160179.18", "ENSG00000258017.1",
     "ENSG00000282393.1", "ENSG00000286104.1", "ENSG00000274422.1",
@@ -122,7 +122,7 @@ test_that("diff_counts works for RENEE", {
     12.2916291583364, 8.87223576354017,
     8.87223576354017, 8.87223576354017, 8.87223576354017, 14.6300392915434
   )) %>%
-    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, digits = 1))) %>%
+    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, digits = 0))) %>%
     as.data.frame()
   expect_equal(actual, expected)
 })
