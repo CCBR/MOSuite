@@ -158,7 +158,8 @@ diff_counts <- function(moo,
   ### PH: START Limma Normalization - Same as in Normalize Counts
   # Create DGEList object from counts - counts should not be Log scale
   if (input_in_log_counts == TRUE) {
-    x <- edgeR::DGEList(counts = 2^df.m, genes = gene_names)
+    df_unlog <- df.m %>% dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ 2^.x))
+    x <- edgeR::DGEList(counts = df_unlog, genes = gene_names)
   } else {
     x <- edgeR::DGEList(counts = df.m, genes = gene_names)
   }
