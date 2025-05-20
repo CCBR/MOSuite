@@ -84,7 +84,6 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     sub_count_type = NULL,
     sample_id_colname = "Sample",
     feature_id_colname = "GeneName",
-    columns_to_include = c("GeneName", "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C3"),
     covariates_colnames = c("Group", "Batch"),
     contrast_colname = c("Group"),
     contrasts = c("B-A", "C-A", "B-C"),
