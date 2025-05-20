@@ -68,7 +68,7 @@ test_that("diff_counts works for RENEE", {
       return_mean_and_sd = TRUE,
       input_in_log_counts = TRUE
     )
-  expect_equal(
+  expect_true(equal_dfs(
     head(moo_renee@analyses$diff),
     structure(list(gene_id = c(
       "ENSG00000160179.18", "ENSG00000258017.1",
@@ -122,7 +122,7 @@ test_that("diff_counts works for RENEE", {
       12.2916291583364, 8.87223576354017,
       8.87223576354017, 8.87223576354017, 8.87223576354017, 14.6300392915434
     )), row.names = c(NA, 6L), class = "data.frame")
-  )
+  ))
 })
 
 test_that("diff_counts errors", {
