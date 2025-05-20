@@ -79,3 +79,6 @@ moo <- multiOmicDataSet(
   )
 nidap_deg_analysis_2 <- moo@analyses$diff
 usethis::use_data(nidap_deg_analysis_2, overwrite = TRUE)
+
+## re-compress Rda files
+# tools::resaveRdaFiles('data')
