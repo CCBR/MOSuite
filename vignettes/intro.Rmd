@@ -49,5 +49,5 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     voom_normalization_method = "quantile",
   )
 
-moo@analyses$diff %>% head()
+moo_nidap@analyses$diff %>% head()
 ```
