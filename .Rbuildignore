@@ -15,4 +15,5 @@
 ^doc$
 ^Meta$
 ^vignettes/figures/$
+^vignettes/memory\.Rmd$
 ^figures/$
