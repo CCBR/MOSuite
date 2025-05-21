@@ -59,17 +59,34 @@ moo %<>%
 ### batch correct
 
 ```{r nidap_batch}
-moo %<>% batch_correct_counts(
-  covariates_colname = "Group",
-  batch_colname = "Batch",
-  label_colname = "Label"
-)
+moo %<>%
+  batch_correct_counts(
+    covariates_colname = "Group",
+    batch_colname = "Batch",
+    label_colname = "Label"
+  )
 ```
 
+### differential expression
+
+```{r}
+moo %<>%
+  diff_counts(
+    count_type = "filt",
+    covariates_colnames = c("Group", "Batch"),
+    contrast_colname = c("Group"),
+    contrasts = c("B-A", "C-A", "B-C"),
+    input_in_log_counts = FALSE,
+    return_mean_and_sd = FALSE,
+    return_normalized_counts = TRUE,
+    voom_normalization_method = "quantile",
+  )
+```
 
 ## Customize plots
 
 TODO
+
 - show how to use individual plotting functions
 - how to customize & override default color palettes
 - how to customize ggplot objects
@@ -92,3 +109,11 @@ plot_pca(moo@counts$batch,
 p <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
 print(p)
 ```
+
+### Enhanced Volcano
+
+TODO
+
+### Venn Diagram
+
+TODO
