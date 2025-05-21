@@ -1,5 +1,5 @@
 Package: MOSuite
-Title: R package for downstream multi-omics analysis
+Title: R package for differential multi-omics analysis
 Version: 0.0.0.9000
 Authors@R: c(
     person("Kelly", "Sovacool", , "kelly.sovacool@nih.gov", role = c("aut", "cre"),
@@ -11,7 +11,12 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-8734-9875")),
     person("CCR Collaborative Bioinformatics Resource", role = "cph")
   )
-Description: TODO What the package does (one paragraph).
+Description: Multi-Omics Suite (MOSuite) provides a suite of functions to
+    clean, filter, batch-correct, normalize, visualize, and perform
+    differential analysis. While the package is designed for differential
+    RNA-seq analysis and multi-omics datasets, it can be used for any data
+    represented in a counts table. See the website for more information,
+    documentation, and examples: <https://ccbr.github.io/MOSuite/>
 License: MIT + file LICENSE
 URL: https://github.com/CCBR/MOSuite, https://ccbr.github.io/MOSuite/
 BugReports: https://github.com/CCBR/MOSuite/issues
