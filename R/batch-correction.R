@@ -59,7 +59,6 @@ batch_correct_counts <- function(moo,
                                  save_plots = options::opt("save_plots"),
                                  plots_subdir = "batch") {
   abort_packages_not_installed("sva")
-  message(glue::glue("* batch-correcting {glue::glue_collapse(c(count_type, sub_count_type),sep='-')} counts"))
   # select correct counts matrix
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
@@ -83,6 +82,7 @@ batch_correct_counts <- function(moo,
   }
   sample_metadata <- moo@sample_meta
   batch_vctr <- sample_metadata %>% dplyr::pull(batch_colname)
+  message(glue::glue("* batch-correcting {glue::glue_collapse(c(count_type, sub_count_type),sep='-')} counts"))
 
 
   if (is.null(sample_id_colname)) {

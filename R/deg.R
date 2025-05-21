@@ -56,7 +56,6 @@ diff_counts <- function(moo,
                         print_plots = options::opt("print_plots"),
                         save_plots = options::opt("save_plots"),
                         plots_subdir = "diff") {
-  message("* differential counts")
   Sample <- group <- y <-
     sample_metadata <- moo@sample_meta
   # select correct counts matrix
@@ -80,6 +79,7 @@ diff_counts <- function(moo,
     }
     counts_dat <- moo@counts[[count_type]][[sub_count_type]]
   }
+  message(glue::glue("* differential counts"))
   # TODO support tibbles
   counts_dat %<>% as.data.frame()
 

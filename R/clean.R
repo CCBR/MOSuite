@@ -54,7 +54,6 @@ clean_raw_counts <- function(moo,
                              gene_name_column_to_use_for_collapsing_duplicates = "",
                              print_plots = options::opt("print_plots"),
                              save_plots = options::opt("save_plots")) {
-  message(glue::glue("* cleaning {count_type} counts"))
   counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
 
@@ -73,6 +72,7 @@ clean_raw_counts <- function(moo,
     )
   }
 
+  message(glue::glue("* cleaning {count_type} counts"))
   # Manually rename samples
   counts_dat <- rename_samples(counts_dat, samples_to_rename)
 

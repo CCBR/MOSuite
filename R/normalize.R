@@ -56,7 +56,6 @@ normalize_counts <- function(moo,
                              save_plots = options::opt("save_plots"),
                              interactive_plots = FALSE,
                              plots_subdir = "norm") {
-  message(glue::glue("* normalizing {count_type} counts"))
   counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
   plots_subdir <- file.path(plots_subdir, norm_type)
@@ -72,6 +71,7 @@ normalize_counts <- function(moo,
   if (is.null(label_colname)) {
     label_colname <- sample_id_colname
   }
+  message(glue::glue("* normalizing {count_type} counts"))
   df.filt <- counts_dat %>%
     dplyr::select(tidyselect::all_of(samples_to_include))
 

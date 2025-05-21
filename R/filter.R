@@ -101,7 +101,6 @@ filter_counts <- function(moo,
                           save_plots = options::opt("save_plots"),
                           interactive_plots = FALSE,
                           plots_subdir = "filt") {
-  message(glue::glue("* filtering {count_type} counts"))
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
   }
@@ -120,6 +119,8 @@ filter_counts <- function(moo,
   if (is.null(label_colname)) {
     label_colname <- sample_id_colname
   }
+  message(glue::glue("* filtering {count_type} counts"))
+
   df <- counts_dat %>% dplyr::select(
     tidyselect::all_of(feature_id_colname),
     tidyselect::all_of(samples_to_include)
