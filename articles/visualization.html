@@ -146,11 +146,12 @@ disk.</p>
 <h3 id="batch-correct">batch correct<a class="anchor" aria-label="anchor" href="#batch-correct"></a>
 </h3>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">moo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/compound.html" class="external-link">%&lt;&gt;%</a></span> <span class="fu"><a href="../reference/batch_correct_counts.html">batch_correct_counts</a></span><span class="op">(</span></span>
-<span>  covariates_colname <span class="op">=</span> <span class="st">"Group"</span>,</span>
-<span>  batch_colname <span class="op">=</span> <span class="st">"Batch"</span>,</span>
-<span>  label_colname <span class="op">=</span> <span class="st">"Label"</span></span>
-<span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">moo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/compound.html" class="external-link">%&lt;&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/batch_correct_counts.html">batch_correct_counts</a></span><span class="op">(</span></span>
+<span>    covariates_colname <span class="op">=</span> <span class="st">"Group"</span>,</span>
+<span>    batch_colname <span class="op">=</span> <span class="st">"Batch"</span>,</span>
+<span>    label_colname <span class="op">=</span> <span class="st">"Label"</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; * batch-correcting norm-voom counts</span></span>
 <span><span class="co">#&gt; Found2batches</span></span>
 <span><span class="co">#&gt; Adjusting for2covariate(s) or covariate level(s)</span></span>
@@ -166,17 +167,43 @@ disk.</p>
 <pre><code><span><span class="co">#&gt; The total number of features in output: 7943</span></span>
 <span><span class="co">#&gt; Number of samples after batch correction: 10</span></span></code></pre>
 </div>
+<div class="section level3">
+<h3 id="differential-expression">differential expression<a class="anchor" aria-label="anchor" href="#differential-expression"></a>
+</h3>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">moo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/compound.html" class="external-link">%&lt;&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/diff_counts.html">diff_counts</a></span><span class="op">(</span></span>
+<span>    count_type <span class="op">=</span> <span class="st">"filt"</span>,</span>
+<span>    covariates_colnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group"</span>, <span class="st">"Batch"</span><span class="op">)</span>,</span>
+<span>    contrast_colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group"</span><span class="op">)</span>,</span>
+<span>    contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B-A"</span>, <span class="st">"C-A"</span>, <span class="st">"B-C"</span><span class="op">)</span>,</span>
+<span>    input_in_log_counts <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    return_mean_and_sd <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    return_normalized_counts <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    voom_normalization_method <span class="op">=</span> <span class="st">"quantile"</span>,</span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; * differential counts</span></span>
+<span><span class="co">#&gt; Setting first column of `counts` as gene annotation.</span></span>
+<span><span class="co">#&gt; Total number of genes included: 7943</span></span>
+<span><span class="co">#&gt; `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</span></span></code></pre></div>
+<p><img src="visualization_files/figure-html/unnamed-chunk-1-1.png" width="480"></p>
+<pre><code><span><span class="co">#&gt; Saving 5 x 4 in image</span></span>
+<span><span class="co">#&gt; `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</span></span></code></pre>
+</div>
 </div>
 <div class="section level2">
 <h2 id="customize-plots">Customize plots<a class="anchor" aria-label="anchor" href="#customize-plots"></a>
 </h2>
-<p>TODO - show how to use individual plotting functions - how to
-customize &amp; override default color palettes - how to customize
-ggplot objects</p>
+<p>TODO</p>
+<ul>
+<li>show how to use individual plotting functions</li>
+<li>how to customize &amp; override default color palettes</li>
+<li>how to customize ggplot objects</li>
+</ul>
 <div class="section level3">
 <h3 id="d-pca">3D PCA<a class="anchor" aria-label="anchor" href="#d-pca"></a>
 </h3>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_pca.html">plot_pca</a></span><span class="op">(</span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">batch</span>,</span>
 <span>  <span class="va">moo</span><span class="op">@</span><span class="va">sample_meta</span>,</span>
 <span>  principal_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
@@ -185,12 +212,12 @@ ggplot objects</p>
 <span>  color_values <span class="op">=</span> <span class="va">moo</span><span class="op">@</span><span class="va">analyses</span><span class="op">[[</span><span class="st">"colors"</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"Group"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="plotly html-widget html-fill-item" id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:480px;height:384px;"></div>
-<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"visdat":{"2d6814022e15":["function () ","plotlyVisDat"]},"cur_data":"2d6814022e15","attrs":{"2d6814022e15":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"size":8},"hoverinfo":"text","text":{},"color":{},"size":24,"colors":["#000000","#E69F00","#56B4E9"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"PC1"},"yaxis":{"title":"PC2"},"zaxis":{"title":"PC3"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-37.02988740420713,-46.202726529239996,-47.388329488061188],"y":[33.20056607030736,40.838627625724037,28.814546147005224],"z":[4.7406847243841019,-10.906448043253027,-13.204218047115619],"mode":"markers","marker":{"color":"rgba(0,0,0,1)","size":8,"sizemode":"area","line":{"color":"rgba(0,0,0,1)"}},"hoverinfo":["text","text","text"],"text":["A1","A2","A3"],"type":"scatter3d","name":"A","textfont":{"color":"rgba(0,0,0,1)","size":55},"error_y":{"color":"rgba(0,0,0,1)","width":55},"error_x":{"color":"rgba(0,0,0,1)","width":55},"line":{"color":"rgba(0,0,0,1)","width":55},"frame":null},{"x":[-28.694926741752916,-13.178325203869875,-15.174264901109913],"y":[-29.61351670343015,-34.916643374714177,-65.245132469700494],"z":[25.172778558047199,13.334101581276443,7.1777565898972835],"mode":"markers","marker":{"color":"rgba(230,159,0,1)","size":8,"sizemode":"area","line":{"color":"rgba(230,159,0,1)"}},"hoverinfo":["text","text","text"],"text":["B1","B2","B3"],"type":"scatter3d","name":"B","textfont":{"color":"rgba(230,159,0,1)","size":55},"error_y":{"color":"rgba(230,159,0,1)","width":55},"error_x":{"color":"rgba(230,159,0,1)","width":55},"line":{"color":"rgba(230,159,0,1)","width":55},"frame":null},{"x":[54.383108042646533,77.413153148631352,55.872199076963149],"y":[-0.31296701193061999,31.436049026500761,-4.2015293097619741],"z":[-44.493203749203325,67.633314692756926,-49.454766306789963],"mode":"markers","marker":{"color":"rgba(86,180,233,1)","size":8,"sizemode":"area","line":{"color":"rgba(86,180,233,1)"}},"hoverinfo":["text","text","text"],"text":["C1","C2","C3"],"type":"scatter3d","name":"C","textfont":{"color":"rgba(86,180,233,1)","size":55},"error_y":{"color":"rgba(86,180,233,1)","width":55},"error_x":{"color":"rgba(86,180,233,1)","width":55},"line":{"color":"rgba(86,180,233,1)","width":55},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"visdat":{"2d4813d8421e":["function () ","plotlyVisDat"]},"cur_data":"2d4813d8421e","attrs":{"2d4813d8421e":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"size":8},"hoverinfo":"text","text":{},"color":{},"size":24,"colors":["#000000","#E69F00","#56B4E9"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"PC1"},"yaxis":{"title":"PC2"},"zaxis":{"title":"PC3"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-37.02988740420713,-46.202726529239996,-47.388329488061188],"y":[33.20056607030736,40.838627625724037,28.814546147005224],"z":[4.7406847243841019,-10.906448043253027,-13.204218047115619],"mode":"markers","marker":{"color":"rgba(0,0,0,1)","size":8,"sizemode":"area","line":{"color":"rgba(0,0,0,1)"}},"hoverinfo":["text","text","text"],"text":["A1","A2","A3"],"type":"scatter3d","name":"A","textfont":{"color":"rgba(0,0,0,1)","size":55},"error_y":{"color":"rgba(0,0,0,1)","width":55},"error_x":{"color":"rgba(0,0,0,1)","width":55},"line":{"color":"rgba(0,0,0,1)","width":55},"frame":null},{"x":[-28.694926741752916,-13.178325203869875,-15.174264901109913],"y":[-29.61351670343015,-34.916643374714177,-65.245132469700494],"z":[25.172778558047199,13.334101581276443,7.1777565898972835],"mode":"markers","marker":{"color":"rgba(230,159,0,1)","size":8,"sizemode":"area","line":{"color":"rgba(230,159,0,1)"}},"hoverinfo":["text","text","text"],"text":["B1","B2","B3"],"type":"scatter3d","name":"B","textfont":{"color":"rgba(230,159,0,1)","size":55},"error_y":{"color":"rgba(230,159,0,1)","width":55},"error_x":{"color":"rgba(230,159,0,1)","width":55},"line":{"color":"rgba(230,159,0,1)","width":55},"frame":null},{"x":[54.383108042646533,77.413153148631352,55.872199076963149],"y":[-0.31296701193061999,31.436049026500761,-4.2015293097619741],"z":[-44.493203749203325,67.633314692756926,-49.454766306789963],"mode":"markers","marker":{"color":"rgba(86,180,233,1)","size":8,"sizemode":"area","line":{"color":"rgba(86,180,233,1)"}},"hoverinfo":["text","text","text"],"text":["C1","C2","C3"],"type":"scatter3d","name":"C","textfont":{"color":"rgba(86,180,233,1)","size":55},"error_y":{"color":"rgba(86,180,233,1)","width":55},"error_x":{"color":"rgba(86,180,233,1)","width":55},"line":{"color":"rgba(86,180,233,1)","width":55},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="section level3">
 <h3 id="expression-heatmap">Expression Heatmap<a class="anchor" aria-label="anchor" href="#expression-heatmap"></a>
 </h3>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_expr_heatmap.html">plot_expr_heatmap</a></span><span class="op">(</span><span class="va">moo</span>, count_type <span class="op">=</span> <span class="st">"norm"</span>, sub_count_type <span class="op">=</span> <span class="st">"voom"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: `arrange_()` was deprecated in dplyr 0.7.0.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use `arrange()` instead.</span></span>
@@ -206,6 +233,16 @@ ggplot objects</p>
 <span><span class="co">#&gt; skip it.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualization_files/figure-html/expr_heatmap-1.png" width="480"></p>
+</div>
+<div class="section level3">
+<h3 id="enhanced-volcano">Enhanced Volcano<a class="anchor" aria-label="anchor" href="#enhanced-volcano"></a>
+</h3>
+<p>TODO</p>
+</div>
+<div class="section level3">
+<h3 id="venn-diagram">Venn Diagram<a class="anchor" aria-label="anchor" href="#venn-diagram"></a>
+</h3>
+<p>TODO</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
