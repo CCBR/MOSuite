@@ -7,9 +7,13 @@ cff-version: 1.2.0
 message: 'To cite package "MOSuite" in publications use:'
 type: software
 license: MIT
-title: 'MOSuite: R package for downstream multi-omics analysis'
+title: 'MOSuite: R package for differential multi-omics analysis'
 version: 0.0.0.9000
-abstract: TODO What the package does (one paragraph).
+abstract: 'Multi-Omics Suite (MOSuite) provides a suite of functions to clean, filter,
+  batch-correct, normalize, visualize, and perform differential analysis. While the
+  package is designed for differential RNA-seq analysis and multi-omics datasets,
+  it can be used for any data represented in a counts table. See the website for more
+  information, documentation, and examples: <https://ccbr.github.io/MOSuite/>'
 authors:
 - family-names: Sovacool
   given-names: Kelly
