@@ -3,6 +3,8 @@
 
 # MOSuite
 
+R package for differential multi-omics analysis
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/CCBR/MOSuite/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CCBR/MOSuite/actions/workflows/R-CMD-check.yaml)
@@ -10,11 +12,12 @@
 [![docs](https://img.shields.io/badge/-docs-blue?logo=readthedocs)](https://ccbr.github.io/MOSuite/)
 <!-- badges: end -->
 
-R package for downstream multi-omics analysis
-
-Designed for differential [RNA-seq](https://github.com/CCBR/RENEE)
-analysis or any data represented in a counts table. See the website for
-more information, documentation, and examples:
+Multi-Omics Suite provides a suite of functions to clean, filter,
+batch-correct, normalize, visualize, and perform differential expression
+analysis. While the package is designed for differential
+[RNA-seq](https://github.com/CCBR/RENEE) analysis and multi-omics
+datasets, it can be used for any data represented in a counts table. See
+the website for more information, documentation, and examples:
 <https://ccbr.github.io/MOSuite/>
 
 ## Installation
