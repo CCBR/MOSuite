@@ -44,17 +44,6 @@ for a quick start tutorial.
 Take a look at the [reference documentation](https://ccbr.github.io/MOSuite/reference/index.html)
 for detailed information on each function in the package.
 
-<!--
-## Example
-
-TODO: This is a basic example which shows you how to solve a common problem:
-
-```{r example, message=FALSE, warning=FALSE}
-library(MOSuite)
-## basic example code
-```
--->
-
 ## Help & Contributing
 
 Come across a **bug**? Open an [issue](https://github.com/CCBR/MOSuite/issues) and include a minimal reproducible example.
