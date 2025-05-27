@@ -38,16 +38,6 @@ quick start tutorial. Take a look at the [reference
 documentation](https://ccbr.github.io/MOSuite/reference/index.html) for
 detailed information on each function in the package.
 
-<!--
-## Example
-&#10;TODO: This is a basic example which shows you how to solve a common problem:
-&#10;
-``` r
-library(MOSuite)
-## basic example code
-```
--->
-
 ## Help & Contributing
 
 Come across a **bug**? Open an
