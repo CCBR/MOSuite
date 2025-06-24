@@ -45,9 +45,10 @@ reference:
   - subtitle: Color selectors
     contents:
       - contains("color")
-  - title: Misc. helpers
+  - title: Misc. helpers & utilities
     contents:
       - starts_with('calc_')
+      - has_keyword('utilities')
   - title: Datasets
     contents:
       - has_keyword('data')

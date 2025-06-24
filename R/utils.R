@@ -74,6 +74,7 @@ abort_packages_not_installed <- function(...) {
 #'
 #' @returns single joined dataframe
 #' @export
+#' @keywords utilities
 #'
 #' @examples
 #'
