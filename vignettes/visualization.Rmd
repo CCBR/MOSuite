@@ -78,7 +78,6 @@ moo %<>%
     contrasts = c("B-A", "C-A", "B-C"),
     input_in_log_counts = FALSE,
     return_mean_and_sd = FALSE,
-    return_normalized_counts = TRUE,
     voom_normalization_method = "quantile",
   )
 ```
