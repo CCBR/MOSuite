@@ -103,7 +103,6 @@
 <span>    contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B-A"</span>, <span class="st">"C-A"</span>, <span class="st">"B-C"</span><span class="op">)</span>,</span>
 <span>    input_in_log_counts <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    return_mean_and_sd <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>    return_normalized_counts <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    voom_normalization_method <span class="op">=</span> <span class="st">"quantile"</span>,</span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="intro_files/figure-html/nidap_data-1.png" width="700"></p>
@@ -140,35 +139,32 @@
 <p><img src="intro_files/figure-html/nidap_data-11.png" width="700"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">moo_nidap</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   GeneName   B-A_FC    C-A_FC    B-C_FC  B-A_logFC   C-A_logFC  B-C_logFC</span></span>
-<span><span class="co">#&gt; 1   Mrpl15 1.059250 -1.068725  1.132046 0.08304265 -0.09589040  0.1789331</span></span>
-<span><span class="co">#&gt; 2   Lypla1 1.370909 -1.066981  1.462734 0.45513310 -0.09353458  0.5486677</span></span>
-<span><span class="co">#&gt; 3    Tcea1 1.083699 -1.177051  1.275569 0.11596469 -0.23517638  0.3511411</span></span>
-<span><span class="co">#&gt; 4  Atp6v1h 1.311199 -1.221374  1.601465 0.39088683 -0.28850521  0.6793920</span></span>
-<span><span class="co">#&gt; 5   Rb1cc1 1.514888  1.313927  1.152946 0.59921070  0.39388567  0.2053250</span></span>
-<span><span class="co">#&gt; 6   Pcmtd1 1.112738  3.238362 -2.910264 0.15411405  1.69526432 -1.5411503</span></span>
-<span><span class="co">#&gt;   B-A_tstat  C-A_tstat  B-C_tstat  B-A_pval    C-A_pval   B-C_pval B-A_adjpval</span></span>
-<span><span class="co">#&gt; 1 0.2377167 -0.2897955  0.5285947 0.8162052 0.777035116 0.60695058   0.9682636</span></span>
-<span><span class="co">#&gt; 2 1.1301522 -0.2379598  1.3910079 0.2810081 0.816021040 0.19006353   0.7797612</span></span>
-<span><span class="co">#&gt; 3 0.3657617 -0.7602905  1.1281746 0.7210585 0.462100568 0.28180907   0.9500109</span></span>
-<span><span class="co">#&gt; 4 1.1241780 -0.8324070  1.9865449 0.2834330 0.421815393 0.07085778   0.7825194</span></span>
-<span><span class="co">#&gt; 5 1.3095182  0.9073581  0.4843119 0.2154459 0.382492765 0.63708764   0.7187843</span></span>
-<span><span class="co">#&gt; 6 0.2497788  3.4021010 -2.9536960 0.8070821 0.005417489 0.01233497   0.9663212</span></span>
-<span><span class="co">#&gt;   C-A_adjpval B-C_adjpval       A1       A2       A3       B1       B2       B3</span></span>
-<span><span class="co">#&gt; 1  0.89204033   0.8355016 6.790471 6.700108 6.640742 6.224241 6.381441 7.022469</span></span>
-<span><span class="co">#&gt; 2  0.91228196   0.4871490 7.044587 6.781339 6.525757 6.468469 6.570792 7.588399</span></span>
-<span><span class="co">#&gt; 3  0.69160897   0.5893629 6.933534 7.324339 7.127986 7.476012 7.329584 7.107831</span></span>
-<span><span class="co">#&gt; 4  0.65837683   0.3168579 6.507046 7.261517 7.002701 7.311825 7.520832 7.297114</span></span>
-<span><span class="co">#&gt; 5  0.62547476   0.8518020 5.854326 6.764199 6.745353 5.748975 7.105729 7.171486</span></span>
-<span><span class="co">#&gt; 6  0.05722644   0.1411803 6.126888 6.216408 4.486891 5.239345 4.811866 6.123205</span></span>
-<span><span class="co">#&gt;         C1       C2       C3</span></span>
-<span><span class="co">#&gt; 1 6.017919 7.030723 6.596843</span></span>
-<span><span class="co">#&gt; 2 5.918805 6.430298 7.246364</span></span>
-<span><span class="co">#&gt; 3 7.189263 6.187955 7.195633</span></span>
-<span><span class="co">#&gt; 4 7.217828 6.670645 6.013050</span></span>
-<span><span class="co">#&gt; 5 5.563335 7.190990 7.427213</span></span>
-<span><span class="co">#&gt; 6 6.721852 7.242167 7.333287</span></span></code></pre></div>
+<span><span class="va">moo_nidap</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/join_dfs.html">join_dfs</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
+<span><span class="co">#&gt;   GeneName   B-A_FC  B-A_logFC B-A_tstat  B-A_pval B-A_adjpval    C-A_FC</span></span>
+<span><span class="co">#&gt; 1   Mrpl15 1.059250 0.08304265 0.2377167 0.8162052   0.9682636 -1.068725</span></span>
+<span><span class="co">#&gt; 2   Lypla1 1.370909 0.45513310 1.1301522 0.2810081   0.7797612 -1.066981</span></span>
+<span><span class="co">#&gt; 3    Tcea1 1.083699 0.11596469 0.3657617 0.7210585   0.9500109 -1.177051</span></span>
+<span><span class="co">#&gt; 4  Atp6v1h 1.311199 0.39088683 1.1241780 0.2834330   0.7825194 -1.221374</span></span>
+<span><span class="co">#&gt; 5   Rb1cc1 1.514888 0.59921070 1.3095182 0.2154459   0.7187843  1.313927</span></span>
+<span><span class="co">#&gt; 6   Pcmtd1 1.112738 0.15411405 0.2497788 0.8070821   0.9663212  3.238362</span></span>
+<span><span class="co">#&gt;     C-A_logFC  C-A_tstat    C-A_pval C-A_adjpval    B-C_FC  B-C_logFC</span></span>
+<span><span class="co">#&gt; 1 -0.09589040 -0.2897955 0.777035116  0.89204033  1.132046  0.1789331</span></span>
+<span><span class="co">#&gt; 2 -0.09353458 -0.2379598 0.816021040  0.91228196  1.462734  0.5486677</span></span>
+<span><span class="co">#&gt; 3 -0.23517638 -0.7602905 0.462100568  0.69160897  1.275569  0.3511411</span></span>
+<span><span class="co">#&gt; 4 -0.28850521 -0.8324070 0.421815393  0.65837683  1.601465  0.6793920</span></span>
+<span><span class="co">#&gt; 5  0.39388567  0.9073581 0.382492765  0.62547476  1.152946  0.2053250</span></span>
+<span><span class="co">#&gt; 6  1.69526432  3.4021010 0.005417489  0.05722644 -2.910264 -1.5411503</span></span>
+<span><span class="co">#&gt;    B-C_tstat   B-C_pval B-C_adjpval</span></span>
+<span><span class="co">#&gt; 1  0.5285947 0.60695058   0.8355016</span></span>
+<span><span class="co">#&gt; 2  1.3910079 0.19006353   0.4871490</span></span>
+<span><span class="co">#&gt; 3  1.1281746 0.28180907   0.5893629</span></span>
+<span><span class="co">#&gt; 4  1.9865449 0.07085778   0.3168579</span></span>
+<span><span class="co">#&gt; 5  0.4843119 0.63708764   0.8518020</span></span>
+<span><span class="co">#&gt; 6 -2.9536960 0.01233497   0.1411803</span></span></code></pre></div>
   </main>
 </div>
 
