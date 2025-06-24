@@ -49,8 +49,7 @@ test_that("E2E workflow succeeds for NIDAP data", {
       contrast_colname = c("Group"),
       contrasts = c("B-A", "C-A", "B-C"),
       input_in_log_counts = FALSE,
-      return_mean_and_sd = FALSE,
-      return_normalized_counts = TRUE,
+      return_mean_and_sd = TRUE,
       voom_normalization_method = "quantile",
     ))
 })

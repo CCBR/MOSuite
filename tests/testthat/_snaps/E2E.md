@@ -53,8 +53,8 @@
         diff_counts(count_type = "filt", sub_count_type = NULL, sample_id_colname = "Sample",
           feature_id_colname = "GeneName", covariates_colnames = c("Group", "Batch"),
           contrast_colname = c("Group"), contrasts = c("B-A", "C-A", "B-C"),
-          input_in_log_counts = FALSE, return_mean_and_sd = FALSE,
-          return_normalized_counts = TRUE, voom_normalization_method = "quantile", )
+          input_in_log_counts = FALSE, return_mean_and_sd = TRUE,
+          voom_normalization_method = "quantile", )
     Message
       * cleaning raw counts
       Not able to identify multiple id's in GeneName
@@ -80,5 +80,5 @@
       Number of samples after batch correction: 10
       * differential counts
       Setting first column of `counts` as gene annotation.
-      Total number of genes included: 7943
+      Total number of genes included: 7942
 

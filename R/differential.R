@@ -14,7 +14,6 @@
 #' @param contrasts Specify each contrast in the format group1-group2, e.g. treated-control
 #' @param covariates_colnames Columns to be used as covariates in linear modeling. Must include column from "Contrast Variable". Most commonly your covariate will be group and batch (if you have different batches in your data).
 #' @param return_mean_and_sd if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for contrast(s)
-#' @param return_normalized_counts if TRUE, return normalized counts for samples included in the limma model
 #'
 #' @returns `multiOmicDataSet` with `diff` added to the `analyses` slot (i.e. `moo@analyses$diff`)
 #' @export
@@ -46,18 +45,20 @@ diff_counts <- function(moo,
                         sample_id_colname = NULL,
                         feature_id_colname = NULL,
                         samples_to_include = NULL,
-                        covariates_colnames = c("Group", "Batch"), # TODO better defaults for covariates & contrasts
-                        contrast_colname = c("Group"),
-                        contrasts = c("B-A", "C-A", "B-C"),
+                        covariates_colnames = NULL,
+                        contrast_colname = NULL,
+                        contrasts = NULL,
                         input_in_log_counts = FALSE,
                         return_mean_and_sd = FALSE,
-                        return_normalized_counts = TRUE,
+                        # return_normalized_counts = FALSE,
                         voom_normalization_method = "quantile",
                         print_plots = options::opt("print_plots"),
                         save_plots = options::opt("save_plots"),
                         plots_subdir = "diff") {
-  Sample <- group <- y <-
-    sample_metadata <- moo@sample_meta
+  Sample <- group <- y <- NULL
+  return_normalized_counts <- FALSE
+  sample_metadata <- moo@sample_meta
+  message(glue::glue("* differential counts"))
   # select correct counts matrix
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
@@ -79,7 +80,16 @@ diff_counts <- function(moo,
     }
     counts_dat <- moo@counts[[count_type]][[sub_count_type]]
   }
-  message(glue::glue("* differential counts"))
+  if (is.null(covariates_colnames)) {
+    stop("covariates_colnames vector cannot be NULL")
+  }
+  if (is.null(contrast_colname)) {
+    stop("contrast_colname cannot be NULL")
+  }
+  if (is.null(contrasts)) {
+    stop("contrasts vector cannot be NULL")
+  }
+
   # TODO support tibbles
   counts_dat %<>% as.data.frame()
 
@@ -332,7 +342,23 @@ diff_counts <- function(moo,
     print_plots = print_plots, save_plots = save_plots
   )
 
-  moo@analyses[["diff"]] <- finalres
+  df_list <- contrasts %>% purrr::map(\(contrast) {
+    finalres %>%
+      dplyr::select(
+        dplyr::all_of(feature_id_colname),
+        purrr::map(contrast %>% stringr::str_split("-") %>% unlist() %>% paste0(., "_"),
+          dplyr::starts_with,
+          vars = colnames(.)
+        ) %>%
+          unlist(),
+        dplyr::all_of(dplyr::starts_with(contrast))
+      ) %>%
+      dplyr::rename_with(~ gsub(paste0(contrast, "_"), "", .x))
+  })
+
+  names(df_list) <- contrasts
+
+  moo@analyses[["diff"]] <- df_list
   return(moo)
 }
 
