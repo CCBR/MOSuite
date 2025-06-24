@@ -6,7 +6,7 @@
 \title{Differential gene expression analysis for the NIDAP test dataset.
 The result of running \code{diff_counts()} on \code{nidap_filtered_counts}.}
 \format{
-An object of class \code{data.frame} with 7943 rows and 25 columns.
+An object of class \code{list} of length 3.
 }
 \usage{
 nidap_deg_analysis_2
