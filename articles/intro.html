@@ -104,7 +104,8 @@
 <span>    input_in_log_counts <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    return_mean_and_sd <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    voom_normalization_method <span class="op">=</span> <span class="st">"quantile"</span>,</span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/filter_diff.html">filter_diff</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="intro_files/figure-html/nidap_data-1.png" width="700"></p>
 <pre><code><span><span class="co">#&gt; * cleaning raw counts</span></span>
 <span><span class="co">#&gt; Not able to identify multiple id's in GeneName</span></span>
@@ -137,10 +138,16 @@
 <span><span class="co">#&gt; Total number of genes included: 7943</span></span>
 <span><span class="co">#&gt; `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</span></span></code></pre>
 <p><img src="intro_files/figure-html/nidap_data-11.png" width="700"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
+<span><span class="co">#&gt; * filtering differential features</span></span>
+<span><span class="co">#&gt; Total number of genes selected with adjpval &lt; 0.05 and | logFC | ≥ 1 is</span></span>
+<span><span class="co">#&gt; sum(selgenes)</span></span></code></pre>
+<p><img src="intro_files/figure-html/nidap_data-12.png" width="700"></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">moo_nidap</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/join_dfs.html">join_dfs</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/join_dfs_wide.html">join_dfs_wide</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
@@ -164,7 +171,30 @@
 <span><span class="co">#&gt; 3  1.1281746 0.28180907   0.5893629</span></span>
 <span><span class="co">#&gt; 4  1.9865449 0.07085778   0.3168579</span></span>
 <span><span class="co">#&gt; 5  0.4843119 0.63708764   0.8518020</span></span>
-<span><span class="co">#&gt; 6 -2.9536960 0.01233497   0.1411803</span></span></code></pre></div>
+<span><span class="co">#&gt; 6 -2.9536960 0.01233497   0.1411803</span></span>
+<span></span>
+<span><span class="va">moo_nidap</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff_filt</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   GeneName B-A_FC B-A_logFC B-A_tstat B-A_pval B-A_adjpval C-A_FC C-A_logFC</span></span>
+<span><span class="co">#&gt; 1     Rrs1  -2.06    -1.040    -2.860   0.0147       0.276  -2.71     -1.44</span></span>
+<span><span class="co">#&gt; 2     Mcm3  -1.45    -0.539    -1.870   0.0869       0.544  -2.45     -1.29</span></span>
+<span><span class="co">#&gt; 3   Ogfrl1   1.07     0.102     0.292   0.7750       0.960  -3.78     -1.92</span></span>
+<span><span class="co">#&gt; 4    Smap1   2.96     1.570     2.010   0.0684       0.499   5.68      2.51</span></span>
+<span><span class="co">#&gt; 5  Plekhb2  -1.24    -0.312    -1.100   0.2950       0.789   2.69      1.43</span></span>
+<span><span class="co">#&gt; 6   Il18r1   2.41     1.270     0.706   0.4940       0.875  36.40      5.19</span></span>
+<span><span class="co">#&gt;   C-A_tstat C-A_pval C-A_adjpval B-C_FC B-C_logFC B-C_tstat B-C_pval</span></span>
+<span><span class="co">#&gt; 1     -3.83 2.48e-03     0.03680   1.32     0.399     0.941 3.66e-01</span></span>
+<span><span class="co">#&gt; 2     -4.33 1.03e-03     0.02240   1.69     0.755     2.380 3.53e-02</span></span>
+<span><span class="co">#&gt; 3     -4.04 1.71e-03     0.03030   4.05     2.020     4.030 1.76e-03</span></span>
+<span><span class="co">#&gt; 4      3.59 3.82e-03     0.04700  -1.92    -0.938    -1.750 1.07e-01</span></span>
+<span><span class="co">#&gt; 5      5.99 6.94e-05     0.00463  -3.34    -1.740    -6.980 1.66e-05</span></span>
+<span><span class="co">#&gt; 6      3.13 8.86e-03     0.07640 -15.10    -3.920    -4.230 1.23e-03</span></span>
+<span><span class="co">#&gt;   B-C_adjpval</span></span>
+<span><span class="co">#&gt; 1      0.6660</span></span>
+<span><span class="co">#&gt; 2      0.2300</span></span>
+<span><span class="co">#&gt; 3      0.0550</span></span>
+<span><span class="co">#&gt; 4      0.3780</span></span>
+<span><span class="co">#&gt; 5      0.0033</span></span>
+<span><span class="co">#&gt; 6      0.0455</span></span></code></pre></div>
   </main>
 </div>
 
