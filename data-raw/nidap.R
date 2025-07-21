@@ -80,5 +80,8 @@ moo <- multiOmicDataSet(
 nidap_deg_analysis_2 <- moo@analyses$diff
 usethis::use_data(nidap_deg_analysis_2, overwrite = TRUE)
 
+nidap_deg_gene_list <- readr::read_csv(system.file("extdata", "nidap", "DEG_Gene_List.csv.gz", package = "MOSuite"))
+usethis::use_data(nidap_deg_gene_list, overwrite = TRUE)
+
 ## re-compress Rda files
 # tools::resaveRdaFiles('data')

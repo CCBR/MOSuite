@@ -432,6 +432,7 @@ plot_mean_variance <- function(voom_elist) {
 #'
 #' Outputs dataset of significant genes from DEG table; filters genes based on statistical significance (p-value or adjusted p-value) and change (fold change, log2 fold change, or t-statistic); in addition allows for selection of DEG estimates and for sub-setting of contrasts and groups included in the output gene list.
 filter_diff <- function(DEGAnalysis) {
+  # from NIDAP DEG_Gene_List template
   ## This function filters DEG table
 
   ## --------- ##

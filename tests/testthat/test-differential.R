@@ -129,3 +129,7 @@ test_that("diff_counts errors", {
     "sub_count_type DoesNotExist is not in"
   )
 })
+
+test_that("filter_diff works for NIDAP", {
+  expect_equal(nidap_deg_analysis %>% filter_diff(), nidap_deg_gene_list)
+})
