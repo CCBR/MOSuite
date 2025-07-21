@@ -131,5 +131,39 @@ test_that("diff_counts errors", {
 })
 
 test_that("filter_diff works for NIDAP", {
-  expect_equal(nidap_deg_analysis %>% filter_diff(), nidap_deg_gene_list)
+  moo <- moo_nidap %>%
+    diff_counts(
+      count_type = "filt",
+      sub_count_type = NULL,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      covariates_colnames = c("Group", "Batch"),
+      contrast_colname = c("Group"),
+      contrasts = c("B-A", "C-A", "B-C"),
+      voom_normalization_method = "quantile",
+    ) %>%
+    filter_diff(
+      significance_column = "adjpval",
+      significance_cutoff = 0.05,
+      change_column = "logFC",
+      change_cutoff = 1,
+      filtering_mode = "any",
+      include_estimates = c("FC", "logFC", "tstat", "pval", "adjpval"),
+      round_estimates = TRUE,
+      rounding_decimal_for_percent_cells = 0,
+      contrast_filter = "none",
+      contrasts = c(),
+      groups = c(),
+      groups_filter = "none",
+      label_font_size = 6,
+      label_distance = 1,
+      y_axis_expansion = 0.08,
+      fill_colors = c("steelblue1", "whitesmoke"),
+      pie_chart_in_3d = TRUE,
+      bar_width = 0.4,
+      draw_bar_border = TRUE,
+      plot_type = "bar",
+      plot_titles_fontsize = 12
+    )
+  expect_equal(moo@analyses$diff_filt, nidap_deg_gene_list)
 })

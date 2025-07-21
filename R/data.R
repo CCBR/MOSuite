@@ -50,3 +50,7 @@
 #' The result of running `diff_counts()` on `nidap_filtered_counts`.
 #' @keywords data
 "nidap_deg_analysis_2"
+
+#' List of differentially expressed genes from the NIDAP test dataset using
+#' default parameters with `filter_diff()`.
+"nidap_deg_gene_list"

@@ -129,6 +129,7 @@ join_dfs_wide <- function(df_list, join_fn = dplyr::left_join) {
 #'
 bind_dfs_long <- function(df_list,
                           outcolname = contrast) {
+  contrast <- NULL # data variable
   if (!inherits(df_list, "list")) {
     stop(glue::glue("df_list must be a named list. class: {class(df_list)}"))
   }
