@@ -17,6 +17,7 @@ This is the first release of MOSuite 🎉
 - `normalize_counts()` (#82)
 - `batch_correct_counts()` (#87)
 - `diff_counts()` (#102)
+- `filter_diff()` (#110)
 
 ### visualization
 

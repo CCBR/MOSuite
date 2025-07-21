@@ -6,6 +6,7 @@
 \alias{\%>\%}
 \alias{\%<>\%}
 \alias{:=}
+\alias{!!}
 \alias{.data}
 \title{dplyr pipe}
 \keyword{internal}
@@ -18,6 +19,6 @@ below to see their documentation.
 
   \item{magrittr}{\code{\link[magrittr:compound]{\%<>\%}}}
 
-  \item{rlang}{\code{\link[rlang:dyn-dots]{:=}}, \code{\link[rlang:dot-data]{.data}}}
+  \item{rlang}{\code{\link[rlang:dyn-dots]{:=}}, \code{\link[rlang:injection-operator]{!!}}, \code{\link[rlang:dot-data]{.data}}}
 }}
 

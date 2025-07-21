@@ -61,6 +61,12 @@ moo %<>%
     covariates_colnames = "condition",
     contrast_colname = "condition",
     contrasts = c("knockout-wildtype")
+  ) %>%
+  filter_diff(
+    significance_cutoff = 0.05,
+    significance_column = "adjpval",
+    change_column = "logFC",
+    change_cutoff = 1
   )
 
 moo@counts$norm$voom %>% head()

@@ -69,7 +69,7 @@ moo %<>%
 
 ### differential expression
 
-```{r}
+```{r diff_counts}
 moo %<>%
   diff_counts(
     count_type = "filt",
@@ -80,6 +80,11 @@ moo %<>%
     return_mean_and_sd = FALSE,
     voom_normalization_method = "quantile",
   )
+```
+### filter differential features
+
+```{r filter_diff}
+moo %<>% filter_diff()
 ```
 
 ## Customize plots

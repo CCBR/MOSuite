@@ -12,10 +12,10 @@ bind_dfs_long(df_list, outcolname = contrast)
 \item{outcolname}{column name in output dataframe for the names from the named list}
 }
 \value{
-long dataframe with new column \code{outcolname}
+long dataframe with new column \code{outcolname} from named list
 }
 \description{
-The first column is assumed to be shared by all dataframes
+The dataframes must have all of the same columns
 }
 \examples{
 
