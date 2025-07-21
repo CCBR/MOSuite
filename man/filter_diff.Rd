@@ -109,7 +109,7 @@ moo <- multiOmicDataSet(
     contrasts = c("B-A", "C-A", "B-C"),
     voom_normalization_method = "quantile",
   ) \%>\%
-  filter_diff
+  filter_diff()
 head(moo@analyses$diff_filt)
 }
 \seealso{

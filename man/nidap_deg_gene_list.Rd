@@ -15,4 +15,4 @@ nidap_deg_gene_list
 List of differentially expressed genes from the NIDAP test dataset using
 default parameters with \code{filter_diff()}.
 }
-\keyword{datasets}
+\keyword{data}
