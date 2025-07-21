@@ -82,7 +82,9 @@ head(moo@counts$clean)
 \seealso{
 Other moo methods: 
 \code{\link{batch_correct_counts}()},
+\code{\link{diff_counts}()},
 \code{\link{filter_counts}()},
+\code{\link{filter_diff}()},
 \code{\link{normalize_counts}()},
 \code{\link{plot_corr_heatmap}()},
 \code{\link{plot_expr_heatmap}()},

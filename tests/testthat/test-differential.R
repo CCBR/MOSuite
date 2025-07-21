@@ -32,10 +32,10 @@ test_that("differential analysis works for NIDAP", {
   # equal_dfs(x, y)
 
   expect_equal(
-    deg_moo@analyses$diff %>% join_dfs() %>%
+    deg_moo@analyses$diff %>% join_dfs_wide() %>%
       dplyr::arrange(Gene) %>%
       dplyr::select(order(colnames(.))),
-    nidap_deg_analysis_2 %>% join_dfs() %>%
+    nidap_deg_analysis_2 %>% join_dfs_wide() %>%
       dplyr::arrange(Gene) %>%
       dplyr::select(order(colnames(.)))
   )
@@ -128,4 +128,42 @@ test_that("diff_counts errors", {
     moo_nidap %>% diff_counts(count_type = "norm", sub_count_type = "DoesNotExist"),
     "sub_count_type DoesNotExist is not in"
   )
+})
+
+test_that("filter_diff works for NIDAP", {
+  moo <- moo_nidap %>%
+    diff_counts(
+      count_type = "filt",
+      sub_count_type = NULL,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      covariates_colnames = c("Group", "Batch"),
+      contrast_colname = c("Group"),
+      contrasts = c("B-A", "C-A", "B-C"),
+      voom_normalization_method = "quantile",
+    ) %>%
+    filter_diff(
+      significance_column = "adjpval",
+      significance_cutoff = 0.05,
+      change_column = "logFC",
+      change_cutoff = 1,
+      filtering_mode = "any",
+      include_estimates = c("FC", "logFC", "tstat", "pval", "adjpval"),
+      round_estimates = TRUE,
+      rounding_decimal_for_percent_cells = 0,
+      contrast_filter = "none",
+      contrasts = c(),
+      groups = c(),
+      groups_filter = "none",
+      label_font_size = 6,
+      label_distance = 1,
+      y_axis_expansion = 0.08,
+      fill_colors = c("steelblue1", "whitesmoke"),
+      pie_chart_in_3d = TRUE,
+      bar_width = 0.4,
+      draw_bar_border = TRUE,
+      plot_type = "bar",
+      plot_titles_fontsize = 12
+    )
+  expect_equal(moo@analyses$diff_filt, nidap_deg_gene_list)
 })

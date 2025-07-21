@@ -55,6 +55,7 @@ Suggests:
     docopt,
     knitr,
     lobstr,
+    plotrix,
     RColorBrewer,
     readr,
     rmarkdown,

@@ -13,6 +13,11 @@ magrittr::`%<>%`
 #' @export
 rlang::`:=`
 
+#' bang-bang
+#' @importFrom rlang !!
+#' @export
+rlang::`!!`
+
 #' rlang data pronoun
 #' @importFrom rlang .data
 #' @export
