@@ -65,14 +65,14 @@ abort_packages_not_installed <- function(...) {
   }
 }
 
-#' Join dataframes in named list
+#' Join dataframes in named list to wide dataframe
 #'
 #' The first column is assumed to be shared by all dataframes
 #'
 #' @param df_list named list of dataframes
 #' @param join_fn join function to use (Default: `dplyr::left_join`)
 #'
-#' @returns single joined dataframe
+#' @returns wide dataframe
 #' @export
 #' @keywords utilities
 #'
@@ -82,9 +82,9 @@ abort_packages_not_installed <- function(...) {
 #'   "a_vs_b" = data.frame(id = c("a1", "b2", "c3"), score = runif(3)),
 #'   "b_vs_c" = data.frame(id = c("a1", "b2", "c3"), score = rnorm(3))
 #' )
-#' dfs %>% join_dfs()
+#' dfs %>% join_dfs_wide()
 #'
-join_dfs <- function(df_list, join_fn = dplyr::left_join) {
+join_dfs_wide <- function(df_list, join_fn = dplyr::left_join) {
   if (!inherits(df_list, "list")) {
     stop(glue::glue("df_list must be a named list. class: {class(df_list)}"))
   }
@@ -105,5 +105,44 @@ join_dfs <- function(df_list, join_fn = dplyr::left_join) {
       )
   }) %>%
     purrr::reduce(join_fn)
+  return(dat_joined)
+}
+
+#' Bind dataframes in named list to long dataframe
+#'
+#' The dataframes must have all of the same columns
+#'
+#' @param df_list named list of dataframes
+#' @param outcolname column name in output dataframe for the names from the named list
+#'
+#' @returns long dataframe with new column `outcolname` from named list
+#' @export
+#' @keywords utilities
+#'
+#' @examples
+#'
+#' dfs <- list(
+#'   "a_vs_b" = data.frame(id = c("a1", "b2", "c3"), score = runif(3)),
+#'   "b_vs_c" = data.frame(id = c("a1", "b2", "c3"), score = rnorm(3))
+#' )
+#' dfs %>% bind_dfs_long()
+#'
+bind_dfs_long <- function(df_list,
+                          outcolname = contrast) {
+  if (!inherits(df_list, "list")) {
+    stop(glue::glue("df_list must be a named list. class: {class(df_list)}"))
+  }
+  if (is.null(names(df_list))) {
+    stop(glue::glue("df_list does not have names"))
+  }
+  # use first column as start
+  common_col <- df_list[[1]] %>%
+    dplyr::select(1) %>%
+    colnames()
+  dat_joined <- purrr::map(names(df_list), \(df_name) {
+    df_list[[df_name]] %>%
+      dplyr::mutate({{ outcolname }} := df_name, .after = common_col)
+  }) %>%
+    dplyr::bind_rows()
   return(dat_joined)
 }

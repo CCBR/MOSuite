@@ -109,9 +109,25 @@ p <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
 print(p)
 ```
 
-### Enhanced Volcano
+### Volcano
 
-TODO
+#### Summary
+
+```{r volcano_enhanced}
+moo@analyses$diff %>%
+  join_dfs() %>%
+  plot_volcano_summary()
+```
+
+#### Enhanced
+
+```{r volcano_enhanced}
+moo@analyses$diff %>%
+  join_dfs() %>%
+  dplyr::rename(Gene = GeneName) %>%
+  plot_volcano_enhanced()
+```
+
 
 ### Venn Diagram
 
