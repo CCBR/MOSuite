@@ -457,7 +457,7 @@ filter_diff <- function(DEGAnalysis) {
   deg_table <- DEGAnalysis
 
   # Basic parameters
-  gene_names_column <- "Gene"
+  feature_id_colname <- "Gene"
   significance_column <- "adjpval"
   significance_cutoff <- 0.05
   change_column <- "logFC"
@@ -512,7 +512,7 @@ filter_diff <- function(DEGAnalysis) {
   estimates <- paste0("_", include_estimates)
   signif <- paste0("_", significance_column)
   change <- paste0("_", change_column)
-  deg_table <- deg_table %>% dplyr::select(gene_names_column, ends_with(c(estimates, signif, change)))
+  deg_table <- deg_table %>% dplyr::select(feature_id_colname, ends_with(c(estimates, signif, change)))
 
 
   contrasts_name <- deg_table %>%
@@ -542,17 +542,17 @@ filter_diff <- function(DEGAnalysis) {
 
   ### PH: START Subset DEG table
 
-  deg_table <- deg_table %>% dplyr::select(gene_names_column, starts_with(c(groups_name, contrasts_name)))
+  deg_table <- deg_table %>% dplyr::select(feature_id_colname, starts_with(c(groups_name, contrasts_name)))
 
 
   ## select filter variables
   datsignif <- deg_table %>%
-    dplyr::select(gene_names_column, ends_with(signif)) %>%
-    tibble::column_to_rownames(gene_names_column)
+    dplyr::select(feature_id_colname, ends_with(signif)) %>%
+    tibble::column_to_rownames(feature_id_colname)
   datchange <- deg_table %>%
-    dplyr::select(gene_names_column, ends_with(change)) %>%
-    tibble::column_to_rownames(gene_names_column)
-  genes <- deg_table[, gene_names_column]
+    dplyr::select(feature_id_colname, ends_with(change)) %>%
+    tibble::column_to_rownames(feature_id_colname)
+  genes <- deg_table[, feature_id_colname]
 
   ## filter genes
   significant <- datsignif <= significance_cutoff
@@ -572,7 +572,7 @@ filter_diff <- function(DEGAnalysis) {
 
 
   ## .output dataset
-  out <- deg_table %>% dplyr::filter(get(gene_names_column) %in% select_genes)
+  out <- deg_table %>% dplyr::filter(get(feature_id_colname) %in% select_genes)
   if (round_estimates) {
     out <- out %>% mutate_if(is.numeric, ~ signif(., 3))
   }

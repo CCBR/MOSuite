@@ -32,10 +32,10 @@ test_that("differential analysis works for NIDAP", {
   # equal_dfs(x, y)
 
   expect_equal(
-    deg_moo@analyses$diff %>% join_dfs() %>%
+    deg_moo@analyses$diff %>% join_dfs_wide() %>%
       dplyr::arrange(Gene) %>%
       dplyr::select(order(colnames(.))),
-    nidap_deg_analysis_2 %>% join_dfs() %>%
+    nidap_deg_analysis_2 %>% join_dfs_wide() %>%
       dplyr::arrange(Gene) %>%
       dplyr::select(order(colnames(.)))
   )
