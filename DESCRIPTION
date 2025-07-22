@@ -11,10 +11,10 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-8734-9875")),
     person("CCR Collaborative Bioinformatics Resource", role = "cph")
   )
-Description: Multi-Omics Suite (MOSuite) provides a suite of functions to
-    clean, filter, batch-correct, normalize, visualize, and perform
-    differential analysis. While the package is designed for differential
-    RNA-seq analysis and multi-omics datasets, it can be used for any data
+Description: Multi-Omics Suite provides a suite of functions to clean,
+    filter, batch-correct, normalize, visualize, and perform differential
+    analysis. While the package is designed for differential RNA-seq
+    analysis and multi-omics datasets, it can be used for any data
     represented in a counts table. See the website for more information,
     documentation, and examples: <https://ccbr.github.io/MOSuite/>
 License: MIT + file LICENSE
@@ -35,7 +35,6 @@ Imports:
     matrixStats,
     methods,
     options,
-    patchwork,
     plotly,
     purrr,
     reshape2,
@@ -55,8 +54,10 @@ Suggests:
     dendsort,
     docopt,
     EnhancedVolcano,
+    gridExtra,
     knitr,
     lobstr,
+    patchwork,
     plotrix,
     RColorBrewer,
     readr,
@@ -65,8 +66,10 @@ Suggests:
     styler,
     sva,
     testthat (>= 3.0.0),
+    UpSetR,
     usethis,
-    V8
+    V8,
+    VennDiagram
 VignetteBuilder:
     knitr
 biocViews:

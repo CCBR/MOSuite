@@ -110,18 +110,20 @@ plot_pca(moo@counts$batch,
 ### Expression Heatmap
 
 ```{r expr_heatmap}
-p <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
-print(p)
+heatmap_plot <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
+print(heatmap_plot)
 ```
 
 ### Volcano
 
-#### Summary
+= #### Summary
 
 ```{r volcano_summary}
 dat_volcano_summary <- moo@analyses$diff %>%
   join_dfs_wide() %>%
   plot_volcano_summary()
+
+head(dat_volcano_summary)
 ```
 
 #### Enhanced
@@ -135,4 +137,7 @@ dat_volcano_enhanced <- moo@analyses$diff %>%
 
 ### Venn Diagram
 
-TODO
+```{r venn_diagram}
+venn_dat <- dat_volcano_summary %>% plot_venn_diagram()
+head(venn_dat)
+```

@@ -27,6 +27,7 @@ This is the first release of MOSuite 🎉
 - `plot_pca()` (#88, #96)
 - `plot_volcano_enhanced()` (#112)
 - `plot_volcano_summary()` (#112)
+- `plot_venn_diagram()` (#111)
 
 ## vignettes
 

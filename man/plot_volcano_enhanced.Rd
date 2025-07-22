@@ -101,5 +101,9 @@ plot_volcano_enhanced(
 \description{
 Uses \href{https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html}{Bioconductor's Enhanced Volcano Plot}.
 }
+\examples{
+plot_volcano_enhanced(nidap_deg_analysis, print_plots = TRUE)
+
+}
 \keyword{plotters}
 \keyword{volcano}

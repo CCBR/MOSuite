@@ -96,5 +96,11 @@ usethis::use_data(nidap_deg_analysis_2, overwrite = TRUE)
 nidap_deg_gene_list <- moo@analyses$diff_filt
 usethis::use_data(nidap_deg_gene_list, overwrite = TRUE)
 
+nidap_volcano_summary_dat <- readr::read_csv(system.file("extdata", "nidap", "Volcano_Summary.csv.gz", package = "MOSuite"))
+usethis::use_data(nidap_volcano_summary_dat, overwrite = TRUE)
+
+nidap_venn_diagram_dat <- readr::read_csv(system.file("extdata", "nidap", "Venn_Diagram.csv.gz", package = "MOSuite"))
+usethis::use_data(nidap_venn_diagram_dat, overwrite = TRUE)
+
 ## re-compress Rda files
 # tools::resaveRdaFiles('data')

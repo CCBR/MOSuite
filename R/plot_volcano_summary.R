@@ -44,6 +44,10 @@
 #'
 #' @export
 #' @keywords plotters volcano
+#'
+#' @examples
+#' plot_volcano_summary(nidap_deg_analysis, print_plots = TRUE)
+#'
 plot_volcano_summary <- function(moo_diff,
                                  feature_id_colname = NULL,
                                  signif_colname = "pval",
@@ -88,6 +92,7 @@ plot_volcano_summary <- function(moo_diff,
                                  print_plots = options::opt("print_plots"),
                                  save_plots = options::opt("save_plots"),
                                  plots_subdir = "figures") {
+  abort_packages_not_installed("patchwork")
   diff_dat <- as.data.frame(moo_diff)
 
   ## -------------------------------- ##

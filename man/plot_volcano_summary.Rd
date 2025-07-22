@@ -147,5 +147,9 @@ dataset includes one row for each significant gene in each contrast, and
 contains columns from the DEG analysis of that contrast as well as columns
 useful to the Venn diagram template downstream.
 }
+\examples{
+plot_volcano_summary(nidap_deg_analysis, print_plots = TRUE)
+
+}
 \keyword{plotters}
 \keyword{volcano}
