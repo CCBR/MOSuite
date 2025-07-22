@@ -2,10 +2,104 @@
 % Please edit documentation in R/plot_volcano_enhanced.R
 \name{plot_volcano_enhanced}
 \alias{plot_volcano_enhanced}
-\title{Implementation of Bioconductor's Enhanced Volcano Plot (v1.6.0, https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html).}
+\title{Enhanced Volcano Plot}
 \usage{
-plot_volcano_enhanced(DEGAnalysis, feature_id_colname = NULL)
+plot_volcano_enhanced(
+  moo_diff,
+  feature_id_colname = NULL,
+  signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+  signif_threshold = 0.05,
+  change_colname = c("B-A_logFC", "B-C_logFC"),
+  change_threshold = 1,
+  value_to_sort_the_output_dataset = "p-value",
+  num_features_to_label = 30,
+  use_only_addition_labels = FALSE,
+  additional_labels = "",
+  is_red = TRUE,
+  lab_size = 4,
+  change_sig_name = "p-value",
+  change_lfc_name = "log2FC",
+  title = "Volcano Plots",
+  use_custom_lab = FALSE,
+  ylim = 0,
+  custom_xlim = "",
+  xlim_additional = 0,
+  ylim_additional = 0,
+  axis_lab_size = 24,
+  point_size = 2,
+  image_width = 3000,
+  image_height = 3000,
+  dpi = 300,
+  interactive_plots = FALSE,
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff",
+  plot_filename = "volcano_enhanced.png"
+)
+}
+\arguments{
+\item{moo_diff}{Differential expression analysis result from one or more contrasts}
+
+\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
+
+\item{signif_colname}{column name of significance values (e.g., adjusted p-values or FDR). This column will be used to determine which points are considered significant in the volcano plot.}
+
+\item{signif_threshold}{Numeric value specifying the significance cutoff for p-values (i.e. filters on \code{signif_colname})}
+
+\item{change_colname}{column name of fold change values.}
+
+\item{change_threshold}{Numeric value specifying the fold change cutoff for significance (i.e. filters on \code{change_colname})}
+
+\item{value_to_sort_the_output_dataset}{How to sort the output dataset. Options are "fold-change" or "p-value".}
+
+\item{num_features_to_label}{Number of top features/genes to label in the volcano plot. Default is 30.}
+
+\item{use_only_addition_labels}{If \code{TRUE}, only the additional labels specified in \code{additional_labels} will be used for labeling in the volcano plot, ignoring the top features.}
+
+\item{additional_labels}{comma-separated string of feature names or IDs to include in the volcano plot.}
+
+\item{is_red}{Logical. If TRUE, highlights points in red.}
+
+\item{lab_size}{Size of the labels in the volcano plot.}
+
+\item{change_sig_name}{Name for the significance column in the plot. Default is "p-value".}
+
+\item{change_lfc_name}{Name for the fold change column in the plot. Default is "log2FC".}
+
+\item{title}{Title of the plot. Default is "Volcano Plots".}
+
+\item{use_custom_lab}{If TRUE, uses custom labels for the plot.}
+
+\item{ylim}{Y-axis limits for the plot.}
+
+\item{custom_xlim}{Custom X-axis limits for the plot.}
+
+\item{xlim_additional}{Additional space to add to the X-axis limits.}
+
+\item{ylim_additional}{Additional space to add to the Y-axis limits.}
+
+\item{axis_lab_size}{Size of the axis labels.}
+
+\item{point_size}{Size of the points in the plot.}
+
+\item{image_width}{output image width in pixels - only used if save_plots is TRUE}
+
+\item{image_height}{output image height in pixels - only used if save_plots is TRUE}
+
+\item{dpi}{dots-per-inch of the output image (see \code{ggsave()}) - only used if save_plots is TRUE}
+
+\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
+
+\item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
+
+\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+
+\item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
+
+\item{plot_filename}{plot output filename - only used if save_plots is TRUE}
 }
 \description{
-Implementation of Bioconductor's Enhanced Volcano Plot (v1.6.0, https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html).
+Uses \href{https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html}{Bioconductor's Enhanced Volcano Plot}.
 }
+\keyword{plotters}
+\keyword{volcano}

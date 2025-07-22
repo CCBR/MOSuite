@@ -17,7 +17,7 @@ remove_low_count_genes(
 )
 }
 \arguments{
-\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
+\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
 \item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).}
 

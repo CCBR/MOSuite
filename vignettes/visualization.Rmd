@@ -118,18 +118,17 @@ print(p)
 
 #### Summary
 
-```{r volcano_enhanced}
-moo@analyses$diff %>%
-  join_dfs() %>%
+```{r volcano_summary}
+dat_volcano_summary <- moo@analyses$diff %>%
+  join_dfs_wide() %>%
   plot_volcano_summary()
 ```
 
 #### Enhanced
 
 ```{r volcano_enhanced}
-moo@analyses$diff %>%
-  join_dfs() %>%
-  dplyr::rename(Gene = GeneName) %>%
+dat_volcano_enhanced <- moo@analyses$diff %>%
+  join_dfs_wide() %>%
   plot_volcano_enhanced()
 ```
 

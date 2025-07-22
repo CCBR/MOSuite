@@ -1,22 +1,94 @@
-#' Volcano Plot - Summary [CCBR] (eeced39d-ed52-4b16-9847-4282971775e6): v393
+#' Volcano Plot - Summary [CC
 #' Produces one volcano plot for each tested contrast in the input DEG table.
 #'
 #' It can be sorted by either fold change, t-statistic, or p-value. The returned
 #' dataset includes one row for each significant gene in each contrast, and
 #' contains columns from the DEG analysis of that contrast as well as columns
 #' useful to the Venn diagram template downstream.
-S7::method(plot_volcano_summary, S7::class_data.frame) <- function(moo_counts,
-                                                                   feature_id_colname = NULL, ...) {
-  # image: png
-
-  ## --------- ##
-  ## Libraries ##
-  ## --------- ##
-
-  library(ggplot2)
-  library(dplyr)
-  library(ggrepel)
-  counts_dat <- as.data.frame(moo_counts)
+#'
+#' @inheritParams option_params
+#' @inheritParams plot_volcano_enhanced
+#' @inheritParams filter_counts
+#'
+#' @param add_features Add custom_gene_list To Labels. Set TRUE when you want to label a specific set of features (features) in the "custom_gene_list" parameter" IN ADDITION to the number of features you set in the "Number of Features to Label" parameter.
+#' @param label_features Select TRUE when you want to label ONLY a specific list of features(features) given in the "custom_gene_list" parameter.
+#' @param custom_gene_list Provide a list of features (comma separated) to be labeled on the volcano plot. You must toggle one of the following ON to see these labels: "Add features" or "Label Only My Feature List".
+#' @param default_label_color Set the color for the text used to add feature (gene) name labels to points.
+#' @param custom_label_color Set the color for the specific list of features (features) provided in the "Feature List" parameter.
+#' @param label_x_adj adjust position of the labels on the x-axis. Default: 0.2
+#' @param label_y_adj adjust position of the labels on the y-axis. Default: 0.2
+#' @param line_thickness Set the thickness of the lines in the plot. Default: 0.5
+#' @param label_font_size Set the font size of the labels. Default: 4
+#' @param label_font_type Set the font type of the labels. Default: 1
+#' @param displace_feature_labels Set to TRUE to displace gene labels. Default: FALSE. Set TRUE if you want to displace the feature (gene) label for a specific set of features. Make sure to use custom x- and y- limits and give sufficient space for displacement; otherwise other labels than the desired ones will appear displaced.
+#' @param custom_gene_list_special_label_displacement Provide a list of features (comma separated) for which you want special displacement of the feature label.
+#' @param special_label_displacement_x_axis Displacement of the feature label on the x-axis. Default: 2
+#' @param special_label_displacement_y_axis Displacement of the feature label on the y-axis. Default: 2
+#' @param color_of_signif_threshold_line Color of the significance threshold line. Default: "blue"
+#' @param color_of_non_significant_features Color of the non-significant features. Default: "black"
+#' @param color_of_logfold_change_threshold_line Color of the log fold change threshold line. Default: "red"
+#' @param color_of_features_meeting_only_signif_threshold Color of the features that meet only the significance threshold. Default: "lightgoldenrod2"
+#' @param color_for_features_meeting_pvalue_and_foldchange_thresholds Color of the features that meet both the p-value and fold change thresholds. Default: "red"
+#' @param flip_vplot Set to TRUE to flip the fold change values so that the volcano plot looks like a comparison was B-A. Default: FALSE
+#' @param use_default_x_axis_limit Set to TRUE to use the default x-axis limit. Default: TRUE
+#' @param x_axis_limit Custom x-axis limit. Default: c(-5, 5)
+#' @param use_default_y_axis_limit Set to TRUE to use the default y-axis limit. Default: TRUE
+#' @param y_axis_limit Custom y-axis limit. Default: c(0, 10)
+#' @param point_size Size of the points in the plot. Default: 1
+#' @param add_deg_columns Add additional columns from the DEG analysis to the output dataset. Default: FALSE
+#' @param use_default_grid_layout Set to TRUE to use the default grid layout. Default: TRUE
+#' @param number_of_rows_in_grid_layout Number of rows in the grid layout. Default: 1
+#' @param aspect_ratio Aspect ratio of the output image. Default: 4/3
+#' @param graphics_device passed to `ggsave(device)`. Default: `grDevices::png`
+#' @param plot_filename Filename for the output plot. Default: "volcano_plot.png"
+#'
+#' @export
+#' @keywords plotters volcano
+plot_volcano_summary <- function(moo_diff,
+                                 feature_id_colname = NULL,
+                                 signif_colname = "pval",
+                                 signif_threshold = 0.05,
+                                 change_threshold = 1,
+                                 value_to_sort_the_output_dataset = "t-statistic",
+                                 num_features_to_label = 30,
+                                 add_features = FALSE,
+                                 label_features = FALSE,
+                                 custom_gene_list = "",
+                                 default_label_color = "black",
+                                 custom_label_color = "green3",
+                                 label_x_adj = 0.2,
+                                 label_y_adj = 0.2,
+                                 line_thickness = 0.5,
+                                 label_font_size = 4,
+                                 label_font_type = 1,
+                                 displace_feature_labels = FALSE,
+                                 custom_gene_list_special_label_displacement = "",
+                                 special_label_displacement_x_axis = 2,
+                                 special_label_displacement_y_axis = 2,
+                                 color_of_signif_threshold_line = "blue",
+                                 color_of_non_significant_features = "black",
+                                 color_of_logfold_change_threshold_line = "red",
+                                 color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
+                                 color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
+                                 flip_vplot = FALSE,
+                                 use_default_x_axis_limit = TRUE,
+                                 x_axis_limit = 5,
+                                 use_default_y_axis_limit = TRUE,
+                                 y_axis_limit = 10,
+                                 point_size = 2,
+                                 add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
+                                 graphics_device = grDevices::png,
+                                 image_width = 15,
+                                 image_height = 15,
+                                 dpi = 300,
+                                 use_default_grid_layout = TRUE,
+                                 number_of_rows_in_grid_layout = 1,
+                                 aspect_ratio = 0,
+                                 plot_filename = "volcano.png",
+                                 print_plots = options::opt("print_plots"),
+                                 save_plots = options::opt("save_plots"),
+                                 plots_subdir = "figures") {
+  diff_dat <- as.data.frame(moo_diff)
 
   ## -------------------------------- ##
   ## User-Defined Template Parameters ##
@@ -29,88 +101,11 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(moo_counts,
 
   # Basic Parameters:
   if (is.null(feature_id_colname)) {
-    feature_id_colname <- colnames(counts_dat)[1]
-  }
-
-  stat_type <- "pval"
-  pvalue_threshold <- 0.05
-  log2fc_threshold <- 1
-
-  # Gene name label Parameters
-  value_to_sort_the_output_dataset <- "t-statistic"
-  no_genes_to_label <- 30
-  AddMyGenes <- FALSE
-  LabelMyGenes <- FALSE
-  MyGeneList <- ""
-  GeneLabelColor <- "black"
-  MyGenesLabelColor <- "green3"
-  LabelXadj <- 0.2
-  LabelYadj <- 0.2
-  LineThickness <- 0.5
-  LabelFontSize <- 4
-  LabelFontType <- 1
-  DisplaceGeneLabels <- FALSE
-  GeneListSpecialLabelDisplacement <- ""
-  SpecialLabelDisplacementXAxis <- 2
-  SpecialLabelDisplacementYAxis <- 2
-
-  # Plot Parameters
-  ColorofPValueThresholdLine <- "blue"
-  ColorofNonSignificantGenes <- "black"
-  ColorofLogFoldChangeThresholdLine <- "red"
-  ColorofGenesMeetingOnlyPValueThreshold <- "lightgoldenrod2"
-  colorforgenesmeetingpvalueandfoldchangethresholds <- "red"
-  flipVplot <- FALSE
-  UseDefaultXAxisLimit <- TRUE
-  XAxisLimit <- 5
-  UseDefaultYAxisLimit <- TRUE
-  YAxisLimit <- 10
-  PointSize <- 2
-
-  # Table Parameters:
-  add_deg_columns <- c("FC", "logFC", "tstat", "pval", "adjpval")
-
-  # Image Parameters:
-  ImageOutputFormat <- "png"
-  Usesvglite <- FALSE
-  image_width <- 15
-  image_height <- 15
-  image_resolution <- 300
-  UseDefaultGridLayout <- TRUE
-  NumberofRowsinGridLayout <- 1
-  aspect_ratio <- 0
-  graphicsFile <- "volcano.png"
-
-  ## --------------- ##
-  ## Main Code Block ##
-  ## --------------- ##
-
-  # Set Visualization parameters
-  if (Usesvglite & ((ImageOutputFormat == "svg"))) {
-    library(svglite)
-    svglite::svglite(
-      file = graphicsFile,
-      width = image_width,
-      height = image_height,
-      pointsize = 1,
-      bg = "white",
-    )
-  } else if (ImageOutputFormat == "png") {
-    png(
-      filename = graphicsFile,
-      width = image_width,
-      height = image_height,
-      units = "in",
-      pointsize = 4,
-      bg = "white",
-      res = image_resolution,
-      type = "cairo"
-    )
+    feature_id_colname <- colnames(diff_dat)[1]
   }
 
   #  Identify all contrasts in DEG output table
-  volcols <- colnames(counts_dat)
-  print(volcols)
+  volcols <- colnames(diff_dat)
   statcols <- volcols[grepl("logFC", volcols)]
   contrasts <- unique(gsub("_logFC", "", statcols))
 
@@ -120,85 +115,85 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(moo_counts,
   #  Create Volcano for each DEG comparison
   for (contrast in contrasts) {
     ### PH: START Build table for Volcano plot
-    print(paste0("Doing contrast: ", contrast))
+    message(paste0("Preparing table for contrast: ", contrast))
     lfccol <- paste0(contrast, "_logFC")
-    pvalcol <- paste0(contrast, "_", stat_type)
+    pvalcol <- paste0(contrast, "_", signif_colname)
     tstatcol <- paste0(contrast, "_", "tstat")
 
-    print(paste0("Fold change column: ", lfccol))
-    print(paste0(stat_type, " column: ", pvalcol))
+    message(paste0("Fold change column: ", lfccol))
+    message(paste0(signif_colname, " column: ", pvalcol))
 
     if (value_to_sort_the_output_dataset == "fold-change") {
-      counts_dat %>% dplyr::arrange(desc(abs(counts_dat[, lfccol]))) -> counts_dat
+      diff_dat %>% dplyr::arrange(dplyr::desc(abs(diff_dat[, lfccol]))) -> diff_dat
     } else if (value_to_sort_the_output_dataset == "p-value") {
-      counts_dat %>% dplyr::arrange(counts_dat[, pvalcol]) -> counts_dat
+      diff_dat %>% dplyr::arrange(diff_dat[, pvalcol]) -> diff_dat
     } else if (value_to_sort_the_output_dataset == "t-statistic") {
-      counts_dat %>% dplyr::arrange(desc(abs(counts_dat[, tstatcol]))) -> counts_dat
+      diff_dat %>% dplyr::arrange(dplyr::desc(abs(diff_dat[, tstatcol]))) -> diff_dat
     }
 
-    ## optional Parameter: Provide a list of genes to label on Volcano plot
-    ## work with a list of genes
-    if (AddMyGenes == T) {
-      gl <- trimws(unlist(strsplit(c(MyGeneList), ",")), which = c("both"))
-      ind <- match(gl, counts_dat$Gene) # get the indices of the listed genes
-      gene_list_ind <- c(1:no_genes_to_label, ind) # when list provided
-      color_gene_label <- c(rep(c(GeneLabelColor), no_genes_to_label), rep(c(MyGenesLabelColor), length(ind)))
-    } else if (LabelMyGenes == T) {
-      gl <- trimws(unlist(strsplit(c(MyGeneList), ",")), which = c("both")) # unpack the gene list provided by the user and remove white spaces
-      ind <- match(gl, counts_dat$Gene) # get the indices of the listed genes
-      gene_list_ind <- ind # when list provided
-      color_gene_label <- rep(c(MyGenesLabelColor), length(ind))
+    ## optional Parameter: Provide a list of features to label on Volcano plot
+    ## work with a list of features
+    if (add_features == T) {
+      gl <- trimws(unlist(strsplit(c(custom_gene_list), ",")), which = c("both"))
+      ind <- match(gl, diff_dat$Gene) # get the indices of the listed features
+      custom_gene_list_ind <- c(1:num_features_to_label, ind) # when list provided
+      color_gene_label <- c(rep(c(default_label_color), num_features_to_label), rep(c(custom_label_color), length(ind)))
+    } else if (label_features == T) {
+      gl <- trimws(unlist(strsplit(c(custom_gene_list), ",")), which = c("both")) # unpack the gene list provided by the user and remove white spaces
+      ind <- match(gl, diff_dat$Gene) # get the indices of the listed features
+      custom_gene_list_ind <- ind # when list provided
+      color_gene_label <- rep(c(custom_label_color), length(ind))
     } else {
-      if (no_genes_to_label > 0) {
-        gene_list_ind <- 1:no_genes_to_label # if no list provided label the number of genes given by the user
-        color_gene_label <- rep(c(GeneLabelColor), no_genes_to_label)
-      } else if (no_genes_to_label == 0) {
-        gene_list_ind <- 0
+      if (num_features_to_label > 0) {
+        custom_gene_list_ind <- 1:num_features_to_label # if no list provided label the number of features given by the user
+        color_gene_label <- rep(c(default_label_color), num_features_to_label)
+      } else if (num_features_to_label == 0) {
+        custom_gene_list_ind <- 0
       }
     }
 
 
     ## optional Parameter: IF DEG was set up A-B User can Flip FC values so that Volcano plot looks like comparison was B-A
     ## flip contrast section
-    indc <- which(colnames(counts_dat) == lfccol) # get the indice of the column that contains the contrast_logFC data
+    indc <- which(colnames(diff_dat) == lfccol) # get the indice of the column that contains the contrast_logFC data
 
     if (length(indc) == 0) {
-      print("Please rename the logFC column to include the contrast evaluated.")
+      message("Please rename the logFC column to include the contrast evaluated.")
     } else {
-      old_contrast <- colnames(counts_dat)[indc]
+      old_contrast <- colnames(diff_dat)[indc]
     }
     # actually flip contrast
-    if (flipVplot == T) {
+    if (flip_vplot == T) {
       # get the indice of the contrast to flip
-      indcc <- match(old_contrast, colnames(counts_dat))
+      indcc <- match(old_contrast, colnames(diff_dat))
       # create flipped contrast label
       splt1 <- strsplit(old_contrast, "_") # split by underline symbol to isolate the contrast name
       splt2 <- strsplit(splt1[[1]][1], "-") # split the contrast name in the respective components
       flipped_contrast <- paste(splt2[[1]][2], splt2[[1]][1], sep = "-") # flip contrast name
       new_contrast_label <- paste(flipped_contrast, c("logFC"), sep = "_")
       # rename contrast column to the flipped contrast
-      colnames(counts_dat)[indcc] <- new_contrast_label
+      colnames(diff_dat)[indcc] <- new_contrast_label
       # flip the contrast data around y-axis
-      counts_dat[, indcc] <- -counts_dat[indcc]
+      diff_dat[, indcc] <- -diff_dat[indcc]
     } else {
       new_contrast_label <- old_contrast
     }
 
-    filtered_genes <- counts_dat$Gene[counts_dat[, pvalcol] < pvalue_threshold & abs(counts_dat[, new_contrast_label]) > log2fc_threshold]
-    # print(filtered_genes)
-    repeated_column <- rep(contrast, length(filtered_genes))
+    filtered_features <- diff_dat$Gene[diff_dat[, pvalcol] < signif_threshold &
+      abs(diff_dat[, new_contrast_label]) > change_threshold]
+    repeated_column <- rep(contrast, length(filtered_features))
     ## If param empty, fill it with default value.
     if (length(add_deg_columns) == 0) {
       add_deg_columns <- c("FC", "logFC", "tstat", "pval", "adjpval")
     } else if (all(add_deg_columns == "none")) {
-      new_df <- data.frame(filtered_genes, repeated_column)
+      new_df <- data.frame(filtered_features, repeated_column)
       names(new_df) <- c(feature_id_colname, "Contrast")
     } else {
       add_deg_columns <- setdiff(add_deg_columns, "none")
       out_columns <- paste(contrast, add_deg_columns, sep = "_")
-      deg <- counts_dat[, c(feature_id_colname, out_columns)]
+      deg <- diff_dat[, c(feature_id_colname, out_columns)]
       names(deg)[1] <- feature_id_colname
-      new_df <- data.frame(filtered_genes, repeated_column) %>% dplyr::left_join(deg, by = c("filtered_genes" = feature_id_colname))
+      new_df <- data.frame(filtered_features, repeated_column) %>% dplyr::left_join(deg, by = c("filtered_features" = feature_id_colname))
       names(new_df) <- c(feature_id_colname, "Contrast", add_deg_columns)
     }
 
@@ -210,105 +205,112 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(moo_counts,
 
     ### PH: START Make plot - Can we use Enhanced volcano function from other template to make figure instead of ggplot shown here
 
-    print(paste0("Total number of genes included in volcano plot: ", nrow(counts_dat)))
-    ## special nudge/repel of specific genes
-    if (DisplaceGeneLabels) {
-      gn <- trimws(unlist(strsplit(c(GeneListSpecialLabelDisplacement), ",")), which = c("both"))
-      ind_gn <- match(gn, counts_dat$Gene[gene_list_ind]) # get the indices of the listed genes
-      nudge_x_all <- rep(c(0.2), length(counts_dat$Gene[gene_list_ind]))
-      nudge_y_all <- rep(c(0.2), length(counts_dat$Gene[gene_list_ind]))
-      nudge_x_all[ind_gn] <- c(SpecialLabelDisplacementXAxis)
-      nudge_y_all[ind_gn] <- c(SpecialLabelDisplacementYAxis)
+    message(paste0(
+      "Total number of features included in volcano plot: ",
+      nrow(diff_dat)
+    ))
+    ## special nudge/repel of specific features
+    if (displace_feature_labels) {
+      gn <- trimws(unlist(strsplit(
+        c(custom_gene_list_special_label_displacement), ","
+      )), which = c("both"))
+      ind_gn <- match(gn, diff_dat$Gene[custom_gene_list_ind]) # get the indices of the listed features
+      nudge_x_all <- rep(c(0.2), length(diff_dat$Gene[custom_gene_list_ind]))
+      nudge_y_all <- rep(c(0.2), length(diff_dat$Gene[custom_gene_list_ind]))
+      nudge_x_all[ind_gn] <- c(special_label_displacement_x_axis)
+      nudge_y_all[ind_gn] <- c(special_label_displacement_y_axis)
     } else {
-      nudge_x_all <- LabelXadj
-      nudge_y_all <- LabelYadj
+      nudge_x_all <- label_x_adj
+      nudge_y_all <- label_y_adj
     }
 
 
 
     # set plot parameters
-    if (UseDefaultYAxisLimit) {
-      negative_log10_p_values <- -log10(counts_dat[, pvalcol])
+    if (use_default_y_axis_limit) {
+      negative_log10_p_values <- -log10(diff_dat[, pvalcol])
       ymax <- ceiling(max(negative_log10_p_values[is.finite(negative_log10_p_values)]))
     } else {
-      ymax <- YAxisLimit
+      ymax <- y_axis_limit
     }
-    if (UseDefaultXAxisLimit) {
-      xmax1 <- ceiling(max(counts_dat[, lfccol]))
-      xmax2 <- ceiling(max(-counts_dat[, lfccol]))
+    if (use_default_x_axis_limit) {
+      xmax1 <- ceiling(max(diff_dat[, lfccol]))
+      xmax2 <- ceiling(max(-diff_dat[, lfccol]))
       xmax <- max(xmax1, xmax2)
     } else {
-      xmax <- XAxisLimit
+      xmax <- x_axis_limit
     }
 
 
-    grm <- counts_dat[, c(new_contrast_label, pvalcol)]
-    grm[, "neglogpval"] <- -log10(counts_dat[, pvalcol])
+    grm <- diff_dat[, c(new_contrast_label, pvalcol)]
+    grm[, "neglogpval"] <- -log10(diff_dat[, pvalcol])
     colnames(grm) <- c("FC", "pval", "neglogpval")
-    print(grm[gene_list_ind, ])
-    p <- ggplot(
-      grm,
-      aes_string(x = "FC", y = "neglogpval")
-    ) + # modified by RAS
-      theme_classic() +
-      geom_point(
-        color = ColorofNonSignificantGenes,
-        size = PointSize
+    # message(grm[custom_gene_list_ind, ])
+    p <- ggplot2::ggplot(grm, ggplot2::aes(x = !!rlang::sym("FC"), y = !!rlang::sym("neglogpval"))) + # modified by RAS
+      ggplot2::theme_classic() +
+      ggplot2::geom_point(color = color_of_non_significant_features, size = point_size) +
+      ggplot2::geom_vline(
+        xintercept = c(-change_threshold, change_threshold),
+        color = color_of_logfold_change_threshold_line,
+        alpha = 1.0
       ) +
-      geom_vline(xintercept = c(-log2fc_threshold, log2fc_threshold), color = ColorofLogFoldChangeThresholdLine, alpha = 1.0) +
-      geom_hline(yintercept = -log10(pvalue_threshold), color = ColorofPValueThresholdLine, alpha = 1.0) +
-      geom_point(
-        data = grm[counts_dat[, pvalcol] < pvalue_threshold, ],
-        color = ColorofGenesMeetingOnlyPValueThreshold,
-        size = PointSize
+      ggplot2::geom_hline(
+        yintercept = -log10(signif_threshold),
+        color = color_of_signif_threshold_line,
+        alpha = 1.0
       ) +
-      geom_point(
-        data = grm[counts_dat[, pvalcol] < pvalue_threshold & abs(grm[, "FC"]) > log2fc_threshold, ],
-        color = colorforgenesmeetingpvalueandfoldchangethresholds,
-        size = PointSize
+      ggplot2::geom_point(
+        data = grm[diff_dat[, pvalcol] < signif_threshold, ],
+        color = color_of_features_meeting_only_signif_threshold,
+        size = point_size
       ) +
-      geom_text_repel(
-        data = grm[gene_list_ind, ],
-        label = counts_dat$Gene[gene_list_ind],
+      ggplot2::geom_point(
+        data = grm[diff_dat[, pvalcol] < signif_threshold &
+          abs(grm[, "FC"]) > change_threshold, ],
+        color = color_for_features_meeting_pvalue_and_foldchange_thresholds,
+        size = point_size
+      ) +
+      ggrepel::geom_text_repel(
+        data = grm[custom_gene_list_ind, ],
+        label = diff_dat$Gene[custom_gene_list_ind],
         color = color_gene_label,
-        fontface = LabelFontType,
+        fontface = label_font_type,
         nudge_x = nudge_x_all,
         nudge_y = nudge_y_all,
-        size = LabelFontSize,
-        segment.size = LineThickness
+        size = label_font_size,
+        segment.size = line_thickness
       ) +
-      xlim(-xmax, xmax) +
-      ylim(0, ymax) +
-      xlab(new_contrast_label) +
-      ylab(pvalcol)
+      ggplot2::xlim(-xmax, xmax) +
+      ggplot2::ylim(0, ymax) +
+      ggplot2::xlab(new_contrast_label) +
+      ggplot2::ylab(pvalcol)
 
     if (aspect_ratio > 0) {
-      p <- p + coord_fixed(ratio = aspect_ratio)
+      p <- p + ggplot2::coord_fixed(ratio = aspect_ratio)
     }
 
-    # print(p)
     Plots[[contrast]] <- p
     ### PH: END Make plot - Can we use Enhanced volcano function from other template to make figure instead of ggplot shown here
   }
 
 
   ## Print plots
-  Use_default_grid_layout <- UseDefaultGridLayout
-  require(gridExtra)
   nplots <- length(Plots)
-  if (Use_default_grid_layout) {
+  if (use_default_grid_layout) {
     nrows <- ceiling(nplots / ceiling(sqrt(nplots)))
   } else {
-    nrows <- NumberofRowsinGridLayout
+    nrows <- number_of_rows_in_grid_layout
   }
-
-  do.call("grid.arrange", c(Plots, nrow = nrows))
-  print("done plotting")
+  plot_patchwork <- patchwork::wrap_plots(Plots, nrow = nrows)
+  print_or_save_plot(
+    plot_patchwork,
+    filename = file.path(plots_subdir, plot_filename),
+    print_plots = print_plots,
+    save_plots = save_plots,
+    graphics_device = graphics_device
+  )
 
   df_out <- unique(do.call("rbind", df_outs))
-  print(head(df_out))
-  print(colnames(df_out))
-
 
   return(df_out)
 }
