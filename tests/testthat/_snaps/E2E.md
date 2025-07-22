@@ -9,7 +9,15 @@
           minimum_number_of_samples_with_nonzero_counts_in_a_group = 1, ) %>%
         normalize_counts(group_colname = "condition", label_colname = "sample_id") %>%
         diff_counts(covariates_colnames = "condition", contrast_colname = "condition",
-          contrasts = c("knockout-wildtype"))
+          contrasts = c("knockout-wildtype")) %>% filter_diff(significance_column = "adjpval",
+        significance_cutoff = 0.05, change_column = "logFC", change_cutoff = 1,
+        filtering_mode = "any", include_estimates = c("FC", "logFC", "tstat", "pval",
+          "adjpval"), round_estimates = TRUE, rounding_decimal_for_percent_cells = 0,
+        contrast_filter = "none", contrasts = c(), groups = c(), groups_filter = "none",
+        label_font_size = 6, label_distance = 1, y_axis_expansion = 0.08,
+        fill_colors = c("steelblue1", "whitesmoke"), pie_chart_in_3d = TRUE,
+        bar_width = 0.4, draw_bar_border = TRUE, plot_type = "bar",
+        plot_titles_fontsize = 12)
     Message
       Rows: 58929 Columns: 6
       -- Column specification --------------------------------------------------------
@@ -41,6 +49,8 @@
       * differential counts
       Setting first column of `counts` as gene annotation.
       Total number of genes included: 291
+      * filtering differential features
+      Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
 
 # E2E workflow succeeds for NIDAP data
 
@@ -54,7 +64,15 @@
           feature_id_colname = "GeneName", covariates_colnames = c("Group", "Batch"),
           contrast_colname = c("Group"), contrasts = c("B-A", "C-A", "B-C"),
           input_in_log_counts = FALSE, return_mean_and_sd = TRUE,
-          voom_normalization_method = "quantile", )
+          voom_normalization_method = "quantile", ) %>% filter_diff(
+        significance_column = "adjpval", significance_cutoff = 0.05, change_column = "logFC",
+        change_cutoff = 1, filtering_mode = "any", include_estimates = c("FC",
+          "logFC", "tstat", "pval", "adjpval"), round_estimates = TRUE,
+        rounding_decimal_for_percent_cells = 0, contrast_filter = "none", contrasts = c(),
+        groups = c(), groups_filter = "none", label_font_size = 6, label_distance = 1,
+        y_axis_expansion = 0.08, fill_colors = c("steelblue1", "whitesmoke"),
+        pie_chart_in_3d = TRUE, bar_width = 0.4, draw_bar_border = TRUE, plot_type = "bar",
+        plot_titles_fontsize = 12)
     Message
       * cleaning raw counts
       Not able to identify multiple id's in GeneName
@@ -81,4 +99,8 @@
       * differential counts
       Setting first column of `counts` as gene annotation.
       Total number of genes included: 7942
+      Joining with `by = join_by(GeneName)`
+      Joining with `by = join_by(GeneName)`
+      * filtering differential features
+      Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
 

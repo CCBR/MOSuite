@@ -43,9 +43,12 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     input_in_log_counts = FALSE,
     return_mean_and_sd = FALSE,
     voom_normalization_method = "quantile",
-  )
+  ) %>%
+  filter_diff()
 
 moo_nidap@analyses$diff %>%
-  join_dfs() %>%
+  join_dfs_wide() %>%
   head()
+
+moo_nidap@analyses$diff_filt %>% head()
 ```
