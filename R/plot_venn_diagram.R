@@ -30,8 +30,13 @@
 #' @param intersection_line_width Width of the lines in the intersection plot. Default: 0.5
 #' @param table_font_size Font size for the table in the plot. Default: 3
 #' @param table_content Content of the table in the plot. Default: NULL
+#'
 #' @export
 #' @keywords plotters
+#'
+#' @examples
+#' plot_venn_diagram(nidap_volcano_summary_dat, print_plots = TRUE)
+#'
 plot_venn_diagram <- function(diff_summary_dat,
                               feature_id_colname = NULL,
                               contrasts_colname = "Contrast",
@@ -70,7 +75,8 @@ plot_venn_diagram <- function(diff_summary_dat,
                               print_plots = options::opt("print_plots"),
                               save_plots = options::opt("save_plots"),
                               plots_subdir = "diff") {
-  abort_packages_not_installed(c("VennDiagram", "patchwork", "UpSetR"))
+  Freq <- Gene <- Id <- Size <- Var1 <- NULL
+  abort_packages_not_installed(c("VennDiagram", "gridExtra", "patchwork", "UpSetR"))
 
   ### PH:
   # Input - DEG table from Volcano Summary, I think we need to make this function more generic.
@@ -141,7 +147,7 @@ plot_venn_diagram <- function(diff_summary_dat,
     tab <- tab[order(nn, decreasing = FALSE)]
     names(tab) <- gsub("\\{\\} | \\{\\}|\\{\\} |\\{\\} \\{\\}", "", names(tab))
     names(tab) <- sub("\\( ", "(", names(tab))
-    names(tab) <- gsub(" ", " ∩ ", names(tab))
+    names(tab) <- gsub(" ", " \u2229 ", names(tab))
     tab <- tab[names(tab) != "()"] %>%
       data.frame() %>%
       dplyr::rename("Intersection" = Var1, "Size" = Freq) %>%
@@ -150,7 +156,7 @@ plot_venn_diagram <- function(diff_summary_dat,
       dplyr::select(Intersection, Id, Size)
     Intersection <- gsub("\\{\\} | \\{\\}|\\{\\} |\\{\\} \\{\\}", "", Intersection)
     Intersection <- sub("\\( ", "(", Intersection)
-    Intersection <- gsub(" ", " ∩ ", Intersection)
+    Intersection <- gsub(" ", " \u2229 ", Intersection)
     Intersection <- data.frame(Intersection) %>%
       tibble::rownames_to_column("Gene") %>%
       dplyr::inner_join(tab, by = c(Intersection = "Intersection")) %>%
@@ -179,7 +185,7 @@ plot_venn_diagram <- function(diff_summary_dat,
     tabsel <- tab
     Intersectionsel <- Intersection
   }
-  tab$"Return" <- ifelse(tab$Intersection %in% tabsel$Intersection, "Yes", "—")
+  tab$"Return" <- ifelse(tab$Intersection %in% tabsel$Intersection, "Yes", "\u2014")
 
   if (intersections_order == "freq") {
     tab <- tab %>% dplyr::arrange(-Size)
@@ -297,7 +303,7 @@ plot_venn_diagram <- function(diff_summary_dat,
     } else if (!is.null(distance) & is.null(position)) {
       distance <- as.numeric(distance)
 
-      vobj <- venn.diagram(
+      vobj <- VennDiagram::venn.diagram(
         vlist,
         file = NULL,
         force_unique = venn_force_unique,
@@ -316,7 +322,7 @@ plot_venn_diagram <- function(diff_summary_dat,
     } else if (is.null(distance) & !is.null(position)) {
       position <- as.numeric(position)
 
-      vobj <- venn.diagram(
+      vobj <- VennDiagram::venn.diagram(
         vlist,
         file = NULL,
         force_unique = venn_force_unique,
@@ -336,7 +342,7 @@ plot_venn_diagram <- function(diff_summary_dat,
       distance <- as.numeric(distance)
       position <- as.numeric(position)
 
-      vobj <- venn.diagram(
+      vobj <- VennDiagram::venn.diagram(
         vlist,
         file = NULL,
         force_unique = venn_force_unique,
@@ -355,7 +361,7 @@ plot_venn_diagram <- function(diff_summary_dat,
       )
     }
 
-    pVenn <- patchwork::wrap_elements(gTree(children = vobj))
+    pVenn <- patchwork::wrap_elements(grid::gTree(children = vobj))
     output_plot <- pVenn
 
     ### PH: END Create Venn Diagram

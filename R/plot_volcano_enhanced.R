@@ -33,6 +33,10 @@
 #'
 #' @export
 #' @keywords plotters volcano
+#'
+#' @examples
+#' plot_volcano_enhanced(nidap_deg_analysis, print_plots = TRUE)
+#'
 plot_volcano_enhanced <- function(moo_diff,
                                   feature_id_colname = NULL,
                                   signif_colname = c("B-A_adjpval", "B-C_adjpval"),
