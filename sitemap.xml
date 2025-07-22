@@ -50,6 +50,8 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_norm_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_raw_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_sample_metadata.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/nidap_venn_diagram_dat.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/nidap_volcano_summary_dat.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/normalize_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/options.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap.html</loc></url>
@@ -69,6 +71,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_read_depth.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_read_depth_dat.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_read_depth_moo.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/plot_venn_diagram.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_volcano_enhanced.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_volcano_summary.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/print_or_save_plot.html</loc></url>
