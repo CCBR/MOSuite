@@ -25,9 +25,12 @@ This is the first release of MOSuite 🎉
 - `plot_corr_heatmap()` (#96)
 - `plot_expr_heatmap()` (#90, #96)
 - `plot_pca()` (#88, #96)
+- `plot_volcano_enhanced()` (#112)
+- `plot_volcano_summary()` (#112)
 
 ## vignettes
 
 - `intro`
 - `visualization`
 - `memory`
+- `renee`
