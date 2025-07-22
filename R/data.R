@@ -50,3 +50,11 @@
 #' The result of running `diff_counts()` on `nidap_filtered_counts`.
 #' @keywords data
 "nidap_deg_analysis_2"
+
+#' Summarized differential expression analysis for input to venn diagram
+#' @keywords data
+"nidap_volcano_summary_dat"
+
+#' Output data from venn diagram.
+#' The result of running `plot_venn_diagram()` on `nidap_volcano_summary_dat`
+"nidap_venn_diagram_dat"

@@ -30,6 +30,7 @@ Imports:
     ggplot2,
     ggrepel,
     glue,
+    gridExtra,
     limma,
     magrittr,
     matrixStats,
@@ -55,6 +56,7 @@ Suggests:
     docopt,
     knitr,
     lobstr,
+    patchwork,
     RColorBrewer,
     readr,
     rmarkdown,
@@ -62,6 +64,7 @@ Suggests:
     styler,
     sva,
     testthat (>= 3.0.0),
+    UpSetR,
     usethis,
     V8
 VignetteBuilder:
