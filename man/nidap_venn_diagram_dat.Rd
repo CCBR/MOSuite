@@ -15,4 +15,4 @@ nidap_venn_diagram_dat
 Output data from venn diagram.
 The result of running \code{plot_venn_diagram()} on \code{nidap_volcano_summary_dat}
 }
-\keyword{datasets}
+\keyword{data}

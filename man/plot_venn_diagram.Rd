@@ -43,7 +43,7 @@ plot_venn_diagram(
 \arguments{
 \item{diff_summary_dat}{Summarized differential expression analysis}
 
-\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
+\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
 \item{contrasts_colname}{Name of the column in \code{diff_summary_dat} that contains the contrast names (default: "Contrast")}
 
@@ -89,15 +89,15 @@ plot_venn_diagram(
 
 \item{table_content}{Content of the table in the plot. Default: NULL}
 
-\item{graphics_device}{Graphics device to use for the plot. Default: \code{grDevices::png}}
+\item{graphics_device}{passed to \code{ggsave(device)}. Default: \code{grDevices::png}}
 
-\item{dpi}{Resolution of the plot (dots per inch). Default: 300}
+\item{dpi}{dots-per-inch of the output image (see \code{ggsave()}) - only used if save_plots is TRUE}
 
-\item{image_width}{Width of the plot image in pixels. Default: 4000}
+\item{image_width}{output image width in pixels - only used if save_plots is TRUE}
 
-\item{image_height}{Height of the plot image in pixels. Default: 3000}
+\item{image_height}{output image height in pixels - only used if save_plots is TRUE}
 
-\item{plot_filename}{Filename for the plot image. Default: "venn_diagram.png"}
+\item{plot_filename}{plot output filename - only used if save_plots is TRUE}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 

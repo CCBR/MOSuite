@@ -39,6 +39,7 @@ reference:
     contents:
       - ends_with("_counts")
       - -has_keyword("data")
+      - filter_diff
   - title: Visualization
     contents:
       - has_keyword("plotters")

@@ -17,6 +17,7 @@ This is the first release of MOSuite 🎉
 - `normalize_counts()` (#82)
 - `batch_correct_counts()` (#87)
 - `diff_counts()` (#102)
+- `filter_diff()` (#110)
 
 ### visualization
 
@@ -24,9 +25,12 @@ This is the first release of MOSuite 🎉
 - `plot_corr_heatmap()` (#96)
 - `plot_expr_heatmap()` (#90, #96)
 - `plot_pca()` (#88, #96)
+- `plot_volcano_enhanced()` (#112)
+- `plot_volcano_summary()` (#112)
 
 ## vignettes
 
 - `intro`
 - `visualization`
 - `memory`
+- `renee`

@@ -2,7 +2,10 @@
 #'
 #' generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across tested contrasts). This Venn diagram is available for up to five sets; Intersection plot is available for any number of sets. Specific sets can be selected for the visualizations and the returned dataset may include all (default) or specified intersections.
 #'
+#' @inheritParams option_params
 #' @inheritParams filter_counts
+#' @inheritParams plot_volcano_enhanced
+#' @inheritParams plot_volcano_summary
 #'
 #' @param diff_summary_dat Summarized differential expression analysis
 #' @param contrasts_colname Name of the column in `diff_summary_dat` that contains the contrast names (default: "Contrast")
@@ -27,12 +30,6 @@
 #' @param intersection_line_width Width of the lines in the intersection plot. Default: 0.5
 #' @param table_font_size Font size for the table in the plot. Default: 3
 #' @param table_content Content of the table in the plot. Default: NULL
-#' @param graphics_device Graphics device to use for the plot. Default: `grDevices::png`
-#' @param dpi Resolution of the plot (dots per inch). Default: 300
-#' @param image_width Width of the plot image in pixels. Default: 4000
-#' @param image_height Height of the plot image in pixels. Default: 3000
-#' @param plot_filename Filename for the plot image. Default: "venn_diagram.png"
-#'
 #' @export
 #' @keywords plotters
 plot_venn_diagram <- function(diff_summary_dat,

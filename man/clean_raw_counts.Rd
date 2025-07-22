@@ -25,7 +25,7 @@ clean_raw_counts(
 
 \item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first column in the sample metadata will be used.)}
 
-\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
+\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
 \item{samples_to_rename}{If you do not have a Plot Labels Column in your sample metadata table, you can use this parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to which new name: old_name: new_name}
 
@@ -82,7 +82,9 @@ head(moo@counts$clean)
 \seealso{
 Other moo methods: 
 \code{\link{batch_correct_counts}()},
+\code{\link{diff_counts}()},
 \code{\link{filter_counts}()},
+\code{\link{filter_diff}()},
 \code{\link{normalize_counts}()},
 \code{\link{plot_corr_heatmap}()},
 \code{\link{plot_expr_heatmap}()},
