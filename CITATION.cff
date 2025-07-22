@@ -9,11 +9,11 @@ type: software
 license: MIT
 title: 'MOSuite: R package for differential multi-omics analysis'
 version: 0.0.0.9000
-abstract: 'Multi-Omics Suite (MOSuite) provides a suite of functions to clean, filter,
-  batch-correct, normalize, visualize, and perform differential analysis. While the
-  package is designed for differential RNA-seq analysis and multi-omics datasets,
-  it can be used for any data represented in a counts table. See the website for more
-  information, documentation, and examples: <https://ccbr.github.io/MOSuite/>'
+abstract: 'Multi-Omics Suite provides a suite of functions to clean, filter, batch-correct,
+  normalize, visualize, and perform differential analysis. While the package is designed
+  for differential RNA-seq analysis and multi-omics datasets, it can be used for any
+  data represented in a counts table. See the website for more information, documentation,
+  and examples: <https://ccbr.github.io/MOSuite/>'
 authors:
 - family-names: Sovacool
   given-names: Kelly
@@ -313,19 +313,6 @@ references:
     email: doug.kelkhoff@gmail.com
   year: '2025'
   doi: 10.32614/CRAN.package.options
-- type: software
-  title: patchwork
-  abstract: 'patchwork: The Composer of Plots'
-  notes: Imports
-  url: https://patchwork.data-imaginist.com
-  repository: https://CRAN.R-project.org/package=patchwork
-  authors:
-  - family-names: Pedersen
-    given-names: Thomas Lin
-    email: thomasp85@gmail.com
-    orcid: https://orcid.org/0000-0002-5147-4711
-  year: '2025'
-  doi: 10.32614/CRAN.package.patchwork
 - type: software
   title: plotly
   abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
@@ -644,6 +631,17 @@ references:
   year: '2025'
   doi: 10.18129/B9.bioc.EnhancedVolcano
 - type: software
+  title: gridExtra
+  abstract: 'gridExtra: Miscellaneous Functions for "Grid" Graphics'
+  notes: Suggests
+  repository: https://CRAN.R-project.org/package=gridExtra
+  authors:
+  - family-names: Auguie
+    given-names: Baptiste
+    email: baptiste.auguie@gmail.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.gridExtra
+- type: software
   title: knitr
   abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
   notes: Suggests
@@ -668,6 +666,19 @@ references:
     email: hadley@rstudio.com
   year: '2025'
   doi: 10.32614/CRAN.package.lobstr
+- type: software
+  title: patchwork
+  abstract: 'patchwork: The Composer of Plots'
+  notes: Suggests
+  url: https://patchwork.data-imaginist.com
+  repository: https://CRAN.R-project.org/package=patchwork
+  authors:
+  - family-names: Pedersen
+    given-names: Thomas Lin
+    email: thomasp85@gmail.com
+    orcid: https://orcid.org/0000-0002-5147-4711
+  year: '2025'
+  doi: 10.32614/CRAN.package.patchwork
 - type: software
   title: plotrix
   abstract: 'plotrix: Various Plotting Functions'
@@ -894,6 +905,19 @@ references:
   doi: 10.32614/CRAN.package.testthat
   version: '>= 3.0.0'
 - type: software
+  title: UpSetR
+  abstract: 'UpSetR: A More Scalable Alternative to Venn and Euler Diagrams for Visualizing
+    Intersecting Sets'
+  notes: Suggests
+  url: http://github.com/hms-dbmi/UpSetR
+  repository: https://CRAN.R-project.org/package=UpSetR
+  authors:
+  - family-names: Gehlenborg
+    given-names: Nils
+    email: nils@hms.harvard.edu
+  year: '2025'
+  doi: 10.32614/CRAN.package.UpSetR
+- type: software
   title: usethis
   abstract: 'usethis: Automate Package and Project Setup'
   notes: Suggests
@@ -931,3 +955,13 @@ references:
     orcid: https://orcid.org/0000-0002-4035-0289
   year: '2025'
   doi: 10.32614/CRAN.package.V8
+- type: software
+  title: VennDiagram
+  abstract: 'VennDiagram: Generate High-Resolution Venn and Euler Plots'
+  notes: Suggests
+  repository: https://CRAN.R-project.org/package=VennDiagram
+  authors:
+  - family-names: Chen
+    given-names: Hanbo
+  year: '2025'
+  doi: 10.32614/CRAN.package.VennDiagram
