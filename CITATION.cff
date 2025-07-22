@@ -314,6 +314,19 @@ references:
   year: '2025'
   doi: 10.32614/CRAN.package.options
 - type: software
+  title: patchwork
+  abstract: 'patchwork: The Composer of Plots'
+  notes: Imports
+  url: https://patchwork.data-imaginist.com
+  repository: https://CRAN.R-project.org/package=patchwork
+  authors:
+  - family-names: Pedersen
+    given-names: Thomas Lin
+    email: thomasp85@gmail.com
+    orcid: https://orcid.org/0000-0002-5147-4711
+  year: '2025'
+  doi: 10.32614/CRAN.package.patchwork
+- type: software
   title: plotly
   abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
   notes: Imports
@@ -613,6 +626,23 @@ references:
     orcid: https://orcid.org/0000-0002-6580-4718
   year: '2025'
   doi: 10.32614/CRAN.package.docopt
+- type: software
+  title: EnhancedVolcano
+  abstract: 'EnhancedVolcano: Publication-ready volcano plots with enhanced colouring
+    and labeling'
+  notes: Suggests
+  url: https://github.com/kevinblighe/EnhancedVolcano
+  repository: https://bioconductor.org/
+  authors:
+  - family-names: Blighe
+    given-names: Kevin
+    email: kevin@clinicalbioinformatics.co.uk
+  - family-names: Rana
+    given-names: Sharmila
+  - family-names: Lewis
+    given-names: Myles
+  year: '2025'
+  doi: 10.18129/B9.bioc.EnhancedVolcano
 - type: software
   title: knitr
   abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'

@@ -36,7 +36,7 @@ filter_diff(
 \arguments{
 \item{moo}{multiOmicDataSet object (see \code{create_multiOmicDataSet_from_dataframes()})}
 
-\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
+\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
 
 \item{significance_column}{Column name for significance, e.g. \code{"pval"} or \code{"pvaladj"} (default)}
 
