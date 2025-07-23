@@ -10,6 +10,12 @@ R package for differential multi-omics analysis
 [![R-CMD-check](https://github.com/CCBR/MOSuite/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CCBR/MOSuite/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/CCBR/MOSuite/graph/badge.svg?token=730OAPA4NU)](https://codecov.io/gh/CCBR/MOSuite)
 [![docs](https://img.shields.io/badge/-docs-blue?logo=readthedocs)](https://ccbr.github.io/MOSuite/)
+[![version](https://img.shields.io/github/v/release/ccbr/mosuite?color=blue)](https://github.com/CCBR/MOSuite/releases/latest)
+
+<!--
+[![docker](https://img.shields.io/docker/v/nciccbr/mosuite?logo=docker&label=docker&color=blue
+)](https://hub.docker.com/r/nciccbr/mosuite)
+-->
 <!-- badges: end -->
 
 Multi-Omics Suite provides a suite of functions to clean, filter,
@@ -26,9 +32,18 @@ You can install the development version of MOSuite from
 [GitHub](https://github.com/CCBR/MOSuite) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("CCBR/MOSuite")
+# install.packages("remotes")
+remotes::install_github("CCBR/MOSuite")
 ```
+
+Or install a specific version:
+
+``` r
+remotes::install_github("CCBR/MOSuite", ref = "v0.1.0")
+```
+
+There is also a docker image available at
+<https://hub.docker.com/r/nciccbr/mosuite>
 
 ## Usage
 
