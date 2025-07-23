@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+R -e 'devtools::load_all(); render_report(execute_params = list(counts_tsv = system.file("extdata", "RSEM.genes.expected_count.all_samples.txt.gz", package = "MOSuite"), samplesheet_tsv = system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")))'
