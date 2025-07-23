@@ -6,7 +6,7 @@ on:
     types: [published]
 
 env:
-  IMAGE_NAME: "MOSuite"
+  IMAGE_NAME: "mosuite" # must be lowercase
   CONTEXT: "./"
   NAMESPACE: "nciccbr"
 
