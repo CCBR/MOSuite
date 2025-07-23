@@ -1,6 +1,6 @@
 Package: MOSuite
 Title: R package for differential multi-omics analysis
-Version: 0.1.0
+Version: 0.1.0.9000
 Date: 2025-07-23
 Authors@R: c(
     person("Kelly", "Sovacool", , "kelly.sovacool@nih.gov", role = c("aut", "cre"),
