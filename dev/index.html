@@ -64,14 +64,23 @@
 <p>R package for differential multi-omics analysis</p>
 <!-- badges: start -->
 
+<!--
+[![docker](https://img.shields.io/docker/v/nciccbr/mosuite?logo=docker&label=docker&color=blue
+)](https://hub.docker.com/r/nciccbr/mosuite)
+-->
+<!-- badges: end -->
 <p>Multi-Omics Suite provides a suite of functions to clean, filter, batch-correct, normalize, visualize, and perform differential expression analysis. While the package is designed for differential <a href="https://github.com/CCBR/RENEE" class="external-link">RNA-seq</a> analysis and multi-omics datasets, it can be used for any data represented in a counts table. See the website for more information, documentation, and examples: <a href="https://ccbr.github.io/MOSuite/" class="uri">https://ccbr.github.io/MOSuite/</a></p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of MOSuite from <a href="https://github.com/CCBR/MOSuite" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CCBR/MOSuite"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CCBR/MOSuite"</span><span class="op">)</span></span></code></pre></div>
+<p>Or install a specific version:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CCBR/MOSuite"</span>, ref <span class="op">=</span> <span class="st">"v0.1.0"</span><span class="op">)</span></span></code></pre></div>
+<p>There is also a docker image available at <a href="https://hub.docker.com/r/nciccbr/mosuite" class="external-link uri">https://hub.docker.com/r/nciccbr/mosuite</a></p>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -145,6 +154,7 @@
 <li><a href="https://github.com/CCBR/MOSuite/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/CCBR/MOSuite/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://codecov.io/gh/CCBR/MOSuite" class="external-link"><img src="https://codecov.io/gh/CCBR/MOSuite/graph/badge.svg?token=730OAPA4NU" alt="codecov"></a></li>
 <li><a href="https://ccbr.github.io/MOSuite/"><img src="https://img.shields.io/badge/-docs-blue?logo=readthedocs" alt="docs"></a></li>
+<li><a href="https://github.com/CCBR/MOSuite/releases/latest" class="external-link"><img src="https://img.shields.io/github/v/release/ccbr/mosuite?color=blue" alt="version"></a></li>
 </ul>
 </div>
 
