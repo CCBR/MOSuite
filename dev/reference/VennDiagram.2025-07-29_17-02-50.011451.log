@@ -1,0 +1,39 @@
+INFO [2025-07-29 17:02:50] [[1]]
+INFO [2025-07-29 17:02:50] vlist
+INFO [2025-07-29 17:02:50] 
+INFO [2025-07-29 17:02:50] $file
+INFO [2025-07-29 17:02:50] NULL
+INFO [2025-07-29 17:02:50] 
+INFO [2025-07-29 17:02:50] $force_unique
+INFO [2025-07-29 17:02:50] venn_force_unique
+INFO [2025-07-29 17:02:50] 
+INFO [2025-07-29 17:02:50] $print.mode
+INFO [2025-07-29 17:02:50] print_mode
+INFO [2025-07-29 17:02:50] 
+INFO [2025-07-29 17:02:50] $sigdigs
+INFO [2025-07-29 17:02:50] venn_significant_digits
+INFO [2025-07-29 17:02:50] 
+INFO [2025-07-29 17:02:50] $margin
+INFO [2025-07-29 17:02:50] venn_outer_margin
+INFO [2025-07-29 17:02:50] 
+INFO [2025-07-29 17:02:50] $main
+INFO [2025-07-29 17:02:50] [1] ""
+INFO [2025-07-29 17:02:50] 
+INFO [2025-07-29 17:02:50] $cat.cex
+INFO [2025-07-29 17:02:50] venn_font_size_for_category_names
+INFO [2025-07-29 17:02:50] 
+INFO [2025-07-29 17:02:50] $cex
+INFO [2025-07-29 17:02:50] venn_font_size_for_counts
+INFO [2025-07-29 17:02:50] 
+INFO [2025-07-29 17:02:50] $main.cex
+INFO [2025-07-29 17:02:50] [1] 3
+INFO [2025-07-29 17:02:50] 
+INFO [2025-07-29 17:02:50] $fill
+INFO [2025-07-29 17:02:50] venn_fill_colors[1:num_categories]
+INFO [2025-07-29 17:02:50] 
+INFO [2025-07-29 17:02:50] $alpha
+INFO [2025-07-29 17:02:50] venn_fill_transparency
+INFO [2025-07-29 17:02:50] 
+INFO [2025-07-29 17:02:50] $col
+INFO [2025-07-29 17:02:50] color_border
+INFO [2025-07-29 17:02:50] 
