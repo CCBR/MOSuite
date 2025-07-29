@@ -8,7 +8,7 @@ message: 'To cite package "MOSuite" in publications use:'
 type: software
 license: MIT
 title: 'MOSuite: R package for differential multi-omics analysis'
-version: 0.1.0
+version: 0.1.0.9000
 abstract: 'Multi-Omics Suite provides a suite of functions to clean, filter, batch-correct,
   normalize, visualize, and perform differential analysis. While the package is designed
   for differential RNA-seq analysis and multi-omics datasets, it can be used for any
