@@ -2,13 +2,18 @@
 # CITATION file created with {cffr} R package
 # See also: https://docs.ropensci.org/cffr/
 # --------------------------------------------
-
+ 
 cff-version: 1.2.0
 message: 'To cite package "MOSuite" in publications use:'
 type: software
 license: MIT
 title: 'MOSuite: R package for differential multi-omics analysis'
 version: 0.1.0.9000
+doi: 10.5281/zenodo.16371580
+identifiers:
+- description: Archived snapshots of all versions
+  type: doi
+  value: 10.5281/zenodo.16371580
 abstract: 'Multi-Omics Suite provides a suite of functions to clean, filter, batch-correct,
   normalize, visualize, and perform differential analysis. While the package is designed
   for differential RNA-seq analysis and multi-omics datasets, it can be used for any
@@ -30,6 +35,28 @@ authors:
   given-names: Samantha
   email: samantha.chill@nih.gov
   orcid: https://orcid.org/0000-0002-8734-9875
+preferred-citation:
+  type: manual
+  title: 'MOSuite: R package for differential multi-omics analysis'
+  authors:
+  - family-names: Sovacool
+    given-names: Kelly
+    email: kelly.sovacool@nih.gov
+    orcid: https://orcid.org/0000-0003-3283-829X
+  - family-names: Homan
+    given-names: Philip
+    email: philip.homan@nih.gov
+  - family-names: Koparde
+    given-names: Vishal
+    email: vishal.koparde@nih.gov
+    orcid: https://orcid.org/0000-0001-8978-8495
+  - family-names: Chill
+    given-names: Samantha
+    email: samantha.chill@nih.gov
+    orcid: https://orcid.org/0000-0002-8734-9875
+  year: '2025'
+  doi: 10.5281/zenodo.16371580
+  url: https://ccbr.github.io/MOSuite/
 repository-code: https://github.com/CCBR/MOSuite
 url: https://ccbr.github.io/MOSuite/
 date-released: '2025-07-23'
@@ -966,3 +993,4 @@ references:
     given-names: Hanbo
   year: '2025'
   doi: 10.32614/CRAN.package.VennDiagram
+

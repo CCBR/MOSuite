@@ -1,5 +1,7 @@
 # MOSuite development version
 
+- MOSuite is now archived in Zenodo with a DOI: [10.5281/zenodo.16371580](http://doi.org/10.5281/zenodo.16371580)
+
 # MOSuite 0.1.0
 
 This is the first release of MOSuite 🎉
