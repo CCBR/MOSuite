@@ -41,6 +41,7 @@ jobs:
         shell: Rscript {0}
         run: |
           # See https://docs.ropensci.org/cffr/articles/cffr.html
+          library(cffr)
           mykeys <- list(identifiers = list(list(
              description = "Archived snapshots of all versions",
              type = "doi",
@@ -48,7 +49,7 @@ jobs:
           )))
           cf <- cff_create(keys = mykeys)
           # Create your CITATION.cff file
-          cffr::cff_write(cf)
+          cff_write(cf)
 
       - name: format
         uses: pre-commit/action@v3.0.1
