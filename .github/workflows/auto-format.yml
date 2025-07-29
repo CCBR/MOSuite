@@ -37,7 +37,7 @@ jobs:
         run: |
           rmarkdown::render("README.Rmd")
 
-      - name: update CITATION.cff & inst/CITATION
+      - name: update citation
         shell: Rscript {0}
         run: |
           # See https://docs.ropensci.org/cffr/articles/cffr.html
