@@ -4,13 +4,13 @@ on:
   repository_dispatch:
   workflow_dispatch:
   schedule:
-    - cron: "00 13 3 * *"
+    - cron: "12 11 2 * *"
 
 jobs:
   linkChecker:
     runs-on: ubuntu-latest
     permissions:
-      issues: write
+      issues: write # required for peter-evans/create-issue-from-file
     steps:
       - uses: actions/checkout@v4
 
@@ -19,7 +19,6 @@ jobs:
         uses: lycheeverse/lychee-action@v2
         with:
           fail: false
-          args: --base . --verbose
 
       - name: Create Issue From File
         if: steps.lychee.outputs.exit_code != 0
