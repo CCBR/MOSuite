@@ -1,7 +1,8 @@
 # plot_volcano_enhanced works on nidap dataset
 
     Code
-      df_volc_enh <- plot_volcano_enhanced(nidap_deg_analysis, save_plots = TRUE)
+      df_volc_enh <- plot_volcano_enhanced(nidap_deg_analysis, save_plots = FALSE,
+        print_plots = FALSE)
     Message
       Genes in initial dataset: 7943
       
