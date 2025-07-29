@@ -8,7 +8,11 @@ message: 'To cite package "MOSuite" in publications use:'
 type: software
 license: MIT
 title: 'MOSuite: R package for differential multi-omics analysis'
-version: 0.1.0
+version: 0.1.0.9000
+identifiers:
+- description: Archived snapshots of all versions
+  type: doi
+  value: 10.5281/zenodo.16371580
 abstract: 'Multi-Omics Suite provides a suite of functions to clean, filter, batch-correct,
   normalize, visualize, and perform differential analysis. While the package is designed
   for differential RNA-seq analysis and multi-omics datasets, it can be used for any
@@ -117,12 +121,12 @@ references:
   authors:
   - family-names: Chen
     given-names: Yunshun
-  - family-names: Chen
-    given-names: Lizhong
   - family-names: Lun
     given-names: Aaron TL
   - family-names: McCarthy
     given-names: Davis J
+  - family-names: Chen
+    given-names: Lizhong
   - family-names: Baldoni
     given-names: Pedro
   - family-names: Ritchie
@@ -260,8 +264,6 @@ references:
     given-names: Charity
   - family-names: Li
     given-names: Mengbo
-  - family-names: Chen
-    given-names: Lizhong
   year: '2025'
   doi: 10.18129/B9.bioc.limma
 - type: software

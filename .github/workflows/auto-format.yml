@@ -37,15 +37,18 @@ jobs:
         run: |
           rmarkdown::render("README.Rmd")
 
-      - name: update CITATION.cff
+      - name: update CITATION.cff & inst/CITATION
         shell: Rscript {0}
         run: |
-          # Customize with your own code
           # See https://docs.ropensci.org/cffr/articles/cffr.html
-          # Write your own keys
-          mykeys <- list()
+          mykeys <- list(identifiers = list(list(
+             description = "Archived snapshots of all versions",
+             type = "doi",
+             value = "10.5281/zenodo.16371580"
+          )))
+          cf <- cff_create(keys = mykeys)
           # Create your CITATION.cff file
-          cffr::cff_write(keys = mykeys)
+          cffr::cff_write(cf)
 
       - name: format
         uses: pre-commit/action@v3.0.1
