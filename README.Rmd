@@ -43,13 +43,13 @@ You can install the development version of MOSuite from [GitHub](https://github.
 
 ```r
 # install.packages("remotes")
-remotes::install_github("CCBR/MOSuite")
+remotes::install_github("CCBR/MOSuite", dependencies = TRUE)
 ```
 
 Or install a specific version:
 
 ```r
-remotes::install_github("CCBR/MOSuite", ref = "v0.1.0")
+remotes::install_github("CCBR/MOSuite", dependencies = TRUE, ref = "v0.1.0")
 ```
 
 There is also a docker image available at <https://hub.docker.com/r/nciccbr/mosuite>
