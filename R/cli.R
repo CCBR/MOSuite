@@ -1,5 +1,5 @@
 # These functions were inspired by and adapted from renv:
-#   https://github.com/rstudio/renv/blob/d0eb86349d35679eb6920ca59072bd7369fe620f/R/cli.R
+#   https://github.com/rstudio/MOSuite/blob/d0eb86349d35679eb6920ca59072bd7369fe620f/R/cli.R
 
 #' Execute MOSuite from the CLI
 #'
@@ -27,14 +27,14 @@ cli_exec_impl <- function(clargs) {
     return(cli_help(method))
   }
 
-  # check for known function in renv
-  exports <- getNamespaceExports("renv")
+  # check for known function in MOSuite
+  exports <- getNamespaceExports("MOSuite")
   if (!method %in% exports) {
     return(cli_unknown(method, exports))
   }
 
   # begin building call
-  args <- list(call("::", as.symbol("renv"), as.symbol(method)))
+  args <- list(call("::", as.symbol("MOSuite"), as.symbol(method)))
 
   for (clarg in clargs[-1L]) {
     # convert '--no-<flag>' into a FALSE parameter
