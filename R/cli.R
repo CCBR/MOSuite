@@ -86,13 +86,12 @@ cli_exec_impl <- function(clargs) {
   eval(expr = expr, envir = globalenv())
 }
 
-cli_usage <- function() {
+cli_usage <- function(con = stderr()) {
   usage <- "
-Usage: mosuite [function] [--json=path/to/args.json] [args]
+Usage: mosuite [function] [--json=path/to/args.json]
 
 [function] should be the name of a function exported from MOSuite.
 [--json] should specify the path to a JSON file with arguments accepted by that function. The equals sign (=) is required to separate --json from the path.
-[args] If --json is not specified, all CLI arguments are parsed as R code and passed to the function.
 
 Additionally, the JSON file can contain the following keys:
   - moo_input_rds: file path to an existing MultiOmicsDataset object in RDS format. This is required if `method` has `moo` as an argument.
@@ -109,7 +108,7 @@ Basic Methods:
   mosuite diff_counts
   mosuite filter_diff
 "
-  writeLines(usage, con = stderr())
+  writeLines(usage, con = con)
 }
 
 cli_help <- function(method) {

@@ -90,3 +90,11 @@ mosuite clean_raw_counts --json=args_2.json
 Results are saved to `moo.rds`.
 Overwriting the same `moo` file is recommended to save disk space, as the
 multiOmicDataset object saves intermediate results in its data structure.
+
+Run `mosuite --help` to see the full CLI usage:
+
+```{r help, echo=FALSE, results='asis'}
+cat("```")
+MOSuite:::cli_usage(con = stdout())
+cat("```")
+```
