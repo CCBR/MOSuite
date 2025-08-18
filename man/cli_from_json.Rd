@@ -4,7 +4,7 @@
 \alias{cli_from_json}
 \title{Call an MOSuite function with arguments specified in a json file}
 \usage{
-cli_from_json(method, json)
+cli_from_json(method, json, debug = FALSE)
 }
 \arguments{
 \item{method}{function in MOSuite to call}
@@ -15,6 +15,8 @@ Additionally, the JSON can contain the following keys:
 \item \code{moo_input_rds} - filepath to an existing MultiOmicsDataset object in RDS format. This is required if \code{method} contains \code{moo} as an argument.
 \item \code{moo_output_rds} - filepath to write the result to.
 }}
+
+\item{debug}{when TRUE, do not call the command, just return the expression.}
 }
 \value{
 invisible returns the function call
