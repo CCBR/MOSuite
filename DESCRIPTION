@@ -24,6 +24,7 @@ BugReports: https://github.com/CCBR/MOSuite/issues
 Depends:
     R (>= 3.5)
 Imports:
+    assertthat,
     dendextend,
     DESeq2,
     dplyr,

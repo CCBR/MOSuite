@@ -28,12 +28,12 @@ You should add this executable to your `PATH` environment variable.
 If you're using the [MOSuite docker container](https://hub.docker.com/r/nciccbr/mosuite),
 it is already included in the path.
 
-Any user-facing function in MOSuite can be called with `mosuite [function]` from a unix shell CLI.
+Any user-facing function in MOSuite can be called with `mosuite [function]` from the unix CLI.
 Function arguments are passed in via a JSON file.
 In addition to arguments used by the function,
 the JSON file can contain the following keys:
 
-  - `moo_input_rds` - file path to an existing MultiOmicsDataset object in RDS format. This is required if `method` has `moo` as an argument.
+  - `moo_input_rds` - file path to an existing MultiOmicsDataset object in RDS format. This is required if the MOSuite function has `moo` as an argument (most user-facing functions do).
   - `moo_output_rds` - file path to write the result to.
 
 Create a JSON file with arguments for `create_multiOmicDataSet_from_files()`.

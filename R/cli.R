@@ -88,17 +88,17 @@ cli_exec_impl <- function(clargs) {
 
 cli_usage <- function() {
   usage <- "
-Usage: mosuite [method] [--json=path/to/args.json] [args]
+Usage: mosuite [function] [--json=path/to/args.json] [args]
 
-[method] should be the name of a function exported from MOSuite.
+[function] should be the name of a function exported from MOSuite.
 [--json] should specify the path to a JSON file with arguments accepted by that function. The equals sign (=) is required to separate --json from the path.
 [args] If --json is not specified, all CLI arguments are parsed as R code and passed to the function.
 
 Additionally, the JSON file can contain the following keys:
-  - `moo_input_rds` - filepath to an existing MultiOmicsDataset object in RDS format. This is required if `method` has `moo` as an argument.
-  - `moo_output_rds` - filepath to write the result to.
+  - moo_input_rds: file path to an existing MultiOmicsDataset object in RDS format. This is required if `method` has `moo` as an argument.
+  - moo_output_rds: file path to write the result to.
 
-Use `mosuite [method] --help` for more information about the associated function.
+Use `mosuite [function] --help` for more information about the associated function.
 
 Basic Methods:
   mosuite create_multiOmicDataSet_from_files
@@ -113,7 +113,7 @@ Basic Methods:
 }
 
 cli_help <- function(method) {
-  print(help(method, package = "MOSuite"))
+  print(utils::help(method, package = "MOSuite"))
 }
 
 cli_unknown <- function(method, exports) {
@@ -121,7 +121,7 @@ cli_unknown <- function(method, exports) {
   warning("MOSuite: '%s' is not a known command.", method)
 
   # check for similar commands
-  distance <- c(adist(method, exports))
+  distance <- c(utils::adist(method, exports))
   names(distance) <- exports
   n <- min(distance)
   if (n > 2) {
