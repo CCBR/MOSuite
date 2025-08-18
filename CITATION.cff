@@ -78,6 +78,17 @@ references:
   year: '2025'
   version: '>= 3.5'
 - type: software
+  title: assertthat
+  abstract: 'assertthat: Easy Pre and Post Assertions'
+  notes: Imports
+  repository: https://CRAN.R-project.org/package=assertthat
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@rstudio.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.assertthat
+- type: software
   title: dendextend
   abstract: 'dendextend: Extending ''dendrogram'' Functionality in R'
   notes: Imports
@@ -235,6 +246,19 @@ references:
     orcid: https://orcid.org/0000-0002-6983-2759
   year: '2025'
   doi: 10.32614/CRAN.package.glue
+- type: software
+  title: jsonlite
+  abstract: 'jsonlite: A Simple and Robust JSON Parser and Generator for R'
+  notes: Imports
+  url: https://jeroen.r-universe.dev/jsonlite
+  repository: https://CRAN.R-project.org/package=jsonlite
+  authors:
+  - family-names: Ooms
+    given-names: Jeroen
+    email: jeroenooms@gmail.com
+    orcid: https://orcid.org/0000-0002-4035-0289
+  year: '2025'
+  doi: 10.32614/CRAN.package.jsonlite
 - type: software
   title: limma
   abstract: 'limma: Linear Models for Microarray and Omics Data'
