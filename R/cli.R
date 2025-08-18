@@ -151,7 +151,7 @@ cli_parse <- function(text) {
 #' @param method function in MOSuite to call
 #' @param json path to a JSON file containing arguments for the function.
 #'  Additionally, the JSON can contain the following keys:
-#'    - `moo_input_rds` - filepath to an existing MultiOmicsDataset object in RDS format. This is required if `method` contains `moo` as an argument.
+#'    - `moo_input_rds` - filepath to an existing MultiOmicsDataset object in RDS format. This is required if the MOSuite function contains `moo` as an argument.
 #'    - `moo_output_rds` - filepath to write the result to.
 #' @param debug when TRUE, do not call the command, just return the expression.
 #'
