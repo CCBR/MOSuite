@@ -3,9 +3,12 @@
 
 #' Execute MOSuite from the CLI
 #'
+#' @export
+#' @keywords internal
 cli_exec <- function(clargs = commandArgs(trailingOnly = TRUE)) {
   invisible(cli_exec_impl(clargs))
 }
+
 cli_exec_impl <- function(clargs) {
   # check for tool called without arguments, or called with '--help'
   usage <-
@@ -34,7 +37,14 @@ cli_exec_impl <- function(clargs) {
   }
 
   # begin building call
-  args <- list(call("::", as.symbol("MOSuite"), as.symbol(method)))
+  # if --json in arguments, call cli_from_json()
+  if (any(stringr::str_detect(clargs, "^--json"))) {
+    args <- list(call(":::", as.symbol("MOSuite"), as.symbol("cli_from_json")),
+      method = method
+    )
+  } else { # otherwise call the method directly
+    args <- list(call("::", as.symbol("MOSuite"), as.symbol(method)))
+  }
 
   for (clarg in clargs[-1L]) {
     # convert '--no-<flag>' into a FALSE parameter
@@ -78,21 +88,30 @@ cli_exec_impl <- function(clargs) {
 
 cli_usage <- function() {
   usage <- "
-Usage: mosuite [method] [args...]
+Usage: mosuite [method] [--json=path/to/args.json] [args]
 
 [method] should be the name of a function exported from MOSuite.
-[args...] should be arguments accepted by that function.
+[--json] should specify the path to a JSON file with arguments accepted by that function. The equals sign (=) is required to separate --json from the path.
+[args] If --json is not specified, all CLI arguments are parsed as R code and passed to the function.
 
-Use mosuite [method] --help for more information about the associated function.
+Additionally, the JSON file can contain the following keys:
+  - `moo_input_rds` - filepath to an existing MultiOmicsDataset object in RDS format. This is required if `method` has `moo` as an argument.
+  - `moo_output_rds` - filepath to write the result to.
 
-Examples:
+Use `mosuite [method] --help` for more information about the associated function.
 
-  # basic commands
-  mosuite create_multiOmicDataSet_from_files   # Create MO object from files
+Basic Methods:
+  mosuite create_multiOmicDataSet_from_files
+  mosuite filter_counts
+  mosuite clean_raw_counts
+  mosuite normalize_counts
+  mosuite batch_correct_counts
+  mosuite diff_counts
+  mosuite filter_diff
 "
-
   writeLines(usage, con = stderr())
 }
+
 cli_help <- function(method) {
   print(help(method, package = "MOSuite"))
 }
@@ -126,4 +145,47 @@ cli_parse <- function(text) {
   # parse the expression
   value <- parse(text = text)[[1L]]
   if (is.language(value)) text else value
+}
+
+#' Call an MOSuite function with arguments specified in a json file
+#'
+#' @param method function in MOSuite to call
+#' @param json path to a JSON file containing arguments for the function.
+#'  Additionally, the JSON can contain the following keys:
+#'    - `moo_input_rds` - filepath to an existing MultiOmicsDataset object in RDS format. This is required if `method` contains `moo` as an argument.
+#'    - `moo_output_rds` - filepath to write the result to.
+#' @param debug when TRUE, do not call the command, just return the expression.
+#'
+#' @returns invisible returns the function call
+#' @export
+#' @keywords internal
+#'
+cli_from_json <- function(method, json, debug = FALSE) {
+  # begin building function call
+  fcn_args <- list(call("::", as.symbol("MOSuite"), as.symbol(method)))
+  # get function arguments from json
+  json_args <- unlist(jsonlite::read_json(json))
+  # if needed, get moo from moo_input_rds
+  accepted_args <- formals(method, envir = getNamespace("MOSuite"))
+  if ("moo" %in% names(accepted_args)) {
+    assertthat::assert_that("moo_input_rds" %in% names(json_args),
+      msg = glue::glue("moo_input_rds must be included in the JSON because `moo` is required for {method}()")
+    )
+    fcn_args[["moo"]] <- readr::read_rds(json_args[["moo_input_rds"]])
+  }
+  # all other json keys should be arguments for the method
+  fcn_args <- c(fcn_args, json_args[!stringr::str_detect(names(json_args), "moo_.*_rds")])
+
+  # invoke method with parsed arguments from json
+  expr <- as.call(fcn_args)
+  if (isFALSE(debug)) {
+    result <- eval(expr = expr, envir = globalenv())
+
+    # save result to output_rds
+    if ("moo_output_rds" %in% names(json_args)) {
+      readr::write_rds(result, json_args[["moo_output_rds"]])
+    }
+  }
+
+  invisible(expr)
 }
