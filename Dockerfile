@@ -94,6 +94,11 @@ RUN mamba install -c conda-forge \
 COPY . /opt2/MOSuite
 RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE)"
 
+# add exec to the path
+RUN EXEC_MOSUITE=$(R -s -e "cat(system.file('exec','mosuite', package='MOSuite'))")
+RUN chmod +x $EXEC_MOSUITE
+RUN export PATH="$PATH:$(dirname $EXEC_MOSUITE)"
+
 # Save Dockerfile in the docker
 COPY Dockerfile /opt2/Dockerfile_${REPONAME}.${BUILD_TAG}
 RUN chmod a+r /opt2/Dockerfile_${REPONAME}.${BUILD_TAG}
