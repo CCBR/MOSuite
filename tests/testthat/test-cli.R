@@ -18,14 +18,17 @@ test_that("mosuite cli", {
 
 test_that("cli_exec --json --debug", {
   expect_snapshot(
-    cli_exec(c(
+    print(cli_exec(c(
       "create_multiOmicDataSet_from_files",
       paste0('--json="', system.file("extdata", "example.json", package = "MOSuite"), '"'),
       "--debug"
-    ))
+    )))
   )
 })
 
-test_that("cli_exec --help", {
+test_that("mosuite --help", {
   expect_snapshot(cli_exec("--help"))
+  expect_snapshot(system(paste(system.file("exec", "mosuite", package = "MOSuite"), "--help")))
+  expect_snapshot(cli_exec(c("filter_counts", "--help")))
+  expect_warning(cli_exec("not_a_function"), "not a known function")
 })

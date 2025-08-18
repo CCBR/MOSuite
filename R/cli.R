@@ -117,7 +117,7 @@ cli_help <- function(method) {
 
 cli_unknown <- function(method, exports) {
   # report unknown command
-  warning("MOSuite: '%s' is not a known command.", method)
+  warning(glue::glue("MOSuite: {method} is not a known function."))
 
   # check for similar commands
   distance <- c(utils::adist(method, exports))
