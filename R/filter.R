@@ -121,6 +121,8 @@ filter_counts <- function(moo,
   }
   message(glue::glue("* filtering {count_type} counts"))
 
+  samples_to_include %<>% unlist()
+
   df <- counts_dat %>% dplyr::select(
     tidyselect::all_of(feature_id_colname),
     tidyselect::all_of(samples_to_include)

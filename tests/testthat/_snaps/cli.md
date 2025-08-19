@@ -3,15 +3,6 @@
     Code
       system(command)
 
-# cli_exec --json --debug
-
-    Code
-      print(cli_exec(c("create_multiOmicDataSet_from_files", paste0("--json=\"",
-        system.file("extdata", "example.json", package = "MOSuite"), "\""), "--debug")))
-    Output
-      MOSuite::create_multiOmicDataSet_from_files(feature_counts_filepath = "inst/extdata/RSEM.genes.expected_count.all_samples.txt.gz", 
-          sample_meta_filepath = "inst/extdata/sample_metadata.tsv.gz")
-
 # mosuite --help
 
     Code

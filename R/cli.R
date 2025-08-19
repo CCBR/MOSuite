@@ -163,7 +163,8 @@ cli_from_json <- function(method, json, debug = FALSE) {
   # begin building function call
   fcn_args <- list(call("::", as.symbol("MOSuite"), as.symbol(method)))
   # get function arguments from json
-  json_args <- unlist(jsonlite::read_json(json))
+  json_args <- jsonlite::read_json(json)
+
   # if needed, get moo from moo_input_rds
   accepted_args <- formals(method, envir = getNamespace("MOSuite"))
   if ("moo" %in% names(accepted_args)) {
@@ -173,6 +174,7 @@ cli_from_json <- function(method, json, debug = FALSE) {
     fcn_args[["moo"]] <- readr::read_rds(json_args[["moo_input_rds"]])
   }
   # all other json keys should be arguments for the method
+  # TODO convert lists to vectors
   fcn_args <- c(fcn_args, json_args[!stringr::str_detect(names(json_args), "moo_.*_rds")])
 
   # invoke method with parsed arguments from json

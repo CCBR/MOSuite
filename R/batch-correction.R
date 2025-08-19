@@ -84,6 +84,7 @@ batch_correct_counts <- function(moo,
   batch_vctr <- sample_metadata %>% dplyr::pull(batch_colname)
   message(glue::glue("* batch-correcting {glue::glue_collapse(c(count_type, sub_count_type),sep='-')} counts"))
 
+  covariates_colnames %<>% unlist()
 
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]

@@ -12,7 +12,7 @@ cli_from_json(method, json, debug = FALSE)
 \item{json}{path to a JSON file containing arguments for the function.
 Additionally, the JSON can contain the following keys:
 \itemize{
-\item \code{moo_input_rds} - filepath to an existing MultiOmicsDataset object in RDS format. This is required if \code{method} contains \code{moo} as an argument.
+\item \code{moo_input_rds} - filepath to an existing MultiOmicsDataset object in RDS format. This is required if the MOSuite function contains \code{moo} as an argument.
 \item \code{moo_output_rds} - filepath to write the result to.
 }}
 
