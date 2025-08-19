@@ -92,12 +92,12 @@ RUN mamba install -c conda-forge \
 
 # install R package
 COPY . /opt2/MOSuite
-RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE)"
+RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com')"
 
 # add mosuite exec to the path
-ENV EXEC_MOSUITE="$(R -s -e "cat(system.file('exec','mosuite', package='MOSuite'))")"
-RUN chmod +x $EXEC_MOSUITE
-ENV PATH="$PATH:$(dirname $EXEC_MOSUITE)"
+RUN chmod -R +x /opt2/conda/lib/R/library/MOSuite/exec
+ENV PATH="$PATH:/opt2/conda/lib/R/library/MOSuite/exec"
+RUN mosuite --help
 
 # Save Dockerfile in the docker
 COPY Dockerfile /opt2/Dockerfile_${REPONAME}.${BUILD_TAG}
