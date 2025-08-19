@@ -4,7 +4,19 @@
 \alias{do_math}
 \title{Function for testing CLI argument parsing}
 \usage{
-do_math(add = TRUE, left = 1, right = 2)
+do_math(add = TRUE, subtract = FALSE, left = 1, right = 2)
+}
+\arguments{
+\item{add}{whether to add left and right}
+
+\item{subtract}{whether to subtract left and right}
+
+\item{left}{number on the left side of the operand}
+
+\item{right}{number on the right side of the operand}
+}
+\value{
+result of adding or subtracting left and right
 }
 \description{
 Function for testing CLI argument parsing
