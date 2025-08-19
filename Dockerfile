@@ -95,7 +95,7 @@ COPY . /opt2/MOSuite
 RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE)"
 
 # add mosuite exec to the path
-RUN export EXEC_MOSUITE=$(R -s -e "cat(system.file('exec','mosuite', package='MOSuite'))")
+ENV EXEC_MOSUITE="$(R -s -e "cat(system.file('exec','mosuite', package='MOSuite'))")"
 RUN chmod +x $EXEC_MOSUITE
 ENV PATH="$PATH:$(dirname $EXEC_MOSUITE)"
 
