@@ -33,6 +33,13 @@ test_that("cli_exec --json --debug", {
 test_that("mosuite --help", {
   expect_snapshot(cli_exec("--help"))
   expect_snapshot(system(paste(system.file("exec", "mosuite", package = "MOSuite"), "--help")))
-  expect_snapshot(cli_exec(c("filter_counts", "--help")))
+  expect_snapshot(cli_exec("help"))
+  expect_true(inherits(cli_exec(c("filter_counts", "--help")), "help_files_with_topic"))
   expect_warning(cli_exec("not_a_function"), "not a known function")
+})
+
+test_that("cli_exec parses args correctly", {
+  expect_equal(cli_exec("do_math"), 3)
+  expect_equal(cli_exec(c("do_math", "--subtract", "--no-add")), -1)
+  expect_equal(cli_exec(c("do_math", "left=2", "right=3")), 5)
 })
