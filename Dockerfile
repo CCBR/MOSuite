@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM nciccbr/ccbr_ubuntu_22.04:v4
 
 # build time variables
 ARG BUILD_DATE="000000"
@@ -10,73 +10,6 @@ ENV REPONAME=${REPONAME}
 
 ARG R_VERSION=4.3.2
 ENV R_VERSION=${R_VERSION}
-
-RUN mkdir -p /opt2 && mkdir -p /data2
-ENV TZ=America/New_York
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-RUN apt update && apt-get -y upgrade
-# Set the locale
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-		locales build-essential cmake cpanminus && \
-	localedef -i en_US -f UTF-8 en_US.UTF-8 && \
-	cpanm FindBin Term::ReadLine
-
-# install basic dependencies with apt-get
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-  build-essential \
-  bzip2 \
-	figlet \
-	g++ \
-	gcc \
-	gfortran \
-	git \
-	libatlas-base-dev \
-	libblas-dev \
-	libboost-dev \
-	libbz2-dev \
-	libcurl4-openssl-dev \
-	libexpat1-dev \
-	libfreetype6-dev \
-	libgd-dev \
-	libgd-perl \
-	libglib2.0-dev \
-  libgpgme11-dev \
-	libgs-dev \
-	libgsl-dev \
-	libgsl0-dev \
-	libhtml-template-compiled-perl \
-	libicu-dev \
-	libjudy-dev \
-	liblapack-dev \
-	liblzma-dev \
-	libmysqlclient-dev \
-	libncurses-dev \
-	libopenmpi-dev \
-	libpng-dev \
-	librtmp-dev \
-  libseccomp-dev \
-	libssl-dev \
-	libtool \
-	libxml-libxml-debugging-perl \
-	libxml-opml-simplegen-perl \
-	libxml2-dev \
-	libxslt-dev \
-	make \
-	manpages-dev \
-	openjdk-17-jre-headless \
-	parallel \
-	pigz \
-  pkg-config \
-	rsync \
-  squashfs-tools \
-	unzip \
-    vim \
-  uuid-dev \
-	wget \
-	zlib1g \
-	zlib1g-dev \
-	zlibc
 
 # Install conda and give write permissions to conda folder
 RUN echo 'export PATH=/opt2/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
