@@ -28,6 +28,11 @@ test_that("cli_exec --json --debug", {
       "    sample_meta_filepath = \"inst/extdata/sample_metadata.tsv.gz\")"
     )
   )
+  expect_error(cli_exec(c(
+    "filter_counts",
+    paste0('--json="', system.file("extdata", "example.json", package = "MOSuite"), '"'),
+    "--debug"
+  )), "moo_input_rds must be included")
 })
 
 test_that("mosuite --help", {
