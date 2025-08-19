@@ -1,0 +1,7 @@
+{
+  "moo_input_rds": "moo.rds",
+  "moo_output_rds": "moo.rds",
+  "covariates_colnames": "condition",
+  "contrast_colname": "condition",
+  "contrasts": ["knockout-wildtype"]
+}
