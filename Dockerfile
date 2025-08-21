@@ -18,10 +18,28 @@ RUN echo 'export PATH=/opt2/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
     rm ~/miniforge3.sh && chmod 777 -R /opt2/conda/
 ENV PATH="/opt2/conda/bin:$PATH"
 
+# Pin channels and update
+SHELL ["/bin/bash", "-lc"]
+RUN conda config --add channels conda-forge \
+ && conda config --add channels bioconda \
+ && conda config --set channel_priority strict
+
+
 # install conda packages
-RUN mamba install -c conda-forge \
+RUN mamba install -y -c conda-forge \
   r-base=${R_VERSION} \
-  r-devtools
+  r-devtools \
+    r-ggplot2 \
+    r-ggrepel r-viridis r-upsetr r-patchwork r-plotly \
+    r-matrix r-mgcv r-survival \
+    bioconductor-genomicranges \
+    bioconductor-summarizedexperiment \
+    bioconductor-delayedarray \
+    bioconductor-s4arrays \
+    bioconductor-annotationdbi \
+    bioconductor-annotate \
+    bioconductor-keggrest \
+ && conda clean -afy
 
 # install R package
 COPY . /opt2/MOSuite
