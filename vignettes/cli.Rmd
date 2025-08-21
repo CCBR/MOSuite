@@ -1,0 +1,131 @@
+---
+title: "Calling MOSuite from the CLI"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Calling MOSuite from the CLI}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+```{r setup}
+library(MOSuite)
+```
+
+MOSuite includes an executable called `mosuite`.
+After installing the package, you can use `system.file()` to locate it:
+
+```{r install}
+system.file("exec", "mosuite", package = "MOSuite")
+```
+
+You should add this executable to your `PATH` environment variable.
+If you're using the [MOSuite docker container](https://hub.docker.com/r/nciccbr/mosuite),
+it is already included in the path.
+
+Any user-facing function in MOSuite can be called with `mosuite [function]` from the unix CLI.
+Function arguments are passed in via a JSON file.
+In addition to arguments used by the function,
+the JSON file can contain the following keys:
+
+  - `moo_input_rds` - file path to an existing MultiOmicsDataset object in RDS format. This is required if the MOSuite function has `moo` as an argument (most user-facing functions do).
+  - `moo_output_rds` - file path to write the result to.
+
+Create a JSON file with arguments for `create_multiOmicDataSet_from_files()`.
+You can use R code as below or write it by hand.
+
+```{r create_json}
+j <- list(
+  feature_counts_filepath = system.file("extdata", "RSEM.genes.expected_count.all_samples.txt.gz", package = "MOSuite"),
+  sample_meta_filepath = system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite"),
+  moo_output_rds = "moo.rds"
+)
+jsonlite::write_json(j, "args_1.json")
+```
+
+In a unix shell, call `create_multiOmicDataSet_from_files()` and specify the path to the JSON file:
+
+```{bash create_moo, eval=FALSE}
+mosuite create_multiOmicDataSet_from_files --json=args_1.json
+```
+
+This is equivalent to running the following R code:
+
+```{r create_moo_R}
+moo <- create_multiOmicDataSet_from_files(
+  feature_counts_filepath = system.file(
+    "extdata",
+    "RSEM.genes.expected_count.all_samples.txt.gz",
+    package = "MOSuite"
+  ),
+  sample_meta_filepath = system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
+)
+readr::write_rds(moo, "moo.rds")
+```
+
+You can use the `moo` object you just created as input to other MOSuite functions.
+
+Create a JSON file of arguments for `clean_raw_counts()` with R (or write it by hand):
+
+```{r create_json_filter}
+j <- list(
+  moo_input_rds = "moo.rds",
+  moo_output_rds = "moo.rds",
+  save_plots = TRUE
+)
+jsonlite::write_json(j, "args_2.json")
+```
+
+Then run `clean_raw_counts()`:
+
+```{bash clean_raw_counts, eval=FALSE}
+mosuite clean_raw_counts --json=args_2.json
+```
+
+Results are saved to `moo.rds`.
+Overwriting the same `moo` file is recommended to save disk space, as the
+multiOmicDataset object saves intermediate results in its data structure.
+
+Run `mosuite --help` to see the full CLI usage:
+
+```{r help, echo=FALSE, results='asis'}
+cat("```")
+MOSuite:::cli_usage(con = stdout())
+cat("```")
+```
+
+## Example end-to-end script
+
+You can create a shell script to run the full MOSuite pipeline.
+This script assumes you have a directory `json_args/` with JSON files to set
+each function's arguments.
+
+```{r script_e2e, echo=FALSE, results='asis'}
+cat("```bash\n")
+cat(readr::read_lines(system.file("extdata", "example_script.sh", package = "MOSuite")), sep = "\n")
+cat("\n```")
+```
+
+The example script and accompanying JSON files are included in the package data.
+You can copy them to your working directory:
+
+```{r example_data_paths, eval=FALSE}
+# copy the example script
+file.copy(system.file("extdata", "example_script.sh", package = "MOSuite"), to = "./")
+# copy the JSON files
+file.copy(system.file("extdata", "json_args", package = "MOSuite"), to = "./", recursive = TRUE)
+```
+
+Then run the script from the CLI:
+
+```bash
+bash ./example_script.sh
+```
+
+The final multiOmicDataSet will be in `moo.rds` and figures from each step will
+be in `./figures/`.

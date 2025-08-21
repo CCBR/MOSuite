@@ -91,6 +91,10 @@ diff_counts <- function(moo,
   if (is.null(contrasts)) {
     stop("contrasts vector cannot be NULL")
   }
+  # ensure these are vectors, not lists. needed when using cli with JSON for args
+  covariates_colnames %<>% unlist()
+  contrast_colname %<>% unlist()
+  contrasts %<>% unlist()
 
   # TODO support tibbles
   counts_dat %<>% as.data.frame()
@@ -532,6 +536,11 @@ filter_diff <- function(moo,
   if (!(contrast_filter %in% c("keep", "remove", "none"))) {
     stop(glue::glue("contrast_filter not recognized: {contrast_filter}"))
   }
+  # ensure these are vectors, not lists. needed for reading args from JSON
+  include_estimates %<>% unlist()
+  contrasts %<>% unlist()
+  groups %<>% unlist()
+  fill_colors %<>% unlist()
 
   # If include_estimates param is empty, then fill it with default values.
   if (length(include_estimates) == 0) {

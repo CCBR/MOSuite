@@ -1,2 +1,5 @@
 *.html
 *.R
+*.json
+moo.rds
+/figures

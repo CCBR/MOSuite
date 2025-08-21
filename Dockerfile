@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM nciccbr/ccbr_ubuntu_22.04:v4
 
 # build time variables
 ARG BUILD_DATE="000000"
@@ -11,73 +11,6 @@ ENV REPONAME=${REPONAME}
 ARG R_VERSION=4.3.2
 ENV R_VERSION=${R_VERSION}
 
-RUN mkdir -p /opt2 && mkdir -p /data2
-ENV TZ=America/New_York
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-RUN apt update && apt-get -y upgrade
-# Set the locale
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-		locales build-essential cmake cpanminus && \
-	localedef -i en_US -f UTF-8 en_US.UTF-8 && \
-	cpanm FindBin Term::ReadLine
-
-# install basic dependencies with apt-get
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-  build-essential \
-  bzip2 \
-	figlet \
-	g++ \
-	gcc \
-	gfortran \
-	git \
-	libatlas-base-dev \
-	libblas-dev \
-	libboost-dev \
-	libbz2-dev \
-	libcurl4-openssl-dev \
-	libexpat1-dev \
-	libfreetype6-dev \
-	libgd-dev \
-	libgd-perl \
-	libglib2.0-dev \
-  libgpgme11-dev \
-	libgs-dev \
-	libgsl-dev \
-	libgsl0-dev \
-	libhtml-template-compiled-perl \
-	libicu-dev \
-	libjudy-dev \
-	liblapack-dev \
-	liblzma-dev \
-	libmysqlclient-dev \
-	libncurses-dev \
-	libopenmpi-dev \
-	libpng-dev \
-	librtmp-dev \
-  libseccomp-dev \
-	libssl-dev \
-	libtool \
-	libxml-libxml-debugging-perl \
-	libxml-opml-simplegen-perl \
-	libxml2-dev \
-	libxslt-dev \
-	make \
-	manpages-dev \
-	openjdk-17-jre-headless \
-	parallel \
-	pigz \
-  pkg-config \
-	rsync \
-  squashfs-tools \
-	unzip \
-    vim \
-  uuid-dev \
-	wget \
-	zlib1g \
-	zlib1g-dev \
-	zlibc
-
 # Install conda and give write permissions to conda folder
 RUN echo 'export PATH=/opt2/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
     wget --quiet "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" -O ~/miniforge3.sh && \
@@ -85,14 +18,37 @@ RUN echo 'export PATH=/opt2/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
     rm ~/miniforge3.sh && chmod 777 -R /opt2/conda/
 ENV PATH="/opt2/conda/bin:$PATH"
 
+# Pin channels and update
+SHELL ["/bin/bash", "-lc"]
+RUN conda config --add channels conda-forge \
+ && conda config --add channels bioconda \
+ && conda config --set channel_priority strict
+
+
 # install conda packages
-RUN mamba install -c conda-forge \
+RUN mamba install -y -c conda-forge \
   r-base=${R_VERSION} \
-  r-devtools
+  r-devtools \
+    r-ggplot2 \
+    r-ggrepel r-viridis r-upsetr r-patchwork r-plotly \
+    r-matrix r-mgcv r-survival \
+    bioconductor-genomicranges \
+    bioconductor-summarizedexperiment \
+    bioconductor-delayedarray \
+    bioconductor-s4arrays \
+    bioconductor-annotationdbi \
+    bioconductor-annotate \
+    bioconductor-keggrest \
+ && conda clean -afy
 
 # install R package
 COPY . /opt2/MOSuite
-RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE)"
+RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com')"
+
+# add mosuite exec to the path
+RUN chmod -R +x /opt2/conda/lib/R/library/MOSuite/exec
+ENV PATH="$PATH:/opt2/conda/lib/R/library/MOSuite/exec"
+RUN mosuite --help
 
 # Save Dockerfile in the docker
 COPY Dockerfile /opt2/Dockerfile_${REPONAME}.${BUILD_TAG}
