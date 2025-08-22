@@ -65,6 +65,27 @@ abort_packages_not_installed <- function(...) {
   }
 }
 
+#' Function for testing CLI argument parsing
+#'
+#' @param add whether to add left and right
+#' @param subtract whether to subtract left and right
+#' @param left number on the left side of the operand
+#' @param right number on the right side of the operand
+#'
+#' @returns result of adding or subtracting left and right
+#'
+#' @export
+#' @keywords internal
+do_math <- function(add = TRUE, subtract = FALSE, left = 1, right = 2) {
+  result <- NULL
+  if (isTRUE(add)) {
+    result <- left + right
+  } else if (isTRUE(subtract)) {
+    result <- left - right
+  }
+  return(result)
+}
+
 #' Join dataframes in named list to wide dataframe
 #'
 #' The first column is assumed to be shared by all dataframes
