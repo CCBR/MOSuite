@@ -10,7 +10,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  warning = FALSE
 )
 ```
 
@@ -44,8 +45,8 @@ Running this container with docker or singularity is the recommend way to run
 MOSuite in pipelines and HPC environments.
 
 ```sh
-singularity exec docker://nciccbr/mosuite:0.2.0 bash mosuite --help
-singularity exec docker://nciccbr/mosuite:0.2.0 bash \
+singularity exec docker://nciccbr/mosuite:v0.2.0 bash mosuite --help
+singularity exec docker://nciccbr/mosuite:v0.2.0 bash \
   R -s -e 'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'
 ```
 
