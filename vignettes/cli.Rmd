@@ -13,9 +13,6 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-```{r setup}
-library(MOSuite)
-```
 
 MOSuite includes an executable file called `mosuite`.
 Any user-facing function in the MOSuite R package can be called with
@@ -35,38 +32,7 @@ MOSuite:::cli_usage(con = stdout())
 cat("```")
 ```
 
-## Example end-to-end script
-
-You can create a shell script to run the full MOSuite pipeline.
-This script assumes you have a directory `json_args/` with JSON files to set
-each function's arguments.
-
-```{r script_e2e, echo=FALSE, results='asis'}
-cat("```bash\n")
-cat(readr::read_lines(system.file("extdata", "example_script.sh", package = "MOSuite")), sep = "\n")
-cat("\n```")
-```
-
-The example script and accompanying JSON files are included in the package data.
-You can copy them to your working directory with R:
-
-```{r example_data_paths, eval=FALSE}
-# copy the example script
-file.copy(system.file("extdata", "example_script.sh", package = "MOSuite"), to = "./")
-# copy the JSON files
-file.copy(system.file("extdata", "json_args", package = "MOSuite"), to = "./", recursive = TRUE)
-```
-
-Then run the script from the CLI:
-
-```bash
-bash ./example_script.sh
-```
-
-The final multiOmicDataSet will be in `moo.rds` and figures from each step will
-be in `./figures/`.
-
-## Installing the mosuite CLI
+## Installing the MOSuite CLI
 
 ### Docker Container
 
@@ -99,8 +65,39 @@ You should add this executable to your `PATH` environment variable.
 export PATH="$PATH:/path/to/exec/mosuite"
 ```
 
-If you're using the [MOSuite docker container](https://hub.docker.com/r/nciccbr/mosuite),
+If you're using the [MOSuite docker container](#docker-container),
 it is already included in the path.
+
+## Example end-to-end script
+
+You can create a shell script to run the full MOSuite pipeline.
+This script assumes you have a directory `json_args/` with JSON files to set
+each function's arguments.
+
+```{r script_e2e, echo=FALSE, results='asis'}
+cat("```bash\n")
+cat(readr::read_lines(system.file("extdata", "example_script.sh", package = "MOSuite")), sep = "\n")
+cat("\n```")
+```
+
+The example script and accompanying JSON files are included in the package data.
+You can copy them to your working directory with R:
+
+```{r example_data_paths, eval=FALSE}
+# copy the example script
+file.copy(system.file("extdata", "example_script.sh", package = "MOSuite"), to = "./")
+# copy the JSON files
+file.copy(system.file("extdata", "json_args", package = "MOSuite"), to = "./", recursive = TRUE)
+```
+
+Then run the script from the CLI:
+
+```bash
+bash ./example_script.sh
+```
+
+The final multiOmicDataSet will be in `moo.rds` and figures from each step will
+be in `./figures/`.
 
 ## Writing JSON files
 
@@ -125,6 +122,7 @@ mosuite create_multiOmicDataSet_from_files --json=args_1.json
 This is equivalent to running the following R code:
 
 ```{r create_moo_R}
+library(MOSuite)
 moo <- create_multiOmicDataSet_from_files(
   feature_counts_filepath = system.file(
     "extdata",
