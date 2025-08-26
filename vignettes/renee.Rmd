@@ -71,3 +71,9 @@ moo %<>%
 
 moo@counts$norm$voom %>% head()
 ```
+
+## The multiOmicDataSet object structure
+
+```{r str_moo}
+str(moo)
+```

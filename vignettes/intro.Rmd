@@ -52,3 +52,9 @@ moo_nidap@analyses$diff %>%
 
 moo_nidap@analyses$diff_filt %>% head()
 ```
+
+## The multiOmicDataSet object structure
+
+```{r str_moo}
+str(moo_nidap)
+```
