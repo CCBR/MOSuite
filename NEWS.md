@@ -1,8 +1,11 @@
-# MOSuite development version
+# MOSuite (development version)
 
+# MOSuite 0.2.0
+
+- Any user-facing function can now be called from the unix command line.  (#126, #127)
+  Usage: `mosuite [function] --json=path/to/args`
+  See the new `cli` vignette for detailed instructions.
 - MOSuite is now archived in Zenodo with a DOI: [10.5281/zenodo.16371580](http://doi.org/10.5281/zenodo.16371580)
-- Any user-facing function can now be called from the unix command line: `mosuite [function] --json=path/to/args`.
-  See the new cli vignette for detailed instructions.
 
 # MOSuite 0.1.0
 
