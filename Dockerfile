@@ -32,6 +32,10 @@ RUN chmod -R +x /opt2/conda/lib/R/library/MOSuite/exec
 ENV PATH="$PATH:/opt2/conda/lib/R/library/MOSuite/exec"
 RUN mosuite --help
 
+# copy example script & json to data
+COPY ./inst/extdata/example_script.sh /data2/
+COPY ./inst/extdata/json_args/ /data2/json_args/
+
 # Save Dockerfile in the docker
 COPY Dockerfile /opt2/Dockerfile_${REPONAME}.${BUILD_TAG}
 RUN chmod a+r /opt2/Dockerfile_${REPONAME}.${BUILD_TAG}
