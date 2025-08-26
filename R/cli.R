@@ -99,7 +99,7 @@ Additionally, the JSON file can contain the following keys:
 
 Use `mosuite [function] --help` for more information about the associated function.
 
-Basic Methods:
+Main functions:
   mosuite create_multiOmicDataSet_from_files
   mosuite filter_counts
   mosuite clean_raw_counts
@@ -167,11 +167,12 @@ cli_from_json <- function(method, json, debug = FALSE) {
 
   # if needed, get moo from moo_input_rds
   accepted_args <- formals(method, envir = getNamespace("MOSuite"))
-  if ("moo" %in% names(accepted_args)) {
+  first_arg <- names(formals(method, envir = getNamespace("MOSuite")))[1]
+  if (stringr::str_detect(first_arg, "^moo")) {
     assertthat::assert_that("moo_input_rds" %in% names(json_args),
       msg = glue::glue("moo_input_rds must be included in the JSON because `moo` is required for {method}()")
     )
-    fcn_args[["moo"]] <- readr::read_rds(json_args[["moo_input_rds"]])
+    fcn_args[[first_arg]] <- readr::read_rds(json_args[["moo_input_rds"]])
   }
   # all other json keys should be arguments for the method
   # TODO convert lists to vectors
