@@ -4,6 +4,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/LICENSE-text.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/LICENSE.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/PULL_REQUEST_TEMPLATE.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/articles/cli.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/articles/index.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/articles/intro.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/articles/memory.html</loc></url>
@@ -23,10 +24,13 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/calc_pca.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/check_packages_installed.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/clean_raw_counts.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/cli_exec.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/cli_from_json.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/counts_dat_to_matrix.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/create_multiOmicDataSet_from_dataframes.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/create_multiOmicDataSet_from_files.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/diff_counts.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/do_math.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/extract_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/filter_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/filter_diff.html</loc></url>
