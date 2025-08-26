@@ -8,7 +8,7 @@ message: 'To cite package "MOSuite" in publications use:'
 type: software
 license: MIT
 title: 'MOSuite: R package for differential multi-omics analysis'
-version: 0.1.0.9000
+version: 0.2.0.9000
 doi: 10.5281/zenodo.16371580
 identifiers:
 - description: Archived snapshots of all versions
@@ -59,7 +59,7 @@ preferred-citation:
   url: https://ccbr.github.io/MOSuite/
 repository-code: https://github.com/CCBR/MOSuite
 url: https://ccbr.github.io/MOSuite/
-date-released: '2025-07-23'
+date-released: '2025-08-26'
 contact:
 - family-names: Sovacool
   given-names: Kelly
