@@ -129,3 +129,13 @@ bash ./example_script.sh
 
 The final multiOmicDataSet will be in `moo.rds` and figures from each step will
 be in `./figures/`.
+
+## Docker Container
+
+We provide a docker container with the MOSuite R package and CLI installed as of
+v0.2.0 and later.
+<https://hub.docker.com/r/nciccbr/mosuite>
+
+```sh
+singularity exec docker://nciccbr/mosuite:0.2.0 bash mosuite --help
+```
