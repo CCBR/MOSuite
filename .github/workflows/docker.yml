@@ -27,7 +27,7 @@ jobs:
             DOCKER_TAGS=${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}:${VERSION},${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}:latest
           else
             HASH=$(git rev-parse --short HEAD)
-            VERSION="$(grep 'Version:' $CONTEXT/DESCRIPTION | sed 's/Version: //')_${HASH}"
+            VERSION="$(grep 'Version:' $CONTEXT/DESCRIPTION | sed 's/Version: /v/')_${HASH}"
             DOCKER_TAGS=${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}:${VERSION}
           fi
           echo "VERSION_TAG=$(echo $VERSION)" >> "$GITHUB_OUTPUT"
