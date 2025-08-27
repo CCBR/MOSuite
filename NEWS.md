@@ -1,5 +1,7 @@
 # MOSuite (development version)
 
+- Improve CLI docs to show batch correction. (#128)
+
 # MOSuite 0.2.0
 
 - Any user-facing function can now be called from the unix command line.  (#126, #127)
