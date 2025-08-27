@@ -58,39 +58,10 @@ test_that("constructing MOO works for RENEE data", {
   )
 })
 
-test_that("annotation minimally contains feature id column", {
-  moo <- create_multiOmicDataSet_from_dataframes(
-    readr::read_tsv(
-      system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
-    ),
-    gene_counts %>% glue_gene_symbols()
-  )
-  expect_equal(
-    moo@annotation %>% head(),
-    structure(
-      list(gene_id = structure(
-        c(
-          "ENSG00000121410.11|A1BG",
-          "ENSG00000268895.5|A1BG-AS1",
-          "ENSG00000148584.15|A1CF",
-          "ENSG00000175899.14|A2M",
-          "ENSG00000245105.3|A2M-AS1",
-          "ENSG00000166535.20|A2ML1"
-        ),
-        class = c("glue", "character")
-      )),
-      row.names = c(NA, -6L),
-      class = c("tbl_df", "tbl", "data.frame")
-    )
-  )
-})
-
-test_that("constructing MOO works for NIDAP data", {
-  moo <- create_multiOmicDataSet_from_dataframes(
-    nidap_sample_metadata,
-    nidap_raw_counts,
-    sample_id_colname = "Sample",
-    feature_id_colname = "GeneName"
+test_that("constructing MOO works from CSV files", {
+  moo <- create_multiOmicDataSet_from_files(system.file("extdata", "nidap", "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz", package = "MOSuite"),
+    system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
+    delim = ","
   )
   expect_equal(moo@sample_meta, structure(
     list(
@@ -142,6 +113,33 @@ test_that("constructing MOO works for NIDAP data", {
         C2 = c(0, 0, 0, 0, 0, 0),
         C3 = c(0, 0, 0, 0, 0, 0)
       ),
+      row.names = c(NA, -6L),
+      class = c("tbl_df", "tbl", "data.frame")
+    )
+  )
+})
+
+test_that("annotation minimally contains feature id column", {
+  moo <- create_multiOmicDataSet_from_dataframes(
+    readr::read_tsv(
+      system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
+    ),
+    gene_counts %>% glue_gene_symbols()
+  )
+  expect_equal(
+    moo@annotation %>% head(),
+    structure(
+      list(gene_id = structure(
+        c(
+          "ENSG00000121410.11|A1BG",
+          "ENSG00000268895.5|A1BG-AS1",
+          "ENSG00000148584.15|A1CF",
+          "ENSG00000175899.14|A2M",
+          "ENSG00000245105.3|A2M-AS1",
+          "ENSG00000166535.20|A2ML1"
+        ),
+        class = c("glue", "character")
+      )),
       row.names = c(NA, -6L),
       class = c("tbl_df", "tbl", "data.frame")
     )
