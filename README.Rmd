@@ -53,7 +53,13 @@ Or install a specific version:
 remotes::install_github("CCBR/MOSuite", dependencies = TRUE, ref = "v0.1.0")
 ```
 
-There is also a docker image available at <https://hub.docker.com/r/nciccbr/mosuite>
+There is also a Docker container available at <https://hub.docker.com/r/nciccbr/mosuite>
+
+```sh
+singularity exec docker://nciccbr/mosuite:v0.2.0 R -s -e \
+  'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'
+```
+
 
 ## Usage
 
