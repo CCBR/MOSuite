@@ -80,6 +80,8 @@ batch_correct_counts <- function(moo,
     }
     counts_dat <- moo@counts[[count_type]][[sub_count_type]]
   }
+  # sva::ComBat() can't handle tibbles
+  counts_dat %<>% as.data.frame()
   sample_metadata <- moo@sample_meta
   batch_vctr <- sample_metadata %>% dplyr::pull(batch_colname)
   message(glue::glue("* batch-correcting {glue::glue_collapse(c(count_type, sub_count_type),sep='-')} counts"))
@@ -118,6 +120,7 @@ batch_correct_counts <- function(moo,
     sample_metadata %<>%
       dplyr::mutate(dplyr::across(tidyselect::all_of(covariates_colnames), ~ as.factor(.x)))
     # run batch correction
+    message("Running sva::ComBat()")
     combat_edata <- sva::ComBat(
       counts_matr,
       batch = batch_vctr,
