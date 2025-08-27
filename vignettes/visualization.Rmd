@@ -116,7 +116,7 @@ print(heatmap_plot)
 
 ### Volcano
 
-= #### Summary
+#### Summary
 
 ```{r volcano_summary}
 dat_volcano_summary <- moo@analyses$diff %>%
