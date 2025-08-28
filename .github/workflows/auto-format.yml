@@ -32,10 +32,11 @@ jobs:
         with:
           needs: Suggests
 
-      - name: render README.Rmd
+      - name: render README.Rmd & docs
         shell: Rscript {0}
         run: |
           rmarkdown::render("README.Rmd")
+          devtools::document()
 
       - name: update citation
         shell: Rscript {0}
