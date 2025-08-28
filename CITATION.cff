@@ -878,6 +878,27 @@ references:
   year: '2025'
   doi: 10.32614/CRAN.package.rmarkdown
 - type: software
+  title: roxygen2
+  abstract: 'roxygen2: In-Line Documentation for R'
+  notes: Suggests
+  url: https://roxygen2.r-lib.org/
+  repository: https://CRAN.R-project.org/package=roxygen2
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+    orcid: https://orcid.org/0000-0003-4757-117X
+  - family-names: Danenberg
+    given-names: Peter
+    email: pcd@roxygen.org
+  - family-names: Csárdi
+    given-names: Gábor
+    email: csardi.gabor@gmail.com
+  - family-names: Eugster
+    given-names: Manuel
+  year: '2025'
+  doi: 10.32614/CRAN.package.roxygen2
+- type: software
   title: scales
   abstract: 'scales: Scale Functions for Visualization'
   notes: Suggests
