@@ -80,6 +80,8 @@ batch_correct_counts <- function(moo,
     }
     counts_dat <- moo@counts[[count_type]][[sub_count_type]]
   }
+  # sva::ComBat() can't handle tibbles
+  counts_dat %<>% as.data.frame()
   sample_metadata <- moo@sample_meta
   batch_vctr <- sample_metadata %>% dplyr::pull(batch_colname)
   message(glue::glue("* batch-correcting {glue::glue_collapse(c(count_type, sub_count_type),sep='-')} counts"))

@@ -1,7 +1,11 @@
 {
   "moo_input_rds": "moo.rds",
   "moo_output_rds": "moo.rds",
-  "covariates_colnames": "condition",
-  "contrast_colname": "condition",
-  "contrasts": ["knockout-wildtype"]
+  "count_type": "filt",
+  "covariates_colnames": ["Group", "Batch"],
+  "contrast_colname": "Group",
+  "contrasts": ["B-A", "C-A", "B-C"],
+  "input_in_log_counts": false,
+  "return_mean_and_sd": true,
+  "voom_normalization_method": "quantile"
 }

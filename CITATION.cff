@@ -8,7 +8,7 @@ message: 'To cite package "MOSuite" in publications use:'
 type: software
 license: MIT
 title: 'MOSuite: R package for differential multi-omics analysis'
-version: 0.1.0.9000
+version: 0.2.0.9000
 doi: 10.5281/zenodo.16371580
 identifiers:
 - description: Archived snapshots of all versions
@@ -59,7 +59,7 @@ preferred-citation:
   url: https://ccbr.github.io/MOSuite/
 repository-code: https://github.com/CCBR/MOSuite
 url: https://ccbr.github.io/MOSuite/
-date-released: '2025-07-23'
+date-released: '2025-08-26'
 contact:
 - family-names: Sovacool
   given-names: Kelly
@@ -877,6 +877,27 @@ references:
     orcid: https://orcid.org/0000-0003-3925-190X
   year: '2025'
   doi: 10.32614/CRAN.package.rmarkdown
+- type: software
+  title: roxygen2
+  abstract: 'roxygen2: In-Line Documentation for R'
+  notes: Suggests
+  url: https://roxygen2.r-lib.org/
+  repository: https://CRAN.R-project.org/package=roxygen2
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+    orcid: https://orcid.org/0000-0003-4757-117X
+  - family-names: Danenberg
+    given-names: Peter
+    email: pcd@roxygen.org
+  - family-names: Csárdi
+    given-names: Gábor
+    email: csardi.gabor@gmail.com
+  - family-names: Eugster
+    given-names: Manuel
+  year: '2025'
+  doi: 10.32614/CRAN.package.roxygen2
 - type: software
   title: scales
   abstract: 'scales: Scale Functions for Visualization'

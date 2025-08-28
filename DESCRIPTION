@@ -65,6 +65,7 @@ Suggests:
     RColorBrewer,
     readr,
     rmarkdown,
+    roxygen2,
     scales,
     styler,
     sva,

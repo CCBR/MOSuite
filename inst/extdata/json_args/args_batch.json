@@ -1,0 +1,9 @@
+{
+  "moo_input_rds": "moo.rds",
+  "moo_output_rds": "moo.rds",
+  "count_type": "norm",
+  "sub_count_type": "voom",
+  "covariates_colname": "Group",
+  "batch_colname": "Batch",
+  "label_colname": "Label" 
+}

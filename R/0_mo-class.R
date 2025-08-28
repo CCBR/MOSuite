@@ -90,6 +90,10 @@ multiOmicDataSet <- S7::new_class("multiOmicDataSet",
 #' head(moo@counts$raw)
 #' head(moo@annotation)
 #'
+#' sample_meta_nidap <- readr::read_csv(system.file("extdata", "nidap", "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz", package = "MOSuite"))
+#' raw_counts_nidap <- readr::read_csv(system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"))
+#' moo_nidap <- create_multiOmicDataSet_from_dataframes(sample_meta_nidap, raw_counts_nidap)
+#'
 #' @family moo constructors
 create_multiOmicDataSet_from_dataframes <- function(sample_metadata,
                                                     counts_dat,
@@ -112,7 +116,10 @@ create_multiOmicDataSet_from_dataframes <- function(sample_metadata,
 
   meta_sample_colnames <- sample_metadata %>% dplyr::pull(sample_id_colname)
   if (!all(meta_sample_colnames %in% colnames(counts_dat))) {
-    stop("Not all sample IDs in the sample metadata are in the count data")
+    stop(glue::glue(
+      "Not all sample IDs in the sample metadata are in the count data. Samples missing in count data:\n\t",
+      glue::glue_collapse(meta_sample_colnames[!(meta_sample_colnames %in% colnames(counts_dat))], sep = ", ")
+    ))
   }
   feature_sample_colnames <- counts_dat %>%
     dplyr::select(tidyselect::all_of(meta_sample_colnames)) %>%
@@ -134,8 +141,10 @@ create_multiOmicDataSet_from_dataframes <- function(sample_metadata,
 #'
 #' @inheritParams multiOmicDataSet
 #' @inheritParams create_multiOmicDataSet_from_dataframes
-#' @param sample_meta_filepath path to tsv file with sample IDs and metadata for differential analysis.
-#' @param feature_counts_filepath path to tsv file of expected feature counts (e.g. gene counts from RSEM).
+#' @param sample_meta_filepath path to text file with sample IDs and metadata for differential analysis.
+#' @param feature_counts_filepath path to text file of expected feature counts (e.g. gene counts from RSEM).
+#' @param ... additional arguments forwarded to `readr::read_delim()`
+#'
 #' @return [multiOmicDataSet] object
 #' @export
 #'
@@ -153,13 +162,19 @@ create_multiOmicDataSet_from_dataframes <- function(sample_metadata,
 #' moo@counts$raw %>% head()
 #' moo@sample_meta
 #'
+#' moo_nidap <- create_multiOmicDataSet_from_files(system.file("extdata", "nidap", "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz", package = "MOSuite"),
+#'   system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
+#'   delim = ","
+#' )
+#'
 #' @family moo constructors
 create_multiOmicDataSet_from_files <- function(sample_meta_filepath, feature_counts_filepath,
                                                count_type = "raw",
                                                sample_id_colname = NULL,
-                                               feature_id_colname = NULL) {
-  counts_dat <- readr::read_tsv(feature_counts_filepath)
-  sample_metadata <- readr::read_tsv(sample_meta_filepath)
+                                               feature_id_colname = NULL,
+                                               ...) {
+  counts_dat <- readr::read_delim(feature_counts_filepath, ...)
+  sample_metadata <- readr::read_delim(sample_meta_filepath, ...)
   return(create_multiOmicDataSet_from_dataframes(
     sample_metadata = sample_metadata,
     counts_dat = counts_dat,
