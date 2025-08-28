@@ -9,19 +9,22 @@ create_multiOmicDataSet_from_files(
   feature_counts_filepath,
   count_type = "raw",
   sample_id_colname = NULL,
-  feature_id_colname = NULL
+  feature_id_colname = NULL,
+  ...
 )
 }
 \arguments{
-\item{sample_meta_filepath}{path to tsv file with sample IDs and metadata for differential analysis.}
+\item{sample_meta_filepath}{path to text file with sample IDs and metadata for differential analysis.}
 
-\item{feature_counts_filepath}{path to tsv file of expected feature counts (e.g. gene counts from RSEM).}
+\item{feature_counts_filepath}{path to text file of expected feature counts (e.g. gene counts from RSEM).}
 
 \item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
 
 \item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} - first column in the sample metadata will be used.)}
 
 \item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first column in the count data will be used.)}
+
+\item{...}{additional arguments forwarded to \code{readr::read_delim()}}
 }
 \value{
 \link{multiOmicDataSet} object
@@ -42,6 +45,11 @@ moo <- create_multiOmicDataSet_from_files(
 )
 moo@counts$raw \%>\% head()
 moo@sample_meta
+
+moo_nidap <- create_multiOmicDataSet_from_files(system.file("extdata", "nidap", "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz", package = "MOSuite"),
+  system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
+  delim = ","
+)
 
 }
 \seealso{
