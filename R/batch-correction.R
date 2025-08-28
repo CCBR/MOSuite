@@ -120,7 +120,6 @@ batch_correct_counts <- function(moo,
     sample_metadata %<>%
       dplyr::mutate(dplyr::across(tidyselect::all_of(covariates_colnames), ~ as.factor(.x)))
     # run batch correction
-    message("Running sva::ComBat()")
     combat_edata <- sva::ComBat(
       counts_matr,
       batch = batch_vctr,
