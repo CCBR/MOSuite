@@ -118,8 +118,8 @@ installed as of v0.2.0 and later. <a href="https://hub.docker.com/r/nciccbr/mosu
 <p>Running this container with docker or singularity is the recommend
 way to run MOSuite in pipelines and HPC environments.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">singularity</span> exec docker://nciccbr/mosuite:v0.2.0 bash mosuite <span class="at">--help</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">singularity</span> exec docker://nciccbr/mosuite:v0.2.0 bash <span class="dt">\</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  R <span class="at">-s</span> <span class="at">-e</span> <span class="st">'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'</span></span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">singularity</span> exec docker://nciccbr/mosuite:v0.2.0 R <span class="at">-s</span> <span class="at">-e</span> <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="st">'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="installation-on-a-personal-computer">Installation on a personal computer<a class="anchor" aria-label="anchor" href="#installation-on-a-personal-computer"></a>
@@ -144,7 +144,7 @@ container</a>, it is already included in the path.</p>
 <p>You can create a shell script to run the full MOSuite pipeline. This
 script assumes you have a directory <code>json_args/</code> with JSON
 files to set each function’s arguments.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">#!/usr/bin/env sh</span></span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># set MOSuite options for plots</span></span>
@@ -160,15 +160,19 @@ files to set each function’s arguments.</p>
 <span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="ex">mosuite</span> clean_raw_counts <span class="at">--json</span><span class="op">=</span>json_args/args_clean.json</span>
 <span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="ex">mosuite</span> filter_counts <span class="at">--json</span><span class="op">=</span>json_args/args_filter.json</span>
 <span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="ex">mosuite</span> normalize_counts <span class="at">--json</span><span class="op">=</span>json_args/args_norm.json</span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="ex">mosuite</span> diff_counts <span class="at">--json</span><span class="op">=</span>json_args/args_diff.json</span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="ex">mosuite</span> filter_diff <span class="at">--json</span><span class="op">=</span>json_args/args_diff_filter.json</span></code></pre></div>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="ex">mosuite</span> batch_correct_counts <span class="at">--json</span><span class="op">=</span>json_args/args_batch.json</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="ex">mosuite</span> diff_counts <span class="at">--json</span><span class="op">=</span>json_args/args_diff.json</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="ex">mosuite</span> filter_diff <span class="at">--json</span><span class="op">=</span>json_args/args_diff_filter.json</span></code></pre></div>
 <p>The example script and accompanying JSON files are included in the
 package data. You can copy them to your working directory with R:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># copy the example script</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"example_script.sh"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>, to <span class="op">=</span> <span class="st">"./"</span><span class="op">)</span></span>
 <span><span class="co"># copy the JSON files</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"json_args"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>, to <span class="op">=</span> <span class="st">"./"</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"json_args"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>, to <span class="op">=</span> <span class="st">"./"</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co"># copy the raw counts &amp; sample metadata</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"nidap"</span>, <span class="st">"Raw_Counts.csv.gz"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>, to <span class="op">=</span> <span class="st">"./"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"nidap"</span>, <span class="st">"Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>, to <span class="op">=</span> <span class="st">"./"</span><span class="op">)</span></span></code></pre></div>
 <p>Then run the script from the CLI:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">bash</span> ./example_script.sh</span></code></pre></div>
 <p>The final multiOmicDataSet will be in <code>moo.rds</code> and

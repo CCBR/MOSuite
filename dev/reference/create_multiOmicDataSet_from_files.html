@@ -52,7 +52,8 @@
 <span>  <span class="va">feature_counts_filepath</span>,</span>
 <span>  count_type <span class="op">=</span> <span class="st">"raw"</span>,</span>
 <span>  sample_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  feature_id_colname <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  feature_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -61,11 +62,11 @@
 
 
 <dl><dt id="arg-sample-meta-filepath">sample_meta_filepath<a class="anchor" aria-label="anchor" href="#arg-sample-meta-filepath"></a></dt>
-<dd><p>path to tsv file with sample IDs and metadata for differential analysis.</p></dd>
+<dd><p>path to text file with sample IDs and metadata for differential analysis.</p></dd>
 
 
 <dt id="arg-feature-counts-filepath">feature_counts_filepath<a class="anchor" aria-label="anchor" href="#arg-feature-counts-filepath"></a></dt>
-<dd><p>path to tsv file of expected feature counts (e.g. gene counts from RSEM).</p></dd>
+<dd><p>path to text file of expected feature counts (e.g. gene counts from RSEM).</p></dd>
 
 
 <dt id="arg-count-type">count_type<a class="anchor" aria-label="anchor" href="#arg-count-type"></a></dt>
@@ -78,6 +79,10 @@
 
 <dt id="arg-feature-id-colname">feature_id_colname<a class="anchor" aria-label="anchor" href="#arg-feature-id-colname"></a></dt>
 <dd><p>name of the column in <code>counts_dat</code> that contains feature/gene IDs. (Default: <code>NULL</code> - first column in the count data will be used.)</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>additional arguments forwarded to <code><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">readr::read_delim()</a></code></p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -136,6 +141,27 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> KO_S4     knockout </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> WT_S1     wildtype </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> WT_S2     wildtype </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">moo_nidap</span> <span class="op">&lt;-</span> <span class="fu">create_multiOmicDataSet_from_files</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"nidap"</span>, <span class="st">"Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"nidap"</span>, <span class="st">"Raw_Counts.csv.gz"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  delim <span class="op">=</span> <span class="st">","</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">43280</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">10</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Delimiter:</span> ","</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">chr</span> (1): GeneName</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">dbl</span> (9): A1, A2, A3, B1, B2, B3, C1, C2, C3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">9</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">5</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Delimiter:</span> ","</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">chr</span> (3): Sample, Group, Label</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">dbl</span> (2): Replicate, Batch</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
