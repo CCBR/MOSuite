@@ -1,5 +1,5 @@
 # These functions were inspired by and adapted from renv:
-#   https://github.com/rstudio/MOSuite/blob/d0eb86349d35679eb6920ca59072bd7369fe620f/R/cli.R
+#   https://github.com/rstudio/renv/blob/d0eb86349d35679eb6920ca59072bd7369fe620f/R/cli.R
 
 #' Execute MOSuite from the CLI
 #'
