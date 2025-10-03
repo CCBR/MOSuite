@@ -43,8 +43,8 @@
 #'   )
 #' head(moo@analyses$limma$diff)
 diff_counts <- function(moo,
-                        count_type = "filt",
                         diff_method = "limma",
+                        count_type = "filt",
                         sub_count_type = NULL,
                         sample_id_colname = NULL,
                         feature_id_colname = NULL,
