@@ -22,13 +22,7 @@ R package for differential multi-omics analysis
 [![codecov](https://codecov.io/gh/CCBR/MOSuite/graph/badge.svg?token=730OAPA4NU)](https://codecov.io/gh/CCBR/MOSuite)
 [![version](https://img.shields.io/github/v/release/ccbr/mosuite)](https://github.com/CCBR/MOSuite/releases/latest)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16371580.svg)](https://doi.org/10.5281/zenodo.16371580)
-
-
-<!--
-[![docker](https://img.shields.io/docker/v/nciccbr/mosuite?logo=docker&label=docker&color=blue
-)](https://hub.docker.com/r/nciccbr/mosuite)
--->
-
+[![docker](https://img.shields.io/docker/v/nciccbr/mosuite?logo=docker&label=docker&color=blue)](https://hub.docker.com/r/nciccbr/mosuite)
 <!-- badges: end -->
 
 Multi-Omics Suite provides a suite of functions to clean, filter, batch-correct,
