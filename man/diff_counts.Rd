@@ -6,6 +6,7 @@
 \usage{
 diff_counts(
   moo,
+  diff_method = "limma",
   count_type = "filt",
   sub_count_type = NULL,
   sample_id_colname = NULL,
@@ -24,6 +25,8 @@ diff_counts(
 }
 \arguments{
 \item{moo}{multiOmicDataSet object (see \code{create_multiOmicDataSet_from_dataframes()})}
+
+\item{diff_method}{method for differential analysis (Default: "limma")}
 
 \item{count_type}{the type of counts to use -- must be a name in the counts slot (\code{moo@counts})}
 
@@ -54,7 +57,7 @@ diff_counts(
 \item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \value{
-\code{multiOmicDataSet} with \code{diff} added to the \code{analyses} slot (i.e. \code{moo@analyses$diff})
+\code{multiOmicDataSet} with \code{diff} added to the \code{analyses} slot (i.e. \code{moo@analyses$limma$diff})
 }
 \description{
 Differential expression analysis
@@ -79,7 +82,7 @@ moo <- multiOmicDataSet(
     contrasts = c("B-A", "C-A", "B-C"),
     voom_normalization_method = "quantile",
   )
-head(moo@analyses$diff)
+head(moo@analyses$limma$diff)
 }
 \seealso{
 Other moo methods: 
@@ -93,7 +96,7 @@ Other moo methods:
 \code{\link{plot_histogram}()},
 \code{\link{plot_pca}()},
 \code{\link{plot_read_depth}()},
-\code{\link{run_deseq2}()},
+\code{\link{run_deseq}()},
 \code{\link{set_color_pal}()}
 }
 \concept{moo methods}
