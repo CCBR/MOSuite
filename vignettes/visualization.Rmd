@@ -81,6 +81,7 @@ moo %<>%
     voom_normalization_method = "quantile",
   )
 ```
+
 ### filter differential features
 
 ```{r filter_diff}
