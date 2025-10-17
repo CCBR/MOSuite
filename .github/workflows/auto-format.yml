@@ -52,6 +52,10 @@ jobs:
           # Create your CITATION.cff file
           cff_write(cf)
 
+      - name: update codemeta
+        run: |
+          cffconvert -f codemeta > codemeta.json
+
       - name: format
         uses: pre-commit/action@v3.0.1
         continue-on-error: true
