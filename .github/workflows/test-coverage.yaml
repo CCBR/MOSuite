@@ -24,10 +24,15 @@ jobs:
           use-public-rspm: true
           r-version: 4.3
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::covr, any::xml2
-          needs: coverage
+      - name: Install deps
+        shell: Rscript {0}
+        run: |
+          install.packages('devtools')
+          devtools::install(dependencies = TRUE)
+      # - uses: r-lib/actions/setup-r-dependencies@v2
+      #   with:
+      #     extra-packages: any::covr, any::xml2
+      #     needs: coverage
 
       - name: Test coverage
         run: |
