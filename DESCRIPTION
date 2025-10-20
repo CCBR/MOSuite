@@ -62,6 +62,7 @@ Suggests:
     lobstr,
     patchwork,
     plotrix,
+    rcmdcheck,
     RColorBrewer,
     readr,
     rmarkdown,
