@@ -33,10 +33,7 @@ jobs:
           r-version: 4.3
 
       - name: Install deps
-        shell: Rscript {0}
-        run: |
-          install.packages('devtools')
-          devtools::install(dependencies = TRUE)
+        run: Rscript .github/install.R
       # - uses: r-lib/actions/setup-r-dependencies@v2
       #   with:
       #     needs: Suggests
