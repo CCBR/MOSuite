@@ -59,7 +59,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::lintr, local::., any::goodpractice
+          extra-packages: any::lintr, any::goodpractice
           needs: lint
 
       - name: Good Practice checks
