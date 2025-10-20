@@ -230,7 +230,6 @@ plot_volcano_summary <- function(moo_diff,
     }
 
 
-
     # set plot parameters
     if (use_default_y_axis_limit) {
       negative_log10_p_values <- -log10(diff_dat[, pvalcol])

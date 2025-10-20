@@ -619,7 +619,6 @@ filter_diff <- function(moo,
   ### PH: END Subset DEG table
 
 
-
   ### PH: START Create DEG summary Barplot
   ## do plot
   significant <- apply(datsignif, 2, function(x) x <= significance_cutoff)
