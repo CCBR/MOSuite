@@ -65,11 +65,6 @@
 <p>R package for differential multi-omics analysis</p>
 <!-- badges: start -->
 
-<!--
-[![docker](https://img.shields.io/docker/v/nciccbr/mosuite?logo=docker&label=docker&color=blue
-)](https://hub.docker.com/r/nciccbr/mosuite)
--->
-<!-- badges: end -->
 <p>Multi-Omics Suite provides a suite of functions to clean, filter, batch-correct, normalize, visualize, and perform differential expression analysis. While the package is designed for differential <a href="https://github.com/CCBR/RENEE" class="external-link">RNA-seq</a> analysis and multi-omics datasets, it can be used for any data represented in a counts table. See the website for more information, documentation, and examples: <a href="https://ccbr.github.io/MOSuite/" class="uri">https://ccbr.github.io/MOSuite/</a></p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -77,10 +72,10 @@
 <p>You can install the development version of MOSuite from <a href="https://github.com/CCBR/MOSuite" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CCBR/MOSuite"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"CCBR/MOSuite"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Or install a specific version:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CCBR/MOSuite"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span>, ref <span class="op">=</span> <span class="st">"v0.1.0"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"CCBR/MOSuite"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span>, ref <span class="op">=</span> <span class="st">"v0.1.0"</span><span class="op">)</span></span></code></pre></div>
 <p>There is also a Docker container available at <a href="https://hub.docker.com/r/nciccbr/mosuite" class="external-link uri">https://hub.docker.com/r/nciccbr/mosuite</a></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">singularity</span> exec docker://nciccbr/mosuite:v0.2.0 R <span class="at">-s</span> <span class="at">-e</span> <span class="dt">\</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="st">'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'</span></span></code></pre></div>
@@ -156,7 +151,9 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/CCBR/MOSuite/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/CCBR/MOSuite/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://codecov.io/gh/CCBR/MOSuite" class="external-link"><img src="https://codecov.io/gh/CCBR/MOSuite/graph/badge.svg?token=730OAPA4NU" alt="codecov"></a></li>
+<li><a href="https://github.com/CCBR/MOSuite/actions/workflows/github-code-scanning/codeql" class="external-link"><img src="https://github.com/CCBR/MOSuite/actions/workflows/github-code-scanning/codeql/badge.svg" alt="CodeQL"></a></li>
 <li><a href="https://github.com/CCBR/MOSuite/releases/latest" class="external-link"><img src="https://img.shields.io/github/v/release/ccbr/mosuite" alt="version"></a></li>
+<li><a href="https://hub.docker.com/r/nciccbr/mosuite" class="external-link"><img src="https://img.shields.io/docker/v/nciccbr/mosuite?logo=docker&amp;label=docker&amp;color=blue" alt="docker"></a></li>
 <li><a href="https://doi.org/10.5281/zenodo.16371580" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.16371580.svg" alt="DOI"></a></li>
 </ul>
 </div>
