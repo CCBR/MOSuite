@@ -6,14 +6,16 @@
 #' @inheritParams option_params
 #'
 #' @param sub_count_type if `count_type` is a list, specify the sub count type within the list. (Default: `NULL`)
-#' @param covariates_colnames The column name(s) from the sample metadata
-#'   containing variable(s) of interest, such as phenotype.
-#'   Most commonly this will be the same column selected for your Groups Column.
-#'   Some experimental designs may require that you add additional covariate columns here.
-#' @param contrast_colname The column in the metadata that contains the group variables you wish to find differential expression between. Up to 2 columns (2-factor analysis) can be used.
+#' @param covariates_colnames The column name(s) from the sample metadata containing variable(s) of interest, such as
+#'   phenotype. Most commonly this will be the same column selected for your Groups Column. Some experimental designs
+#'   may require that you add additional covariate columns here.
+#' @param contrast_colname The column in the metadata that contains the group variables you wish to find differential
+#'   expression between. Up to 2 columns (2-factor analysis) can be used.
 #' @param contrasts Specify each contrast in the format group1-group2, e.g. treated-control
-#' @param covariates_colnames Columns to be used as covariates in linear modeling. Must include column from "Contrast Variable". Most commonly your covariate will be group and batch (if you have different batches in your data).
-#' @param return_mean_and_sd if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for contrast(s)
+#' @param covariates_colnames Columns to be used as covariates in linear modeling. Must include column from "Contrast
+#'   Variable". Most commonly your covariate will be group and batch (if you have different batches in your data).
+#' @param return_mean_and_sd if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for
+#'   contrast(s)
 #'
 #' @returns `multiOmicDataSet` with `diff` added to the `analyses` slot (i.e. `moo@analyses$diff`)
 #' @export
@@ -57,7 +59,7 @@ diff_counts <- function(moo,
                         print_plots = options::opt("print_plots"),
                         save_plots = options::opt("save_plots"),
                         plots_subdir = "diff") {
-  Sample <- group <- y <- . <- NULL
+  final_res <- group <- . <- NULL
   return_normalized_counts <- FALSE
   sample_metadata <- moo@sample_meta
   message(glue::glue("* differential counts"))
@@ -92,12 +94,12 @@ diff_counts <- function(moo,
     stop("contrasts vector cannot be NULL")
   }
   # ensure these are vectors, not lists. needed when using cli with JSON for args
-  covariates_colnames %<>% unlist()
-  contrast_colname %<>% unlist()
-  contrasts %<>% unlist()
+  covariates_colnames <- covariates_colnames %>% unlist()
+  contrast_colname <- contrast_colname %>% unlist()
+  contrasts <- contrasts %>% unlist()
 
   # TODO support tibbles
-  counts_dat %<>% as.data.frame()
+  counts_dat <- counts_dat %>% as.data.frame()
 
 
   if (is.null(sample_id_colname)) {
@@ -112,7 +114,7 @@ diff_counts <- function(moo,
 
   ### PH: START Check Rownames - from Filtering + Normalization Template
   ## create unique rownames to correctly add back Annocolumns at end of template
-  counts_dat[, feature_id_colname] <- paste0(counts_dat[, feature_id_colname], "_", 1:nrow(counts_dat))
+  counts_dat[, feature_id_colname] <- paste0(counts_dat[, feature_id_colname], "_", seq_len(nrow(counts_dat)))
 
   df.m <- counts_dat
   gene_names <- NULL
@@ -124,7 +126,7 @@ diff_counts <- function(moo,
   # Remove samples that are not in the contrast groups:
   groups <- unique(unlist(strsplit(contrasts, "-")))
   sample_metadata <- sample_metadata %>% dplyr::filter(.data[[contrast_colname]] %in% groups)
-  df.m %<>% dplyr::select(tidyr::all_of(c(
+  df.m <- df.m %>% dplyr::select(tidyr::all_of(c(
     feature_id_colname,
     sample_metadata %>% dplyr::pull(sample_id_colname)
   )))
@@ -147,9 +149,11 @@ diff_counts <- function(moo,
 
   # Combine columns if 2-factor analysis
   if (length(contrast_colname) > 1) {
-    sample_metadata %>% dplyr::mutate(contmerge = paste0(.data[[contrast_colname[1]]], ".", .data[[contrast_colname[2]]])) -> sample_metadata
+    sample_metadata <- sample_metadata %>%
+      dplyr::mutate(contmerge = paste0(.data[[contrast_colname[1]]], ".", .data[[contrast_colname[2]]]))
   } else {
-    sample_metadata %>% dplyr::mutate(contmerge = .data[[contrast_colname]]) -> sample_metadata
+    sample_metadata <- sample_metadata %>%
+      dplyr::mutate(contmerge = .data[[contrast_colname]])
   }
 
   contrast_var <- factor(sample_metadata$contmerge)
@@ -193,9 +197,10 @@ diff_counts <- function(moo,
   }
   ### PH: END Limma Normalization - Same as in Normalize Counts
 
-  ### PH: START Linear Fit and and extract df.voom table. Could be added to Limma Normalization function above with an option to run lmFit
+  ### PH: START Linear Fit and and extract df.voom table. Could be added to Limma Normalization function above with an
+  ### option to run lmFit
   rownames(v$E) <- v$genes$GeneID
-  as.data.frame(v$E) %>% tibble::rownames_to_column(feature_id_colname) -> df.voom
+  # df.voom <- as.data.frame(v$E) %>% tibble::rownames_to_column(feature_id_colname)
   fit <- limma::lmFit(v, design)
   cm <- limma::makeContrasts(contrasts = contrasts, levels = design)
   ### PH: END Linear Fit and and extract df.voom table.
@@ -216,7 +221,7 @@ diff_counts <- function(moo,
   pvalall <- fit2$p.value
   colnames(pvalall) <- paste(colnames(pvalall), "pval", sep = "_")
   pvaladjall <- apply(pvalall, 2, function(x) {
-    stats::p.adjust(x, "BH")
+    return(stats::p.adjust(x, "BH"))
   })
   colnames(pvaladjall) <- paste(colnames(fit2$coefficients), "adjpval",
     sep =
@@ -241,9 +246,9 @@ diff_counts <- function(moo,
     tve <- t(v$E)
     mean.df <- as.data.frame(tve) %>%
       tibble::rownames_to_column(sample_id_colname) %>%
-      dplyr::left_join(sample_metadata %>% dplyr::select(tidyr::all_of(c(sample_id_colname, contrast_colname))),
-        by = sample_id_colname
-      ) %>%
+      dplyr::left_join(sample_metadata %>% dplyr::select(tidyr::all_of(
+        c(sample_id_colname, contrast_colname)
+      )), by = sample_id_colname) %>%
       dplyr::rename(group = tidyr::all_of(contrast_colname)) %>%
       dplyr::group_by(group) %>%
       dplyr::summarise(dplyr::across(dplyr::where(is.numeric), ~ base::mean(.x))) %>%
@@ -258,9 +263,9 @@ diff_counts <- function(moo,
 
     sd.df <- as.data.frame(tve) %>%
       tibble::rownames_to_column(sample_id_colname) %>%
-      dplyr::left_join(sample_metadata %>% dplyr::select(tidyr::all_of(c(sample_id_colname, contrast_colname))),
-        by = sample_id_colname
-      ) %>%
+      dplyr::left_join(sample_metadata %>% dplyr::select(tidyr::all_of(
+        c(sample_id_colname, contrast_colname)
+      )), by = sample_id_colname) %>%
       dplyr::rename(group = tidyr::all_of(contrast_colname)) %>%
       dplyr::group_by(group) %>%
       dplyr::summarise(dplyr::across(dplyr::where(is.numeric), ~ stats::sd(.x))) %>%
@@ -273,25 +278,34 @@ diff_counts <- function(moo,
     colnames(mat_sd) <- gsub("\\.", "_", colnames(mat_sd))
     # mat_sd %<>% as.data.frame() %>% tibble::rownames_to_column(feature_id_colname)
 
-    finalres <- purrr::map(list(mat_mean, mat_sd, FC, logFC, tstat, pvalall, pvaladjall), \(mat) {
-      mat %>%
-        as.data.frame() %>%
-        tibble::rownames_to_column(feature_id_colname)
-    }) %>%
+    finalres <- purrr::map(
+      list(mat_mean, mat_sd, FC, logFC, tstat, pvalall, pvaladjall),
+      \(mat) {
+        mat %>%
+          as.data.frame() %>%
+          tibble::rownames_to_column(feature_id_colname) %>%
+          return()
+      }
+    ) %>%
       purrr::reduce(dplyr::left_join, by = feature_id_colname)
   } else {
     finalres <- purrr::map(list(FC, logFC, tstat, pvalall, pvaladjall), \(mat) {
       mat %>%
         as.data.frame() %>%
-        tibble::rownames_to_column(feature_id_colname)
+        tibble::rownames_to_column(feature_id_colname) %>%
+        return()
     }) %>%
       purrr::reduce(dplyr::left_join, by = feature_id_colname)
   }
 
   if (return_normalized_counts == TRUE) {
-    finalres %<>% dplyr::left_join(v$E %>% as.data.frame() %>% tibble::rownames_to_column(feature_id_colname),
-      by = feature_id_colname
-    )
+    finalres <- final_res %>%
+      dplyr::left_join(
+        v$E %>%
+          as.data.frame() %>%
+          tibble::rownames_to_column(feature_id_colname),
+        by = feature_id_colname
+      )
   }
 
   message(paste0("Total number of genes included: ", nrow(finalres)))
@@ -311,21 +325,20 @@ diff_counts <- function(moo,
   # Print out sample numbers:
   #
   sampsize <- colSums(design)
-  titleval <- "Please note Sample size:"
-  titletext <- paste(names(sampsize),
-    sampsize,
-    sep = "=",
-    collapse = " \n "
-  )
-  titleall <- paste(titleval, "\n", titletext, "\n\n\n")
+  # titleval <- "Please note Sample size:"
+  # titletext <- paste(names(sampsize),
+  #                    sampsize,
+  #                    sep = "=",
+  #                    collapse = " \n ")
+  # titleall <- paste(titleval, "\n", titletext, "\n\n\n")
 
   contrast <- colnames(cm)
   connames <- strsplit(contrast, "-")
   connames <- lapply(connames, function(x) {
-    gsub("\\(", "", gsub("\\)", "", x))
+    return(gsub("\\(", "", gsub("\\)", "", x)))
   })
   contrastsize <- lapply(connames, function(x) {
-    sampsize[unlist(x)]
+    return(sampsize[unlist(x)])
   })
   footnotetext <- paste(contrast, contrastsize, sep = " : ", collapse = "\n")
   footnotetext <- paste("\n\n\nContrasts:\n", footnotetext)
@@ -335,31 +348,77 @@ diff_counts <- function(moo,
   #                                   -finalres from Create DEG Table
   ## Output should be table With # of DEGs per contrast with different cutoffs
   # TODO: currently these are not used anywhere downstream
-  FCpval1 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.05, pval = "pval", feature_id_colname = feature_id_colname)
-  FCpval2 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.01, pval = "pval", feature_id_colname = feature_id_colname)
-  FCadjpval1 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.05, pval = "adjpval", feature_id_colname = feature_id_colname)
-  FCadjpval2 <- get_gene_lists(finalres, FC, pvalall, pvaladjall, contrasts, FClimit = 1.2, pvallimit = 0.01, pval = "adjpval", feature_id_colname = feature_id_colname)
+  # FCpval1 <- get_gene_lists(
+  #   finalres,
+  #   FC,
+  #   pvalall,
+  #   pvaladjall,
+  #   contrasts,
+  #   FClimit = 1.2,
+  #   pvallimit = 0.05,
+  #   pval = "pval",
+  #   feature_id_colname = feature_id_colname
+  # )
+  # FCpval2 <- get_gene_lists(
+  #   finalres,
+  #   FC,
+  #   pvalall,
+  #   pvaladjall,
+  #   contrasts,
+  #   FClimit = 1.2,
+  #   pvallimit = 0.01,
+  #   pval = "pval",
+  #   feature_id_colname = feature_id_colname
+  # )
+  # FCadjpval1 <- get_gene_lists(
+  #   finalres,
+  #   FC,
+  #   pvalall,
+  #   pvaladjall,
+  #   contrasts,
+  #   FClimit = 1.2,
+  #   pvallimit = 0.05,
+  #   pval = "adjpval",
+  #   feature_id_colname = feature_id_colname
+  # )
+  # FCadjpval2 <- get_gene_lists(
+  #   finalres,
+  #   FC,
+  #   pvalall,
+  #   pvaladjall,
+  #   contrasts,
+  #   FClimit = 1.2,
+  #   pvallimit = 0.01,
+  #   pval = "adjpval",
+  #   feature_id_colname = feature_id_colname
+  # )
   ### PH: END Identify DEG genes
 
   # Mean-variance Plot.
   mv_plot <- plot_mean_variance(voom_elist = v)
-  print_or_save_plot(mv_plot,
+  print_or_save_plot(
+    mv_plot,
     filename = file.path(plots_subdir, "mean-variance.png"),
-    print_plots = print_plots, save_plots = save_plots
+    print_plots = print_plots,
+    save_plots = save_plots
   )
 
   df_list <- contrasts %>% purrr::map(\(contrast) {
     finalres %>%
       dplyr::select(
         tidyselect::all_of(feature_id_colname),
-        tidyselect::all_of(purrr::map(contrast %>% stringr::str_split("-") %>% unlist() %>% paste0(., "_"),
-          tidyselect::starts_with,
-          vars = colnames(.)
-        ) %>%
-          unlist()),
+        tidyselect::all_of(
+          purrr::map(
+            contrast %>% stringr::str_split("-") %>% unlist() %>% paste0(., "_"),
+            tidyselect::starts_with,
+            vars = colnames(.)
+          ) %>%
+            unlist()
+        ),
         tidyselect::all_of(tidyselect::starts_with(contrast))
       ) %>%
-      dplyr::rename_with(~ gsub(paste0(contrast, "_"), "", .x))
+      dplyr::rename_with(~ gsub(paste0(contrast, "_"), "", .x)) %>%
+      return()
   })
 
   names(df_list) <- contrasts
@@ -369,32 +428,40 @@ diff_counts <- function(moo,
 }
 
 
-get_gene_lists <- function(finalres, FC, pvalall, pvaladjall, contrasts, FClimit, pvallimit, pval, feature_id_colname = "Gene") {
+get_gene_lists <- function(finalres,
+                           FC,
+                           pvalall,
+                           pvaladjall,
+                           contrasts,
+                           FClimit,
+                           pvallimit,
+                           pval,
+                           feature_id_colname = "Gene") {
   upreg_genes <- list()
   downreg_genes <- list()
-  for (i in 1:length(contrasts)) {
+  for (i in seq_len(length(contrasts))) {
     if (pval == "pval") {
-      finalres %>%
+      upreg_genes[[i]] <- finalres %>%
         dplyr::filter(.data[[colnames(FC)[i]]] > FClimit &
           .data[[colnames(pvalall)[i]]] < pvallimit) %>%
         dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
-        length() -> upreg_genes[[i]]
-      finalres %>%
+        length()
+      downreg_genes[[i]] <- finalres %>%
         dplyr::filter(.data[[colnames(FC)[i]]] < -FClimit &
           .data[[colnames(pvalall)[i]]] < pvallimit) %>%
         dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
-        length() -> downreg_genes[[i]]
+        length()
     } else {
-      finalres %>%
+      upreg_genes[[i]] <- finalres %>%
         dplyr::filter(.data[[colnames(FC)[i]]] > FClimit &
           .data[[colnames(pvaladjall)[i]]] < pvallimit) %>%
         dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
-        length() -> upreg_genes[[i]]
-      finalres %>%
+        length()
+      downreg_genes[[i]] <- finalres %>%
         dplyr::filter(.data[[colnames(FC)[i]]] < -FClimit &
           .data[[colnames(pvaladjall)[i]]] < pvallimit) %>%
         dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
-        length() -> downreg_genes[[i]]
+        length()
     }
   }
   names(upreg_genes) <- contrasts
@@ -419,7 +486,11 @@ plot_mean_variance <- function(voom_elist) {
   g <- ggplot2::ggplot() +
     ggplot2::geom_point(data = xyplot, ggplot2::aes(x = sx, y = sy), size = 1) +
     ggplot2::theme_bw() +
-    ggplot2::geom_smooth(data = voomline, ggplot2::aes(x = x, y = y), color = "red") +
+    ggplot2::geom_smooth(
+      data = voomline,
+      ggplot2::aes(x = x, y = y),
+      color = "red"
+    ) +
     ggplot2::ggtitle("voom: Mean-variance trend") +
     ggplot2::xlab(v$voom.xy$xlab) +
     ggplot2::ylab(v$voom.xy$ylab) +
@@ -436,22 +507,34 @@ plot_mean_variance <- function(voom_elist) {
 
 #' Filter features from differential analysis based on statistical significance
 #'
-#' Outputs dataset of significant genes from DEG table; filters genes based on statistical significance (p-value or adjusted p-value) and change (fold change, log2 fold change, or t-statistic); in addition allows for selection of DEG estimates and for sub-setting of contrasts and groups included in the output gene list.
+#' Outputs dataset of significant genes from DEG table; filters genes based on statistical significance (p-value or
+#' adjusted p-value) and change (fold change, log2 fold change, or t-statistic); in addition allows for selection of DEG
+#' estimates and for sub-setting of contrasts and groups included in the output gene list.
 #'
 #' @inheritParams option_params
 #' @inheritParams filter_counts
 #' @param significance_column Column name for significance, e.g. `"pval"` or `"pvaladj"` (default)
-#' @param significance_cutoff Features will only be kept if their `significance_column` is less then this cutoff threshold
+#' @param significance_cutoff Features will only be kept if their `significance_column` is less then this cutoff
+#'   threshold
 #' @param change_column Column name for change, e.g. `"logFC"` (default)
-#' @param change_cutoff Features will only be kept if the absolute value of their `change_column` is greater than or equal to this cutoff threshold
-#' @param filtering_mode Accepted values: `"any"` or `"all"` to include features that meet the criteria in _any_ contrast or in _all_ contrasts
-#' @param include_estimates Column names of estimates to include. Default: `c("FC", "logFC", "tstat", "pval", "adjpval")`
+#' @param change_cutoff Features will only be kept if the absolute value of their `change_column` is greater than or
+#'   equal to this cutoff threshold
+#' @param filtering_mode Accepted values: `"any"` or `"all"` to include features that meet the criteria in _any_
+#'   contrast or in _all_ contrasts
+#' @param include_estimates Column names of estimates to include. Default: `c("FC", "logFC", "tstat", "pval",
+#'   "adjpval")`
 #' @param round_estimates Whether to round estimates. Default: `TRUE`
 #' @param rounding_decimal_for_percent_cells Decimal place to use when rounding Percent cells
-#' @param contrast_filter Whether to filter `contrasts` in or our of analysis. If `"keep"`, only the contrast names listed in `contrasts` will be included. If `"remove`, the contrast names listed by `contrasts` will be removed. If `"none"`, all contrasts in the dataset are used. Options: `"keep"`, `"remove"`, or `"none"`
-#' @param contrasts Contrast names to filter by `contrast_filter`. If `contrast_filter` is `"none"`, this parameter has no effect.
-#' @param groups Group names to filter by `groups_filter`. If `groups_filter` is `"none"`, this parameter has no effect. Options: `"keep"`, `"remove"`, or `"none"`
-#' @param groups_filter Whether to filter `groups` in or out of analysis. If `"keep"`, only the group names listed in `groups` will be included. If `"remove"`, the group names listed by `groups` will be removed. If `"none"`, all groups in the dataset are used.
+#' @param contrast_filter Whether to filter `contrasts` in or our of analysis. If `"keep"`, only the contrast names
+#'   listed in `contrasts` will be included. If `"remove`, the contrast names listed by `contrasts` will be removed. If
+#'   `"none"`, all contrasts in the dataset are used. Options: `"keep"`, `"remove"`, or `"none"`
+#' @param contrasts Contrast names to filter by `contrast_filter`. If `contrast_filter` is `"none"`, this parameter has
+#'   no effect.
+#' @param groups Group names to filter by `groups_filter`. If `groups_filter` is `"none"`, this parameter has no effect.
+#'   Options: `"keep"`, `"remove"`, or `"none"`
+#' @param groups_filter Whether to filter `groups` in or out of analysis. If `"keep"`, only the group names listed in
+#'   `groups` will be included. If `"remove"`, the group names listed by `groups` will be removed. If `"none"`, all
+#'   groups in the dataset are used.
 #' @param label_font_size Font size for labels in the plot (default: 6)
 #' @param label_distance Distance of labels from the bars (default: 1)
 #' @param y_axis_expansion Expansion of the y-axis (default: 0.08)
@@ -515,7 +598,7 @@ filter_diff <- function(moo,
                         print_plots = options::opt("print_plots"),
                         save_plots = options::opt("save_plots"),
                         plots_subdir = file.path("diff", "filt")) {
-  Count <- Count_format <- L1 <- Label <- Percent <- Significant <- Var1 <- Var2 <- contrast <- value <- NULL
+  Count <- Count_format <- L1 <- Label <- Percent <- Significant <- Var1 <- Var2 <- value <- NULL
 
   # from NIDAP DEG_Gene_List template - filters DEG table
   diff_dat <- moo@analyses$diff %>%
@@ -537,10 +620,10 @@ filter_diff <- function(moo,
     stop(glue::glue("contrast_filter not recognized: {contrast_filter}"))
   }
   # ensure these are vectors, not lists. needed for reading args from JSON
-  include_estimates %<>% unlist()
-  contrasts %<>% unlist()
-  groups %<>% unlist()
-  fill_colors %<>% unlist()
+  include_estimates <- include_estimates %>% unlist()
+  contrasts <- contrasts %>% unlist()
+  groups <- groups %>% unlist()
+  fill_colors <- fill_colors %>% unlist()
 
   # If include_estimates param is empty, then fill it with default values.
   if (length(include_estimates) == 0) {
@@ -550,7 +633,10 @@ filter_diff <- function(moo,
   estimates <- paste0("_", include_estimates)
   signif <- paste0("_", significance_column)
   change <- paste0("_", change_column)
-  diff_dat <- diff_dat %>% dplyr::select(tidyselect::all_of(feature_id_colname), tidyselect::ends_with(c(estimates, signif, change)))
+  diff_dat <- diff_dat %>% dplyr::select(
+    tidyselect::all_of(feature_id_colname),
+    tidyselect::ends_with(c(estimates, signif, change))
+  )
 
 
   contrasts_name <- diff_dat %>%
@@ -580,15 +666,24 @@ filter_diff <- function(moo,
 
   ### PH: START Subset DEG table
 
-  diff_dat <- diff_dat %>% dplyr::select(tidyselect::all_of(feature_id_colname), tidyselect::starts_with(c(groups_name, contrasts_name)))
+  diff_dat <- diff_dat %>% dplyr::select(
+    tidyselect::all_of(feature_id_colname),
+    tidyselect::starts_with(c(groups_name, contrasts_name))
+  )
 
 
   ## select filter variables
   datsignif <- diff_dat %>%
-    dplyr::select(tidyselect::all_of(feature_id_colname), tidyselect::ends_with(signif)) %>%
+    dplyr::select(
+      tidyselect::all_of(feature_id_colname),
+      tidyselect::ends_with(signif)
+    ) %>%
     tibble::column_to_rownames(feature_id_colname)
   datchange <- diff_dat %>%
-    dplyr::select(tidyselect::all_of(feature_id_colname), tidyselect::ends_with(change)) %>%
+    dplyr::select(
+      tidyselect::all_of(feature_id_colname),
+      tidyselect::ends_with(change)
+    ) %>%
     tibble::column_to_rownames(feature_id_colname)
   genes <- diff_dat[, feature_id_colname]
 
@@ -605,9 +700,17 @@ filter_diff <- function(moo,
 
   # stop if 0 genes selected with the selection criteria
   if (length(select_genes) == 0) {
-    stop("ERROR: Selection criteria selected no genes - change stringency of the Significance cutoff and/or Change cutoff parameters")
+    stop(glue::glue(
+      "ERROR: Selection criteria selected no genes - change stringency of the Significance cutoff",
+      " and/or Change cutoff parameters"
+    ))
   }
-  message(glue::glue("Total number of genes selected with {significance_column} < {significance_cutoff} and \u007c {change_column} \u007c \u2265 {change_cutoff} is sum(selgenes)"))
+  message(
+    glue::glue(
+      "Total number of genes selected with {significance_column} < {significance_cutoff}",
+      " and \u007c {change_column} \u007c \u2265 {change_cutoff} is sum(selgenes)"
+    )
+  )
 
 
   ## .output dataset
@@ -648,35 +751,74 @@ filter_diff <- function(moo,
 
     tab <- Var2df %>%
       dplyr::mutate(Significant = ifelse(Var1, "TRUE", "FALSE")) %>%
-      dplyr::mutate(Significant = factor(Significant, levels = c("TRUE", "FALSE")), Count = value, Count_format = format(round(value, 1), nsmall = 0, big.mark = ",")) %>%
+      dplyr::mutate(
+        Significant = factor(Significant, levels = c("TRUE", "FALSE")),
+        Count = value,
+        Count_format = format(round(value, 1), nsmall = 0, big.mark = ",")
+      ) %>%
       dplyr::mutate(Var2 = gsub("_pval|_adjpval", "", Var2)) %>%
       dplyr::group_by(Var2) %>%
-      dplyr::mutate(Percent = round(Count / sum(Count) * 100, rounding_decimal_for_percent_cells)) %>%
+      dplyr::mutate(Percent = round(
+        Count / sum(Count) * 100,
+        rounding_decimal_for_percent_cells
+      )) %>%
       dplyr::mutate(Label = sprintf("%s (%g%%)", Count_format, Percent))
 
-    pp <- ggplot2::ggplot(tab, ggplot2::aes(x = "", y = Count, labels = Significant, fill = Significant)) +
-      ggplot2::geom_col(width = bar_width, position = "dodge", col = bar_border) +
+    pp <- ggplot2::ggplot(
+      tab,
+      ggplot2::aes(
+        x = "",
+        y = Count,
+        labels = Significant,
+        fill = Significant
+      )
+    ) +
+      ggplot2::geom_col(
+        width = bar_width,
+        position = "dodge",
+        col = bar_border
+      ) +
       ggplot2::facet_wrap(~Var2) +
       ggplot2::scale_fill_manual(values = fill_colors) +
       ggplot2::theme_bw(base_size = 20) +
       ggplot2::xlab("Contrast") +
       ggplot2::ylab("Number of Genes") +
-      ggplot2::geom_text(ggplot2::aes(label = Label),
+      ggplot2::geom_text(
+        ggplot2::aes(label = Label),
         color = c("black"),
-        size = label_font_size, position = ggplot2::position_dodge(width = bar_width), vjust = -label_distance
+        size = label_font_size,
+        position = ggplot2::position_dodge(width = bar_width),
+        vjust = -label_distance
       ) +
-      ggplot2::theme(axis.ticks.x = ggplot2::element_blank(), axis.text.x = ggplot2::element_blank()) +
-      ggplot2::ggtitle(sprintf("%s<%g & |%s|>%g %s", significance_column, significance_cutoff, change_column, change_cutoff, filtering_mode)) +
       ggplot2::theme(
-        legend.key.size = ggplot2::unit(3, "line"), legend.position = "top",
-        panel.grid.major.x = ggplot2::element_blank(), panel.grid.minor.x = ggplot2::element_blank(),
-        strip.background = ggplot2::element_blank(), strip.text = ggplot2::element_text(size = plot_titles_fontsize)
+        axis.ticks.x = ggplot2::element_blank(),
+        axis.text.x = ggplot2::element_blank()
+      ) +
+      ggplot2::ggtitle(
+        sprintf(
+          "%s<%g & |%s|>%g %s",
+          significance_column,
+          significance_cutoff,
+          change_column,
+          change_cutoff,
+          filtering_mode
+        )
+      ) +
+      ggplot2::theme(
+        legend.key.size = ggplot2::unit(3, "line"),
+        legend.position = "top",
+        panel.grid.major.x = ggplot2::element_blank(),
+        panel.grid.minor.x = ggplot2::element_blank(),
+        strip.background = ggplot2::element_blank(),
+        strip.text = ggplot2::element_text(size = plot_titles_fontsize)
       ) +
       ggplot2::xlab("") +
       ggplot2::scale_y_continuous(name = "", expand = c(y_axis_expansion, 0))
-    print_or_save_plot(pp,
+    print_or_save_plot(
+      pp,
       filename = file.path(plots_subdir, glue::glue("{plot_type}chart.png")),
-      print_plots = print_plots, save_plots = save_plots
+      print_plots = print_plots,
+      save_plots = save_plots
     )
   } else if (filtering_mode == "all") {
     say_contrast <- paste(colnames(dd), collapse = " & ")
@@ -688,53 +830,153 @@ filter_diff <- function(moo,
       colnames(dd) <- say_contrast
       tab <- reshape2::melt(apply(dd, 2, table)) %>%
         dplyr::mutate(Significant = ifelse(Var1, "TRUE", "FALSE")) %>%
-        dplyr::mutate(Significant = factor(Significant, levels = c("TRUE", "FALSE")), Count = value, Count_format = format(round(value, 1), nsmall = 0, big.mark = ",")) %>%
+        dplyr::mutate(
+          Significant = factor(Significant, levels = c("TRUE", "FALSE")),
+          Count = value,
+          Count_format = format(round(value, 1), nsmall = 0, big.mark = ",")
+        ) %>%
         dplyr::group_by(Var2) %>%
-        dplyr::mutate(Percent = round(Count / sum(Count) * 100, rounding_decimal_for_percent_cells)) %>%
+        dplyr::mutate(Percent = round(
+          Count / sum(Count) * 100,
+          rounding_decimal_for_percent_cells
+        )) %>%
         dplyr::mutate(Label = sprintf("%s (%g%%)", Count_format, Percent))
 
-      pp <- ggplot2::ggplot(tab, ggplot2::aes(x = "", y = Count, labels = Significant, fill = Significant)) +
-        ggplot2::geom_col(width = bar_width, position = "dodge", col = bar_border) +
+      pp <- ggplot2::ggplot(
+        tab,
+        ggplot2::aes(
+          x = "",
+          y = Count,
+          labels = Significant,
+          fill = Significant
+        )
+      ) +
+        ggplot2::geom_col(
+          width = bar_width,
+          position = "dodge",
+          col = bar_border
+        ) +
         ggplot2::facet_wrap(~Var2) +
         ggplot2::scale_fill_manual(values = fill_colors) +
         ggplot2::theme_bw(base_size = 20) +
         ggplot2::xlab("Contrast") +
         ggplot2::ylab("Number of Genes") +
-        ggplot2::geom_text(ggplot2::aes(label = Label), color = c("black"), size = label_font_size, position = ggplot2::position_dodge(width = bar_width), vjust = -label_distance) +
-        ggplot2::ggtitle(sprintf("%s<%g & |%s|>%g %s", significance_column, significance_cutoff, change_column, change_cutoff, filtering_mode)) +
+        ggplot2::geom_text(
+          ggplot2::aes(label = Label),
+          color = c("black"),
+          size = label_font_size,
+          position = ggplot2::position_dodge(width = bar_width),
+          vjust = -label_distance
+        ) +
+        ggplot2::ggtitle(
+          sprintf(
+            "%s<%g & |%s|>%g %s",
+            significance_column,
+            significance_cutoff,
+            change_column,
+            change_cutoff,
+            filtering_mode
+          )
+        ) +
         ggplot2::theme(
-          axis.ticks.x = ggplot2::element_blank(), axis.text.x = ggplot2::element_blank(),
-          legend.key.size = ggplot2::unit(3, "line"), legend.position = "top",
-          panel.grid.major.x = ggplot2::element_blank(), panel.grid.minor.x = ggplot2::element_blank(),
-          axis.ticks.x = ggplot2::element_blank(), axis.text.x = ggplot2::element_blank(),
-          strip.background = ggplot2::element_blank(), strip.text = ggplot2::element_text(size = plot_titles_fontsize)
+          axis.ticks.x = ggplot2::element_blank(),
+          axis.text.x = ggplot2::element_blank(),
+          legend.key.size = ggplot2::unit(3, "line"),
+          legend.position = "top",
+          panel.grid.major.x = ggplot2::element_blank(),
+          panel.grid.minor.x = ggplot2::element_blank(),
+          axis.ticks.x = ggplot2::element_blank(),
+          axis.text.x = ggplot2::element_blank(),
+          strip.background = ggplot2::element_blank(),
+          strip.text = ggplot2::element_text(size = plot_titles_fontsize)
         ) +
         ggplot2::xlab("") +
-        ggplot2::scale_y_continuous(name = "", expand = c(y_axis_expansion, 0))
-      print_or_save_plot(pp,
+        ggplot2::scale_y_continuous(
+          name = "",
+          expand = c(y_axis_expansion, 0)
+        )
+      print_or_save_plot(
+        pp,
         filename = file.path(plots_subdir, glue::glue("{plot_type}chart.png")),
-        print_plots = print_plots, save_plots = save_plots
+        print_plots = print_plots,
+        save_plots = save_plots
       )
       ### PH: END Create DEG summary Barplot
     } else if (plot_type == "pie") {
       ### PH: START Create DEG summary PieChart
       abort_packages_not_installed("plotrix")
       N <- c(sum(dd), length(dd) - sum(dd))
-      Nk <- format(round(as.numeric(N), 1), nsmall = 0, big.mark = ",")
+      Nk <- format(round(as.numeric(N), 1),
+        nsmall = 0,
+        big.mark = ","
+      )
       P <- round(N / sum(N) * 100, rounding_decimal_for_percent_cells)
       if (label_font_size > 0) {
-        labs <- c(sprintf("Significant\n%s (%g%%)", Nk[1], P[1]), sprintf("Non-Significant\n%s (%g%%)", Nk[2], P[2]))
+        labs <- c(
+          sprintf("Significant\n%s (%g%%)", Nk[1], P[1]),
+          sprintf("Non-Significant\n%s (%g%%)", Nk[2], P[2])
+        )
       } else {
         labs <- NULL
       }
       # TODO: how to print_or_save base R plot?
       if (pie_chart_in_3d) {
-        plotrix::pie3D(N, radius = 0.8, height = 0.06, col = fill_colors, theta = 0.9, start = 0, explode = 0, labels = labs, labelcex = label_font_size, shade = 0.7, sector.order = 1:2, border = FALSE)
-        graphics::title(main = sprintf("%s<%g & |%s|>%g %s: %s", significance_column, significance_cutoff, change_column, change_cutoff, filtering_mode, say_contrast), cex.main = plot_titles_fontsize / 3, line = -2)
+        plotrix::pie3D(
+          N,
+          radius = 0.8,
+          height = 0.06,
+          col = fill_colors,
+          theta = 0.9,
+          start = 0,
+          explode = 0,
+          labels = labs,
+          labelcex = label_font_size,
+          shade = 0.7,
+          sector.order = 1:2,
+          border = FALSE
+        )
+        graphics::title(
+          main = sprintf(
+            "%s<%g & |%s|>%g %s: %s",
+            significance_column,
+            significance_cutoff,
+            change_column,
+            change_cutoff,
+            filtering_mode,
+            say_contrast
+          ),
+          cex.main = plot_titles_fontsize / 3,
+          line = -2
+        )
       } else {
         labs <- gsub("\n", ": ", labs)
-        plotrix::pie3D(N, radius = 0.8, height = 0.06, col = fill_colors, theta = 0.9, start = 45, explode = 0, labels = labs, labelcex = label_font_size, shade = 0.7, sector.order = 1:2, border = NULL)
-        graphics::title(main = sprintf("%s<%g & |%s|>%g %s: %s", significance_column, significance_cutoff, change_column, change_cutoff, filtering_mode, say_contrast), cex.main = plot_titles_fontsize / 3, line = -2)
+        plotrix::pie3D(
+          N,
+          radius = 0.8,
+          height = 0.06,
+          col = fill_colors,
+          theta = 0.9,
+          start = 45,
+          explode = 0,
+          labels = labs,
+          labelcex = label_font_size,
+          shade = 0.7,
+          sector.order = 1:2,
+          border = NULL
+        )
+        graphics::title(
+          main = sprintf(
+            "%s<%g & |%s|>%g %s: %s",
+            significance_column,
+            significance_cutoff,
+            change_column,
+            change_cutoff,
+            filtering_mode,
+            say_contrast
+          ),
+          cex.main = plot_titles_fontsize / 3,
+          line = -2
+        )
       }
     }
     ### PH: END Create DEG summary PieChart

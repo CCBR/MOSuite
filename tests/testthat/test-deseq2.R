@@ -1,8 +1,6 @@
 set.seed(20231228)
 moo <- create_multiOmicDataSet_from_files(
-  sample_meta_filepath = system.file("extdata", "sample_metadata.tsv.gz",
-    package = "MOSuite"
-  ),
+  sample_meta_filepath = system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite"),
   feature_counts_filepath = system.file(
     "extdata",
     "RSEM.genes.expected_count.all_samples.txt.gz",
@@ -11,9 +9,7 @@ moo <- create_multiOmicDataSet_from_files(
 ) %>%
   suppressMessages()
 moo@sample_meta <- moo@sample_meta %>%
-  dplyr::mutate(condition = factor(condition,
-    levels = c("wildtype", "knockout")
-  ))
+  dplyr::mutate(condition = factor(condition, levels = c("wildtype", "knockout")))
 
 test_that("run_deseq2 works", {
   expect_error(
@@ -24,7 +20,8 @@ test_that("run_deseq2 works", {
   min_count <- 10
   genes_above_threshold <- moo@counts$raw %>%
     tidyr::pivot_longer(!tidyselect::any_of(c("gene_id", "GeneName")),
-      names_to = "sample_id", values_to = "count"
+      names_to = "sample_id",
+      values_to = "count"
     ) %>%
     dplyr::group_by(gene_id) %>%
     dplyr::summarize(count_sum = sum(count)) %>%
@@ -33,7 +30,12 @@ test_that("run_deseq2 works", {
   moo@counts$filt <- moo@counts$raw %>%
     dplyr::filter(gene_id %in% (genes_above_threshold))
   moo <- moo %>%
-    run_deseq2(moo, design = ~condition, fitType = "local", feature_id_colname = "gene_id") %>%
+    run_deseq2(
+      moo,
+      design = ~condition,
+      fitType = "local",
+      feature_id_colname = "gene_id"
+    ) %>%
     suppressMessages()
   dds <- moo@analyses$deseq2_ds
 
@@ -66,15 +68,9 @@ test_that("run_deseq2 works", {
     structure(
       list(
         counts.KO_S3 = c(25L, 16L, 19L),
-        counts.KO_S4 = c(
-          22L,
-          10L, 26L
-        ),
+        counts.KO_S4 = c(22L, 10L, 26L),
         counts.WT_S1 = c(74L, 0L, 10L),
-        counts.WT_S2 = c(
-          104L,
-          0L, 8L
-        ),
+        counts.WT_S2 = c(104L, 0L, 8L),
         mu.1 = c(23.8682703018296, 13.1709993621292, 22.8847421174049),
         mu.2 = c(23.131035523431, 12.7641781441173, 22.1778862132993),
         mu.3 = c(78.660598086526, 0.163744933328453, 8.02129153499216),

@@ -33,7 +33,8 @@ get_random_colors <- function(num_colors, n = 2e3) {
 #'
 #' @inheritParams create_multiOmicDataSet_from_dataframes
 #'
-#' @param palette_fun Function for selecting colors. Assumed to contain `n` for the number of colors. Default: `grDevices::palette.colors()`
+#' @param palette_fun Function for selecting colors. Assumed to contain `n` for the number of colors. Default:
+#'   `grDevices::palette.colors()`
 #' @param ... additional arguments forwarded to `palette_fun`
 #'
 #' @returns named list, with each column in `sample_metadata` containing entry with a named vector of colors
@@ -76,14 +77,14 @@ get_colors_vctr <- function(dat,
     unique()
   withCallingHandlers(
     warning = function(cnd) {
-      message(glue::glue('Warning raised in get_color_vctr() for column "{colname}"'))
+      return(message(glue::glue('Warning raised in get_color_vctr() for column "{colname}"')))
     },
     colors_vctr <- palette_fun(n = length(obs), ...)
   )
 
   # if more colors are returned than are in the observations, truncate the vector.
   # this occurs when using RColorBrewer::brewer.pal with n < 3
-  colors_vctr <- colors_vctr[1:length(obs)]
+  colors_vctr <- colors_vctr[seq_len(length(obs))]
 
   names(colors_vctr) <- obs
   return(colors_vctr)
@@ -111,13 +112,22 @@ get_colors_vctr <- function(dat,
 #' moo@analyses$colors$Group
 #'
 #' @family moo methods
-set_color_pal <- S7::new_generic("set_color_pal", "moo", function(moo, colname, palette_fun = grDevices::palette.colors,
+set_color_pal <- S7::new_generic("set_color_pal", "moo", function(moo,
+                                                                  colname,
+                                                                  palette_fun = grDevices::palette.colors,
                                                                   ...) {
-  S7::S7_dispatch()
+  return(S7::S7_dispatch())
 })
 
-S7::method(set_color_pal, multiOmicDataSet) <- function(moo, colname, palette_fun = grDevices::palette.colors,
+S7::method(set_color_pal, multiOmicDataSet) <- function(moo,
+                                                        colname,
+                                                        palette_fun = grDevices::palette.colors,
                                                         ...) {
-  moo@analyses[["colors"]][[colname]] <- get_colors_vctr(dat = moo@sample_meta, colname = colname, palette_fun = palette_fun, ...)
+  moo@analyses[["colors"]][[colname]] <- get_colors_vctr(
+    dat = moo@sample_meta,
+    colname = colname,
+    palette_fun = palette_fun,
+    ...
+  )
   return(moo)
 }

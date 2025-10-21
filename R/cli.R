@@ -6,7 +6,7 @@
 #' @export
 #' @keywords internal
 cli_exec <- function(clargs = commandArgs(trailingOnly = TRUE)) {
-  invisible(cli_exec_impl(clargs))
+  return(invisible(cli_exec_impl(clargs)))
 }
 
 cli_exec_impl <- function(clargs) {
@@ -39,10 +39,9 @@ cli_exec_impl <- function(clargs) {
   # begin building call
   # if --json in arguments, call cli_from_json()
   if (any(stringr::str_detect(clargs, "^--json"))) {
-    args <- list(call(":::", as.symbol("MOSuite"), as.symbol("cli_from_json")),
-      method = method
-    )
-  } else { # otherwise call the method directly
+    args <- list(call(":::", as.symbol("MOSuite"), as.symbol("cli_from_json")), method = method)
+  } else {
+    # otherwise call the method directly
     args <- list(call("::", as.symbol("MOSuite"), as.symbol(method)))
   }
 
@@ -51,39 +50,27 @@ cli_exec_impl <- function(clargs) {
     if (grepl("^--no-", clarg)) {
       key <- substring(clarg, 6L)
       args[[key]] <- FALSE
-    }
-
-    # convert '--param=value' flags
-    else if (grepl("^--[^=]+=", clarg)) {
+    } else if (grepl("^--[^=]+=", clarg)) { # convert '--param=value' flags
       index <- regexpr("=", clarg, fixed = TRUE)
       key <- substring(clarg, 3L, index - 1L)
       val <- substring(clarg, index + 1L)
       args[[key]] <- cli_parse(val)
-    }
-
-    # convert '--flag' into a TRUE parameter
-    else if (grepl("^--", clarg)) {
+    } else if (grepl("^--", clarg)) { # convert '--flag' into a TRUE parameter
       key <- substring(clarg, 3L)
       args[[key]] <- TRUE
-    }
-
-    # convert 'param=value' flags
-    else if (grepl("=", clarg, fixed = TRUE)) {
+    } else if (grepl("=", clarg, fixed = TRUE)) { # convert 'param=value' flags
       index <- regexpr("=", clarg, fixed = TRUE)
       key <- substring(clarg, 1L, index - 1L)
       val <- substring(clarg, index + 1L)
       args[[key]] <- cli_parse(val)
-    }
-
-    # take other parameters as-is
-    else {
+    } else { # take other parameters as-is
       args[[length(args) + 1L]] <- cli_parse(clarg)
     }
   }
 
   # invoke method with parsed arguments
   expr <- as.call(args)
-  eval(expr = expr, envir = globalenv())
+  return(eval(expr = expr, envir = globalenv()))
 }
 
 cli_usage <- function(con = stderr()) {
@@ -91,10 +78,12 @@ cli_usage <- function(con = stderr()) {
 Usage: mosuite [function] [--json=path/to/args.json]
 
 [function] should be the name of a function exported from MOSuite.
-[--json] should specify the path to a JSON file with arguments accepted by that function. The equals sign (=) is required to separate --json from the path.
+[--json] should specify the path to a JSON file with arguments accepted by that function.
+         The equals sign (=) is required to separate --json from the path.
 
 Additionally, the JSON file can contain the following keys:
-  - moo_input_rds: file path to an existing MultiOmicsDataset object in RDS format. This is required if `method` has `moo` as an argument.
+  - moo_input_rds: file path to an existing MultiOmicsDataset object in RDS format.
+    This is required if `method` has `moo` as an argument.
   - moo_output_rds: file path to write the result to.
 
 Use `mosuite [function] --help` for more information about the associated function.
@@ -108,11 +97,11 @@ Main functions:
   mosuite diff_counts
   mosuite filter_diff
 "
-  writeLines(usage, con = con)
+  return(writeLines(usage, con = con))
 }
 
 cli_help <- function(method) {
-  print(utils::help(method, package = "MOSuite"))
+  return(print(utils::help(method, package = "MOSuite")))
 }
 
 cli_unknown <- function(method, exports) {
@@ -143,15 +132,16 @@ cli_parse <- function(text) {
 
   # parse the expression
   value <- parse(text = text)[[1L]]
-  if (is.language(value)) text else value
+  return(if (is.language(value)) text else value)
 }
 
 #' Call an MOSuite function with arguments specified in a json file
 #'
 #' @param method function in MOSuite to call
 #' @param json path to a JSON file containing arguments for the function.
-#'  Additionally, the JSON can contain the following keys:
-#'    - `moo_input_rds` - filepath to an existing MultiOmicsDataset object in RDS format. This is required if the MOSuite function contains `moo` as an argument.
+#' Additionally, the JSON can contain the following keys:
+#'    - `moo_input_rds` - filepath to an existing MultiOmicsDataset object in RDS format.
+#'       This is required if the MOSuite function contains `moo` as an argument.
 #'    - `moo_output_rds` - filepath to write the result to.
 #' @param debug when TRUE, do not call the command, just return the expression.
 #'
@@ -166,11 +156,13 @@ cli_from_json <- function(method, json, debug = FALSE) {
   json_args <- jsonlite::read_json(json)
 
   # if needed, get moo from moo_input_rds
-  accepted_args <- formals(method, envir = getNamespace("MOSuite"))
   first_arg <- names(formals(method, envir = getNamespace("MOSuite")))[1]
   if (stringr::str_detect(first_arg, "^moo")) {
-    assertthat::assert_that("moo_input_rds" %in% names(json_args),
-      msg = glue::glue("moo_input_rds must be included in the JSON because `moo` is required for {method}()")
+    assertthat::assert_that(
+      "moo_input_rds" %in% names(json_args),
+      msg = glue::glue(
+        "moo_input_rds must be included in the JSON because `moo` is required for {method}()"
+      )
     )
     fcn_args[[first_arg]] <- readr::read_rds(json_args[["moo_input_rds"]])
   }
@@ -189,5 +181,5 @@ cli_from_json <- function(method, json, debug = FALSE) {
     }
   }
 
-  invisible(expr)
+  return(invisible(expr))
 }

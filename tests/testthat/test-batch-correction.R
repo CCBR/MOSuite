@@ -6,9 +6,7 @@ test_that("batch_correction works for NIDAP", {
       "raw" = as.data.frame(nidap_raw_counts),
       "clean" = as.data.frame(nidap_clean_raw_counts),
       "filt" = as.data.frame(nidap_filtered_counts),
-      "norm" = list(
-        "voom" = as.data.frame(nidap_norm_counts)
-      )
+      "norm" = list("voom" = as.data.frame(nidap_norm_counts))
     )
   ) %>%
     batch_correct_counts(

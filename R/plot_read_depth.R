@@ -3,7 +3,8 @@
 #' The first argument can be a `multiOmicDataset` object (`moo`) or a `data.frame` containing counts.
 #' For a `moo`, choose which counts slot to use with `count_type` & (optionally) `sub_count_type`.
 #'
-#' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
+#' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts
+#'   slot
 #' @param ... arguments forwarded to method
 #'
 #' @return ggplot barplot
@@ -45,7 +46,8 @@ plot_read_depth <- S7::new_generic("plot_read_depth", dispatch_args = "moo_count
 #'
 #' @param moo_counts `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
 #' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
-#' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list. Must be a name in `names(moo@counts[[count_type]])`.
+#' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list.
+#'   Must be a name in `names(moo@counts[[count_type]])`.
 #'
 #' @return ggplot barplot
 #'
@@ -69,7 +71,7 @@ S7::method(plot_read_depth, multiOmicDataSet) <- function(moo_counts,
                                                           sub_count_type = NULL,
                                                           ...) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
-  plot_read_depth(counts_dat, ...)
+  return(plot_read_depth(counts_dat, ...))
 }
 
 #' Plot read depth for `data.frame`
@@ -87,7 +89,7 @@ S7::method(plot_read_depth, multiOmicDataSet) <- function(moo_counts,
 #' @seealso [plot_read_depth] generic
 #' @family plotters for counts dataframes
 S7::method(plot_read_depth, S7::class_data.frame) <- function(moo_counts) {
-  sample_names <- read_sums <- column_sums <- NULL
+  sample_names <- column_sums <- NULL
   counts_dat <- moo_counts
   sum_df <- counts_dat %>%
     dplyr::summarize(dplyr::across(tidyselect::where(is.numeric), sum)) %>%

@@ -6,14 +6,40 @@ test_that("counts_dat_to_matrix works", {
       counts_dat_to_matrix(),
     structure(
       c(
-        0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L,
-        0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L,
+        0L
       ),
       dim = c(6L, 4L),
       dimnames = list(
         c(
-          "ENSG00000121410.11", "ENSG00000268895.5", "ENSG00000148584.15",
-          "ENSG00000175899.14", "ENSG00000245105.3", "ENSG00000166535.20"
+          "ENSG00000121410.11",
+          "ENSG00000268895.5",
+          "ENSG00000148584.15",
+          "ENSG00000175899.14",
+          "ENSG00000245105.3",
+          "ENSG00000166535.20"
         ),
         c("KO_S3", "KO_S4", "WT_S1", "WT_S2")
       )
@@ -29,10 +55,7 @@ test_that("calc_cpm works on RENEE data", {
       levels = c("wildtype", "knockout")
     )
   )
-  moo <- create_multiOmicDataSet_from_dataframes(
-    sample_meta,
-    gene_counts %>% dplyr::select(-GeneName)
-  )
+  moo <- create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts %>% dplyr::select(-GeneName))
   moo <- moo %>% calc_cpm()
   cpm_edger <- gene_counts %>%
     dplyr::select(-GeneName) %>%
@@ -48,10 +71,7 @@ test_that("calc_cpm_df works on NIDAP data", {
   trans.df <- df
   trans.df[, -1] <- edgeR::cpm(as.matrix(df[, -1]))
 
-  expect_equal(
-    calc_cpm_df(df, feature_id_colname = "Gene"),
-    trans.df
-  )
+  expect_equal(calc_cpm_df(df, feature_id_colname = "Gene"), trans.df)
 })
 test_that("calc_cpm_df preserves rownames", {
   df <- nidap_clean_raw_counts %>%
@@ -60,8 +80,5 @@ test_that("calc_cpm_df preserves rownames", {
   trans.df <- df
   trans.df[, -1] <- edgeR::cpm(as.matrix(df[, -1]))
 
-  expect_equal(
-    calc_cpm_df(df, feature_id_colname = "Gene"),
-    trans.df
-  )
+  expect_equal(calc_cpm_df(df, feature_id_colname = "Gene"), trans.df)
 })

@@ -1,18 +1,23 @@
 #' Enhanced Volcano Plot
 #'
-#' Uses [Bioconductor's Enhanced Volcano Plot](https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html).
+#' Uses [Bioconductor's Enhanced Volcano
+#' Plot](https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html).
 #'
 #' @inheritParams option_params
 #' @inheritParams filter_counts
 #'
 #' @param moo_diff Differential expression analysis result from one or more contrasts
-#' @param signif_colname column name of significance values (e.g., adjusted p-values or FDR). This column will be used to determine which points are considered significant in the volcano plot.
-#' @param signif_threshold Numeric value specifying the significance cutoff for p-values (i.e. filters on `signif_colname`)
+#' @param signif_colname column name of significance values (e.g., adjusted p-values or FDR). This column will be used
+#'   to determine which points are considered significant in the volcano plot.
+#' @param signif_threshold Numeric value specifying the significance cutoff for p-values (i.e. filters on
+#'   `signif_colname`)
 #' @param change_colname column name of fold change values.
-#' @param change_threshold Numeric value specifying the fold change cutoff for significance (i.e. filters on `change_colname`)
+#' @param change_threshold Numeric value specifying the fold change cutoff for significance (i.e. filters on
+#'   `change_colname`)
 #' @param value_to_sort_the_output_dataset How to sort the output dataset. Options are "fold-change" or "p-value".
 #' @param num_features_to_label Number of top features/genes to label in the volcano plot. Default is 30.
-#' @param use_only_addition_labels If `TRUE`, only the additional labels specified in `additional_labels` will be used for labeling in the volcano plot, ignoring the top features.
+#' @param use_only_addition_labels If `TRUE`, only the additional labels specified in `additional_labels` will be used
+#'   for labeling in the volcano plot, ignoring the top features.
 #' @param additional_labels comma-separated string of feature names or IDs to include in the volcano plot.
 #' @param is_red Logical. If TRUE, highlights points in red.
 #' @param lab_size Size of the labels in the volcano plot.
@@ -84,7 +89,7 @@ plot_volcano_enhanced <- function(moo_diff,
   plots_list <- list()
 
   # user can select multiple comparisons to create volcano plots
-  for (i in 1:length(change_colname)) {
+  for (i in seq_along(change_colname)) {
     ### PH: START Build table for Volcano plot
 
     lfccol <- change_colname[i]
@@ -110,7 +115,8 @@ plot_volcano_enhanced <- function(moo_diff,
     }
 
     ### PH: START Creating rank based on pvalue and fold change
-    ## This is unique to this template and could be useful as a generic tool to create rankes for GSEA. Recommend extracting this function
+    # This is unique to this template and could be useful as a generic tool to create rankes for GSEA. Recommend
+    # extracting this function
     group <- gsub("_pval|p_val_", "", sig_name)
     rank[[i]] <- -log10(df[[sig_name]]) * sign(df[[lfc_name]])
     names(rank)[i] <- paste0("C_", group, "_rank")
@@ -144,7 +150,9 @@ plot_volcano_enhanced <- function(moo_diff,
     additional_labels <- additional_labels[filter]
 
     if (length(missing_labels) > 0) {
-      message(glue::glue(("Could not find missing labels:\t{paste(missing_labels, collapse = ', ')}")))
+      message(glue::glue((
+        "Could not find missing labels:\t{paste(missing_labels, collapse = ', ')}"
+      )))
     }
 
     if (use_only_addition_labels) {
@@ -252,7 +260,7 @@ plot_volcano_enhanced <- function(moo_diff,
       selectLab = genes_to_label,
       title = title,
       # CHANGE NW: See line 78
-      subtitle <- group,
+      subtitle = group,
       xlab = xlab,
       ylab = ylab,
       xlim = xlim,
@@ -277,7 +285,7 @@ plot_volcano_enhanced <- function(moo_diff,
         selectLab = NULL,
         title = title,
         # CHANGE NW: See line 78
-        subtitle <- group,
+        subtitle = group,
         xlab = xlab,
         ylab = ylab,
         xlim = xlim,
@@ -324,11 +332,15 @@ plot_volcano_enhanced <- function(moo_diff,
     plots_list[[i]] <- volcano_plot
   }
   plot_patchwork <- patchwork::wrap_plots(plots_list)
-  print_or_save_plot(plot_patchwork,
+  print_or_save_plot(
+    plot_patchwork,
     filename = file.path(plots_subdir, plot_filename),
-    print_plots = print_plots, save_plots = save_plots,
+    print_plots = print_plots,
+    save_plots = save_plots,
     units = "px",
-    width = image_width, height = image_height, dpi = dpi
+    width = image_width,
+    height = image_height,
+    dpi = dpi
   )
 
   df_final <- cbind(diff_dat, do.call(cbind, rank))

@@ -51,7 +51,8 @@ run_mosuite <- function(metadat, counts) {
     filter_counts(
       group_colname = "treatments_radiation_treatment_type",
       label_colname = "sample"
-    )
+    ) %>%
+    return()
 }
 moo <- run_mosuite(metadat, counts)
 ```
