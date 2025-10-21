@@ -120,7 +120,6 @@ references:
   - family-names: Huber
     given-names: Wolfgang
   year: '2025'
-  doi: 10.18129/B9.bioc.DESeq2
 - type: software
   title: dplyr
   abstract: 'dplyr: A Grammar of Data Manipulation'
@@ -155,14 +154,12 @@ references:
   authors:
   - family-names: Chen
     given-names: Yunshun
-  - family-names: Chen
-    given-names: Lizhong
   - family-names: Lun
     given-names: Aaron TL
   - family-names: McCarthy
     given-names: Davis J
-  - family-names: Baldoni
-    given-names: Pedro
+  - family-names: Chen
+    given-names: Lizhong
   - family-names: Ritchie
     given-names: Matthew E
   - family-names: Phipson
@@ -176,7 +173,6 @@ references:
   - family-names: Smyth
     given-names: Gordon K
   year: '2025'
-  doi: 10.18129/B9.bioc.edgeR
 - type: software
   title: ggplot2
   abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
@@ -258,10 +254,13 @@ references:
     email: jeroenooms@gmail.com
     orcid: https://orcid.org/0000-0002-4035-0289
   year: '2025'
+  identifiers:
+  - type: url
+    value: https://arxiv.org/abs/1403.2805
   doi: 10.32614/CRAN.package.jsonlite
 - type: software
   title: limma
-  abstract: 'limma: Linear Models for Microarray and Omics Data'
+  abstract: 'limma: Linear Models for Microarray Data'
   notes: Imports
   url: https://bioinf.wehi.edu.au/limma/
   repository: https://bioconductor.org/
@@ -295,8 +294,6 @@ references:
     name-particle: de
   - family-names: Chen
     given-names: Yunshun
-  - family-names: Giner
-    given-names: Goknur
   - family-names: Langaas
     given-names: Mette
   - family-names: Ferkingstad
@@ -307,12 +304,6 @@ references:
     given-names: Francois
   - family-names: Choi
     given-names: Dongseok
-  - family-names: Law
-    given-names: Charity
-  - family-names: Li
-    given-names: Mengbo
-  - family-names: Chen
-    given-names: Lizhong
   year: '2025'
   doi: 10.18129/B9.bioc.limma
 - type: software
@@ -930,6 +921,10 @@ references:
   - family-names: Walthert
     given-names: Lorenz
     email: lorenz.walthert@icloud.com
+  - family-names: Patil
+    given-names: Indrajeet
+    email: patilindrajeet.science@gmail.com
+    orcid: https://orcid.org/0000-0003-1995-6531
   year: '2025'
   doi: 10.32614/CRAN.package.styler
 - type: software
