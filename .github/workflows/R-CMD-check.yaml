@@ -66,13 +66,19 @@ jobs:
 
       - name: Good Practice checks
         shell: Rscript {0}
-        run: goodpractice::gp()
+        run: |
+          g <- goodpractice::gp()
+          g
+          n_failed <- length(goodpractice::failed_checks(g))
+          if (n_failed > 0) {
+            warning(paste(n_failed, "failed checks")))
+          }
 
       - name: Lint
         shell: Rscript {0}
         run: lintr::lint_package()
         env:
-          LINTR_ERROR_ON_LINT: false
+          LINTR_ERROR_ON_LINT: true
 
   check: # make sure all check jobs pass. https://github.com/orgs/community/discussions/4324#discussioncomment-3477871
     runs-on: ubuntu-latest
