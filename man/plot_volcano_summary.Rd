@@ -2,8 +2,7 @@
 % Please edit documentation in R/plot_volcano_summary.R
 \name{plot_volcano_summary}
 \alias{plot_volcano_summary}
-\title{Volcano Plot - Summary [CC
-Produces one volcano plot for each tested contrast in the input DEG table.}
+\title{Volcano Plot - Summary [CC Produces one volcano plot for each tested contrast in the input DEG table.}
 \usage{
 plot_volcano_summary(
   moo_diff,
@@ -55,27 +54,38 @@ plot_volcano_summary(
 \arguments{
 \item{moo_diff}{Differential expression analysis result from one or more contrasts}
 
-\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
+\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).
+This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
+Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
+used.)}
 
-\item{signif_colname}{column name of significance values (e.g., adjusted p-values or FDR). This column will be used to determine which points are considered significant in the volcano plot.}
+\item{signif_colname}{column name of significance values (e.g., adjusted p-values or FDR). This column will be used
+to determine which points are considered significant in the volcano plot.}
 
-\item{signif_threshold}{Numeric value specifying the significance cutoff for p-values (i.e. filters on \code{signif_colname})}
+\item{signif_threshold}{Numeric value specifying the significance cutoff for p-values (i.e. filters on
+\code{signif_colname})}
 
-\item{change_threshold}{Numeric value specifying the fold change cutoff for significance (i.e. filters on \code{change_colname})}
+\item{change_threshold}{Numeric value specifying the fold change cutoff for significance (i.e. filters on
+\code{change_colname})}
 
 \item{value_to_sort_the_output_dataset}{How to sort the output dataset. Options are "fold-change" or "p-value".}
 
 \item{num_features_to_label}{Number of top features/genes to label in the volcano plot. Default is 30.}
 
-\item{add_features}{Add custom_gene_list To Labels. Set TRUE when you want to label a specific set of features (features) in the "custom_gene_list" parameter" IN ADDITION to the number of features you set in the "Number of Features to Label" parameter.}
+\item{add_features}{Add custom_gene_list To Labels. Set TRUE when you want to label a specific set of features
+(features) in the "custom_gene_list" parameter" IN ADDITION to the number of features you set in the "Number of
+Features to Label" parameter.}
 
-\item{label_features}{Select TRUE when you want to label ONLY a specific list of features(features) given in the "custom_gene_list" parameter.}
+\item{label_features}{Select TRUE when you want to label ONLY a specific list of features(features) given in the
+"custom_gene_list" parameter.}
 
-\item{custom_gene_list}{Provide a list of features (comma separated) to be labeled on the volcano plot. You must toggle one of the following ON to see these labels: "Add features" or "Label Only My Feature List".}
+\item{custom_gene_list}{Provide a list of features (comma separated) to be labeled on the volcano plot. You must
+toggle one of the following ON to see these labels: "Add features" or "Label Only My Feature List".}
 
 \item{default_label_color}{Set the color for the text used to add feature (gene) name labels to points.}
 
-\item{custom_label_color}{Set the color for the specific list of features (features) provided in the "Feature List" parameter.}
+\item{custom_label_color}{Set the color for the specific list of features (features) provided in the "Feature List"
+parameter.}
 
 \item{label_x_adj}{adjust position of the labels on the x-axis. Default: 0.2}
 
@@ -87,9 +97,12 @@ plot_volcano_summary(
 
 \item{label_font_type}{Set the font type of the labels. Default: 1}
 
-\item{displace_feature_labels}{Set to TRUE to displace gene labels. Default: FALSE. Set TRUE if you want to displace the feature (gene) label for a specific set of features. Make sure to use custom x- and y- limits and give sufficient space for displacement; otherwise other labels than the desired ones will appear displaced.}
+\item{displace_feature_labels}{Set to TRUE to displace gene labels. Default: FALSE. Set TRUE if you want to displace
+the feature (gene) label for a specific set of features. Make sure to use custom x- and y- limits and give
+sufficient space for displacement; otherwise other labels than the desired ones will appear displaced.}
 
-\item{custom_gene_list_special_label_displacement}{Provide a list of features (comma separated) for which you want special displacement of the feature label.}
+\item{custom_gene_list_special_label_displacement}{Provide a list of features (comma separated) for which you want
+special displacement of the feature label.}
 
 \item{special_label_displacement_x_axis}{Displacement of the feature label on the x-axis. Default: 2}
 
@@ -101,11 +114,14 @@ plot_volcano_summary(
 
 \item{color_of_logfold_change_threshold_line}{Color of the log fold change threshold line. Default: "red"}
 
-\item{color_of_features_meeting_only_signif_threshold}{Color of the features that meet only the significance threshold. Default: "lightgoldenrod2"}
+\item{color_of_features_meeting_only_signif_threshold}{Color of the features that meet only the significance
+threshold. Default: "lightgoldenrod2"}
 
-\item{color_for_features_meeting_pvalue_and_foldchange_thresholds}{Color of the features that meet both the p-value and fold change thresholds. Default: "red"}
+\item{color_for_features_meeting_pvalue_and_foldchange_thresholds}{Color of the features that meet both the p-value
+and fold change thresholds. Default: "red"}
 
-\item{flip_vplot}{Set to TRUE to flip the fold change values so that the volcano plot looks like a comparison was B-A. Default: FALSE}
+\item{flip_vplot}{Set to TRUE to flip the fold change values so that the volcano plot looks like a comparison was
+B-A. Default: FALSE}
 
 \item{use_default_x_axis_limit}{Set to TRUE to use the default x-axis limit. Default: TRUE}
 
@@ -142,9 +158,8 @@ plot_volcano_summary(
 \item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \description{
-It can be sorted by either fold change, t-statistic, or p-value. The returned
-dataset includes one row for each significant gene in each contrast, and
-contains columns from the DEG analysis of that contrast as well as columns
+It can be sorted by either fold change, t-statistic, or p-value. The returned dataset includes one row for each
+significant gene in each contrast, and contains columns from the DEG analysis of that contrast as well as columns
 useful to the Venn diagram template downstream.
 }
 \examples{

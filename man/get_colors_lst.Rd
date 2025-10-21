@@ -7,10 +7,11 @@
 get_colors_lst(sample_metadata, palette_fun = grDevices::palette.colors, ...)
 }
 \arguments{
-\item{sample_metadata}{sample metadata as a data frame or tibble.
-The first column is assumed to contain the sample IDs which must correspond to column names in the raw counts.}
+\item{sample_metadata}{sample metadata as a data frame or tibble. The first column is assumed to contain the sample
+IDs which must correspond to column names in the raw counts.}
 
-\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default: \code{grDevices::palette.colors()}}
+\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default:
+\code{grDevices::palette.colors()}}
 
 \item{...}{additional arguments forwarded to \code{palette_fun}}
 }
