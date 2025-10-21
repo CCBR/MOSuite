@@ -32,11 +32,11 @@ jobs:
           use-public-rspm: true
           r-version: 4.3
 
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          needs: Suggests
       - name: Install deps
         run: Rscript .github/install.R
-      # - uses: r-lib/actions/setup-r-dependencies@v2
-      #   with:
-      #     needs: Suggests
 
       - name: render README.Rmd & docs
         shell: Rscript {0}
