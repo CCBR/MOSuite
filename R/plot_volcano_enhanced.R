@@ -203,7 +203,6 @@ plot_volcano_enhanced <- function(moo_diff,
     maxy <- ceiling(maxy)
 
 
-
     ## X-axis custom range change:
     if (custom_xlim == "") {
       xlim <- c(
