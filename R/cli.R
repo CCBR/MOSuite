@@ -154,13 +154,11 @@ cli_from_json <- function(method, json, debug = FALSE) {
   json_args <- jsonlite::read_json(json)
 
   # if needed, get moo from moo_input_rds
-  first_arg <- names(formals(method, envir = getNamespace("MOSuite")))[1]
+  accepted_args <- formals(method, envir = getNamespace("MOSuite"))
+  first_arg <- names(accepted_args)[1]
   if (stringr::str_detect(first_arg, "^moo")) {
-    assertthat::assert_that(
-      "moo_input_rds" %in% names(json_args),
-      msg = glue::glue(
-        "moo_input_rds must be included in the JSON because `moo` is required for {method}()"
-      )
+    assertthat::assert_that("moo_input_rds" %in% names(json_args),
+      msg = glue::glue("moo_input_rds must be included in the JSON because `{first_arg}` is required for {method}()")
     )
     fcn_args[[first_arg]] <- readr::read_rds(json_args[["moo_input_rds"]])
   }
