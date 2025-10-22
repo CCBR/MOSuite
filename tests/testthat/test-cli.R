@@ -40,8 +40,10 @@ test_that("cli_exec --json --debug", {
       )
     )),
     c(
-      "MOSuite::create_multiOmicDataSet_from_files(",
-      "feature_counts_filepath = \"inst/extdata/RSEM.genes.expected_count.all_samples.txt.gz\", ",
+      paste0(
+        "MOSuite::create_multiOmicDataSet_from_files(",
+        "feature_counts_filepath = \"inst/extdata/RSEM.genes.expected_count.all_samples.txt.gz\", "
+      ),
       "    sample_meta_filepath = \"inst/extdata/sample_metadata.tsv.gz\")"
     )
   )
