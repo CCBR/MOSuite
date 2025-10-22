@@ -200,8 +200,10 @@ plot_volcano_summary <- function(moo_diff,
       new_contrast_label <- old_contrast
     }
 
-    filtered_features <- diff_dat$Gene[diff_dat[, pvalcol] < signif_threshold &
-      abs(diff_dat[, new_contrast_label]) > change_threshold]
+    filtered_features <- diff_dat$Gene[all(
+      diff_dat[, pvalcol] < signif_threshold,
+      abs(diff_dat[, new_contrast_label]) > change_threshold
+    )]
     repeated_column <- rep(contrast, length(filtered_features))
     ## If param empty, fill it with default value.
     if (length(add_deg_columns) == 0) {
@@ -290,8 +292,7 @@ plot_volcano_summary <- function(moo_diff,
         size = point_size
       ) +
       ggplot2::geom_point(
-        data = grm[diff_dat[, pvalcol] < signif_threshold &
-          abs(grm[, "FC"]) > change_threshold, ],
+        data = grm[diff_dat[, pvalcol] < signif_threshold & abs(grm[, "FC"]) > change_threshold, ],
         color = color_for_features_meeting_pvalue_and_foldchange_thresholds,
         size = point_size
       ) +

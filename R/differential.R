@@ -442,24 +442,20 @@ get_gene_lists <- function(finalres,
   for (i in seq_len(length(contrasts))) {
     if (pval == "pval") {
       upreg_genes[[i]] <- finalres %>%
-        dplyr::filter(.data[[colnames(FC)[i]]] > FClimit &
-          .data[[colnames(pvalall)[i]]] < pvallimit) %>%
+        dplyr::filter(.data[[colnames(FC)[i]]] > FClimit & .data[[colnames(pvalall)[i]]] < pvallimit) %>%
         dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
         length()
       downreg_genes[[i]] <- finalres %>%
-        dplyr::filter(.data[[colnames(FC)[i]]] < -FClimit &
-          .data[[colnames(pvalall)[i]]] < pvallimit) %>%
+        dplyr::filter(.data[[colnames(FC)[i]]] < -FClimit & .data[[colnames(pvalall)[i]]] < pvallimit) %>%
         dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
         length()
     } else {
       upreg_genes[[i]] <- finalres %>%
-        dplyr::filter(.data[[colnames(FC)[i]]] > FClimit &
-          .data[[colnames(pvaladjall)[i]]] < pvallimit) %>%
+        dplyr::filter(.data[[colnames(FC)[i]]] > FClimit & .data[[colnames(pvaladjall)[i]]] < pvallimit) %>%
         dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
         length()
       downreg_genes[[i]] <- finalres %>%
-        dplyr::filter(.data[[colnames(FC)[i]]] < -FClimit &
-          .data[[colnames(pvaladjall)[i]]] < pvallimit) %>%
+        dplyr::filter(.data[[colnames(FC)[i]]] < -FClimit & .data[[colnames(pvaladjall)[i]]] < pvallimit) %>%
         dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
         length()
     }

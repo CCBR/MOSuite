@@ -32,10 +32,8 @@ Imports:
     ggplot2,
     ggrepel,
     glue,
-    goodpractice,
     jsonlite,
     limma,
-    lintr,
     magrittr,
     matrixStats,
     methods,
@@ -79,6 +77,7 @@ Suggests:
 VignetteBuilder:
     knitr
 biocViews:
+Config/Needs/lint: lintr, goodpractice
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true

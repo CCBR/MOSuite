@@ -49,7 +49,9 @@ sample_meta_nidap <- readr::read_csv(system.file("extdata", "nidap",
   "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
   package = "MOSuite"
 ))
-raw_counts_nidap <- readr::read_csv(system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"))
+raw_counts_nidap <- readr::read_csv(system.file("extdata", "nidap", "Raw_Counts.csv.gz",
+                                                package = "MOSuite"
+                                                ))
 moo_nidap <- create_multiOmicDataSet_from_dataframes(sample_meta_nidap, raw_counts_nidap)
 
 }

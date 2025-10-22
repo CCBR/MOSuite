@@ -11,9 +11,7 @@ cli_exec <- function(clargs = commandArgs(trailingOnly = TRUE)) {
 
 cli_exec_impl <- function(clargs) {
   # check for tool called without arguments, or called with '--help'
-  usage <-
-    length(clargs) == 0 ||
-      clargs[1L] %in% c("help", "--help")
+  usage <- length(clargs) == 0 || clargs[1L] %in% c("help", "--help")
 
   if (usage) {
     return(cli_usage())

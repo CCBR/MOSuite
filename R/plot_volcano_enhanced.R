@@ -132,8 +132,7 @@ plot_volcano_enhanced <- function(moo_diff,
     }
 
     if (is_red) {
-      df_sub <- df[df[[sigcol]] <= signif_threshold &
-        abs(df[[lfccol]]) >= change_threshold, ]
+      df_sub <- df[df[[sigcol]] <= signif_threshold & abs(df[[lfccol]]) >= change_threshold, ]
     } else {
       df_sub <- df
     }
@@ -165,8 +164,7 @@ plot_volcano_enhanced <- function(moo_diff,
     significant[] <- "Not significant"
     significant[which(abs(df[, 2]) > change_threshold)] <- "Fold change only"
     significant[which(df[, 3] < signif_threshold)] <- "Significant only"
-    significant[which(abs(df[, 2]) > change_threshold &
-      df[, 3] < signif_threshold)] <- "Significant and fold change"
+    significant[which(abs(df[, 2]) > change_threshold & df[, 3] < signif_threshold)] <- "Significant and fold change"
 
     ### PH: END Build table for Volcano plot
 

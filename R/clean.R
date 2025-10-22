@@ -193,8 +193,10 @@ separate_gene_meta_columns <- function(counts_dat, split_gene_name = TRUE) {
       colnames(counts_dat)[colnames(counts_dat) %in% feature_id_colname] <- out_colname
     } else {
       ## at least one column must have all ensemble ids found in EnsCol
-      if (nrow(EnsCol[EnsCol[, 1] == TRUE, ]) == nrow(Ensembl_ID) ||
-        nrow(EnsCol[EnsCol[, 2] == TRUE, ]) == nrow(Ensembl_ID)) {
+      if (any(
+        nrow(EnsCol[EnsCol[, 1] == TRUE, ]) == nrow(Ensembl_ID),
+        nrow(EnsCol[EnsCol[, 2] == TRUE, ]) == nrow(Ensembl_ID)
+      )) {
         colnames(Ensembl_ID)[colSums(EnsCol) != nrow(Ensembl_ID)] <- out_colname
 
         ## check if Ensmble column has version information
