@@ -58,6 +58,11 @@ jobs:
           # Create your CITATION.cff file
           cff_write(cf)
 
+      - name: update codemeta
+        uses: citation-file-format/cffconvert-github-action@2.0.0
+        with:
+          args: "--format codemeta --outfile codemeta.json"
+
       - name: format
         uses: pre-commit/action@v3.0.1
         continue-on-error: true
