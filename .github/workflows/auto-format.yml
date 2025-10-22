@@ -59,8 +59,9 @@ jobs:
           cff_write(cf)
 
       - name: update codemeta
-        run: |
-          cffconvert -f codemeta > codemeta.json
+        uses: citation-file-format/cffconvert-github-action@2.0.0
+        with:
+          args: "--format codemeta --outfile codemeta.json"
 
       - name: format
         uses: pre-commit/action@v3.0.1
