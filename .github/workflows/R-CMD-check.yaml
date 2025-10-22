@@ -71,7 +71,7 @@ jobs:
           g
           n_failed <- length(goodpractice::failed_checks(g))
           if (n_failed > 0) {
-            warning(paste(n_failed, "failed checks")))
+            warning(paste(n_failed, "failed checks"))
           }
 
       - name: Lint
