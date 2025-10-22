@@ -50,8 +50,8 @@ sample_meta_nidap <- readr::read_csv(system.file("extdata", "nidap",
   package = "MOSuite"
 ))
 raw_counts_nidap <- readr::read_csv(system.file("extdata", "nidap", "Raw_Counts.csv.gz",
-                                                package = "MOSuite"
-                                                ))
+  package = "MOSuite"
+))
 moo_nidap <- create_multiOmicDataSet_from_dataframes(sample_meta_nidap, raw_counts_nidap)
 
 }

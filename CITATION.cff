@@ -243,37 +243,6 @@ references:
   year: '2025'
   doi: 10.32614/CRAN.package.glue
 - type: software
-  title: goodpractice
-  abstract: 'goodpractice: Advice on R Package Building'
-  notes: Imports
-  url: https://docs.ropensci.org/goodpractice/
-  repository: https://CRAN.R-project.org/package=goodpractice
-  authors:
-  - family-names: Padgham
-    given-names: Mark
-    email: mark@ropensci.org
-    orcid: https://orcid.org/0000-0003-2172-5265
-  - family-names: Marks
-    given-names: Karina
-    email: karina.marks@ascent.io
-  - family-names: Bortoli
-    given-names: Daniel
-    name-particle: de
-  - family-names: Csardi
-    given-names: Gabor
-    email: csardi.gabor@gmail.com
-  - family-names: Frick
-    given-names: Hannah
-    email: hannah.frick@gmail.com
-  - family-names: Jones
-    given-names: Owen
-    email: owenjonesuob@gmail.com
-  - family-names: Alexander
-    given-names: Hannah
-    email: halexander@mango-solutions.com
-  year: '2025'
-  doi: 10.32614/CRAN.package.goodpractice
-- type: software
   title: jsonlite
   abstract: 'jsonlite: A Simple and Robust JSON Parser and Generator for R'
   notes: Imports
@@ -337,32 +306,6 @@ references:
     given-names: Dongseok
   year: '2025'
   doi: 10.18129/B9.bioc.limma
-- type: software
-  title: lintr
-  abstract: 'lintr: A ''Linter'' for R Code'
-  notes: Imports
-  url: https://lintr.r-lib.org
-  repository: https://CRAN.R-project.org/package=lintr
-  authors:
-  - family-names: Hester
-    given-names: Jim
-  - family-names: Angly
-    given-names: Florent
-  - family-names: Hyde
-    given-names: Russ
-  - family-names: Chirico
-    given-names: Michael
-    email: michaelchirico4@gmail.com
-  - family-names: Ren
-    given-names: Kun
-  - family-names: Rosenstock
-    given-names: Alexander
-  - family-names: Patil
-    given-names: Indrajeet
-    email: patilindrajeet.science@gmail.com
-    orcid: https://orcid.org/0000-0003-1995-6531
-  year: '2025'
-  doi: 10.32614/CRAN.package.lintr
 - type: software
   title: magrittr
   abstract: 'magrittr: A Forward-Pipe Operator for R'
