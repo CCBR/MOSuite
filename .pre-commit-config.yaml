@@ -31,9 +31,9 @@ repos:
       - id: parsable-R
       - id: readme-rmd-rendered
       - id: use-tidy-description
-      # - id: lintr
-      #   args: [--warn_only]
-      #   verbose: true
+      - id: lintr
+        args: [--warn_only]
+        verbose: true
   # enforce commit format
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v2.3.0

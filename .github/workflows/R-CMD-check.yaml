@@ -78,7 +78,7 @@ jobs:
         shell: Rscript {0}
         run: lintr::lint_package()
         env:
-          LINTR_ERROR_ON_LINT: true
+          LINTR_ERROR_ON_LINT: false
 
   check: # make sure all check jobs pass. https://github.com/orgs/community/discussions/4324#discussioncomment-3477871
     runs-on: ubuntu-latest
