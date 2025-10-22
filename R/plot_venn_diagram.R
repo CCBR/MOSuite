@@ -85,6 +85,10 @@ plot_venn_diagram <- function(diff_summary_dat,
   Freq <- Gene <- Id <- Size <- Var1 <- NULL
   abort_packages_not_installed(c("VennDiagram", "gridExtra", "patchwork", "UpSetR"))
 
+  if (nrow(diff_summary_dat) == 0) {
+    stop("Dataframe is empty")
+  }
+
   ### PH:
   # Input - DEG table from Volcano Summary, I think we need to make this function more generic.
   #    The input should be the Limma DEG table and maybe be used with the DEG Gene List Template
@@ -110,29 +114,32 @@ plot_venn_diagram <- function(diff_summary_dat,
     vlist <- vlist[select_contrasts]
   }
   num_categories <- length(vlist)
+  if (num_categories == 0) {
+    stop("Zero categories found")
+  }
 
   # generate upset object
 
   # modify UpSetR function (keep gene names as rownames of intersection matrix)
-  # fromList <- function(input) {
-  #   # Same as original fromList()...
-  #   elements <- unique(unlist(input))
-  #   data <- unlist(lapply(input, function(x) {
-  #     return(as.vector(match(elements, x)))
-  #   }))
-  #   data[is.na(data)] <- as.integer(0)
-  #   data[data != 0] <- as.integer(1)
-  #   data <- data.frame(matrix(data, ncol = length(input), byrow = FALSE))
-  #   data <- data[which(rowSums(data) != 0), ]
-  #   names(data) <- names(input)
-  #   # ... Except now it conserves your original value names!
-  #   row.names(data) <- elements
-  #   return(data)
-  # }
+  fromList <- function(input) {
+    # Same as original fromList()...
+    elements <- unique(unlist(input))
+    data <- unlist(lapply(input, function(x) {
+      return(as.vector(match(elements, x)))
+    }))
+    data[is.na(data)] <- as.integer(0)
+    data[data != 0] <- as.integer(1)
+    data <- data.frame(matrix(data, ncol = length(input), byrow = FALSE))
+    data <- data[which(rowSums(data) != 0), ]
+    names(data) <- names(input)
+    # ... Except now it conserves your original value names!
+    row.names(data) <- elements
+    return(data)
+  }
 
 
   if (num_categories > 1) {
-    sets <- UpSetR::fromList(vlist)
+    sets <- fromList(vlist)
 
     if (!is.null(select_contrasts)) {
       Intersection <- sets[, match(select_contrasts, colnames(sets))]

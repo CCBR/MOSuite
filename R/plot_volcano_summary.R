@@ -200,11 +200,10 @@ plot_volcano_summary <- function(moo_diff,
       new_contrast_label <- old_contrast
     }
 
-    filtered_features <- diff_dat$Gene[all(
-      diff_dat[, pvalcol] < signif_threshold,
-      abs(diff_dat[, new_contrast_label]) > change_threshold
-    )]
+    filtered_features <- diff_dat$Gene[diff_dat[, pvalcol] < signif_threshold &
+      abs(diff_dat[, new_contrast_label]) > change_threshold]
     repeated_column <- rep(contrast, length(filtered_features))
+
     ## If param empty, fill it with default value.
     if (length(add_deg_columns) == 0) {
       add_deg_columns <- c("FC", "logFC", "tstat", "pval", "adjpval")
