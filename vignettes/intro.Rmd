@@ -46,11 +46,11 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
   ) %>%
   filter_diff()
 
-moo_nidap@analyses$diff %>%
+moo_nidap@analyses$limma$diff %>%
   join_dfs_wide() %>%
   head()
 
-moo_nidap@analyses$diff_filt %>% head()
+moo_nidap@analyses$limma$diff_filt %>% head()
 ```
 
 ## The multiOmicDataSet object structure

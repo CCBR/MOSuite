@@ -6,6 +6,7 @@
 \usage{
 filter_diff(
   moo,
+  diff_method = "limma",
   feature_id_colname = NULL,
   significance_column = "adjpval",
   significance_cutoff = 0.05,
@@ -35,6 +36,8 @@ filter_diff(
 }
 \arguments{
 \item{moo}{multiOmicDataSet object (see \code{create_multiOmicDataSet_from_dataframes()})}
+
+\item{diff_method}{where to access differential results from the analysis slot (default: "limma")}
 
 \item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).
 This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
@@ -124,7 +127,7 @@ moo <- multiOmicDataSet(
     voom_normalization_method = "quantile",
   ) \%>\%
   filter_diff()
-head(moo@analyses$diff_filt)
+head(moo@analyses[["limma"]][["diff_filt"]])
 }
 \seealso{
 Other moo methods: 
@@ -138,7 +141,7 @@ Other moo methods:
 \code{\link{plot_histogram}()},
 \code{\link{plot_pca}()},
 \code{\link{plot_read_depth}()},
-\code{\link{run_deseq2}()},
+\code{\link{run_deseq}()},
 \code{\link{set_color_pal}()}
 }
 \concept{moo methods}

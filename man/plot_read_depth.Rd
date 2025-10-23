@@ -63,7 +63,7 @@ Other moo methods:
 \code{\link{plot_expr_heatmap}()},
 \code{\link{plot_histogram}()},
 \code{\link{plot_pca}()},
-\code{\link{run_deseq2}()},
+\code{\link{run_deseq}()},
 \code{\link{set_color_pal}()}
 }
 \concept{moo methods}
