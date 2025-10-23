@@ -59,19 +59,30 @@
 
 
 <dt id="arg-sample-id-colname">sample_id_colname<a class="anchor" aria-label="anchor" href="#arg-sample-id-colname"></a></dt>
-<dd><p>The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: <code>NULL</code> - first column in the sample metadata will be used.)</p></dd>
+<dd><p>The column from the sample metadata containing the sample names. The names in this column
+must exactly match the names used as the sample column names of your input Counts Matrix. (Default: <code>NULL</code> - first
+column in the sample metadata will be used.)</p></dd>
 
 
 <dt id="arg-feature-id-colname">feature_id_colname<a class="anchor" aria-label="anchor" href="#arg-feature-id-colname"></a></dt>
-<dd><p>The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: <code>NULL</code> - first column in the counts matrix will be used.)</p></dd>
+<dd><p>The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID).
+This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
+Matrix will be available to select for this parameter. (Default: <code>NULL</code> - first column in the counts matrix will be
+used.)</p></dd>
 
 
 <dt id="arg-group-colname">group_colname<a class="anchor" aria-label="anchor" href="#arg-group-colname"></a></dt>
-<dd><p>The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).</p></dd>
+<dd><p>The column from the sample metadata containing the sample group information. This is usually a
+column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
+Before, After, etc.).</p></dd>
 
 
 <dt id="arg-label-colname">label_colname<a class="anchor" aria-label="anchor" href="#arg-label-colname"></a></dt>
-<dd><p>The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: <code>NULL</code> – <code>sample_id_colname</code> will be used.)</p></dd>
+<dd><p>The column from the sample metadata containing the sample labels as you wish them to appear in
+the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
+labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
+column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
+<code>NULL</code> – <code>sample_id_colname</code> will be used.)</p></dd>
 
 
 <dt id="arg-color-values">color_values<a class="anchor" aria-label="anchor" href="#arg-color-values"></a></dt>
@@ -79,27 +90,35 @@
 
 
 <dt id="arg-samples-to-include">samples_to_include<a class="anchor" aria-label="anchor" href="#arg-samples-to-include"></a></dt>
-<dd><p>Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: <code>NULL</code> - all sample IDs in <code>moo@sample_meta</code> will be used.)</p></dd>
+<dd><p>Which samples would you like to include? Usually, you will choose all sample columns, or
+you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
+analysis downstream of this step. (Default: <code>NULL</code> - all sample IDs in <code>moo@sample_meta</code> will be used.)</p></dd>
 
 
 <dt id="arg-include-all-genes">include_all_genes<a class="anchor" aria-label="anchor" href="#arg-include-all-genes"></a></dt>
-<dd><p>Set to TRUE if all genes are to be included. Set to FALSE if you want to filter genes by variance and/or provide a list of specific genes that will appear in the heatmap.</p></dd>
+<dd><p>Set to TRUE if all genes are to be included. Set to FALSE if you want to filter genes by
+variance and/or provide a list of specific genes that will appear in the heatmap.</p></dd>
 
 
 <dt id="arg-filter-top-genes-by-variance">filter_top_genes_by_variance<a class="anchor" aria-label="anchor" href="#arg-filter-top-genes-by-variance"></a></dt>
-<dd><p>Set to TRUE if you want to only include the top genes by variance. Set to FALSE if you do not want to filter genes by variance.</p></dd>
+<dd><p>Set to TRUE if you want to only include the top genes by variance. Set to FALSE
+if you do not want to filter genes by variance.</p></dd>
 
 
 <dt id="arg-top-genes-by-variance-to-include">top_genes_by_variance_to_include<a class="anchor" aria-label="anchor" href="#arg-top-genes-by-variance-to-include"></a></dt>
-<dd><p>The number of genes to include if filtering genes by variance. This parameter is ignored if "Filter top genes by variance" is set to FALSE.</p></dd>
+<dd><p>The number of genes to include if filtering genes by variance. This parameter
+is ignored if "Filter top genes by variance" is set to FALSE.</p></dd>
 
 
 <dt id="arg-specific-genes-to-include-in-heatmap">specific_genes_to_include_in_heatmap<a class="anchor" aria-label="anchor" href="#arg-specific-genes-to-include-in-heatmap"></a></dt>
-<dd><p>Enter the gene symbols to be included in the heatmap, with each gene symbol separated with a space from the others. Alternatively, paste in a column of gene names from any spreadsheet application. This parameter is ignored if "Include all genes" is set to TRUE.</p></dd>
+<dd><p>Enter the gene symbols to be included in the heatmap, with each gene
+symbol separated with a space from the others. Alternatively, paste in a column of gene names from any spreadsheet
+application. This parameter is ignored if "Include all genes" is set to TRUE.</p></dd>
 
 
 <dt id="arg-cluster-genes">cluster_genes<a class="anchor" aria-label="anchor" href="#arg-cluster-genes"></a></dt>
-<dd><p>Choose whether to cluster the rows (genes). If TRUE, rows will have clustering applied. If FALSE, clustering will not be applied to rows.</p></dd>
+<dd><p>Choose whether to cluster the rows (genes). If TRUE, rows will have clustering applied. If
+FALSE, clustering will not be applied to rows.</p></dd>
 
 
 <dt id="arg-gene-distance-metric">gene_distance_metric<a class="anchor" aria-label="anchor" href="#arg-gene-distance-metric"></a></dt>
@@ -115,7 +134,8 @@
 
 
 <dt id="arg-display-gene-names">display_gene_names<a class="anchor" aria-label="anchor" href="#arg-display-gene-names"></a></dt>
-<dd><p>Set to TRUE to display gene names on the right side of the heatmap. Set to FALSE to hide gene names.</p></dd>
+<dd><p>Set to TRUE to display gene names on the right side of the heatmap. Set to FALSE to hide
+gene names.</p></dd>
 
 
 <dt id="arg-center-and-rescale-expression">center_and_rescale_expression<a class="anchor" aria-label="anchor" href="#arg-center-and-rescale-expression"></a></dt>
@@ -123,11 +143,13 @@
 
 
 <dt id="arg-cluster-samples">cluster_samples<a class="anchor" aria-label="anchor" href="#arg-cluster-samples"></a></dt>
-<dd><p>Choose whether to cluster the columns (samples). If TRUE, columns will have clustering applied. If FALSE, clustering will not be applied to columns.</p></dd>
+<dd><p>Choose whether to cluster the columns (samples). If TRUE, columns will have clustering
+applied. If FALSE, clustering will not be applied to columns.</p></dd>
 
 
 <dt id="arg-arrange-sample-columns">arrange_sample_columns<a class="anchor" aria-label="anchor" href="#arg-arrange-sample-columns"></a></dt>
-<dd><p>If TRUE, arranges columns by annotation groups. If FALSE, and "Cluster Samples" is FALSE, samples will appear in the order of input (samples to include)</p></dd>
+<dd><p>If TRUE, arranges columns by annotation groups. If FALSE, and "Cluster Samples" is
+FALSE, samples will appear in the order of input (samples to include)</p></dd>
 
 
 <dt id="arg-order-by-gene-expression">order_by_gene_expression<a class="anchor" aria-label="anchor" href="#arg-order-by-gene-expression"></a></dt>
@@ -159,11 +181,13 @@
 
 
 <dt id="arg-reorder-dendrogram-order">reorder_dendrogram_order<a class="anchor" aria-label="anchor" href="#arg-reorder-dendrogram-order"></a></dt>
-<dd><p>Reorder the samples (columns) of the dendrogram by name, e.g. “sample2”,“sample3",“sample1".</p></dd>
+<dd><p>Reorder the samples (columns) of the dendrogram by name, e.g.
+“sample2”,“sample3",“sample1".</p></dd>
 
 
 <dt id="arg-display-sample-names">display_sample_names<a class="anchor" aria-label="anchor" href="#arg-display-sample-names"></a></dt>
-<dd><p>Set to TRUE if you want sample names to be displayed on the plot. Set to FALSE to hide sample names.</p></dd>
+<dd><p>Set to TRUE if you want sample names to be displayed on the plot. Set to FALSE to hide
+sample names.</p></dd>
 
 
 <dt id="arg-group-columns">group_columns<a class="anchor" aria-label="anchor" href="#arg-group-columns"></a></dt>
@@ -175,7 +199,8 @@
 
 
 <dt id="arg-assign-color-to-sample-groups">assign_color_to_sample_groups<a class="anchor" aria-label="anchor" href="#arg-assign-color-to-sample-groups"></a></dt>
-<dd><p>Enter each sample to color in the format: group_name: color This parameter is ignored if "Assign Colors" is set to FALSE.</p></dd>
+<dd><p>Enter each sample to color in the format: group_name: color This parameter is
+ignored if "Assign Colors" is set to FALSE.</p></dd>
 
 
 <dt id="arg-group-colors">group_colors<a class="anchor" aria-label="anchor" href="#arg-group-colors"></a></dt>
@@ -187,7 +212,9 @@
 
 
 <dt id="arg-autoscale-heatmap-color">autoscale_heatmap_color<a class="anchor" aria-label="anchor" href="#arg-autoscale-heatmap-color"></a></dt>
-<dd><p>Set to TRUE to autoscale the heatmap colors between the maximum and minimum heatmap color parameters. If FALSE, set the heatmap colors between "Set max heatmap color" and "Set min heatmap color" (below).</p></dd>
+<dd><p>Set to TRUE to autoscale the heatmap colors between the maximum and minimum heatmap
+color parameters. If FALSE, set the heatmap colors between "Set max heatmap color" and "Set min heatmap color"
+(below).</p></dd>
 
 
 <dt id="arg-set-min-heatmap-color">set_min_heatmap_color<a class="anchor" aria-label="anchor" href="#arg-set-min-heatmap-color"></a></dt>
@@ -199,7 +226,8 @@
 
 
 <dt id="arg-aspect-ratio">aspect_ratio<a class="anchor" aria-label="anchor" href="#arg-aspect-ratio"></a></dt>
-<dd><p>Set figure Aspect Ratio. Ratio refers to entire figure including legend. If set to Auto figure size is based on number of rows and columns form counts matrix. default - Auto</p></dd>
+<dd><p>Set figure Aspect Ratio. Ratio refers to entire figure including legend. If set to Auto figure
+size is based on number of rows and columns form counts matrix. default - Auto</p></dd>
 
 
 <dt id="arg-legend-font-size">legend_font_size<a class="anchor" aria-label="anchor" href="#arg-legend-font-size"></a></dt>
@@ -207,15 +235,18 @@
 
 
 <dt id="arg-gene-name-font-size">gene_name_font_size<a class="anchor" aria-label="anchor" href="#arg-gene-name-font-size"></a></dt>
-<dd><p>Font size for gene names. If you don't want gene labels to show, toggle "Display Gene Names" below to FALSE</p></dd>
+<dd><p>Font size for gene names. If you don't want gene labels to show, toggle "Display Gene
+Names" below to FALSE</p></dd>
 
 
 <dt id="arg-sample-name-font-size">sample_name_font_size<a class="anchor" aria-label="anchor" href="#arg-sample-name-font-size"></a></dt>
-<dd><p>Font size for sample names. If you don't want to display samples names, toggle "Display sample names" (below) to FALSE</p></dd>
+<dd><p>Font size for sample names. If you don't want to display samples names, toggle "Display
+sample names" (below) to FALSE</p></dd>
 
 
 <dt id="arg-display-numbers">display_numbers<a class="anchor" aria-label="anchor" href="#arg-display-numbers"></a></dt>
-<dd><p>Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if you want to see these numbers on the plot.</p></dd>
+<dd><p>Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if
+you want to see these numbers on the plot.</p></dd>
 
 </dl></div>
     <div class="section level2">

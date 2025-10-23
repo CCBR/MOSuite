@@ -74,11 +74,13 @@
 
 
 <dt id="arg-sample-id-colname">sample_id_colname<a class="anchor" aria-label="anchor" href="#arg-sample-id-colname"></a></dt>
-<dd><p>name of the column in <code>sample_metadata</code> that contains the sample IDs. (Default: <code>NULL</code> - first column in the sample metadata will be used.)</p></dd>
+<dd><p>name of the column in <code>sample_metadata</code> that contains the sample IDs. (Default: <code>NULL</code> -
+first column in the sample metadata will be used.)</p></dd>
 
 
 <dt id="arg-feature-id-colname">feature_id_colname<a class="anchor" aria-label="anchor" href="#arg-feature-id-colname"></a></dt>
-<dd><p>name of the column in <code>counts_dat</code> that contains feature/gene IDs. (Default: <code>NULL</code> - first column in the count data will be used.)</p></dd>
+<dd><p>name of the column in <code>counts_dat</code> that contains feature/gene IDs. (Default: <code>NULL</code> - first
+column in the count data will be used.)</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -142,7 +144,11 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> WT_S1     wildtype </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> WT_S2     wildtype </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">moo_nidap</span> <span class="op">&lt;-</span> <span class="fu">create_multiOmicDataSet_from_files</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"nidap"</span>, <span class="st">"Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="va">moo_nidap</span> <span class="op">&lt;-</span> <span class="fu">create_multiOmicDataSet_from_files</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"nidap"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz"</span>,</span></span>
+<span class="r-in"><span>    package <span class="op">=</span> <span class="st">"MOSuite"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"nidap"</span>, <span class="st">"Raw_Counts.csv.gz"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  delim <span class="op">=</span> <span class="st">","</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>

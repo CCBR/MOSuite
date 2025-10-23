@@ -102,22 +102,24 @@ usage:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">Usage:</span> mosuite <span class="pp">[</span><span class="ss">function</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">json=path/to/args.json</span><span class="pp">]</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="ex">[function]</span> should be the name of a function exported from MOSuite.</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">[--json]</span> should specify the path to a JSON file with arguments accepted by that function. The equals sign <span class="er">(</span><span class="ex">=</span><span class="kw">)</span> <span class="ex">is</span> required to separate <span class="at">--json</span> from the path.</span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="ex">Additionally,</span> the JSON file can contain the following keys:</span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="ex">-</span> moo_input_rds: file path to an existing MultiOmicsDataset object in RDS format. This is required if <span class="kw">`</span><span class="ex">method</span><span class="kw">`</span> has <span class="kw">`</span><span class="ex">moo</span><span class="kw">`</span> as an argument.</span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  <span class="ex">-</span> moo_output_rds: file path to write the result to.</span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="ex">Use</span> <span class="kw">`</span><span class="ex">mosuite</span> <span class="pp">[</span><span class="ss">function</span><span class="pp">]</span> <span class="at">--help</span><span class="kw">`</span> for more information about the associated function.</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">[--json]</span> should specify the path to a JSON file with arguments accepted by that function.</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>         <span class="ex">The</span> equals sign <span class="er">(</span><span class="ex">=</span><span class="kw">)</span> <span class="ex">is</span> required to separate <span class="at">--json</span> from the path.</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="ex">Additionally,</span> the JSON file can contain the following keys:</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  <span class="ex">-</span> moo_input_rds: file path to an existing MultiOmicsDataset object in RDS format.</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    <span class="ex">This</span> is required if <span class="kw">`</span><span class="ex">method</span><span class="kw">`</span> has <span class="kw">`</span><span class="ex">moo</span><span class="kw">`</span> as an argument.</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>  <span class="ex">-</span> moo_output_rds: file path to write the result to.</span>
 <span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="ex">Main</span> functions:</span>
-<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  <span class="ex">mosuite</span> create_multiOmicDataSet_from_files</span>
-<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>  <span class="ex">mosuite</span> filter_counts</span>
-<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>  <span class="ex">mosuite</span> clean_raw_counts</span>
-<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  <span class="ex">mosuite</span> normalize_counts</span>
-<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>  <span class="ex">mosuite</span> batch_correct_counts</span>
-<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>  <span class="ex">mosuite</span> diff_counts</span>
-<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>  <span class="ex">mosuite</span> filter_diff</span></code></pre></div>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="ex">Use</span> <span class="kw">`</span><span class="ex">mosuite</span> <span class="pp">[</span><span class="ss">function</span><span class="pp">]</span> <span class="at">--help</span><span class="kw">`</span> for more information about the associated function.</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="ex">Main</span> functions:</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>  <span class="ex">mosuite</span> create_multiOmicDataSet_from_files</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  <span class="ex">mosuite</span> filter_counts</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>  <span class="ex">mosuite</span> clean_raw_counts</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>  <span class="ex">mosuite</span> normalize_counts</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>  <span class="ex">mosuite</span> batch_correct_counts</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>  <span class="ex">mosuite</span> diff_counts</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>  <span class="ex">mosuite</span> filter_diff</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="installing-the-mosuite-cli">Installing the MOSuite CLI<a class="anchor" aria-label="anchor" href="#installing-the-mosuite-cli"></a>
@@ -179,12 +181,28 @@ files to set each function’s arguments.</p>
 package data. You can copy them to your working directory with R:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># copy the example script</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"example_script.sh"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>, to <span class="op">=</span> <span class="st">"./"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"example_script.sh"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span>
+<span>  to <span class="op">=</span> <span class="st">"./"</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co"># copy the JSON files</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"json_args"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>, to <span class="op">=</span> <span class="st">"./"</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"json_args"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span>
+<span>  to <span class="op">=</span> <span class="st">"./"</span>,</span>
+<span>  recursive <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co"># copy the raw counts &amp; sample metadata</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"nidap"</span>, <span class="st">"Raw_Counts.csv.gz"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>, to <span class="op">=</span> <span class="st">"./"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"nidap"</span>, <span class="st">"Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>, to <span class="op">=</span> <span class="st">"./"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"nidap"</span>, <span class="st">"Raw_Counts.csv.gz"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span>
+<span>  to <span class="op">=</span> <span class="st">"./"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span>    <span class="st">"extdata"</span>,</span>
+<span>    <span class="st">"nidap"</span>,</span>
+<span>    <span class="st">"Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz"</span>,</span>
+<span>    package <span class="op">=</span> <span class="st">"MOSuite"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  to <span class="op">=</span> <span class="st">"./"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Then run the script from the CLI:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">bash</span> ./example_script.sh</span></code></pre></div>
 <p>The final multiOmicDataSet will be in <code>moo.rds</code> and
