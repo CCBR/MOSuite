@@ -7,9 +7,11 @@
 plot_pca(moo_counts, principal_components = c(1, 2), ...)
 }
 \arguments{
-\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
+slot}
 
-\item{principal_components}{vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3 for a 3D pca with plotly. (Default: \code{c(1,2)})}
+\item{principal_components}{vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3
+for a 3D pca with plotly. (Default: \code{c(1,2)})}
 
 \item{...}{additional arguments forwarded to method (see Details below)}
 }

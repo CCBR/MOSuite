@@ -40,21 +40,28 @@ plot_volcano_enhanced(
 \arguments{
 \item{moo_diff}{Differential expression analysis result from one or more contrasts}
 
-\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
+\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).
+This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
+Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
+used.)}
 
-\item{signif_colname}{column name of significance values (e.g., adjusted p-values or FDR). This column will be used to determine which points are considered significant in the volcano plot.}
+\item{signif_colname}{column name of significance values (e.g., adjusted p-values or FDR). This column will be used
+to determine which points are considered significant in the volcano plot.}
 
-\item{signif_threshold}{Numeric value specifying the significance cutoff for p-values (i.e. filters on \code{signif_colname})}
+\item{signif_threshold}{Numeric value specifying the significance cutoff for p-values (i.e. filters on
+\code{signif_colname})}
 
 \item{change_colname}{column name of fold change values.}
 
-\item{change_threshold}{Numeric value specifying the fold change cutoff for significance (i.e. filters on \code{change_colname})}
+\item{change_threshold}{Numeric value specifying the fold change cutoff for significance (i.e. filters on
+\code{change_colname})}
 
 \item{value_to_sort_the_output_dataset}{How to sort the output dataset. Options are "fold-change" or "p-value".}
 
 \item{num_features_to_label}{Number of top features/genes to label in the volcano plot. Default is 30.}
 
-\item{use_only_addition_labels}{If \code{TRUE}, only the additional labels specified in \code{additional_labels} will be used for labeling in the volcano plot, ignoring the top features.}
+\item{use_only_addition_labels}{If \code{TRUE}, only the additional labels specified in \code{additional_labels} will be used
+for labeling in the volcano plot, ignoring the top features.}
 
 \item{additional_labels}{comma-separated string of feature names or IDs to include in the volcano plot.}
 
@@ -88,7 +95,9 @@ plot_volcano_enhanced(
 
 \item{dpi}{dots-per-inch of the output image (see \code{ggsave()}) - only used if save_plots is TRUE}
 
-\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
+\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover
+your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
+is set to TRUE. Default is FALSE.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 

@@ -11,7 +11,8 @@ get_colors_vctr(dat, colname, palette_fun = grDevices::palette.colors, ...)
 
 \item{colname}{column name in \code{dat}}
 
-\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default: \code{grDevices::palette.colors()}}
+\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default:
+\code{grDevices::palette.colors()}}
 
 \item{...}{additional arguments forwarded to \code{palette_fun}}
 }

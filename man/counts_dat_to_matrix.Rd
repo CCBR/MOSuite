@@ -9,7 +9,8 @@ counts_dat_to_matrix(counts_tbl, feature_id_colname = NULL)
 \arguments{
 \item{counts_tbl}{expected feature counts as a dataframe or tibble, with all columns except \code{feature_id_colname}}
 
-\item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first column in the count data will be used.)}
+\item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first
+column in the count data will be used.)}
 }
 \value{
 matrix of gene counts with rows as gene IDs

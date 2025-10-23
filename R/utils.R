@@ -11,7 +11,7 @@
 #'   head()
 #' }
 glue_gene_symbols <- function(counts_dat) {
-  if ("gene_id" %in% colnames(counts_dat) & "GeneName" %in% colnames(counts_dat)) {
+  if ("gene_id" %in% colnames(counts_dat) && "GeneName" %in% colnames(counts_dat)) {
     counts_dat <- counts_dat %>%
       dplyr::mutate(
         gene_id = glue::glue("{gene_id}|{GeneName}"),
@@ -40,7 +40,9 @@ check_packages_installed <- function(...) {
 #' Throw error if required packages are not installed.
 #'
 #' Reports which packages need to be installed and the parent function name.
-#' See \url{https://stackoverflow.com/questions/15595478/how-to-get-the-name-of-the-calling-function-inside-the-called-routine}
+#' See
+#' https://stackoverflow.com/questions/15595478/how-to-get-the-name-of-the-calling-function-inside-the-called-routine
+#'
 #' This is only intended to be used inside a function. It will error otherwise.
 #'
 #' @inheritParams check_packages_installed
@@ -57,7 +59,8 @@ abort_packages_not_installed <- function(...) {
   packages_not_installed <- Filter(isFALSE, package_status)
   if (length(packages_not_installed) > 0) {
     msg <- paste0(
-      "The following package(s) are required for `", parent_fcn_name,
+      "The following package(s) are required for `",
+      parent_fcn_name,
       "` but are not installed: \n  ",
       paste0(names(packages_not_installed), collapse = ", ")
     )
@@ -76,7 +79,10 @@ abort_packages_not_installed <- function(...) {
 #'
 #' @export
 #' @keywords internal
-do_math <- function(add = TRUE, subtract = FALSE, left = 1, right = 2) {
+do_math <- function(add = TRUE,
+                    subtract = FALSE,
+                    left = 1,
+                    right = 2) {
   result <- NULL
   if (isTRUE(add)) {
     result <- left + right
@@ -121,9 +127,10 @@ join_dfs_wide <- function(df_list, join_fn = dplyr::left_join) {
       dplyr::rename_with(
         .cols = !tidyselect::any_of(common_col),
         .fn = \(x) {
-          glue::glue("{df_name}_{x}")
+          return(glue::glue("{df_name}_{x}"))
         }
-      )
+      ) %>%
+      return()
   }) %>%
     purrr::reduce(join_fn)
   return(dat_joined)
@@ -148,8 +155,7 @@ join_dfs_wide <- function(df_list, join_fn = dplyr::left_join) {
 #' )
 #' dfs %>% bind_dfs_long()
 #'
-bind_dfs_long <- function(df_list,
-                          outcolname = contrast) {
+bind_dfs_long <- function(df_list, outcolname = contrast) {
   contrast <- NULL # data variable
   if (!inherits(df_list, "list")) {
     stop(glue::glue("df_list must be a named list. class: {class(df_list)}"))
@@ -163,7 +169,8 @@ bind_dfs_long <- function(df_list,
     colnames()
   dat_joined <- purrr::map(names(df_list), \(df_name) {
     df_list[[df_name]] %>%
-      dplyr::mutate({{ outcolname }} := df_name, .after = common_col)
+      dplyr::mutate({{ outcolname }} := df_name, .after = common_col) %>%
+      return()
   }) %>%
     dplyr::bind_rows()
   return(dat_joined)

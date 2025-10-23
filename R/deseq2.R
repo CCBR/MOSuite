@@ -22,7 +22,7 @@
 #' }
 #' @family moo methods
 run_deseq2 <- S7::new_generic("run_deseq2", "moo", function(moo, design, ...) {
-  S7::S7_dispatch()
+  return(S7::S7_dispatch())
 })
 
 S7::method(run_deseq2, multiOmicDataSet) <- function(moo, design, feature_id_colname = "gene_id", min_count = 10, ...) {

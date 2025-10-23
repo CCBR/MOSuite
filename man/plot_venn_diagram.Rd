@@ -43,9 +43,13 @@ plot_venn_diagram(
 \arguments{
 \item{diff_summary_dat}{Summarized differential expression analysis}
 
-\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
+\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).
+This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
+Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
+used.)}
 
-\item{contrasts_colname}{Name of the column in \code{diff_summary_dat} that contains the contrast names (default: "Contrast")}
+\item{contrasts_colname}{Name of the column in \code{diff_summary_dat} that contains the contrast names (default:
+"Contrast")}
 
 \item{select_contrasts}{A vector of contrast names to select for the plot. If empty, all contrasts are used.}
 
@@ -55,15 +59,18 @@ plot_venn_diagram(
 
 \item{venn_force_unique}{If TRUE, forces unique elements in the Venn diagram. Default: TRUE}
 
-\item{venn_numbers_format}{Format for the numbers in the Venn diagram. Options: "raw", "percent", "raw-percent", "percent-raw". Default: "raw"}
+\item{venn_numbers_format}{Format for the numbers in the Venn diagram. Options: "raw", "percent", "raw-percent",
+"percent-raw". Default: "raw"}
 
 \item{venn_significant_digits}{Number of significant digits for the Venn diagram numbers. Default: 2}
 
-\item{venn_fill_colors}{A vector of colors to fill the Venn diagram categories. Default: c("darkgoldenrod2", "darkolivegreen2", "mediumpurple3", "darkorange2", "lightgreen")}
+\item{venn_fill_colors}{A vector of colors to fill the Venn diagram categories. Default: c("darkgoldenrod2",
+"darkolivegreen2", "mediumpurple3", "darkorange2", "lightgreen")}
 
 \item{venn_fill_transparency}{Transparency level for the Venn diagram fill colors. Default: 0.2}
 
-\item{venn_border_colors}{Colors for the borders of the Venn diagram categories. Default: "fill colors" (uses the same colors as \code{venn_fill_colors})}
+\item{venn_border_colors}{Colors for the borders of the Venn diagram categories. Default: "fill colors" (uses the
+same colors as \code{venn_fill_colors})}
 
 \item{venn_font_size_for_category_names}{Font size for the category names in the Venn diagram. Default: 3}
 
@@ -106,7 +113,10 @@ plot_venn_diagram(
 \item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \description{
-generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across tested contrasts). This Venn diagram is available for up to five sets; Intersection plot is available for any number of sets. Specific sets can be selected for the visualizations and the returned dataset may include all (default) or specified intersections.
+generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across
+tested contrasts). This Venn diagram is available for up to five sets; Intersection plot is available for any number
+of sets. Specific sets can be selected for the visualizations and the returned dataset may include all (default) or
+specified intersections.
 }
 \examples{
 plot_venn_diagram(nidap_volcano_summary_dat, print_plots = TRUE)

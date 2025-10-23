@@ -8,7 +8,8 @@
 
 \item{count_type}{the type of counts to use. Must be a name in the counts slot (\code{names(moo@counts)}).}
 
-\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list. Must be a name in \code{names(moo@counts[[count_type]])}.}
+\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
+Must be a name in \code{names(moo@counts[[count_type]])}.}
 }
 \value{
 ggplot barplot

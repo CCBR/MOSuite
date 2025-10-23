@@ -96,12 +96,28 @@ You can copy them to your working directory with R:
 
 ```{r example_data_paths, eval=FALSE}
 # copy the example script
-file.copy(system.file("extdata", "example_script.sh", package = "MOSuite"), to = "./")
+file.copy(system.file("extdata", "example_script.sh", package = "MOSuite"),
+  to = "./"
+)
 # copy the JSON files
-file.copy(system.file("extdata", "json_args", package = "MOSuite"), to = "./", recursive = TRUE)
+file.copy(
+  system.file("extdata", "json_args", package = "MOSuite"),
+  to = "./",
+  recursive = TRUE
+)
 # copy the raw counts & sample metadata
-file.copy(system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"), to = "./")
-file.copy(system.file("extdata", "nidap", "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz", package = "MOSuite"), to = "./")
+file.copy(system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
+  to = "./"
+)
+file.copy(
+  system.file(
+    "extdata",
+    "nidap",
+    "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+    package = "MOSuite"
+  ),
+  to = "./"
+)
 ```
 
 Then run the script from the CLI:

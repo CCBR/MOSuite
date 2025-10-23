@@ -1,6 +1,9 @@
 #' Plot a venn diagram, UpSet plot, or table of intersections
 #'
-#' generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across tested contrasts). This Venn diagram is available for up to five sets; Intersection plot is available for any number of sets. Specific sets can be selected for the visualizations and the returned dataset may include all (default) or specified intersections.
+#' generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across
+#' tested contrasts). This Venn diagram is available for up to five sets; Intersection plot is available for any number
+#' of sets. Specific sets can be selected for the visualizations and the returned dataset may include all (default) or
+#' specified intersections.
 #'
 #' @inheritParams option_params
 #' @inheritParams filter_counts
@@ -8,16 +11,20 @@
 #' @inheritParams plot_volcano_summary
 #'
 #' @param diff_summary_dat Summarized differential expression analysis
-#' @param contrasts_colname Name of the column in `diff_summary_dat` that contains the contrast names (default: "Contrast")
+#' @param contrasts_colname Name of the column in `diff_summary_dat` that contains the contrast names (default:
+#'   "Contrast")
 #' @param select_contrasts A vector of contrast names to select for the plot. If empty, all contrasts are used.
 #' @param plot_type Type of plot to generate: "Venn diagram" or "Intersection plot". Default: "Venn diagram"
 #' @param intersection_ids A vector of intersection IDs to select for the plot. If empty, all intersections are used.
 #' @param venn_force_unique If TRUE, forces unique elements in the Venn diagram. Default: TRUE
-#' @param venn_numbers_format Format for the numbers in the Venn diagram. Options: "raw", "percent", "raw-percent", "percent-raw". Default: "raw"
+#' @param venn_numbers_format Format for the numbers in the Venn diagram. Options: "raw", "percent", "raw-percent",
+#'   "percent-raw". Default: "raw"
 #' @param venn_significant_digits Number of significant digits for the Venn diagram numbers. Default: 2
-#' @param venn_fill_colors A vector of colors to fill the Venn diagram categories. Default: c("darkgoldenrod2", "darkolivegreen2", "mediumpurple3", "darkorange2", "lightgreen")
+#' @param venn_fill_colors A vector of colors to fill the Venn diagram categories. Default: c("darkgoldenrod2",
+#'   "darkolivegreen2", "mediumpurple3", "darkorange2", "lightgreen")
 #' @param venn_fill_transparency Transparency level for the Venn diagram fill colors. Default: 0.2
-#' @param venn_border_colors Colors for the borders of the Venn diagram categories. Default: "fill colors" (uses the same colors as `venn_fill_colors`)
+#' @param venn_border_colors Colors for the borders of the Venn diagram categories. Default: "fill colors" (uses the
+#'   same colors as `venn_fill_colors`)
 #' @param venn_font_size_for_category_names Font size for the category names in the Venn diagram. Default: 3
 #' @param venn_category_names_distance Distance of the category names from the Venn diagram circles. Default: c()
 #' @param venn_category_names_position Position of the category names in the Venn diagram. Default: c()
@@ -78,6 +85,10 @@ plot_venn_diagram <- function(diff_summary_dat,
   Freq <- Gene <- Id <- Size <- Var1 <- NULL
   abort_packages_not_installed(c("VennDiagram", "gridExtra", "patchwork", "UpSetR"))
 
+  if (nrow(diff_summary_dat) == 0) {
+    stop("Dataframe is empty")
+  }
+
   ### PH:
   # Input - DEG table from Volcano Summary, I think we need to make this function more generic.
   #    The input should be the Limma DEG table and maybe be used with the DEG Gene List Template
@@ -103,6 +114,9 @@ plot_venn_diagram <- function(diff_summary_dat,
     vlist <- vlist[select_contrasts]
   }
   num_categories <- length(vlist)
+  if (num_categories == 0) {
+    stop("Zero categories found")
+  }
 
   # generate upset object
 
@@ -111,11 +125,11 @@ plot_venn_diagram <- function(diff_summary_dat,
     # Same as original fromList()...
     elements <- unique(unlist(input))
     data <- unlist(lapply(input, function(x) {
-      x <- as.vector(match(elements, x))
+      return(as.vector(match(elements, x)))
     }))
     data[is.na(data)] <- as.integer(0)
     data[data != 0] <- as.integer(1)
-    data <- data.frame(matrix(data, ncol = length(input), byrow = F))
+    data <- data.frame(matrix(data, ncol = length(input), byrow = FALSE))
     data <- data[which(rowSums(data) != 0), ]
     names(data) <- names(input)
     # ... Except now it conserves your original value names!
@@ -125,7 +139,7 @@ plot_venn_diagram <- function(diff_summary_dat,
 
 
   if (num_categories > 1) {
-    sets <- UpSetR::fromList(vlist)
+    sets <- fromList(vlist)
 
     if (!is.null(select_contrasts)) {
       Intersection <- sets[, match(select_contrasts, colnames(sets))]
@@ -135,11 +149,11 @@ plot_venn_diagram <- function(diff_summary_dat,
 
     # generate intersection frequency table and gene list (all intersections for the output dataset/table not the plot)
     Intersection <- sapply(colnames(Intersection), function(x) {
-      ifelse(Intersection[, x] == 1, x, "{}")
+      return(ifelse(Intersection[, x] == 1, x, "{}"))
     })
     rownames(Intersection) <- rownames(sets)
     Intersection <- apply(Intersection, 1, function(x) {
-      sprintf("(%s)", paste(x, collapse = " "))
+      return(sprintf("(%s)", paste(x, collapse = " ")))
     })
     tab <- table(Intersection)
     tab <- tab[order(tab)]
@@ -284,7 +298,7 @@ plot_venn_diagram <- function(diff_summary_dat,
     distance <- venn_category_names_distance
     position <- venn_category_names_position
 
-    if (is.null(distance) & is.null(position)) {
+    if (is.null(distance) && is.null(position)) {
       vobj <- VennDiagram::venn.diagram(
         vlist,
         file = NULL,
@@ -300,7 +314,7 @@ plot_venn_diagram <- function(diff_summary_dat,
         alpha = venn_fill_transparency,
         col = color_border
       )
-    } else if (!is.null(distance) & is.null(position)) {
+    } else if (!is.null(distance) && is.null(position)) {
       distance <- as.numeric(distance)
 
       vobj <- VennDiagram::venn.diagram(
@@ -319,7 +333,7 @@ plot_venn_diagram <- function(diff_summary_dat,
         col = color_border,
         cat.dist = distance
       )
-    } else if (is.null(distance) & !is.null(position)) {
+    } else if (is.null(distance) && !is.null(position)) {
       position <- as.numeric(position)
 
       vobj <- VennDiagram::venn.diagram(

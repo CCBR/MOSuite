@@ -36,17 +36,23 @@ filter_diff(
 \arguments{
 \item{moo}{multiOmicDataSet object (see \code{create_multiOmicDataSet_from_dataframes()})}
 
-\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
+\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).
+This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
+Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
+used.)}
 
 \item{significance_column}{Column name for significance, e.g. \code{"pval"} or \code{"pvaladj"} (default)}
 
-\item{significance_cutoff}{Features will only be kept if their \code{significance_column} is less then this cutoff threshold}
+\item{significance_cutoff}{Features will only be kept if their \code{significance_column} is less then this cutoff
+threshold}
 
 \item{change_column}{Column name for change, e.g. \code{"logFC"} (default)}
 
-\item{change_cutoff}{Features will only be kept if the absolute value of their \code{change_column} is greater than or equal to this cutoff threshold}
+\item{change_cutoff}{Features will only be kept if the absolute value of their \code{change_column} is greater than or
+equal to this cutoff threshold}
 
-\item{filtering_mode}{Accepted values: \code{"any"} or \code{"all"} to include features that meet the criteria in \emph{any} contrast or in \emph{all} contrasts}
+\item{filtering_mode}{Accepted values: \code{"any"} or \code{"all"} to include features that meet the criteria in \emph{any}
+contrast or in \emph{all} contrasts}
 
 \item{include_estimates}{Column names of estimates to include. Default: \code{c("FC", "logFC", "tstat", "pval", "adjpval")}}
 
@@ -54,13 +60,19 @@ filter_diff(
 
 \item{rounding_decimal_for_percent_cells}{Decimal place to use when rounding Percent cells}
 
-\item{contrast_filter}{Whether to filter \code{contrasts} in or our of analysis. If \code{"keep"}, only the contrast names listed in \code{contrasts} will be included. If \verb{"remove}, the contrast names listed by \code{contrasts} will be removed. If \code{"none"}, all contrasts in the dataset are used. Options: \code{"keep"}, \code{"remove"}, or \code{"none"}}
+\item{contrast_filter}{Whether to filter \code{contrasts} in or our of analysis. If \code{"keep"}, only the contrast names
+listed in \code{contrasts} will be included. If \verb{"remove}, the contrast names listed by \code{contrasts} will be removed. If
+\code{"none"}, all contrasts in the dataset are used. Options: \code{"keep"}, \code{"remove"}, or \code{"none"}}
 
-\item{contrasts}{Contrast names to filter by \code{contrast_filter}. If \code{contrast_filter} is \code{"none"}, this parameter has no effect.}
+\item{contrasts}{Contrast names to filter by \code{contrast_filter}. If \code{contrast_filter} is \code{"none"}, this parameter has
+no effect.}
 
-\item{groups}{Group names to filter by \code{groups_filter}. If \code{groups_filter} is \code{"none"}, this parameter has no effect. Options: \code{"keep"}, \code{"remove"}, or \code{"none"}}
+\item{groups}{Group names to filter by \code{groups_filter}. If \code{groups_filter} is \code{"none"}, this parameter has no effect.
+Options: \code{"keep"}, \code{"remove"}, or \code{"none"}}
 
-\item{groups_filter}{Whether to filter \code{groups} in or out of analysis. If \code{"keep"}, only the group names listed in \code{groups} will be included. If \code{"remove"}, the group names listed by \code{groups} will be removed. If \code{"none"}, all groups in the dataset are used.}
+\item{groups_filter}{Whether to filter \code{groups} in or out of analysis. If \code{"keep"}, only the group names listed in
+\code{groups} will be included. If \code{"remove"}, the group names listed by \code{groups} will be removed. If \code{"none"}, all
+groups in the dataset are used.}
 
 \item{label_font_size}{Font size for labels in the plot (default: 6)}
 
@@ -87,7 +99,9 @@ filter_diff(
 \item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \description{
-Outputs dataset of significant genes from DEG table; filters genes based on statistical significance (p-value or adjusted p-value) and change (fold change, log2 fold change, or t-statistic); in addition allows for selection of DEG estimates and for sub-setting of contrasts and groups included in the output gene list.
+Outputs dataset of significant genes from DEG table; filters genes based on statistical significance (p-value or
+adjusted p-value) and change (fold change, log2 fold change, or t-statistic); in addition allows for selection of DEG
+estimates and for sub-setting of contrasts and groups included in the output gene list.
 }
 \examples{
 moo <- multiOmicDataSet(

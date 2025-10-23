@@ -1,9 +1,9 @@
 options::set_option_name_fn(function(package, name) {
-  tolower(paste0("moo_", name))
+  return(tolower(paste0("moo_", name)))
 })
 
 options::set_envvar_name_fn(function(package, name) {
-  gsub("[^A-Z0-9]", "_", toupper(paste0("moo_", name)))
+  return(gsub("[^A-Z0-9]", "_", toupper(paste0("moo_", name))))
 })
 
 options::define_option(

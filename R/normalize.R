@@ -98,7 +98,7 @@ normalize_counts <- function(moo,
   df.voom <- as.data.frame(v$E) %>% tibble::rownames_to_column(feature_id_colname)
   message(paste0("Total number of features included: ", nrow(df.voom)))
   ### PH: END Limma Normalization
-  if (isTRUE(print_plots) | isTRUE(save_plots)) {
+  if (isTRUE(print_plots) || isTRUE(save_plots)) {
     if (is.null(colors_for_plots)) {
       colors_for_plots <- moo@analyses[["colors"]][[group_colname]]
     }
@@ -149,21 +149,30 @@ normalize_counts <- function(moo,
       color_values = colors_for_plots
     ) + ggplot2::labs(caption = "normalized counts")
 
-    print_or_save_plot(pca_plot,
+    print_or_save_plot(
+      pca_plot,
       filename = file.path(plots_subdir, "pca.png"),
-      print_plots = print_plots, save_plots = save_plots
+      print_plots = print_plots,
+      save_plots = save_plots
     )
-    print_or_save_plot(hist_plot,
+    print_or_save_plot(
+      hist_plot,
       filename = file.path(plots_subdir, "histogram.png"),
-      print_plots = print_plots, save_plots = save_plots
+      print_plots = print_plots,
+      save_plots = save_plots
     )
-    print_or_save_plot(corHM_plot,
+    print_or_save_plot(
+      corHM_plot,
       filename = file.path(plots_subdir, "corr_heatmap.png"),
-      print_plots = print_plots, save_plots = save_plots
+      print_plots = print_plots,
+      save_plots = save_plots
     )
   }
 
-  message(paste("Sample columns:", paste(colnames(df.voom)[!colnames(df.voom) %in% feature_id_colname]), collapse = ", "))
+  message(paste("Sample columns:",
+    paste(colnames(df.voom)[!colnames(df.voom) %in% feature_id_colname]),
+    collapse = ", "
+  ))
 
   if (isFALSE("norm" %in% names(moo@counts))) {
     moo@counts[["norm"]] <- list()

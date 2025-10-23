@@ -6,7 +6,8 @@
 #'
 #'
 #' @param dat data frame
-#' @param samples_to_rename_manually TODO use sample metadata spreadsheet custom column. Need to document the format of this object.
+#' @param samples_to_rename_manually TODO use sample metadata spreadsheet custom column. Need to document the format of
+#'   this object.
 #'
 #' @return data frame with samples renamed
 #' @keywords internal

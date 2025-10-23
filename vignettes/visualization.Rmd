@@ -45,21 +45,21 @@ moo <- create_multiOmicDataSet_from_dataframes(
   clean_raw_counts()
 ```
 ```{r nidap_filter}
-moo %<>%
+moo <- moo %>%
   filter_counts(group_colname = "Group")
 ```
 
 ### normalize
 
 ```{r nidap_norm}
-moo %<>%
+moo <- moo %>%
   normalize_counts(group_colname = "Group")
 ```
 
 ### batch correct
 
 ```{r nidap_batch}
-moo %<>%
+moo <- moo %>%
   batch_correct_counts(
     covariates_colname = "Group",
     batch_colname = "Batch",
@@ -70,7 +70,7 @@ moo %<>%
 ### differential expression
 
 ```{r diff_counts}
-moo %<>%
+moo <- moo %>%
   diff_counts(
     count_type = "filt",
     covariates_colnames = c("Group", "Batch"),
@@ -84,7 +84,7 @@ moo %<>%
 ### filter differential features
 
 ```{r filter_diff}
-moo %<>% filter_diff()
+moo <- moo %>% filter_diff()
 ```
 
 ## Customize plots
