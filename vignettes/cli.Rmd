@@ -15,6 +15,14 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+> ⚠️ **Most users do not need to use the CLI.**
+> We recommend using MOSuite within R scripts, R Markdown, or Quarto documents
+> for the vast majority of use-cases, as shown in the
+> [**introductory vignette**](https://ccbr.github.io/MOSuite/articles/intro.html).
+> The CLI is provided for a very specialized situation where MOSuite is run in
+> an environment that cannot use R scripts natively.
+
 MOSuite includes an executable file called `mosuite`.
 Any user-facing function in the MOSuite R package can be called with
 `mosuite [function]` from the unix CLI.
@@ -25,10 +33,12 @@ the JSON file can contain the following keys:
   - `moo_input_rds` - file path to an existing MultiOmicsDataset object in RDS format. This is required if the MOSuite function has `moo` as an argument (most user-facing functions do).
   - `moo_output_rds` - file path to write the result to.
 
-Run `mosuite --help` to see the full CLI usage:
+## Usage
+
+Run `mosuite --help` in a unix shell to see the full CLI usage:
 
 ```{r help, echo=FALSE, results='asis'}
-cat("```")
+cat("```sh")
 MOSuite:::cli_usage(con = stdout())
 cat("```")
 ```
@@ -86,12 +96,28 @@ You can copy them to your working directory with R:
 
 ```{r example_data_paths, eval=FALSE}
 # copy the example script
-file.copy(system.file("extdata", "example_script.sh", package = "MOSuite"), to = "./")
+file.copy(system.file("extdata", "example_script.sh", package = "MOSuite"),
+  to = "./"
+)
 # copy the JSON files
-file.copy(system.file("extdata", "json_args", package = "MOSuite"), to = "./", recursive = TRUE)
+file.copy(
+  system.file("extdata", "json_args", package = "MOSuite"),
+  to = "./",
+  recursive = TRUE
+)
 # copy the raw counts & sample metadata
-file.copy(system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"), to = "./")
-file.copy(system.file("extdata", "nidap", "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz", package = "MOSuite"), to = "./")
+file.copy(system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
+  to = "./"
+)
+file.copy(
+  system.file(
+    "extdata",
+    "nidap",
+    "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+    package = "MOSuite"
+  ),
+  to = "./"
+)
 ```
 
 Then run the script from the CLI:

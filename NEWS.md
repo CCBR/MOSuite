@@ -1,6 +1,9 @@
 # MOSuite (development version)
 
 - Improve CLI docs to show batch correction. (#128)
+- Minor documentation improvements. (#135)
+- A docker image is now available. (#134)
+  - <https://hub.docker.com/r/nciccbr/mosuite>
 
 # MOSuite 0.2.0
 

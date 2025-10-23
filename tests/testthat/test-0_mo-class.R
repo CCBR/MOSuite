@@ -59,7 +59,13 @@ test_that("constructing MOO works for RENEE data", {
 })
 
 test_that("constructing MOO works from CSV files", {
-  moo <- create_multiOmicDataSet_from_files(system.file("extdata", "nidap", "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz", package = "MOSuite"),
+  moo <- create_multiOmicDataSet_from_files(
+    system.file(
+      "extdata",
+      "nidap",
+      "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+      package = "MOSuite"
+    ),
     system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
     delim = ","
   )
@@ -168,14 +174,15 @@ test_that("extract_counts works", {
       "raw" = as.data.frame(nidap_raw_counts),
       "clean" = as.data.frame(nidap_clean_raw_counts),
       "filt" = as.data.frame(nidap_filtered_counts),
-      "norm" = list(
-        "voom" = as.data.frame(nidap_norm_counts)
-      )
+      "norm" = list("voom" = as.data.frame(nidap_norm_counts))
     )
   )
   expect_equal(extract_counts(moo, "clean"), moo@counts$clean)
   expect_equal(extract_counts(moo, "norm", "voom"), moo@counts$norm$voom)
   expect_error(extract_counts(moo, "notacounttype"), "not in moo")
-  expect_error(extract_counts(moo, "raw", "notasubtype"), "does not contain subtypes")
+  expect_error(
+    extract_counts(moo, "raw", "notasubtype"),
+    "does not contain subtypes"
+  )
   expect_error(extract_counts(moo, "norm"), "contains subtypes")
 })

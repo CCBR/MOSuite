@@ -11,7 +11,8 @@ extract_counts(moo, count_type, sub_count_type = NULL)
 
 \item{count_type}{the type of counts to use -- must be a name in the counts slot (\code{moo@counts[[count_type]]})}
 
-\item{sub_count_type}{if \code{count_type} is a list, specify the sub count type within the list (\code{moo@counts[[count_type]][[sub_count_type]]}). (Default: \code{NULL})}
+\item{sub_count_type}{if \code{count_type} is a list, specify the sub count type within the list
+(\code{moo@counts[[count_type]][[sub_count_type]]}). (Default: \code{NULL})}
 }
 \description{
 Extract count data

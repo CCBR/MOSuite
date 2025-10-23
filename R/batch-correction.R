@@ -81,12 +81,16 @@ batch_correct_counts <- function(moo,
     counts_dat <- moo@counts[[count_type]][[sub_count_type]]
   }
   # sva::ComBat() can't handle tibbles
-  counts_dat %<>% as.data.frame()
+  counts_dat <- counts_dat %>% as.data.frame()
   sample_metadata <- moo@sample_meta
   batch_vctr <- sample_metadata %>% dplyr::pull(batch_colname)
-  message(glue::glue("* batch-correcting {glue::glue_collapse(c(count_type, sub_count_type),sep='-')} counts"))
+  message(
+    glue::glue(
+      "* batch-correcting {glue::glue_collapse(c(count_type, sub_count_type),sep='-')} counts"
+    )
+  )
 
-  covariates_colnames %<>% unlist()
+  covariates_colnames <- covariates_colnames %>% unlist()
 
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
@@ -117,7 +121,7 @@ batch_correct_counts <- function(moo,
     counts_matr <- counts_dat %>%
       counts_dat_to_matrix(feature_id_colname = feature_id_colname)
     # coerce covariate columns to factors
-    sample_metadata %<>%
+    sample_metadata <- sample_metadata %>%
       dplyr::mutate(dplyr::across(tidyselect::all_of(covariates_colnames), ~ as.factor(.x)))
     # run batch correction
     combat_edata <- sva::ComBat(
@@ -133,7 +137,7 @@ batch_correct_counts <- function(moo,
       tibble::rownames_to_column(feature_id_colname)
   }
 
-  if (isTRUE(print_plots) | isTRUE(save_plots)) {
+  if (isTRUE(print_plots) || isTRUE(save_plots)) {
     if (is.null(colors_for_plots)) {
       colors_for_plots <- moo@analyses[["colors"]][[batch_colname]]
     }
@@ -167,17 +171,23 @@ batch_correct_counts <- function(moo,
       color_values = colors_for_plots
     ) + ggplot2::labs(caption = "batch-corrected counts")
 
-    print_or_save_plot(pca_plot,
+    print_or_save_plot(
+      pca_plot,
       filename = file.path(plots_subdir, "pca.png"),
-      print_plots = print_plots, save_plots = save_plots
+      print_plots = print_plots,
+      save_plots = save_plots
     )
-    print_or_save_plot(hist_plot,
+    print_or_save_plot(
+      hist_plot,
       filename = file.path(plots_subdir, "histogram.png"),
-      print_plots = print_plots, save_plots = save_plots
+      print_plots = print_plots,
+      save_plots = save_plots
     )
-    print_or_save_plot(corHM_plot,
+    print_or_save_plot(
+      corHM_plot,
       filename = file.path(plots_subdir, "corr_heatmap.png"),
-      print_plots = print_plots, save_plots = save_plots
+      print_plots = print_plots,
+      save_plots = save_plots
     )
   }
 

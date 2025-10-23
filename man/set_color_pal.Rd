@@ -11,7 +11,8 @@ set_color_pal(moo, colname, palette_fun = grDevices::palette.colors, ...)
 
 \item{colname}{group column name to set the palette for}
 
-\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default: \code{grDevices::palette.colors()}}
+\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default:
+\code{grDevices::palette.colors()}}
 
 \item{...}{additional arguments forwarded to \code{palette_fun}}
 }

@@ -45,29 +45,50 @@ filter_counts(
 
 \item{count_type}{the type of counts to use -- must be a name in the counts slot (\code{moo@counts})}
 
-\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
+\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).
+This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
+Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
+used.)}
 
-\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first column in the sample metadata will be used.)}
+\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column
+must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first
+column in the sample metadata will be used.)}
 
-\item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).}
+\item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a
+column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
+Before, After, etc.).}
 
-\item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column. However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample. (Default: \code{NULL} -- \code{sample_id_colname} will be used.)}
+\item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in
+the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
+labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
+column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
+\code{NULL} -- \code{sample_id_colname} will be used.)}
 
-\item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
+\item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or
+you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
+analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
 
 \item{minimum_count_value_to_be_considered_nonzero}{Minimum count value to be considered non-zero for a sample}
 
 \item{minimum_number_of_samples_with_nonzero_counts_in_total}{Minimum number of samples (total) with non-zero counts}
 
-\item{minimum_number_of_samples_with_nonzero_counts_in_a_group}{Only keeps genes that have at least this number of samples with nonzero CPM counts in at least one group}
+\item{minimum_number_of_samples_with_nonzero_counts_in_a_group}{Only keeps genes that have at least this number of
+samples with nonzero CPM counts in at least one group}
 
-\item{use_cpm_counts_to_filter}{If no transformation has been been performed on counts matrix (eg Raw Counts) set to TRUE. If TRUE counts will be transformed to CPM and filtered based on given criteria. If gene counts matrix has been transformed (eg log2, CPM, FPKM or some form of Normalization) set to FALSE. If FALSE no further transformation will be applied and features will be filtered as is. For RNAseq data RAW counts should be transformed to CPM in order to properly filter.}
+\item{use_cpm_counts_to_filter}{If no transformation has been been performed on counts matrix (eg Raw Counts) set to
+TRUE. If TRUE counts will be transformed to CPM and filtered based on given criteria. If gene counts matrix has
+been transformed (eg log2, CPM, FPKM or some form of Normalization) set to FALSE. If FALSE no further
+transformation will be applied and features will be filtered as is. For RNAseq data RAW counts should be
+transformed to CPM in order to properly filter.}
 
-\item{use_group_based_filtering}{If TRUE, only keeps features (e.g. genes) that have at least a certain number of samples with nonzero CPM counts in at least one group}
+\item{use_group_based_filtering}{If TRUE, only keeps features (e.g. genes) that have at least a certain number of
+samples with nonzero CPM counts in at least one group}
 
-\item{principal_component_on_x_axis}{The principal component to plot on the x-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 1)}
+\item{principal_component_on_x_axis}{The principal component to plot on the x-axis for the PCA plot. Choices include
+1, 2, 3, ... (default: 1)}
 
-\item{principal_component_on_y_axis}{The principal component to plot on the y-axis for the PCA plot. Choices include 1, 2, 3, ... (default: 2)}
+\item{principal_component_on_y_axis}{The principal component to plot on the y-axis for the PCA plot. Choices include
+1, 2, 3, ... (default: 2)}
 
 \item{legend_position_for_pca}{legend position for the PCA plot}
 
@@ -81,9 +102,13 @@ filter_counts(
 
 \item{label_offset_x_}{label offset x for the PCA plot}
 
-\item{samples_to_rename}{If you do not have a Plot Labels Column in your sample metadata table, you can use this parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to which new name: old_name: new_name}
+\item{samples_to_rename}{If you do not have a Plot Labels Column in your sample metadata table, you can use this
+parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for
+renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to
+which new name: old_name: new_name}
 
-\item{color_histogram_by_group}{Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.}
+\item{color_histogram_by_group}{Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by
+the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.}
 
 \item{set_min_max_for_x_axis_for_histogram}{whether to set min/max value for histogram x-axis}
 
@@ -91,19 +116,23 @@ filter_counts(
 
 \item{maximum_for_x_axis_for_histogram}{x-axis maximum for histogram plot}
 
-\item{legend_position_for_histogram}{legend position for the histogram plot. consider setting to 'none' for a large number of samples.}
+\item{legend_position_for_histogram}{legend position for the histogram plot. consider setting to 'none' for a large
+number of samples.}
 
 \item{legend_font_size_for_histogram}{legend font size for the histogram plot}
 
 \item{number_of_histogram_legend_columns}{number of columns for the histogram legend}
 
-\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list. If you have >12 samples or groups, program will choose from a wide range of random colors}
+\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list. If you have >12
+samples or groups, program will choose from a wide range of random colors}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
 \item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 
-\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle is set to TRUE. Default is FALSE.}
+\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover
+your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
+is set to TRUE. Default is FALSE.}
 
 \item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
 }

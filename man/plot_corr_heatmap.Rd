@@ -7,7 +7,8 @@
 plot_corr_heatmap(moo_counts, ...)
 }
 \arguments{
-\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
+slot}
 
 \item{...}{arguments forwarded to method \link{plot_corr_heatmap_dat}}
 }

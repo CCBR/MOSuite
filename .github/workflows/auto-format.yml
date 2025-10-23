@@ -28,9 +28,15 @@ jobs:
           ref: ${{ github.ref_name }}
       - uses: r-lib/actions/setup-pandoc@v2
       - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+          r-version: 4.3
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           needs: Suggests
+      - name: Install deps
+        run: Rscript .github/install.R
 
       - name: render README.Rmd & docs
         shell: Rscript {0}
@@ -51,6 +57,11 @@ jobs:
           cf <- cff_create(keys = mykeys)
           # Create your CITATION.cff file
           cff_write(cf)
+
+      - name: update codemeta
+        uses: citation-file-format/cffconvert-github-action@2.0.0
+        with:
+          args: "--format codemeta --outfile codemeta.json"
 
       - name: format
         uses: pre-commit/action@v3.0.1

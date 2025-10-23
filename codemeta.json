@@ -1,0 +1,36 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "author": [
+    {
+      "@id": "https://orcid.org/0000-0003-3283-829X",
+      "@type": "Person",
+      "familyName": "Sovacool",
+      "givenName": "Kelly"
+    },
+    {
+      "@type": "Person",
+      "familyName": "Homan",
+      "givenName": "Philip"
+    },
+    {
+      "@id": "https://orcid.org/0000-0001-8978-8495",
+      "@type": "Person",
+      "familyName": "Koparde",
+      "givenName": "Vishal"
+    },
+    {
+      "@id": "https://orcid.org/0000-0002-8734-9875",
+      "@type": "Person",
+      "familyName": "Chill",
+      "givenName": "Samantha"
+    }
+  ],
+  "codeRepository": "https://github.com/CCBR/MOSuite",
+  "description": "Multi-Omics Suite provides a suite of functions to clean, filter, batch-correct, normalize, visualize, and perform differential analysis. While the package is designed for differential RNA-seq analysis and multi-omics datasets, it can be used for any data represented in a counts table. See the website for more information, documentation, and examples: <https://ccbr.github.io/MOSuite/>",
+  "identifier": "https://doi.org/10.5281/zenodo.16371580",
+  "license": "https://spdx.org/licenses/MIT",
+  "name": "MOSuite: R package for differential multi-omics analysis",
+  "url": "https://ccbr.github.io/MOSuite/",
+  "version": "0.2.0.9000"
+}

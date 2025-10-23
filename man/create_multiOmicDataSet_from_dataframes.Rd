@@ -13,14 +13,16 @@ create_multiOmicDataSet_from_dataframes(
 )
 }
 \arguments{
-\item{sample_metadata}{sample metadata as a data frame or tibble.
-The first column is assumed to contain the sample IDs which must correspond to column names in the raw counts.}
+\item{sample_metadata}{sample metadata as a data frame or tibble. The first column is assumed to contain the sample
+IDs which must correspond to column names in the raw counts.}
 
 \item{counts_dat}{data frame of feature counts (e.g. expected feature counts from RSEM).}
 
-\item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} - first column in the sample metadata will be used.)}
+\item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} -
+first column in the sample metadata will be used.)}
 
-\item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first column in the count data will be used.)}
+\item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first
+column in the count data will be used.)}
 
 \item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
 }
@@ -43,8 +45,13 @@ head(moo@sample_meta)
 head(moo@counts$raw)
 head(moo@annotation)
 
-sample_meta_nidap <- readr::read_csv(system.file("extdata", "nidap", "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz", package = "MOSuite"))
-raw_counts_nidap <- readr::read_csv(system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"))
+sample_meta_nidap <- readr::read_csv(system.file("extdata", "nidap",
+  "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+  package = "MOSuite"
+))
+raw_counts_nidap <- readr::read_csv(system.file("extdata", "nidap", "Raw_Counts.csv.gz",
+  package = "MOSuite"
+))
 moo_nidap <- create_multiOmicDataSet_from_dataframes(sample_meta_nidap, raw_counts_nidap)
 
 }

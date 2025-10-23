@@ -32,21 +32,31 @@ diff_counts(
 
 \item{sub_count_type}{if \code{count_type} is a list, specify the sub count type within the list. (Default: \code{NULL})}
 
-\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first column in the sample metadata will be used.)}
+\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column
+must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first
+column in the sample metadata will be used.)}
 
-\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be used.)}
+\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).
+This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
+Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
+used.)}
 
-\item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or you could choose to remove certain samples. Samples excluded here will be removed in this step and from further analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
+\item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or
+you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
+analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
 
-\item{covariates_colnames}{Columns to be used as covariates in linear modeling. Must include column from "Contrast Variable". Most commonly your covariate will be group and batch (if you have different batches in your data).}
+\item{covariates_colnames}{Columns to be used as covariates in linear modeling. Must include column from "Contrast
+Variable". Most commonly your covariate will be group and batch (if you have different batches in your data).}
 
-\item{contrast_colname}{The column in the metadata that contains the group variables you wish to find differential expression between. Up to 2 columns (2-factor analysis) can be used.}
+\item{contrast_colname}{The column in the metadata that contains the group variables you wish to find differential
+expression between. Up to 2 columns (2-factor analysis) can be used.}
 
 \item{contrasts}{Specify each contrast in the format group1-group2, e.g. treated-control}
 
 \item{input_in_log_counts}{set this to \code{TRUE} if counts are already log2-transformed}
 
-\item{return_mean_and_sd}{if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for contrast(s)}
+\item{return_mean_and_sd}{if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for
+contrast(s)}
 
 \item{voom_normalization_method}{Normalization method to be applied to the logCPM values when using \code{limma::voom}}
 

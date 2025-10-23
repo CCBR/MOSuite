@@ -21,8 +21,8 @@
 #' moo <- run_deseq2(moo, ~condition)
 #' }
 #' @family moo methods
-run_deseq <- S7::new_generic("run_deseq", "moo", function(moo, design, ...) {
-  S7::S7_dispatch()
+run_deseq <- S7::new_generic("run_deseq2", "moo", function(moo, design, ...) {
+  return(S7::S7_dispatch())
 })
 
 S7::method(run_deseq, multiOmicDataSet) <- function(moo,

@@ -18,7 +18,7 @@
 #'   calc_cpm()
 #' head(moo@counts$cpm)
 calc_cpm <- S7::new_generic("calc_cpm", "moo", function(moo, ...) {
-  S7::S7_dispatch()
+  return(S7::S7_dispatch())
 })
 
 S7::method(calc_cpm, multiOmicDataSet) <- function(moo, feature_id_colname = "gene_id", ...) {
@@ -99,5 +99,6 @@ as_integer_df <- function(counts_tbl) {
     dplyr::mutate(dplyr::across(
       dplyr::where(is.numeric),
       \(x) as.integer(round(x, 0))
-    ))
+    )) %>%
+    return()
 }

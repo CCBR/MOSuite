@@ -25,7 +25,9 @@ test_that("filter_counts reproduces NIDAP results", {
 
 test_that("filter_counts works on RENEE dataset", {
   moo <- create_multiOmicDataSet_from_dataframes(
-    readr::read_tsv(system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")),
+    readr::read_tsv(
+      system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
+    ),
     gene_counts %>% glue_gene_symbols()
   )
   rds2 <- moo %>% filter_counts(
