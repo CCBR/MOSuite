@@ -28,7 +28,7 @@ Imports:
     DESeq2,
     dplyr,
     edgeR,
-    ggplot2,
+    ggplot2 (< 4.0.0),
     ggrepel,
     glue,
     jsonlite,
