@@ -14,15 +14,15 @@ inputs:
 
 runs:
   using: "composite"
-    steps:
-      - uses: r-lib/actions/setup-pandoc@v2
+  steps:
+    - uses: r-lib/actions/setup-pandoc@v2
 
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          r-version: ${{ inputs.r-version }}
-          http-user-agent: ${{ inputs.http-user-agent }}
-          use-public-rspm: ${{ inputs.use-public-rspm }}
+    - uses: r-lib/actions/setup-r@v2
+      with:
+        r-version: ${{ inputs.r-version }}
+        http-user-agent: ${{ inputs.http-user-agent }}
+        use-public-rspm: ${{ inputs.use-public-rspm }}
 
-      - uses: r-lib/actions/setup-renv@v2
-        with:
-          profile: '${{ inputs.renv-profile }}'
+    - uses: r-lib/actions/setup-renv@v2
+      with:
+        profile: '${{ inputs.renv-profile }}'
