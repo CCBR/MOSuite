@@ -29,6 +29,14 @@ runs:
         http-user-agent: ${{ inputs.http-user-agent }}
         use-public-rspm: ${{ inputs.use-public-rspm }}
 
+    - name: initialize renv
+      shell: Rscript {0}
+      run: |
+        if (!requireNamespace("renv", quietly = TRUE)) {
+          install.packages("renv")
+        }
+        renv::init(profile = ${{ inputs.renv-profile }}, bioconductor = TRUE)
+
     - uses: r-lib/actions/setup-renv@v2
       with:
         profile: '${{ inputs.renv-profile }}'
