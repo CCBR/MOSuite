@@ -74,8 +74,8 @@ VignetteBuilder:
 Remotes:
     local::.
 biocViews:
-Config/Needs/renv/dev/dependencies: covr, lintr, goodpractice, pkgdown,
-    rcmdcheck, testthat (>= 3.0.0), styler, rmarkdown, roxygen2, covr,
+Config/Needs/renv/dev/dependencies: cffr, covr, goodpractice, lintr,
+    pkgdown, rcmdcheck, rmarkdown, roxygen2, styler, testthat (>= 3.0.0),
     xml2
 Config/testthat/edition: 3
 Encoding: UTF-8

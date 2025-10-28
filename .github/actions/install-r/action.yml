@@ -4,7 +4,7 @@ description: |
 inputs:
   r-version:
     description: "The version of R to install"
-    default: "4.5.1"
+    default: "release"
   renv-profile:
     default: '"dev"'
   http-user-agent:
@@ -31,4 +31,4 @@ runs:
 
     - uses: r-lib/actions/setup-renv@v2
       with:
-        profile: '"${{ inputs.renv-profile }}"'
+        profile: '${{ inputs.renv-profile }}'
