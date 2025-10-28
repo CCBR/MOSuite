@@ -27,7 +27,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
 
-      - uses: ./.github/actions/install-r-pak
+      - uses: CCBR/actions/install-r-pak
         with:
           versions-file: .github/package-versions.txt
           needs: dev

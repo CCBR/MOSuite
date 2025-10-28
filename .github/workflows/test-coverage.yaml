@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./.github/actions/install-r-pak
+      - uses: CCBR/actions/install-r-pak
         with:
           versions-file: .github/package-versions.txt
           needs: dev
