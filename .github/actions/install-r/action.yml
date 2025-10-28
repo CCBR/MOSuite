@@ -16,9 +16,11 @@ runs:
   using: "composite"
   steps:
     - name: install ubuntu deps
+      shell: bash
       run: |
         sudo apt-get update
         sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev pandoc
+
     - uses: r-lib/actions/setup-pandoc@v2
 
     - uses: r-lib/actions/setup-r@v2
