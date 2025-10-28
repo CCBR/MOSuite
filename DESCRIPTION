@@ -63,8 +63,12 @@ Suggests:
     plotrix,
     RColorBrewer,
     readr,
+    rmarkdown,
+    roxygen2,
     scales,
+    styler,
     sva,
+    testthat (>= 3.0.0),
     UpSetR,
     usethis,
     V8,
@@ -74,9 +78,7 @@ VignetteBuilder:
 Remotes:
     local::.
 biocViews:
-Config/Needs/renv/dev/dependencies: cffr, covr, goodpractice, lintr,
-    pkgdown, rcmdcheck, rmarkdown, roxygen2, styler, testthat (>= 3.0.0),
-    xml2
+Config/Needs/dev: cffr, covr, goodpractice, lintr, pkgdown, rcmdcheck xml2
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true

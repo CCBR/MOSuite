@@ -32,9 +32,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./.github/actions/install-r
+      - uses: ./.github/actions/install-r-pak
         with:
+          packages-file: .github/package-versions.txt
+          extra-packages: local::.
+          needs: dev
           r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
 
       - uses: r-lib/actions/check-r-package@v2
         with:
@@ -44,7 +48,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/install-r
+
+      - uses: ./.github/actions/install-r-pak
+        with:
+          packages-file: .github/package-versions.txt
 
       - name: Good Practice checks
         shell: Rscript {0}

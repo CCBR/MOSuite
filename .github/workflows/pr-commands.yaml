@@ -25,7 +25,9 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: ./.github/actions/install-r
+      - uses: ./.github/actions/install-r-pak
+        with:
+          packages-file: .github/package-versions.txt
 
       - name: Document
         run: roxygen2::roxygenise()

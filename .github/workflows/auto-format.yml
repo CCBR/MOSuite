@@ -27,7 +27,10 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
 
-      - uses: ./.github/actions/install-r
+      - uses: ./.github/actions/install-r-pak
+        with:
+          packages-file: .github/package-versions.txt
+          needs: dev
 
       - name: render README.Rmd & docs
         shell: Rscript {0}
