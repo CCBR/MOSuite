@@ -25,7 +25,7 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: CCBR/actions/install-r-pak
+      - uses: CCBR/actions/install-r-pak@main
         with:
           versions-file: .github/package-versions.txt
 

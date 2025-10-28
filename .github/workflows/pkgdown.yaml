@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: CCBR/actions/install-r-pak
+      - uses: CCBR/actions/install-r-pak@main
         with:
           versions-file: .github/package-versions.txt
           extra-packages: local::.
