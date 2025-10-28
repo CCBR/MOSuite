@@ -48,7 +48,6 @@ runs:
           fi
         fi
 
-        echo $PKG_VERSIONS
         echo "PKG_VERSIONS=${PKG_VERSIONS}" >> "$GITHUB_ENV"
 
     - uses: r-lib/actions/setup-r-dependencies@v2
