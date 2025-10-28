@@ -29,7 +29,7 @@ RUN conda config --add channels conda-forge \
 RUN mamba install -y -c conda-forge \
     r-base=${R_VERSION} \
     r-devtools \
-    r-ggplot2<4.0.0 \
+    "r-ggplot2 <4.0.0" \
     r-ggrepel r-viridis r-upsetr r-patchwork r-plotly \
     r-matrix r-mgcv r-survival \
     bioconductor-genomicranges \
