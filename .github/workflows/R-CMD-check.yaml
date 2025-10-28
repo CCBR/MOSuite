@@ -34,7 +34,7 @@ jobs:
 
       - uses: ./.github/actions/install-r-pak
         with:
-          packages-file: .github/package-versions.txt
+          versions-file: .github/package-versions.txt
           extra-packages: local::.
           needs: dev
           r-version: ${{ matrix.config.r }}
@@ -51,7 +51,7 @@ jobs:
 
       - uses: ./.github/actions/install-r-pak
         with:
-          packages-file: .github/package-versions.txt
+          versions-file: .github/package-versions.txt
 
       - name: Good Practice checks
         shell: Rscript {0}

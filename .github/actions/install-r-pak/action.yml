@@ -9,12 +9,12 @@ inputs:
     default: ""
   use-public-rspm:
     default: true
-  packages-file:
+  versions-file:
     default: ""
     description: "File with content to pass to the extra-packages argument of setup-r-dependencies"
   extra-packages:
     default: ""
-    description: "More packages to install in addition to those specified in packages-file"
+    description: "More packages to install in addition to those specified in versions-file"
   needs:
     default: ""
     description: "Config/Needs field from DESCRIPTION to pass along to setup-r-dependencies"
@@ -35,8 +35,8 @@ runs:
       shell: bash
       run: |
         # get package versions from file
-        if [ -f ${{ inputs.packages-file }} ]; then
-          PKG_VERSIONS=$(cat ${{ inputs.packages-file }})
+        if [ -f ${{ inputs.versions-file }} ]; then
+          PKG_VERSIONS=$(cat ${{ inputs.versions-file }})
         fi
 
         # get additional package versions from input

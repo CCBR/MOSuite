@@ -27,7 +27,7 @@ jobs:
 
       - uses: ./.github/actions/install-r-pak
         with:
-          packages-file: .github/package-versions.txt
+          versions-file: .github/package-versions.txt
 
       - name: Document
         run: roxygen2::roxygenise()
