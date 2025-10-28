@@ -31,4 +31,4 @@ runs:
 
     - uses: r-lib/actions/setup-renv@v2
       with:
-        profile: '${{ inputs.renv-profile }}'
+        profile: '"${{ inputs.renv-profile }}"'
