@@ -29,7 +29,7 @@ RUN conda config --add channels conda-forge \
 RUN mamba install -y -c conda-forge \
     r-base=${R_VERSION} \
     r-devtools \
-    r-ggplot2 \
+    "r-ggplot2 <4.0.0" \
     r-ggrepel r-viridis r-upsetr r-patchwork r-plotly \
     r-matrix r-mgcv r-survival \
     bioconductor-genomicranges \
@@ -43,7 +43,7 @@ RUN mamba install -y -c conda-forge \
 
 # install R package
 COPY . /opt2/MOSuite
-RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com')"
+RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com', upgrade='never')"
 
 # add mosuite exec to the path
 RUN chmod -R +x /opt2/conda/lib/R/library/MOSuite/exec
