@@ -52,6 +52,7 @@ jobs:
       - uses: ./.github/actions/install-r-pak
         with:
           versions-file: .github/package-versions.txt
+          needs: dev
 
       - name: Good Practice checks
         shell: Rscript {0}
