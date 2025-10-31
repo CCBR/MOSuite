@@ -8,7 +8,7 @@
 #     "norm" = list("voom" = as.data.frame(nidap_norm_counts))
 #   )
 # )
-# moo_nidap@analyses$diff <- nidap_deg_analysis_2
+# moo_nidap@analyses$limma$diff <- nidap_deg_analysis_2
 #
 # test_that("volcano plots work on MOO", {
 #   volc_sum <- plot_volcano_summary(moo_nidap)
