@@ -76,7 +76,7 @@ Suggests:
 VignetteBuilder:
     knitr
 Remotes:
-    bioc::release/EnhancedVolcano
+    bioc::3.22/EnhancedVolcano
 biocViews:
 Config/Needs/dev: cffr, covr, goodpractice, lintr, pkgdown, rcmdcheck,
     xml2
