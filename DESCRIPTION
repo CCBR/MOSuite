@@ -75,6 +75,8 @@ Suggests:
     VennDiagram
 VignetteBuilder:
     knitr
+Remotes:
+    bioc::release/EnhancedVolcano
 biocViews:
 Config/Needs/dev: cffr, covr, goodpractice, lintr, pkgdown, rcmdcheck,
     xml2
