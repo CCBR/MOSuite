@@ -21,6 +21,7 @@ jobs:
 
       - uses: CCBR/actions/install-r-pak@main
         with:
+          r-version: 4.4
           versions-file: .github/package-versions.txt
           needs: dev
 
