@@ -119,7 +119,7 @@ print(heatmap_plot)
 #### Summary
 
 ```{r volcano_summary}
-dat_volcano_summary <- moo@analyses$diff %>%
+dat_volcano_summary <- moo@analyses$limma$diff %>%
   join_dfs_wide() %>%
   plot_volcano_summary()
 
@@ -129,7 +129,7 @@ head(dat_volcano_summary)
 #### Enhanced
 
 ```{r volcano_enhanced}
-dat_volcano_enhanced <- moo@analyses$diff %>%
+dat_volcano_enhanced <- moo@analyses$limma$diff %>%
   join_dfs_wide() %>%
   plot_volcano_enhanced()
 ```

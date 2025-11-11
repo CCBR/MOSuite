@@ -26,13 +26,13 @@ test_that("differential analysis works for NIDAP", {
   #   dplyr::arrange(Gene) %>%
   #   dplyr::select(order(colnames(.))) %>% dplyr::select(-C2) %>%
   #   as.data.frame()
-  # y <- moo@analyses$diff %>%
+  # y <- moo@analyses$limma$diff %>%
   #   dplyr::arrange(Gene) %>%
   #   dplyr::select(order(colnames(.)))
   # equal_dfs(x, y)
 
   expect_equal(
-    deg_moo@analyses$diff %>%
+    deg_moo@analyses$limma$diff %>%
       join_dfs_wide() %>%
       dplyr::arrange(Gene) %>%
       dplyr::select(order(colnames(.))),
@@ -71,7 +71,7 @@ test_that("diff_counts works for RENEE", {
       return_mean_and_sd = TRUE,
       input_in_log_counts = TRUE
     )
-  actual <- moo_renee@analyses$diff[[1]] %>%
+  actual <- moo_renee@analyses$limma$diff[[1]] %>%
     head() %>%
     dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, digits = 0)))
   expected <- tibble::tibble(
@@ -211,5 +211,5 @@ test_that("filter_diff works for NIDAP", {
       plot_type = "bar",
       plot_titles_fontsize = 12
     )
-  expect_equal(moo@analyses$diff_filt, nidap_deg_gene_list)
+  expect_equal(moo@analyses$limma$diff_filt, nidap_deg_gene_list)
 })
