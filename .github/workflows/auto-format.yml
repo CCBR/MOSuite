@@ -11,6 +11,10 @@ permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   auto-format:
     runs-on: ubuntu-latest
@@ -29,6 +33,7 @@ jobs:
 
       - uses: CCBR/actions/install-r-pak@main
         with:
+          r-version: 4.4
           versions-file: .github/package-versions.txt
           needs: dev
 
