@@ -101,7 +101,7 @@ file.copy(system.file("extdata", "example_script.sh", package = "MOSuite"),
 )
 # copy the JSON files
 file.copy(
-  system.file("extdata", "json_args", package = "MOSuite"),
+  system.file("extdata", "json_args", "common", package = "MOSuite"),
   to = "./",
   recursive = TRUE
 )
