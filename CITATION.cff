@@ -425,7 +425,7 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: h.wickham@gmail.com
+    email: hadley@posit.co
   year: '2025'
   doi: 10.32614/CRAN.package.reshape2
 - type: software
@@ -718,7 +718,7 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
   year: '2025'
   doi: 10.32614/CRAN.package.lobstr
 - type: software
@@ -738,73 +738,11 @@ references:
   title: plotrix
   abstract: 'plotrix: Various Plotting Functions'
   notes: Suggests
-  url: https://github.com/dmurdoch/plotrix
+  url: https://plotrix.github.io/plotrix/
   repository: https://CRAN.R-project.org/package=plotrix
   authors:
   - family-names: Lemon
     given-names: Jim
-  - family-names: Bolker
-    given-names: Ben
-  - family-names: Oom
-    given-names: Sander
-  - family-names: Klein
-    given-names: Eduardo
-  - family-names: Rowlingson
-    given-names: Barry
-  - family-names: Wickham
-    given-names: Hadley
-  - family-names: Tyagi
-    given-names: Anupam
-  - family-names: Eterradossi
-    given-names: Olivier
-  - family-names: Grothendieck
-    given-names: Gabor
-  - family-names: Toews
-    given-names: Michael
-  - family-names: Kane
-    given-names: John
-  - family-names: Turner
-    given-names: Rolf
-  - family-names: Witthoft
-    given-names: Carl
-  - family-names: Stander
-    given-names: Julian
-  - family-names: Petzoldt
-    given-names: Thomas
-  - family-names: Duursma
-    given-names: Remko
-  - family-names: Biancotto
-    given-names: Elisa
-  - family-names: Levy
-    given-names: Ofir
-  - family-names: Dutang
-    given-names: Christophe
-  - family-names: Solymos
-    given-names: Peter
-  - family-names: Engelmann
-    given-names: Robby
-  - family-names: Hecker
-    given-names: Michael
-  - family-names: Steinbeck
-    given-names: Felix
-  - family-names: Borchers
-    given-names: Hans
-  - family-names: Singmann
-    given-names: Henrik
-  - family-names: Toal
-    given-names: Ted
-  - family-names: Ogle
-    given-names: Derek
-  - family-names: Baral
-    given-names: Darshan
-  - family-names: Groemping
-    given-names: Ulrike
-  - family-names: Venables
-    given-names: Bill
-  - family-names: Team
-    given-names: The CRAN
-  - family-names: Murdoch
-    given-names: Duncan
   year: '2025'
   doi: 10.32614/CRAN.package.plotrix
 - type: software
