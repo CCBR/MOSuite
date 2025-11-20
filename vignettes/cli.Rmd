@@ -101,7 +101,7 @@ file.copy(system.file("extdata", "example_script.sh", package = "MOSuite"),
 )
 # copy the JSON files
 file.copy(
-  system.file("extdata", "json_args", package = "MOSuite"),
+  system.file("extdata", "json_args", "common", package = "MOSuite"),
   to = "./",
   recursive = TRUE
 )
@@ -186,3 +186,16 @@ mosuite clean_raw_counts --json=args_2.json
 Results are saved to `moo.rds`.
 Overwriting the same `moo` file is recommended to save disk space, as the
 multiOmicDataset object saves intermediate results within its data structure.
+
+## Template JSON files
+
+JSON file templates with default arguments for the main functions are bundled with the package.
+You can copy them to your current directory like so:
+
+```{r json_template}
+file.copy(
+  system.file("extdata", "json_args", "defaults", package = "MOSuite"),
+  to = "./",
+  recursive = TRUE
+)
+```

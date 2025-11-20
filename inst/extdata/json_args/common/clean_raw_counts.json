@@ -1,0 +1,14 @@
+{
+  "moo_input_rds": "moo.rds",
+  "moo_output_rds": "moo.rds",
+  "count_type": "raw",
+  "sample_id_colname": null,
+  "feature_id_colname": null,
+  "samples_to_rename": "",
+  "cleanup_column_names": true,
+  "split_gene_name": true,
+  "aggregate_rows_with_duplicate_gene_names": true,
+  "gene_name_column_to_use_for_collapsing_duplicates": "",
+  "print_plots": true,
+  "save_plots": true
+}

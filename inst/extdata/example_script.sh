@@ -10,10 +10,10 @@ mkdir -p $MOO_PLOTS_DIR
 mosuite=$(R -s -e "cat(system.file('exec','mosuite', package='MOSuite'))")
 export PATH="$PATH:$(dirname $mosuite)"
 
-mosuite create_multiOmicDataSet_from_files --json=json_args/args_create.json
-mosuite clean_raw_counts --json=json_args/args_clean.json
-mosuite filter_counts --json=json_args/args_filter.json
-mosuite normalize_counts --json=json_args/args_norm.json
-mosuite batch_correct_counts --json=json_args/args_batch.json
-mosuite diff_counts --json=json_args/args_diff.json
-mosuite filter_diff --json=json_args/args_diff_filter.json
+mosuite create_multiOmicDataSet_from_files --json=json_args/common/create_multiOmicDataSet_from_files.json
+mosuite clean_raw_counts --json=json_args/common/clean_raw_counts.json
+mosuite filter_counts --json=json_args/common/filter_counts.json
+mosuite normalize_counts --json=json_args/common/normalize_counts.json
+mosuite batch_correct_counts --json=json_args/common/batch_correct_counts.json
+mosuite diff_counts --json=json_args/common/diff_counts.json
+mosuite filter_diff --json=json_args/common/filter_diff.json

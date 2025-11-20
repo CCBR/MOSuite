@@ -1,6 +1,7 @@
 {
   "moo_input_rds": "moo.rds",
   "moo_output_rds": "moo.rds",
+  "feature_id_colname": null,
   "significance_column": "adjpval",
   "significance_cutoff": 0.05,
   "change_column": "logFC",
@@ -10,8 +11,8 @@
   "round_estimates": true,
   "rounding_decimal_for_percent_cells": 0,
   "contrast_filter": "none",
-  "contrasts": [],
-  "groups": [],
+  "contrasts": null,
+  "groups": null,
   "groups_filter": "none",
   "label_font_size": 6,
   "label_distance": 1,
@@ -21,5 +22,8 @@
   "bar_width": 0.4,
   "draw_bar_border": true,
   "plot_type": "bar",
-  "plot_titles_fontsize": 12
+  "plot_titles_fontsize": 12,
+  "print_plots": true,
+  "save_plots": true,
+  "plots_subdir": "diff/filt"
 }
