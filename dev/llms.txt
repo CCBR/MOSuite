@@ -1,0 +1,275 @@
+# MOSuite
+
+R package for differential multi-omics analysis
+
+Multi-Omics Suite provides a suite of functions to clean, filter,
+batch-correct, normalize, visualize, and perform differential expression
+analysis. While the package is designed for differential
+[RNA-seq](https://github.com/CCBR/RENEE) analysis and multi-omics
+datasets, it can be used for any data represented in a counts table. See
+the website for more information, documentation, and examples:
+<https://ccbr.github.io/MOSuite/>
+
+## Installation
+
+You can install the development version of MOSuite from
+[GitHub](https://github.com/CCBR/MOSuite) with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("CCBR/MOSuite", dependencies = TRUE)
+```
+
+Or install a specific version:
+
+``` r
+remotes::install_github("CCBR/MOSuite", dependencies = TRUE, ref = "v0.1.0")
+```
+
+There is also a Docker container available at
+<https://hub.docker.com/r/nciccbr/mosuite>
+
+``` sh
+singularity exec docker://nciccbr/mosuite:v0.2.0 R -s -e \
+  'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'
+```
+
+## Usage
+
+Please see the [introductory
+vignette](https://ccbr.github.io/MOSuite/articles/intro.html) for a
+quick start tutorial. Take a look at the [reference
+documentation](https://ccbr.github.io/MOSuite/reference/index.html) for
+detailed information on each function in the package.
+
+## Help & Contributing
+
+Come across a **bug**? Open an
+[issue](https://github.com/CCBR/MOSuite/issues) and include a minimal
+reproducible example.
+
+Have a **question**? Ask it in
+[discussions](https://github.com/CCBR/MOSuite/discussions).
+
+Want to **contribute** to this project? Check out the [contributing
+guidelines](https://ccbr.github.io/MOSuite/dev/CONTRIBUTING.md).
+
+## Development Roadmap
+
+![](./reference/figures/development-plan.png)
+
+- [dev
+  spreadsheet](https://nih-my.sharepoint.com/:x:/g/personal/homanpj_nih_gov/ETvHXgnwxExEpcP57Jj9_EwBHBvZBqNuZ_c3eu51w-SlnA?e=PcXKU8)
+- [project board](https://github.com/orgs/CCBR/projects/32)
+
+# Package index
+
+## multiOmicDataSet
+
+- [`create_multiOmicDataSet_from_dataframes()`](https://ccbr.github.io/MOSuite/dev/reference/create_multiOmicDataSet_from_dataframes.md)
+  : Construct a multiOmicDataSet object from data frames
+- [`create_multiOmicDataSet_from_files()`](https://ccbr.github.io/MOSuite/dev/reference/create_multiOmicDataSet_from_files.md)
+  : Construct a multiOmicDataSet object from tsv files.
+- [`multiOmicDataSet()`](https://ccbr.github.io/MOSuite/dev/reference/multiOmicDataSet.md)
+  : multiOmicDataSet class
+
+## Main functions
+
+See
+[`vignette('intro')`](https://ccbr.github.io/MOSuite/dev/articles/intro.md)
+for recommended usage
+
+- [`batch_correct_counts()`](https://ccbr.github.io/MOSuite/dev/reference/batch_correct_counts.md)
+  : Perform batch correction
+- [`clean_raw_counts()`](https://ccbr.github.io/MOSuite/dev/reference/clean_raw_counts.md)
+  : Clean Raw Counts
+- [`diff_counts()`](https://ccbr.github.io/MOSuite/dev/reference/diff_counts.md)
+  : Differential expression analysis
+- [`extract_counts()`](https://ccbr.github.io/MOSuite/dev/reference/extract_counts.md)
+  : Extract count data
+- [`filter_counts()`](https://ccbr.github.io/MOSuite/dev/reference/filter_counts.md)
+  : Filter low counts
+- [`normalize_counts()`](https://ccbr.github.io/MOSuite/dev/reference/normalize_counts.md)
+  : Normalize counts
+- [`filter_diff()`](https://ccbr.github.io/MOSuite/dev/reference/filter_diff.md)
+  : Filter features from differential analysis based on statistical
+  significance
+
+## Visualization
+
+- [`plot_corr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap.md)
+  : Plot correlation heatmap
+- [`plot_expr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_expr_heatmap.md)
+  : Plot expression heatmap
+- [`plot_histogram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.md)
+  : Plot histogram
+- [`plot_pca()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca.md)
+  : Perform and plot a Principal Components Analysis
+- [`plot_read_depth()`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth.md)
+  : Plot read depth as a bar plot
+- [`plot_venn_diagram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_venn_diagram.md)
+  : Plot a venn diagram, UpSet plot, or table of intersections
+- [`plot_volcano_enhanced()`](https://ccbr.github.io/MOSuite/dev/reference/plot_volcano_enhanced.md)
+  : Enhanced Volcano Plot
+- [`plot_volcano_summary()`](https://ccbr.github.io/MOSuite/dev/reference/plot_volcano_summary.md)
+  : Volcano Plot - Summary \[CC Produces one volcano plot for each
+  tested contrast in the input DEG table.
+- [`print_or_save_plot()`](https://ccbr.github.io/MOSuite/dev/reference/print_or_save_plot.md)
+  : Print and/or save a ggplot
+
+### Color selectors
+
+- [`get_colors_lst()`](https://ccbr.github.io/MOSuite/dev/reference/get_colors_lst.md)
+  : Create named list of default colors for plotting
+- [`get_colors_vctr()`](https://ccbr.github.io/MOSuite/dev/reference/get_colors_vctr.md)
+  : Get vector of colors for observations in one column of a data frame
+- [`set_color_pal()`](https://ccbr.github.io/MOSuite/dev/reference/set_color_pal.md)
+  : Set color palette for a single group/column
+
+## Misc. helpers & utilities
+
+- [`calc_cpm()`](https://ccbr.github.io/MOSuite/dev/reference/calc_cpm.md)
+  : Calculate counts-per-million (CPM) on raw counts in a
+  multiOmicDataSet
+- [`calc_pca()`](https://ccbr.github.io/MOSuite/dev/reference/calc_pca.md)
+  : Perform principal components analysis
+- [`bind_dfs_long()`](https://ccbr.github.io/MOSuite/dev/reference/bind_dfs_long.md)
+  : Bind dataframes in named list to long dataframe
+- [`join_dfs_wide()`](https://ccbr.github.io/MOSuite/dev/reference/join_dfs_wide.md)
+  : Join dataframes in named list to wide dataframe
+
+## Datasets
+
+- [`gene_counts`](https://ccbr.github.io/MOSuite/dev/reference/gene_counts.md)
+  : RSEM expected gene counts
+
+- [`nidap_batch_corrected_counts`](https://ccbr.github.io/MOSuite/dev/reference/nidap_batch_corrected_counts.md)
+  : Batch-corrected counts for the NIDAP test dataset.
+
+- [`nidap_batch_corrected_counts_2`](https://ccbr.github.io/MOSuite/dev/reference/nidap_batch_corrected_counts_2.md)
+  :
+
+  Batch-corrected counts for the NIDAP test dataset. The result of
+  running
+  [`batch_correct_counts()`](https://ccbr.github.io/MOSuite/dev/reference/batch_correct_counts.md)
+  on `nidap_norm_counts`.
+
+- [`nidap_clean_raw_counts`](https://ccbr.github.io/MOSuite/dev/reference/nidap_clean_raw_counts.md)
+  :
+
+  Clean raw counts for the NIDAP test dataset. The result of running
+  [`clean_raw_counts()`](https://ccbr.github.io/MOSuite/dev/reference/clean_raw_counts.md)
+  on `nidap_raw_counts`.
+
+- [`nidap_deg_analysis`](https://ccbr.github.io/MOSuite/dev/reference/nidap_deg_analysis.md)
+  : Differential gene expression analysis for the NIDAP test dataset.
+
+- [`nidap_deg_analysis_2`](https://ccbr.github.io/MOSuite/dev/reference/nidap_deg_analysis_2.md)
+  :
+
+  Differential gene expression analysis for the NIDAP test dataset. The
+  result of running
+  [`diff_counts()`](https://ccbr.github.io/MOSuite/dev/reference/diff_counts.md)
+  on `nidap_filtered_counts`.
+
+- [`nidap_deg_gene_list`](https://ccbr.github.io/MOSuite/dev/reference/nidap_deg_gene_list.md)
+  :
+
+  List of differentially expressed genes from the NIDAP test dataset
+  using default parameters with
+  [`filter_diff()`](https://ccbr.github.io/MOSuite/dev/reference/filter_diff.md).
+
+- [`nidap_filtered_counts`](https://ccbr.github.io/MOSuite/dev/reference/nidap_filtered_counts.md)
+  :
+
+  Filtered counts for the NIDAP test dataset. The result of running
+  [`filter_counts()`](https://ccbr.github.io/MOSuite/dev/reference/filter_counts.md)
+  on `nidap_clean_raw_counts`.
+
+- [`nidap_norm_counts`](https://ccbr.github.io/MOSuite/dev/reference/nidap_norm_counts.md)
+  :
+
+  Normalized counts for the NIDAP test dataset. The result of running
+  [`normalize_counts()`](https://ccbr.github.io/MOSuite/dev/reference/normalize_counts.md)
+  on `nidap_filtered_counts`.
+
+- [`nidap_raw_counts`](https://ccbr.github.io/MOSuite/dev/reference/nidap_raw_counts.md)
+  :
+
+  Raw counts for the NIDAP test dataset Pairs with
+  `nidap_sample_metadata`.
+
+- [`nidap_sample_metadata`](https://ccbr.github.io/MOSuite/dev/reference/nidap_sample_metadata.md)
+  : Sample metadata for the NIDAP test dataset
+
+- [`nidap_venn_diagram_dat`](https://ccbr.github.io/MOSuite/dev/reference/nidap_venn_diagram_dat.md)
+  :
+
+  Output data from venn diagram. The result of running
+  [`plot_venn_diagram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_venn_diagram.md)
+  on `nidap_volcano_summary_dat`
+
+- [`nidap_volcano_summary_dat`](https://ccbr.github.io/MOSuite/dev/reference/nidap_volcano_summary_dat.md)
+  : Summarized differential expression analysis for input to venn
+  diagram
+
+## Options
+
+- [`options`](https://ccbr.github.io/MOSuite/dev/reference/options.md) :
+  MOSuite Options
+
+### Low-level plot helpers
+
+These functions are called by the main visualization functions.
+
+- [`plot_corr_heatmap_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_dat.md)
+  : Plot correlation heatmap for counts dataframe
+
+- [`plot_corr_heatmap_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_moo.md)
+  : Plot correlation heatmap for multiOmicDataSet
+
+- [`plot_expr_heatmap_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_expr_heatmap_dat.md)
+  : Plot expression heatmap for counts dataframe
+
+- [`plot_expr_heatmap_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_expr_heatmap_moo.md)
+  : Plot expression heatmap for multiOmicDataSet
+
+- [`plot_histogram_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram_dat.md)
+  : Plot histogram for counts dataframe
+
+- [`plot_histogram_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram_moo.md)
+  : Plot histogram for multiOmicDataSet
+
+- [`plot_pca_2d()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_2d.md)
+  : Perform and plot a 2D Principal Components Analysis
+
+- [`plot_pca_3d()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_3d.md)
+  : 3D PCA for counts dataframe
+
+- [`plot_pca_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_dat.md)
+  : Plot 2D or 3D PCA for counts dataframe
+
+- [`plot_pca_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_moo.md)
+  : Plot 2D or 3D PCA for multiOmicDataset
+
+- [`plot_read_depth_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth_dat.md)
+  :
+
+  Plot read depth for `data.frame`
+
+- [`plot_read_depth_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth_moo.md)
+  : Plot read depth for multiOmicDataSet
+
+# Articles
+
+### Articles
+
+- [Introduction to
+  MultiOmicsSuite](https://ccbr.github.io/MOSuite/dev/articles/intro.md):
+- [RSEM counts from
+  RENEE](https://ccbr.github.io/MOSuite/dev/articles/renee.md):
+- [Visualization with built-in
+  plots](https://ccbr.github.io/MOSuite/dev/articles/visualization.md):
+- [Calling MOSuite from the
+  CLI](https://ccbr.github.io/MOSuite/dev/articles/cli.md):
+- [Memory Usage](https://ccbr.github.io/MOSuite/dev/articles/memory.md):
