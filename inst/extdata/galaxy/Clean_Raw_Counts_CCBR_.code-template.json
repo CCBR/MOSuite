@@ -1,0 +1,119 @@
+{
+	"codeTemplate": "Clean_Raw_Counts <- function({{{Raw_Counts_Matrix}}}) {\n\n\nlibrary(stringr)\nlibrary(tidyr)\nlibrary(dplyr)\n\n## -------------------------------- ##\n## User-Defined Template Parameters ##\n## -------------------------------- ##\n\n#Basic Parameters:\nraw_counts_matrix={{{Raw_Counts_Matrix}}}\nData_type='{{{data_type}}}'\ngene_id_column='{{{Feature_ID_Column}}}'\nsamples_to_rename = {{{Samples_to_Rename}}}\n\n#Advanced Parameters:\ncleanup_column_names={{{Cleanup_Column_Names}}}\nsplit_gene_name = {{{Split_Feature_ID}}}\naggregate_rows_with_duplicate_gene_names={{{Aggregate_Rows_with_Duplicate_Feature_Names}}}\ngene_name_column_to_use_for_collapsing_duplicates='{{{Column_Used_to_Aggregate_Duplicates_Feature_IDs}}}'\n\n###################################################################################\nremoveVersion <- function(ids){\n  return(unlist(lapply(stringr::str_split(ids, \"[.]\"), \"[[\",1)))\n}  \n\nprint(Data_type)\n\n\n##################################     \n##### Sample Name Check\n################################## \n\n## duplicate col name\nif(sum(duplicated(colnames(raw_counts_matrix)))!=0){\n        print(\"Duplicate column names are not allowed, the following columns were duplicated.\\n\")\n        colnames(raw_counts_matrix)[duplicated(colnames(raw_counts_matrix))]\n        stop(\"Duplicated columns\")\n}\n\n\n\n\n##################################     \n##### Manually rename samples\n################################## \n\n   if (!is.null(samples_to_rename)) {\n        if (samples_to_rename != c(\"\")) {\n            for (x in samples_to_rename) {\n                old <- strsplit(x, \": ?\")[[1]][1]\n                new <- strsplit(x, \": ?\")[[1]][2]\n                colnames(raw_counts_matrix)[colnames(raw_counts_matrix)%in%old]=new\n            }\n        }\n    }\n\n    \n\n    ##################################     \n    ##### Cleanup Columns\n    ##################################    \nif(cleanup_column_names){\ncl_og=colnames(raw_counts_matrix)\n      ## convert special charchers to _\n    cl2 <- gsub('-| |\\\\:','_',colnames(raw_counts_matrix))\n    if (length(cl2[(cl2)!=colnames(raw_counts_matrix)])>0) {\n      print('Columns had special characters relpaced with _ ')\n          # (colnames(raw_counts_matrix)[(colnames(raw_counts_matrix))!=cl2])\n          # print(cl2[(cl2)!=colnames(raw_counts_matrix)])\n      colnames(raw_counts_matrix) = cl2\n    }\n        \n    ## if names begin with number add X\n    cl2=sub(\"^(\\\\d)\", \"X\\\\1\", colnames(raw_counts_matrix))\n    if (length(cl2[(cl2)!=colnames(raw_counts_matrix)])>0) {\n\n    print('Columns started with numbers and an X was added to colname :')\n         # (colnames(raw_counts_matrix)[(colnames(raw_counts_matrix))!=cl2])\n         # print(cl2[(cl2)!=colnames(raw_counts_matrix)])\n    colnames(raw_counts_matrix) = cl2\n    }\n    #print(\"Original Colnames:\")\n    #print(cl_og[(cl_og)!=colnames(df)])\n    #print(\"Modified Colnames:\")\n    #print(colnames(df)[colnames(df)!=(cl_og)]%>%as.data.frame)\n \n #print(\"Final Colnames:\")   \n \n}else{\n\n    ## invalid name format\n    if(any(make.names(colnames(raw_counts_matrix))!=colnames(raw_counts_matrix))){\n        print(\"Error: The following counts matrix column names are not valid:\\n\")\n        print(colnames(raw_counts_matrix)[make.names(colnames(raw_counts_matrix))!=colnames(raw_counts_matrix)])\n        print(\"Likely causes are columns starting with numbers or other special characters eg spaces.\\n\")\n        # stop(\"Bad column names.\")\n    }\n    ## Names Contain dashes\n    if(sum(grepl(\"-\",colnames(raw_counts_matrix)))!=0){\n        print(\"The sample names cannot contain dashes.\")\n        print(colnames(raw_counts_matrix)[grepl(\"-\",colnames(raw_counts_matrix))])\n        # stop(\"No dashes allowed in column names\")\n    }\n}\n  \n\n##################################    \n## Split Ensemble + Gene name\n##################################\n## First check if Feature ID column  can be split by \",|_-:\"\n## Then check if one column contains Ensemble (regex '^ENS[A-Z]+[0-9]+')\n##   check if Ensemble ID has version info and remove version\n##   If one column contains Ensemble ID Assume other column is Gene names\n## If Column does not contain Ensmeble ID name split columns Gene_ID_1 and Gene_ID_2\nprint(\"\")\n\nif(split_gene_name==T){\nEnsembl_ID=  str_split_fixed(raw_counts_matrix[,gene_id_column],'_|-|:|\\\\|',n=2)%>%data.frame()\nEnsCol= apply(Ensembl_ID, c(1,2), function(x) grepl('^ENS[A-Z]+[0-9]+', x))\n      \n    \nif(\"\"%in%Ensembl_ID[,1]|\"\"%in%Ensembl_ID[,2]){\nprint(paste0(\"Not able to identify multiple id's in \", gene_id_column ))\n  # colnames(df)[colnames(df)%in%clm]=gene_col\n    if(Data_type=='Bulk RNAseq') { \n        colnames(raw_counts_matrix)[colnames(raw_counts_matrix)%in%gene_id_column]='Gene'\n    }else if(Data_type=='Proteomics'){\n        colnames(raw_counts_matrix)[colnames(raw_counts_matrix)%in%gene_id_column]='FeatureID'\n    }else { print('incorrect Data Type'); incorrect_Data_Type }\n}else{\n## at least one column must have all ensemble ids found in EnsCol \n  if (nrow(EnsCol[EnsCol[,1]==T,])==nrow(Ensembl_ID)|nrow(EnsCol[EnsCol[,2]==T,])==nrow(Ensembl_ID)){\n      if(Data_type=='Bulk RNAseq') { \n          colnames(Ensembl_ID)[colSums(EnsCol)!=nrow(Ensembl_ID)]='Gene'\n      }else if(Data_type=='Proteomics'){\n          colnames(Ensembl_ID)[colSums(EnsCol)!=nrow(Ensembl_ID)]='FeatureID'\n      }\n## check if Ensmble column has version information\n  if(grepl('^ENS[A-Z]+[0-9]+\\\\.[0-9]+$', Ensembl_ID[,colSums(EnsCol)==nrow(Ensembl_ID)])%>%sum()==nrow(Ensembl_ID)){\n      colnames(Ensembl_ID)[colSums(EnsCol)==nrow(Ensembl_ID)]='Ensembl_ID_version'\n          Ensembl_ID$Ensembl_ID=removeVersion(Ensembl_ID$Ensembl_ID_version)\n  }else{\n      colnames(Ensembl_ID)[colSums(EnsCol)==nrow(Ensembl_ID)]='Ensembl_ID'\n  }\n  }else{\n  colnames(Ensembl_ID)=c('Feature_id_1','Feature_id_2')\n  print(\"Could not determine ID formats from split 'Feature ID' Column\")\n\n}\n  raw_counts_matrix <- cbind(Ensembl_ID,raw_counts_matrix[,!colnames(raw_counts_matrix)%in%gene_id_column])\n}         \n}else{\n    if(Data_type=='Bulk RNAseq') { \n        colnames(raw_counts_matrix)[colnames(raw_counts_matrix)%in%gene_id_column]='Gene'\n    }else if(Data_type=='Proteomics'){\n        colnames(raw_counts_matrix)[colnames(raw_counts_matrix)%in%gene_id_column]='FeatureID'\n    }else { print('incorrect Data Type'); incorrect_Data_Type }\n}\n\n##################################\n## If duplicate gene aggregate information to single row\n##################################   \n## If user uses \"Feature ID\" column then switch to empty for appropriate behavor based on other parameters\nif(gene_name_column_to_use_for_collapsing_duplicates==gene_id_column){\n  gene_name_column_to_use_for_collapsing_duplicates=\"\"\n}\n\n    if(gene_name_column_to_use_for_collapsing_duplicates==\"\"&\n    ('Feature_id_1'%in%colnames(raw_counts_matrix))==F){\n      if(Data_type=='Bulk RNAseq') { \n        gene_name_column_to_use_for_collapsing_duplicates='Gene'\n      }else if(Data_type=='Proteomics'){\n        gene_name_column_to_use_for_collapsing_duplicates='FeatureID'\n      }\n    }  \n\n#geneids<-df[,gene_col]\n    nums <- unlist(lapply(raw_counts_matrix, is.numeric)) \n    nums = names(nums[nums])\n    print('')\n    print('Columns that can be used to aggregate gene information' )\n    print(raw_counts_matrix[,!names(raw_counts_matrix) %in% nums,drop=F]%>%colnames())\n    \n    print('')\n\n    \n    if(gene_name_column_to_use_for_collapsing_duplicates==\"\"){\n\n      if(split_gene_name==F){     \n       ## If no additional Column name given for Aggregation then display Feature ID duplicates\n        print(paste0(\"genes with duplicate IDs in \",gene_id_column,\":\")) \n\n       ## Print original Column name for user Reference then use new Column name to subset table\n        if(Data_type=='Bulk RNAseq') { \n          gene_id_column='Gene'\n        }else if(Data_type=='Proteomics'){\n          gene_id_column='FeatureID'\n        }\n        raw_counts_matrix[duplicated(raw_counts_matrix[,gene_id_column]),gene_id_column]%>%unique()%>%as.character()%>%write( stdout())\n\n      }else if(split_gene_name==T&grepl('Feature_id_1',colnames(raw_counts_matrix))==F){  \n          if(Data_type=='Bulk RNAseq') { \n                          gene_id_column='Gene'\n                        }else if(Data_type=='Proteomics'){\n                          gene_id_column='FeatureID'\n                        }\n          print(paste0(\"genes with duplicate IDs in \",gene_id_column,\":\"))\n            \n          raw_counts_matrix[duplicated(raw_counts_matrix[,gene_name_column_to_use_for_collapsing_duplicates]),gene_name_column_to_use_for_collapsing_duplicates]%>%unique()%>%as.character()%>%write( stdout())\n          \n\n      }else if(split_gene_name==T&grepl('Feature_id_1',colnames(raw_counts_matrix))==T){  \n          print(paste0(\"genes with duplicate IDs in \",'Feature_id_1',\":\"))\n            \n          raw_counts_matrix[duplicated(raw_counts_matrix[,'Feature_id_1']),'Feature_id_1']%>%unique()%>%as.character()%>%write( stdout())\n\n          print(paste0(\"genes with duplicate IDs in \",'Feature_id_2',\":\"))\n            \n          raw_counts_matrix[duplicated(raw_counts_matrix[,'Feature_id_2']),'Feature_id_2']%>%unique()%>%as.character()%>%write( stdout())\n\n      }\n    }\n\n\n\n\n\n\nif(aggregate_rows_with_duplicate_gene_names == TRUE){\n\n    print(\"Aggregating the counts for the same ID in different chromosome locations.\")\n    print(\"Column used to Aggregate duplicate IDs: \")\n    print(gene_name_column_to_use_for_collapsing_duplicates)\n    print(\"Number of rows before Collapse: \")\n    print(nrow(raw_counts_matrix))\n\n    if(sum(duplicated(raw_counts_matrix[,gene_name_column_to_use_for_collapsing_duplicates]))!=0){\n    print(\"\")\n    print(\"Duplicate IDs: \")\n    print(raw_counts_matrix[duplicated(raw_counts_matrix[,gene_name_column_to_use_for_collapsing_duplicates]),gene_name_column_to_use_for_collapsing_duplicates]%>%as.character%>%unique)\n\n        dfagg=raw_counts_matrix[,c(gene_name_column_to_use_for_collapsing_duplicates,nums)]%>%group_by_at(gene_name_column_to_use_for_collapsing_duplicates)%>%summarise_all(sum)\n\n        if (ncol(raw_counts_matrix[,!names(raw_counts_matrix) %in% nums, drop = FALSE])>1) {\n          ## collapse non-numeric columns\n          dfagg2=raw_counts_matrix[,!names(raw_counts_matrix) %in% nums]%>%group_by_at(gene_name_column_to_use_for_collapsing_duplicates)%>%summarise_all(paste,collapse=',')\n          \n          dfagg=merge(dfagg2,dfagg,by=eval(gene_name_column_to_use_for_collapsing_duplicates),sort = F)%>%as.data.frame()\n        }\n        dfout=dfagg\n        print(\"Number of rows after Collapse: \")\n        print(nrow(dfout))\n    }else{\n      print(paste0(\"no duplicated IDs in \",gene_name_column_to_use_for_collapsing_duplicates))\n      dfout=raw_counts_matrix\n    }\n}else{\n  if(gene_name_column_to_use_for_collapsing_duplicates!=\"\"){\n            print(\"\")\n            print(paste0(\"Duplicate IDs in \",gene_name_column_to_use_for_collapsing_duplicates,\" Column:\"))\n            print(raw_counts_matrix[duplicated(raw_counts_matrix[,gene_name_column_to_use_for_collapsing_duplicates]),gene_name_column_to_use_for_collapsing_duplicates]%>%as.character%>%unique)\n  }\n  \n            print(\"\")\n  print(paste0(\"If you desire to Aggregate row feature information select appropriate Column to use for collapsing duplicates\"))\n\n  dfout=raw_counts_matrix}\n\nreturn(dfout)\n}   \n  \n\n#################################################\n## Global imports and functions included below ##\n#################################################\n\n# Functions defined here will be available to call in\n# the code for any table.\n\n#install_bioconductor_package <- function(pkg) {\n#    install.packages(paste0(\"https://gypsum.palantircloud.com/assets/dyn/bioconductor-packages/\", pkg, \".tar.gz\"), repos=NULL)\n",
+	"columns": [
+		{
+			"key": "Feature_ID_Column",
+			"displayName": "Feature ID Column",
+			"description": "Select a column from your raw counts that contains Feature IDs for each row.\n\nIf this column contains special character (| - , or space) separating multiple gene identifiers, then the column will be split into separate columns for each identifier.\n\nExample: a column with gene identifiers initially listed like \"ENSG00000000003.14_TSPAN6\" will be divided into two columns, one for the Ensemble ID (e.g. \"ENSG00000000003.14\") and another for the Gene Name (e.g. \"TSPAN6\").",
+			"paramGroup": "Basic",
+			"sourceDataset": "Raw_Counts_Matrix",
+			"defaultValue": null,
+			"columnType": "STRING",
+			"isMulti": null
+		}
+	],
+	"condaDependencies": [],
+	"description": "This template checks the input raw counts matrix for common formatting problems with Feature identifiers (Gene or Peptide/Protein Names) and sample names. \n\nIf Feature IDs contain multiple IDs separated by special Characters((| - , or space) they will be split into multiple columns. \n\nIf Duplicate Feature ID's are detected the counts are summed across duplicate Feature ID rows within each sample.\n\nInvalid sample names will also be reported in the template Log and can be automatically corrected. If your sample names are corrected here, be sure to make equivalent changes to your metadata table.",
+	"externalId": "Clean_Raw_Counts_CCBR_",
+	"inputDatasets": [
+		{
+			"key": "Raw_Counts_Matrix",
+			"displayName": "Raw Counts Matrix",
+			"description": "The input dataset of raw counts.",
+			"paramGroup": "Basic",
+			"anchorDataset": false,
+			"dataType": "R_NATIVE_DATAFRAME",
+			"tags": []
+		}
+	],
+	"vectorLanguage": "R",
+	"codeLanguage": "R",
+	"parameters": [
+		{
+			"key": "data_type",
+			"displayName": "data type",
+			"description": "",
+			"paramType": "SELECT",
+			"paramGroup": "Basic",
+			"paramValues": [
+				"Bulk RNAseq",
+				"Proteomics"
+			],
+			"defaultValue": null,
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Samples_to_Rename",
+			"displayName": "Samples to Rename",
+			"description": "Enter each sample that you want to rename in the format:\n\nold_name: new_name",
+			"paramType": "VECTOR",
+			"paramGroup": "Advanced",
+			"paramValues": null,
+			"defaultValue": "c(\"\")",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Cleanup_Column_Names",
+			"displayName": "Cleanup Column Names",
+			"description": "Invalid raw counts column names can cause errors in the downstream analysis. If this toggle is ON, any invalid column names will be automatically altered to a correct format.\n\nThese format changes will include adding an \"X\" as the first character in any column name that began with a numeral and replacing some special characters (\"-,:. \") with underscores (\"_\"). Invalid sample names and any changes made will be detailed in the template log.",
+			"paramType": "BOOLEAN",
+			"paramGroup": "Advanced",
+			"paramValues": null,
+			"defaultValue": "TRUE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Split_Feature_ID",
+			"displayName": "Split Feature ID",
+			"description": "",
+			"paramType": "BOOLEAN",
+			"paramGroup": "Advanced",
+			"paramValues": null,
+			"defaultValue": "TRUE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Aggregate_Rows_with_Duplicate_Feature_Names",
+			"displayName": "Aggregate Rows with Duplicate Feature Names",
+			"description": "Regardless of the toggle status (ON/OFF), if a Feature ID (from the \"Cleanup Column Names\" parameter above) is found to be duplicated on multiple rows of the raw counts, the Log will report these Feature IDs.\n\nUsing the default behavior (ON), the counts for all rows with a duplicate Feature IDs are aggregated into a single row. Counts are summed across duplicate Feature ID rows within each sample. Additional identifier columns, if present (e.g. Ensembl IDs), will be preserved and multiple matching identifiers in such additional columns will appear as comma-separated values in an aggregated row.",
+			"paramType": "BOOLEAN",
+			"paramGroup": "Advanced",
+			"paramValues": null,
+			"defaultValue": "TRUE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Column_Used_to_Aggregate_Duplicates_Feature_IDs",
+			"displayName": "Column Used to Aggregate Duplicates Feature IDs",
+			"description": "Select the column with Feature IDs to use as grouping elements to collapse the counts matrix.\n\nThe log output will list the columns available to identify duplicate row IDs in order to aggregate information. \n\nIf Bulk RNAseq data your column selected for Feature ID will be  renamed to \"Gene\" \nIf analyzing Proteomics data your column selected for Feature ID will be  renamed to \"Feature ID\".\n\nIf left blank your \"Feature ID\" Column will be used to Aggregate Rows.\n\nIf \"Feature ID\" column can be split into multiple IDs the non Ensembl ID name will be used to aggregate duplicate IDs.\nIf \"Feature ID\" column  does not contain Ensembl IDs the split Feature IDs will be named 'Feature_id_1' and 'Feature_id_2'. For this case the Template will error out and you will have to manually enter Column ID for this field.",
+			"paramType": "STRING",
+			"paramGroup": "Advanced",
+			"paramValues": [
+				"Gene",
+				"Pepetide",
+				"Protein",
+				"Ensembl_ID",
+				"Ensembl_ID_version",
+				"Gene_id_1",
+				"Gene_id_2",
+				"Original Gene Column"
+			],
+			"defaultValue": "",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		}
+	],
+	"title": "Clean Raw Counts [CCBR]",
+	"templateApiVersion": "0.1.0"
+}
