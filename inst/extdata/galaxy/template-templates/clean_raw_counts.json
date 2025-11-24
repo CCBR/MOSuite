@@ -6,9 +6,19 @@
         {
             "key": "feature_id_colname",
             "displayName": "Feature ID Column",
-            "description": "Select a column from your raw counts that contains Feature IDs for each row.\n\nIf this column contains special character (| - , or space) separating multiple gene identifiers, then the column will be split into separate columns for each identifier.\n\nExample: a column with gene identifiers initially listed like \"ENSG00000000003.14_TSPAN6\" will be divided into two columns, one for the Ensemble ID (e.g. \"ENSG00000000003.14\") and another for the Gene Name (e.g. \"TSPAN6\").",
+            "description": "Select a column from your counts that contains Feature IDs for each row. Defaults to the first column in the counts data.",
             "paramGroup": "Basic",
-            "sourceDataset": "Raw_Counts_Matrix",
+            "sourceDataset": "moo@counts",
+            "defaultValue": null,
+            "columnType": "STRING",
+            "isMulti": null
+        },
+        {
+            "key": "sample_id_colname",
+            "displayName": "Sample ID Column",
+            "description": "Select a column from your sample metadata that contains Sample IDs for each column. Defaults to the first column in the sample metadata.",
+            "paramGroup": "Basic",
+            "sourceDataset": "moo@sample_meta",
             "defaultValue": null,
             "columnType": "STRING",
             "isMulti": null
@@ -42,16 +52,13 @@
             "objectPropertyReference": null
         },
         {
-            "key": "data_type",
-            "displayName": "data type",
+            "key": "count_type",
+            "displayName": "Count Type",
             "description": "",
-            "paramType": "SELECT",
+            "paramType": "STRING",
             "paramGroup": "Basic",
-            "paramValues": [
-                "Bulk RNAseq",
-                "Proteomics"
-            ],
-            "defaultValue": null,
+            "paramValues": null,
+            "defaultValue": "raw",
             "condition": null,
             "content": null,
             "objectPropertyReference": null
