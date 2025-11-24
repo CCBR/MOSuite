@@ -16,7 +16,6 @@ def main():
         with open(code_template_file, "r") as infile:
             code_template = json.load(infile)
             template_name = code_template_file.name
-            print(template_name)
             mapping = next(
                         (
                             meta
@@ -25,7 +24,6 @@ def main():
                         ),
                         {},
                     )
-            print(mapping)
             new_template = {
                 "title": code_template["title"].replace(" [CCBR]", ""),
                 "description": code_template["description"],
@@ -48,9 +46,7 @@ def main():
                         new_template[arg_type].append(param)
             with open(
                 pathlib.Path(
-                    f"inst/extdata/galaxy/template-templates/{template_name}".replace(
-                        "_CCBR_", ""
-                    )
+                    f"inst/extdata/galaxy/template-templates/{new_template['r_function']}.json"
                 ),
                 "w",
             ) as outfile:
