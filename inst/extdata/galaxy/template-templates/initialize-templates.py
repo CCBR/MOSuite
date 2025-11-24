@@ -10,16 +10,26 @@ def main():
         "inst/extdata/galaxy/nidap/NIDAPBulkTemplate_parameterTo_MOSuiteMapping.json",
         "r",
     ) as infile:
-        mapping = json.load(infile)
+        template_mappings = json.load(infile)['template_mappings']
     for filename in glob.glob("inst/extdata/galaxy/nidap/*.code-template.json"):
         code_template_file = pathlib.Path(filename)
         with open(code_template_file, "r") as infile:
             code_template = json.load(infile)
             template_name = code_template_file.name
+            print(template_name)
+            mapping = next(
+                        (
+                            meta
+                            for key, meta in template_mappings.items()
+                            if key == template_name
+                        ),
+                        {},
+                    )
+            print(mapping)
             new_template = {
                 "title": code_template["title"].replace(" [CCBR]", ""),
                 "description": code_template["description"],
-                "codeTemplate": code_template["codeTemplate"],
+                "r_function": mapping.get('r_function', ""),
                 "columns": [],
                 "inputDatasets": [],
                 "parameters": [],
@@ -27,14 +37,7 @@ def main():
             for arg_type in ("columns", "inputDatasets", "parameters"):
                 for param in code_template.get(arg_type, []):
                     param_name = param.get("key")
-                    params_lst = next(
-                        (
-                            m
-                            for k, m in mapping.get("template_mappings", {}).items()
-                            if k == template_name
-                        ),
-                        {},
-                    ).get("parameter_mappings", [])
+                    params_lst = mapping.get("parameter_mappings", [])
                     new_param = next(
                         (p.get(param_name) for p in params_lst if param_name in p), None
                     )
