@@ -14,5 +14,5 @@ permissions:
 
 jobs:
   add-to-project:
-    uses: CCBR/.github/.github/workflows/auto-add-user-project.yml@v0.1.0
+    uses: CCBR/.github/.github/workflows/auto-add-user-project.yml@main
     secrets: inherit
