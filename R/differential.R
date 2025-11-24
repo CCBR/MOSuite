@@ -5,6 +5,7 @@
 #' @inheritParams normalize_counts
 #' @inheritParams option_params
 #'
+#' @param diff_method method for differential analysis (Default: "limma")
 #' @param sub_count_type if `count_type` is a list, specify the sub count type within the list. (Default: `NULL`)
 #' @param covariates_colnames The column name(s) from the sample metadata containing variable(s) of interest, such as
 #'   phenotype. Most commonly this will be the same column selected for your Groups Column. Some experimental designs
@@ -17,7 +18,7 @@
 #' @param return_mean_and_sd if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for
 #'   contrast(s)
 #'
-#' @returns `multiOmicDataSet` with `diff` added to the `analyses` slot (i.e. `moo@analyses$diff`)
+#' @returns `multiOmicDataSet` with `diff` added to the `analyses` slot (i.e. `moo@analyses$limma$diff`)
 #' @export
 #'
 #' @family moo methods
@@ -42,8 +43,9 @@
 #'     contrasts = c("B-A", "C-A", "B-C"),
 #'     voom_normalization_method = "quantile",
 #'   )
-#' head(moo@analyses$diff)
+#' head(moo@analyses$limma$diff)
 diff_counts <- function(moo,
+                        diff_method = "limma",
                         count_type = "filt",
                         sub_count_type = NULL,
                         sample_id_colname = NULL,
@@ -396,6 +398,7 @@ diff_counts <- function(moo,
 
   # Mean-variance Plot.
   mv_plot <- plot_mean_variance(voom_elist = v)
+  plots_subdir <- file.path(diff_method, plots_subdir)
   print_or_save_plot(
     mv_plot,
     filename = file.path(plots_subdir, "mean-variance.png"),
@@ -423,7 +426,7 @@ diff_counts <- function(moo,
 
   names(df_list) <- contrasts
 
-  moo@analyses[["diff"]] <- df_list
+  moo@analyses[[diff_method]][["diff"]] <- df_list
   return(moo)
 }
 
@@ -509,6 +512,7 @@ plot_mean_variance <- function(voom_elist) {
 #'
 #' @inheritParams option_params
 #' @inheritParams filter_counts
+#' @param diff_method where to access differential results from the analysis slot (default: "limma")
 #' @param significance_column Column name for significance, e.g. `"pval"` or `"pvaladj"` (default)
 #' @param significance_cutoff Features will only be kept if their `significance_column` is less then this cutoff
 #'   threshold
@@ -567,8 +571,9 @@ plot_mean_variance <- function(voom_elist) {
 #'     voom_normalization_method = "quantile",
 #'   ) %>%
 #'   filter_diff()
-#' head(moo@analyses$diff_filt)
+#' head(moo@analyses[["limma"]][["diff_filt"]])
 filter_diff <- function(moo,
+                        diff_method = "limma",
                         feature_id_colname = NULL,
                         significance_column = "adjpval",
                         significance_cutoff = 0.05,
@@ -597,7 +602,7 @@ filter_diff <- function(moo,
   Count <- Count_format <- L1 <- Label <- Percent <- Significant <- Var1 <- Var2 <- value <- NULL
 
   # from NIDAP DEG_Gene_List template - filters DEG table
-  diff_dat <- moo@analyses$diff %>%
+  diff_dat <- moo@analyses[[diff_method]]$diff %>%
     join_dfs_wide() %>%
     as.data.frame()
 
@@ -810,6 +815,8 @@ filter_diff <- function(moo,
       ) +
       ggplot2::xlab("") +
       ggplot2::scale_y_continuous(name = "", expand = c(y_axis_expansion, 0))
+
+    plots_subdir <- file.path(diff_method, plots_subdir)
     print_or_save_plot(
       pp,
       filename = file.path(plots_subdir, glue::glue("{plot_type}chart.png")),
@@ -977,6 +984,6 @@ filter_diff <- function(moo,
     }
     ### PH: END Create DEG summary PieChart
   }
-  moo@analyses$diff_filt <- out
+  moo@analyses[[diff_method]][["diff_filt"]] <- out
   return(moo)
 }

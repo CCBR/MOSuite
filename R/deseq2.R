@@ -21,22 +21,58 @@
 #' moo <- run_deseq2(moo, ~condition)
 #' }
 #' @family moo methods
-run_deseq2 <- S7::new_generic("run_deseq2", "moo", function(moo, design, ...) {
+run_deseq <- S7::new_generic("run_deseq2", "moo", function(moo, design, ...) {
   return(S7::S7_dispatch())
 })
 
-S7::method(run_deseq2, multiOmicDataSet) <- function(moo, design, feature_id_colname = "gene_id", min_count = 10, ...) {
-  if (is.null(moo@counts$filt)) {
-    stop("moo must contain filtered counts for DESeq2. Hint: Did you forget to run filter_counts()?")
+S7::method(run_deseq, multiOmicDataSet) <- function(moo,
+                                                    design,
+                                                    count_type = "filt",
+                                                    sub_count_type = NULL,
+                                                    feature_id_colname = NULL,
+                                                    min_count = 10, ...) {
+  sample_metadata <- moo@sample_meta
+  message(glue::glue("* differential counts with DESeq2"))
+  # select correct counts matrix
+  if (!(count_type %in% names(moo@counts))) {
+    stop(glue::glue("count_type {count_type} not in moo@counts"))
   }
+  counts_dat <- moo@counts[[count_type]]
+  if (!is.null(sub_count_type)) {
+    if (!(inherits(counts_dat, "list"))) {
+      stop(
+        glue::glue(
+          "{count_type} counts is not a named list. To use {count_type} counts, set sub_count_type to NULL"
+        )
+      )
+    } else if (!(sub_count_type %in% names(counts_dat))) {
+      stop(
+        glue::glue(
+          "sub_count_type {sub_count_type} is not in moo@counts[[{count_type}]]"
+        )
+      )
+    }
+    counts_dat <- moo@counts[[count_type]][[sub_count_type]]
+  }
+  if (is.null(sample_id_colname)) {
+    sample_id_colname <- colnames(sample_metadata)[1]
+  }
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- colnames(counts_dat)[1]
+  }
+
   dds <- DESeq2::DESeqDataSetFromMatrix(
-    countData = moo@counts$filt %>%
+    countData = counts_dat %>%
       dplyr::mutate(dplyr::across(dplyr::where(is.numeric), round)) %>% # DESeq2 requires integer counts
       counts_dat_to_matrix(feature_id_colname = feature_id_colname),
-    colData = moo@sample_meta,
+    colData = sample_metadata,
     design = design
-  )
-  moo@analyses$deseq2_ds <- DESeq2::DESeq(dds, ...)
-  moo@analyses$deseq2_results <- DESeq2::results(moo@analyses$deseq2_ds)
+  ) %>%
+    DESeq2::DESeq(...)
+
+  moo@analyses$deseq$dds <- dds
+  moo@analyses$deseq$colData <- DESeq2::colData(dds)
+  moo@analyses$deseq$res <- DESeq2::results(dds)
+  moo@analyses$deseq$vsd <- DESeq2::vst(dds, blind = FALSE)
   return(moo)
 }
