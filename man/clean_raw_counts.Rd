@@ -9,7 +9,7 @@ clean_raw_counts(
   count_type = "raw",
   sample_id_colname = NULL,
   feature_id_colname = NULL,
-  samples_to_rename = c(""),
+  samples_to_rename = "",
   cleanup_column_names = TRUE,
   split_gene_name = TRUE,
   aggregate_rows_with_duplicate_gene_names = TRUE,

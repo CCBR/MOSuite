@@ -167,13 +167,15 @@ create_multiOmicDataSet_from_dataframes <- function(sample_metadata,
   return(multiOmicDataSet(sample_metadata, anno_dat, counts))
 }
 
-#' Construct a multiOmicDataSet object from tsv files.
+#' Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).
 #'
 #' @inheritParams multiOmicDataSet
 #' @inheritParams create_multiOmicDataSet_from_dataframes
 #' @param sample_meta_filepath path to text file with sample IDs and metadata for differential analysis.
 #' @param feature_counts_filepath path to text file of expected feature counts (e.g. gene counts from RSEM).
-#' @param ... additional arguments forwarded to `readr::read_delim()`
+#' @param delim Delimiter used in the input files. Any delimiter accepted by `readr::read_delim()` can be used.
+#'   If the files are in CSV format, set `delim = ','`; for TSV format, set `delim = '\t'`.
+#' @param ... additional arguments forwarded to `readr::read_delim()`.
 #'
 #' @return [multiOmicDataSet] object
 #' @export
@@ -187,7 +189,8 @@ create_multiOmicDataSet_from_dataframes <- function(sample_metadata,
 #'   feature_counts_filepath = system.file("extdata",
 #'     "RSEM.genes.expected_count.all_samples.txt.gz",
 #'     package = "MOSuite"
-#'   )
+#'   ),
+#'   delim = "\t"
 #' )
 #' moo@counts$raw %>% head()
 #' moo@sample_meta
@@ -204,12 +207,12 @@ create_multiOmicDataSet_from_dataframes <- function(sample_metadata,
 #' @family moo constructors
 create_multiOmicDataSet_from_files <- function(sample_meta_filepath,
                                                feature_counts_filepath,
-                                               count_type = "raw",
                                                sample_id_colname = NULL,
                                                feature_id_colname = NULL,
+                                               delim = NULL,
                                                ...) {
-  counts_dat <- readr::read_delim(feature_counts_filepath, ...)
-  sample_metadata <- readr::read_delim(sample_meta_filepath, ...)
+  counts_dat <- readr::read_delim(feature_counts_filepath, delim = delim, ...)
+  sample_metadata <- readr::read_delim(sample_meta_filepath, delim = delim, ...)
   return(
     create_multiOmicDataSet_from_dataframes(
       sample_metadata = sample_metadata,
