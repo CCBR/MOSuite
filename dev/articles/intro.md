@@ -2,6 +2,8 @@
 
 ``` r
 library(MOSuite)
+#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
