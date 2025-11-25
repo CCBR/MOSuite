@@ -4,8 +4,7 @@
 #' get_function_meta(tools::Rd_db("MOSuite"), "batch_correct_counts")
 #'
 get_function_meta <- function(func_name, rd_db) {
-  func_file <- paste0(func_name, ".Rd")
-  func_db <- rd_db[[func_file]]
+  func_db <- rd_db[[paste0(func_name, ".Rd")]]
 
   title <- tools:::.Rd_get_metadata(func_db, "title")
   desc <- tools:::.Rd_get_metadata(func_db, "description")
@@ -15,11 +14,12 @@ get_function_meta <- function(func_name, rd_db) {
     dplyr::pull("desc") %>%
     as.list()
   names(arg_docs) <- arg_desc %>% dplyr::pull("arg")
-  # TODO Rd to markdown??
 
   arg_defaults <- lapply(formals(func_name), \(x) {
     if (inherits(x, "name")) {
       default <- NULL
+    } else if (inherits(x, "call")) {
+      default <- eval(x)
     } else {
       default <- x
     }

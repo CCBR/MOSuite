@@ -129,6 +129,18 @@
       "condition": null,
       "content": null,
       "objectPropertyReference": null
+    },
+    {
+      "key": "save_plots",
+      "displayName": "Save Plots",
+      "description": "Whether to save plots to files during analysis (Defaults to `FALSE`, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Basic",
+      "paramValues": null,
+      "defaultValue": true,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
     }
   ]
 }
