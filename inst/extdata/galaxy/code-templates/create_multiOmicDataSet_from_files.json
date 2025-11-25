@@ -1,7 +1,7 @@
 {
   "r_function": "create_multiOmicDataSet_from_files",
-  "title": "Create Multi-Omic Dataset from Files",
-  "description": "Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).",
+  "title": "Create Multi-Omic Dataset from Files\n",
+  "description": "Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).\n",
   "columns": [],
   "inputDatasets": [],
   "parameters": [
@@ -20,7 +20,7 @@
     {
       "key": "sample_meta_filepath",
       "displayName": "",
-      "description": "path to text file with sample IDs and metadata for differential analysis.",
+      "description": "path to text file with sample IDs and metadata for differential analysis.\n",
       "paramType": "STRING",
       "paramGroup": "basic",
       "paramValues": null,
@@ -31,7 +31,7 @@
     {
       "key": "feature_counts_filepath",
       "displayName": "",
-      "description": "path to text file of expected feature counts (e.g. gene counts from RSEM).",
+      "description": "path to text file of expected feature counts (e.g. gene counts from RSEM).\n",
       "paramType": "STRING",
       "paramGroup": "basic",
       "paramValues": null,
@@ -42,7 +42,7 @@
     {
       "key": "sample_id_colname",
       "displayName": "",
-      "description": "name of the column in \\code{sample_metadata} that contains the sample IDs. (Default: \\code{NULL} -\nfirst column in the sample metadata will be used.)",
+      "description": "name of the column in `sample_metadata` that contains the sample IDs. (Default: `NULL` -\nfirst column in the sample metadata will be used.)\n",
       "paramType": "STRING",
       "paramGroup": "basic",
       "paramValues": null,
@@ -53,7 +53,7 @@
     {
       "key": "feature_id_colname",
       "displayName": "",
-      "description": "name of the column in \\code{counts_dat} that contains feature/gene IDs. (Default: \\code{NULL} - first\ncolumn in the count data will be used.)",
+      "description": "name of the column in `counts_dat` that contains feature/gene IDs. (Default: `NULL` - first\ncolumn in the count data will be used.)\n",
       "paramType": "STRING",
       "paramGroup": "basic",
       "paramValues": null,
@@ -64,7 +64,7 @@
     {
       "key": "delim",
       "displayName": "",
-      "description": "Delimiter used in the input files. Any delimiter accepted by \\code{readr::read_delim()} can be used.\nIf the files are in CSV format, set \\code{delim = ','}; for TSV format, set \\code{delim = '\\t'}.",
+      "description": "Delimiter used in the input files. Any delimiter accepted by `readr::read_delim()` can be used.\nIf the files are in CSV format, set `delim = ','`; for TSV format, set `delim = '\\t'`.\n",
       "paramType": "STRING",
       "paramGroup": "basic",
       "paramValues": null,

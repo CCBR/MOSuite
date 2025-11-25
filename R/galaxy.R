@@ -46,18 +46,23 @@ get_function_meta <- function(func_name, rd_db) {
 #' @examples
 #'
 #' update_function_template(
-#'   system.file("extdata", "galaxy", "template-templates", "create_multiOmicDataSet_from_files.json", package = "MOSuite"),
+#'   system.file("extdata", "galaxy", "template-templates", "create_multiOmicDataSet_from_files.json",
+#'     package = "MOSuite"
+#'   ),
 #'   tools::Rd_db("MOSuite")
 #' )
 #'
-update_function_template <- function(template_filename, rd_db, keep_deprecated_args = TRUE) {
+update_function_template <- function(template_filename,
+                                     rd_db,
+                                     keep_deprecated_args = TRUE) {
+  abort_packages_not_installed("Rd2md")
   template <- jsonlite::read_json(template_filename)
   r_function <- template$r_function
   func_meta <- get_function_meta(r_function, rd_db)
   new_template <- list(
     r_function = r_function,
-    title = template$title,
-    description = func_meta$description,
+    title = template$title |> Rd2md::rd_str_to_md(),
+    description = func_meta$description |> Rd2md::rd_str_to_md(),
     columns = list(),
     inputDatasets = list(),
     parameters = list()
@@ -69,7 +74,7 @@ update_function_template <- function(template_filename, rd_db, keep_deprecated_a
       arg_name <- template[[arg_type]][[i]]$key
       if (arg_name %in% names(func_meta$args)) {
         arg_meta <- template[[arg_type]][[i]]
-        arg_meta$description <- func_meta$args[[arg_name]]$description
+        arg_meta$description <- func_meta$args[[arg_name]]$description |> Rd2md::rd_str_to_md()
         arg_meta$defaultValue <- func_meta$args[[arg_name]]$defaultValue
         args_in_template <- c(args_in_template, arg_name)
         new_template[[arg_type]][[length(new_template[[arg_type]]) + 1]] <- arg_meta
@@ -84,7 +89,9 @@ update_function_template <- function(template_filename, rd_db, keep_deprecated_a
   }
 
   if (length(template_args_missing) > 0) {
-    glue::glue("{basename(template_filename)}: Argument(s) from template not found in R function doc: {paste(template_args_missing, collapse = ', ')}")
+    glue::glue(
+      "{basename(template_filename)}: Argument(s) from template not found in R function doc: {paste(template_args_missing, collapse = ', ')}"
+    )
   }
 
   func_args_missing <- setdiff(names(func_meta$args), args_in_template)
@@ -116,14 +123,17 @@ write_package_json <- function(input_dir = file.path("inst", "extdata", "galaxy"
   templates <- list.files(input_dir, pattern = ".*\\.json$", full.names = TRUE)
   rd_db <- tools::Rd_db("MOSuite")
   for (f in templates) {
+    base_filename <- basename(f)
+    message(glue::glue("* Processing {base_filename}"))
     updated_template <- update_function_template(f, rd_db)
     jsonlite::write_json(
       updated_template,
-      file.path(output_dir, basename(f)),
+      file.path(output_dir, base_filename),
       auto_unbox = TRUE,
       pretty = TRUE,
       null = "null",
       na = "null"
     )
   }
+  return()
 }
