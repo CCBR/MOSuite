@@ -153,7 +153,7 @@ B-A. Default: FALSE}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
-\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 
 \item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
 }

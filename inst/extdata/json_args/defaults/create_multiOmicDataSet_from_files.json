@@ -1,7 +1,17 @@
 {
-  "moo_output_rds": "moo.rds",
-  "sample_meta_filepath": null,
-  "feature_counts_filepath": null,
-  "sample_id_colname": null,
-  "feature_id_colname": null
+  "sample_meta_filepath": {
+    "defaultValue": null
+  },
+  "feature_counts_filepath": {
+    "defaultValue": null
+  },
+  "sample_id_colname": {
+    "defaultValue": null
+  },
+  "feature_id_colname": {
+    "defaultValue": null
+  },
+  "delim": {
+    "defaultValue": null
+  }
 }

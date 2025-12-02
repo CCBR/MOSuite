@@ -1,36 +1,100 @@
 {
-  "moo_input_rds": "moo.rds",
-  "moo_output_rds": "moo.rds",
-  "count_type": "clean",
-  "feature_id_colname": null,
-  "sample_id_colname": null,
-  "group_colname": "Group",
-  "label_colname": null,
-  "samples_to_include": null,
-  "minimum_count_value_to_be_considered_nonzero": 8,
-  "minimum_number_of_samples_with_nonzero_counts_in_total": 7,
-  "minimum_number_of_samples_with_nonzero_counts_in_a_group": 3,
-  "use_cpm_counts_to_filter": true,
-  "use_group_based_filtering": false,
-  "principal_component_on_x_axis": 1,
-  "principal_component_on_y_axis": 2,
-  "legend_position_for_pca": "top",
-  "point_size_for_pca": 1,
-  "add_label_to_pca": true,
-  "label_font_size": 3,
-  "label_offset_y_": 2,
-  "label_offset_x_": 2,
-  "samples_to_rename": "",
-  "color_histogram_by_group": false,
-  "set_min_max_for_x_axis_for_histogram": false,
-  "minimum_for_x_axis_for_histogram": -1,
-  "maximum_for_x_axis_for_histogram": 1,
-  "legend_position_for_histogram": "top",
-  "legend_font_size_for_histogram": 10,
-  "number_of_histogram_legend_columns": 6,
-  "colors_for_plots": null,
-  "print_plots": true,
-  "save_plots": true,
-  "interactive_plots": false,
-  "plots_subdir": "filt"
+  "moo_input_rds": null,
+  "moo_output_rds": null,
+  "count_type": {
+    "defaultValue": "clean"
+  },
+  "feature_id_colname": {
+    "defaultValue": null
+  },
+  "sample_id_colname": {
+    "defaultValue": null
+  },
+  "group_colname": {
+    "defaultValue": "Group"
+  },
+  "label_colname": {
+    "defaultValue": null
+  },
+  "samples_to_include": {
+    "defaultValue": null
+  },
+  "minimum_count_value_to_be_considered_nonzero": {
+    "defaultValue": 8
+  },
+  "minimum_number_of_samples_with_nonzero_counts_in_total": {
+    "defaultValue": 7
+  },
+  "minimum_number_of_samples_with_nonzero_counts_in_a_group": {
+    "defaultValue": 3
+  },
+  "use_cpm_counts_to_filter": {
+    "defaultValue": true
+  },
+  "use_group_based_filtering": {
+    "defaultValue": false
+  },
+  "principal_component_on_x_axis": {
+    "defaultValue": 1
+  },
+  "principal_component_on_y_axis": {
+    "defaultValue": 2
+  },
+  "legend_position_for_pca": {
+    "defaultValue": "top"
+  },
+  "point_size_for_pca": {
+    "defaultValue": 1
+  },
+  "add_label_to_pca": {
+    "defaultValue": true
+  },
+  "label_font_size": {
+    "defaultValue": 3
+  },
+  "label_offset_y_": {
+    "defaultValue": 2
+  },
+  "label_offset_x_": {
+    "defaultValue": 2
+  },
+  "samples_to_rename": {
+    "defaultValue": ""
+  },
+  "color_histogram_by_group": {
+    "defaultValue": false
+  },
+  "set_min_max_for_x_axis_for_histogram": {
+    "defaultValue": false
+  },
+  "minimum_for_x_axis_for_histogram": {
+    "defaultValue": -1
+  },
+  "maximum_for_x_axis_for_histogram": {
+    "defaultValue": 1
+  },
+  "legend_position_for_histogram": {
+    "defaultValue": "top"
+  },
+  "legend_font_size_for_histogram": {
+    "defaultValue": 10
+  },
+  "number_of_histogram_legend_columns": {
+    "defaultValue": 6
+  },
+  "colors_for_plots": {
+    "defaultValue": null
+  },
+  "print_plots": {
+    "defaultValue": true
+  },
+  "save_plots": {
+    "defaultValue": true
+  },
+  "interactive_plots": {
+    "defaultValue": false
+  },
+  "plots_subdir": {
+    "defaultValue": "filt"
+  }
 }

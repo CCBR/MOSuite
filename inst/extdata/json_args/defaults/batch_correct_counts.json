@@ -1,16 +1,40 @@
 {
-  "moo_input_rds": "moo.rds",
-  "moo_output_rds": "moo.rds",
-  "count_type": "norm",
-  "sub_count_type": "voom",
-  "sample_id_colname": null,
-  "feature_id_colname": null,
-  "samples_to_include": null,
-  "covariates_colnames": "Group",
-  "batch_colname": "Batch",
-  "label_colname": null,
-  "colors_for_plots": null,
-  "print_plots": true,
-  "save_plots": true,
-  "plots_subdir": "batch"
+  "moo_input_rds": null,
+  "moo_output_rds": null,
+  "count_type": {
+    "defaultValue": "norm"
+  },
+  "sub_count_type": {
+    "defaultValue": "voom"
+  },
+  "sample_id_colname": {
+    "defaultValue": null
+  },
+  "feature_id_colname": {
+    "defaultValue": null
+  },
+  "samples_to_include": {
+    "defaultValue": null
+  },
+  "covariates_colnames": {
+    "defaultValue": "Group"
+  },
+  "batch_colname": {
+    "defaultValue": "Batch"
+  },
+  "label_colname": {
+    "defaultValue": null
+  },
+  "colors_for_plots": {
+    "defaultValue": null
+  },
+  "print_plots": {
+    "defaultValue": true
+  },
+  "save_plots": {
+    "defaultValue": true
+  },
+  "plots_subdir": {
+    "defaultValue": "batch"
+  }
 }

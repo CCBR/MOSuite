@@ -1,33 +1,91 @@
 {
-  "moo_input_rds": "moo.rds",
-  "moo_output_rds": "moo.rds",
-  "count_type": "filt",
-  "norm_type": "voom",
-  "feature_id_colname": null,
-  "samples_to_include": null,
-  "sample_id_colname": null,
-  "group_colname": "Group",
-  "label_colname": null,
-  "input_in_log_counts": false,
-  "voom_normalization_method": "quantile",
-  "samples_to_rename": "",
-  "add_label_to_pca": true,
-  "principal_component_on_x_axis": 1,
-  "principal_component_on_y_axis": 2,
-  "legend_position_for_pca": "top",
-  "label_offset_x_": 2,
-  "label_offset_y_": 2,
-  "label_font_size": 3,
-  "point_size_for_pca": 8,
-  "color_histogram_by_group": true,
-  "set_min_max_for_x_axis_for_histogram": false,
-  "minimum_for_x_axis_for_histogram": -1,
-  "maximum_for_x_axis_for_histogram": 1,
-  "legend_font_size_for_histogram": 10,
-  "legend_position_for_histogram": "top",
-  "colors_for_plots": null,
-  "print_plots": true,
-  "save_plots": true,
-  "interactive_plots": false,
-  "plots_subdir": "norm"
+  "moo_input_rds": null,
+  "moo_output_rds": null,
+  "count_type": {
+    "defaultValue": "filt"
+  },
+  "norm_type": {
+    "defaultValue": "voom"
+  },
+  "feature_id_colname": {
+    "defaultValue": null
+  },
+  "samples_to_include": {
+    "defaultValue": null
+  },
+  "sample_id_colname": {
+    "defaultValue": null
+  },
+  "group_colname": {
+    "defaultValue": "Group"
+  },
+  "label_colname": {
+    "defaultValue": null
+  },
+  "input_in_log_counts": {
+    "defaultValue": false
+  },
+  "voom_normalization_method": {
+    "defaultValue": "quantile"
+  },
+  "samples_to_rename": {
+    "defaultValue": ""
+  },
+  "add_label_to_pca": {
+    "defaultValue": true
+  },
+  "principal_component_on_x_axis": {
+    "defaultValue": 1
+  },
+  "principal_component_on_y_axis": {
+    "defaultValue": 2
+  },
+  "legend_position_for_pca": {
+    "defaultValue": "top"
+  },
+  "label_offset_x_": {
+    "defaultValue": 2
+  },
+  "label_offset_y_": {
+    "defaultValue": 2
+  },
+  "label_font_size": {
+    "defaultValue": 3
+  },
+  "point_size_for_pca": {
+    "defaultValue": 8
+  },
+  "color_histogram_by_group": {
+    "defaultValue": true
+  },
+  "set_min_max_for_x_axis_for_histogram": {
+    "defaultValue": false
+  },
+  "minimum_for_x_axis_for_histogram": {
+    "defaultValue": -1
+  },
+  "maximum_for_x_axis_for_histogram": {
+    "defaultValue": 1
+  },
+  "legend_font_size_for_histogram": {
+    "defaultValue": 10
+  },
+  "legend_position_for_histogram": {
+    "defaultValue": "top"
+  },
+  "colors_for_plots": {
+    "defaultValue": null
+  },
+  "print_plots": {
+    "defaultValue": true
+  },
+  "save_plots": {
+    "defaultValue": true
+  },
+  "interactive_plots": {
+    "defaultValue": false
+  },
+  "plots_subdir": {
+    "defaultValue": "norm"
+  }
 }

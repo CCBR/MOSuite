@@ -1,0 +1,91 @@
+{
+  "moo_input_rds": null,
+  "moo_output_rds": null,
+  "feature_id_colname": {
+    "defaultValue": null
+  },
+  "signif_colname": {
+    "defaultValue": ["B-A_adjpval", "B-C_adjpval"]
+  },
+  "signif_threshold": {
+    "defaultValue": 0.05
+  },
+  "change_colname": {
+    "defaultValue": ["B-A_logFC", "B-C_logFC"]
+  },
+  "change_threshold": {
+    "defaultValue": 1
+  },
+  "value_to_sort_the_output_dataset": {
+    "defaultValue": "p-value"
+  },
+  "num_features_to_label": {
+    "defaultValue": 30
+  },
+  "use_only_addition_labels": {
+    "defaultValue": false
+  },
+  "additional_labels": {
+    "defaultValue": ""
+  },
+  "is_red": {
+    "defaultValue": true
+  },
+  "lab_size": {
+    "defaultValue": 4
+  },
+  "change_sig_name": {
+    "defaultValue": "p-value"
+  },
+  "change_lfc_name": {
+    "defaultValue": "log2FC"
+  },
+  "title": {
+    "defaultValue": "Volcano Plots"
+  },
+  "use_custom_lab": {
+    "defaultValue": false
+  },
+  "ylim": {
+    "defaultValue": 0
+  },
+  "custom_xlim": {
+    "defaultValue": ""
+  },
+  "xlim_additional": {
+    "defaultValue": 0
+  },
+  "ylim_additional": {
+    "defaultValue": 0
+  },
+  "axis_lab_size": {
+    "defaultValue": 24
+  },
+  "point_size": {
+    "defaultValue": 2
+  },
+  "image_width": {
+    "defaultValue": 3000
+  },
+  "image_height": {
+    "defaultValue": 3000
+  },
+  "dpi": {
+    "defaultValue": 300
+  },
+  "interactive_plots": {
+    "defaultValue": false
+  },
+  "print_plots": {
+    "defaultValue": true
+  },
+  "save_plots": {
+    "defaultValue": true
+  },
+  "plots_subdir": {
+    "defaultValue": "diff"
+  },
+  "plot_filename": {
+    "defaultValue": "volcano_enhanced.png"
+  }
+}

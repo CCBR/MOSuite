@@ -1,7 +1,7 @@
 {
   "r_function": "clean_raw_counts",
   "title": "Clean Raw Counts\n",
-  "description": "Clean Raw Counts\n",
+  "description": "This function checks the input raw counts matrix for common formatting problems with feature identifiers and sample\nnames. If feature IDs contain multiple IDs separated by special characters (| - , or space) they will be split into\nmultiple columns. If duplicate feature IDs are detected the counts are summed across duplicate feature ID rows\nwithin each sample. Invalid sample names will also be reported and can be automatically\ncorrected. If your sample names are corrected here, be sure to make equivalent changes to your metadata table.\n",
   "columns": [
     {
       "key": "feature_id_colname",
@@ -76,7 +76,7 @@
     {
       "key": "cleanup_column_names",
       "displayName": "Cleanup Column Names",
-      "description": "Invalid raw counts column names can cause errors\nin the downstream analysis. If this is `TRUE`, any invalid column names\nwill be automatically altered to a correct format. These format changes\nwill include adding an \"X\" as the first character in any column name that\nbegan with a numeral and replacing some special characters (\"-,:. \") with\nunderscores (\"_\"). Invalid sample names and any changes made will be\ndetailed in the template log.\n",
+      "description": "Invalid raw counts column names can cause errors\nin the downstream analysis. If this is `TRUE`, any invalid column names\nwill be automatically altered to a correct format. These format changes\nwill include adding an \"X\" as the first character in any column name that\nbegan with a numeral and replacing some special characters (\"-,:. \") with\nunderscores (\"_\"). Invalid sample names and any changes made will be\ndetailed.\n",
       "paramType": "BOOLEAN",
       "paramGroup": "Advanced",
       "paramValues": null,
@@ -133,7 +133,7 @@
     {
       "key": "save_plots",
       "displayName": "Save Plots",
-      "description": "Whether to save plots to files during analysis (Defaults to `FALSE`, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')\n",
+      "description": "Whether to save plots to files during analysis (Defaults to `TRUE`, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')\n",
       "paramType": "BOOLEAN",
       "paramGroup": "Basic",
       "paramValues": null,
@@ -142,5 +142,15 @@
       "content": null,
       "objectPropertyReference": null
     }
-  ]
+  ],
+  "outputs": {
+    "analysis": {
+      "type": "file",
+      "name": "moo.rds"
+    },
+    "figures": {
+      "type": "directory",
+      "name": "figures/clean/"
+    }
+  }
 }

@@ -1,0 +1,35 @@
+{
+  "counts_dat": {
+    "defaultValue": null
+  },
+  "sample_metadata": {
+    "defaultValue": null
+  },
+  "sample_id_colname": {
+    "defaultValue": null
+  },
+  "samples_to_rename": {
+    "defaultValue": null
+  },
+  "group_colname": {
+    "defaultValue": "Group"
+  },
+  "label_colname": {
+    "defaultValue": "Label"
+  },
+  "principal_components": {
+    "defaultValue": [1, 2, 3]
+  },
+  "point_size": {
+    "defaultValue": 8
+  },
+  "label_font_size": {
+    "defaultValue": 24
+  },
+  "color_values": {
+    "defaultValue": ["#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c", "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"]
+  },
+  "plot_title": {
+    "defaultValue": "PCA 3D"
+  }
+}

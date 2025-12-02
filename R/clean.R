@@ -1,9 +1,9 @@
 #' Clean Raw Counts
 #'
-#' This template checks the input raw counts matrix for common formatting problems with feature identifiers and sample
+#' This function checks the input raw counts matrix for common formatting problems with feature identifiers and sample
 #' names. If feature IDs contain multiple IDs separated by special characters (| - , or space) they will be split into
 #' multiple columns. If duplicate feature IDs are detected the counts are summed across duplicate feature ID rows
-#' within each sample. Invalid sample names will also be reported in the template log and can be automatically
+#' within each sample. Invalid sample names will also be reported and can be automatically
 #' corrected. If your sample names are corrected here, be sure to make equivalent changes to your metadata table.
 #'
 #' @inheritParams filter_counts
@@ -15,7 +15,7 @@
 #'   will include adding an "X" as the first character in any column name that
 #'   began with a numeral and replacing some special characters ("-,:. ") with
 #'   underscores ("_"). Invalid sample names and any changes made will be
-#'   detailed in the template log.
+#'   detailed.
 #' @param split_gene_name If `TRUE`, split the gene name column by any of these special characters: `,|_-:`
 #' @param aggregate_rows_with_duplicate_gene_names If a Feature ID (from the
 #'   "Cleanup Column Names" parameter above) is found to be duplicated on

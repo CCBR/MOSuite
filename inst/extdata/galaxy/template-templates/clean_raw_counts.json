@@ -144,5 +144,16 @@
         "content": null,
         "objectPropertyReference": null
         }
-    ]
+    ],
+    "outputDatasetName": "Cleaned MultiOmics Dataset",
+    "outputs": {
+        "analysis": {
+            "type": "file",
+            "name": "moo.rds"
+        },
+        "figures": {
+            "type": "directory",
+            "name": "figures/clean/"
+        }
+    }
 }
