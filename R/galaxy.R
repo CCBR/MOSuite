@@ -153,35 +153,36 @@ write_json <- function(x,
 }
 
 #' @keywords internal
-write_package_json_blueprints <- function(input_dir = file.path("inst", "extdata", "galaxy", "template-templates"),
-                                          blueprints_output_dir = file.path("inst", "extdata", "galaxy", "code-templates"),
-                                          defaults_output_dir = file.path("inst", "extdata", "json_args", "defaults")) {
-  options(moo_print_plots = TRUE)
-  options(moo_save_plots = TRUE)
-  options(moo_plots_dir = "./figures")
-  templates <- list.files(input_dir, pattern = ".*\\.json$", full.names = TRUE)
-  rd_db <- tools::Rd_db("MOSuite")
-  for (f in templates) {
-    base_filename <- basename(f)
-    message(glue::glue("* Processing {base_filename}"))
+write_package_json_blueprints <-
+  function(input_dir = file.path("inst", "extdata", "galaxy", "template-templates"),
+           blueprints_output_dir = file.path("inst", "extdata", "galaxy", "code-templates"),
+           defaults_output_dir = file.path("inst", "extdata", "json_args", "defaults")) {
+    options(moo_print_plots = TRUE)
+    options(moo_save_plots = TRUE)
+    options(moo_plots_dir = "./figures")
+    templates <- list.files(input_dir, pattern = ".*\\.json$", full.names = TRUE)
+    rd_db <- tools::Rd_db("MOSuite")
+    for (f in templates) {
+      base_filename <- basename(f)
+      message(glue::glue("* Processing {base_filename}"))
 
-    template <- jsonlite::read_json(f)
-    r_function <- template$r_function
-    func_meta <- get_function_meta(r_function, rd_db)
+      template <- jsonlite::read_json(f)
+      r_function <- template$r_function
+      func_meta <- get_function_meta(r_function, rd_db)
 
-    # write default arguments
-    func_args <- get_function_args(func_meta)
-    write_json(
-      lapply(func_args, \(x) x["defaultValue"]),
-      file.path(defaults_output_dir, glue::glue("{r_function}.json"))
-    )
+      # write default arguments
+      func_args <- get_function_args(func_meta)
+      write_json(
+        lapply(func_args, \(x) x["defaultValue"]),
+        file.path(defaults_output_dir, glue::glue("{r_function}.json"))
+      )
 
-    # write galaxy blueprint template
-    updated_template <- update_function_template(template, func_meta, func_args)
-    write_json(
-      updated_template,
-      file.path(blueprints_output_dir, glue::glue("{r_function}.json"))
-    )
+      # write galaxy blueprint template
+      updated_template <- update_function_template(template, func_meta, func_args)
+      write_json(
+        updated_template,
+        file.path(blueprints_output_dir, glue::glue("{r_function}.json"))
+      )
+    }
+    return(invisible())
   }
-  return(invisible())
-}
