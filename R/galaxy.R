@@ -43,6 +43,19 @@ get_function_meta <- function(func_name, rd_db) {
 }
 
 #' @keywords internal
+get_function_args <- function(func_meta) {
+  func_names <- Filter(\(x) !stringr::str_starts(x, "moo"), names(func_meta$args))
+  func_args <- func_meta$args[func_names]
+  if (stringr::str_starts(names(func_meta$args)[1], "moo")) {
+    func_names <- c("moo_input_rds", "moo_output_rds", func_names)
+    func_args <- c("moo.rds", "moo.rds", func_args)
+  }
+  names(func_args) <- func_names
+
+  return(func_args)
+}
+
+#' @keywords internal
 #' @examples
 #'
 #' update_function_template(
@@ -54,7 +67,7 @@ get_function_meta <- function(func_name, rd_db) {
 #'
 update_function_template <- function(template,
                                      func_meta,
-                                     func_defaults,
+                                     func_args,
                                      keep_deprecated_args = TRUE) {
   abort_packages_not_installed("Rd2md")
   new_template <- list(
@@ -63,7 +76,8 @@ update_function_template <- function(template,
     description = func_meta$description |> Rd2md::rd_str_to_md(),
     columns = list(),
     inputDatasets = list(),
-    parameters = list()
+    parameters = list(),
+    outputs = template$outputs
   )
   args_in_template <- c()
   template_args_missing <- c()
@@ -72,8 +86,8 @@ update_function_template <- function(template,
       arg_name <- template[[arg_type]][[i]]$key
       if (arg_name %in% names(func_meta$args)) {
         arg_meta <- template[[arg_type]][[i]]
-        arg_meta$description <- func_meta$args[[arg_name]]$description |> Rd2md::rd_str_to_md()
-        arg_meta$defaultValue <- func_defaults[[arg_name]]
+        arg_meta$description <- func_args[[arg_name]]$description |> Rd2md::rd_str_to_md()
+        arg_meta$defaultValue <- func_args[[arg_name]]$defaultValue
         args_in_template <- c(args_in_template, arg_name)
         new_template[[arg_type]][[length(new_template[[arg_type]]) + 1]] <- arg_meta
       } else {
@@ -88,7 +102,7 @@ update_function_template <- function(template,
 
   if (length(template_args_missing) > 0) {
     glue::glue(
-      "{basename(template_filename)}: ",
+      "{template$r_function}: ",
       "Argument(s) from template not found in R function doc: ",
       "{paste(template_args_missing, collapse = ', ')}"
     )
@@ -98,7 +112,7 @@ update_function_template <- function(template,
   if (length(func_args_missing) > 0) {
     message(
       glue::glue(
-        "{r_function}: ",
+        "{template$r_function}: ",
         "Argument(s) from R function doc not found in template: ",
         "{paste(func_args_missing, collapse = ', ')}"
       )
@@ -127,7 +141,7 @@ write_json <- function(x,
                        null = "null",
                        na = "null",
                        ...) {
-  jsonlite::write_json(
+  return(invisible(jsonlite::write_json(
     x,
     filepath,
     auto_unbox = auto_unbox,
@@ -135,22 +149,7 @@ write_json <- function(x,
     null = null,
     na = na,
     ...
-  )
-}
-
-#' @keywords internal
-get_function_defaults <- function(func_meta) {
-  func_defaults <- list()
-  names(func_meta$args) %>% purrr::map(\(arg_name) {
-    if (stringr::str_starts(arg_name, "moo")) {
-      func_defaults[["moo_input_rds"]] <- "moo.rds"
-      func_defaults[["moo_output_rds"]] <- "moo.rds"
-    } else {
-      func_defaults[[arg_name]] <- func_meta$args[[arg_name]]$defaultValue
-    }
-  })
-
-  return(func_defaults)
+  )))
 }
 
 #' @keywords internal
@@ -171,18 +170,18 @@ write_package_json_blueprints <- function(input_dir = file.path("inst", "extdata
     func_meta <- get_function_meta(r_function, rd_db)
 
     # write default arguments
-    func_defaults <- get_function_defaults(func_meta)
+    func_args <- get_function_args(func_meta)
     write_json(
-      func_defaults,
+      lapply(func_args, \(x) x["defaultValue"]),
       file.path(defaults_output_dir, glue::glue("{r_function}.json"))
     )
 
     # write galaxy blueprint template
-    updated_template <- update_function_template(template, func_meta, func_defaults)
+    updated_template <- update_function_template(template, func_meta, func_args)
     write_json(
       updated_template,
       file.path(blueprints_output_dir, glue::glue("{r_function}.json"))
     )
   }
-  return()
+  return(invisible())
 }
