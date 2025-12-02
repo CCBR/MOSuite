@@ -76,7 +76,11 @@ to manually enter the Column ID for this field.}
 \code{multiOmicDataSet} with cleaned counts
 }
 \description{
-Clean Raw Counts
+This template checks the input raw counts matrix for common formatting problems with feature identifiers and sample
+names. If feature IDs contain multiple IDs separated by special characters (| - , or space) they will be split into
+multiple columns. If duplicate feature IDs are detected the counts are summed across duplicate feature ID rows
+within each sample. Invalid sample names will also be reported in the template log and can be automatically
+corrected. If your sample names are corrected here, be sure to make equivalent changes to your metadata table.
 }
 \examples{
 moo <- create_multiOmicDataSet_from_dataframes(

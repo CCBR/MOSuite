@@ -757,6 +757,18 @@ references:
   year: '2025'
   doi: 10.32614/CRAN.package.RColorBrewer
 - type: software
+  title: Rd2md
+  abstract: 'Rd2md: Markdown Reference Manuals'
+  notes: Suggests
+  url: https://github.com/quantsch/rd2md
+  repository: https://CRAN.R-project.org/package=Rd2md
+  authors:
+  - family-names: Busch
+    given-names: Julian
+    email: jb@quants.ch
+  year: '2025'
+  doi: 10.32614/CRAN.package.Rd2md
+- type: software
   title: readr
   abstract: 'readr: Read Rectangular Text Data'
   notes: Suggests
