@@ -77,11 +77,11 @@
 #' @param colors_for_plots Colors for the PCA and histogram will be picked, in order, from this list. If you have >12
 #'   samples or groups, program will choose from a wide range of random colors
 #' @param plot_corr_matrix_heatmap Datasets with a large number of samples may be too large to create a correlation
-#'   matrix heatmap. If this function takes longer than 5 minutes to run, Set to FALSE and the correlation matrix will
-#'   not be be created. Default is TRUE.
+#'   matrix heatmap. If this function takes longer than 5 minutes to run, Set to `FALSE` and the correlation matrix will
+#'   not be be created. Default is `TRUE`.
 #' @param interactive_plots set to TRUE to make PCA and Histogram plots interactive with `plotly`, allowing you to hover
 #'   your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
-#'   is set to TRUE. Default is FALSE.
+#'   is set to `TRUE`. Default is `FALSE`.
 #' @param plots_subdir subdirectory in where plots will be saved if `save_plots` is `TRUE`
 #'
 #' @return `multiOmicDataSet` with filtered counts
@@ -242,20 +242,22 @@ filter_counts <- function(moo,
       )
     }
 
+    plot_ext <- "png"
     if (isTRUE(interactive_plots)) {
       pca_plot <- pca_plot %>% plotly::ggplotly(tooltip = c("sample", "group"))
       hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) %>%
         plotly::ggplotly(tooltip = c("sample"))
+      plot_ext <- "html"
     }
     print_or_save_plot(
       pca_plot,
-      filename = file.path(plots_subdir, "pca.png"),
+      filename = file.path(plots_subdir, glue::glue("pca.{plot_ext}")),
       print_plots = print_plots,
       save_plots = save_plots
     )
     print_or_save_plot(
       hist_plot,
-      filename = file.path(plots_subdir, "histogram.png"),
+      filename = file.path(plots_subdir, glue::glue("histogram.{plot_ext}")),
       print_plots = print_plots,
       save_plots = save_plots
     )
