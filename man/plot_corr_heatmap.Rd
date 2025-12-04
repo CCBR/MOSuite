@@ -79,8 +79,7 @@ Other plotters:
 \code{\link{print_or_save_plot}()}
 
 Other heatmaps: 
-\code{\link{plot_expr_heatmap}()},
-\code{\link{plot_expr_heatmap_dat}}
+\code{\link{plot_expr_heatmap}()}
 
 Other moo methods: 
 \code{\link{batch_correct_counts}()},

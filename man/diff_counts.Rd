@@ -61,7 +61,7 @@ contrast(s)}
 
 \item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 
-\item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
+\item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \value{
 \code{multiOmicDataSet} with \code{diff} added to the \code{analyses} slot (i.e. \code{moo@analyses$diff})

@@ -82,7 +82,7 @@
 #' @param interactive_plots set to TRUE to make PCA and Histogram plots interactive with `plotly`, allowing you to hover
 #'   your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
 #'   is set to `TRUE`. Default is `FALSE`.
-#' @param plots_subdir subdirectory in where plots will be saved if `save_plots` is `TRUE`
+#' @param plots_subdir subdirectory in `figures/` where plots will be saved if `save_plots` is `TRUE`
 #'
 #' @return `multiOmicDataSet` with filtered counts
 #' @export

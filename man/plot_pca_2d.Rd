@@ -55,7 +55,7 @@ which new name: old_name: new_name}
 
 \item{color_values}{vector of colors as hex values or names recognized by R}
 
-\item{principal_components}{vector with numbered principal components to plot (Default: \code{c(1,2)})}
+\item{principal_components}{vector with numbered principal components to plot}
 
 \item{legend_position}{passed to in \code{legend.position} \code{ggplot2::theme()}}
 

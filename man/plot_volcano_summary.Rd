@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_volcano_summary.R
 \name{plot_volcano_summary}
 \alias{plot_volcano_summary}
-\title{Volcano Plot - Summary [CC Produces one volcano plot for each tested contrast in the input DEG table.}
+\title{Volcano Plot - Summary}
 \usage{
 plot_volcano_summary(
   moo_diff,
@@ -45,14 +45,14 @@ plot_volcano_summary(
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = 1,
   aspect_ratio = 0,
-  plot_filename = "volcano.png",
+  plot_filename = "volcano_summary.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "figures"
+  plots_subdir = "diff"
 )
 }
 \arguments{
-\item{moo_diff}{Differential expression analysis result from one or more contrasts}
+\item{moo_diff}{Differential expression analysis result from one or more contrasts. This must be a dataframe.}
 
 \item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).
 This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
@@ -155,9 +155,10 @@ B-A. Default: FALSE}
 
 \item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 
-\item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
+\item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \description{
+Produces one volcano plot for each tested contrast in the input DEG table.
 It can be sorted by either fold change, t-statistic, or p-value. The returned dataset includes one row for each
 significant gene in each contrast, and contains columns from the DEG analysis of that contrast as well as columns
 useful to the Venn diagram template downstream.

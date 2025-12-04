@@ -127,7 +127,7 @@ not be be created. Default is \code{TRUE}.}
 your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
 is set to \code{TRUE}. Default is \code{FALSE}.}
 
-\item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
+\item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \value{
 \code{multiOmicDataSet} with normalized counts

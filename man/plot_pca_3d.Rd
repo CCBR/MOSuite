@@ -5,8 +5,11 @@
 \title{3D PCA for counts dataframe}
 \usage{
 plot_pca_3d(
-  counts_dat,
-  sample_metadata,
+  moo_counts,
+  count_type = NULL,
+  sub_count_type = NULL,
+  sample_metadata = NULL,
+  feature_id_colname = NULL,
   sample_id_colname = NULL,
   samples_to_rename = NULL,
   group_colname = "Group",
@@ -16,13 +19,28 @@ plot_pca_3d(
   label_font_size = 24,
   color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
-  plot_title = "PCA 3D"
+  plot_title = "PCA 3D",
+  plot_filename = "pca_3D.html",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "pca"
 )
 }
 \arguments{
-\item{counts_dat}{data frame of feature counts (e.g. expected feature counts from RSEM).}
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
+slot}
+
+\item{count_type}{the type of counts to use -- must be a name in the counts slot (\code{moo@counts})}
+
+\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
+Must be a name in \code{names(moo@counts[[count_type]])}.}
 
 \item{sample_metadata}{sample metadata as a data frame or tibble.}
+
+\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID).
+This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
+Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
+used.)}
 
 \item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column
 must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first
@@ -43,7 +61,7 @@ labels to display on your figure (e.g. shorter labels are sometimes preferred on
 column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
 \code{NULL} -- \code{sample_id_colname} will be used.)}
 
-\item{principal_components}{vector with numbered principal components to plot (Default: \code{c(1,2,3)})}
+\item{principal_components}{vector with numbered principal components to plot}
 
 \item{point_size}{size for \code{ggplot2::geom_point()}}
 
@@ -52,16 +70,23 @@ column with your preferred Labels here. The selected column should contain uniqu
 \item{color_values}{vector of colors as hex values or names recognized by R}
 
 \item{plot_title}{title for the plot}
+
+\item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
+
+\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+
+\item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \value{
 \code{plotly::plot_ly} figure
 }
 \description{
-3D PCA for counts dataframe
+The first argument can be a \code{multiOmicDataset} object (\code{moo}) or a \code{data.frame} containing counts.
+For a \code{moo}, choose which counts slot to use with \code{count_type} & (optionally) \code{sub_count_type}.
+For a \code{data.frame}, you must also set \code{sample_metadata}.
+All other arguments are optional.
 }
 \seealso{
-\link{plot_pca} generic
-
 Other PCA functions: 
 \code{\link{calc_pca}()},
 \code{\link{plot_pca}()},
