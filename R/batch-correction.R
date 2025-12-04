@@ -114,7 +114,7 @@ batch_correct_counts <- function(moo,
     combat_edata <- counts_dat
     warning(
       glue::glue(
-        "Batch column {batch_column} contains only 1 unique value; skipping batch correction"
+        "Batch column {batch_colname} contains only 1 unique value; skipping batch correction"
       )
     )
   } else {
