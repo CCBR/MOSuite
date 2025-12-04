@@ -1,0 +1,329 @@
+{
+  "r_function": "plot_volcano_enhanced",
+  "title": "Plot Volcano - Enhanced\n",
+  "description": "Uses \nlist(list(\"https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html\"), list(\"Bioconductor's Enhanced Volcano Plot\"))\n.\n",
+  "columns": [
+    {
+      "key": "feature_id_colname",
+      "displayName": "Column with Feature ID",
+      "description": "The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).\nThis is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts\nMatrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be\nused.)\n",
+      "paramGroup": "Basic",
+      "sourceDataset": "DEG_Table",
+      "columnType": "STRING",
+      "isMulti": null
+    },
+    {
+      "key": "signif_colname",
+      "displayName": "Significance Column",
+      "description": "column name of significance values (e.g., adjusted p-values or FDR). This column will be used\nto determine which points are considered significant in the volcano plot.\n",
+      "paramGroup": "Basic",
+      "sourceDataset": "DEG_Table",
+      "defaultValue": ["B-A_adjpval", "B-C_adjpval"],
+      "columnType": "NUMBER",
+      "isMulti": true
+    },
+    {
+      "key": "change_colname",
+      "displayName": "Log2 Fold Change Column",
+      "description": "column name of fold change values.\n",
+      "paramGroup": "Basic",
+      "sourceDataset": "DEG_Table",
+      "defaultValue": ["B-A_logFC", "B-C_logFC"],
+      "columnType": "NUMBER",
+      "isMulti": true
+    }
+  ],
+  "inputDatasets": [
+    {
+      "key": "moo_input_rds",
+      "displayName": "MOO input Rds",
+      "description": "File path to read the input multiOmicDataSet object (MOO)",
+      "paramType": "STRING",
+      "paramGroup": "basic",
+      "paramValues": null,
+      "defaultValue": "moo.rds",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    }
+  ],
+  "parameters": [
+    {
+      "key": "moo_output_rds",
+      "displayName": "Plot output Rds",
+      "description": "File path to output the plot object as an Rds file",
+      "paramType": "STRING",
+      "paramGroup": "basic",
+      "paramValues": null,
+      "defaultValue": "enhanced_volcano_plot.rds",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "signif_threshold",
+      "displayName": "P-Value Threshold",
+      "description": "Numeric value specifying the significance cutoff for p-values (i.e. filters on\n`signif_colname`)\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Basic",
+      "paramValues": null,
+      "defaultValue": 0.05,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "change_threshold",
+      "displayName": "Log2 Fold Change Threshold",
+      "description": "Numeric value specifying the fold change cutoff for significance (i.e. filters on\n`change_colname`)\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Basic",
+      "paramValues": null,
+      "defaultValue": 1,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "value_to_sort_the_output_dataset",
+      "displayName": "How to sort the output dataset",
+      "description": "How to sort the output dataset. Options are \"fold-change\" or \"p-value\".\n",
+      "paramType": "SELECT",
+      "paramGroup": "Label",
+      "paramValues": [
+        "p-value",
+        "fold-change"
+      ],
+      "defaultValue": "p-value",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "num_features_to_label",
+      "displayName": "Number of Features to Label",
+      "description": "Number of top features/genes to label in the volcano plot. Default is 30.\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Label",
+      "paramValues": null,
+      "defaultValue": 30,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "use_only_addition_labels",
+      "displayName": "Label Only My Feature List",
+      "description": "If `TRUE`, only the additional labels specified in `additional_labels` will be used\nfor labeling in the volcano plot, ignoring the top features.\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Label",
+      "paramValues": null,
+      "defaultValue": false,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "additional_labels",
+      "displayName": "My Feature List",
+      "description": "comma-separated string of feature names or IDs to include in the volcano plot.\n",
+      "paramType": "STRING",
+      "paramGroup": "Label",
+      "paramValues": null,
+      "defaultValue": "",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "lab_size",
+      "displayName": "Label Size",
+      "description": "Size of the labels in the volcano plot.\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Label",
+      "paramValues": null,
+      "defaultValue": 4,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "change_sig_name",
+      "displayName": "Custom Significance Label",
+      "description": "Name for the significance column in the plot. Default is \"p-value\".\n",
+      "paramType": "STRING",
+      "paramGroup": "Title and Axis labels",
+      "paramValues": null,
+      "defaultValue": "p-value",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "change_lfc_name",
+      "displayName": "Custom Log Fold Change Label",
+      "description": "Name for the fold change column in the plot. Default is \"log2FC\".\n",
+      "paramType": "STRING",
+      "paramGroup": "Title and Axis labels",
+      "paramValues": null,
+      "defaultValue": "log2FC",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "use_custom_lab",
+      "displayName": "Use Custom Labels",
+      "description": "If TRUE, uses custom labels for the plot (set by `change_sig_name` and `change_lfc_name`)\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Title and Axis Labels",
+      "paramValues": null,
+      "defaultValue": false,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "title",
+      "displayName": "Plot Title",
+      "description": "Title of the plot. Default is \"Volcano Plots\".\n",
+      "paramType": "STRING",
+      "paramGroup": "Title and Axis labels",
+      "paramValues": null,
+      "defaultValue": "Volcano Plots",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "ylim",
+      "displayName": "Y-Limit",
+      "description": "Y-axis limits for the plot.\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Plot",
+      "paramValues": null,
+      "defaultValue": 0,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "custom_xlim",
+      "displayName": "Custom X-axis limits",
+      "description": "Custom X-axis limits for the plot.\n",
+      "paramType": "STRING",
+      "paramGroup": "Plot",
+      "paramValues": null,
+      "defaultValue": "",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "xlim_additional",
+      "displayName": "X-Limit Padding",
+      "description": "Additional space to add to the X-axis limits.\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Plot",
+      "paramValues": null,
+      "defaultValue": 0,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "ylim_additional",
+      "displayName": "Y-Limit Padding",
+      "description": "Additional space to add to the Y-axis limits.\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Plot",
+      "paramValues": null,
+      "defaultValue": 0,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "axis_lab_size",
+      "displayName": "Axis Label Size",
+      "description": "Size of the axis labels.\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Plot",
+      "paramValues": null,
+      "defaultValue": 24,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "point_size",
+      "displayName": "Point Size",
+      "description": "Size of the points in the plot.\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Plot",
+      "paramValues": null,
+      "defaultValue": 2,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "image_width",
+      "displayName": "Image Width",
+      "description": "output image width in pixels - only used if save_plots is TRUE\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Image",
+      "paramValues": null,
+      "defaultValue": 3000,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "image_height",
+      "displayName": "Image Height",
+      "description": "output image height in pixels - only used if save_plots is TRUE\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Image",
+      "paramValues": null,
+      "defaultValue": 3000,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "dpi",
+      "displayName": "Image Resolution (DPI)",
+      "description": "dots-per-inch of the output image (see `ggsave()`) - only used if save_plots is TRUE\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Image",
+      "paramValues": null,
+      "defaultValue": 300,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "save_plots",
+      "displayName": "Save Plots",
+      "description": "Whether to save plots to files during analysis (Defaults to `TRUE`, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Visualization",
+      "paramValues": null,
+      "defaultValue": true,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    }
+  ],
+  "outputs": {
+    "analysis": {
+      "type": "file",
+      "name": "enhanced_volcano_plot.rds"
+    },
+    "figures": {
+      "type": "file",
+      "name": "figures/diff/volcano_enhanced.png"
+    }
+  }
+}

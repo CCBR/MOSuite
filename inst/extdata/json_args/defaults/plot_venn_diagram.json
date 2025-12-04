@@ -1,7 +1,6 @@
 {
-  "diff_summary_dat": {
-    "defaultValue": null
-  },
+  "moo_input_rds": null,
+  "moo_output_rds": null,
   "feature_id_colname": {
     "defaultValue": null
   },

@@ -56,22 +56,16 @@
     ],
     "inputDatasets": [
         {
-            "key": "counts_matrix",
-            "displayName": "Counts Matrix",
-            "description": "The input Counts Matrix. Usually, this will be your Filtered Counts matrix.",
-            "paramGroup": "Basic",
-            "anchorDataset": false,
-            "dataType": "R_NATIVE_DATAFRAME",
-            "tags": []
-        },
-        {
-            "key": "Sample_Metadata",
-            "displayName": "Sample Metadata",
-            "description": "The Sample Metadata table containing your sample metadata. At minimum, this table must include one column each of the following: Samples, Groups, Batches, and Labels. The names in the Samples column of your input Sample Metadata must match the Sample Column Names of your input Counts Matrix exactly. You may have more than one column showing different Groups by which your samples may be organized (e.g. Genotype, Response, Time, etc.).",
-            "paramGroup": "Basic",
-            "anchorDataset": false,
-            "dataType": "R_NATIVE_DATAFRAME",
-            "tags": []
+            "key": "moo_input_rds",
+            "displayName": "MOO input Rds",
+            "description": "File path to read the input multiOmicDataSet object (MOO)",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
         }
     ],
     "parameters": [

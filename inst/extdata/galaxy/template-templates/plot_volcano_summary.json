@@ -1,5 +1,5 @@
 {
-    "title": "Volcano Plot - Summary",
+    "title": "Plot Volcano - Summary",
     "description": "Produces one volcano plot for each tested contrast in the input DEG table.\n\nIt can be sorted by either fold change, t-statistic, or p-value. The returned dataset includes one row for each significant gene in each contrast, and contains columns from the DEG analysis of that contrast as well as columns useful to the Venn diagram template downstream.",
     "r_function": "plot_volcano_summary",
     "columns": [
@@ -16,19 +16,34 @@
     ],
     "inputDatasets": [
         {
-            "key": "DEG_Table",
-            "displayName": "DEG Table",
-            "description": "Dataset containing differential expression of genes (DEG) analysis output columns. Usually, this includes columns for gene names, (log) fold changes, (adjusted) p-values, and t-statistics. Other columns may also be present.",
-            "paramGroup": "Basic",
-            "anchorDataset": false,
-            "dataType": "R_NATIVE_DATAFRAME",
-            "tags": []
+            "key": "moo_input_rds",
+            "displayName": "MOO input Rds",
+            "description": "File path to read the input multiOmicDataSet object (MOO)",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
         }
     ],
     "parameters": [
         {
-            "key": "volcano_p_value_type",
-            "displayName": "Volcano P-value Type",
+            "key": "moo_output_rds",
+            "displayName": "Summary dataframe output Rds",
+            "description": "File path to output summary data as an Rds file",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "summary_data.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "signif_colname",
+            "displayName": "Significance column name",
             "description": "Choose whether to use unadjusted or adjusted p-values in the resulting volcano plots.",
             "paramType": "SELECT",
             "paramGroup": "Basic",
@@ -42,7 +57,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "p_value_threshold",
+            "key": "signif_threshold",
             "displayName": "P-Value Threshold",
             "description": "Generates a horizontal blue line at -log10 of this value on the y-axis of the volcano plot. Genes located above this threshold are considered significantly differentially expressed.",
             "paramType": "NUMBER",
@@ -54,7 +69,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "log2_fold_change_threshold",
+            "key": "change_threshold",
             "displayName": "Log2 Fold Change Threshold",
             "description": "Generates two vertical red lines at +/- this value on the x-axis of the volcano plot. A value of 1 entered here will draw lines at a log2 fold change values of -1 and 1. This corresponds to unlogged fold changes of 2 and 1/2, respectively.",
             "paramType": "NUMBER",
@@ -66,8 +81,8 @@
             "objectPropertyReference": null
         },
         {
-            "key": "choose_genes_to_label_by",
-            "displayName": "Choose Genes To Label By",
+            "key": "value_to_sort_the_output_dataset",
+            "displayName": "Choose How to sort the output dataset",
             "description": "This selection determines how the gene list is sorted before choosing the top-N genes as set by the \"Number of Genes to Label\" parameter. Choose either (absolute) fold change, p-value, or t-statistic to label the top genes by the selected metric.",
             "paramType": "SELECT",
             "paramGroup": "Gene Name Label",
@@ -82,7 +97,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "number_of_genes_to_label",
+            "key": "num_features_to_label",
             "displayName": "Number of Genes to Label",
             "description": "To minimize clutter on the volcano plot, it is inadvisable to label every gene. You can choose to label any number of genes or none. The value of this parameter (N) is used to label the top N genes only. See the \"Choose Genes To Label By\" parameter for options on how to sort the gene list before labeling the top N genes.",
             "paramType": "NUMBER",
@@ -94,8 +109,8 @@
             "objectPropertyReference": null
         },
         {
-            "key": "add_my_gene_list_to_labels",
-            "displayName": "Add My Gene List To Labels",
+            "key": "add_features",
+            "displayName": "Add Custom Features List To Labels",
             "description": "Set TRUE when you want to label a specific set of genes in the \"My Gene List\" parameter\" IN ADDITION to the number of genes you set in the \"Number of Genes to Label\" parameter.",
             "paramType": "BOOLEAN",
             "paramGroup": "Gene Name Label",
@@ -106,8 +121,8 @@
             "objectPropertyReference": null
         },
         {
-            "key": "label_only_my_gene_list",
-            "displayName": "Label Only My Gene List",
+            "key": "label_features",
+            "displayName": "Label Only Custom Features List",
             "description": "Select TRUE when you want to label ONLY a specific list of genes given in the \"My Gene List\" parameter.",
             "paramType": "BOOLEAN",
             "paramGroup": "Gene Name Label",
@@ -118,8 +133,8 @@
             "objectPropertyReference": null
         },
         {
-            "key": "my_gene_list",
-            "displayName": "My Gene List",
+            "key": "custom_gene_list",
+            "displayName": "Custom Feature/Gene List",
             "description": "Provide a list of genes (comma separated) to be labeled on the volcano plot. You must toggle one of the following ON to see these labels: \"Add My Gene List To Labels\" or \"Label Only My Gene List\".",
             "paramType": "STRING",
             "paramGroup": "Gene Name Label",
@@ -130,8 +145,8 @@
             "objectPropertyReference": null
         },
         {
-            "key": "gene_label_text_color",
-            "displayName": "Gene Label Text Color",
+            "key": "default_label_color",
+            "displayName": "Default Feature Label Text Color",
             "description": "Set the color for the text used to add gene name labels to points.",
             "paramType": "SELECT",
             "paramGroup": "Gene Name Label",
@@ -800,8 +815,8 @@
             "objectPropertyReference": null
         },
         {
-            "key": "gene_label_text_color_for_my_genes",
-            "displayName": "Gene Label Text Color for My Genes",
+            "key": "custom_label_color",
+            "displayName": "Feature Label Text Color for custom features list",
             "description": "Set the color for the specific list of genes provided in the \"Gene List\" parameter.",
             "paramType": "SELECT",
             "paramGroup": "Gene Name Label",
@@ -1470,7 +1485,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "label_position_adjustment_x_axis",
+            "key": "label_x_adj",
             "displayName": "Label Position Adjustment (X-Axis)",
             "description": "",
             "paramType": "NUMBER",
@@ -1482,7 +1497,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "label_position_adjustment_y_axis",
+            "key": "label_y_adj",
             "displayName": "Label Position Adjustment (Y-Axis)",
             "description": "",
             "paramType": "NUMBER",
@@ -1494,7 +1509,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "line_segment_thickness",
+            "key": "line_thickness",
             "displayName": "Line Segment Thickness",
             "description": "Thickness of the line connecting the point and it's gene label",
             "paramType": "NUMBER",
@@ -1530,8 +1545,8 @@
             "objectPropertyReference": null
         },
         {
-            "key": "displace_gene_labels",
-            "displayName": "Displace Gene Labels",
+            "key": "displace_feature_labels",
+            "displayName": "Displace Feature Labels",
             "description": "Set TRUE if you want to displace the gene label for a specific set of genes. Make sure to use custom x- and y- limits and give sufficient space for displacement; otherwise other labels than the desired ones will appear displaced.",
             "paramType": "BOOLEAN",
             "paramGroup": "Gene Name Label",
@@ -1542,9 +1557,9 @@
             "objectPropertyReference": null
         },
         {
-            "key": "gene_list_special_label_displacement",
+            "key": "custom_gene_list_special_label_displacement",
             "displayName": "Gene List Special Label Displacement",
-            "description": "Provide a list of genes (comma separated) for which you want special displacement of the gene label.",
+            "description": "Provide a list of features (comma separated) for which you want special displacement of the gene label.",
             "paramType": "STRING",
             "paramGroup": "Gene Name Label",
             "paramValues": null,
@@ -1578,7 +1593,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "color_of_p_value_threshold_line",
+            "key": "color_of_signif_threshold_line",
             "displayName": "Color of P-Value Threshold Line",
             "description": "The color of the horizontal p-value threshold line",
             "paramType": "SELECT",
@@ -2248,8 +2263,8 @@
             "objectPropertyReference": null
         },
         {
-            "key": "color_of_non_significant_genes",
-            "displayName": "Color of Non-Significant Genes",
+            "key": "color_of_non_significant_features",
+            "displayName": "Color of Non-Significant Features",
             "description": "",
             "paramType": "SELECT",
             "paramGroup": "Plot",
@@ -2918,7 +2933,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "color_of_log_fold_change_threshold_line",
+            "key": "color_of_logfold_change_threshold_line",
             "displayName": "Color of Log Fold Change Threshold Line",
             "description": "The color of the vertical fold-change threshold lines",
             "paramType": "SELECT",
@@ -3588,8 +3603,8 @@
             "objectPropertyReference": null
         },
         {
-            "key": "color_of_genes_meeting_only_p_value_threshold",
-            "displayName": "Color of Genes Meeting Only P-Value Threshold",
+            "key": "color_of_features_meeting_only_signif_threshold",
+            "displayName": "Color of Features Meeting Only P-Value Threshold",
             "description": "",
             "paramType": "SELECT",
             "paramGroup": "Plot",
@@ -4258,8 +4273,8 @@
             "objectPropertyReference": null
         },
         {
-            "key": "color_for_genes_meeting_p_value_and_fold_change_thresholds",
-            "displayName": "Color for genes meeting p-value and fold-change thresholds",
+            "key": "color_for_features_meeting_pvalue_and_foldchange_thresholds",
+            "displayName": "Color for features meeting p-value and fold-change thresholds",
             "description": "",
             "paramType": "SELECT",
             "paramGroup": "Plot",
@@ -4928,7 +4943,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "flip_contrast",
+            "key": "flip_vplot",
             "displayName": "Flip Contrast",
             "description": "Select TRUE if you want to flip the contrast to opposite direction (flip the plot around the y-axis).",
             "paramType": "BOOLEAN",
@@ -5000,53 +5015,19 @@
             "objectPropertyReference": null
         },
         {
-            "key": "deg_columns_to_keep_in_output_table",
-            "displayName": "DEG Columns to Keep in Output Table",
+            "key": "add_deg_columns",
+            "displayName": "Add DEG Columns to Output Table",
             "description": "Select columns from input DEG results to include in the output dataset. If \"none\" is selected, then the output will contain only columns for Gene and Contrast.",
-            "paramType": "MULTISELECT",
-            "paramGroup": "Table",
-            "paramValues": [
-                "FC",
-                "logFC",
-                "tstat",
-                "pval",
-                "adjpval",
-                "none"
-            ],
-            "defaultValue": "c(\"FC\",\"logFC\",\"tstat\",\"pval\",\"adjpval\")",
-            "condition": null,
-            "content": null,
-            "objectPropertyReference": null
-        },
-        {
-            "key": "Image_Output_Format",
-            "displayName": "Image Output Format",
-            "description": "Select the image format for saved images: .png (default) .svg (vectorized)",
-            "paramType": "SELECT",
-            "paramGroup": "Image",
-            "paramValues": [
-                "png",
-                "svg"
-            ],
-            "defaultValue": "png",
-            "condition": null,
-            "content": null,
-            "objectPropertyReference": null
-        },
-        {
-            "key": "Use_svglite",
-            "displayName": "Use svglite",
-            "description": "If TRUE, generates the image using the svglite library, to enable easy editing using off-the-shelf SVG editors",
             "paramType": "BOOLEAN",
-            "paramGroup": "Image",
+            "paramGroup": "Table",
             "paramValues": null,
-            "defaultValue": "FALSE",
+            "defaultValue": false,
             "condition": null,
             "content": null,
             "objectPropertyReference": null
         },
         {
-            "key": "Image_Width",
+            "key": "image_width",
             "displayName": "Image Width",
             "description": "Image width in inches",
             "paramType": "NUMBER",
@@ -5058,7 +5039,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Image_Height",
+            "key": "image_height",
             "displayName": "Image Height",
             "description": "Image height in inches",
             "paramType": "NUMBER",
@@ -5070,7 +5051,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Image_Resolution",
+            "key": "dpi",
             "displayName": "Image Resolution",
             "description": "Image resolution in dpi (dots-per-inch) for png output",
             "paramType": "NUMBER",
@@ -5106,7 +5087,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "figure_aspect_ratio",
+            "key": "aspect_ratio",
             "displayName": "Figure Aspect Ratio",
             "description": "figure aspect ratio, expressed as y / x; if 0, the ratio is based on the image size",
             "paramType": "NUMBER",
@@ -5116,6 +5097,29 @@
             "condition": null,
             "content": null,
             "objectPropertyReference": null
+        },
+        {
+        "key": "save_plots",
+        "displayName": "Save Plots",
+        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+        "paramType": "BOOLEAN",
+        "paramGroup": "Visualization",
+        "paramValues": null,
+        "defaultValue": true,
+        "condition": null,
+        "content": null,
+        "objectPropertyReference": null
         }
-    ]
+    ],
+    "outputDatasetName": "Volcano Plot - Summary",
+    "outputs": {
+        "analysis": {
+            "type": "file",
+            "name": "summary_data.rds"
+        },
+        "figures": {
+            "type": "file",
+            "name": "figures/diff/volcano_summary.png"
+        }
+    }
 }

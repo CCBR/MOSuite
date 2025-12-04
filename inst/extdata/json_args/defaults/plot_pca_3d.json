@@ -1,8 +1,16 @@
 {
-  "counts_dat": {
+  "moo_input_rds": null,
+  "moo_output_rds": null,
+  "count_type": {
+    "defaultValue": null
+  },
+  "sub_count_type": {
     "defaultValue": null
   },
   "sample_metadata": {
+    "defaultValue": null
+  },
+  "feature_id_colname": {
     "defaultValue": null
   },
   "sample_id_colname": {
@@ -31,5 +39,17 @@
   },
   "plot_title": {
     "defaultValue": "PCA 3D"
+  },
+  "plot_filename": {
+    "defaultValue": "pca_3D.html"
+  },
+  "print_plots": {
+    "defaultValue": true
+  },
+  "save_plots": {
+    "defaultValue": true
+  },
+  "plots_subdir": {
+    "defaultValue": "pca"
   }
 }

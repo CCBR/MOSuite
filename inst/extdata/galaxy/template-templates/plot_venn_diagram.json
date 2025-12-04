@@ -26,16 +26,31 @@
     ],
     "inputDatasets": [
         {
-            "key": "Input_Dataset",
-            "displayName": "Input Dataset",
-            "description": "The input dataset containing cateogry membership information. Should contain at least two columns: elements and categories. If an element is contained in multiple categories, there should be one row for each category.",
-            "paramGroup": "Basic",
-            "anchorDataset": false,
-            "dataType": "R_NATIVE_DATAFRAME",
-            "tags": []
+            "key": "moo_input_rds",
+            "displayName": "MOO input Rds",
+            "description": "File path to read the input multiOmicDataSet object (MOO)",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
         }
     ],
     "parameters": [
+        {
+            "key": "moo_output_rds",
+            "displayName": "Plot output Rds",
+            "description": "File path to output the plot object as an Rds file",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "venn_diagram_plot.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
         {
             "key": "select_contrasts",
             "displayName": "Selected Categories",
@@ -1029,21 +1044,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Image_Output_Format",
-            "displayName": "Image Output Format",
-            "description": "Select the image format for saved images: currently only .png available",
-            "paramType": "SELECT",
-            "paramGroup": "Image",
-            "paramValues": [
-                "png"
-            ],
-            "defaultValue": "png",
-            "condition": null,
-            "content": null,
-            "objectPropertyReference": null
-        },
-        {
-            "key": "Image_Resolution",
+            "key": "dpi",
             "displayName": "Image Resolution",
             "description": "",
             "paramType": "NUMBER",
@@ -1055,7 +1056,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Image_Height",
+            "key": "image_height",
             "displayName": "Image Height",
             "description": "",
             "paramType": "NUMBER",
@@ -1067,7 +1068,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Image_Width",
+            "key": "image_width",
             "displayName": "Image Width",
             "description": "",
             "paramType": "NUMBER",
@@ -1077,6 +1078,29 @@
             "condition": null,
             "content": null,
             "objectPropertyReference": null
+        },
+        {
+        "key": "save_plots",
+        "displayName": "Save Plots",
+        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+        "paramType": "BOOLEAN",
+        "paramGroup": "Visualization",
+        "paramValues": null,
+        "defaultValue": true,
+        "condition": null,
+        "content": null,
+        "objectPropertyReference": null
         }
-    ]
+    ],
+    "outputDatasetName": "Venn Diagram Plot",
+    "outputs": {
+        "analysis": {
+            "type": "file",
+            "name": "plot.rds"
+        },
+        "figures": {
+            "type": "file",
+            "name": "figures/diff/venn_diagram.png"
+        }
+    }
 }
