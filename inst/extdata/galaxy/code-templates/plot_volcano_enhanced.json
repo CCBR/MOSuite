@@ -174,7 +174,7 @@
     {
       "key": "use_custom_lab",
       "displayName": "Use Custom Labels",
-      "description": "If TRUE, uses custom labels for the plot (set by `change_sig_name` and `change_lfc_name`)\n",
+      "description": "If TRUE, uses custom labels for the plot.\n",
       "paramType": "BOOLEAN",
       "paramGroup": "Title and Axis Labels",
       "paramValues": null,

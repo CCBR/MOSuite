@@ -73,14 +73,8 @@
   "legend_position_for_histogram": {
     "defaultValue": "top"
   },
-  "number_of_histogram_legend_columns": {
-    "defaultValue": 6
-  },
   "colors_for_plots": {
     "defaultValue": null
-  },
-  "plot_corr_matrix_heatmap": {
-    "defaultValue": true
   },
   "print_plots": {
     "defaultValue": true

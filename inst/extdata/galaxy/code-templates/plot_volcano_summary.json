@@ -1,7 +1,7 @@
 {
   "r_function": "plot_volcano_summary",
   "title": "Plot Volcano - Summary\n",
-  "description": "Produces one volcano plot for each tested contrast in the input DEG table.\nIt can be sorted by either fold change, t-statistic, or p-value. The returned dataset includes one row for each\nsignificant gene in each contrast, and contains columns from the DEG analysis of that contrast as well as columns\nuseful to the Venn diagram template downstream.\n",
+  "description": "It can be sorted by either fold change, t-statistic, or p-value. The returned dataset includes one row for each\nsignificant gene in each contrast, and contains columns from the DEG analysis of that contrast as well as columns\nuseful to the Venn diagram template downstream.\n",
   "columns": [
     {
       "key": "feature_id_colname",
