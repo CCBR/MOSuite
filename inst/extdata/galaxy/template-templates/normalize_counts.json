@@ -76,6 +76,42 @@
     ],
     "parameters": [
         {
+            "key": "moo_output_rds",
+            "displayName": "MOO output Rds",
+            "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file at the end of the function",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "count_type",
+            "displayName": "Count Type",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "Basic",
+            "paramValues": null,
+            "defaultValue": "raw",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "norm_type",
+            "displayName": "Normalization Type",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "Basic",
+            "paramValues": null,
+            "defaultValue": "raw",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
             "key": "input_in_log_counts",
             "displayName": "Input in Log Counts",
             "description": "TRUE if input is in log counts",
@@ -297,7 +333,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Number_of_Histogram_Legend_Columns",
+            "key": "number_of_histogram_legend_columns",
             "displayName": "Number of Histogram Legend Columns",
             "description": "",
             "paramType": "NUMBER",
@@ -334,18 +370,6 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Number_of_Image_Rows",
-            "displayName": "Number of Image Rows",
-            "description": "1 = side-by-side, 2 = stacked",
-            "paramType": "NUMBER",
-            "paramGroup": "Visualization",
-            "paramValues": null,
-            "defaultValue": "2",
-            "condition": null,
-            "content": null,
-            "objectPropertyReference": null
-        },
-        {
             "key": "interactive_plots",
             "displayName": "Make Plots Interactive",
             "description": "Toggle TRUE to make PCA and Histogram plots interactive, allowing you to hover your mouse over a point or line to view sample information. The similarity heatmap will not display if this toggle is set to TRUE. Default is FALSE.",
@@ -358,7 +382,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Plot_Correlation_Matrix_Heatmap",
+            "key": "plot_corr_matrix_heatmap",
             "displayName": "Plot Correlation Matrix Heatmap",
             "description": "Datasets with a large number of samples may be too large to create a correlation matix Heatmap. If Template takes longer than 5 min to run Toggle switch to off and the correlation matrix will not be be created",
             "paramType": "BOOLEAN",
@@ -368,6 +392,29 @@
             "condition": null,
             "content": null,
             "objectPropertyReference": null
+        },
+        {
+        "key": "save_plots",
+        "displayName": "Save Plots",
+        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+        "paramType": "BOOLEAN",
+        "paramGroup": "Visualization",
+        "paramValues": null,
+        "defaultValue": true,
+        "condition": null,
+        "content": null,
+        "objectPropertyReference": null
         }
-    ]
+    ],
+    "outputDatasetName": "Normalized Counts in MultiOmics Dataset",
+    "outputs": {
+        "analysis": {
+            "type": "file",
+            "name": "moo.rds"
+        },
+        "figures": {
+            "type": "directory",
+            "name": "figures/norm/"
+        }
+    }
 }

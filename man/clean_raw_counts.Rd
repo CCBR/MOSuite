@@ -15,7 +15,8 @@ clean_raw_counts(
   aggregate_rows_with_duplicate_gene_names = TRUE,
   gene_name_column_to_use_for_collapsing_duplicates = "",
   print_plots = options::opt("print_plots"),
-  save_plots = options::opt("save_plots")
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "clean"
 )
 }
 \arguments{
@@ -71,6 +72,8 @@ to manually enter the Column ID for this field.}
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
 \item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+
+\item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \value{
 \code{multiOmicDataSet} with cleaned counts

@@ -30,5 +30,8 @@
   },
   "save_plots": {
     "defaultValue": true
+  },
+  "plots_subdir": {
+    "defaultValue": "clean"
   }
 }

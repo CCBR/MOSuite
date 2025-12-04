@@ -97,7 +97,7 @@ for labeling in the volcano plot, ignoring the top features.}
 
 \item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover
 your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
-is set to TRUE. Default is FALSE.}
+is set to \code{TRUE}. Default is \code{FALSE}.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 

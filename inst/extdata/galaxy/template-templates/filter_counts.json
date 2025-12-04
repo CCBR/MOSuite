@@ -52,39 +52,47 @@
             "defaultValue": null,
             "columnType": "ALL",
             "isMulti": null
-        },
-        {
-            "key": "outlier_samples_to_remove",
-            "displayName": "Outlier Samples to Remove",
-            "description": "",
-            "paramGroup": "Filtering",
-            "sourceDataset": "counts_matrix",
-            "defaultValue": null,
-            "columnType": "NUMBER",
-            "isMulti": true
         }
     ],
     "inputDatasets": [
         {
-            "key": "counts_matrix",
-            "displayName": "Counts Matrix",
-            "description": "The input Counts Matrix. Usually, this will be your Cleaned Counts matrix.",
-            "paramGroup": "Basic",
-            "anchorDataset": false,
-            "dataType": "R_NATIVE_DATAFRAME",
-            "tags": []
-        },
-        {
-            "key": "Sample_Metadata",
-            "displayName": "Sample Metadata",
-            "description": "The Sample Metadata table containing your sample metadata. At minimum, this table must include one column each of the following: Samples, Groups, Batches, and Labels. The names in the Samples column of your input Sample Metadata must match the Sample Column Names of your input Counts Matrix exactly. You may have more than one column showing different Groups by which your samples may be organized (e.g. Genotype, Response, Time, etc.).",
-            "paramGroup": "Basic",
-            "anchorDataset": false,
-            "dataType": "R_NATIVE_DATAFRAME",
-            "tags": []
+            "key": "moo_input_rds",
+            "displayName": "MOO input Rds",
+            "description": "File path to read the input multiOmicDataSet object (MOO)",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
         }
     ],
     "parameters": [
+        {
+            "key": "moo_output_rds",
+            "displayName": "MOO output Rds",
+            "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file at the end of the function",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "count_type",
+            "displayName": "Count Type",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "Basic",
+            "paramValues": null,
+            "defaultValue": "raw",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
         {
             "key": "use_cpm_counts_to_filter",
             "displayName": "Use CPM Counts to filter",
@@ -338,7 +346,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Number_of_Histogram_Legend_Columns",
+            "key": "number_of_histogram_legend_columns",
             "displayName": "Number of Histogram Legend Columns",
             "description": "",
             "paramType": "NUMBER",
@@ -375,18 +383,6 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Number_of_Image_Rows",
-            "displayName": "Number of Image Rows",
-            "description": "1 = side-by-side, 2 = stacked",
-            "paramType": "NUMBER",
-            "paramGroup": "Visualization",
-            "paramValues": null,
-            "defaultValue": "2",
-            "condition": null,
-            "content": null,
-            "objectPropertyReference": null
-        },
-        {
             "key": "interactive_plots",
             "displayName": "Interactive Plots",
             "description": "Toggle TRUE to make PCA and Histogram plots interactive, allowing you to hover your mouse over a point or line to view sample information. The similarity heatmap will not display if this toggle is set to TRUE. Default is FALSE.",
@@ -399,7 +395,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Plot_Correlation_Matrix_Heatmap",
+            "key": "plot_corr_matrix_heatmap",
             "displayName": "Plot Correlation Matrix Heatmap",
             "description": "Datasets with a large number of samples may be too large to create a correlation matix heatmap. If this template takes longer than 5 minutes to run, Toggle switch to FALSE and the correlation matrix will not be be created. Default is TRUE.",
             "paramType": "BOOLEAN",
@@ -409,6 +405,29 @@
             "condition": null,
             "content": null,
             "objectPropertyReference": null
+        },
+        {
+        "key": "save_plots",
+        "displayName": "Save Plots",
+        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+        "paramType": "BOOLEAN",
+        "paramGroup": "Visualization",
+        "paramValues": null,
+        "defaultValue": true,
+        "condition": null,
+        "content": null,
+        "objectPropertyReference": null
         }
-    ]
+    ],
+    "outputDatasetName": "Filtered MultiOmics Dataset",
+    "outputs": {
+        "analysis": {
+            "type": "file",
+            "name": "moo.rds"
+        },
+        "figures": {
+            "type": "directory",
+            "name": "figures/filt/"
+        }
+    }
 }

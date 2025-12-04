@@ -16,16 +16,31 @@
     ],
     "inputDatasets": [
         {
-            "key": "DEG_Table",
-            "displayName": "DEG Table",
-            "description": "",
-            "paramGroup": null,
-            "anchorDataset": false,
-            "dataType": "R_NATIVE_DATAFRAME",
-            "tags": []
+            "key": "moo_input_rds",
+            "displayName": "MOO input Rds",
+            "description": "File path to read the input multiOmicDataSet object (MOO)",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
         }
     ],
     "parameters": [
+        {
+            "key": "moo_output_rds",
+            "displayName": "MOO output Rds",
+            "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file at the end of the function",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
         {
             "key": "significance_column",
             "displayName": "Significance Column",
@@ -185,7 +200,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Label_Font_Size",
+            "key": "label_font_size",
             "displayName": "Label Font Size",
             "description": "",
             "paramType": "NUMBER",
@@ -197,7 +212,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Label_Distance",
+            "key": "label_distance",
             "displayName": "Label Distance",
             "description": "Distance of text label from top of a bar",
             "paramType": "NUMBER",
@@ -209,7 +224,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Y_Axis_Expansion",
+            "key": "y_axis_expansion",
             "displayName": "Y-Axis Expansion",
             "description": "multiplicative expansion of y-axis limits; increase/decrease this number if the text label above the bar requires more/less space",
             "paramType": "NUMBER",
@@ -221,7 +236,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Fill_Colors_",
+            "key": "fill_colors",
             "displayName": "Fill Colors ",
             "description": "",
             "paramType": "MULTISELECT",
@@ -248,7 +263,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Pie_Chart_in_3D",
+            "key": "pie_chart_in_3d",
             "displayName": "Pie Chart in 3D",
             "description": "If TRUE, a 3D Pie chart is plotted with 'Filtering mode' set to 'in all contrasts', if FALSE, a 2D chart will be plotted for this filtering mode.",
             "paramType": "BOOLEAN",
@@ -260,7 +275,7 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Bar_Width",
+            "key": "bar_width",
             "displayName": "Bar Width",
             "description": "Bar width in the bar chart plotted with Filtering mode set to 'in any contrast'",
             "paramType": "NUMBER",
@@ -272,21 +287,9 @@
             "objectPropertyReference": null
         },
         {
-            "key": "Draw_Bar_Border",
+            "key": "draw_bar_border",
             "displayName": "Draw Bar Border",
             "description": "",
-            "paramType": "BOOLEAN",
-            "paramGroup": "Visualization",
-            "paramValues": null,
-            "defaultValue": "TRUE",
-            "condition": null,
-            "content": null,
-            "objectPropertyReference": null
-        },
-        {
-            "key": "Force_Barchart",
-            "displayName": "Force Barchart",
-            "description": "applies only to 'Filtering mode' set to 'in all contrasts'; if TRUE, bar chart instead of pie chart is plotted",
             "paramType": "BOOLEAN",
             "paramGroup": "Visualization",
             "paramValues": null,
@@ -306,6 +309,41 @@
             "condition": null,
             "content": null,
             "objectPropertyReference": null
+        },
+		{
+			"key": "plot_titles_fontsize",
+			"displayName": "Font Size for Plot Titles",
+			"description": "",
+			"paramType": "NUMBER",
+			"paramGroup": "Label",
+			"paramValues": null,
+			"defaultValue": 12,
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+        {
+        "key": "save_plots",
+        "displayName": "Save Plots",
+        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+        "paramType": "BOOLEAN",
+        "paramGroup": "Visualization",
+        "paramValues": null,
+        "defaultValue": true,
+        "condition": null,
+        "content": null,
+        "objectPropertyReference": null
         }
-    ]
+    ],
+    "outputDatasetName": "Filtered Differential Counts from MultiOmics Dataset",
+    "outputs": {
+        "analysis": {
+            "type": "file",
+            "name": "moo.rds"
+        },
+        "figures": {
+            "type": "directory",
+            "name": "figures/diff/filt/"
+        }
+    }
 }

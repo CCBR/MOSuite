@@ -71,7 +71,7 @@ which new name: old_name: new_name}
 
 \item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover
 your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
-is set to TRUE. Default is FALSE.}
+is set to \code{TRUE}. Default is \code{FALSE}.}
 }
 \value{
 ggplot object
