@@ -76,6 +76,9 @@
 #' @param number_of_histogram_legend_columns number of columns for the histogram legend
 #' @param colors_for_plots Colors for the PCA and histogram will be picked, in order, from this list. If you have >12
 #'   samples or groups, program will choose from a wide range of random colors
+#' @param plot_corr_matrix_heatmap Datasets with a large number of samples may be too large to create a correlation
+#'   matrix heatmap. If this function takes longer than 5 minutes to run, Set to FALSE and the correlation matrix will
+#'   not be be created. Default is TRUE.
 #' @param interactive_plots set to TRUE to make PCA and Histogram plots interactive with `plotly`, allowing you to hover
 #'   your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
 #'   is set to TRUE. Default is FALSE.
@@ -126,6 +129,7 @@ filter_counts <- function(moo,
                           legend_font_size_for_histogram = 10,
                           number_of_histogram_legend_columns = 6,
                           colors_for_plots = NULL,
+                          plot_corr_matrix_heatmap = TRUE,
                           print_plots = options::opt("print_plots"),
                           save_plots = options::opt("save_plots"),
                           interactive_plots = FALSE,
@@ -220,15 +224,23 @@ filter_counts <- function(moo,
       legend_font_size = legend_font_size_for_histogram,
       number_of_legend_columns = number_of_histogram_legend_columns
     ) + ggplot2::labs(caption = "filtered counts")
-    corHM <- plot_corr_heatmap(
-      df_filt[, samples_to_include],
-      sample_metadata = sample_metadata,
-      sample_id_colname = sample_id_colname,
-      feature_id_colname = feature_id_colname,
-      label_colname = label_colname,
-      group_colname = group_colname,
-      color_values = colors_for_plots
-    ) + ggplot2::labs(caption = "filtered counts")
+    if (isTRUE(plot_corr_matrix_heatmap)) {
+      corHM <- plot_corr_heatmap(
+        df_filt[, samples_to_include],
+        sample_metadata = sample_metadata,
+        sample_id_colname = sample_id_colname,
+        feature_id_colname = feature_id_colname,
+        label_colname = label_colname,
+        group_colname = group_colname,
+        color_values = colors_for_plots
+      ) + ggplot2::labs(caption = "filtered counts")
+      print_or_save_plot(
+        corHM,
+        filename = file.path(plots_subdir, "corr_heatmap.png"),
+        print_plots = print_plots,
+        save_plots = save_plots
+      )
+    }
 
     if (isTRUE(interactive_plots)) {
       pca_plot <- pca_plot %>% plotly::ggplotly(tooltip = c("sample", "group"))
@@ -244,12 +256,6 @@ filter_counts <- function(moo,
     print_or_save_plot(
       hist_plot,
       filename = file.path(plots_subdir, "histogram.png"),
-      print_plots = print_plots,
-      save_plots = save_plots
-    )
-    print_or_save_plot(
-      corHM,
-      filename = file.path(plots_subdir, "corr_heatmap.png"),
       print_plots = print_plots,
       save_plots = save_plots
     )
