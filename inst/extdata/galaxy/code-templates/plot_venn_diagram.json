@@ -15,7 +15,7 @@
     {
       "key": "contrasts_colname",
       "displayName": "Categories Column",
-      "description": "Name of the column in `diff_summary_dat` that contains the contrast names (default:\n\"Contrast\")\n",
+      "description": "Name of the column in `moo_diff_summary_dat` that contains the contrast names (default:\n\"Contrast\")\n",
       "paramGroup": "Basic",
       "sourceDataset": "Input_Dataset",
       "defaultValue": "Contrast",

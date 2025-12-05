@@ -1,15 +1,14 @@
 {
   "r_function": "plot_pca_3d",
   "title": "PCA 3D\n",
-  "description": "3D PCA for counts dataframe\n",
+  "description": "The first argument can be a \nlist(\"multiOmicDataset\")\n object (\nlist(\"moo\")\n) or a \nlist(\"data.frame\")\n containing counts.\nFor a \nlist(\"moo\")\n, choose which counts slot to use with \nlist(\"count_type\")\n & (optionally) \nlist(\"sub_count_type\")\n.\nFor a \nlist(\"data.frame\")\n, you must also set \nlist(\"sample_metadata\")\n.\nAll other arguments are optional.\n",
   "columns": [
     {
       "key": "feature_id_colname",
       "displayName": "FeatureID Name Column",
-      "description": "The column from your counts matrix containing the Feature IDs (such as gene names, isoform names and so on). This is usually the first column of your counts matrix.",
+      "description": "The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID).\nThis is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts\nMatrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be\nused.)\n",
       "paramGroup": "Basic",
       "sourceDataset": "Counts_Matrix",
-      "defaultValue": null,
       "columnType": "STRING",
       "isMulti": null
     },
@@ -73,11 +72,10 @@
     {
       "key": "count_type",
       "displayName": "Count Type",
-      "description": "",
+      "description": "the type of counts to use -- must be a name in the counts slot (`moo@counts`)\n",
       "paramType": "STRING",
       "paramGroup": "Basic",
       "paramValues": null,
-      "defaultValue": "raw",
       "condition": null,
       "content": null,
       "objectPropertyReference": null
@@ -85,11 +83,10 @@
     {
       "key": "sub_count_type",
       "displayName": "Sub Count Type",
-      "description": "optional",
+      "description": "used if `count_type` is a list in the counts slot: specify the sub count type within the list.\nMust be a name in `names(moo@counts[[count_type]])`.\n",
       "paramType": "STRING",
       "paramGroup": "Basic",
       "paramValues": null,
-      "defaultValue": "raw",
       "condition": null,
       "content": null,
       "objectPropertyReference": null
@@ -208,7 +205,7 @@
     {
       "key": "save_plots",
       "displayName": "Save Plots",
-      "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+      "description": "Whether to save plots to files during analysis (Defaults to `TRUE`, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')\n",
       "paramType": "BOOLEAN",
       "paramGroup": "Visualization",
       "paramValues": null,

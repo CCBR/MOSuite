@@ -104,7 +104,7 @@ update_function_template <- function(template,
     }
   }
   if (length(template_args_missing) > 0) {
-    warning(glue::glue(
+    message(glue::glue(
       "{template$r_function}: ",
       "Argument(s) from template not found in R function doc: ",
       "{paste(template_args_missing, collapse = ', ')}"

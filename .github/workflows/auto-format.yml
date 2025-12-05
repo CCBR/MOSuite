@@ -63,6 +63,7 @@ jobs:
           args: "--format codemeta --outfile codemeta.json"
 
       - name: update galaxy templates
+        if: false # skip for now
         shell: Rscript {0}
         run: MOSuite:::write_package_json_blueprints()
 

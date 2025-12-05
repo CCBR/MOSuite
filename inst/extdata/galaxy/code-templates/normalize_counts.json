@@ -325,11 +325,11 @@
     {
       "key": "number_of_histogram_legend_columns",
       "displayName": "Number of Histogram Legend Columns",
-      "description": "",
+      "description": "number of columns for the histogram legend\n",
       "paramType": "NUMBER",
       "paramGroup": "Histogram",
       "paramValues": null,
-      "defaultValue": "6",
+      "defaultValue": 6,
       "condition": null,
       "content": null,
       "objectPropertyReference": null
@@ -361,7 +361,7 @@
     {
       "key": "interactive_plots",
       "displayName": "Make Plots Interactive",
-      "description": "set to TRUE to make PCA and Histogram plots interactive with `plotly`, allowing you to hover\nyour mouse over a point or line to view sample information. The similarity heat map will not display if this toggle\nis set to TRUE. Default is FALSE.\n",
+      "description": "set to TRUE to make PCA and Histogram plots interactive with `plotly`, allowing you to hover\nyour mouse over a point or line to view sample information. The similarity heat map will not display if this toggle\nis set to `TRUE`. Default is `FALSE`.\n",
       "paramType": "BOOLEAN",
       "paramGroup": "Visualization",
       "paramValues": null,
@@ -373,11 +373,11 @@
     {
       "key": "plot_corr_matrix_heatmap",
       "displayName": "Plot Correlation Matrix Heatmap",
-      "description": "Datasets with a large number of samples may be too large to create a correlation matix Heatmap. If Template takes longer than 5 min to run Toggle switch to off and the correlation matrix will not be be created",
+      "description": "Datasets with a large number of samples may be too large to create a correlation\nmatrix heatmap. If this function takes longer than 5 minutes to run, Set to `FALSE` and the correlation matrix will\nnot be be created. Default is `TRUE`.\n",
       "paramType": "BOOLEAN",
       "paramGroup": "TCGA",
       "paramValues": null,
-      "defaultValue": "TRUE",
+      "defaultValue": true,
       "condition": null,
       "content": null,
       "objectPropertyReference": null
