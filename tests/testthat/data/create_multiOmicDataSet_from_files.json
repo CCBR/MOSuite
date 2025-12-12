@@ -1,0 +1,7 @@
+{
+  "moo_output_rds": "moo.rds",
+  "sample_meta_filepath": "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+  "feature_counts_filepath": "Raw_Counts.csv.gz",
+  "sample_id_colname": null,
+  "feature_id_colname": null
+}
