@@ -1,5 +1,5 @@
 {
-    "moo_input_rds": "moo.rds",
+    "moo_input_rds": "tests/testthat/data/moo.rds",
     "count_type": "clean",
     "feature_id_colname": null,
     "sample_id_colname": null,
@@ -44,5 +44,5 @@
     "save_plots": true,
     "plot_corr_matrix_heatmap": true,
     "samples_to_include": null,
-    "moo_output_rds": "moo.rds"
+    "moo_output_rds": "tests/testthat/data/moo.rds"
 }

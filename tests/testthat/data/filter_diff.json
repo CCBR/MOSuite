@@ -1,6 +1,6 @@
 {
-  "moo_input_rds": "moo.rds",
-  "moo_output_rds": "moo.rds",
+  "moo_input_rds": "tests/testthat/data/moo.rds",
+  "moo_output_rds": "tests/testthat/data/moo.rds",
   "feature_id_colname": null,
   "significance_column": "adjpval",
   "significance_cutoff": 0.05,

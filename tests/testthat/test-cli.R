@@ -69,3 +69,23 @@ test_that("mosuite --help", {
   )), "help_files_with_topic"))
   expect_warning(cli_exec("not_a_function"), "not a known function")
 })
+
+test_that("mosuite cli E2E", {
+  # write initial json with correct file paths
+  write_json(
+    list(
+      feature_counts_filepath = system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
+      sample_meta_filepath = system.file(
+        "extdata",
+        "nidap",
+        "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+        package = "MOSuite"
+      ),
+      moo_output_rds = testthat::test_path("data", "moo.rds")
+    ),
+    testthat::test_path("data", "create_multiOmicDataSet_from_files.json")
+  )
+  run_function_cli("create_multiOmicDataSet_from_files")
+  run_function_cli("clean_raw_counts")
+  run_function_cli("filter_counts")
+})

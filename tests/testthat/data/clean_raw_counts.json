@@ -1,6 +1,6 @@
 {
-  "moo_input_rds": "moo.rds",
-  "moo_output_rds": "moo.rds",
+  "moo_input_rds": "tests/testthat/data/moo.rds",
+  "moo_output_rds": "tests/testthat/data/moo.rds",
   "count_type": "raw",
   "sample_id_colname": null,
   "feature_id_colname": null,
