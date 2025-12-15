@@ -11,7 +11,9 @@
 #'   head()
 #' }
 glue_gene_symbols <- function(counts_dat) {
-  if ("gene_id" %in% colnames(counts_dat) && "GeneName" %in% colnames(counts_dat)) {
+  if (
+    "gene_id" %in% colnames(counts_dat) && "GeneName" %in% colnames(counts_dat)
+  ) {
     counts_dat <- counts_dat %>%
       dplyr::mutate(
         gene_id = glue::glue("{gene_id}|{GeneName}"),
@@ -55,7 +57,11 @@ check_packages_installed <- function(...) {
 #' }
 abort_packages_not_installed <- function(...) {
   package_status <- check_packages_installed(...)
-  parent_fcn_name <- sub("\\(.*$", "\\(\\)", deparse(sys.calls()[[sys.nframe() - 1]]))
+  parent_fcn_name <- sub(
+    "\\(.*$",
+    "\\(\\)",
+    deparse(sys.calls()[[sys.nframe() - 1]])
+  )
   packages_not_installed <- Filter(isFALSE, package_status)
   if (length(packages_not_installed) > 0) {
     msg <- paste0(
@@ -79,10 +85,7 @@ abort_packages_not_installed <- function(...) {
 #'
 #' @export
 #' @keywords internal
-do_math <- function(add = TRUE,
-                    subtract = FALSE,
-                    left = 1,
-                    right = 2) {
+do_math <- function(add = TRUE, subtract = FALSE, left = 1, right = 2) {
   result <- NULL
   if (isTRUE(add)) {
     result <- left + right

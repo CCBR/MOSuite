@@ -45,19 +45,21 @@
 #' head(moo@counts[["batch"]])
 #'
 #' @family moo methods
-batch_correct_counts <- function(moo,
-                                 count_type = "norm",
-                                 sub_count_type = "voom",
-                                 sample_id_colname = NULL,
-                                 feature_id_colname = NULL,
-                                 samples_to_include = NULL,
-                                 covariates_colnames = "Group",
-                                 batch_colname = "Batch",
-                                 label_colname = NULL,
-                                 colors_for_plots = NULL,
-                                 print_plots = options::opt("print_plots"),
-                                 save_plots = options::opt("save_plots"),
-                                 plots_subdir = "batch") {
+batch_correct_counts <- function(
+  moo,
+  count_type = "norm",
+  sub_count_type = "voom",
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  samples_to_include = NULL,
+  covariates_colnames = "Group",
+  batch_colname = "Batch",
+  label_colname = NULL,
+  colors_for_plots = NULL,
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "batch"
+) {
   abort_packages_not_installed("sva")
   # select correct counts matrix
   if (!(count_type %in% names(moo@counts))) {
@@ -122,14 +124,21 @@ batch_correct_counts <- function(moo,
       counts_dat_to_matrix(feature_id_colname = feature_id_colname)
     # coerce covariate columns to factors
     sample_metadata <- sample_metadata %>%
-      dplyr::mutate(dplyr::across(tidyselect::all_of(covariates_colnames), ~ as.factor(.x)))
+      dplyr::mutate(dplyr::across(
+        tidyselect::all_of(covariates_colnames),
+        ~ as.factor(.x)
+      ))
     # run batch correction
     combat_edata <- sva::ComBat(
       counts_matr,
       batch = batch_vctr,
-      mod = stats::model.matrix(stats::as.formula(paste(
-        "~", paste(covariates_colnames, sep = "+", collapse = "+")
-      )), data = sample_metadata),
+      mod = stats::model.matrix(
+        stats::as.formula(paste(
+          "~",
+          paste(covariates_colnames, sep = "+", collapse = "+")
+        )),
+        data = sample_metadata
+      ),
       par.prior = TRUE,
       prior.plots = FALSE
     ) %>%
@@ -149,7 +158,8 @@ batch_correct_counts <- function(moo,
       group_colname = batch_colname,
       label_colname = label_colname,
       color_values = colors_for_plots
-    ) + ggplot2::labs(caption = "batch-corrected counts")
+    ) +
+      ggplot2::labs(caption = "batch-corrected counts")
 
     hist_plot <- plot_histogram(
       combat_edata,
@@ -160,7 +170,8 @@ batch_correct_counts <- function(moo,
       label_colname = label_colname,
       color_values = colors_for_plots,
       color_by_group = TRUE
-    ) + ggplot2::labs(caption = "batch-corrected counts")
+    ) +
+      ggplot2::labs(caption = "batch-corrected counts")
     corHM_plot <- plot_corr_heatmap(
       combat_edata,
       sample_metadata = sample_metadata,
@@ -169,7 +180,8 @@ batch_correct_counts <- function(moo,
       group_colname = batch_colname,
       label_colname = label_colname,
       color_values = colors_for_plots
-    ) + ggplot2::labs(caption = "batch-corrected counts")
+    ) +
+      ggplot2::labs(caption = "batch-corrected counts")
 
     print_or_save_plot(
       pca_plot,
@@ -191,7 +203,9 @@ batch_correct_counts <- function(moo,
     )
   }
 
-  message(glue::glue("The total number of features in output: {nrow(combat_edata)}"))
+  message(glue::glue(
+    "The total number of features in output: {nrow(combat_edata)}"
+  ))
   message(glue::glue(
     "Number of samples after batch correction: {ncol(combat_edata)}"
   ))

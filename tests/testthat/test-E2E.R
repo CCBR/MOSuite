@@ -1,10 +1,15 @@
 test_that("E2E workflow succeeds for RENEE data", {
   options(moo_print_plots = FALSE, moo_save_plots = FALSE)
-  gene_counts_tsv <- system.file("extdata",
+  gene_counts_tsv <- system.file(
+    "extdata",
     "RSEM.genes.expected_count.all_samples.txt.gz",
     package = "MOSuite"
   )
-  metadata_tsv <- system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
+  metadata_tsv <- system.file(
+    "extdata",
+    "sample_metadata.tsv.gz",
+    package = "MOSuite"
+  )
 
   expect_snapshot(
     moo <- create_multiOmicDataSet_from_files(
@@ -19,7 +24,10 @@ test_that("E2E workflow succeeds for RENEE data", {
         minimum_number_of_samples_with_nonzero_counts_in_total = 1,
         minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
       ) %>%
-      normalize_counts(group_colname = "condition", label_colname = "sample_id") %>%
+      normalize_counts(
+        group_colname = "condition",
+        label_colname = "sample_id"
+      ) %>%
       diff_counts(
         covariates_colnames = "condition",
         contrast_colname = "condition",

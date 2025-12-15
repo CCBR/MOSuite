@@ -20,10 +20,12 @@ multiOmicDataSet <- S7::new_class(
     # list of data frames
     analyses = S7::class_list
   ),
-  constructor = function(sample_metadata,
-                         anno_dat,
-                         counts_lst,
-                         analyses_lst = list()) {
+  constructor = function(
+    sample_metadata,
+    anno_dat,
+    counts_lst,
+    analyses_lst = list()
+  ) {
     if (!("colors" %in% names(analyses_lst))) {
       analyses_lst[["colors"]] <- get_colors_lst(sample_metadata)
     }
@@ -123,11 +125,13 @@ multiOmicDataSet <- S7::new_class(
 #' moo_nidap <- create_multiOmicDataSet_from_dataframes(sample_meta_nidap, raw_counts_nidap)
 #'
 #' @family moo constructors
-create_multiOmicDataSet_from_dataframes <- function(sample_metadata,
-                                                    counts_dat,
-                                                    sample_id_colname = NULL,
-                                                    feature_id_colname = NULL,
-                                                    count_type = "raw") {
+create_multiOmicDataSet_from_dataframes <- function(
+  sample_metadata,
+  counts_dat,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  count_type = "raw"
+) {
   # move sample & feature ID columns to first
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
@@ -147,7 +151,12 @@ create_multiOmicDataSet_from_dataframes <- function(sample_metadata,
     stop(
       glue::glue(
         "Not all sample IDs in the sample metadata are in the count data. Samples missing in count data:\n\t",
-        glue::glue_collapse(meta_sample_colnames[!(meta_sample_colnames %in% colnames(counts_dat))], sep = ", ")
+        glue::glue_collapse(
+          meta_sample_colnames[
+            !(meta_sample_colnames %in% colnames(counts_dat))
+          ],
+          sep = ", "
+        )
       )
     )
   }
@@ -202,12 +211,14 @@ create_multiOmicDataSet_from_dataframes <- function(sample_metadata,
 #' )
 #'
 #' @family moo constructors
-create_multiOmicDataSet_from_files <- function(sample_meta_filepath,
-                                               feature_counts_filepath,
-                                               count_type = "raw",
-                                               sample_id_colname = NULL,
-                                               feature_id_colname = NULL,
-                                               ...) {
+create_multiOmicDataSet_from_files <- function(
+  sample_meta_filepath,
+  feature_counts_filepath,
+  count_type = "raw",
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  ...
+) {
   counts_dat <- readr::read_delim(feature_counts_filepath, ...)
   sample_metadata <- readr::read_delim(sample_meta_filepath, ...)
   return(
@@ -254,11 +265,19 @@ create_multiOmicDataSet_from_files <- function(sample_meta_filepath,
 #'   extract_counts("norm", "voom") %>%
 #'   head()
 #'
-extract_counts <- S7::new_generic("extract_counts", "moo", function(moo, count_type, sub_count_type = NULL) {
-  return(S7::S7_dispatch())
-})
+extract_counts <- S7::new_generic(
+  "extract_counts",
+  "moo",
+  function(moo, count_type, sub_count_type = NULL) {
+    return(S7::S7_dispatch())
+  }
+)
 
-S7::method(extract_counts, multiOmicDataSet) <- function(moo, count_type, sub_count_type = NULL) {
+S7::method(extract_counts, multiOmicDataSet) <- function(
+  moo,
+  count_type,
+  sub_count_type = NULL
+) {
   # select correct counts matrix
   if (!(count_type %in% names(moo@counts))) {
     stop(

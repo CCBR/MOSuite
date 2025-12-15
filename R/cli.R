@@ -37,7 +37,10 @@ cli_exec_impl <- function(clargs) {
   # begin building call
   # if --json in arguments, call cli_from_json()
   if (any(stringr::str_detect(clargs, "^--json"))) {
-    args <- list(call(":::", as.symbol("MOSuite"), as.symbol("cli_from_json")), method = method)
+    args <- list(
+      call(":::", as.symbol("MOSuite"), as.symbol("cli_from_json")),
+      method = method
+    )
   } else {
     # otherwise call the method directly
     args <- list(call("::", as.symbol("MOSuite"), as.symbol(method)))
@@ -48,20 +51,24 @@ cli_exec_impl <- function(clargs) {
     if (grepl("^--no-", clarg)) {
       key <- substring(clarg, 6L)
       args[[key]] <- FALSE
-    } else if (grepl("^--[^=]+=", clarg)) { # convert '--param=value' flags
+    } else if (grepl("^--[^=]+=", clarg)) {
+      # convert '--param=value' flags
       index <- regexpr("=", clarg, fixed = TRUE)
       key <- substring(clarg, 3L, index - 1L)
       val <- substring(clarg, index + 1L)
       args[[key]] <- cli_parse(val)
-    } else if (grepl("^--", clarg)) { # convert '--flag' into a TRUE parameter
+    } else if (grepl("^--", clarg)) {
+      # convert '--flag' into a TRUE parameter
       key <- substring(clarg, 3L)
       args[[key]] <- TRUE
-    } else if (grepl("=", clarg, fixed = TRUE)) { # convert 'param=value' flags
+    } else if (grepl("=", clarg, fixed = TRUE)) {
+      # convert 'param=value' flags
       index <- regexpr("=", clarg, fixed = TRUE)
       key <- substring(clarg, 1L, index - 1L)
       val <- substring(clarg, index + 1L)
       args[[key]] <- cli_parse(val)
-    } else { # take other parameters as-is
+    } else {
+      # take other parameters as-is
       args[[length(args) + 1L]] <- cli_parse(clarg)
     }
   }
@@ -157,14 +164,20 @@ cli_from_json <- function(method, json, debug = FALSE) {
   accepted_args <- formals(method, envir = getNamespace("MOSuite"))
   first_arg <- names(accepted_args)[1]
   if (stringr::str_detect(first_arg, "^moo")) {
-    assertthat::assert_that("moo_input_rds" %in% names(json_args),
-      msg = glue::glue("moo_input_rds must be included in the JSON because `{first_arg}` is required for {method}()")
+    assertthat::assert_that(
+      "moo_input_rds" %in% names(json_args),
+      msg = glue::glue(
+        "moo_input_rds must be included in the JSON because `{first_arg}` is required for {method}()"
+      )
     )
     fcn_args[[first_arg]] <- readr::read_rds(json_args[["moo_input_rds"]])
   }
   # all other json keys should be arguments for the method
   # TODO convert lists to vectors
-  fcn_args <- c(fcn_args, json_args[!stringr::str_detect(names(json_args), "moo_.*_rds")])
+  fcn_args <- c(
+    fcn_args,
+    json_args[!stringr::str_detect(names(json_args), "moo_.*_rds")]
+  )
 
   # invoke method with parsed arguments from json
   expr <- as.call(fcn_args)

@@ -20,7 +20,11 @@ get_random_colors <- function(num_colors, n = 2e3) {
     stop("num_colors must be at least 1")
   }
   n <- 2e3
-  ourColorSpace <- colorspace::RGB(stats::runif(n), stats::runif(n), stats::runif(n))
+  ourColorSpace <- colorspace::RGB(
+    stats::runif(n),
+    stats::runif(n),
+    stats::runif(n)
+  )
   ourColorSpace <- methods::as(ourColorSpace, "LAB")
   currentColorSpace <- ourColorSpace@coords
   # Set iter.max to 20 to avoid convergence warnings.
@@ -45,9 +49,11 @@ get_random_colors <- function(num_colors, n = 2e3) {
 #' \dontrun{
 #' get_colors_lst(nidap_sample_metadata, palette_fun = RColorBrewer::brewer.pal, name = "Set3")
 #' }
-get_colors_lst <- function(sample_metadata,
-                           palette_fun = grDevices::palette.colors,
-                           ...) {
+get_colors_lst <- function(
+  sample_metadata,
+  palette_fun = grDevices::palette.colors,
+  ...
+) {
   dat_colnames <- colnames(sample_metadata)
   color_lists <- dat_colnames %>%
     purrr::map(
@@ -68,16 +74,20 @@ get_colors_lst <- function(sample_metadata,
 #' @returns named vector of colors for each unique observation in `dat$colname`
 #' @export
 #'
-get_colors_vctr <- function(dat,
-                            colname,
-                            palette_fun = grDevices::palette.colors,
-                            ...) {
+get_colors_vctr <- function(
+  dat,
+  colname,
+  palette_fun = grDevices::palette.colors,
+  ...
+) {
   obs <- dat %>%
     dplyr::pull(colname) %>%
     unique()
   withCallingHandlers(
     warning = function(cnd) {
-      return(message(glue::glue('Warning raised in get_color_vctr() for column "{colname}"')))
+      return(message(glue::glue(
+        'Warning raised in get_color_vctr() for column "{colname}"'
+      )))
     },
     colors_vctr <- palette_fun(n = length(obs), ...)
   )
@@ -112,17 +122,20 @@ get_colors_vctr <- function(dat,
 #' moo@analyses$colors$Group
 #'
 #' @family moo methods
-set_color_pal <- S7::new_generic("set_color_pal", "moo", function(moo,
-                                                                  colname,
-                                                                  palette_fun = grDevices::palette.colors,
-                                                                  ...) {
-  return(S7::S7_dispatch())
-})
+set_color_pal <- S7::new_generic(
+  "set_color_pal",
+  "moo",
+  function(moo, colname, palette_fun = grDevices::palette.colors, ...) {
+    return(S7::S7_dispatch())
+  }
+)
 
-S7::method(set_color_pal, multiOmicDataSet) <- function(moo,
-                                                        colname,
-                                                        palette_fun = grDevices::palette.colors,
-                                                        ...) {
+S7::method(set_color_pal, multiOmicDataSet) <- function(
+  moo,
+  colname,
+  palette_fun = grDevices::palette.colors,
+  ...
+) {
   moo@analyses[["colors"]][[colname]] <- get_colors_vctr(
     dat = moo@sample_meta,
     colname = colname,

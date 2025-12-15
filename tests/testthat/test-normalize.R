@@ -22,9 +22,12 @@ test_that("normalize works for NIDAP", {
 })
 
 test_that("normalize works for RENEE", {
-  moo <- create_multiOmicDataSet_from_dataframes(readr::read_tsv(
-    system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
-  ), gene_counts) %>%
+  moo <- create_multiOmicDataSet_from_dataframes(
+    readr::read_tsv(
+      system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
+    ),
+    gene_counts
+  ) %>%
     clean_raw_counts() %>%
     filter_counts(
       group_colname = "condition",
