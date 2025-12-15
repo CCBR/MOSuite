@@ -12,9 +12,13 @@ test_that("clean_raw_counts works for NIDAP data", {
 })
 
 test_that("clean_raw_counts works for RENEE data", {
-  moo <- create_multiOmicDataSet_from_dataframes(readr::read_tsv(
-    system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
-  ), gene_counts) %>% clean_raw_counts()
+  moo <- create_multiOmicDataSet_from_dataframes(
+    readr::read_tsv(
+      system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
+    ),
+    gene_counts
+  ) %>%
+    clean_raw_counts()
   expect_equal(
     head(moo@counts$clean),
     structure(

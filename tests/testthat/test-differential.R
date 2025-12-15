@@ -45,9 +45,12 @@ test_that("differential analysis works for NIDAP", {
 
 test_that("diff_counts works for RENEE", {
   options(moo_print_plots = FALSE)
-  moo_renee <- create_multiOmicDataSet_from_dataframes(readr::read_tsv(
-    system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
-  ), counts_dat = gene_counts) %>%
+  moo_renee <- create_multiOmicDataSet_from_dataframes(
+    readr::read_tsv(
+      system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
+    ),
+    counts_dat = gene_counts
+  ) %>%
     clean_raw_counts() %>%
     filter_counts(
       group_colname = "condition",
@@ -73,7 +76,10 @@ test_that("diff_counts works for RENEE", {
     )
   actual <- moo_renee@analyses$diff[[1]] %>%
     head() %>%
-    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, digits = 0)))
+    dplyr::mutate(dplyr::across(
+      dplyr::where(is.numeric),
+      ~ round(.x, digits = 0)
+    ))
   expected <- tibble::tibble(
     gene_id = c(
       "ENSG00000160179.18",
@@ -156,7 +162,10 @@ test_that("diff_counts works for RENEE", {
       0.000380696838101513
     )
   ) %>%
-    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, digits = 0))) %>%
+    dplyr::mutate(dplyr::across(
+      dplyr::where(is.numeric),
+      ~ round(.x, digits = 0)
+    )) %>%
     as.data.frame()
   expect_equal(actual, expected)
 })
@@ -167,11 +176,13 @@ test_that("diff_counts errors", {
     "count_type DoesNotExist not in"
   )
   expect_error(
-    moo_nidap %>% diff_counts(count_type = "raw", sub_count_type = "DoesNotExist"),
+    moo_nidap %>%
+      diff_counts(count_type = "raw", sub_count_type = "DoesNotExist"),
     "raw counts is not a named list"
   )
   expect_error(
-    moo_nidap %>% diff_counts(count_type = "norm", sub_count_type = "DoesNotExist"),
+    moo_nidap %>%
+      diff_counts(count_type = "norm", sub_count_type = "DoesNotExist"),
     "sub_count_type DoesNotExist is not in"
   )
 })

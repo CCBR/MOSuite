@@ -5,7 +5,11 @@ write_example_json <- function() {
       "RSEM.genes.expected_count.all_samples.txt.gz",
       package = "MOSuite"
     ),
-    sample_meta_filepath = system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite"),
+    sample_meta_filepath = system.file(
+      "extdata",
+      "sample_metadata.tsv.gz",
+      package = "MOSuite"
+    ),
     moo_output_rds = "moo.rds"
   )
   return(jsonlite::write_json(j, "inst/extdata/example.json"))
@@ -47,25 +51,33 @@ test_that("cli_exec --json --debug", {
       "    sample_meta_filepath = \"inst/extdata/sample_metadata.tsv.gz\")"
     )
   )
-  expect_error(cli_exec(c(
-    "filter_counts",
-    paste0(
-      '--json="',
-      system.file("extdata", "example.json", package = "MOSuite"),
-      '"'
-    ),
-    "--debug"
-  )), "moo_input_rds must be included")
+  expect_error(
+    cli_exec(c(
+      "filter_counts",
+      paste0(
+        '--json="',
+        system.file("extdata", "example.json", package = "MOSuite"),
+        '"'
+      ),
+      "--debug"
+    )),
+    "moo_input_rds must be included"
+  )
 })
 
 test_that("mosuite --help", {
   expect_snapshot(cli_exec("--help"))
   expect_snapshot(system(paste(
-    system.file("exec", "mosuite", package = "MOSuite"), "--help"
+    system.file("exec", "mosuite", package = "MOSuite"),
+    "--help"
   )))
   expect_snapshot(cli_exec("help"))
-  expect_true(inherits(cli_exec(c(
-    "filter_counts", "--help"
-  )), "help_files_with_topic"))
+  expect_true(inherits(
+    cli_exec(c(
+      "filter_counts",
+      "--help"
+    )),
+    "help_files_with_topic"
+  ))
   expect_warning(cli_exec("not_a_function"), "not a known function")
 })

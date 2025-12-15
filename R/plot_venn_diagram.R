@@ -44,46 +44,53 @@
 #' @examples
 #' plot_venn_diagram(nidap_volcano_summary_dat, print_plots = TRUE)
 #'
-plot_venn_diagram <- function(diff_summary_dat,
-                              feature_id_colname = NULL,
-                              contrasts_colname = "Contrast",
-                              select_contrasts = c(),
-                              plot_type = "Venn diagram",
-                              intersection_ids = c(),
-                              venn_force_unique = TRUE,
-                              venn_numbers_format = "raw",
-                              venn_significant_digits = 2,
-                              venn_fill_colors = c(
-                                "darkgoldenrod2",
-                                "darkolivegreen2",
-                                "mediumpurple3",
-                                "darkorange2",
-                                "lightgreen"
-                              ),
-                              venn_fill_transparency = 0.2,
-                              venn_border_colors = "fill colors",
-                              venn_font_size_for_category_names = 3,
-                              venn_category_names_distance = c(),
-                              venn_category_names_position = c(),
-                              venn_font_size_for_counts = 6,
-                              venn_outer_margin = 0,
-                              intersections_order = "degree",
-                              display_empty_intersections = FALSE,
-                              intersection_bar_color = "steelblue4",
-                              intersection_point_size = 2.2,
-                              intersection_line_width = 0.7,
-                              table_font_size = 0.7,
-                              table_content = "all intersections",
-                              graphics_device = grDevices::png,
-                              dpi = 300,
-                              image_width = 4000,
-                              image_height = 3000,
-                              plot_filename = "venn_diagram.png",
-                              print_plots = options::opt("print_plots"),
-                              save_plots = options::opt("save_plots"),
-                              plots_subdir = "diff") {
+plot_venn_diagram <- function(
+  diff_summary_dat,
+  feature_id_colname = NULL,
+  contrasts_colname = "Contrast",
+  select_contrasts = c(),
+  plot_type = "Venn diagram",
+  intersection_ids = c(),
+  venn_force_unique = TRUE,
+  venn_numbers_format = "raw",
+  venn_significant_digits = 2,
+  venn_fill_colors = c(
+    "darkgoldenrod2",
+    "darkolivegreen2",
+    "mediumpurple3",
+    "darkorange2",
+    "lightgreen"
+  ),
+  venn_fill_transparency = 0.2,
+  venn_border_colors = "fill colors",
+  venn_font_size_for_category_names = 3,
+  venn_category_names_distance = c(),
+  venn_category_names_position = c(),
+  venn_font_size_for_counts = 6,
+  venn_outer_margin = 0,
+  intersections_order = "degree",
+  display_empty_intersections = FALSE,
+  intersection_bar_color = "steelblue4",
+  intersection_point_size = 2.2,
+  intersection_line_width = 0.7,
+  table_font_size = 0.7,
+  table_content = "all intersections",
+  graphics_device = grDevices::png,
+  dpi = 300,
+  image_width = 4000,
+  image_height = 3000,
+  plot_filename = "venn_diagram.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff"
+) {
   Freq <- Gene <- Id <- Size <- Var1 <- NULL
-  abort_packages_not_installed(c("VennDiagram", "gridExtra", "patchwork", "UpSetR"))
+  abort_packages_not_installed(c(
+    "VennDiagram",
+    "gridExtra",
+    "patchwork",
+    "UpSetR"
+  ))
 
   if (nrow(diff_summary_dat) == 0) {
     stop("Dataframe is empty")
@@ -137,7 +144,6 @@ plot_venn_diagram <- function(diff_summary_dat,
     return(data)
   }
 
-
   if (num_categories > 1) {
     sets <- fromList(vlist)
 
@@ -168,7 +174,11 @@ plot_venn_diagram <- function(diff_summary_dat,
       tibble::rownames_to_column("Id") %>%
       dplyr::mutate(Id = as.numeric(Id)) %>%
       dplyr::select(Intersection, Id, Size)
-    Intersection <- gsub("\\{\\} | \\{\\}|\\{\\} |\\{\\} \\{\\}", "", Intersection)
+    Intersection <- gsub(
+      "\\{\\} | \\{\\}|\\{\\} |\\{\\} \\{\\}",
+      "",
+      Intersection
+    )
     Intersection <- sub("\\( ", "(", Intersection)
     Intersection <- gsub(" ", " \u2229 ", Intersection)
     Intersection <- data.frame(Intersection) %>%
@@ -199,7 +209,11 @@ plot_venn_diagram <- function(diff_summary_dat,
     tabsel <- tab
     Intersectionsel <- Intersection
   }
-  tab$"Return" <- ifelse(tab$Intersection %in% tabsel$Intersection, "Yes", "\u2014")
+  tab$"Return" <- ifelse(
+    tab$Intersection %in% tabsel$Intersection,
+    "Yes",
+    "\u2014"
+  )
 
   if (intersections_order == "freq") {
     tab <- tab %>% dplyr::arrange(-Size)
@@ -211,9 +225,7 @@ plot_venn_diagram <- function(diff_summary_dat,
 
   ### PH: End Create venn Table from DEG table
 
-
   ### PH: START This section sets immage output parameters and includes error check
-
 
   # Logic Error Check ====
   if (num_categories == 1) {

@@ -9,14 +9,17 @@ test_that("constructing MOO works for RENEE data", {
     sample_id_colname = "sample_id",
     feature_id_colname = "gene_id"
   )
-  expect_equal(moo@sample_meta, structure(
-    list(
-      sample_id = c("KO_S3", "KO_S4", "WT_S1", "WT_S2"),
-      condition = c("knockout", "knockout", "wildtype", "wildtype")
-    ),
-    row.names = c(NA, -4L),
-    class = c("tbl_df", "tbl", "data.frame")
-  ))
+  expect_equal(
+    moo@sample_meta,
+    structure(
+      list(
+        sample_id = c("KO_S3", "KO_S4", "WT_S1", "WT_S2"),
+        condition = c("knockout", "knockout", "wildtype", "wildtype")
+      ),
+      row.names = c(NA, -4L),
+      class = c("tbl_df", "tbl", "data.frame")
+    )
+  )
   expect_equal(
     moo@annotation %>% head(),
     structure(
@@ -69,17 +72,20 @@ test_that("constructing MOO works from CSV files", {
     system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
     delim = ","
   )
-  expect_equal(moo@sample_meta, structure(
-    list(
-      Sample = c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
-      Group = c("A", "A", "A", "B", "B", "B", "C", "C", "C"),
-      Replicate = c(1, 2, 3, 1, 2, 3, 1, 2, 3),
-      Batch = c(1, 2, 2, 1, 1, 2, 1, 2, 2),
-      Label = c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3")
-    ),
-    row.names = c(NA, -9L),
-    class = c("tbl_df", "tbl", "data.frame")
-  ))
+  expect_equal(
+    moo@sample_meta,
+    structure(
+      list(
+        Sample = c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
+        Group = c("A", "A", "A", "B", "B", "B", "C", "C", "C"),
+        Replicate = c(1, 2, 3, 1, 2, 3, 1, 2, 3),
+        Batch = c(1, 2, 2, 1, 1, 2, 1, 2, 2),
+        Label = c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3")
+      ),
+      row.names = c(NA, -9L),
+      class = c("tbl_df", "tbl", "data.frame")
+    )
+  )
   expect_equal(
     moo@annotation %>% head(),
     structure(
@@ -135,17 +141,19 @@ test_that("annotation minimally contains feature id column", {
   expect_equal(
     moo@annotation %>% head(),
     structure(
-      list(gene_id = structure(
-        c(
-          "ENSG00000121410.11|A1BG",
-          "ENSG00000268895.5|A1BG-AS1",
-          "ENSG00000148584.15|A1CF",
-          "ENSG00000175899.14|A2M",
-          "ENSG00000245105.3|A2M-AS1",
-          "ENSG00000166535.20|A2ML1"
-        ),
-        class = c("glue", "character")
-      )),
+      list(
+        gene_id = structure(
+          c(
+            "ENSG00000121410.11|A1BG",
+            "ENSG00000268895.5|A1BG-AS1",
+            "ENSG00000148584.15|A1CF",
+            "ENSG00000175899.14|A2M",
+            "ENSG00000245105.3|A2M-AS1",
+            "ENSG00000166535.20|A2ML1"
+          ),
+          class = c("glue", "character")
+        )
+      ),
       row.names = c(NA, -6L),
       class = c("tbl_df", "tbl", "data.frame")
     )

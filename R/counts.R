@@ -21,7 +21,11 @@ calc_cpm <- S7::new_generic("calc_cpm", "moo", function(moo, ...) {
   return(S7::S7_dispatch())
 })
 
-S7::method(calc_cpm, multiOmicDataSet) <- function(moo, feature_id_colname = "gene_id", ...) {
+S7::method(calc_cpm, multiOmicDataSet) <- function(
+  moo,
+  feature_id_colname = "gene_id",
+  ...
+) {
   moo@counts$cpm <- moo@counts$raw %>%
     calc_cpm_df(feature_id_colname = feature_id_colname)
   return(moo)
@@ -45,7 +49,9 @@ calc_cpm_df <- function(dat, feature_id_colname = "gene_id", ...) {
     edgeR::cpm(...) %>%
     as.data.frame()
   dat_cpm[[feature_id_colname]] <- gene_ids
-  rownames(dat_cpm) <- if (suppressWarnings(all(!is.na(as.integer(row_names))))) {
+  rownames(dat_cpm) <- if (
+    suppressWarnings(all(!is.na(as.integer(row_names))))
+  ) {
     as.integer(row_names)
   } else {
     col

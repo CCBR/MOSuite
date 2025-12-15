@@ -55,7 +55,10 @@ test_that("calc_cpm works on RENEE data", {
       levels = c("wildtype", "knockout")
     )
   )
-  moo <- create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts %>% dplyr::select(-GeneName))
+  moo <- create_multiOmicDataSet_from_dataframes(
+    sample_meta,
+    gene_counts %>% dplyr::select(-GeneName)
+  )
   moo <- moo %>% calc_cpm()
   cpm_edger <- gene_counts %>%
     dplyr::select(-GeneName) %>%

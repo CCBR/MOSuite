@@ -26,36 +26,38 @@
 #'   )
 #' head(moo@counts[["norm"]][["voom"]])
 #' @family moo methods
-normalize_counts <- function(moo,
-                             count_type = "filt",
-                             norm_type = "voom",
-                             feature_id_colname = NULL,
-                             samples_to_include = NULL,
-                             sample_id_colname = NULL,
-                             group_colname = "Group",
-                             label_colname = NULL,
-                             input_in_log_counts = FALSE,
-                             voom_normalization_method = "quantile",
-                             samples_to_rename = c(""),
-                             add_label_to_pca = TRUE,
-                             principal_component_on_x_axis = 1,
-                             principal_component_on_y_axis = 2,
-                             legend_position_for_pca = "top",
-                             label_offset_x_ = 2,
-                             label_offset_y_ = 2,
-                             label_font_size = 3,
-                             point_size_for_pca = 8,
-                             color_histogram_by_group = TRUE,
-                             set_min_max_for_x_axis_for_histogram = FALSE,
-                             minimum_for_x_axis_for_histogram = -1,
-                             maximum_for_x_axis_for_histogram = 1,
-                             legend_font_size_for_histogram = 10,
-                             legend_position_for_histogram = "top",
-                             colors_for_plots = NULL,
-                             print_plots = options::opt("print_plots"),
-                             save_plots = options::opt("save_plots"),
-                             interactive_plots = FALSE,
-                             plots_subdir = "norm") {
+normalize_counts <- function(
+  moo,
+  count_type = "filt",
+  norm_type = "voom",
+  feature_id_colname = NULL,
+  samples_to_include = NULL,
+  sample_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = NULL,
+  input_in_log_counts = FALSE,
+  voom_normalization_method = "quantile",
+  samples_to_rename = c(""),
+  add_label_to_pca = TRUE,
+  principal_component_on_x_axis = 1,
+  principal_component_on_y_axis = 2,
+  legend_position_for_pca = "top",
+  label_offset_x_ = 2,
+  label_offset_y_ = 2,
+  label_font_size = 3,
+  point_size_for_pca = 8,
+  color_histogram_by_group = TRUE,
+  set_min_max_for_x_axis_for_histogram = FALSE,
+  minimum_for_x_axis_for_histogram = -1,
+  maximum_for_x_axis_for_histogram = 1,
+  legend_font_size_for_histogram = 10,
+  legend_position_for_histogram = "top",
+  colors_for_plots = NULL,
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  interactive_plots = FALSE,
+  plots_subdir = "norm"
+) {
   counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
   sample_metadata <- moo@sample_meta %>% as.data.frame()
   plots_subdir <- file.path(plots_subdir, norm_type)
@@ -74,7 +76,6 @@ normalize_counts <- function(moo,
   message(glue::glue("* normalizing {count_type} counts"))
   df.filt <- counts_dat %>%
     dplyr::select(tidyselect::all_of(samples_to_include))
-
 
   ## --------------- ##
   ## Main Code Block ##
@@ -95,7 +96,8 @@ normalize_counts <- function(moo,
   }
   v <- limma::voom(x, normalize = voom_normalization_method)
   rownames(v$E) <- v$genes$feature_id
-  df.voom <- as.data.frame(v$E) %>% tibble::rownames_to_column(feature_id_colname)
+  df.voom <- as.data.frame(v$E) %>%
+    tibble::rownames_to_column(feature_id_colname)
   message(paste0("Total number of features included: ", nrow(df.voom)))
   ### PH: END Limma Normalization
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
@@ -125,7 +127,8 @@ normalize_counts <- function(moo,
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_
-    ) + ggplot2::labs(caption = "normalized counts")
+    ) +
+      ggplot2::labs(caption = "normalized counts")
     hist_plot <- plot_histogram(
       df.voom,
       sample_metadata = sample_metadata,
@@ -138,7 +141,8 @@ normalize_counts <- function(moo,
       x_axis_label = "Normalized Counts",
       legend_position = legend_position_for_histogram,
       legend_font_size = legend_font_size_for_histogram
-    ) + ggplot2::labs(caption = "normalized counts")
+    ) +
+      ggplot2::labs(caption = "normalized counts")
     corHM_plot <- plot_corr_heatmap(
       df.filt,
       sample_metadata = sample_metadata,
@@ -147,7 +151,8 @@ normalize_counts <- function(moo,
       group_colname = group_colname,
       label_colname = label_colname,
       color_values = colors_for_plots
-    ) + ggplot2::labs(caption = "normalized counts")
+    ) +
+      ggplot2::labs(caption = "normalized counts")
 
     print_or_save_plot(
       pca_plot,
@@ -169,7 +174,8 @@ normalize_counts <- function(moo,
     )
   }
 
-  message(paste("Sample columns:",
+  message(paste(
+    "Sample columns:",
     paste(colnames(df.voom)[!colnames(df.voom) %in% feature_id_colname]),
     collapse = ", "
   ))
