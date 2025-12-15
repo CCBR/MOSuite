@@ -22,3 +22,5 @@
 ^vignettes/figures/$
 ^vignettes/memory\.Rmd$
 VennDiagram.*\.log
+^[.]?air[.]toml$
+^\.vscode$
