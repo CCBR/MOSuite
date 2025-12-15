@@ -124,8 +124,8 @@ number of samples.}
 
 \item{number_of_histogram_legend_columns}{number of columns for the histogram legend}
 
-\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list. If you have >12
-samples or groups, program will choose from a wide range of random colors}
+\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list.
+Colors must either be names in \code{grDevices::colors()} or valid hex codes.}
 
 \item{plot_corr_matrix_heatmap}{Datasets with a large number of samples may be too large to create a correlation
 matrix heatmap. If this function takes longer than 5 minutes to run, Set to \code{FALSE} and the correlation matrix will

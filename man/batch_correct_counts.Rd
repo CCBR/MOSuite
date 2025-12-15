@@ -59,8 +59,8 @@ labels to display on your figure (e.g. shorter labels are sometimes preferred on
 column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
 \code{NULL} -- \code{sample_id_colname} will be used.)}
 
-\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list. If you have >12
-samples or groups, program will choose from a wide range of random colors}
+\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list.
+Colors must either be names in \code{grDevices::colors()} or valid hex codes.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
