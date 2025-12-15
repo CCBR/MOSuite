@@ -51,7 +51,9 @@ normalize_counts <- function(moo,
                              maximum_for_x_axis_for_histogram = 1,
                              legend_font_size_for_histogram = 10,
                              legend_position_for_histogram = "top",
+                             number_of_histogram_legend_columns = 6,
                              colors_for_plots = NULL,
+                             plot_corr_matrix_heatmap = TRUE,
                              print_plots = options::opt("print_plots"),
                              save_plots = options::opt("save_plots"),
                              interactive_plots = FALSE,
@@ -137,18 +139,26 @@ normalize_counts <- function(moo,
       color_by_group = color_histogram_by_group,
       x_axis_label = "Normalized Counts",
       legend_position = legend_position_for_histogram,
-      legend_font_size = legend_font_size_for_histogram
+      legend_font_size = legend_font_size_for_histogram,
+      number_of_legend_columns = number_of_histogram_legend_columns
     ) + ggplot2::labs(caption = "normalized counts")
-    corHM_plot <- plot_corr_heatmap(
-      df.filt,
-      sample_metadata = sample_metadata,
-      sample_id_colname = sample_id_colname,
-      feature_id_colname = feature_id_colname,
-      group_colname = group_colname,
-      label_colname = label_colname,
-      color_values = colors_for_plots
-    ) + ggplot2::labs(caption = "normalized counts")
-
+    if (isTRUE(plot_corr_matrix_heatmap)) {
+      corHM_plot <- plot_corr_heatmap(
+        df.filt,
+        sample_metadata = sample_metadata,
+        sample_id_colname = sample_id_colname,
+        feature_id_colname = feature_id_colname,
+        group_colname = group_colname,
+        label_colname = label_colname,
+        color_values = colors_for_plots
+      ) + ggplot2::labs(caption = "normalized counts")
+      print_or_save_plot(
+        corHM_plot,
+        filename = file.path(plots_subdir, "corr_heatmap.png"),
+        print_plots = print_plots,
+        save_plots = save_plots
+      )
+    }
     print_or_save_plot(
       pca_plot,
       filename = file.path(plots_subdir, "pca.png"),
@@ -158,12 +168,6 @@ normalize_counts <- function(moo,
     print_or_save_plot(
       hist_plot,
       filename = file.path(plots_subdir, "histogram.png"),
-      print_plots = print_plots,
-      save_plots = save_plots
-    )
-    print_or_save_plot(
-      corHM_plot,
-      filename = file.path(plots_subdir, "corr_heatmap.png"),
       print_plots = print_plots,
       save_plots = save_plots
     )

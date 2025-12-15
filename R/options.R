@@ -15,7 +15,7 @@ options::define_option(
 )
 options::define_option(
   option = "save_plots",
-  default = FALSE,
+  default = TRUE,
   desc = "Whether to save plots to files during analysis",
   option_name = "moo_save_plots",
   envvar_name = "MOO_SAVE_PLOTS"

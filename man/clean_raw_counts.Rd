@@ -9,13 +9,14 @@ clean_raw_counts(
   count_type = "raw",
   sample_id_colname = NULL,
   feature_id_colname = NULL,
-  samples_to_rename = c(""),
+  samples_to_rename = "",
   cleanup_column_names = TRUE,
   split_gene_name = TRUE,
   aggregate_rows_with_duplicate_gene_names = TRUE,
   gene_name_column_to_use_for_collapsing_duplicates = "",
   print_plots = options::opt("print_plots"),
-  save_plots = options::opt("save_plots")
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "clean"
 )
 }
 \arguments{
@@ -43,7 +44,7 @@ will be automatically altered to a correct format. These format changes
 will include adding an "X" as the first character in any column name that
 began with a numeral and replacing some special characters ("-,:. ") with
 underscores ("_"). Invalid sample names and any changes made will be
-detailed in the template log.}
+detailed.}
 
 \item{split_gene_name}{If \code{TRUE}, split the gene name column by any of these special characters: \verb{,|_-:}}
 
@@ -70,13 +71,19 @@ to manually enter the Column ID for this field.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
-\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+
+\item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \value{
 \code{multiOmicDataSet} with cleaned counts
 }
 \description{
-Clean Raw Counts
+This function checks the input raw counts matrix for common formatting problems with feature identifiers and sample
+names. If feature IDs contain multiple IDs separated by special characters (| - , or space) they will be split into
+multiple columns. If duplicate feature IDs are detected the counts are summed across duplicate feature ID rows
+within each sample. Invalid sample names will also be reported and can be automatically
+corrected. If your sample names are corrected here, be sure to make equivalent changes to your metadata table.
 }
 \examples{
 moo <- create_multiOmicDataSet_from_dataframes(

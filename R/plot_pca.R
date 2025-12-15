@@ -78,12 +78,14 @@ S7::method(plot_pca, multiOmicDataSet) <- function(moo_counts,
                                                    principal_components = c(1, 2),
                                                    ...) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
-  return(plot_pca(
-    counts_dat,
-    sample_metadata = moo_counts@sample_meta,
-    principal_components = principal_components,
-    ...
-  ))
+  return(
+    plot_pca(
+      counts_dat,
+      sample_metadata = moo_counts@sample_meta,
+      principal_components = principal_components,
+      ...
+    )
+  )
 }
 
 #' Plot 2D or 3D PCA for counts dataframe
@@ -111,11 +113,14 @@ S7::method(plot_pca, S7::class_data.frame) <- function(moo_counts,
       "Principal components must have exactly 2 or 3 items. Length: {len_pcs}"
     ))
   }
-  return(plot_fun(moo_counts,
-    sample_metadata = sample_metadata,
-    principal_components = principal_components,
-    ...
-  ))
+  return(
+    plot_fun(
+      moo_counts,
+      sample_metadata = sample_metadata,
+      principal_components = principal_components,
+      ...
+    )
+  )
 }
 
 #' Perform and plot a 2D Principal Components Analysis
@@ -145,7 +150,7 @@ S7::method(plot_pca, S7::class_data.frame) <- function(moo_counts,
 #'   renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to
 #'   which new name: old_name: new_name
 #' @param color_values vector of colors as hex values or names recognized by R
-#' @param principal_components vector with numbered principal components to plot (Default: `c(1,2)`)
+#' @param principal_components vector with numbered principal components to plot
 #' @param legend_position passed to in `legend.position` `ggplot2::theme()`
 #' @param point_size size for `ggplot2::geom_point()`
 #' @param add_label whether to add text labels for the points
@@ -272,45 +277,153 @@ plot_pca_2d <- function(counts_dat,
   return(pca_plot)
 }
 
+#' @rdname plot_pca_3d
+#' @name plot_pca_3d
+#' @export
+plot_pca_3d <- S7::new_generic("plot_pca_3d", "moo_counts", function(moo_counts,
+                                                                     count_type = NULL,
+                                                                     sub_count_type = NULL,
+                                                                     sample_metadata = NULL,
+                                                                     feature_id_colname = NULL,
+                                                                     sample_id_colname = NULL,
+                                                                     samples_to_rename = NULL,
+                                                                     group_colname = "Group",
+                                                                     label_colname = "Label",
+                                                                     principal_components = c(1, 2, 3),
+                                                                     point_size = 8,
+                                                                     label_font_size = 24,
+                                                                     color_values = c(
+                                                                       "#5954d6",
+                                                                       "#e1562c",
+                                                                       "#b80058",
+                                                                       "#00c6f8",
+                                                                       "#d163e6",
+                                                                       "#00a76c",
+                                                                       "#ff9287",
+                                                                       "#008cf9",
+                                                                       "#006e00",
+                                                                       "#796880",
+                                                                       "#FFA500",
+                                                                       "#878500"
+                                                                     ),
+                                                                     plot_title = "PCA 3D",
+                                                                     plot_filename = "pca_3D.html",
+                                                                     print_plots = options::opt("print_plots"),
+                                                                     save_plots = options::opt("save_plots"),
+                                                                     plots_subdir = "pca") {
+  return(S7::S7_dispatch())
+})
+
+#' @rdname plot_pca_3d
+#' @name plot_pca_3d
+#' @export
+S7::method(plot_pca_3d, multiOmicDataSet) <- function(moo_counts,
+                                                      count_type = NULL,
+                                                      sub_count_type = NULL,
+                                                      sample_metadata = NULL,
+                                                      feature_id_colname = NULL,
+                                                      sample_id_colname = NULL,
+                                                      samples_to_rename = NULL,
+                                                      group_colname = "Group",
+                                                      label_colname = "Label",
+                                                      principal_components = c(1, 2, 3),
+                                                      point_size = 8,
+                                                      label_font_size = 24,
+                                                      color_values = c(
+                                                        "#5954d6",
+                                                        "#e1562c",
+                                                        "#b80058",
+                                                        "#00c6f8",
+                                                        "#d163e6",
+                                                        "#00a76c",
+                                                        "#ff9287",
+                                                        "#008cf9",
+                                                        "#006e00",
+                                                        "#796880",
+                                                        "#FFA500",
+                                                        "#878500"
+                                                      ),
+                                                      plot_title = "PCA 3D",
+                                                      plot_filename = "pca_3D.html",
+                                                      print_plots = options::opt("print_plots"),
+                                                      save_plots = options::opt("save_plots"),
+                                                      plots_subdir = "pca") {
+  counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  return(
+    plot_pca_3d(
+      counts_dat,
+      sample_metadata = moo_counts@sample_meta,
+      count_type = count_type,
+      sub_count_type = sub_count_type,
+      principal_components = principal_components,
+      feature_id_colname = feature_id_colname,
+      sample_id_colname = sample_id_colname,
+      samples_to_rename = samples_to_rename,
+      group_colname = group_colname,
+      label_colname = label_colname,
+      principal_components = principal_components,
+      point_size = point_size,
+      label_font_size = label_font_size,
+      color_values = color_values,
+      plot_title = plot_title,
+      plot_filename = plot_filename,
+      print_plots = print_plots,
+      save_plots = save_plots,
+      plots_subdir = plots_subdir
+    )
+  )
+}
+
 #' 3D PCA for counts dataframe
 #'
+#' @inherit moo_counts description
 #' @inheritParams plot_pca_2d
 #' @inheritParams filter_counts
+#' @inheritParams plot_histogram
+#' @inheritParams plot_expr_heatmap
 #'
-#' @param principal_components vector with numbered principal components to plot (Default: `c(1,2,3)`)
+#' @param principal_components vector with numbered principal components to plot
 #' @param point_size size for `ggplot2::geom_point()`
 #' @param plot_title title for the plot
 #'
 #' @export
 #' @returns `plotly::plot_ly` figure
 #'
-#' @seealso [plot_pca] generic
 #' @family PCA functions
 #'
-plot_pca_3d <- function(counts_dat,
-                        sample_metadata,
-                        sample_id_colname = NULL,
-                        samples_to_rename = NULL,
-                        group_colname = "Group",
-                        label_colname = "Label",
-                        principal_components = c(1, 2, 3),
-                        point_size = 8,
-                        label_font_size = 24,
-                        color_values = c(
-                          "#5954d6",
-                          "#e1562c",
-                          "#b80058",
-                          "#00c6f8",
-                          "#d163e6",
-                          "#00a76c",
-                          "#ff9287",
-                          "#008cf9",
-                          "#006e00",
-                          "#796880",
-                          "#FFA500",
-                          "#878500"
-                        ),
-                        plot_title = "PCA 3D") {
+#' @rdname plot_pca_3d
+#' @name plot_pca_3d
+S7::method(plot_pca_3d, S7::class_data.frame) <- function(moo_counts,
+                                                          count_type = NULL,
+                                                          sub_count_type = NULL,
+                                                          sample_metadata = NULL,
+                                                          feature_id_colname = NULL,
+                                                          sample_id_colname = NULL,
+                                                          samples_to_rename = NULL,
+                                                          group_colname = "Group",
+                                                          label_colname = "Label",
+                                                          principal_components = c(1, 2, 3),
+                                                          point_size = 8,
+                                                          label_font_size = 24,
+                                                          color_values = c(
+                                                            "#5954d6",
+                                                            "#e1562c",
+                                                            "#b80058",
+                                                            "#00c6f8",
+                                                            "#d163e6",
+                                                            "#00a76c",
+                                                            "#ff9287",
+                                                            "#008cf9",
+                                                            "#006e00",
+                                                            "#796880",
+                                                            "#FFA500",
+                                                            "#878500"
+                                                          ),
+                                                          plot_title = "PCA 3D",
+                                                          plot_filename = "pca_3D.html",
+                                                          print_plots = options::opt("print_plots"),
+                                                          save_plots = options::opt("save_plots"),
+                                                          plots_subdir = "pca") {
   PC <- std.dev <- percent <- cumulative <- NULL
   if (length(principal_components) != 3) {
     stop(
@@ -320,6 +433,9 @@ plot_pca_3d <- function(counts_dat,
     )
   }
 
+  if (is.null(sample_metadata)) {
+    stop("sample_metadata cannot be NULL")
+  }
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
   }
@@ -330,9 +446,10 @@ plot_pca_3d <- function(counts_dat,
 
   # calculate PCA
   pca_df <- calc_pca(
-    counts_dat = counts_dat,
+    counts_dat = moo_counts,
     sample_metadata = sample_metadata,
-    sample_id_colname = sample_id_colname
+    sample_id_colname = sample_id_colname,
+    feature_id_colname = feature_id_colname
   ) %>%
     dplyr::filter(PC %in% principal_components)
   pca_wide <- pca_df %>%
@@ -360,6 +477,14 @@ plot_pca_3d <- function(counts_dat,
     text = stats::as.formula(paste("~", sample_id_colname)),
     size = label_font_size
   )
+
+  print_or_save_plot(
+    p,
+    filename = file.path(plots_subdir, plot_filename),
+    print_plots = print_plots,
+    save_plots = save_plots
+  )
+
   return(fig)
 }
 

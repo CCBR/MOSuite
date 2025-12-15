@@ -62,6 +62,7 @@ Suggests:
     patchwork,
     plotrix,
     RColorBrewer,
+    Rd2md,
     readr,
     rmarkdown,
     roxygen2,

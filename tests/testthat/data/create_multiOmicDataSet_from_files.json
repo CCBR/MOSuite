@@ -1,0 +1,5 @@
+{
+  "feature_counts_filepath": "/Users/sovacoolkl/projects/CCBR/multiOmicsSuite/inst/extdata/nidap/Raw_Counts.csv.gz",
+  "sample_meta_filepath": "/Users/sovacoolkl/projects/CCBR/multiOmicsSuite/inst/extdata/nidap/Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+  "moo_output_rds": "tests/testthat/data/moo.rds"
+}

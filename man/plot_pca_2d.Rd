@@ -55,7 +55,7 @@ which new name: old_name: new_name}
 
 \item{color_values}{vector of colors as hex values or names recognized by R}
 
-\item{principal_components}{vector with numbered principal components to plot (Default: \code{c(1,2)})}
+\item{principal_components}{vector with numbered principal components to plot}
 
 \item{legend_position}{passed to in \code{legend.position} \code{ggplot2::theme()}}
 
@@ -71,7 +71,7 @@ which new name: old_name: new_name}
 
 \item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover
 your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
-is set to TRUE. Default is FALSE.}
+is set to \code{TRUE}. Default is \code{FALSE}.}
 }
 \value{
 ggplot object

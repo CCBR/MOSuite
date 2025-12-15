@@ -23,3 +23,12 @@ compare_proxy.plotly <- function(x, path = "x") {
 
   return(list(object = x, path = paste0("compare_proxy(", path, ")")))
 }
+
+run_function_cli <- function(func_name) {
+  json_path <- testthat::test_path("data", paste0(
+    func_name, ".json"
+  ))
+  return(cli_exec(c(
+    func_name, paste0('--json="', json_path, '"')
+  )))
+}

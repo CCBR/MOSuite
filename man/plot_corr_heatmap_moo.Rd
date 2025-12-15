@@ -20,7 +20,6 @@ Plot correlation heatmap for multiOmicDataSet
 \link{plot_corr_heatmap} generic
 
 Other plotters for multiOmicDataSets: 
-\code{\link{plot_expr_heatmap_moo}},
 \code{\link{plot_histogram_moo}},
 \code{\link{plot_pca_moo}},
 \code{\link{plot_read_depth_moo}}

@@ -1,0 +1,189 @@
+{
+    "title": "DEG Analysis",
+    "description": "Performs Differential Expression of Genes (DEG) Analysis.\n\nThis template takes (filtered) raw counts as its input and transforms this count data to log2-counts per million (logCPM). The normalization and DEG analysis is implemented using the Limma Voom R package.\n\nThe returned counts matrix contains normalized counts, not batch corrected counts. The DEG analysis accounts for batch using covariates, however. You can optionally also return mean and standard deviation of normalized expression within groups.\n\nThis template will support up to 2 factors",
+    "r_function": "diff_counts",
+    "columns": [
+        {
+            "key": "feature_id_colname",
+            "displayName": "Feature/Gene Names Column",
+            "description": "The column from your counts matrix containing the  Feature ID (gene names).",
+            "paramGroup": "Basic",
+            "sourceDataset": "Counts_Matrix",
+            "defaultValue": null,
+            "columnType": "STRING",
+            "isMulti": null
+        },
+        {
+            "key": "sample_id_colname",
+            "displayName": "Sample Names Column",
+            "description": "Column containing sample names",
+            "paramGroup": "Basic",
+            "sourceDataset": "Sample_Metadata",
+            "defaultValue": null,
+            "columnType": "ALL",
+            "isMulti": null
+        },
+        {
+            "key": "samples_to_include",
+            "displayName": "Columns to Include",
+            "description": "Select the sample columns from the input counts matrix that you want to process. Only numeric columns can be selected.",
+            "paramGroup": "Basic",
+            "sourceDataset": "Counts_Matrix",
+            "defaultValue": null,
+            "columnType": "ALL",
+            "isMulti": true
+        },
+        {
+            "key": "contrast_colname",
+            "displayName": "Contrast Variable Column",
+            "description": "The column in the input Sample Metadata that contains the group variables you wish to find differential expression between. User can add up to 2 columns (2-factor analysis)",
+            "paramGroup": "Basic",
+            "sourceDataset": "Sample_Metadata",
+            "defaultValue": null,
+            "columnType": "ALL",
+            "isMulti": true
+        },
+        {
+            "key": "covariates_colnames",
+            "displayName": "Covariates Column(s)",
+            "description": "Columns to be used as covariates in linear modeling. Must include column from \"Contrast Variable\". Most commonly your covariate will be group and batch (if you have different batches in your data).",
+            "paramGroup": "Basic",
+            "sourceDataset": "Sample_Metadata",
+            "defaultValue": null,
+            "columnType": "ALL",
+            "isMulti": true
+        }
+    ],
+    "inputDatasets": [
+        {
+            "key": "moo_input_rds",
+            "displayName": "MOO input Rds",
+            "description": "File path to read the input multiOmicDataSet object (MOO)",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        }
+    ],
+    "parameters": [
+        {
+            "key": "moo_output_rds",
+            "displayName": "MOO output Rds",
+            "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file at the end of the function",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "count_type",
+            "displayName": "Count Type",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "Basic",
+            "paramValues": null,
+            "defaultValue": "raw",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "sub_count_type",
+            "displayName": "Sub Count Type",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "Basic",
+            "paramValues": null,
+            "defaultValue": "raw",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "contrasts",
+            "displayName": "Contrasts",
+            "description": "Specify each contrast in the format group1-group2, e.g. treated-control",
+            "paramType": "VECTOR",
+            "paramGroup": "Basic",
+            "paramValues": null,
+            "defaultValue": null,
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "input_in_log_counts",
+            "displayName": "Input in log Counts",
+            "description": "Set to TRUE if input is in log counts.",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Advanced",
+            "paramValues": null,
+            "defaultValue": "FALSE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "return_mean_and_sd",
+            "displayName": "Return Mean and SD",
+            "description": "if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for contrast(s)",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Advanced",
+            "paramValues": null,
+            "defaultValue": "FALSE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "voom_normalization_method",
+            "displayName": "Normalization Method",
+            "description": "Normalization method to be applied to the logCPM values",
+            "paramType": "SELECT",
+            "paramGroup": "Advanced",
+            "paramValues": [
+                "none",
+                "scale",
+                "quantile",
+                "cyclicloess",
+                "TMM",
+                "TMMwzp",
+                "RLE",
+                "upperquartile"
+            ],
+            "defaultValue": "quantile",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+        "key": "save_plots",
+        "displayName": "Save Plots",
+        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+        "paramType": "BOOLEAN",
+        "paramGroup": "Visualization",
+        "paramValues": null,
+        "defaultValue": true,
+        "condition": null,
+        "content": null,
+        "objectPropertyReference": null
+        }
+    ],
+    "outputDatasetName": "Differential Counts from MultiOmics Dataset",
+    "outputs": {
+        "analysis": {
+            "type": "file",
+            "name": "moo.rds"
+        },
+        "figures": {
+            "type": "directory",
+            "name": "figures/diff/"
+        }
+    }
+}

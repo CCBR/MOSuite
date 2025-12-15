@@ -1,0 +1,331 @@
+{
+    "title": "Plot Volcano - Enhanced",
+    "description": "Implementation of Bioconductor's Enhanced Volcano Plot (v1.6.0, https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html). Template written by Matthew Angel and maintained by CCBR. Final Potomac Compatible Version: v52. Final Sugarloaf V1 Version: v55. Latest Sugarloaf V2 Version: v67. [View Documentation](https://nidap.nih.gov/workspace/notepad/view/ri.notepad.main.notepad.8fe3cd6c-db24-4b0a-b717-060cb77ecc5e)",
+    "r_function": "plot_volcano_enhanced",
+    "columns": [
+        {
+            "key": "feature_id_colname",
+            "displayName": "Column with Feature ID",
+            "description": "Column from the input DEG table containing Feature ID (such as Gene Names, Isoform IDs, UniProt IDs, and so on). This is usually the first column (named \"Feature_ID\" or \"Gene\"). Only Text type columns will be allowed.",
+            "paramGroup": "Basic",
+            "sourceDataset": "DEG_Table",
+            "defaultValue": null,
+            "columnType": "STRING",
+            "isMulti": null
+        },
+        {
+            "key": "signif_colname",
+            "displayName": "Significance Column",
+            "description": "Choose an unadjusted or adjusted p-value column from the input DEG table to use as the measure of significance in your Volcano plot. If your DEG analysis contained more than one contrast comparison, you will only be able to select one of these at a time. Make sure you select the same contrast that was selected for the \"Log2 Fold Change Column\" parameter.",
+            "paramGroup": "Basic",
+            "sourceDataset": "DEG_Table",
+            "defaultValue": null,
+            "columnType": "NUMBER",
+            "isMulti": true
+        },
+        {
+            "key": "change_colname",
+            "displayName": "Log2 Fold Change Column",
+            "description": "Choose a log2 fold change column from the input DEG table. If your DEG analysis contained more than one contrast comparison, you will only be able to select one of these at a time. Make sure you select the same contrast that was selected for the \"Significance Column\" parameter.",
+            "paramGroup": "Basic",
+            "sourceDataset": "DEG_Table",
+            "defaultValue": null,
+            "columnType": "NUMBER",
+            "isMulti": true
+        }
+    ],
+    "inputDatasets": [
+        {
+            "key": "moo_input_rds",
+            "displayName": "MOO input Rds",
+            "description": "File path to read the input multiOmicDataSet object (MOO)",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        }
+    ],
+    "parameters": [
+        {
+            "key": "moo_output_rds",
+            "displayName": "Plot output Rds",
+            "description": "File path to output the plot object as an Rds file",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "enhanced_volcano_plot.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "signif_threshold",
+            "displayName": "P-Value Threshold",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Basic",
+            "paramValues": null,
+            "defaultValue": "0.001",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "change_threshold",
+            "displayName": "Log2 Fold Change Threshold",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Basic",
+            "paramValues": null,
+            "defaultValue": "1.0",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "value_to_sort_the_output_dataset",
+            "displayName": "How to sort the output dataset",
+            "description": "This selection determines how the feature (gene) list is sorted before choosing the top-N features as set by the \"Number of Features to Label\" parameter. Choose either (absolute) fold change, p-value, or t-statistic to label the top features by the selected metric. This also determines which features are labeled in the plot. This option is negated if only using custom labels.",
+            "paramType": "SELECT",
+            "paramGroup": "Label",
+            "paramValues": [
+                "p-value",
+                "fold-change"
+            ],
+            "defaultValue": "p-value",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "num_features_to_label",
+            "displayName": "Number of Features to Label",
+            "description": "To minimize clutter on the volcano plot, it is inadvisable to label every feature (gene). You can choose to label any number of features or none. The value of this parameter (N) is used to label the top N features only. See the \"Choose Features To Label By\" parameter for options on how to sort the gene list before labeling the top N features. Will be negated if the option to use only additional labels is selected.",
+            "paramType": "NUMBER",
+            "paramGroup": "Label",
+            "paramValues": null,
+            "defaultValue": "30",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "use_only_addition_labels",
+            "displayName": "Label Only My Feature List",
+            "description": "Select TRUE when you want to label ONLY a specific list of features given in the \"My Feature List\" parameter.",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Label",
+            "paramValues": null,
+            "defaultValue": "FALSE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "additional_labels",
+            "displayName": "My Feature List",
+            "description": "Additional features (genes) to label. If the option to use only custom labels is selected, these will be the only points labeled on the plot. Otherwise, these will be plotted in addition to the other top features. This should be a comma-separated or space-delimited list.",
+            "paramType": "STRING",
+            "paramGroup": "Label",
+            "paramValues": null,
+            "defaultValue": "",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "lab_size",
+            "displayName": "Label Size",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Label",
+            "paramValues": null,
+            "defaultValue": "4",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "change_sig_name",
+            "displayName": "Custom Significance Label",
+            "description": "This replaces bulky names for the p-value column.",
+            "paramType": "STRING",
+            "paramGroup": "Title and Axis labels",
+            "paramValues": null,
+            "defaultValue": "p-value",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "change_lfc_name",
+            "displayName": "Custom Log Fold Change Label",
+            "description": "This replaces bulky column names for the fold-change column.",
+            "paramType": "STRING",
+            "paramGroup": "Title and Axis labels",
+            "paramValues": null,
+            "defaultValue": "log2FC",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+        "key": "use_custom_lab",
+        "displayName": "Use Custom Labels",
+        "description": "",
+        "paramType": "BOOLEAN",
+        "paramGroup": "Title and Axis Labels",
+        "paramValues": null,
+        "defaultValue": false,
+        "condition": null,
+        "content": null,
+        "objectPropertyReference": null
+        },
+        {
+            "key": "title",
+            "displayName": "Plot Title",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "Title and Axis labels",
+            "paramValues": null,
+            "defaultValue": "Volcano Plots",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "ylim",
+            "displayName": "Y-Limit",
+            "description": "Maximum value for y-axis. Defaults to -log10(min(pval)). Set to 0 for automatic scaling.",
+            "paramType": "NUMBER",
+            "paramGroup": "Plot",
+            "paramValues": null,
+            "defaultValue": "0",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "custom_xlim",
+            "displayName": "Custom X-axis limits",
+            "description": "Leave empty for automatic scaling, put one number for symmetrical scale (i.e, putting \"5\" would result in a range from \"-5\" to \"5\"), or put two numbers separated by comma for \"asymmetrical\" scale (i.e, putting \"-2,4\" would result in a range from \"-2\" to \"4\")",
+            "paramType": "STRING",
+            "paramGroup": "Plot",
+            "paramValues": null,
+            "defaultValue": "",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "xlim_additional",
+            "displayName": "X-Limit Padding",
+            "description": "Add additional units to x-limit",
+            "paramType": "NUMBER",
+            "paramGroup": "Plot",
+            "paramValues": null,
+            "defaultValue": "0",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "ylim_additional",
+            "displayName": "Y-Limit Padding",
+            "description": "Adds additional units to y-limit.",
+            "paramType": "NUMBER",
+            "paramGroup": "Plot",
+            "paramValues": null,
+            "defaultValue": "0",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "axis_lab_size",
+            "displayName": "Axis Label Size",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Plot",
+            "paramValues": null,
+            "defaultValue": "24",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "point_size",
+            "displayName": "Point Size",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Plot",
+            "paramValues": null,
+            "defaultValue": "2",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "image_width",
+            "displayName": "Image Width",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Image",
+            "paramValues": null,
+            "defaultValue": "3000",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "image_height",
+            "displayName": "Image Height",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Image",
+            "paramValues": null,
+            "defaultValue": "3000",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "dpi",
+            "displayName": "Image Resolution (DPI)",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Image",
+            "paramValues": null,
+            "defaultValue": "300",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+        "key": "save_plots",
+        "displayName": "Save Plots",
+        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+        "paramType": "BOOLEAN",
+        "paramGroup": "Visualization",
+        "paramValues": null,
+        "defaultValue": true,
+        "condition": null,
+        "content": null,
+        "objectPropertyReference": null
+        }
+    ],
+    "outputDatasetName": "Volcano Plot - Enhanced",
+    "outputs": {
+        "analysis": {
+            "type": "file",
+            "name": "enhanced_volcano_plot.rds"
+        },
+        "figures": {
+            "type": "file",
+            "name": "figures/diff/volcano_enhanced.png"
+        }
+    }
+}

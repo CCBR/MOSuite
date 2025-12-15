@@ -5,7 +5,7 @@
 \title{Plot a venn diagram, UpSet plot, or table of intersections}
 \usage{
 plot_venn_diagram(
-  diff_summary_dat,
+  moo_diff_summary_dat,
   feature_id_colname = NULL,
   contrasts_colname = "Contrast",
   select_contrasts = c(),
@@ -41,14 +41,14 @@ plot_venn_diagram(
 )
 }
 \arguments{
-\item{diff_summary_dat}{Summarized differential expression analysis}
+\item{moo_diff_summary_dat}{Summarized differential expression analysis}
 
 \item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).
 This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
 Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
 used.)}
 
-\item{contrasts_colname}{Name of the column in \code{diff_summary_dat} that contains the contrast names (default:
+\item{contrasts_colname}{Name of the column in \code{moo_diff_summary_dat} that contains the contrast names (default:
 "Contrast")}
 
 \item{select_contrasts}{A vector of contrast names to select for the plot. If empty, all contrasts are used.}
@@ -108,9 +108,9 @@ same colors as \code{venn_fill_colors})}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
-\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 
-\item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
+\item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \description{
 generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across

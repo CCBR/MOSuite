@@ -27,7 +27,7 @@ Whether to print plots during analysis\item{default: }{\preformatted{FALSE}}
 }}
 
 \item{save_plots}{\describe{
-Whether to save plots to files during analysis\item{default: }{\preformatted{FALSE}}
+Whether to save plots to files during analysis\item{default: }{\preformatted{TRUE}}
 \item{option: }{moo_save_plots}
 \item{envvar: }{MOO_SAVE_PLOTS (evaluated if possible, raw string otherwise)}
 }}
