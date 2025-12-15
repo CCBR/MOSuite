@@ -74,8 +74,8 @@
 #'   number of samples.
 #' @param legend_font_size_for_histogram legend font size for the histogram plot
 #' @param number_of_histogram_legend_columns number of columns for the histogram legend
-#' @param colors_for_plots Colors for the PCA and histogram will be picked, in order, from this list. If you have >12
-#'   samples or groups, program will choose from a wide range of random colors
+#' @param colors_for_plots Colors for the PCA and histogram will be picked, in order, from this list.
+#'   Colors must either be names in `grDevices::colors()` or valid hex codes.
 #' @param plot_corr_matrix_heatmap Datasets with a large number of samples may be too large to create a correlation
 #'   matrix heatmap. If this function takes longer than 5 minutes to run, Set to `FALSE` and the correlation matrix will
 #'   not be be created. Default is `TRUE`.
@@ -100,40 +100,42 @@
 #' head(moo@counts$filt)
 #'
 #' @family moo methods
-filter_counts <- function(moo,
-                          count_type = "clean",
-                          feature_id_colname = NULL,
-                          sample_id_colname = NULL,
-                          group_colname = "Group",
-                          label_colname = NULL,
-                          samples_to_include = NULL,
-                          minimum_count_value_to_be_considered_nonzero = 8,
-                          minimum_number_of_samples_with_nonzero_counts_in_total = 7,
-                          minimum_number_of_samples_with_nonzero_counts_in_a_group = 3,
-                          use_cpm_counts_to_filter = TRUE,
-                          use_group_based_filtering = FALSE,
-                          principal_component_on_x_axis = 1,
-                          principal_component_on_y_axis = 2,
-                          legend_position_for_pca = "top",
-                          point_size_for_pca = 1,
-                          add_label_to_pca = TRUE,
-                          label_font_size = 3,
-                          label_offset_y_ = 2,
-                          label_offset_x_ = 2,
-                          samples_to_rename = c(""),
-                          color_histogram_by_group = FALSE,
-                          set_min_max_for_x_axis_for_histogram = FALSE,
-                          minimum_for_x_axis_for_histogram = -1,
-                          maximum_for_x_axis_for_histogram = 1,
-                          legend_position_for_histogram = "top",
-                          legend_font_size_for_histogram = 10,
-                          number_of_histogram_legend_columns = 6,
-                          colors_for_plots = NULL,
-                          plot_corr_matrix_heatmap = TRUE,
-                          print_plots = options::opt("print_plots"),
-                          save_plots = options::opt("save_plots"),
-                          interactive_plots = FALSE,
-                          plots_subdir = "filt") {
+filter_counts <- function(
+  moo,
+  count_type = "clean",
+  feature_id_colname = NULL,
+  sample_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = NULL,
+  samples_to_include = NULL,
+  minimum_count_value_to_be_considered_nonzero = 8,
+  minimum_number_of_samples_with_nonzero_counts_in_total = 7,
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = 3,
+  use_cpm_counts_to_filter = TRUE,
+  use_group_based_filtering = FALSE,
+  principal_component_on_x_axis = 1,
+  principal_component_on_y_axis = 2,
+  legend_position_for_pca = "top",
+  point_size_for_pca = 1,
+  add_label_to_pca = TRUE,
+  label_font_size = 3,
+  label_offset_y_ = 2,
+  label_offset_x_ = 2,
+  samples_to_rename = c(""),
+  color_histogram_by_group = FALSE,
+  set_min_max_for_x_axis_for_histogram = FALSE,
+  minimum_for_x_axis_for_histogram = -1,
+  maximum_for_x_axis_for_histogram = 1,
+  legend_position_for_histogram = "top",
+  legend_font_size_for_histogram = 10,
+  number_of_histogram_legend_columns = 6,
+  colors_for_plots = NULL,
+  plot_corr_matrix_heatmap = TRUE,
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  interactive_plots = FALSE,
+  plots_subdir = "filt"
+) {
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
   }
@@ -156,10 +158,11 @@ filter_counts <- function(moo,
 
   samples_to_include <- samples_to_include %>% unlist()
 
-  df <- counts_dat %>% dplyr::select(
-    tidyselect::all_of(feature_id_colname),
-    tidyselect::all_of(samples_to_include)
-  )
+  df <- counts_dat %>%
+    dplyr::select(
+      tidyselect::all_of(feature_id_colname),
+      tidyselect::all_of(samples_to_include)
+    )
 
   # filter out low count genes
   df_filt <- remove_low_count_genes(
@@ -173,11 +176,13 @@ filter_counts <- function(moo,
     minimum_number_of_samples_with_nonzero_counts_in_total = minimum_number_of_samples_with_nonzero_counts_in_total,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group
   )
-
+  message(glue::glue("colors_for_plots {class(colors_for_plots)}"))
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
     # use consistent colors
     if (is.null(colors_for_plots)) {
       colors_for_plots <- moo@analyses[["colors"]][[group_colname]]
+    } else {
+      colors_for_plots <- as.vector(colors_for_plots)
     }
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots
@@ -185,8 +190,13 @@ filter_counts <- function(moo,
       colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
     }
 
+    message(glue::glue("colors_for_plots {class(colors_for_plots)}"))
+
     log_counts <- df_filt %>%
-      dplyr::mutate(dplyr::across(tidyselect::all_of(samples_to_include), ~ log(.x + 0.5)))
+      dplyr::mutate(dplyr::across(
+        tidyselect::all_of(samples_to_include),
+        ~ log(.x + 0.5)
+      ))
     pca_plot <- plot_pca(
       log_counts,
       sample_metadata = sample_metadata,
@@ -206,7 +216,8 @@ filter_counts <- function(moo,
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_,
-    ) + ggplot2::labs(caption = "filtered counts")
+    ) +
+      ggplot2::labs(caption = "filtered counts")
 
     hist_plot <- plot_histogram(
       log_counts,
@@ -223,7 +234,8 @@ filter_counts <- function(moo,
       legend_position = legend_position_for_histogram,
       legend_font_size = legend_font_size_for_histogram,
       number_of_legend_columns = number_of_histogram_legend_columns
-    ) + ggplot2::labs(caption = "filtered counts")
+    ) +
+      ggplot2::labs(caption = "filtered counts")
     if (isTRUE(plot_corr_matrix_heatmap)) {
       corHM <- plot_corr_heatmap(
         df_filt[, samples_to_include],
@@ -233,7 +245,8 @@ filter_counts <- function(moo,
         label_colname = label_colname,
         group_colname = group_colname,
         color_values = colors_for_plots
-      ) + ggplot2::labs(caption = "filtered counts")
+      ) +
+        ggplot2::labs(caption = "filtered counts")
       print_or_save_plot(
         corHM,
         filename = file.path(plots_subdir, "corr_heatmap.png"),
@@ -263,7 +276,9 @@ filter_counts <- function(moo,
     )
   }
   df_final <- df %>%
-    dplyr::filter(!!rlang::sym(feature_id_colname) %in% df_filt[, feature_id_colname])
+    dplyr::filter(
+      !!rlang::sym(feature_id_colname) %in% df_filt[, feature_id_colname]
+    )
 
   moo@counts[["filt"]] <- df_final
 
@@ -280,15 +295,17 @@ filter_counts <- function(moo,
 #' @return counts matrix with low-count genes removed
 #' @keywords internal
 #'
-remove_low_count_genes <- function(counts_dat,
-                                   sample_metadata,
-                                   feature_id_colname,
-                                   group_colname,
-                                   use_cpm_counts_to_filter = TRUE,
-                                   use_group_based_filtering = FALSE,
-                                   minimum_count_value_to_be_considered_nonzero = 8,
-                                   minimum_number_of_samples_with_nonzero_counts_in_total = 7,
-                                   minimum_number_of_samples_with_nonzero_counts_in_a_group = 3) {
+remove_low_count_genes <- function(
+  counts_dat,
+  sample_metadata,
+  feature_id_colname,
+  group_colname,
+  use_cpm_counts_to_filter = TRUE,
+  use_group_based_filtering = FALSE,
+  minimum_count_value_to_be_considered_nonzero = 8,
+  minimum_number_of_samples_with_nonzero_counts_in_total = 7,
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = 3
+) {
   # TODO refactor with tidyverse
   value <- isexpr1 <- NULL
   df <- counts_dat
@@ -312,18 +329,24 @@ remove_low_count_genes <- function(counts_dat,
     tcounts <- merge(sample_metadata[group_colname], tcounts, by = "row.names")
     tcounts$Row.names <- NULL
     melted <- reshape2::melt(tcounts, id.vars = group_colname)
-    tcounts.tot <- dplyr::summarise(dplyr::group_by_at(melted, c(group_colname, "variable")), sum = sum(value))
+    tcounts.tot <- dplyr::summarise(
+      dplyr::group_by_at(melted, c(group_colname, "variable")),
+      sum = sum(value)
+    )
     tcounts.group <- tcounts.tot %>%
       tidyr::pivot_wider(names_from = "variable", values_from = "sum")
-    tcounts.keep <- colSums(tcounts.group[(1:colnum + 1)] >=
-      minimum_number_of_samples_with_nonzero_counts_in_a_group) >= 1
+    tcounts.keep <- colSums(
+      tcounts.group[(1:colnum + 1)] >=
+        minimum_number_of_samples_with_nonzero_counts_in_a_group
+    ) >=
+      1
     df_filt <- trans_df[tcounts.keep, ] %>%
       tibble::rownames_to_column(feature_id_colname)
   } else {
-    trans_df$isexpr1 <- (
-      rowSums(as.matrix(trans_df[, -1]) > minimum_count_value_to_be_considered_nonzero) >=
-        minimum_number_of_samples_with_nonzero_counts_in_total
-    )
+    trans_df$isexpr1 <- (rowSums(
+      as.matrix(trans_df[, -1]) > minimum_count_value_to_be_considered_nonzero
+    ) >=
+      minimum_number_of_samples_with_nonzero_counts_in_total)
     df_filt <- trans_df %>%
       dplyr::filter(isexpr1) %>%
       dplyr::select(-isexpr1)
