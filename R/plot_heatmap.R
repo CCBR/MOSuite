@@ -156,7 +156,7 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
   rownames(sample_metadata) <- sample_metadata[[label_colname]]
   annoVal <- lapply(group_colname, function(x) {
     # TODO this only works on dataframes, not tibbles
-    out <- as.factor(sample_metadata[, x]) %>% levels()
+    out <- as.factor(sample_metadata %>% dplyr::pull(x)) %>% levels()
     # names(out)=x
     return(out)
   }) %>%
@@ -165,7 +165,7 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
   names(col) <- annoVal
 
   cols <- lapply(group_colname, function(x) {
-    ax <- as.factor(sample_metadata[, x]) %>% levels()
+    ax <- as.factor(sample_metadata %>% dplyr::pull(x)) %>% levels()
     out <- col[ax]
     return(out)
   })
