@@ -5,7 +5,11 @@ write_example_json <- function() {
       "RSEM.genes.expected_count.all_samples.txt.gz",
       package = "MOSuite"
     ),
-    sample_meta_filepath = system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite"),
+    sample_meta_filepath = system.file(
+      "extdata",
+      "sample_metadata.tsv.gz",
+      package = "MOSuite"
+    ),
     moo_output_rds = "moo.rds"
   )
   return(jsonlite::write_json(j, "inst/extdata/example.json"))
@@ -47,45 +51,44 @@ test_that("cli_exec --json --debug", {
       "    sample_meta_filepath = \"inst/extdata/sample_metadata.tsv.gz\")"
     )
   )
-  expect_error(cli_exec(c(
-    "filter_counts",
-    paste0(
-      '--json="',
-      system.file("extdata", "example.json", package = "MOSuite"),
-      '"'
-    ),
-    "--debug"
-  )), "moo_input_rds must be included")
+  expect_error(
+    cli_exec(c(
+      "filter_counts",
+      paste0(
+        '--json="',
+        system.file("extdata", "example.json", package = "MOSuite"),
+        '"'
+      ),
+      "--debug"
+    )),
+    "moo_input_rds must be included"
+  )
 })
 
 test_that("mosuite --help", {
   expect_snapshot(cli_exec("--help"))
   expect_snapshot(system(paste(
-    system.file("exec", "mosuite", package = "MOSuite"), "--help"
+    system.file("exec", "mosuite", package = "MOSuite"),
+    "--help"
   )))
   expect_snapshot(cli_exec("help"))
-  expect_true(inherits(cli_exec(c(
-    "filter_counts", "--help"
-  )), "help_files_with_topic"))
+  expect_true(inherits(
+    cli_exec(c(
+      "filter_counts",
+      "--help"
+    )),
+    "help_files_with_topic"
+  ))
   expect_warning(cli_exec("not_a_function"), "not a known function")
 })
 
 test_that("mosuite cli E2E", {
   # write initial json with correct file paths
-  write_json(
-    list(
-      feature_counts_filepath = system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
-      sample_meta_filepath = system.file(
-        "extdata",
-        "nidap",
-        "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
-        package = "MOSuite"
-      ),
-      moo_output_rds = testthat::test_path("data", "moo.rds")
-    ),
-    testthat::test_path("data", "create_multiOmicDataSet_from_files.json")
-  )
   run_function_cli("create_multiOmicDataSet_from_files")
   run_function_cli("clean_raw_counts")
   run_function_cli("filter_counts")
+  run_function_cli("normalize_counts")
+  run_function_cli("batch_correct_counts")
+  run_function_cli("diff_counts")
+  run_function_cli("filter_diff")
 })
