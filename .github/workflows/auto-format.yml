@@ -67,7 +67,10 @@ jobs:
         shell: Rscript {0}
         run: MOSuite:::write_package_json_blueprints()
 
-      - name: format
+      - name: Format R code
+        uses: rstudio/shiny-workflows/format-r-code@v1
+
+      - name: Run pre-commit hooks
         uses: pre-commit/action@v3.0.1
         continue-on-error: true
 
