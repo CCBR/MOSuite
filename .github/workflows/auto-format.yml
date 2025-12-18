@@ -65,10 +65,6 @@ jobs:
       - name: Format R code
         uses: rstudio/shiny-workflows/format-r-code@v1
 
-      - name: Run pre-commit hooks
-        uses: pre-commit/action@v3.0.1
-        continue-on-error: true
-
       - name: commit & push
         run: |
           git config --global user.name "github-actions[bot]"
