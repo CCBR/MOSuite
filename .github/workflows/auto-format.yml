@@ -67,10 +67,11 @@ jobs:
         with:
           args: "--format codemeta --outfile codemeta.json"
 
-      - name: Format R code
+      - name: Format R code with air
         uses: rstudio/shiny-workflows/format-r-code@v1
 
       - name: commit & push
         run: |
           git add .
-          git commit -m "ci: 🤖 auto-format" && git push || echo "nothing to commit"
+          git commit -m "ci: 🤖 auto-format" || echo "nothing to commit"
+          git push || echo "nothing to push"
