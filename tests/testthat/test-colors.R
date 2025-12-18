@@ -49,7 +49,11 @@ test_that("get_colors_lst works on nidap_sample_metadata", {
   )
 })
 test_that("get_colors_lst handles alternative palette functions", {
-  sample_meta <- system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite") %>%
+  sample_meta <- system.file(
+    "extdata",
+    "sample_metadata.tsv.gz",
+    package = "MOSuite"
+  ) %>%
     readr::read_tsv()
   expect_message(
     expect_warning(
@@ -106,11 +110,12 @@ test_that("set_color_pal overrides the color palette", {
       )
     )
   )
-  moo2 <- moo %>% set_color_pal(
-    colname = "Group",
-    palette_fun = RColorBrewer::brewer.pal,
-    name = "Set2"
-  )
+  moo2 <- moo %>%
+    set_color_pal(
+      colname = "Group",
+      palette_fun = RColorBrewer::brewer.pal,
+      name = "Set2"
+    )
   expect_equal(
     moo2@analyses$colors,
     list(

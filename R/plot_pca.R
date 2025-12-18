@@ -51,11 +51,13 @@
 #' @family PCA functions
 #' @keywords plotters
 #' @family moo methods
-plot_pca <- S7::new_generic("plot_pca", "moo_counts", function(moo_counts,
-                                                               principal_components = c(1, 2),
-                                                               ...) {
-  return(S7::S7_dispatch())
-})
+plot_pca <- S7::new_generic(
+  "plot_pca",
+  "moo_counts",
+  function(moo_counts, principal_components = c(1, 2), ...) {
+    return(S7::S7_dispatch())
+  }
+)
 
 #' Plot 2D or 3D PCA for multiOmicDataset
 #'
@@ -72,11 +74,13 @@ plot_pca <- S7::new_generic("plot_pca", "moo_counts", function(moo_counts,
 #' @name plot_pca_moo
 #' @seealso [plot_pca] generic
 #' @family plotters for multiOmicDataSets
-S7::method(plot_pca, multiOmicDataSet) <- function(moo_counts,
-                                                   count_type,
-                                                   sub_count_type = NULL,
-                                                   principal_components = c(1, 2),
-                                                   ...) {
+S7::method(plot_pca, multiOmicDataSet) <- function(
+  moo_counts,
+  count_type,
+  sub_count_type = NULL,
+  principal_components = c(1, 2),
+  ...
+) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
   return(plot_pca(
     counts_dat,
@@ -97,10 +101,12 @@ S7::method(plot_pca, multiOmicDataSet) <- function(moo_counts,
 #' @name plot_pca_dat
 #' @seealso [plot_pca] generic
 #' @family plotters for counts dataframes
-S7::method(plot_pca, S7::class_data.frame) <- function(moo_counts,
-                                                       sample_metadata,
-                                                       principal_components = c(1, 2),
-                                                       ...) {
+S7::method(plot_pca, S7::class_data.frame) <- function(
+  moo_counts,
+  sample_metadata,
+  principal_components = c(1, 2),
+  ...
+) {
   len_pcs <- length(principal_components)
   if (len_pcs == 2) {
     plot_fun <- plot_pca_2d
@@ -111,7 +117,8 @@ S7::method(plot_pca, S7::class_data.frame) <- function(moo_counts,
       "Principal components must have exactly 2 or 3 items. Length: {len_pcs}"
     ))
   }
-  return(plot_fun(moo_counts,
+  return(plot_fun(
+    moo_counts,
     sample_metadata = sample_metadata,
     principal_components = principal_components,
     ...
@@ -156,35 +163,37 @@ S7::method(plot_pca, S7::class_data.frame) <- function(moo_counts,
 #' @seealso [plot_pca] generic
 #' @family PCA functions
 #'
-plot_pca_2d <- function(counts_dat,
-                        sample_metadata,
-                        sample_id_colname = NULL,
-                        feature_id_colname = NULL,
-                        group_colname = "Group",
-                        label_colname = "Label",
-                        samples_to_rename = NULL,
-                        color_values = c(
-                          "#5954d6",
-                          "#e1562c",
-                          "#b80058",
-                          "#00c6f8",
-                          "#d163e6",
-                          "#00a76c",
-                          "#ff9287",
-                          "#008cf9",
-                          "#006e00",
-                          "#796880",
-                          "#FFA500",
-                          "#878500"
-                        ),
-                        principal_components = c(1, 2),
-                        legend_position = "top",
-                        point_size = 1,
-                        add_label = TRUE,
-                        label_font_size = 3,
-                        label_offset_x_ = 2,
-                        label_offset_y_ = 2,
-                        interactive_plots = FALSE) {
+plot_pca_2d <- function(
+  counts_dat,
+  sample_metadata,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = "Label",
+  samples_to_rename = NULL,
+  color_values = c(
+    "#5954d6",
+    "#e1562c",
+    "#b80058",
+    "#00c6f8",
+    "#d163e6",
+    "#00a76c",
+    "#ff9287",
+    "#008cf9",
+    "#006e00",
+    "#796880",
+    "#FFA500",
+    "#878500"
+  ),
+  principal_components = c(1, 2),
+  legend_position = "top",
+  point_size = 1,
+  add_label = TRUE,
+  label_font_size = 3,
+  label_offset_x_ = 2,
+  label_offset_y_ = 2,
+  interactive_plots = FALSE
+) {
   PC <- std.dev <- percent <- cumulative <- NULL
   if (length(principal_components) != 2) {
     stop(
@@ -223,13 +232,18 @@ plot_pca_2d <- function(counts_dat,
   prin_comp_y <- principal_components[2]
   # plot PCA
   pca_plot <- pca_wide %>%
-    dplyr::mutate(!!rlang::sym(group_colname) := as.character(!!rlang::sym(group_colname))) %>%
+    dplyr::mutate(
+      !!rlang::sym(group_colname) := as.character(!!rlang::sym(group_colname))
+    ) %>%
     ggplot2::ggplot(ggplot2::aes(
       x = !!rlang::sym(glue::glue("PC{prin_comp_x}")),
       y = !!rlang::sym(glue::glue("PC{prin_comp_y}")),
       text = !!rlang::sym(sample_id_colname)
     )) +
-    ggplot2::geom_point(ggplot2::aes(color = !!rlang::sym(group_colname)), size = point_size) +
+    ggplot2::geom_point(
+      ggplot2::aes(color = !!rlang::sym(group_colname)),
+      size = point_size
+    ) +
     ggplot2::theme_bw() +
     ggplot2::theme(
       legend.position = legend_position,
@@ -287,30 +301,32 @@ plot_pca_2d <- function(counts_dat,
 #' @seealso [plot_pca] generic
 #' @family PCA functions
 #'
-plot_pca_3d <- function(counts_dat,
-                        sample_metadata,
-                        sample_id_colname = NULL,
-                        samples_to_rename = NULL,
-                        group_colname = "Group",
-                        label_colname = "Label",
-                        principal_components = c(1, 2, 3),
-                        point_size = 8,
-                        label_font_size = 24,
-                        color_values = c(
-                          "#5954d6",
-                          "#e1562c",
-                          "#b80058",
-                          "#00c6f8",
-                          "#d163e6",
-                          "#00a76c",
-                          "#ff9287",
-                          "#008cf9",
-                          "#006e00",
-                          "#796880",
-                          "#FFA500",
-                          "#878500"
-                        ),
-                        plot_title = "PCA 3D") {
+plot_pca_3d <- function(
+  counts_dat,
+  sample_metadata,
+  sample_id_colname = NULL,
+  samples_to_rename = NULL,
+  group_colname = "Group",
+  label_colname = "Label",
+  principal_components = c(1, 2, 3),
+  point_size = 8,
+  label_font_size = 24,
+  color_values = c(
+    "#5954d6",
+    "#e1562c",
+    "#b80058",
+    "#00c6f8",
+    "#d163e6",
+    "#00a76c",
+    "#ff9287",
+    "#008cf9",
+    "#006e00",
+    "#796880",
+    "#FFA500",
+    "#878500"
+  ),
+  plot_title = "PCA 3D"
+) {
   PC <- std.dev <- percent <- cumulative <- NULL
   if (length(principal_components) != 3) {
     stop(
@@ -403,10 +419,12 @@ get_pc_percent_lab <- function(pca_df, pc) {
 #' @examples
 #' calc_pca(nidap_raw_counts, nidap_sample_metadata) %>% head()
 #' @family PCA functions
-calc_pca <- function(counts_dat,
-                     sample_metadata,
-                     sample_id_colname = NULL,
-                     feature_id_colname = NULL) {
+calc_pca <- function(
+  counts_dat,
+  sample_metadata,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL
+) {
   var <- row <- percent <- NULL
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]

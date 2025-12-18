@@ -49,7 +49,10 @@
 #' @family plotters
 #' @keywords plotters
 #' @family moo methods
-plot_histogram <- S7::new_generic("plot_histogram", dispatch_args = "moo_counts")
+plot_histogram <- S7::new_generic(
+  "plot_histogram",
+  dispatch_args = "moo_counts"
+)
 
 #' Plot histogram for multiOmicDataSet
 #'
@@ -79,12 +82,18 @@ plot_histogram <- S7::new_generic("plot_histogram", dispatch_args = "moo_counts"
 #' @method plot_histogram multiOmicDataSet
 #' @seealso [plot_histogram] generic
 #' @family plotters for multiOmicDataSets
-S7::method(plot_histogram, multiOmicDataSet) <- function(moo_counts,
-                                                         count_type,
-                                                         sub_count_type = NULL,
-                                                         ...) {
+S7::method(plot_histogram, multiOmicDataSet) <- function(
+  moo_counts,
+  count_type,
+  sub_count_type = NULL,
+  ...
+) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
-  return(plot_histogram(counts_dat, sample_metadata = moo_counts@sample_meta, ...))
+  return(plot_histogram(
+    counts_dat,
+    sample_metadata = moo_counts@sample_meta,
+    ...
+  ))
 }
 
 #' Plot histogram for counts dataframe
@@ -145,36 +154,38 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(moo_counts,
 #' @name plot_histogram_dat
 #' @method plot_histogram data.frame
 #' @family plotters for counts dataframes
-S7::method(plot_histogram, S7::class_data.frame) <- function(moo_counts,
-                                                             sample_metadata,
-                                                             sample_id_colname = NULL,
-                                                             feature_id_colname = NULL,
-                                                             group_colname = "Group",
-                                                             label_colname = "Label",
-                                                             color_values = c(
-                                                               "#5954d6",
-                                                               "#e1562c",
-                                                               "#b80058",
-                                                               "#00c6f8",
-                                                               "#d163e6",
-                                                               "#00a76c",
-                                                               "#ff9287",
-                                                               "#008cf9",
-                                                               "#006e00",
-                                                               "#796880",
-                                                               "#FFA500",
-                                                               "#878500"
-                                                             ),
-                                                             color_by_group = FALSE,
-                                                             set_min_max_for_x_axis = FALSE,
-                                                             minimum_for_x_axis = -1,
-                                                             maximum_for_x_axis = 1,
-                                                             x_axis_label = "Counts",
-                                                             y_axis_label = "Density",
-                                                             legend_position = "top",
-                                                             legend_font_size = 10,
-                                                             number_of_legend_columns = 6,
-                                                             interactive_plots = FALSE) {
+S7::method(plot_histogram, S7::class_data.frame) <- function(
+  moo_counts,
+  sample_metadata,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = "Label",
+  color_values = c(
+    "#5954d6",
+    "#e1562c",
+    "#b80058",
+    "#00c6f8",
+    "#d163e6",
+    "#00a76c",
+    "#ff9287",
+    "#008cf9",
+    "#006e00",
+    "#796880",
+    "#FFA500",
+    "#878500"
+  ),
+  color_by_group = FALSE,
+  set_min_max_for_x_axis = FALSE,
+  minimum_for_x_axis = -1,
+  maximum_for_x_axis = 1,
+  x_axis_label = "Counts",
+  y_axis_label = "Density",
+  legend_position = "top",
+  legend_font_size = 10,
+  number_of_legend_columns = 6,
+  interactive_plots = FALSE
+) {
   count <- NULL
   counts_dat <- moo_counts
   if (is.null(sample_id_colname)) {
@@ -202,7 +213,9 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(moo_counts,
 
   if (color_by_group == TRUE) {
     df_long <- df_long %>%
-      dplyr::mutate(!!rlang::sym(group_colname) := as.factor(!!rlang::sym(group_colname))) %>%
+      dplyr::mutate(
+        !!rlang::sym(group_colname) := as.factor(!!rlang::sym(group_colname))
+      ) %>%
       dplyr::filter(!is.na(group_colname))
     n <- df_long %>%
       dplyr::pull(group_colname) %>%
@@ -215,7 +228,10 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(moo_counts,
         x = count,
         group = !!rlang::sym(sample_id_colname)
       )) +
-      ggplot2::geom_density(ggplot2::aes(colour = !!rlang::sym(group_colname)), linewidth = 1)
+      ggplot2::geom_density(
+        ggplot2::aes(colour = !!rlang::sym(group_colname)),
+        linewidth = 1
+      )
   } else {
     n <- df_long %>%
       dplyr::pull(sample_id_colname) %>%
@@ -227,7 +243,10 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(moo_counts,
         x = count,
         group = !!rlang::sym(sample_id_colname)
       )) +
-      ggplot2::geom_density(ggplot2::aes(colour = !!rlang::sym(sample_id_colname)), linewidth = 1)
+      ggplot2::geom_density(
+        ggplot2::aes(colour = !!rlang::sym(sample_id_colname)),
+        linewidth = 1
+      )
   }
 
   hist_plot <- hist_plot +
@@ -253,7 +272,9 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(moo_counts,
     ggplot2::xlim(xmin, xmax) +
     # scale_linetype_manual(values=rep(c('solid', 'dashed','dotted','twodash'),n)) +
     ggplot2::scale_colour_manual(values = color_values[1:n]) +
-    ggplot2::guides(linetype = ggplot2::guide_legend(ncol = number_of_legend_columns))
+    ggplot2::guides(
+      linetype = ggplot2::guide_legend(ncol = number_of_legend_columns)
+    )
 
   if (isTRUE(interactive_plots)) {
     hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) %>%

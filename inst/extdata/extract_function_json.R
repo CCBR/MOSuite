@@ -28,7 +28,7 @@ functions <- list(
     gene_name_column_to_use_for_collapsing_duplicates = "",
     print_plots = TRUE,
     save_plots = TRUE
-  ) ,
+  ),
   create_multiOmicDataSet_from_files = list(
     moo_output_rds = "moo.rds",
     sample_meta_filepath = NULL,
@@ -158,8 +158,20 @@ functions <- list(
 names(functions) %>%
   lapply(\(func_name) {
     func_args <- functions[[func_name]]
-    filename <- here::here('inst', 'extdata', 'json_args', 'defaults', glue::glue("{func_name}.json"))
-    jsonlite::write_json(func_args, filename,
-                         auto_unbox = TRUE, pretty = TRUE, null = 'null', na = 'null')
+    filename <- here::here(
+      'inst',
+      'extdata',
+      'json_args',
+      'defaults',
+      glue::glue("{func_name}.json")
+    )
+    jsonlite::write_json(
+      func_args,
+      filename,
+      auto_unbox = TRUE,
+      pretty = TRUE,
+      null = 'null',
+      na = 'null'
+    )
     return(filename)
   })

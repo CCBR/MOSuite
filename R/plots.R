@@ -15,13 +15,15 @@
 #' @export
 #' @family plotters
 #' @keywords plotters
-print_or_save_plot <- function(plot_obj,
-                               filename,
-                               print_plots = options::opt("print_plots"),
-                               save_plots = options::opt("save_plots"),
-                               plots_dir = options::opt("plots_dir"),
-                               graphics_device = grDevices::png,
-                               ...) {
+print_or_save_plot <- function(
+  plot_obj,
+  filename,
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_dir = options::opt("plots_dir"),
+  graphics_device = grDevices::png,
+  ...
+) {
   if (isTRUE(print_plots)) {
     print(plot_obj)
   }

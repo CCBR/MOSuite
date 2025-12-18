@@ -1,6 +1,10 @@
 set.seed(20231228)
 moo <- create_multiOmicDataSet_from_files(
-  sample_meta_filepath = system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite"),
+  sample_meta_filepath = system.file(
+    "extdata",
+    "sample_metadata.tsv.gz",
+    package = "MOSuite"
+  ),
   feature_counts_filepath = system.file(
     "extdata",
     "RSEM.genes.expected_count.all_samples.txt.gz",
@@ -9,7 +13,9 @@ moo <- create_multiOmicDataSet_from_files(
 ) %>%
   suppressMessages()
 moo@sample_meta <- moo@sample_meta %>%
-  dplyr::mutate(condition = factor(condition, levels = c("wildtype", "knockout")))
+  dplyr::mutate(
+    condition = factor(condition, levels = c("wildtype", "knockout"))
+  )
 
 test_that("run_deseq2 works", {
   expect_error(
@@ -19,7 +25,8 @@ test_that("run_deseq2 works", {
 
   min_count <- 10
   genes_above_threshold <- moo@counts$raw %>%
-    tidyr::pivot_longer(!tidyselect::any_of(c("gene_id", "GeneName")),
+    tidyr::pivot_longer(
+      !tidyselect::any_of(c("gene_id", "GeneName")),
       names_to = "sample_id",
       values_to = "count"
     ) %>%
@@ -64,7 +71,9 @@ test_that("run_deseq2 works", {
 
   # check some of the counts
   expect_equal(
-    dds@assays@data@listData %>% as.data.frame() %>% dplyr::filter(counts.KO_S3 > 15),
+    dds@assays@data@listData %>%
+      as.data.frame() %>%
+      dplyr::filter(counts.KO_S3 > 15),
     structure(
       list(
         counts.KO_S3 = c(25L, 16L, 19L),
