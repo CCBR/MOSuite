@@ -26,10 +26,15 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
       - uses: actions/checkout@v4
-        if: github.event_name == 'push'
+        if: github.event_name != 'pull_request'
         with:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
+
+      - name: git config
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - uses: CCBR/actions/install-r-pak@main
         with:
@@ -62,16 +67,11 @@ jobs:
         with:
           args: "--format codemeta --outfile codemeta.json"
 
-      - name: Format R code
+      - name: Format R code with air
         uses: rstudio/shiny-workflows/format-r-code@v1
-
-      - name: Run pre-commit hooks
-        uses: pre-commit/action@v3.0.1
-        continue-on-error: true
 
       - name: commit & push
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "ci: 🤖 auto-format" && git push || echo "nothing to commit"
+          git commit -m "ci: 🤖 auto-format" || echo "nothing to commit"
+          git push || echo "nothing to push"
