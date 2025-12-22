@@ -337,7 +337,7 @@
     {
       "key": "colors_for_plots",
       "displayName": "Colors for Plots",
-      "description": "Colors for the PCA and histogram will be picked, in order, from this list. If you have >12\nsamples or groups, program will choose from a wide range of random colors\n",
+      "description": "Colors for the PCA and histogram will be picked, in order, from this list.\nColors must either be names in `grDevices::colors()` or valid hex codes.\n",
       "paramType": "MULTISELECT",
       "paramGroup": "Visualization",
       "paramValues": [
