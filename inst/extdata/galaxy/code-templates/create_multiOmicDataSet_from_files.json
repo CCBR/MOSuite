@@ -3,20 +3,7 @@
   "title": "Create Multi-Omic Dataset from Files\n",
   "description": "Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).\n",
   "columns": [],
-  "inputDatasets": [],
-  "parameters": [
-    {
-      "key": "moo_output_rds",
-      "displayName": "MOO output Rds",
-      "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file",
-      "paramType": "STRING",
-      "paramGroup": "basic",
-      "paramValues": null,
-      "defaultValue": "moo.rds",
-      "condition": null,
-      "content": null,
-      "objectPropertyReference": null
-    },
+  "inputDatasets": [
     {
       "key": "sample_meta_filepath",
       "displayName": "",
@@ -35,6 +22,20 @@
       "paramType": "STRING",
       "paramGroup": "basic",
       "paramValues": null,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    }
+  ],
+  "parameters": [
+    {
+      "key": "moo_output_rds",
+      "displayName": "MOO output Rds",
+      "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file",
+      "paramType": "STRING",
+      "paramGroup": "basic",
+      "paramValues": null,
+      "defaultValue": "moo.rds",
       "condition": null,
       "content": null,
       "objectPropertyReference": null
