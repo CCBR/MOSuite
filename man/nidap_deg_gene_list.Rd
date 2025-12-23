@@ -6,7 +6,7 @@
 \title{List of differentially expressed genes from the NIDAP test dataset using
 default parameters with \code{filter_diff()}.}
 \format{
-An object of class \code{data.frame} with 635 rows and 16 columns.
+An object of class \code{data.frame} with 641 rows and 16 columns.
 }
 \usage{
 nidap_deg_gene_list

@@ -8,6 +8,7 @@
 ^\.prettierrc$
 ^\.Rproj\.user$
 ^CITATION\.cff$
+^codemeta\.json$
 ^data-raw$
 ^doc$
 ^Dockerfile$
