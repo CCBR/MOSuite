@@ -109,14 +109,14 @@ batch_correct_counts <- function(
 
   if (batch_colname %in% covariates_colnames) {
     stop(glue::glue(
-      "Batch column ({batch_colname}) cannot be included in covariates."
+      "Batch column '{batch_colname}' cannot be included in covariates."
     ))
   }
   if (length(unique(batch_vctr)) <= 1) {
     combat_edata <- counts_dat
     warning(
       glue::glue(
-        "Batch column {batch_column} contains only 1 unique value; skipping batch correction"
+        "Batch column '{batch_colname}' contains only 1 unique value; skipping batch correction"
       )
     )
   } else {
