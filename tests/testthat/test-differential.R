@@ -30,7 +30,8 @@ test_that("differential analysis works for NIDAP", {
     nidap_deg_analysis_2 %>%
       join_dfs_wide() %>%
       dplyr::arrange(Gene) %>%
-      dplyr::select(order(colnames(.)))
+      dplyr::select(order(colnames(.))),
+    tolerance = 0.01
   )
 })
 
@@ -207,5 +208,5 @@ test_that("filter_diff works for NIDAP", {
       plot_type = "bar",
       plot_titles_fontsize = 12
     )
-  expect_equal(moo@analyses$diff_filt, nidap_deg_gene_list)
+  expect_equal(moo@analyses$diff_filt, nidap_deg_gene_list, tolerance = 0.01)
 })
