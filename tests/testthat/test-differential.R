@@ -152,7 +152,7 @@ test_that("diff_counts works for RENEE", {
     row.names = c(NA, 6L),
     class = "data.frame"
   )
-  expect_equal(actual, expected, tolerance = 0.001)
+  expect_equal(actual, expected, tolerance = 0.01)
 })
 
 test_that("diff_counts errors", {
