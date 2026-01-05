@@ -12,4 +12,4 @@ nidap_deg_gene_list
 
 ## Format
 
-An object of class `data.frame` with 635 rows and 16 columns.
+An object of class `data.frame` with 641 rows and 16 columns.
