@@ -1,147 +1,157 @@
 #' @rdname plot_volcano_summary
 #' @name plot_volcano_summary
 #' @export
-plot_volcano_summary <- S7::new_generic("plot_volcano_summary", "moo_diff", function(moo_diff,
-                                                                                     feature_id_colname = NULL,
-                                                                                     signif_colname = "pval",
-                                                                                     signif_threshold = 0.05,
-                                                                                     change_threshold = 1,
-                                                                                     value_to_sort_the_output_dataset = "t-statistic",
-                                                                                     num_features_to_label = 30,
-                                                                                     add_features = FALSE,
-                                                                                     label_features = FALSE,
-                                                                                     custom_gene_list = "",
-                                                                                     default_label_color = "black",
-                                                                                     custom_label_color = "green3",
-                                                                                     label_x_adj = 0.2,
-                                                                                     label_y_adj = 0.2,
-                                                                                     line_thickness = 0.5,
-                                                                                     label_font_size = 4,
-                                                                                     label_font_type = 1,
-                                                                                     displace_feature_labels = FALSE,
-                                                                                     custom_gene_list_special_label_displacement = "",
-                                                                                     special_label_displacement_x_axis = 2,
-                                                                                     special_label_displacement_y_axis = 2,
-                                                                                     color_of_signif_threshold_line = "blue",
-                                                                                     color_of_non_significant_features = "black",
-                                                                                     color_of_logfold_change_threshold_line = "red",
-                                                                                     color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
-                                                                                     color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
-                                                                                     flip_vplot = FALSE,
-                                                                                     use_default_x_axis_limit = TRUE,
-                                                                                     x_axis_limit = 5,
-                                                                                     use_default_y_axis_limit = TRUE,
-                                                                                     y_axis_limit = 10,
-                                                                                     point_size = 2,
-                                                                                     add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
-                                                                                     graphics_device = grDevices::png,
-                                                                                     image_width = 15,
-                                                                                     image_height = 15,
-                                                                                     dpi = 300,
-                                                                                     use_default_grid_layout = TRUE,
-                                                                                     number_of_rows_in_grid_layout = 1,
-                                                                                     aspect_ratio = 0,
-                                                                                     plot_filename = "volcano_summary.png",
-                                                                                     print_plots = options::opt("print_plots"),
-                                                                                     save_plots = options::opt("save_plots"),
-                                                                                     plots_subdir = "diff") {
-  return(S7::S7_dispatch())
-})
+plot_volcano_summary <- S7::new_generic(
+  "plot_volcano_summary",
+  "moo_diff",
+  function(
+    moo_diff,
+    feature_id_colname = NULL,
+    signif_colname = "pval",
+    signif_threshold = 0.05,
+    change_threshold = 1,
+    value_to_sort_the_output_dataset = "t-statistic",
+    num_features_to_label = 30,
+    add_features = FALSE,
+    label_features = FALSE,
+    custom_gene_list = "",
+    default_label_color = "black",
+    custom_label_color = "green3",
+    label_x_adj = 0.2,
+    label_y_adj = 0.2,
+    line_thickness = 0.5,
+    label_font_size = 4,
+    label_font_type = 1,
+    displace_feature_labels = FALSE,
+    custom_gene_list_special_label_displacement = "",
+    special_label_displacement_x_axis = 2,
+    special_label_displacement_y_axis = 2,
+    color_of_signif_threshold_line = "blue",
+    color_of_non_significant_features = "black",
+    color_of_logfold_change_threshold_line = "red",
+    color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
+    color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
+    flip_vplot = FALSE,
+    use_default_x_axis_limit = TRUE,
+    x_axis_limit = 5,
+    use_default_y_axis_limit = TRUE,
+    y_axis_limit = 10,
+    point_size = 2,
+    add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
+    graphics_device = grDevices::png,
+    image_width = 15,
+    image_height = 15,
+    dpi = 300,
+    use_default_grid_layout = TRUE,
+    number_of_rows_in_grid_layout = 1,
+    aspect_ratio = 0,
+    plot_filename = "volcano_summary.png",
+    print_plots = options::opt("print_plots"),
+    save_plots = options::opt("save_plots"),
+    plots_subdir = "diff"
+  ) {
+    return(S7::S7_dispatch())
+  }
+)
 
 #' @rdname plot_volcano_summary
 #' @name plot_volcano_summary
 #' @export
-S7::method(plot_volcano_summary, multiOmicDataSet) <- function(moo_diff,
-                                                               feature_id_colname = NULL,
-                                                               signif_colname = "pval",
-                                                               signif_threshold = 0.05,
-                                                               change_threshold = 1,
-                                                               value_to_sort_the_output_dataset = "t-statistic",
-                                                               num_features_to_label = 30,
-                                                               add_features = FALSE,
-                                                               label_features = FALSE,
-                                                               custom_gene_list = "",
-                                                               default_label_color = "black",
-                                                               custom_label_color = "green3",
-                                                               label_x_adj = 0.2,
-                                                               label_y_adj = 0.2,
-                                                               line_thickness = 0.5,
-                                                               label_font_size = 4,
-                                                               label_font_type = 1,
-                                                               displace_feature_labels = FALSE,
-                                                               custom_gene_list_special_label_displacement = "",
-                                                               special_label_displacement_x_axis = 2,
-                                                               special_label_displacement_y_axis = 2,
-                                                               color_of_signif_threshold_line = "blue",
-                                                               color_of_non_significant_features = "black",
-                                                               color_of_logfold_change_threshold_line = "red",
-                                                               color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
-                                                               color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
-                                                               flip_vplot = FALSE,
-                                                               use_default_x_axis_limit = TRUE,
-                                                               x_axis_limit = 5,
-                                                               use_default_y_axis_limit = TRUE,
-                                                               y_axis_limit = 10,
-                                                               point_size = 2,
-                                                               add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
-                                                               graphics_device = grDevices::png,
-                                                               image_width = 15,
-                                                               image_height = 15,
-                                                               dpi = 300,
-                                                               use_default_grid_layout = TRUE,
-                                                               number_of_rows_in_grid_layout = 1,
-                                                               aspect_ratio = 0,
-                                                               plot_filename = "volcano_summary.png",
-                                                               print_plots = options::opt("print_plots"),
-                                                               save_plots = options::opt("save_plots"),
-                                                               plots_subdir = "diff") {
-  return(moo_diff@analyses$diff %>%
-    join_dfs_wide() %>%
-    plot_volcano_summary(
-      feature_id_colname,
-      signif_colname,
-      signif_threshold,
-      change_threshold,
-      value_to_sort_the_output_dataset,
-      num_features_to_label,
-      add_features,
-      label_features,
-      custom_gene_list,
-      default_label_color,
-      custom_label_color,
-      label_x_adj,
-      label_y_adj,
-      line_thickness,
-      label_font_size,
-      label_font_type,
-      displace_feature_labels,
-      custom_gene_list_special_label_displacement,
-      special_label_displacement_x_axis,
-      special_label_displacement_y_axis,
-      color_of_signif_threshold_line,
-      color_of_non_significant_features,
-      color_of_logfold_change_threshold_line,
-      color_of_features_meeting_only_signif_threshold,
-      color_for_features_meeting_pvalue_and_foldchange_thresholds,
-      flip_vplot,
-      use_default_x_axis_limit,
-      x_axis_limit,
-      use_default_y_axis_limit,
-      y_axis_limit,
-      point_size,
-      add_deg_columns,
-      graphics_device,
-      image_width,
-      image_height,
-      dpi,
-      use_default_grid_layout,
-      number_of_rows_in_grid_layout,
-      aspect_ratio,
-      plot_filename,
-      print_plots,
-      save_plots,
-      plots_subdir,
-    ))
+S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
+  moo_diff,
+  feature_id_colname = NULL,
+  signif_colname = "pval",
+  signif_threshold = 0.05,
+  change_threshold = 1,
+  value_to_sort_the_output_dataset = "t-statistic",
+  num_features_to_label = 30,
+  add_features = FALSE,
+  label_features = FALSE,
+  custom_gene_list = "",
+  default_label_color = "black",
+  custom_label_color = "green3",
+  label_x_adj = 0.2,
+  label_y_adj = 0.2,
+  line_thickness = 0.5,
+  label_font_size = 4,
+  label_font_type = 1,
+  displace_feature_labels = FALSE,
+  custom_gene_list_special_label_displacement = "",
+  special_label_displacement_x_axis = 2,
+  special_label_displacement_y_axis = 2,
+  color_of_signif_threshold_line = "blue",
+  color_of_non_significant_features = "black",
+  color_of_logfold_change_threshold_line = "red",
+  color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
+  flip_vplot = FALSE,
+  use_default_x_axis_limit = TRUE,
+  x_axis_limit = 5,
+  use_default_y_axis_limit = TRUE,
+  y_axis_limit = 10,
+  point_size = 2,
+  add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
+  graphics_device = grDevices::png,
+  image_width = 15,
+  image_height = 15,
+  dpi = 300,
+  use_default_grid_layout = TRUE,
+  number_of_rows_in_grid_layout = 1,
+  aspect_ratio = 0,
+  plot_filename = "volcano_summary.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff"
+) {
+  return(
+    moo_diff@analyses$diff %>%
+      join_dfs_wide() %>%
+      plot_volcano_summary(
+        feature_id_colname,
+        signif_colname,
+        signif_threshold,
+        change_threshold,
+        value_to_sort_the_output_dataset,
+        num_features_to_label,
+        add_features,
+        label_features,
+        custom_gene_list,
+        default_label_color,
+        custom_label_color,
+        label_x_adj,
+        label_y_adj,
+        line_thickness,
+        label_font_size,
+        label_font_type,
+        displace_feature_labels,
+        custom_gene_list_special_label_displacement,
+        special_label_displacement_x_axis,
+        special_label_displacement_y_axis,
+        color_of_signif_threshold_line,
+        color_of_non_significant_features,
+        color_of_logfold_change_threshold_line,
+        color_of_features_meeting_only_signif_threshold,
+        color_for_features_meeting_pvalue_and_foldchange_thresholds,
+        flip_vplot,
+        use_default_x_axis_limit,
+        x_axis_limit,
+        use_default_y_axis_limit,
+        y_axis_limit,
+        point_size,
+        add_deg_columns,
+        graphics_device,
+        image_width,
+        image_height,
+        dpi,
+        use_default_grid_layout,
+        number_of_rows_in_grid_layout,
+        aspect_ratio,
+        plot_filename,
+        print_plots,
+        save_plots,
+        plots_subdir,
+      )
+  )
 }
 
 #' Volcano Plot - Summary
@@ -207,50 +217,52 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(moo_diff,
 #' @rdname plot_volcano_summary
 #' @name plot_volcano_summary
 #'
-S7::method(plot_volcano_summary, S7::class_data.frame) <- function(moo_diff,
-                                                                   feature_id_colname = NULL,
-                                                                   signif_colname = "pval",
-                                                                   signif_threshold = 0.05,
-                                                                   change_threshold = 1,
-                                                                   value_to_sort_the_output_dataset = "t-statistic",
-                                                                   num_features_to_label = 30,
-                                                                   add_features = FALSE,
-                                                                   label_features = FALSE,
-                                                                   custom_gene_list = "",
-                                                                   default_label_color = "black",
-                                                                   custom_label_color = "green3",
-                                                                   label_x_adj = 0.2,
-                                                                   label_y_adj = 0.2,
-                                                                   line_thickness = 0.5,
-                                                                   label_font_size = 4,
-                                                                   label_font_type = 1,
-                                                                   displace_feature_labels = FALSE,
-                                                                   custom_gene_list_special_label_displacement = "",
-                                                                   special_label_displacement_x_axis = 2,
-                                                                   special_label_displacement_y_axis = 2,
-                                                                   color_of_signif_threshold_line = "blue",
-                                                                   color_of_non_significant_features = "black",
-                                                                   color_of_logfold_change_threshold_line = "red",
-                                                                   color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
-                                                                   color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
-                                                                   flip_vplot = FALSE,
-                                                                   use_default_x_axis_limit = TRUE,
-                                                                   x_axis_limit = 5,
-                                                                   use_default_y_axis_limit = TRUE,
-                                                                   y_axis_limit = 10,
-                                                                   point_size = 2,
-                                                                   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
-                                                                   graphics_device = grDevices::png,
-                                                                   image_width = 15,
-                                                                   image_height = 15,
-                                                                   dpi = 300,
-                                                                   use_default_grid_layout = TRUE,
-                                                                   number_of_rows_in_grid_layout = 1,
-                                                                   aspect_ratio = 0,
-                                                                   plot_filename = "volcano_summary.png",
-                                                                   print_plots = options::opt("print_plots"),
-                                                                   save_plots = options::opt("save_plots"),
-                                                                   plots_subdir = "diff") {
+S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
+  moo_diff,
+  feature_id_colname = NULL,
+  signif_colname = "pval",
+  signif_threshold = 0.05,
+  change_threshold = 1,
+  value_to_sort_the_output_dataset = "t-statistic",
+  num_features_to_label = 30,
+  add_features = FALSE,
+  label_features = FALSE,
+  custom_gene_list = "",
+  default_label_color = "black",
+  custom_label_color = "green3",
+  label_x_adj = 0.2,
+  label_y_adj = 0.2,
+  line_thickness = 0.5,
+  label_font_size = 4,
+  label_font_type = 1,
+  displace_feature_labels = FALSE,
+  custom_gene_list_special_label_displacement = "",
+  special_label_displacement_x_axis = 2,
+  special_label_displacement_y_axis = 2,
+  color_of_signif_threshold_line = "blue",
+  color_of_non_significant_features = "black",
+  color_of_logfold_change_threshold_line = "red",
+  color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
+  flip_vplot = FALSE,
+  use_default_x_axis_limit = TRUE,
+  x_axis_limit = 5,
+  use_default_y_axis_limit = TRUE,
+  y_axis_limit = 10,
+  point_size = 2,
+  add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
+  graphics_device = grDevices::png,
+  image_width = 15,
+  image_height = 15,
+  dpi = 300,
+  use_default_grid_layout = TRUE,
+  number_of_rows_in_grid_layout = 1,
+  aspect_ratio = 0,
+  plot_filename = "volcano_summary.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff"
+) {
   abort_packages_not_installed("patchwork")
   diff_dat <- as.data.frame(moo_diff)
 
@@ -289,26 +301,43 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(moo_diff,
     message(paste0(signif_colname, " column: ", pvalcol))
 
     if (value_to_sort_the_output_dataset == "fold-change") {
-      diff_dat <- diff_dat %>% dplyr::arrange(dplyr::desc(abs(diff_dat[, lfccol])))
+      diff_dat <- diff_dat %>%
+        dplyr::arrange(dplyr::desc(abs(diff_dat[, lfccol])))
     } else if (value_to_sort_the_output_dataset == "p-value") {
       diff_dat <- diff_dat %>% dplyr::arrange(diff_dat[, pvalcol])
     } else if (value_to_sort_the_output_dataset == "t-statistic") {
-      diff_dat <- diff_dat %>% dplyr::arrange(dplyr::desc(abs(diff_dat[, tstatcol])))
+      diff_dat <- diff_dat %>%
+        dplyr::arrange(dplyr::desc(abs(diff_dat[, tstatcol])))
     }
 
     ## optional Parameter: Provide a list of features to label on Volcano plot
     ## work with a list of features
     if (add_features == TRUE) {
-      gl <- trimws(unlist(strsplit(c(
-        custom_gene_list
-      ), ",")), which = c("both"))
+      gl <- trimws(
+        unlist(strsplit(
+          c(
+            custom_gene_list
+          ),
+          ","
+        )),
+        which = c("both")
+      )
       ind <- match(gl, diff_dat$Gene) # get the indices of the listed features
       custom_gene_list_ind <- c(1:num_features_to_label, ind) # when list provided
-      color_gene_label <- c(rep(c(default_label_color), num_features_to_label), rep(c(custom_label_color), length(ind)))
+      color_gene_label <- c(
+        rep(c(default_label_color), num_features_to_label),
+        rep(c(custom_label_color), length(ind))
+      )
     } else if (label_features == TRUE) {
-      gl <- trimws(unlist(strsplit(c(
-        custom_gene_list
-      ), ",")), which = c("both")) # unpack the gene list provided by the user and remove white spaces
+      gl <- trimws(
+        unlist(strsplit(
+          c(
+            custom_gene_list
+          ),
+          ","
+        )),
+        which = c("both")
+      ) # unpack the gene list provided by the user and remove white spaces
       ind <- match(gl, diff_dat$Gene) # get the indices of the listed features
       custom_gene_list_ind <- ind # when list provided
       color_gene_label <- rep(c(custom_label_color), length(ind))
@@ -322,14 +351,15 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(moo_diff,
       }
     }
 
-
     ## optional Parameter: IF DEG was set up A-B User can Flip FC values so that Volcano plot looks like comparison was
     ## B-A
     ## flip contrast section
     indc <- which(colnames(diff_dat) == lfccol) # get the indice of the column that contains the contrast_logFC data
 
     if (length(indc) == 0) {
-      message("Please rename the logFC column to include the contrast evaluated.")
+      message(
+        "Please rename the logFC column to include the contrast evaluated."
+      )
     } else {
       old_contrast <- colnames(diff_dat)[indc]
     }
@@ -350,8 +380,10 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(moo_diff,
       new_contrast_label <- old_contrast
     }
 
-    filtered_features <- diff_dat$Gene[diff_dat[, pvalcol] < signif_threshold &
-      abs(diff_dat[, new_contrast_label]) > change_threshold]
+    filtered_features <- diff_dat$Gene[
+      diff_dat[, pvalcol] < signif_threshold &
+        abs(diff_dat[, new_contrast_label]) > change_threshold
+    ]
     repeated_column <- rep(contrast, length(filtered_features))
 
     ## If param empty, fill it with default value.
@@ -375,7 +407,6 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(moo_diff,
 
     ### PH: END Build table for Volcano plot
 
-
     ### PH: START Make plot - Can we use Enhanced volcano function from other template to make figure instead of ggplot
     ### shown here
 
@@ -385,9 +416,13 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(moo_diff,
     ))
     ## special nudge/repel of specific features
     if (displace_feature_labels) {
-      gn <- trimws(unlist(strsplit(
-        c(custom_gene_list_special_label_displacement), ","
-      )), which = c("both"))
+      gn <- trimws(
+        unlist(strsplit(
+          c(custom_gene_list_special_label_displacement),
+          ","
+        )),
+        which = c("both")
+      )
       ind_gn <- match(gn, diff_dat$Gene[custom_gene_list_ind]) # get the indices of the listed features
       nudge_x_all <- rep(c(0.2), length(diff_dat$Gene[custom_gene_list_ind]))
       nudge_y_all <- rep(c(0.2), length(diff_dat$Gene[custom_gene_list_ind]))
@@ -398,11 +433,12 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(moo_diff,
       nudge_y_all <- label_y_adj
     }
 
-
     # set plot parameters
     if (use_default_y_axis_limit) {
       negative_log10_p_values <- -log10(diff_dat[, pvalcol])
-      ymax <- ceiling(max(negative_log10_p_values[is.finite(negative_log10_p_values)]))
+      ymax <- ceiling(max(negative_log10_p_values[is.finite(
+        negative_log10_p_values
+      )]))
     } else {
       ymax <- y_axis_limit
     }
@@ -414,17 +450,22 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(moo_diff,
       xmax <- x_axis_limit
     }
 
-
     grm <- diff_dat[, c(new_contrast_label, pvalcol)]
     grm[, "neglogpval"] <- -log10(diff_dat[, pvalcol])
     colnames(grm) <- c("FC", "pval", "neglogpval")
     # message(grm[custom_gene_list_ind, ])
-    p <- ggplot2::ggplot(grm, ggplot2::aes(
-      x = !!rlang::sym("FC"),
-      y = !!rlang::sym("neglogpval")
-    )) + # modified by RAS
+    p <- ggplot2::ggplot(
+      grm,
+      ggplot2::aes(
+        x = !!rlang::sym("FC"),
+        y = !!rlang::sym("neglogpval")
+      )
+    ) + # modified by RAS
       ggplot2::theme_classic() +
-      ggplot2::geom_point(color = color_of_non_significant_features, size = point_size) +
+      ggplot2::geom_point(
+        color = color_of_non_significant_features,
+        size = point_size
+      ) +
       ggplot2::geom_vline(
         xintercept = c(-change_threshold, change_threshold),
         color = color_of_logfold_change_threshold_line,
@@ -441,7 +482,10 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(moo_diff,
         size = point_size
       ) +
       ggplot2::geom_point(
-        data = grm[diff_dat[, pvalcol] < signif_threshold & abs(grm[, "FC"]) > change_threshold, ],
+        data = grm[
+          diff_dat[, pvalcol] < signif_threshold &
+            abs(grm[, "FC"]) > change_threshold,
+        ],
         color = color_for_features_meeting_pvalue_and_foldchange_thresholds,
         size = point_size
       ) +
@@ -468,7 +512,6 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(moo_diff,
     ### PH: END Make plot - Can we use Enhanced volcano function from other template to make figure instead of ggplot
     ### shown here
   }
-
 
   ## Print plots
   nplots <- length(Plots)

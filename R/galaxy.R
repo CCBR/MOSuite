@@ -7,11 +7,16 @@ get_function_meta <- function(func_name, rd_db) {
   func_db <- rd_db[[paste0(func_name, ".Rd")]]
 
   title <- tools:::.Rd_get_metadata(func_db, "title") %>% trimws()
-  desc <- paste(tools:::.Rd_get_metadata(func_db, "description"),
+  desc <- paste(
+    tools:::.Rd_get_metadata(func_db, "description"),
     tools:::.Rd_get_metadata(func_db, "details"),
     sep = "\n\n"
-  ) %>% trimws()
-  arg_desc <- dplyr::as_tibble(tools:::.Rd_get_argument_table(func_db), .name_repair = "unique_quiet")
+  ) %>%
+    trimws()
+  arg_desc <- dplyr::as_tibble(
+    tools:::.Rd_get_argument_table(func_db),
+    .name_repair = "unique_quiet"
+  )
   colnames(arg_desc) <- c("arg", "desc")
   arg_docs <- arg_desc %>%
     dplyr::pull("desc") %>%
@@ -33,9 +38,13 @@ get_function_meta <- function(func_name, rd_db) {
     arg_defaults <- arg_defaults %>%
       within(rm("...")) # remove `...` argument
   }
-  args_meta <- names(arg_defaults) %>% lapply(\(arg) {
-    return(list(defaultValue = arg_defaults[[arg]], description = arg_docs[[arg]]))
-  })
+  args_meta <- names(arg_defaults) %>%
+    lapply(\(arg) {
+      return(list(
+        defaultValue = arg_defaults[[arg]],
+        description = arg_docs[[arg]]
+      ))
+    })
   names(args_meta) <- names(arg_defaults)
 
   return(list(
@@ -48,7 +57,10 @@ get_function_meta <- function(func_name, rd_db) {
 
 #' @keywords internal
 get_function_args <- function(func_meta) {
-  func_names <- Filter(\(x) !stringr::str_starts(x, "moo"), names(func_meta$args))
+  func_names <- Filter(
+    \(x) !stringr::str_starts(x, "moo"),
+    names(func_meta$args)
+  )
   func_args <- func_meta$args[func_names]
   if (stringr::str_starts(names(func_meta$args)[1], "moo")) {
     func_names <- c("moo_input_rds", "moo_output_rds", func_names)
@@ -69,10 +81,12 @@ get_function_args <- function(func_meta) {
 #'   tools::Rd_db("MOSuite")
 #' )
 #'
-update_function_template <- function(template,
-                                     func_meta,
-                                     func_args,
-                                     keep_deprecated_args = TRUE) {
+update_function_template <- function(
+  template,
+  func_meta,
+  func_args,
+  keep_deprecated_args = TRUE
+) {
   abort_packages_not_installed("Rd2md")
   new_template <- list(
     r_function = template$r_function,
@@ -90,15 +104,20 @@ update_function_template <- function(template,
       arg_name <- template[[arg_type]][[i]]$key
       if (arg_name %in% names(func_meta$args)) {
         arg_meta <- template[[arg_type]][[i]]
-        arg_meta$description <- func_args[[arg_name]]$description %>% Rd2md::rd_str_to_md()
+        arg_meta$description <- func_args[[arg_name]]$description %>%
+          Rd2md::rd_str_to_md()
         arg_meta$defaultValue <- func_args[[arg_name]]$defaultValue
         args_in_template <- c(args_in_template, arg_name)
-        new_template[[arg_type]][[length(new_template[[arg_type]]) + 1]] <- arg_meta
+        new_template[[arg_type]][[
+          length(new_template[[arg_type]]) + 1
+        ]] <- arg_meta
       } else {
         template_args_missing <- c(template_args_missing, arg_name)
         if (isTRUE(keep_deprecated_args)) {
           arg_meta <- template[[arg_type]][[i]]
-          new_template[[arg_type]][[length(new_template[[arg_type]]) + 1]] <- arg_meta
+          new_template[[arg_type]][[
+            length(new_template[[arg_type]]) + 1
+          ]] <- arg_meta
         }
       }
     }
@@ -137,13 +156,15 @@ check_classes <- function(updated_template) {
 #' `jsonlite::write_json()` with preferred defaults
 #'
 #' @keywords internal
-write_json <- function(x,
-                       filepath,
-                       auto_unbox = TRUE,
-                       pretty = TRUE,
-                       null = "null",
-                       na = "null",
-                       ...) {
+write_json <- function(
+  x,
+  filepath,
+  auto_unbox = TRUE,
+  pretty = TRUE,
+  null = "null",
+  na = "null",
+  ...
+) {
   return(invisible(jsonlite::write_json(
     x,
     filepath,
@@ -157,13 +178,24 @@ write_json <- function(x,
 
 #' @keywords internal
 write_package_json_blueprints <-
-  function(input_dir = file.path("inst", "extdata", "galaxy", "template-templates"),
-           blueprints_output_dir = file.path("inst", "extdata", "galaxy", "code-templates"),
-           defaults_output_dir = file.path("inst", "extdata", "json_args", "defaults")) {
+  function(
+    input_dir = file.path("inst", "extdata", "galaxy", "template-templates"),
+    blueprints_output_dir = file.path(
+      "inst",
+      "extdata",
+      "galaxy",
+      "code-templates"
+    ),
+    defaults_output_dir = file.path("inst", "extdata", "json_args", "defaults")
+  ) {
     options(moo_print_plots = TRUE)
     options(moo_save_plots = TRUE)
     options(moo_plots_dir = "./figures")
-    templates <- list.files(input_dir, pattern = ".*\\.json$", full.names = TRUE)
+    templates <- list.files(
+      input_dir,
+      pattern = ".*\\.json$",
+      full.names = TRUE
+    )
     rd_db <- tools::Rd_db("MOSuite")
     for (f in templates) {
       base_filename <- basename(f)
@@ -181,7 +213,11 @@ write_package_json_blueprints <-
       )
 
       # write galaxy blueprint template
-      updated_template <- update_function_template(template, func_meta, func_args)
+      updated_template <- update_function_template(
+        template,
+        func_meta,
+        func_args
+      )
       write_json(
         updated_template,
         file.path(blueprints_output_dir, glue::glue("{r_function}.json"))

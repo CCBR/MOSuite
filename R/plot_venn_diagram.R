@@ -1,88 +1,96 @@
 #' @rdname plot_venn_diagram
 #' @name plot_venn_diagram
 #' @export
-plot_venn_diagram <- S7::new_generic("plot_venn_diagram", "moo_diff_summary_dat", function(moo_diff_summary_dat,
-                                                                                           feature_id_colname = NULL,
-                                                                                           contrasts_colname = "Contrast",
-                                                                                           select_contrasts = c(),
-                                                                                           plot_type = "Venn diagram",
-                                                                                           intersection_ids = c(),
-                                                                                           venn_force_unique = TRUE,
-                                                                                           venn_numbers_format = "raw",
-                                                                                           venn_significant_digits = 2,
-                                                                                           venn_fill_colors = c(
-                                                                                             "darkgoldenrod2",
-                                                                                             "darkolivegreen2",
-                                                                                             "mediumpurple3",
-                                                                                             "darkorange2",
-                                                                                             "lightgreen"
-                                                                                           ),
-                                                                                           venn_fill_transparency = 0.2,
-                                                                                           venn_border_colors = "fill colors",
-                                                                                           venn_font_size_for_category_names = 3,
-                                                                                           venn_category_names_distance = c(),
-                                                                                           venn_category_names_position = c(),
-                                                                                           venn_font_size_for_counts = 6,
-                                                                                           venn_outer_margin = 0,
-                                                                                           intersections_order = "degree",
-                                                                                           display_empty_intersections = FALSE,
-                                                                                           intersection_bar_color = "steelblue4",
-                                                                                           intersection_point_size = 2.2,
-                                                                                           intersection_line_width = 0.7,
-                                                                                           table_font_size = 0.7,
-                                                                                           table_content = "all intersections",
-                                                                                           graphics_device = grDevices::png,
-                                                                                           dpi = 300,
-                                                                                           image_width = 4000,
-                                                                                           image_height = 3000,
-                                                                                           plot_filename = "venn_diagram.png",
-                                                                                           print_plots = options::opt("print_plots"),
-                                                                                           save_plots = options::opt("save_plots"),
-                                                                                           plots_subdir = "diff") {
-  return(S7::S7_dispatch())
-})
+plot_venn_diagram <- S7::new_generic(
+  "plot_venn_diagram",
+  "moo_diff_summary_dat",
+  function(
+    moo_diff_summary_dat,
+    feature_id_colname = NULL,
+    contrasts_colname = "Contrast",
+    select_contrasts = c(),
+    plot_type = "Venn diagram",
+    intersection_ids = c(),
+    venn_force_unique = TRUE,
+    venn_numbers_format = "raw",
+    venn_significant_digits = 2,
+    venn_fill_colors = c(
+      "darkgoldenrod2",
+      "darkolivegreen2",
+      "mediumpurple3",
+      "darkorange2",
+      "lightgreen"
+    ),
+    venn_fill_transparency = 0.2,
+    venn_border_colors = "fill colors",
+    venn_font_size_for_category_names = 3,
+    venn_category_names_distance = c(),
+    venn_category_names_position = c(),
+    venn_font_size_for_counts = 6,
+    venn_outer_margin = 0,
+    intersections_order = "degree",
+    display_empty_intersections = FALSE,
+    intersection_bar_color = "steelblue4",
+    intersection_point_size = 2.2,
+    intersection_line_width = 0.7,
+    table_font_size = 0.7,
+    table_content = "all intersections",
+    graphics_device = grDevices::png,
+    dpi = 300,
+    image_width = 4000,
+    image_height = 3000,
+    plot_filename = "venn_diagram.png",
+    print_plots = options::opt("print_plots"),
+    save_plots = options::opt("save_plots"),
+    plots_subdir = "diff"
+  ) {
+    return(S7::S7_dispatch())
+  }
+)
 
 #' @rdname plot_venn_diagram
 #' @name plot_venn_diagram
 #' @export
-S7::method(plot_venn_diagram, multiOmicDataSet) <- function(moo_diff_summary_dat,
-                                                            feature_id_colname = NULL,
-                                                            contrasts_colname = "Contrast",
-                                                            select_contrasts = c(),
-                                                            plot_type = "Venn diagram",
-                                                            intersection_ids = c(),
-                                                            venn_force_unique = TRUE,
-                                                            venn_numbers_format = "raw",
-                                                            venn_significant_digits = 2,
-                                                            venn_fill_colors = c(
-                                                              "darkgoldenrod2",
-                                                              "darkolivegreen2",
-                                                              "mediumpurple3",
-                                                              "darkorange2",
-                                                              "lightgreen"
-                                                            ),
-                                                            venn_fill_transparency = 0.2,
-                                                            venn_border_colors = "fill colors",
-                                                            venn_font_size_for_category_names = 3,
-                                                            venn_category_names_distance = c(),
-                                                            venn_category_names_position = c(),
-                                                            venn_font_size_for_counts = 6,
-                                                            venn_outer_margin = 0,
-                                                            intersections_order = "degree",
-                                                            display_empty_intersections = FALSE,
-                                                            intersection_bar_color = "steelblue4",
-                                                            intersection_point_size = 2.2,
-                                                            intersection_line_width = 0.7,
-                                                            table_font_size = 0.7,
-                                                            table_content = "all intersections",
-                                                            graphics_device = grDevices::png,
-                                                            dpi = 300,
-                                                            image_width = 4000,
-                                                            image_height = 3000,
-                                                            plot_filename = "venn_diagram.png",
-                                                            print_plots = options::opt("print_plots"),
-                                                            save_plots = options::opt("save_plots"),
-                                                            plots_subdir = "diff") {
+S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
+  moo_diff_summary_dat,
+  feature_id_colname = NULL,
+  contrasts_colname = "Contrast",
+  select_contrasts = c(),
+  plot_type = "Venn diagram",
+  intersection_ids = c(),
+  venn_force_unique = TRUE,
+  venn_numbers_format = "raw",
+  venn_significant_digits = 2,
+  venn_fill_colors = c(
+    "darkgoldenrod2",
+    "darkolivegreen2",
+    "mediumpurple3",
+    "darkorange2",
+    "lightgreen"
+  ),
+  venn_fill_transparency = 0.2,
+  venn_border_colors = "fill colors",
+  venn_font_size_for_category_names = 3,
+  venn_category_names_distance = c(),
+  venn_category_names_position = c(),
+  venn_font_size_for_counts = 6,
+  venn_outer_margin = 0,
+  intersections_order = "degree",
+  display_empty_intersections = FALSE,
+  intersection_bar_color = "steelblue4",
+  intersection_point_size = 2.2,
+  intersection_line_width = 0.7,
+  table_font_size = 0.7,
+  table_content = "all intersections",
+  graphics_device = grDevices::png,
+  dpi = 300,
+  image_width = 4000,
+  image_height = 3000,
+  plot_filename = "venn_diagram.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff"
+) {
   return(
     moo_diff@analyses$diff %>%
       join_dfs_wide() %>%
@@ -171,46 +179,53 @@ S7::method(plot_venn_diagram, multiOmicDataSet) <- function(moo_diff_summary_dat
 #'
 #' @rdname plot_venn_diagram
 #' @name plot_venn_diagram
-S7::method(plot_venn_diagram, S7::class_data.frame) <- function(moo_diff_summary_dat,
-                                                                feature_id_colname = NULL,
-                                                                contrasts_colname = "Contrast",
-                                                                select_contrasts = c(),
-                                                                plot_type = "Venn diagram",
-                                                                intersection_ids = c(),
-                                                                venn_force_unique = TRUE,
-                                                                venn_numbers_format = "raw",
-                                                                venn_significant_digits = 2,
-                                                                venn_fill_colors = c(
-                                                                  "darkgoldenrod2",
-                                                                  "darkolivegreen2",
-                                                                  "mediumpurple3",
-                                                                  "darkorange2",
-                                                                  "lightgreen"
-                                                                ),
-                                                                venn_fill_transparency = 0.2,
-                                                                venn_border_colors = "fill colors",
-                                                                venn_font_size_for_category_names = 3,
-                                                                venn_category_names_distance = c(),
-                                                                venn_category_names_position = c(),
-                                                                venn_font_size_for_counts = 6,
-                                                                venn_outer_margin = 0,
-                                                                intersections_order = "degree",
-                                                                display_empty_intersections = FALSE,
-                                                                intersection_bar_color = "steelblue4",
-                                                                intersection_point_size = 2.2,
-                                                                intersection_line_width = 0.7,
-                                                                table_font_size = 0.7,
-                                                                table_content = "all intersections",
-                                                                graphics_device = grDevices::png,
-                                                                dpi = 300,
-                                                                image_width = 4000,
-                                                                image_height = 3000,
-                                                                plot_filename = "venn_diagram.png",
-                                                                print_plots = options::opt("print_plots"),
-                                                                save_plots = options::opt("save_plots"),
-                                                                plots_subdir = "diff") {
+S7::method(plot_venn_diagram, S7::class_data.frame) <- function(
+  moo_diff_summary_dat,
+  feature_id_colname = NULL,
+  contrasts_colname = "Contrast",
+  select_contrasts = c(),
+  plot_type = "Venn diagram",
+  intersection_ids = c(),
+  venn_force_unique = TRUE,
+  venn_numbers_format = "raw",
+  venn_significant_digits = 2,
+  venn_fill_colors = c(
+    "darkgoldenrod2",
+    "darkolivegreen2",
+    "mediumpurple3",
+    "darkorange2",
+    "lightgreen"
+  ),
+  venn_fill_transparency = 0.2,
+  venn_border_colors = "fill colors",
+  venn_font_size_for_category_names = 3,
+  venn_category_names_distance = c(),
+  venn_category_names_position = c(),
+  venn_font_size_for_counts = 6,
+  venn_outer_margin = 0,
+  intersections_order = "degree",
+  display_empty_intersections = FALSE,
+  intersection_bar_color = "steelblue4",
+  intersection_point_size = 2.2,
+  intersection_line_width = 0.7,
+  table_font_size = 0.7,
+  table_content = "all intersections",
+  graphics_device = grDevices::png,
+  dpi = 300,
+  image_width = 4000,
+  image_height = 3000,
+  plot_filename = "venn_diagram.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff"
+) {
   Freq <- Gene <- Id <- Size <- Var1 <- NULL
-  abort_packages_not_installed(c("VennDiagram", "gridExtra", "patchwork", "UpSetR"))
+  abort_packages_not_installed(c(
+    "VennDiagram",
+    "gridExtra",
+    "patchwork",
+    "UpSetR"
+  ))
 
   if (nrow(moo_diff_summary_dat) == 0) {
     stop("Dataframe is empty")
@@ -264,7 +279,6 @@ S7::method(plot_venn_diagram, S7::class_data.frame) <- function(moo_diff_summary
     return(data)
   }
 
-
   if (num_categories > 1) {
     sets <- fromList(vlist)
 
@@ -295,7 +309,11 @@ S7::method(plot_venn_diagram, S7::class_data.frame) <- function(moo_diff_summary
       tibble::rownames_to_column("Id") %>%
       dplyr::mutate(Id = as.numeric(Id)) %>%
       dplyr::select(Intersection, Id, Size)
-    Intersection <- gsub("\\{\\} | \\{\\}|\\{\\} |\\{\\} \\{\\}", "", Intersection)
+    Intersection <- gsub(
+      "\\{\\} | \\{\\}|\\{\\} |\\{\\} \\{\\}",
+      "",
+      Intersection
+    )
     Intersection <- sub("\\( ", "(", Intersection)
     Intersection <- gsub(" ", " \u2229 ", Intersection)
     Intersection <- data.frame(Intersection) %>%
@@ -326,7 +344,11 @@ S7::method(plot_venn_diagram, S7::class_data.frame) <- function(moo_diff_summary
     tabsel <- tab
     Intersectionsel <- Intersection
   }
-  tab$"Return" <- ifelse(tab$Intersection %in% tabsel$Intersection, "Yes", "\u2014")
+  tab$"Return" <- ifelse(
+    tab$Intersection %in% tabsel$Intersection,
+    "Yes",
+    "\u2014"
+  )
 
   if (intersections_order == "freq") {
     tab <- tab %>% dplyr::arrange(-Size)
@@ -338,9 +360,7 @@ S7::method(plot_venn_diagram, S7::class_data.frame) <- function(moo_diff_summary
 
   ### PH: End Create venn Table from DEG table
 
-
   ### PH: START This section sets immage output parameters and includes error check
-
 
   # Logic Error Check ====
   if (num_categories == 1) {

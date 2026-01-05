@@ -55,29 +55,57 @@ nidap_sample_metadata <- readr::read_csv(
 )
 usethis::use_data(nidap_sample_metadata, overwrite = TRUE)
 
-nidap_raw_counts <- readr::read_csv(system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"))
+nidap_raw_counts <- readr::read_csv(system.file(
+  "extdata",
+  "nidap",
+  "Raw_Counts.csv.gz",
+  package = "MOSuite"
+))
 usethis::use_data(nidap_raw_counts, overwrite = TRUE)
 
-nidap_clean_raw_counts <- readr::read_csv(system.file("extdata", "nidap", "Clean_Raw_Counts.csv.gz",
+nidap_clean_raw_counts <- readr::read_csv(system.file(
+  "extdata",
+  "nidap",
+  "Clean_Raw_Counts.csv.gz",
   package = "MOSuite"
 ))
 usethis::use_data(nidap_clean_raw_counts, overwrite = TRUE)
 
-nidap_filtered_counts <- readr::read_csv(system.file("extdata", "nidap", "Filtered_Counts.csv.gz", package = "MOSuite"))
+nidap_filtered_counts <- readr::read_csv(system.file(
+  "extdata",
+  "nidap",
+  "Filtered_Counts.csv.gz",
+  package = "MOSuite"
+))
 usethis::use_data(nidap_filtered_counts, overwrite = TRUE)
 
-nidap_norm_counts <- readr::read_csv(system.file("extdata", "nidap", "Normalized_Counts.csv.gz", package = "MOSuite"))
+nidap_norm_counts <- readr::read_csv(system.file(
+  "extdata",
+  "nidap",
+  "Normalized_Counts.csv.gz",
+  package = "MOSuite"
+))
 usethis::use_data(nidap_norm_counts, overwrite = TRUE)
 
 nidap_batch_corrected_counts <- readr::read_csv(
-  system.file("extdata", "nidap", "Batch_Corrected_Counts.csv.gz", package = "MOSuite")
+  system.file(
+    "extdata",
+    "nidap",
+    "Batch_Corrected_Counts.csv.gz",
+    package = "MOSuite"
+  )
 )
 usethis::use_data(nidap_batch_corrected_counts, overwrite = TRUE)
 
 nidap_batch_corrected_counts_2 <- moo@counts[["batch"]]
 usethis::use_data(nidap_batch_corrected_counts_2, overwrite = TRUE)
 
-nidap_deg_analysis <- readr::read_csv(system.file("extdata", "nidap", "DEG_Analysis.csv.gz", package = "MOSuite"))
+nidap_deg_analysis <- readr::read_csv(system.file(
+  "extdata",
+  "nidap",
+  "DEG_Analysis.csv.gz",
+  package = "MOSuite"
+))
 usethis::use_data(nidap_deg_analysis, overwrite = TRUE)
 
 
@@ -90,12 +118,20 @@ usethis::use_data(nidap_deg_analysis_2, overwrite = TRUE)
 nidap_deg_gene_list <- moo@analyses$diff_filt
 usethis::use_data(nidap_deg_gene_list, overwrite = TRUE)
 
-nidap_volcano_summary_dat <- readr::read_csv(system.file("extdata", "nidap", "Volcano_Summary.csv.gz",
+nidap_volcano_summary_dat <- readr::read_csv(system.file(
+  "extdata",
+  "nidap",
+  "Volcano_Summary.csv.gz",
   package = "MOSuite"
 ))
 usethis::use_data(nidap_volcano_summary_dat, overwrite = TRUE)
 
-nidap_venn_diagram_dat <- readr::read_csv(system.file("extdata", "nidap", "Venn_Diagram.csv.gz", package = "MOSuite"))
+nidap_venn_diagram_dat <- readr::read_csv(system.file(
+  "extdata",
+  "nidap",
+  "Venn_Diagram.csv.gz",
+  package = "MOSuite"
+))
 usethis::use_data(nidap_venn_diagram_dat, overwrite = TRUE)
 
 ## re-compress Rda files

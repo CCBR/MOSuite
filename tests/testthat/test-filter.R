@@ -30,18 +30,19 @@ test_that("filter_counts works on RENEE dataset", {
     ),
     gene_counts %>% glue_gene_symbols()
   )
-  rds2 <- moo %>% filter_counts(
-    feature_id_colname = "gene_id",
-    sample_id_colname = "sample_id",
-    group_colname = "condition",
-    label_colname = "sample_id",
-    samples_to_include = c("KO_S3", "KO_S4", "WT_S1", "WT_S2"),
-    minimum_count_value_to_be_considered_nonzero = 1,
-    minimum_number_of_samples_with_nonzero_counts_in_total = 1,
-    minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
-    print_plots = TRUE,
-    count_type = "raw"
-  )
+  rds2 <- moo %>%
+    filter_counts(
+      feature_id_colname = "gene_id",
+      sample_id_colname = "sample_id",
+      group_colname = "condition",
+      label_colname = "sample_id",
+      samples_to_include = c("KO_S3", "KO_S4", "WT_S1", "WT_S2"),
+      minimum_count_value_to_be_considered_nonzero = 1,
+      minimum_number_of_samples_with_nonzero_counts_in_total = 1,
+      minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
+      print_plots = TRUE,
+      count_type = "raw"
+    )
   expect_equal(dim(rds2@counts$filt), c(291, 5))
   expect_equal(
     rds2@counts$filt %>% dplyr::arrange(gene_id) %>% head(),
