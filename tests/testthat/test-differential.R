@@ -10,6 +10,7 @@ moo_nidap <- multiOmicDataSet(
 )
 
 test_that("differential analysis works for NIDAP", {
+  options(moo_print_plots = FALSE)
   deg_moo <- moo_nidap %>%
     diff_counts(
       count_type = "filt",
@@ -174,6 +175,7 @@ test_that("diff_counts errors", {
 })
 
 test_that("filter_diff works for NIDAP", {
+  options(moo_print_plots = FALSE)
   moo <- moo_nidap %>%
     diff_counts(
       count_type = "filt",
