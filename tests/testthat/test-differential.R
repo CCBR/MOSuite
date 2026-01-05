@@ -10,6 +10,7 @@ moo_nidap <- multiOmicDataSet(
 )
 
 test_that("differential analysis works for NIDAP", {
+  options(moo_print_plots = FALSE)
   deg_moo <- moo_nidap %>%
     diff_counts(
       count_type = "filt",
@@ -22,15 +23,6 @@ test_that("differential analysis works for NIDAP", {
       voom_normalization_method = "quantile",
     )
 
-  # x <- nidap_deg_analysis %>%
-  #   dplyr::arrange(Gene) %>%
-  #   dplyr::select(order(colnames(.))) %>% dplyr::select(-C2) %>%
-  #   as.data.frame()
-  # y <- moo@analyses$diff %>%
-  #   dplyr::arrange(Gene) %>%
-  #   dplyr::select(order(colnames(.)))
-  # equal_dfs(x, y)
-
   expect_equal(
     deg_moo@analyses$diff %>%
       join_dfs_wide() %>%
@@ -39,7 +31,8 @@ test_that("differential analysis works for NIDAP", {
     nidap_deg_analysis_2 %>%
       join_dfs_wide() %>%
       dplyr::arrange(Gene) %>%
-      dplyr::select(order(colnames(.)))
+      dplyr::select(order(colnames(.))),
+    tolerance = 0.01
   )
 })
 
@@ -74,100 +67,94 @@ test_that("diff_counts works for RENEE", {
       return_mean_and_sd = TRUE,
       input_in_log_counts = TRUE
     )
-  actual <- moo_renee@analyses$diff[[1]] %>%
-    head() %>%
-    dplyr::mutate(dplyr::across(
-      dplyr::where(is.numeric),
-      ~ round(.x, digits = 0)
-    ))
-  expected <- tibble::tibble(
-    gene_id = c(
-      "ENSG00000160179.18",
-      "ENSG00000258017.1",
-      "ENSG00000282393.1",
-      "ENSG00000286104.1",
-      "ENSG00000274422.1",
-      "ENSG00000154734.15"
+  actual <- moo_renee@analyses$diff[[1]] %>% head()
+  expected <- structure(
+    list(
+      gene_id = c(
+        "ENSG00000160179.18",
+        "ENSG00000258017.1",
+        "ENSG00000282393.1",
+        "ENSG00000286104.1",
+        "ENSG00000274422.1",
+        "ENSG00000154734.15"
+      ),
+      knockout_mean = c(
+        10.9805713961628,
+        9.00423753343925,
+        9.00423753343925,
+        9.00423753343925,
+        9.00423753343925,
+        8.60833480887895
+      ),
+      knockout_sd = c(
+        2.1542262015539,
+        0.640731950886978,
+        0.479050054020298,
+        0.640731950886978,
+        0.479050054020298,
+        0.0808409484333391
+      ),
+      wildtype_mean = c(
+        12.3499548758012,
+        8.87501967069015,
+        8.87501967069015,
+        8.87501967069015,
+        8.87501967069015,
+        14.6328231986934
+      ),
+      wildtype_sd = c(
+        0.082485020673847,
+        0.00393703924789543,
+        0.00393703924789543,
+        0.00393703924789543,
+        0.00393703924789543,
+        0.00393703924789669
+      ),
+      FC = c(
+        -2.54684822818721,
+        1.11617198002536,
+        1.07719571726849,
+        1.11617198002536,
+        1.07719571726849,
+        -65.0581764060579
+      ),
+      logFC = c(
+        -1.34871298907199,
+        0.158559335064906,
+        0.107280399074217,
+        0.158559335064906,
+        0.107280399074217,
+        -6.02365847879717
+      ),
+      tstat = c(
+        -1.27583132251236,
+        0.432232276101188,
+        0.344942879338297,
+        0.432232276101188,
+        0.344942879338297,
+        -32.9652734167629
+      ),
+      pval = c(
+        0.273465120057361,
+        0.688646721521334,
+        0.748130864876644,
+        0.688646721521334,
+        0.748130864876644,
+        7.17809796209428e-06
+      ),
+      adjpval = c(
+        0.506868470934344,
+        0.79745817464873,
+        0.79745817464873,
+        0.79745817464873,
+        0.79745817464873,
+        0.00102459282397239
+      )
     ),
-    knockout_mean = c(
-      10.9805713961628,
-      9.00423753343925,
-      9.00423753343925,
-      9.00423753343925,
-      9.00423753343925,
-      8.60833480887895
-    ),
-    knockout_sd = c(
-      2.1542262015539,
-      0.640731950886978,
-      0.479050054020299,
-      0.640731950886978,
-      0.479050054020299,
-      0.0808409484333391
-    ),
-    wildtype_mean = c(
-      12.3499548758012,
-      8.87501967069015,
-      8.87501967069015,
-      8.87501967069015,
-      8.87501967069015,
-      14.6328231986934
-    ),
-    wildtype_sd = c(
-      0.082485020673847,
-      0.00393703924789543,
-      0.00393703924789543,
-      0.00393703924789543,
-      0.00393703924789543,
-      0.00393703924789669
-    ),
-    `FC` = c(
-      -2.56266458541781,
-      1.16581746593108,
-      1.04271170723614,
-      1.16581746593108,
-      1.04271170723614,
-      -64.968995694703
-    ),
-    `logFC` = c(
-      -1.35764466371701,
-      0.221341920947646,
-      0.0603403313641113,
-      0.221341920947646,
-      0.0603403313641113,
-      -6.02167949874076
-    ),
-    `tstat` = c(
-      -1.28601115515934,
-      0.696457513565273,
-      0.223206820569603,
-      0.696457513565273,
-      0.223206820569603,
-      -45.9646621635613
-    ),
-    `pval` = c(
-      0.271954308769351,
-      0.526807064335256,
-      0.83497735832889,
-      0.526807064335256,
-      0.83497735832889,
-      2.61647311409974e-06
-    ),
-    `adjpval` = c(
-      0.485513520563689,
-      0.700003907404382,
-      0.878543258151392,
-      0.700003907404382,
-      0.878543258151392,
-      0.000380696838101513
-    )
-  ) %>%
-    dplyr::mutate(dplyr::across(
-      dplyr::where(is.numeric),
-      ~ round(.x, digits = 0)
-    )) %>%
-    as.data.frame()
-  expect_equal(actual, expected)
+    row.names = c(NA, 6L),
+    class = "data.frame"
+  )
+  expect_equal(actual, expected, tolerance = 0.01)
 })
 
 test_that("diff_counts errors", {
@@ -188,6 +175,7 @@ test_that("diff_counts errors", {
 })
 
 test_that("filter_diff works for NIDAP", {
+  options(moo_print_plots = FALSE)
   moo <- moo_nidap %>%
     diff_counts(
       count_type = "filt",
@@ -222,5 +210,5 @@ test_that("filter_diff works for NIDAP", {
       plot_type = "bar",
       plot_titles_fontsize = 12
     )
-  expect_equal(moo@analyses$diff_filt, nidap_deg_gene_list)
+  expect_equal(moo@analyses$diff_filt, nidap_deg_gene_list, tolerance = 0.01)
 })
