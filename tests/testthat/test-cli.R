@@ -83,8 +83,8 @@ test_that("mosuite --help", {
 })
 
 test_that("mosuite cli E2E", {
-  # write initial json with correct file paths
-  skip()
+  # note: file paths in json files only work when these tests are run via test()
+  # or test_active_file()
   run_function_cli("create_multiOmicDataSet_from_files")
   run_function_cli("clean_raw_counts")
   run_function_cli("filter_counts")
@@ -92,4 +92,15 @@ test_that("mosuite cli E2E", {
   run_function_cli("batch_correct_counts")
   run_function_cli("diff_counts")
   run_function_cli("filter_diff")
+
+  moo <- readr::read_rds(test_path("moo_diff_filter.rds"))
+  expect_equal(names(moo@counts), c("raw", "clean", "filt", "norm", "batch"))
+  expect_equal(names(moo@analyses), c("colors", "diff", "diff_filt"))
+
+  # clean up temporary files after tests are finished
+  rm_files <- c(
+    list.files(path = test_path(), pattern = "moo.*\\.rds"),
+    list.files(path = test_path(), pattern = ".*\\.log")
+  ) |>
+    lapply(\(x) file.remove(test_path(x)))
 })

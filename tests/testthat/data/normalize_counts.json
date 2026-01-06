@@ -1,6 +1,6 @@
 {
-  "moo_input_rds": "tests/testthat/data/moo.rds",
-  "moo_output_rds": "tests/testthat/data/moo.rds",
+  "moo_input_rds": "moo_filter.rds",
+  "moo_output_rds": "moo_norm.rds",
   "count_type": "filt",
   "norm_type": "voom",
   "feature_id_colname": null,
