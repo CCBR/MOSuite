@@ -1,5 +1,6 @@
 # MOSuite (development version)
 
+- Fix bug where 3D PCA plots were not being saved. (#149)
 - The package now includes custom templates for Galaxy as bundled external data files. (#149)
 - The CLI now converts JSON lists to vectors for better compatibility. (#149)
 - Improve CLI docs to show batch correction. (#128)

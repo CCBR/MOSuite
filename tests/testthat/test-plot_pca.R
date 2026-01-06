@@ -189,31 +189,6 @@ test_that("plot_pca layers are expected", {
   expect_s3_class(p$layers[[1]]$geom, "GeomPoint")
 })
 
-test_that("3DPCA works", {
-  skip()
-  plot_pca_3d(
-    nidap_filtered_counts,
-    nidap_sample_metadata,
-    group_colname = "Group",
-    label_colname = "Label",
-    color_values = c(
-      "#5954d6",
-      "#e1562c",
-      "#b80058",
-      "#00c6f8",
-      "#d163e6",
-      "#00a76c",
-      "#ff9287",
-      "#008cf9",
-      "#006e00",
-      "#796880",
-      "#FFA500",
-      "#878500"
-    ),
-    principal_components = c(1, 2, 3),
-  )
-})
-
 
 test_that("2D & 3D PCA method dispatch works", {
   moo <- multiOmicDataSet(
