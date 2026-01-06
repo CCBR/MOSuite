@@ -92,7 +92,7 @@ S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
   plots_subdir = "diff"
 ) {
   return(
-    moo_diff@analyses$diff %>%
+    moo_diff_summary_dat@analyses$diff %>%
       join_dfs_wide() %>%
       plot_volcano_summary(print_plots = FALSE, save_plots = FALSE) %>%
       plot_venn_diagram(

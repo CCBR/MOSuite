@@ -53,8 +53,8 @@ normalize_counts <- function(
   legend_font_size_for_histogram = 10,
   legend_position_for_histogram = "top",
   number_of_histogram_legend_columns = 6,
-  colors_for_plots = NULL,
   plot_corr_matrix_heatmap = TRUE,
+  colors_for_plots = NULL,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   interactive_plots = FALSE,
@@ -164,6 +164,7 @@ normalize_counts <- function(
         save_plots = save_plots
       )
     }
+
     print_or_save_plot(
       pca_plot,
       filename = file.path(plots_subdir, "pca.png"),

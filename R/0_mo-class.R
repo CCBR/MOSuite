@@ -217,6 +217,7 @@ create_multiOmicDataSet_from_dataframes <- function(
 create_multiOmicDataSet_from_files <- function(
   sample_meta_filepath,
   feature_counts_filepath,
+  count_type = "raw",
   sample_id_colname = NULL,
   feature_id_colname = NULL,
   delim = NULL,

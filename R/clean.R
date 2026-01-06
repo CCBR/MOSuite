@@ -332,7 +332,8 @@ aggregate_duplicate_gene_names <- function(
         grepl("Feature_id_1", colnames(counts_dat)) == FALSE
     ) {
       x <- counts_dat[
-        duplicated(counts_dat[,
+        duplicated(counts_dat[
+          ,
           gene_name_column_to_use_for_collapsing_duplicates
         ]),
         gene_name_column_to_use_for_collapsing_duplicates
@@ -381,13 +382,15 @@ aggregate_duplicate_gene_names <- function(
     )
 
     if (
-      sum(duplicated(counts_dat[,
+      sum(duplicated(counts_dat[
+        ,
         gene_name_column_to_use_for_collapsing_duplicates
       ])) !=
         0
     ) {
       x <- counts_dat[
-        duplicated(counts_dat[,
+        duplicated(counts_dat[
+          ,
           gene_name_column_to_use_for_collapsing_duplicates
         ]),
         gene_name_column_to_use_for_collapsing_duplicates
@@ -439,7 +442,8 @@ aggregate_duplicate_gene_names <- function(
           "Duplicate IDs in {gene_name_column_to_use_for_collapsing_duplicates} Column:",
           glue::glue_collapse(
             counts_dat[
-              duplicated(counts_dat[,
+              duplicated(counts_dat[
+                ,
                 gene_name_column_to_use_for_collapsing_duplicates
               ]),
               gene_name_column_to_use_for_collapsing_duplicates

@@ -502,7 +502,7 @@ S7::method(plot_pca_3d, S7::class_data.frame) <- function(
   )
 
   print_or_save_plot(
-    p,
+    fig,
     filename = file.path(plots_subdir, plot_filename),
     print_plots = print_plots,
     save_plots = save_plots

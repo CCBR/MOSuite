@@ -176,7 +176,7 @@ cli_from_json <- function(method, json, debug = FALSE) {
   json_args <- json_args |>
     purrr::map(\(x) {
       if (is.list(x)) {
-        return(unlist(x))
+        return(unlist(x)) # convert lists to vectors
       } else {
         return(x)
       }
