@@ -43,6 +43,7 @@
       no duplicated IDs in gene_id
       * filtering clean counts
       Number of features after filtering: 291
+      colors_for_plots NULL
       * normalizing filt counts
       Total number of features included: 291
       Sample columns: KO_S3, Sample columns: KO_S4, Sample columns: WT_S1, Sample columns: WT_S2
@@ -74,6 +75,12 @@
         pie_chart_in_3d = TRUE, bar_width = 0.4, draw_bar_border = TRUE, plot_type = "bar",
         plot_titles_fontsize = 12)
     Message
+      Registered S3 methods overwritten by 'GenomeInfoDb':
+        method                from   
+        as.data.frame.Seqinfo Seqinfo
+        merge.Seqinfo         Seqinfo
+        summary.Seqinfo       Seqinfo
+        update.Seqinfo        Seqinfo
       * cleaning raw counts
       Not able to identify multiple id's in GeneName
       Columns that can be used to aggregate gene information GeneName
@@ -83,6 +90,7 @@
       no duplicated IDs in GeneName
       * filtering clean counts
       Number of features after filtering: 7943
+      colors_for_plots NULL
       * normalizing filt counts
       Total number of features included: 7943
       Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
