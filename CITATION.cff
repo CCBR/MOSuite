@@ -247,6 +247,30 @@ references:
   year: '2026'
   doi: 10.32614/CRAN.package.glue
 - type: software
+  title: htmlwidgets
+  abstract: 'htmlwidgets: HTML Widgets for R'
+  notes: Imports
+  url: https://github.com/ramnathv/htmlwidgets
+  repository: https://CRAN.R-project.org/package=htmlwidgets
+  authors:
+  - family-names: Vaidyanathan
+    given-names: Ramnath
+  - family-names: Xie
+    given-names: Yihui
+  - family-names: Allaire
+    given-names: JJ
+  - family-names: Cheng
+    given-names: Joe
+    email: joe@posit.co
+  - family-names: Sievert
+    given-names: Carson
+    email: carson@posit.co
+    orcid: https://orcid.org/0000-0002-4958-2844
+  - family-names: Russell
+    given-names: Kenton
+  year: '2026'
+  doi: 10.32614/CRAN.package.htmlwidgets
+- type: software
   title: jsonlite
   abstract: 'jsonlite: A Simple and Robust JSON Parser and Generator for R'
   notes: Imports
