@@ -7,6 +7,7 @@
 create_multiOmicDataSet_from_files(
   sample_meta_filepath,
   feature_counts_filepath,
+  count_type = "raw",
   sample_id_colname = NULL,
   feature_id_colname = NULL,
   delim = NULL,
@@ -17,6 +18,8 @@ create_multiOmicDataSet_from_files(
 \item{sample_meta_filepath}{path to text file with sample IDs and metadata for differential analysis.}
 
 \item{feature_counts_filepath}{path to text file of expected feature counts (e.g. gene counts from RSEM).}
+
+\item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
 
 \item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} -
 first column in the sample metadata will be used.)}

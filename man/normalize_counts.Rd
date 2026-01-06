@@ -31,8 +31,8 @@ normalize_counts(
   legend_font_size_for_histogram = 10,
   legend_position_for_histogram = "top",
   number_of_histogram_legend_columns = 6,
-  colors_for_plots = NULL,
   plot_corr_matrix_heatmap = TRUE,
+  colors_for_plots = NULL,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   interactive_plots = FALSE,
@@ -112,12 +112,12 @@ number of samples.}
 
 \item{number_of_histogram_legend_columns}{number of columns for the histogram legend}
 
-\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list.
-Colors must either be names in \code{grDevices::colors()} or valid hex codes.}
-
 \item{plot_corr_matrix_heatmap}{Datasets with a large number of samples may be too large to create a correlation
 matrix heatmap. If this function takes longer than 5 minutes to run, Set to \code{FALSE} and the correlation matrix will
 not be be created. Default is \code{TRUE}.}
+
+\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list.
+Colors must either be names in \code{grDevices::colors()} or valid hex codes.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
