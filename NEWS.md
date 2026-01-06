@@ -1,7 +1,9 @@
 # MOSuite (development version)
 
+- The package now includes custom templates for Galaxy as bundled external data files. (#149)
+- The CLI now converts JSON lists to vectors for better compatibility. (#149)
 - Improve CLI docs to show batch correction. (#128)
-- Minor documentation improvements. (#135)
+- Minor documentation improvements. (#135, #149)
 - A docker image is now available. (#134)
   - <https://hub.docker.com/r/nciccbr/mosuite>
 
