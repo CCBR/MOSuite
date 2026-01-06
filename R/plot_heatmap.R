@@ -153,6 +153,8 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
   counts_dat <- counts_dat %>% dplyr::select(tidyselect::where(is.numeric))
 
   ## Annotate
+  # cannot set rownames on a tibble
+  sample_metadata <- sample_metadata %>% as.data.frame()
   rownames(sample_metadata) <- sample_metadata[[label_colname]]
   annoVal <- lapply(group_colname, function(x) {
     # TODO this only works on dataframes, not tibbles
