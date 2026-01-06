@@ -4,6 +4,8 @@
 - Minor documentation improvements. (#135)
 - A docker image is now available. (#134)
   - <https://hub.docker.com/r/nciccbr/mosuite>
+- Fixed `clean_raw_counts()` aggregated duplicate gene rows now returned correctly. Fixes #155.
+
 
 # MOSuite 0.2.0
 
