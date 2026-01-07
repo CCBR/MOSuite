@@ -33,7 +33,7 @@ RUN mamba install -y -c conda-forge \
     r-colorspace \
     r-dendextend \
     r-devtools \
-    r-ggplot2 "<4.0.0" \
+    "r-ggplot2 <4.0.0" \
     r-ggrepel \
     r-gridExtra \
     r-matrix \
