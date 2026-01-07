@@ -61,7 +61,8 @@ RUN mamba install -y -c conda-forge \
 
 # install R package
 COPY . /opt2/MOSuite
-RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com', upgrade='never'); library(MOSuite)"
+RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com', upgrade='never')" && \
+  R -e "library(MOSuite); devtools::test()"
 
 # add mosuite exec to the path
 RUN chmod -R +x /opt2/conda/lib/R/library/MOSuite/exec
