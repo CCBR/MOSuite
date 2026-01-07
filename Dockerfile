@@ -33,7 +33,7 @@ RUN mamba install -y -c conda-forge \
     r-colorspace \
     r-dendextend \
     r-devtools \
-    r-ggplot2 "<4.0.0" \
+    "r-ggplot2 <4.0.0" \
     r-ggrepel \
     r-gridExtra \
     r-matrix \
@@ -61,7 +61,8 @@ RUN mamba install -y -c conda-forge \
 
 # install R package
 COPY . /opt2/MOSuite
-RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com', upgrade='never'); library(MOSuite)"
+RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com', upgrade='never')" && \
+  R -e "library(MOSuite); devtools::test('/opt2/MOSuite')"
 
 # add mosuite exec to the path
 RUN chmod -R +x /opt2/conda/lib/R/library/MOSuite/exec
