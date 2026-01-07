@@ -25,15 +25,35 @@ compare_proxy.plotly <- function(x, path = "x") {
 }
 
 run_function_cli <- function(func_name) {
-  json_path <- testthat::test_path(
-    "data",
-    paste0(
-      func_name,
-      ".json"
-    )
+  json_path <- paste0(
+    func_name,
+    ".json"
   )
+
   return(cli_exec(c(
     func_name,
     paste0('--json="', json_path, '"')
   )))
+}
+
+# source: https://github.com/r-lib/testthat/issues/664#issuecomment-340809997
+create_empty_dir <- function(x) {
+  unlink(x, recursive = TRUE, force = TRUE)
+  return(dir.create(x))
+}
+
+# source: https://github.com/r-lib/testthat/issues/664#issuecomment-340809997
+test_with_dir <- function(desc, ...) {
+  new <- tempfile()
+  create_empty_dir(new)
+  withr::with_dir(
+    # or local_dir()
+    new = new,
+    code = {
+      tmp <- capture.output(
+        test_that(desc = desc, ...)
+      )
+    }
+  )
+  return(invisible())
 }

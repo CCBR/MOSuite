@@ -83,24 +83,45 @@ test_that("mosuite --help", {
 })
 
 test_that("mosuite cli E2E", {
-  # note: file paths in json files only work when these tests are run via test()
-  # or test_active_file()
-  run_function_cli("create_multiOmicDataSet_from_files")
-  run_function_cli("clean_raw_counts")
-  run_function_cli("filter_counts")
-  run_function_cli("normalize_counts")
-  run_function_cli("batch_correct_counts")
-  run_function_cli("diff_counts")
-  run_function_cli("filter_diff")
+  new <- tempfile()
+  create_empty_dir(new)
+  # note: file paths in json files assume all files are in the current workdir
+  withr::with_dir(new = new, code = {
+    file.copy(
+      system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
+      "./"
+    )
+    file.copy(
+      system.file(
+        "extdata",
+        "nidap",
+        "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+        package = "MOSuite"
+      ),
+      "./"
+    )
+    test_data_path <- system.file(
+      "tests",
+      "testthat",
+      "data",
+      package = "MOSuite"
+    )
+    Sys.glob(glue::glue("{test_data_path}/*.json")) |>
+      lapply(function(x) {
+        file.copy(x, "./")
+      })
 
-  moo <- readr::read_rds(test_path("moo_diff_filter.rds"))
-  expect_equal(names(moo@counts), c("raw", "clean", "filt", "norm", "batch"))
-  expect_equal(names(moo@analyses), c("colors", "diff", "diff_filt"))
+    run_function_cli("create_multiOmicDataSet_from_files")
+    run_function_cli("clean_raw_counts")
+    run_function_cli("filter_counts")
+    run_function_cli("normalize_counts")
+    run_function_cli("batch_correct_counts")
+    run_function_cli("diff_counts")
+    run_function_cli("filter_diff")
 
-  # clean up temporary files after tests are finished
-  rm_files <- c(
-    list.files(path = test_path(), pattern = "moo.*\\.rds"),
-    list.files(path = test_path(), pattern = ".*\\.log")
-  ) |>
-    lapply(\(x) file.remove(test_path(x)))
+    expect_true(file.exists("moo_diff_filter.rds"))
+    moo <- readr::read_rds("moo_diff_filter.rds")
+    expect_equal(names(moo@counts), c("raw", "clean", "filt", "norm", "batch"))
+    expect_equal(names(moo@analyses), c("colors", "diff", "diff_filt"))
+  })
 })

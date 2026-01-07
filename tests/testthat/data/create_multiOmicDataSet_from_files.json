@@ -1,5 +1,5 @@
 {
-  "feature_counts_filepath": "../../inst/extdata/nidap/Raw_Counts.csv.gz",
-  "sample_meta_filepath": "../../inst/extdata/nidap/Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+  "feature_counts_filepath": "Raw_Counts.csv.gz",
+  "sample_meta_filepath": "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
   "moo_output_rds": "moo_create.rds"
 }
