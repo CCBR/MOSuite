@@ -22,6 +22,7 @@
 ^README\.html$
 ^vignettes/figures/$
 ^vignettes/memory\.Rmd$
+^vignettes/cli\.Rmd$
 VennDiagram.*\.log
 ^[.]?air[.]toml$
 ^\.vscode$
