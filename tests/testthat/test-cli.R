@@ -100,13 +100,13 @@ test_that("mosuite cli E2E", {
       ),
       "./"
     )
-    test_data_path <- system.file(
-      "tests",
-      "testthat",
-      "data",
+    json_paths <- system.file(
+      "extdata",
+      "json_args",
+      "common",
       package = "MOSuite"
     )
-    Sys.glob(glue::glue("{test_data_path}/*.json")) |>
+    Sys.glob(glue::glue("{json_paths}/*.json")) |>
       lapply(function(x) {
         file.copy(x, "./")
       })

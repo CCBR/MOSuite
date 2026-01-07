@@ -75,12 +75,6 @@
         pie_chart_in_3d = TRUE, bar_width = 0.4, draw_bar_border = TRUE, plot_type = "bar",
         plot_titles_fontsize = 12)
     Message
-      Registered S3 methods overwritten by 'GenomeInfoDb':
-        method                from   
-        as.data.frame.Seqinfo Seqinfo
-        merge.Seqinfo         Seqinfo
-        summary.Seqinfo       Seqinfo
-        update.Seqinfo        Seqinfo
       * cleaning raw counts
       Not able to identify multiple id's in GeneName
       Columns that can be used to aggregate gene information GeneName
