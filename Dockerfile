@@ -24,21 +24,39 @@ ENV PATH="/opt2/conda/bin:$PATH"
 RUN conda config --add channels conda-forge \
  && conda config --add channels bioconda \
  && conda config --set channel_priority strict
-
 # install conda packages
 RUN mamba install -y -c conda-forge \
     r-base=${R_VERSION} \
+    r-amap \
+    r-broom \
+    r-cffr \
+    r-colorspace \
+    r-dendextend \
     r-devtools \
-    "r-ggplot2 <4.0.0" \
-    r-ggrepel r-viridis r-upsetr r-patchwork r-plotly \
-    r-matrix r-mgcv r-survival \
-    bioconductor-genomicranges \
-    bioconductor-summarizedexperiment \
-    bioconductor-delayedarray \
-    bioconductor-s4arrays \
+    r-ggplot2 "<4.0.0" \
+    r-ggrepel \
+    r-gridExtra \
+    r-matrix \
+    r-mgcv \
+    r-patchwork \
+    r-plotly \
+    r-rcolorbrewer \
+    r-readr \
+    r-rmarkdown \
+    r-survival \
+    r-upsetr \
+    r-viridis \
     bioconductor-annotationdbi \
     bioconductor-annotate \
+    bioconductor-complexheatmap \
+    bioconductor-delayedarray \
+    bioconductor-edger \
+    bioconductor-genomicranges \
     bioconductor-keggrest \
+    bioconductor-limma \
+    bioconductor-s4arrays \
+    bioconductor-summarizedexperiment \
+    bioconductor-sva \
   && conda clean -afy
 
 # install R package
