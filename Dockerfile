@@ -70,7 +70,7 @@ ENV PATH="$PATH:/opt2/conda/lib/R/library/MOSuite/exec"
 RUN mosuite --help
 
 # copy .Rprofile to R_HOME
-ADD .Rprofile /opt2/conda/lib/R/
+ADD .github/.Rprofile /opt2/conda/lib/R/
 
 # copy example script & json to data
 COPY ./inst/extdata/example_script.sh /data2/
