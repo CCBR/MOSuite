@@ -1,3 +1,116 @@
+#' @rdname plot_volcano_enhanced
+#' @name plot_volcano_enhanced
+#' @export
+plot_volcano_enhanced <- S7::new_generic(
+  "plot_volcano_enhanced",
+  "moo_diff",
+  function(
+    moo_diff,
+    feature_id_colname = NULL,
+    signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+    signif_threshold = 0.05,
+    change_colname = c("B-A_logFC", "B-C_logFC"),
+    change_threshold = 1.0,
+    value_to_sort_the_output_dataset = "p-value",
+    num_features_to_label = 30,
+    use_only_addition_labels = FALSE,
+    additional_labels = "",
+    is_red = TRUE,
+    lab_size = 4,
+    change_sig_name = "p-value",
+    change_lfc_name = "log2FC",
+    title = "Volcano Plots",
+    use_custom_lab = FALSE,
+    ylim = 0,
+    custom_xlim = "",
+    xlim_additional = 0,
+    ylim_additional = 0,
+    axis_lab_size = 24,
+    point_size = 2,
+    image_width = 3000,
+    image_height = 3000,
+    dpi = 300,
+    interactive_plots = FALSE,
+    print_plots = options::opt("print_plots"),
+    save_plots = options::opt("save_plots"),
+    plots_subdir = "diff",
+    plot_filename = "volcano_enhanced.png"
+  ) {
+    return(S7::S7_dispatch())
+  }
+)
+
+#' @rdname plot_volcano_enhanced
+#' @name plot_volcano_enhanced
+#' @export
+S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
+  moo_diff,
+  feature_id_colname = NULL,
+  signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+  signif_threshold = 0.05,
+  change_colname = c("B-A_logFC", "B-C_logFC"),
+  change_threshold = 1.0,
+  value_to_sort_the_output_dataset = "p-value",
+  num_features_to_label = 30,
+  use_only_addition_labels = FALSE,
+  additional_labels = "",
+  is_red = TRUE,
+  lab_size = 4,
+  change_sig_name = "p-value",
+  change_lfc_name = "log2FC",
+  title = "Volcano Plots",
+  use_custom_lab = FALSE,
+  ylim = 0,
+  custom_xlim = "",
+  xlim_additional = 0,
+  ylim_additional = 0,
+  axis_lab_size = 24,
+  point_size = 2,
+  image_width = 3000,
+  image_height = 3000,
+  dpi = 300,
+  interactive_plots = FALSE,
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff",
+  plot_filename = "volcano_enhanced.png"
+) {
+  return(
+    join_dfs_wide() %>%
+      plot_volcano_enhanced(
+        feature_id_colname,
+        signif_colname,
+        signif_threshold,
+        change_colname,
+        change_threshold,
+        value_to_sort_the_output_dataset,
+        num_features_to_label,
+        use_only_addition_labels,
+        additional_labels,
+        is_red,
+        lab_size,
+        change_sig_name,
+        change_lfc_name,
+        title,
+        use_custom_lab,
+        ylim,
+        custom_xlim,
+        xlim_additional,
+        ylim_additional,
+        axis_lab_size,
+        point_size,
+        image_width,
+        image_height,
+        dpi,
+        interactive_plots,
+        print_plots,
+        save_plots,
+        plots_subdir,
+        plot_filename,
+      )
+  )
+}
+
 #' Enhanced Volcano Plot
 #'
 #' Uses [Bioconductor's Enhanced Volcano
@@ -6,7 +119,7 @@
 #' @inheritParams option_params
 #' @inheritParams filter_counts
 #'
-#' @param moo_diff Differential expression analysis result from one or more contrasts
+#' @param moo_diff Differential expression analysis result from one or more contrasts. This must be a dataframe.
 #' @param signif_colname column name of significance values (e.g., adjusted p-values or FDR). This column will be used
 #'   to determine which points are considered significant in the volcano plot.
 #' @param signif_threshold Numeric value specifying the significance cutoff for p-values (i.e. filters on
@@ -24,7 +137,7 @@
 #' @param change_sig_name Name for the significance column in the plot. Default is "p-value".
 #' @param change_lfc_name Name for the fold change column in the plot. Default is "log2FC".
 #' @param title Title of the plot. Default is "Volcano Plots".
-#' @param use_custom_lab If TRUE, uses custom labels for the plot.
+#' @param use_custom_lab If TRUE, uses custom labels for the plot (set by `change_sig_name` and `change_lfc_name`)
 #' @param ylim Y-axis limits for the plot.
 #' @param custom_xlim Custom X-axis limits for the plot.
 #' @param xlim_additional Additional space to add to the X-axis limits.
@@ -42,7 +155,9 @@
 #' @examples
 #' plot_volcano_enhanced(nidap_deg_analysis, print_plots = TRUE)
 #'
-plot_volcano_enhanced <- function(
+#' @rdname plot_volcano_enhanced
+#' @name plot_volcano_enhanced
+S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
   moo_diff,
   feature_id_colname = NULL,
   signif_colname = c("B-A_adjpval", "B-C_adjpval"),

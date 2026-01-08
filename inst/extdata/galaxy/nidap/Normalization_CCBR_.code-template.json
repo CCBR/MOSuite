@@ -1,0 +1,378 @@
+{
+	"codeTemplate": "Normalized_Counts <- function({{{counts_matrix}}}, {{{Sample_Metadata}}}) {\n    \n    ## --------- ##\n    ## Libraries ##\n    ## --------- ##\n\n    library(limma)\n    library(tidyverse)\n    library(edgeR)\n    library(ggplot2)\n    library(plotly)\n    library(dplyr)\n    library(RColorBrewer)\n    library(colorspace)\n    library(stringr)\n    library(RCurl)\n    library(reshape2)\n    library(gridExtra)\n    library(amap)\n    library(lattice)\n    library(gplots)\n    library(gridGraphics)\n    library(dendsort)\n\n\n    ## -------------------------------- ##\n    ## User-Defined Template Parameters ##\n    ## -------------------------------- ##\n    \n    #Basic Parameters:\n    counts_matrix <- {{{counts_matrix}}}\n    sample_metadata <- {{{Sample_Metadata}}}\n    gene_names_column <- \"{{{Feature_ID_Column}}}\"\n    columns_to_include = {{{Columns_to_Include}}}\n    sample_names_column <- \"{{{Sample_Names_Column}}}\"\n    groups_column <- \"{{{Groups_Column}}}\"\n    labels_column <- \"{{{Labels_Column}}}\"\n\n\n    #Normalization Parameters:\n    input_in_log_counts <- {{{Input_in_Log_Counts}}}\n    normalization_method <- \"{{{Normalization_Method}}}\"\n    \n    #PCA parameters:\n    samples_to_rename_manually_on_pca <- {{{Samples_to_Rename_Manually_on_PCA}}}\n    add_labels_to_pca <- {{{Add_Labels_to_PCA}}}\n    principal_component_on_x_axis_for_pca <- {{{Principal_Component_on_X_axis_for_PCA}}}\n    principal_component_on_y_axis_for_pca <- {{{Principal_Component_on_Y_axis_for_PCA}}}\n    legend_position_for_pca <- \"{{{Legend_position_for_PCA}}}\"\n    label_offset_x_for_pca <- {{{Label_Offset_x_for_PCA}}}\n    label_offset_y_for_pca <- {{{Label_Offset_y_for_PCA}}}\n    label_font_size_for_pca <- {{{Label_Font_Size_for_PCA}}}\n    point_size_for_pca <- {{{Point_Size_for_PCA}}}\n\n    #Histogram parameters:\n    color_histogram_by_group <- {{{Color_Histogram_by_Group}}}\n    set_min_max_for_x_axis_for_histogram <- {{{Set_Min_Max_for_X_axis_for_Histogram}}} \n    minimum_for_x_axis_for_histogram <- {{{Minimum_for_X_axis_in_Histogram}}}\n    maximum_for_x_axis_for_histogram <- {{{Maximum_for_X_axis_in_Histogram}}}\n    legend_font_size_for_histogram <- {{{Legend_Font_Size_for_Histogram}}}\n    legend_position_for_histogram <- \"{{{Legend_Position_for_Histogram}}}\"\n    number_of_histogram_legend_columns <- {{{Number_of_Histogram_Legend_Columns}}}\n    \n    #Visualization Parameters:\n    number_of_image_rows <- {{{Number_of_Image_Rows}}}\n    colors_for_plots <- {{{Colors_for_Plots}}}\n    make_plots_interactive <- {{{Make_Plots_Interactive}}}\n    plot_correlation_matrix_heatmap <- {{{Plot_Correlation_Matrix_Heatmap}}}\n    \n\n    ##--------------- ##\n    ## Error Messages ##\n    ## -------------- ##\n\n    \n    ## --------- ##\n    ## Functions ##\n    ## --------- ##\n\n    getourrandomcolors<-function(k){\n        seed=10\n        n <- 2e3\n        ourColorSpace <- colorspace::RGB(runif(n), runif(n), runif(n))\n        ourColorSpace <- as(ourColorSpace, \"LAB\")\n        currentColorSpace <- ourColorSpace@coords\n        # Set iter.max to 20 to avoid convergence warnings.\n        set.seed(seed)\n        km <- kmeans(currentColorSpace, k, iter.max=20)\n        return( unname(hex(LAB(km$centers))))\n    }\n\n    make_heatmap <- function(counts_matrix, metadata,colorval) {\n        mat <- as.matrix(counts_matrix) \n        tcounts=t(mat)\n        tcounts=merge(metadata,tcounts,by.x=sample_names_column,by.y='row.names')\n        rownames(tcounts)=tcounts[,labels_column]\n        tcounts=tcounts[,!colnames(tcounts)%in%colnames(metadata)]\n        d=Dist(tcounts,method=\"correlation\",diag=TRUE)\n        dend = rev(dendsort(as.dendrogram(hclust( d,method=\"average\"))))\n        m=as.matrix(d)\n        sample_metadata <- metadata\n        rownames(sample_metadata) = sample_metadata[[labels_column]]\n        idx = as.factor(sample_metadata[rownames(m),groups_column])\n        col = colorval\n        cols <- col[idx]\n        new.palette=colorRampPalette(c(\"blue\",\"green\",\"yellow\"),space=\"rgb\")\n  \n    mk<-function(){\n        if(length(colnames(m))>20){\n            par(mar=c(0,0,0,0))\n            heatmap.2(m,\n                        labRow = NA, \n                        labCol = NA,\n                        col=new.palette(20),\n                        trace=\"none\",\n                        colRow = col[idx], \n                        colCol = col[idx],\n                        rowDendrogram=dend,\n                        colDendrogram=dend,\n                        RowSideColors = col[idx],\n                        ColSideColors = col[idx],\n                        dendrogram = \"row\",\n                        cexRow=3,\n                        cexCol=3,\n                        margins=c(0,0),   \n                        lmat=rbind( c(0,0,2),c(4,1,3) ,c(0,5,6) ), \n                        lhei=c(.2,4,2), \n                        lwid=c(1, .2,4 ), \n                        key.par=list(mgp=c(1.75, .5, 0), \n                        mar=c(7, 2, 3.5, 0), \n                        cex.axis=.1, \n                        cex.lab=3, \n                        cex.main=1, \n                        cex.sub=1),\n                        key.xlab = \"Correlation\",\n                        key.ylab=\"Count\",\n                        key.title=\" \")       \n        } else {\n            heatmap.2(m,col=new.palette(20),\n                        trace=\"none\",\n                        colRow = col[idx], \n                        colCol = col[idx],\n                        rowDendrogram=dend,\n                        colDendrogram=dend,\n                        RowSideColors = col[idx],\n                        ColSideColors = col[idx],\n                        dendrogram = \"row\",\n                        cexRow=3,cexCol=3,margins=c(4,1),  \n                        lmat=rbind( c(0,0,2),c(4,1,3) ,c(0,5,6) ), \n                        lhei=c( .2,4,2), \n                        lwid=c(1, .2,4),\n                        key.par=list(mgp=c(1.75, .5, 0), mar=c(7, 2, 3.5, 0), cex.axis=.1, cex.lab=3, cex.main=1, cex.sub=1),\n                        key.xlab = \"Correlation\",\n                        key.ylab=\"Count\",\n                        key.title=\" \")\n            }\n        }\n  \n            tg<-mk()\n            grid.echo(mk)\n            gh1<-grid.grab()\n            mklegend<-function(){\n            plot.new()\n            legend(x=\"top\", legend=levels(idx), col=col[as.factor(levels(idx))],pch=15,x.intersp=3,bty =\"n\",cex=2)\n            }\n        grid.echo(mklegend )\n        gh2<-grid.grab()\n        lay <- c(1,3)\n        grid.newpage()\n        grid.arrange(gh1,gh2,nrow=1,widths=c(unit(1000, \"bigpts\"),unit(300, \"bigpts\")))\n        gh<-grid.grab()\n        return(gh)\n    }\n\n    ## --------------- ##\n    ## Main Code Block ##\n    ## --------------- ##\nsamples_to_include=columns_to_include[columns_to_include%in%sample_metadata[,sample_names_column,drop=T]]\n    anno_col=columns_to_include[columns_to_include%in%sample_metadata[,sample_names_column,drop=T]==F]\n\n\n    samples_to_include <- samples_to_include[samples_to_include != gene_names_column]\n    samples_to_include <- samples_to_include[samples_to_include != \"Gene\"]\n    samples_to_include <- samples_to_include[samples_to_include != \"GeneName\"]\n    \n##create unique rownames to correctly add back Annocolumns at end of template\ncounts_matrix[,gene_names_column]=paste0(counts_matrix[,gene_names_column],'_',1:nrow(counts_matrix))\n\n\n    anno_col=c(anno_col,gene_names_column)%>%unique\n    anno_tbl=counts_matrix[,anno_col,drop=F]%>%as.data.frame\n \n    \n    df.filt <- counts_matrix[,samples_to_include]\n    gene_names <- NULL\n    gene_names$GeneID <- counts_matrix[,1]\n\n    \n    \n    sample_metadata <- sample_metadata[match(colnames(df.filt),sample_metadata[[sample_names_column]]),] #First match sample metadata to counts matrix\n    sample_metadata <- sample_metadata[rowSums(is.na(sample_metadata)) != ncol(sample_metadata), ] # Remove empty rows\n    sample_metadata <- sample_metadata[, colSums(is.na(sample_metadata)) == 0] #Remove empty columns\n    rownames(sample_metadata) <- sample_metadata[[sample_names_column]]\n\n    df.filt <- df.filt[,match(sample_metadata[[sample_names_column]],colnames(df.filt))] #Match counts matrix columns to sample metadata\n    \n    #If input is in log space, linearize\n    if(input_in_log_counts == TRUE){\n        x <- DGEList(counts=2^df.filt, genes=gene_names)\n    } else {\n        x <- DGEList(counts=df.filt, genes=gene_names)     \n    }\n\n    v <- voom(x,normalize=normalization_method)\n    rownames(v$E) <- v$genes$GeneID\n    as.data.frame(v$E) %>% rownames_to_column(gene_names_column) -> df.voom\n    print(paste0(\"Total number of features included: \", nrow(df.voom)))\n\n    #Start PCA Plot:\n    \n    edf <- v$E\n    tedf <- t(edf)\n    tedf <- tedf[, colSums(is.na(tedf)) != nrow(tedf)]\n    tedf <- tedf[, apply(tedf, 2, var) != 0]\n    pca <- prcomp(tedf, scale.=T)\n    \n    pcx <- paste0(\"PC\",principal_component_on_x_axis_for_pca)\n    pcy <- paste0(\"PC\",principal_component_on_y_axis_for_pca)\n    pca.df <- as.data.frame(pca$x) %>% dplyr::select(.data[[pcx]], .data[[pcy]])\n    pca.df$group <- sample_metadata[[groups_column]]\n    pca.df$sample <- sample_metadata[[labels_column]]\n    perc.var <- (pca$sdev^2/sum(pca$sdev^2))*100\n    perc.var <- formatC(perc.var,format = \"g\",digits=4)\n    pc.x.lab <- paste0(pcx,\" \", perc.var[principal_component_on_x_axis_for_pca],\"%\")\n    pc.y.lab <- paste0(pcy,\" \", perc.var[principal_component_on_y_axis_for_pca],\"%\")\n    labelpos <- pca.df\n    labelpos$mean_y <- pca.df[[pcy]]+label_offset_y_for_pca\n    labelpos$mean_x <- pca.df[[pcx]]+label_offset_x_for_pca\n    pca.df$xdata <- pca.df[[pcx]]\n    pca.df$ydata <- pca.df[[pcy]]\n\n    # Manual changes to sample names\n    replacements = samples_to_rename_manually_on_pca\n\n    if (!is.null(replacements)) {\n        if (replacements != c(\"\")) {\n            for (x in replacements) {\n                old <- strsplit(x, \": ?\")[[1]][1]\n                new <- strsplit(x, \": ?\")[[1]][2]\n                pca.df$sample <- ifelse(pca.df$sample==old, new, pca.df$sample)\n            }\n        }\n    }\n\n    colorlist <- c(\"#5954d6\",\"#e1562c\",\"#b80058\",\"#00c6f8\",\"#d163e6\",\"#00a76c\",\"#ff9287\",\"#008cf9\",\"#006e00\",\"#796880\",\"#FFA500\",\"#878500\")\n    names(colorlist) <- c(\"indigo\",\"carrot\",\"lipstick\",\"turquoise\",\"lavender\",\"jade\",\"coral\",\"azure\",\"green\",\"rum\",\"orange\",\"olive\")\n    if(length(colors_for_plots) == 0){\n        colors_for_plots <- c(\"indigo\",\"carrot\",\"lipstick\",\"turquoise\",\"lavender\",\"jade\",\"coral\",\"azure\",\"green\",\"rum\",\"orange\",\"olive\")\n    }\n    colorval <- colorlist[colors_for_plots]\n    colorval <- unname(colorval) #remove names which affect ggplot\n\n    if (length(unique(sample_metadata[[groups_column]])) > length(colorval)) {\n        ## Original color-picking code.\n        k=length(unique(sample_metadata[[groups_column]]))-length(colorval)\n        more_cols<- getourrandomcolors(k) \n        colorval <- c(colorval , more_cols)\n    }\n\n    if (add_labels_to_pca == TRUE){\n    g <- ggplot(pca.df, aes(x=xdata, y=ydata)) +\n        theme_bw() +\n        theme(legend.title=element_blank()) +\n        theme(legend.position=legend_position_for_pca) +\n        geom_point(aes(color=group), size=point_size_for_pca) +\n        geom_text(data=labelpos, aes(x=labelpos$mean_x, y=labelpos$mean_y, \n            label=sample, color=group, vjust=\"inward\", hjust=\"inward\"), size=label_font_size_for_pca, show.legend=FALSE) +\n        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),\n            panel.background = element_blank()) +\n        scale_colour_manual(values = colorval) +\n        xlab(pc.x.lab) + ylab(pc.y.lab)\n    } else {\n    g <- ggplot(pca.df, aes(x=xdata, y=ydata)) +\n        theme_bw() +\n        theme(legend.title=element_blank()) +\n        theme(legend.position=legend_position_for_pca) +\n        geom_point(aes(color=group,text=sample), size=point_size_for_pca) +\n        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),\n            panel.background = element_blank()) +\n        scale_colour_manual(values = colorval) +\n        xlab(pc.x.lab) + ylab(pc.y.lab)    \n    }\n\n    par(mfrow = c(2,1))\n\n    #Histogram Plot:\n    \n    df.m <- melt(edf,id.vars=c(gene_names_column))\n    df.m = dplyr::rename(df.m,sample=Var2)\n\n    if(set_min_max_for_x_axis_for_histogram == TRUE){\n        xmin = minimum_for_x_axis_for_histogram\n        xmax = maximum_for_x_axis_for_histogram\n    } else {\n        xmin = min(df.m$value)\n        xmax = max(df.m$value)\n    }\n\n    if(color_histogram_by_group == TRUE){\n        df.m %>% mutate(colgroup = sample_metadata[sample,groups_column]) -> df.m\n        df.m = df.m[complete.cases(df.m[, \"colgroup\"]),]\n        df.m$colgroup = gsub(\"\\\\s\",\"_\",df.m$colgroup)\n        df.m$colgroup = factor(df.m$colgroup, levels=unique(df.m$colgroup))\n        #print(unique(df.m$sample))\n\n        # plot Density \n        g2 = ggplot(df.m, aes(x=value, group=sample)) + \n            geom_density(aes(colour = colgroup)) +\n            xlab(\"Filtered Counts\") + ylab(\"Density\") +\n            theme_bw() +\n            theme(legend.position=legend_position_for_histogram,legend.text = element_text(size = legend_font_size_for_histogram)) + \n            ggtitle(\"Frequency Histogram\") +\n            xlim(xmin,xmax) +\n            #scale_linetype_manual(values=rep(c('solid', 'dashed','dotted','twodash'),40)) +\n            scale_colour_manual(values=colorval)\n    } else {\n        \n        df.m$sample = sample_metadata[df.m$sample,labels_column]\n        n=length(unique(df.m$sample))\n        cols<- getourrandomcolors(n) \n        \n        g2 = ggplot(df.m, aes(x=value, group=sample)) + \n            geom_density(aes(colour = sample)) +\n            xlab(\"Filtered Counts\") + ylab(\"Density\") +\n            theme_bw() +\n            theme(legend.position=legend_position_for_histogram,legend.text = element_text(size = legend_font_size_for_histogram)) +  \n            ggtitle(\"Frequency Histogram\") +\n            xlim(xmin,xmax) +\n            #scale_linetype_manual(values=rep(c('solid', 'dashed','dotted','twodash'),n)) +\n            scale_colour_manual(values=cols)#+\n            guides(linetype = guide_legend(ncol = number_of_histogram_legend_columns))\n    }\n\n    # dev.off()\n\n    imageWidth = 3000\n    imageHeight = 1500*2\n    dpi = 300\n\n    png(\n      filename=graphicsFile,\n      width=imageWidth,\n      height=imageHeight,\n      units=\"px\",\n      pointsize=4,\n      bg=\"white\",\n      res=dpi,\n      type=\"cairo\")\n\n    if(plot_correlation_matrix_heatmap == TRUE){\n        if(make_plots_interactive == TRUE){\n            p1=(g)%>%ggplotly(tooltip = c(\"sample\",\"group\"))\n            p2=(g2+theme(legend.position = \"none\")) %>%ggplotly(tooltip = c(\"sample\"))\n            fig=subplot(p1,p2,which_layout = 'merge',margin=.05,shareX = F,shareY = F,titleY = T,titleX = T,widths=c(.5,.5),nrows = 1)\n            fig=fig %>% layout(title = 'Interactive PCA and Histogram')\n            print(fig)\n        } else {\n            require(gridExtra)\n            gh<-make_heatmap(df.filt,sample_metadata,colorval)\n            grid.arrange(g,g2,gh, nrow=number_of_image_rows)\n            # dev.off()\n        }  \n    } else {\n        if(make_plots_interactive == TRUE){\n            p1=(g)%>%ggplotly(tooltip = c(\"sample\",\"group\"))\n            p2=(g2+theme(legend.position = \"none\")) %>%ggplotly(tooltip = \"sample\" )\n            fig=subplot(p1,p2,which_layout = 'merge',margin=.05,shareX = F,shareY = F,titleY = T,titleX = T,widths=c(.5,.5),nrows = 1)\n            fig=fig %>% layout(title = 'Interactive PCA and Histogram')\n            print(fig)\n        } else {\n            grid.arrange(g,g2, nrow=number_of_image_rows)\n            # dev.off()\n        }\n        }    \n\nprint(\"Sample columns\")\nprint(colnames(df.voom)[!colnames(df.voom)%in%gene_names_column])\nprint(\"Feature Columns\")\nprint(colnames(anno_tbl))\n\n    df.voom=merge(anno_tbl,df.voom,by=gene_names_column,all.y=T)\n   df.voom[,gene_names_column]=gsub('_[0-9]+$',\"\",df.voom[,gene_names_column])\n\n    return(df.voom)\n}\n\n#################################################\n## Global imports and functions included below ##\n#################################################\n\n",
+	"columns": [
+		{
+			"key": "Feature_ID_Column",
+			"displayName": "Feature ID Column",
+			"description": "The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.",
+			"paramGroup": "Basic",
+			"sourceDataset": "counts_matrix",
+			"defaultValue": null,
+			"columnType": "STRING",
+			"isMulti": null
+		},
+		{
+			"key": "Columns_to_Include",
+			"displayName": "Columns to Include",
+			"description": "Which Columns would you like to include? Usually, you will choose to \"Add all\" (see button on right). Columns excluded here will be removed in this step and from further analysis downstream of this step.",
+			"paramGroup": "Basic",
+			"sourceDataset": "counts_matrix",
+			"defaultValue": null,
+			"columnType": "ALL",
+			"isMulti": true
+		},
+		{
+			"key": "Sample_Names_Column",
+			"displayName": "Sample Names Column",
+			"description": "The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.",
+			"paramGroup": "Basic",
+			"sourceDataset": "Sample_Metadata",
+			"defaultValue": null,
+			"columnType": "STRING",
+			"isMulti": null
+		},
+		{
+			"key": "Groups_Column",
+			"displayName": "Groups Column",
+			"description": "The column from your input Sample Metadata table containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.). Only columns of Text type from your input Sample Metadata will be available to select for this parameter.",
+			"paramGroup": "Basic",
+			"sourceDataset": "Sample_Metadata",
+			"defaultValue": null,
+			"columnType": "ALL",
+			"isMulti": null
+		},
+		{
+			"key": "Labels_Column",
+			"displayName": "Labels Column",
+			"description": "The column from your input Sample Metadata table containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column (see above). However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here.",
+			"paramGroup": "Basic",
+			"sourceDataset": "Sample_Metadata",
+			"defaultValue": null,
+			"columnType": "ALL",
+			"isMulti": null
+		}
+	],
+	"condaDependencies": [],
+	"description": "This template is intended for use with Bulk RNA-seq data and is often performed immediately after filtering for low count genes. It normalizes RNA-seq expression data to account for factors that would prevent direct comparisons between samples.\n\nThis template takes as input a counts matrix (usually the filtered counts matrix) and your sample metadata table. It provides as output an image consisting of three QC plots (see below) and a normalized expression matrix.\n\nThe default normalization method is quantile, which is a very common way to normalize bulk RNA-seq data. Other normalization methods are selectable, as needed.\n\nThe QC plots provided are: (1) PCA Plot: shows the within- and between-group variance in expression after dimensionality reduction; (2) Count Density Histogram: shows the dis/similarity of count distributions between samples; and (3) Similarity Heatmap: shows the overall similarity of samples to one another based on unsupervised clustering.",
+	"externalId": "Normalization_CCBR_",
+	"inputDatasets": [
+		{
+			"key": "counts_matrix",
+			"displayName": "Counts Matrix",
+			"description": "The input Counts Matrix. Usually, this will be your Filtered Counts matrix.",
+			"paramGroup": "Basic",
+			"anchorDataset": false,
+			"dataType": "R_NATIVE_DATAFRAME",
+			"tags": []
+		},
+		{
+			"key": "Sample_Metadata",
+			"displayName": "Sample Metadata",
+			"description": "The Sample Metadata table containing your sample metadata. At minimum, this table must include one column each of the following: Samples, Groups, Batches, and Labels. The names in the Samples column of your input Sample Metadata must match the Sample Column Names of your input Counts Matrix exactly. You may have more than one column showing different Groups by which your samples may be organized (e.g. Genotype, Response, Time, etc.).",
+			"paramGroup": "Basic",
+			"anchorDataset": false,
+			"dataType": "R_NATIVE_DATAFRAME",
+			"tags": []
+		}
+	],
+	"vectorLanguage": "R",
+	"codeLanguage": "R",
+	"parameters": [
+		{
+			"key": "Input_in_Log_Counts",
+			"displayName": "Input in Log Counts",
+			"description": "TRUE if input is in log counts",
+			"paramType": "BOOLEAN",
+			"paramGroup": "Normalization",
+			"paramValues": null,
+			"defaultValue": "FALSE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Normalization_Method",
+			"displayName": "Normalization Method",
+			"description": "Normalization method to be applied to the logCPM values",
+			"paramType": "SELECT",
+			"paramGroup": "Normalization",
+			"paramValues": [
+				"none",
+				"scale",
+				"quantile",
+				"cyclicloess"
+			],
+			"defaultValue": "quantile",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Samples_to_Rename_Manually_on_PCA",
+			"displayName": "Samples to Rename Manually on PCA",
+			"description": "Enter each sample to rename in the format: old_name: new_name",
+			"paramType": "VECTOR",
+			"paramGroup": "PCA",
+			"paramValues": null,
+			"defaultValue": "c(\"\")",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Add_Labels_to_PCA",
+			"displayName": "Add Labels to PCA",
+			"description": "Toggle to TRUE to use the column from \"Label Column to Use for Plots\" (above) to label points on the PCA plot. Toggle to FALSE to remove these labels from the plot. Default is TRUE.",
+			"paramType": "BOOLEAN",
+			"paramGroup": "PCA",
+			"paramValues": null,
+			"defaultValue": "TRUE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Principal_Component_on_X_axis_for_PCA",
+			"displayName": "Principal Component on X-axis for PCA",
+			"description": "The principle component to plot on the x-axis. Choices include 1, 2, 3, ... (default: 1)",
+			"paramType": "NUMBER",
+			"paramGroup": "PCA",
+			"paramValues": null,
+			"defaultValue": "1",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Principal_Component_on_Y_axis_for_PCA",
+			"displayName": "Principal Component on Y-axis for PCA",
+			"description": "The principle component to plot on the y-axis. Choices include 1, 2, 3, ... (default: 2)",
+			"paramType": "NUMBER",
+			"paramGroup": "PCA",
+			"paramValues": null,
+			"defaultValue": "2",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Legend_position_for_PCA",
+			"displayName": "Legend position for PCA",
+			"description": "Legend position relative to the plot",
+			"paramType": "SELECT",
+			"paramGroup": "PCA",
+			"paramValues": [
+				"top",
+				"bottom",
+				"left",
+				"right",
+				"none"
+			],
+			"defaultValue": "top",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Label_Offset_x_for_PCA",
+			"displayName": "Label Offset (x) for PCA",
+			"description": "",
+			"paramType": "NUMBER",
+			"paramGroup": "PCA",
+			"paramValues": null,
+			"defaultValue": "2",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Label_Offset_y_for_PCA",
+			"displayName": "Label Offset (y) for PCA",
+			"description": "",
+			"paramType": "NUMBER",
+			"paramGroup": "PCA",
+			"paramValues": null,
+			"defaultValue": "2",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Label_Font_Size_for_PCA",
+			"displayName": "Label Font Size for PCA",
+			"description": "Font size for sample labels on the PCA. Set to 0 to remove labels.",
+			"paramType": "NUMBER",
+			"paramGroup": "PCA",
+			"paramValues": null,
+			"defaultValue": "3",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Point_Size_for_PCA",
+			"displayName": "Point Size for PCA",
+			"description": "Size of a each data point on the PCA.",
+			"paramType": "NUMBER",
+			"paramGroup": "PCA",
+			"paramValues": null,
+			"defaultValue": "2",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Color_Histogram_by_Group",
+			"displayName": "Color Histogram by Group",
+			"description": "Toggle to FALSE to label histogram by Sample Names. Toggle to TRUE to label histogram by the column you select in the \"Group Column Used to Color Histogram\" parameter (below). Default is FALSE.",
+			"paramType": "BOOLEAN",
+			"paramGroup": "Histogram",
+			"paramValues": null,
+			"defaultValue": "FALSE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Maximum_for_X_axis_in_Histogram",
+			"displayName": "Maximum for X-axis in Histogram",
+			"description": "",
+			"paramType": "NUMBER",
+			"paramGroup": "Histogram",
+			"paramValues": null,
+			"defaultValue": "1",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Minimum_for_X_axis_in_Histogram",
+			"displayName": "Minimum for X-axis in Histogram",
+			"description": "",
+			"paramType": "NUMBER",
+			"paramGroup": "Histogram",
+			"paramValues": null,
+			"defaultValue": "-1",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Set_Min_Max_for_X_axis_for_Histogram",
+			"displayName": "Set Min/Max for X-axis for Histogram",
+			"description": "",
+			"paramType": "BOOLEAN",
+			"paramGroup": "Histogram",
+			"paramValues": null,
+			"defaultValue": "FALSE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Legend_Font_Size_for_Histogram",
+			"displayName": "Legend Font Size for Histogram",
+			"description": "Legend font size for the histogram.",
+			"paramType": "NUMBER",
+			"paramGroup": "Histogram",
+			"paramValues": null,
+			"defaultValue": "10",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Legend_Position_for_Histogram",
+			"displayName": "Legend Position for Histogram",
+			"description": "Legend position on histogram plot, can be 'none' if large number of samples",
+			"paramType": "SELECT",
+			"paramGroup": "Histogram",
+			"paramValues": [
+				"top",
+				"bottom",
+				"left",
+				"right",
+				"none"
+			],
+			"defaultValue": "top",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Number_of_Histogram_Legend_Columns",
+			"displayName": "Number of Histogram Legend Columns",
+			"description": "",
+			"paramType": "NUMBER",
+			"paramGroup": "Histogram",
+			"paramValues": null,
+			"defaultValue": "6",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Colors_for_Plots",
+			"displayName": "Colors for Plots",
+			"description": "Colors for the PCA and histogram will be picked, in order, from this list. If more colors are needed, program will choose from a wide range of random colors",
+			"paramType": "MULTISELECT",
+			"paramGroup": "Visualization",
+			"paramValues": [
+				"indigo",
+				"carrot",
+				"lipstick",
+				"turquoise",
+				"lavender",
+				"jade",
+				"coral",
+				"azure",
+				"green",
+				"rum",
+				"orange",
+				"olive"
+			],
+			"defaultValue": "c(\"indigo\",\"carrot\",\"lipstick\",\"turquoise\",\"lavender\",\"jade\",\"coral\",\"azure\",\"green\",\"rum\",\"orange\",\"olive\")",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Number_of_Image_Rows",
+			"displayName": "Number of Image Rows",
+			"description": "1 = side-by-side, 2 = stacked",
+			"paramType": "NUMBER",
+			"paramGroup": "Visualization",
+			"paramValues": null,
+			"defaultValue": "2",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Make_Plots_Interactive",
+			"displayName": "Make Plots Interactive",
+			"description": "Toggle TRUE to make PCA and Histogram plots interactive, allowing you to hover your mouse over a point or line to view sample information. The similarity heatmap will not display if this toggle is set to TRUE. Default is FALSE.",
+			"paramType": "BOOLEAN",
+			"paramGroup": "Visualization",
+			"paramValues": null,
+			"defaultValue": "FALSE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Plot_Correlation_Matrix_Heatmap",
+			"displayName": "Plot Correlation Matrix Heatmap",
+			"description": "Datasets with a large number of samples may be too large to create a correlation matix Heatmap. If Template takes longer than 5 min to run Toggle switch to off and the correlation matrix will not be be created",
+			"paramType": "BOOLEAN",
+			"paramGroup": "TCGA",
+			"paramValues": null,
+			"defaultValue": "TRUE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		}
+	],
+	"title": "Normalization [CCBR]",
+	"templateApiVersion": "0.1.0"
+}

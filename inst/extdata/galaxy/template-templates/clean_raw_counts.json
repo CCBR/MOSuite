@@ -1,0 +1,159 @@
+{
+    "title": "Clean Raw Counts",
+    "description": "This template checks the input raw counts matrix for common formatting problems with Feature identifiers (Gene or Peptide/Protein Names) and sample names. \n\nIf Feature IDs contain multiple IDs separated by special Characters((| - , or space) they will be split into multiple columns. \n\nIf Duplicate Feature ID's are detected the counts are summed across duplicate Feature ID rows within each sample.\n\nInvalid sample names will also be reported in the template Log and can be automatically corrected. If your sample names are corrected here, be sure to make equivalent changes to your metadata table.",
+    "r_function": "clean_raw_counts",
+    "columns": [
+        {
+            "key": "feature_id_colname",
+            "displayName": "Feature ID Column",
+            "description": "Select a column from your counts that contains Feature IDs for each row. Defaults to the first column in the counts data.",
+            "paramGroup": "Basic",
+            "sourceDataset": "moo@counts",
+            "defaultValue": null,
+            "columnType": "STRING",
+            "isMulti": null
+        },
+        {
+            "key": "sample_id_colname",
+            "displayName": "Sample ID Column",
+            "description": "Select a column from your sample metadata that contains Sample IDs for each column. Defaults to the first column in the sample metadata.",
+            "paramGroup": "Basic",
+            "sourceDataset": "moo@sample_meta",
+            "defaultValue": null,
+            "columnType": "STRING",
+            "isMulti": null
+        }
+    ],
+    "inputDatasets": [
+        {
+            "key": "moo_input_rds",
+            "displayName": "MOO input Rds",
+            "description": "File path to read the input multiOmicDataSet object (MOO)",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        }
+    ],
+    "parameters": [
+        {
+            "key": "moo_output_rds",
+            "displayName": "MOO output Rds",
+            "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file at the end of the function",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "count_type",
+            "displayName": "Count Type",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "Basic",
+            "paramValues": null,
+            "defaultValue": "raw",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "samples_to_rename",
+            "displayName": "Samples to Rename",
+            "description": "Enter each sample that you want to rename in the format:\n\nold_name: new_name",
+            "paramType": "VECTOR",
+            "paramGroup": "Advanced",
+            "paramValues": null,
+            "defaultValue": "c(\"\")",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "cleanup_column_names",
+            "displayName": "Cleanup Column Names",
+            "description": "Invalid raw counts column names can cause errors in the downstream analysis. If this toggle is ON, any invalid column names will be automatically altered to a correct format.\n\nThese format changes will include adding an \"X\" as the first character in any column name that began with a numeral and replacing some special characters (\"-,:. \") with underscores (\"_\"). Invalid sample names and any changes made will be detailed in the template log.",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Advanced",
+            "paramValues": null,
+            "defaultValue": "TRUE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "split_gene_name",
+            "displayName": "Split Feature ID",
+            "description": "",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Advanced",
+            "paramValues": null,
+            "defaultValue": "TRUE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "aggregate_rows_with_duplicate_gene_names",
+            "displayName": "Aggregate Rows with Duplicate Feature Names",
+            "description": "Regardless of the toggle status (ON/OFF), if a Feature ID (from the \"Cleanup Column Names\" parameter above) is found to be duplicated on multiple rows of the raw counts, the Log will report these Feature IDs.\n\nUsing the default behavior (ON), the counts for all rows with a duplicate Feature IDs are aggregated into a single row. Counts are summed across duplicate Feature ID rows within each sample. Additional identifier columns, if present (e.g. Ensembl IDs), will be preserved and multiple matching identifiers in such additional columns will appear as comma-separated values in an aggregated row.",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Advanced",
+            "paramValues": null,
+            "defaultValue": "TRUE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "gene_name_column_to_use_for_collapsing_duplicates",
+            "displayName": "Column Used to Aggregate Duplicates Feature IDs",
+            "description": "Select the column with Feature IDs to use as grouping elements to collapse the counts matrix.\n\nThe log output will list the columns available to identify duplicate row IDs in order to aggregate information. \n\nIf Bulk RNAseq data your column selected for Feature ID will be  renamed to \"Gene\" \nIf analyzing Proteomics data your column selected for Feature ID will be  renamed to \"Feature ID\".\n\nIf left blank your \"Feature ID\" Column will be used to Aggregate Rows.\n\nIf \"Feature ID\" column can be split into multiple IDs the non Ensembl ID name will be used to aggregate duplicate IDs.\nIf \"Feature ID\" column  does not contain Ensembl IDs the split Feature IDs will be named 'Feature_id_1' and 'Feature_id_2'. For this case the Template will error out and you will have to manually enter Column ID for this field.",
+            "paramType": "STRING",
+            "paramGroup": "Advanced",
+            "paramValues": [
+                "Gene",
+                "Pepetide",
+                "Protein",
+                "Ensembl_ID",
+                "Ensembl_ID_version",
+                "Gene_id_1",
+                "Gene_id_2",
+                "Original Gene Column"
+            ],
+            "defaultValue": "",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+        "key": "save_plots",
+        "displayName": "Save Plots",
+        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+        "paramType": "BOOLEAN",
+        "paramGroup": "Basic",
+        "paramValues": null,
+        "defaultValue": true,
+        "condition": null,
+        "content": null,
+        "objectPropertyReference": null
+        }
+    ],
+    "outputDatasetName": "Cleaned MultiOmics Dataset",
+    "outputs": {
+        "analysis": {
+            "type": "file",
+            "name": "moo.rds"
+        },
+        "figures": {
+            "type": "directory",
+            "name": "figures/clean/"
+        }
+    }
+}

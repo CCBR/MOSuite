@@ -1,14 +1,21 @@
 {
-  "moo_input_rds": "moo.rds",
-  "moo_output_rds": "moo.rds",
+  "moo_input_rds": "moo_batch.rds",
+  "moo_output_rds": "moo_diff.rds",
   "count_type": "filt",
   "sub_count_type": null,
   "sample_id_colname": null,
   "feature_id_colname": null,
   "samples_to_include": null,
-  "covariates_colnames": ["Group", "Batch"],
+  "covariates_colnames": [
+    "Group",
+    "Batch"
+  ],
   "contrast_colname": "Group",
-  "contrasts": ["B-A", "C-A", "B-C"],
+  "contrasts": [
+    "B-A",
+    "C-A",
+    "B-C"
+  ],
   "input_in_log_counts": false,
   "return_mean_and_sd": true,
   "voom_normalization_method": "quantile",

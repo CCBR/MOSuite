@@ -1,0 +1,82 @@
+{
+    "title": "Create Multi-Omic Dataset from Files",
+    "description": "",
+    "r_function": "create_multiOmicDataSet_from_files",
+    "columns": [],
+    "inputDatasets": [
+        {
+            "key": "sample_meta_filepath",
+            "displayName": "",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": null,
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "feature_counts_filepath",
+            "displayName": "",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": null,
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        }
+    ],
+    "parameters": [
+        {
+            "key": "moo_output_rds",
+            "displayName": "MOO output Rds",
+            "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "sample_id_colname",
+            "displayName": "",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": null,
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "feature_id_colname",
+            "displayName": "",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": null,
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "delim",
+            "displayName": "",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": null,
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        }
+    ]
+}

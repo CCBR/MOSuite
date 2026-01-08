@@ -1,0 +1,161 @@
+{
+  "r_function": "batch_correct_counts",
+  "title": "Batch Correction\n",
+  "description": "using \nlist(\"sva::ComBat()\")\n",
+  "columns": [
+    {
+      "key": "feature_id_colname",
+      "displayName": "Feature ID Column",
+      "description": "The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).\nThis is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts\nMatrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be\nused.)\n",
+      "paramGroup": "Basic",
+      "sourceDataset": "counts_matrix",
+      "columnType": "STRING",
+      "isMulti": null
+    },
+    {
+      "key": "samples_to_include",
+      "displayName": "Columns to Include",
+      "description": "Which samples would you like to include? Usually, you will choose all sample columns, or\nyou could choose to remove certain samples. Samples excluded here will be removed in this step and from further\nanalysis downstream of this step. (Default: `NULL` - all sample IDs in `moo@sample_meta` will be used.)\n",
+      "paramGroup": "Basic",
+      "sourceDataset": "counts_matrix",
+      "columnType": "ALL",
+      "isMulti": true
+    },
+    {
+      "key": "sample_id_colname",
+      "displayName": "Sample Names Column",
+      "description": "The column from the sample metadata containing the sample names. The names in this column\nmust exactly match the names used as the sample column names of your input Counts Matrix. (Default: `NULL` - first\ncolumn in the sample metadata will be used.)\n",
+      "paramGroup": "Basic",
+      "sourceDataset": "sample_metadata",
+      "columnType": "STRING",
+      "isMulti": null
+    },
+    {
+      "key": "covariates_colnames",
+      "displayName": "Covariates",
+      "description": "The column name(s) from the sample metadata\ncontaining variable(s) of interest, such as phenotype.\nMost commonly this will be the same column selected for your Groups Column.\nSome experimental designs may require that you add additional covariate columns here.\nDo not include the `batch_colname` here.\n",
+      "paramGroup": "Basic",
+      "sourceDataset": "sample_metadata",
+      "defaultValue": "Group",
+      "columnType": "ALL",
+      "isMulti": true
+    },
+    {
+      "key": "batch_colname",
+      "displayName": "Batch Column",
+      "description": "The column from the sample metadata containing the batch information.\nSamples extracted, prepared, or sequenced at separate times or using separate materials/staff/equipment\nmay belong to different batches.\nNot all data sets have batches, in which case you do not need batch correction.\nIf your data set has no batches, you can provide a batch column with the same\nvalue in every row to skip batch correction (alternatively, simply do not run this function).\n",
+      "paramGroup": "Basic",
+      "sourceDataset": "sample_metadata",
+      "defaultValue": "Batch",
+      "columnType": "ALL",
+      "isMulti": null
+    },
+    {
+      "key": "label_colname",
+      "displayName": "Labels Column",
+      "description": "The column from the sample metadata containing the sample labels as you wish them to appear in\nthe plots produced by this template. This can be the same Sample Names Column. However, you may desire different\nlabels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the\ncolumn with your preferred Labels here. The selected column should contain unique names for each sample. (Default:\n`NULL` -- `sample_id_colname` will be used.)\n",
+      "paramGroup": "Basic",
+      "sourceDataset": "sample_metadata",
+      "columnType": "ALL",
+      "isMulti": null
+    }
+  ],
+  "inputDatasets": [
+    {
+      "key": "moo_input_rds",
+      "displayName": "MOO input Rds",
+      "description": "File path to read the input multiOmicDataSet object (MOO)",
+      "paramType": "STRING",
+      "paramGroup": "basic",
+      "paramValues": null,
+      "defaultValue": "moo.rds",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    }
+  ],
+  "parameters": [
+    {
+      "key": "moo_output_rds",
+      "displayName": "MOO output Rds",
+      "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file at the end of the function",
+      "paramType": "STRING",
+      "paramGroup": "basic",
+      "paramValues": null,
+      "defaultValue": "moo.rds",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "count_type",
+      "displayName": "Count Type",
+      "description": "the type of counts to use -- must be a name in the counts slot (`moo@counts`)\n",
+      "paramType": "STRING",
+      "paramGroup": "Basic",
+      "paramValues": null,
+      "defaultValue": "norm",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "sub_count_type",
+      "displayName": "Sub Count Type",
+      "description": "if `count_type` is a list, specify the sub count type within the list. (Default: `\"voom\"`)\n",
+      "paramType": "STRING",
+      "paramGroup": "Basic",
+      "paramValues": null,
+      "defaultValue": "voom",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "colors_for_plots",
+      "displayName": "Colors for plots",
+      "description": "Colors for the PCA and histogram will be picked, in order, from this list.\nColors must either be names in `grDevices::colors()` or valid hex codes.\n",
+      "paramType": "MULTISELECT",
+      "paramGroup": "Visualization",
+      "paramValues": [
+        "indigo",
+        "carrot",
+        "lipstick",
+        "turquoise",
+        "lavender",
+        "jade",
+        "coral",
+        "azure",
+        "green",
+        "rum",
+        "orange",
+        "olive"
+      ],
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "save_plots",
+      "displayName": "Save Plots",
+      "description": "Whether to save plots to files during analysis (Defaults to `TRUE`, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Visualization",
+      "paramValues": null,
+      "defaultValue": true,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    }
+  ],
+  "outputs": {
+    "analysis": {
+      "type": "file",
+      "name": "moo.rds"
+    },
+    "figures": {
+      "type": "directory",
+      "name": "figures/batch/"
+    }
+  }
+}

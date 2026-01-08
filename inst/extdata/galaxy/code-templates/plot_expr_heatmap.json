@@ -1,0 +1,574 @@
+{
+  "r_function": "plot_expr_heatmap",
+  "title": "Plot Expression Heatmap\n",
+  "description": "The samples (i.e. the columns) are clustered in an unsupervised fashion based\non how similar their expression profiles are across the included genes. This\ncan help identify samples that are non clustering with their group as you\nmight expect based on the experimental design.\nBy default, the top 500 genes by variance are used, as these are\ngenerally going to include those genes that most distinguish your samples\nfrom one another. You can change this as well as many other parameters about\nthis heatmap if you explore the advanced options.\n",
+  "columns": [
+    {
+      "key": "feature_id_colname",
+      "displayName": "Gene Column Name",
+      "description": "The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID).\nThis is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts\nMatrix will be available to select for this parameter. (Default: `NULL` - first column in the counts matrix will be\nused.)\n",
+      "paramGroup": "Data Setup",
+      "sourceDataset": "Counts_Matrix",
+      "columnType": "STRING",
+      "isMulti": null
+    },
+    {
+      "key": "sample_id_colname",
+      "displayName": "Sample Name Column",
+      "description": "The column from the sample metadata containing the sample names. The names in this column\nmust exactly match the names used as the sample column names of your input Counts Matrix. (Default: `NULL` - first\ncolumn in the sample metadata will be used.)\n",
+      "paramGroup": "Data Setup",
+      "sourceDataset": "Sample_Metadata",
+      "columnType": "ALL",
+      "isMulti": null
+    },
+    {
+      "key": "label_colname",
+      "displayName": "Sample Labels Column",
+      "description": "The column from the sample metadata containing the sample labels as you wish them to appear in\nthe plots produced by this template. This can be the same Sample Names Column. However, you may desire different\nlabels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the\ncolumn with your preferred Labels here. The selected column should contain unique names for each sample. (Default:\n`NULL` -- `sample_id_colname` will be used.)\n",
+      "paramGroup": "Data Setup",
+      "sourceDataset": "Sample_Metadata",
+      "columnType": "ALL",
+      "isMulti": null
+    },
+    {
+      "key": "samples_to_include",
+      "displayName": "Samples to Include",
+      "description": "Which samples would you like to include? Usually, you will choose all sample columns, or\nyou could choose to remove certain samples. Samples excluded here will be removed in this step and from further\nanalysis downstream of this step. (Default: `NULL` - all sample IDs in `moo@sample_meta` will be used.)\n",
+      "paramGroup": "Data Setup",
+      "sourceDataset": "Counts_Matrix",
+      "columnType": "NUMBER",
+      "isMulti": true
+    },
+    {
+      "key": "reorder_dendrogram_order",
+      "displayName": "Reorder Sample Dendrogram Order",
+      "description": "Reorder the samples (columns) of the dendrogram by name, e.g.\n“sample2”,“sample3\",“sample1\".\n",
+      "paramGroup": "Sample",
+      "sourceDataset": "Counts_Matrix",
+      "columnType": "ALL",
+      "isMulti": true
+    },
+    {
+      "key": "group_colname",
+      "displayName": "Group Columns",
+      "description": "The column from the sample metadata containing the sample group information. This is usually a\ncolumn showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,\nBefore, After, etc.).\n",
+      "paramGroup": "Annotation",
+      "sourceDataset": "Sample_Metadata",
+      "defaultValue": "Group",
+      "columnType": "ALL",
+      "isMulti": true
+    }
+  ],
+  "inputDatasets": [
+    {
+      "key": "moo_input_rds",
+      "displayName": "MOO input Rds",
+      "description": "File path to read the input multiOmicDataSet object (MOO)",
+      "paramType": "STRING",
+      "paramGroup": "basic",
+      "paramValues": null,
+      "defaultValue": "moo.rds",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    }
+  ],
+  "parameters": [
+    {
+      "key": "moo_output_rds",
+      "displayName": "Plot output Rds",
+      "description": "File path to output the plot object as an Rds file",
+      "paramType": "STRING",
+      "paramGroup": "basic",
+      "paramValues": null,
+      "defaultValue": "expr_heatmap_plot.rds",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "count_type",
+      "displayName": "Count Type",
+      "description": "the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).\n",
+      "paramType": "STRING",
+      "paramGroup": "Basic",
+      "paramValues": null,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "sub_count_type",
+      "displayName": "Sub Count Type",
+      "description": "used if `count_type` is a list in the counts slot: specify the sub count type within the list.\nMust be a name in `names(moo@counts[[count_type]])`.\n",
+      "paramType": "STRING",
+      "paramGroup": "Basic",
+      "paramValues": null,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "include_all_genes",
+      "displayName": "Include All Genes",
+      "description": "Set to TRUE if all genes are to be included. Set to FALSE if you want to filter genes by\nvariance and/or provide a list of specific genes that will appear in the heatmap.\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Gene",
+      "paramValues": null,
+      "defaultValue": false,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "filter_top_genes_by_variance",
+      "displayName": "Filter Top Genes by Variance",
+      "description": "Set to TRUE if you want to only include the top genes by variance. Set to FALSE\nif you do not want to filter genes by variance.\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Gene",
+      "paramValues": null,
+      "defaultValue": true,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "top_genes_by_variance_to_include",
+      "displayName": "Top Genes by Variance to Include",
+      "description": "The number of genes to include if filtering genes by variance. This parameter\nis ignored if \"Filter top genes by variance\" is set to FALSE.\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Gene",
+      "paramValues": null,
+      "defaultValue": 500,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "specific_genes_to_include_in_heatmap",
+      "displayName": "Specific Genes to Include in Heatmap",
+      "description": "Enter the gene symbols to be included in the heatmap, with each gene\nsymbol separated with a space from the others. Alternatively, paste in a column of gene names from any spreadsheet\napplication. This parameter is ignored if \"Include all genes\" is set to TRUE.\n",
+      "paramType": "STRING",
+      "paramGroup": "Gene",
+      "paramValues": null,
+      "defaultValue": "None",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "cluster_genes",
+      "displayName": "Cluster Genes",
+      "description": "Choose whether to cluster the rows (genes). If TRUE, rows will have clustering applied. If\nFALSE, clustering will not be applied to rows.\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Gene",
+      "paramValues": null,
+      "defaultValue": true,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "gene_clustering_method",
+      "displayName": "Gene Clustering Method",
+      "description": "Clustering method metric to be used in clustering samples. (TODO document options)\n",
+      "paramType": "SELECT",
+      "paramGroup": "Gene",
+      "paramValues": [
+        "ward.D",
+        "ward.D2",
+        "single",
+        "complete",
+        "average",
+        "mcquitty",
+        "median",
+        "centroid"
+      ],
+      "defaultValue": "average",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "gene_distance_metric",
+      "displayName": "Gene Distance Metric",
+      "description": "Distance metric to be used in clustering genes. (TODO document options)\n",
+      "paramType": "SELECT",
+      "paramGroup": "Gene",
+      "paramValues": [
+        "euclidean",
+        "maximum",
+        "manhattan",
+        "canberra",
+        "binary",
+        "minkowski",
+        "correlation"
+      ],
+      "defaultValue": "correlation",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "display_gene_dendrograms",
+      "displayName": "Display Gene Dendrogram",
+      "description": "Set to TRUE to show gene dendrograms. Set to FALSE to hide dendrograms.\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Gene",
+      "paramValues": null,
+      "defaultValue": true,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "display_gene_names",
+      "displayName": "Display Gene Names",
+      "description": "Set to TRUE to display gene names on the right side of the heatmap. Set to FALSE to hide\ngene names.\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Gene",
+      "paramValues": null,
+      "defaultValue": false,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "center_and_rescale_expression",
+      "displayName": "Center and Rescale Expression",
+      "description": "Center and rescale expression for each gene across all included samples.\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Gene",
+      "paramValues": null,
+      "defaultValue": true,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "cluster_samples",
+      "displayName": "Cluster Samples",
+      "description": "Choose whether to cluster the columns (samples). If TRUE, columns will have clustering\napplied. If FALSE, clustering will not be applied to columns.\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Sample",
+      "paramValues": null,
+      "defaultValue": false,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "arrange_sample_columns",
+      "displayName": "Arrange Sample Columns",
+      "description": "If TRUE, arranges columns by annotation groups. If FALSE, and \"Cluster Samples\" is\nFALSE, samples will appear in the order of input (samples to include)\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Sample",
+      "paramValues": null,
+      "defaultValue": true,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "order_by_gene_expression",
+      "displayName": "Order by Gene Expression",
+      "description": "If TRUE, set gene name below and direction for ordering\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Sample",
+      "paramValues": null,
+      "defaultValue": false,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "gene_to_order_columns",
+      "displayName": "Gene to Order Columns",
+      "description": "Gene to order columns by expression levels\n",
+      "paramType": "STRING",
+      "paramGroup": "Sample",
+      "paramValues": null,
+      "defaultValue": " ",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "gene_expression_order",
+      "displayName": "Gene Expression Order",
+      "description": "Choose direction for gene order\n",
+      "paramType": "SELECT",
+      "paramGroup": "Sample",
+      "paramValues": [
+        "low_to_high",
+        "high_to_low"
+      ],
+      "defaultValue": "low_to_high",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "smpl_clustering_method",
+      "displayName": "Sample Clustering Method",
+      "description": "Clustering method to be used in clustering samples.  (TODO document options)\n",
+      "paramType": "SELECT",
+      "paramGroup": "Sample",
+      "paramValues": [
+        "ward.D",
+        "ward.D2",
+        "single",
+        "complete",
+        "average",
+        "mcquitty",
+        "median",
+        "centroid"
+      ],
+      "defaultValue": "average",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "smpl_distance_metric",
+      "displayName": "Sample Distance Metric",
+      "description": "Distance metric to be used in clustering samples.  (TODO document options)\n",
+      "paramType": "SELECT",
+      "paramGroup": "Sample",
+      "paramValues": [
+        "euclidean",
+        "maximum",
+        "manhattan",
+        "canberra",
+        "binary",
+        "minkowski",
+        "correlation"
+      ],
+      "defaultValue": "correlation",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "display_smpl_dendrograms",
+      "displayName": "Display Sample Dendrograms",
+      "description": "Set to TRUE to show sample dendrograms. Set to FALSE to hide dendrogram.\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Sample",
+      "paramValues": null,
+      "defaultValue": true,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "reorder_dendrogram",
+      "displayName": "Reorder Sample Dendrogram",
+      "description": "If TRUE, set the order of the dendrogram (below)\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Sample",
+      "paramValues": null,
+      "defaultValue": false,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "display_sample_names",
+      "displayName": "Display Sample Names",
+      "description": "Set to TRUE if you want sample names to be displayed on the plot. Set to FALSE to hide\nsample names.\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Sample",
+      "paramValues": null,
+      "defaultValue": true,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "assign_group_colors",
+      "displayName": "Assign Group Colors",
+      "description": "If TRUE, set the groups assigned colors (below)\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Annotation",
+      "paramValues": null,
+      "defaultValue": false,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "assign_color_to_sample_groups",
+      "displayName": "Assign Color to Sample Groups",
+      "description": "Enter each sample to color in the format: group_name: color This parameter is\nignored if \"Assign Colors\" is set to FALSE.\n",
+      "paramType": "VECTOR",
+      "paramGroup": "Annotation",
+      "paramValues": null,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "group_colors",
+      "displayName": "Group Colors",
+      "description": "Set group annotation colors.\n",
+      "paramType": "MULTISELECT",
+      "paramGroup": "Annotation",
+      "paramValues": [
+        "indigo",
+        "carrot",
+        "lipstick",
+        "turquoise",
+        "lavender",
+        "jade",
+        "coral",
+        "azure",
+        "green",
+        "rum",
+        "orange",
+        "olive"
+      ],
+      "defaultValue": ["#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c", "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"],
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "heatmap_color_scheme",
+      "displayName": "Heatmap Color Scheme",
+      "description": "color scheme (TODO document options)\n",
+      "paramType": "SELECT",
+      "paramGroup": "Visual",
+      "paramValues": [
+        "Default",
+        "Blue to Red",
+        "Red to Vanilla",
+        "Violet to Pink",
+        "Bu Yl Rd",
+        "Bu Wt Rd"
+      ],
+      "defaultValue": "Default",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "autoscale_heatmap_color",
+      "displayName": "Autoscale Heatmap Color",
+      "description": "Set to TRUE to autoscale the heatmap colors between the maximum and minimum heatmap\ncolor parameters. If FALSE, set the heatmap colors between \"Set max heatmap color\" and \"Set min heatmap color\"\n(below).\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Visual",
+      "paramValues": null,
+      "defaultValue": true,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "set_max_heatmap_color",
+      "displayName": "Set Max Heatmap Color",
+      "description": "If Autoscale heatmap color is set to FALSE, set the maximum heatmap z-score value.\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Visual",
+      "paramValues": null,
+      "defaultValue": 2,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "set_min_heatmap_color",
+      "displayName": "Set Min Heatmap Color",
+      "description": "If Autoscale heatmap color is set to FALSE, set the minimum heatmap z-score value\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Visual",
+      "paramValues": null,
+      "defaultValue": -2,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "aspect_ratio",
+      "displayName": "Aspect Ratio",
+      "description": "Set figure Aspect Ratio. Ratio refers to entire figure including legend. If set to Auto figure\nsize is based on number of rows and columns form counts matrix. default - Auto\n",
+      "paramType": "STRING",
+      "paramGroup": "Visual",
+      "paramValues": null,
+      "defaultValue": "Auto",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "display_numbers",
+      "displayName": "Display Numbers",
+      "description": "Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if\nyou want to see these numbers on the plot.\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Visual",
+      "paramValues": null,
+      "defaultValue": false,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "gene_name_font_size",
+      "displayName": "Gene Name Font Size",
+      "description": "Font size for gene names. If you don't want gene labels to show, toggle \"Display Gene\nNames\" below to FALSE\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Visual",
+      "paramValues": null,
+      "defaultValue": 4,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "legend_font_size",
+      "displayName": "Legend Font Size",
+      "description": "Set Font size for figure legend. Default is 10.\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Visual",
+      "paramValues": null,
+      "defaultValue": 10,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "sample_name_font_size",
+      "displayName": "Sample Name Font Size",
+      "description": "Font size for sample names. If you don't want to display samples names, toggle \"Display\nsample names\" (below) to FALSE\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Visual",
+      "paramValues": null,
+      "defaultValue": 8,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "save_plots",
+      "displayName": "Save Plots",
+      "description": "Whether to save plots to files during analysis (Defaults to `TRUE`, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Visualization",
+      "paramValues": null,
+      "defaultValue": true,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    }
+  ],
+  "outputs": {
+    "analysis": {
+      "type": "file",
+      "name": "expr_heatmap_plot.rds"
+    },
+    "figures": {
+      "type": "file",
+      "name": "figures/heatmap/expr_heatmap.png"
+    }
+  }
+}

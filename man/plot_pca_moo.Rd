@@ -27,7 +27,6 @@ Plot 2D or 3D PCA for multiOmicDataset
 
 Other plotters for multiOmicDataSets: 
 \code{\link{plot_corr_heatmap_moo}},
-\code{\link{plot_expr_heatmap_moo}},
 \code{\link{plot_histogram_moo}},
 \code{\link{plot_read_depth_moo}}
 }

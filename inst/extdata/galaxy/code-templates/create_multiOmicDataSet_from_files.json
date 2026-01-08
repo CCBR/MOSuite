@@ -1,0 +1,78 @@
+{
+  "r_function": "create_multiOmicDataSet_from_files",
+  "title": "Create Multi-Omic Dataset from Files\n",
+  "description": "Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).\n",
+  "columns": [],
+  "inputDatasets": [
+    {
+      "key": "sample_meta_filepath",
+      "displayName": "",
+      "description": "path to text file with sample IDs and metadata for differential analysis.\n",
+      "paramType": "STRING",
+      "paramGroup": "basic",
+      "paramValues": null,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "feature_counts_filepath",
+      "displayName": "",
+      "description": "path to text file of expected feature counts (e.g. gene counts from RSEM).\n",
+      "paramType": "STRING",
+      "paramGroup": "basic",
+      "paramValues": null,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    }
+  ],
+  "parameters": [
+    {
+      "key": "moo_output_rds",
+      "displayName": "MOO output Rds",
+      "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file",
+      "paramType": "STRING",
+      "paramGroup": "basic",
+      "paramValues": null,
+      "defaultValue": "moo.rds",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "sample_id_colname",
+      "displayName": "",
+      "description": "name of the column in `sample_metadata` that contains the sample IDs. (Default: `NULL` -\nfirst column in the sample metadata will be used.)\n",
+      "paramType": "STRING",
+      "paramGroup": "basic",
+      "paramValues": null,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "feature_id_colname",
+      "displayName": "",
+      "description": "name of the column in `counts_dat` that contains feature/gene IDs. (Default: `NULL` - first\ncolumn in the count data will be used.)\n",
+      "paramType": "STRING",
+      "paramGroup": "basic",
+      "paramValues": null,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "delim",
+      "displayName": "",
+      "description": "Delimiter used in the input files. Any delimiter accepted by `readr::read_delim()` can be used.\nIf the files are in CSV format, set `delim = ','`; for TSV format, set `delim = '\\t'`.\n",
+      "paramType": "STRING",
+      "paramGroup": "basic",
+      "paramValues": null,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    }
+  ],
+  "outputs": null
+}

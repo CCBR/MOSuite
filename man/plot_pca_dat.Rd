@@ -21,7 +21,6 @@ Plot 2D or 3D PCA for counts dataframe
 
 Other plotters for counts dataframes: 
 \code{\link{plot_corr_heatmap_dat}},
-\code{\link{plot_expr_heatmap_dat}},
 \code{\link{plot_histogram_dat}},
 \code{\link{plot_read_depth_dat}}
 }

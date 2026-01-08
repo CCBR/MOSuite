@@ -1,0 +1,167 @@
+{
+    "title": "Batch Correction",
+    "description": "This template performs batch correction on RNA-seq expression data to account for batch effects that can arise whenever some samples are prepared in a different manner or at a different time than others.  It takes a counts matrix (usually the normalized counts matrix) and your metadata table as input and provides two QC plots and a normalized expression matrix as output.  This template is only necessary if your dataset has more than one batch.  When necessary, it is usually the third step (after normalization) in the QC portion of a bulk RNA-seq analysis.\n\nBatch correction can only be attempted if your Batch variable is not completely confounded with your Group variable (see your metadata table).  The two QC plots, a PCA plot and counts frequency histogram, are provided to help assess within and between group variance and the dis/similarity of sample count distributions, respectively.\n\nThe batch correction applied by this template is performed using the 'sva' R package's ComBat method.",
+    "r_function": "batch_correct_counts",
+    "columns": [
+        {
+            "key": "feature_id_colname",
+            "displayName": "Feature ID Column",
+            "description": "The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.",
+            "paramGroup": "Basic",
+            "sourceDataset": "counts_matrix",
+            "defaultValue": null,
+            "columnType": "STRING",
+            "isMulti": null
+        },
+        {
+            "key": "samples_to_include",
+            "displayName": "Columns to Include",
+            "description": "Which Columns would you like to include? Usually, you will choose to \"Add all\" (see button on right). Columns excluded here will be removed in this step and from further analysis downstream of this step.",
+            "paramGroup": "Basic",
+            "sourceDataset": "counts_matrix",
+            "defaultValue": null,
+            "columnType": "ALL",
+            "isMulti": true
+        },
+        {
+            "key": "sample_id_colname",
+            "displayName": "Sample Names Column",
+            "description": "The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.",
+            "paramGroup": "Basic",
+            "sourceDataset": "sample_metadata",
+            "defaultValue": null,
+            "columnType": "STRING",
+            "isMulti": null
+        },
+        {
+            "key": "covariates_colnames",
+            "displayName": "Covariates",
+            "description": "The column(s) from your input Sample Metadata table containing variable(s) of interest, such as phenotype. Most commonly this will be the same column you selected for your Groups Column (above). Some experimental designs may require that you add additional covariate columns here. \nNB. Do not include the \"Batch\" column here.",
+            "paramGroup": "Basic",
+            "sourceDataset": "sample_metadata",
+            "defaultValue": null,
+            "columnType": "ALL",
+            "isMulti": true
+        },
+        {
+            "key": "batch_colname",
+            "displayName": "Batch Column",
+            "description": "The column from your input Sample Metadata table containing the batch information. Samples extracted, prepared, or sequenced at separate times or using separate materials/staff/equipment may belong to different batches. Not all datasets have batches. If yours dataset has no batches, you must still provide a Batch column with the same value in every row.",
+            "paramGroup": "Basic",
+            "sourceDataset": "sample_metadata",
+            "defaultValue": null,
+            "columnType": "ALL",
+            "isMulti": null
+        },
+        {
+            "key": "label_colname",
+            "displayName": "Labels Column",
+            "description": "The column from your input Sample Metadata table containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column (see above). However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here.",
+            "paramGroup": "Basic",
+            "sourceDataset": "sample_metadata",
+            "defaultValue": null,
+            "columnType": "ALL",
+            "isMulti": null
+        }
+    ],
+    "inputDatasets": [
+        {
+            "key": "moo_input_rds",
+            "displayName": "MOO input Rds",
+            "description": "File path to read the input multiOmicDataSet object (MOO)",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        }
+    ],
+    "parameters": [
+        {
+            "key": "moo_output_rds",
+            "displayName": "MOO output Rds",
+            "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file at the end of the function",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "count_type",
+            "displayName": "Count Type",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "Basic",
+            "paramValues": null,
+            "defaultValue": "raw",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "sub_count_type",
+            "displayName": "Sub Count Type",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "Basic",
+            "paramValues": null,
+            "defaultValue": "raw",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "colors_for_plots",
+            "displayName": "Colors for plots",
+            "description": "Colors for the PCA and histogram will be picked, in order, from this list.  If more colors are needed, program will choose from a wide range of random colors",
+            "paramType": "MULTISELECT",
+            "paramGroup": "Visualization",
+            "paramValues": [
+                "indigo",
+                "carrot",
+                "lipstick",
+                "turquoise",
+                "lavender",
+                "jade",
+                "coral",
+                "azure",
+                "green",
+                "rum",
+                "orange",
+                "olive"
+            ],
+            "defaultValue": "c(\"indigo\",\"carrot\",\"lipstick\",\"turquoise\",\"lavender\",\"jade\",\"coral\",\"azure\",\"green\",\"rum\",\"orange\",\"olive\")",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+        "key": "save_plots",
+        "displayName": "Save Plots",
+        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+        "paramType": "BOOLEAN",
+        "paramGroup": "Visualization",
+        "paramValues": null,
+        "defaultValue": true,
+        "condition": null,
+        "content": null,
+        "objectPropertyReference": null
+        }
+    ],
+    "outputDatasetName": "Batch-corrected MultiOmics Dataset",
+    "outputs": {
+        "analysis": {
+            "type": "file",
+            "name": "moo.rds"
+        },
+        "figures": {
+            "type": "directory",
+            "name": "figures/batch/"
+        }
+    }
+}

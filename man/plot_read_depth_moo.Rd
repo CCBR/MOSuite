@@ -36,7 +36,6 @@ plot_read_depth(moo, count_type = "clean")
 
 Other plotters for multiOmicDataSets: 
 \code{\link{plot_corr_heatmap_moo}},
-\code{\link{plot_expr_heatmap_moo}},
 \code{\link{plot_histogram_moo}},
 \code{\link{plot_pca_moo}}
 }

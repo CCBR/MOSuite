@@ -39,7 +39,6 @@ plot_histogram(moo,
 
 Other plotters for multiOmicDataSets: 
 \code{\link{plot_corr_heatmap_moo}},
-\code{\link{plot_expr_heatmap_moo}},
 \code{\link{plot_pca_moo}},
 \code{\link{plot_read_depth_moo}}
 }

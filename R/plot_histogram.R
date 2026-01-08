@@ -1,8 +1,5 @@
 #' Plot histogram
 #'
-#' @inherit moo_counts description
-#'
-#'
 #' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts
 #'   slot
 #' @param ... arguments forwarded to method

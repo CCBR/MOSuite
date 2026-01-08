@@ -9,4 +9,6 @@
 library(testthat)
 library(MOSuite)
 
+options(moo_save_plots = FALSE)
+
 test_check("MOSuite")

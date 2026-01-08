@@ -34,6 +34,7 @@ filter_counts(
   legend_font_size_for_histogram = 10,
   number_of_histogram_legend_columns = 6,
   colors_for_plots = NULL,
+  plot_corr_matrix_heatmap = TRUE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   interactive_plots = FALSE,
@@ -123,18 +124,22 @@ number of samples.}
 
 \item{number_of_histogram_legend_columns}{number of columns for the histogram legend}
 
-\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list. If you have >12
-samples or groups, program will choose from a wide range of random colors}
+\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list.
+Colors must either be names in \code{grDevices::colors()} or valid hex codes.}
+
+\item{plot_corr_matrix_heatmap}{Datasets with a large number of samples may be too large to create a correlation
+matrix heatmap. If this function takes longer than 5 minutes to run, Set to \code{FALSE} and the correlation matrix will
+not be be created. Default is \code{TRUE}.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
-\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 
 \item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover
 your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
-is set to TRUE. Default is FALSE.}
+is set to \code{TRUE}. Default is \code{FALSE}.}
 
-\item{plots_subdir}{subdirectory in where plots will be saved if \code{save_plots} is \code{TRUE}}
+\item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \value{
 \code{multiOmicDataSet} with filtered counts
