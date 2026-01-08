@@ -58,6 +58,9 @@ plot_expr_heatmap(
 )
 }
 \arguments{
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
+slot}
+
 \item{count_type}{the type of counts to use. Must be a name in the counts slot (\code{names(moo@counts)}).}
 
 \item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
@@ -175,6 +178,8 @@ sample names" (below) to FALSE}
 
 \item{display_numbers}{Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if
 you want to see these numbers on the plot.}
+
+\item{plot_filename}{plot output filename - only used if save_plots is TRUE}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 

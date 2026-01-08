@@ -71,6 +71,8 @@ column with your preferred Labels here. The selected column should contain uniqu
 
 \item{plot_title}{title for the plot}
 
+\item{plot_filename}{plot output filename - only used if save_plots is TRUE}
+
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
 \item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
@@ -81,10 +83,7 @@ column with your preferred Labels here. The selected column should contain uniqu
 \code{plotly::plot_ly} figure
 }
 \description{
-The first argument can be a \code{multiOmicDataset} object (\code{moo}) or a \code{data.frame} containing counts.
-For a \code{moo}, choose which counts slot to use with \code{count_type} & (optionally) \code{sub_count_type}.
-For a \code{data.frame}, you must also set \code{sample_metadata}.
-All other arguments are optional.
+3D PCA for counts dataframe
 }
 \seealso{
 Other PCA functions: 

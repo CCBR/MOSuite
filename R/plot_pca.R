@@ -1,7 +1,5 @@
 #' Perform and plot a Principal Components Analysis
 #'
-#' @inherit moo_counts description
-#'
 #' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts
 #'   slot
 #' @param principal_components vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3
@@ -397,7 +395,6 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
 
 #' 3D PCA for counts dataframe
 #'
-#' @inherit moo_counts description
 #' @inheritParams plot_pca_2d
 #' @inheritParams filter_counts
 #' @inheritParams plot_histogram
@@ -406,6 +403,7 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
 #' @param principal_components vector with numbered principal components to plot
 #' @param point_size size for `ggplot2::geom_point()`
 #' @param plot_title title for the plot
+#' @param plot_filename plot output filename - only used if save_plots is TRUE
 #'
 #' @export
 #' @returns `plotly::plot_ly` figure

@@ -1,8 +1,5 @@
 #' Plot correlation heatmap
 #'
-#' @inherit moo_counts description
-#'
-#'
 #' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts
 #'   slot
 #' @param ... arguments forwarded to method [plot_corr_heatmap_dat]
@@ -235,8 +232,9 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
 #'
 #' @inheritParams option_params
 #' @inheritParams filter_counts
-#' @inherit moo_counts description
 #'
+#' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts
+#'   slot
 #' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
 #' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list.
 #'   Must be a name in `names(moo@counts[[count_type]])`.
@@ -312,6 +310,7 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
 #'   sample names" (below) to FALSE
 #' @param display_numbers Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if
 #'   you want to see these numbers on the plot.
+#' @param plot_filename plot output filename - only used if save_plots is TRUE
 #'
 #' @export
 #' @returns heatmap from `ComplexHeatmap::Heatmap()`
