@@ -1,10 +1,6 @@
 ---
 title: "Calling MOSuite from the CLI"
 output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Calling MOSuite from the CLI}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -87,7 +83,14 @@ each function's arguments.
 
 ```{r script_e2e, echo=FALSE, results='asis'}
 cat("```bash\n")
-cat(readr::read_lines(system.file("extdata", "example_script.sh", package = "MOSuite")), sep = "\n")
+cat(
+  readr::read_lines(system.file(
+    "extdata",
+    "example_script.sh",
+    package = "MOSuite"
+  )),
+  sep = "\n"
+)
 cat("\n```")
 ```
 
@@ -96,17 +99,19 @@ You can copy them to your working directory with R:
 
 ```{r example_data_paths, eval=FALSE}
 # copy the example script
-file.copy(system.file("extdata", "example_script.sh", package = "MOSuite"),
+file.copy(
+  system.file("extdata", "example_script.sh", package = "MOSuite"),
   to = "./"
 )
 # copy the JSON files
 file.copy(
-  system.file("extdata", "json_args", "common", package = "MOSuite"),
+  system.file("extdata", "json_args", package = "MOSuite"),
   to = "./",
   recursive = TRUE
 )
 # copy the raw counts & sample metadata
-file.copy(system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
+file.copy(
+  system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
   to = "./"
 )
 file.copy(
@@ -136,8 +141,16 @@ You can use R code as below or write it by hand.
 
 ```{r create_json}
 j <- list(
-  feature_counts_filepath = system.file("extdata", "RSEM.genes.expected_count.all_samples.txt.gz", package = "MOSuite"),
-  sample_meta_filepath = system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite"),
+  feature_counts_filepath = system.file(
+    "extdata",
+    "RSEM.genes.expected_count.all_samples.txt.gz",
+    package = "MOSuite"
+  ),
+  sample_meta_filepath = system.file(
+    "extdata",
+    "sample_metadata.tsv.gz",
+    package = "MOSuite"
+  ),
   moo_output_rds = "moo.rds"
 )
 jsonlite::write_json(j, "args_1.json")
@@ -159,7 +172,11 @@ moo <- create_multiOmicDataSet_from_files(
     "RSEM.genes.expected_count.all_samples.txt.gz",
     package = "MOSuite"
   ),
-  sample_meta_filepath = system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
+  sample_meta_filepath = system.file(
+    "extdata",
+    "sample_metadata.tsv.gz",
+    package = "MOSuite"
+  )
 )
 readr::write_rds(moo, "moo.rds")
 ```

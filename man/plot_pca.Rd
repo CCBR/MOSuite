@@ -19,10 +19,7 @@ for a 3D pca with plotly. (Default: \code{c(1,2)})}
 PCA plot (2D or 3D depending on the number of \code{principal_components})
 }
 \description{
-The first argument can be a \code{multiOmicDataset} object (\code{moo}) or a \code{data.frame} containing counts.
-For a \code{moo}, choose which counts slot to use with \code{count_type} & (optionally) \code{sub_count_type}.
-For a \code{data.frame}, you must also set \code{sample_metadata}.
-All other arguments are optional.
+Perform and plot a Principal Components Analysis
 }
 \details{
 See the low-level function docs for additional arguments

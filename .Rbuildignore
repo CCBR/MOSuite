@@ -19,9 +19,10 @@
 ^MOSuite\.Rproj$
 ^pkgdown$
 ^README\.Rmd$
-^READEME\.html$
+^README\.html$
 ^vignettes/figures/$
 ^vignettes/memory\.Rmd$
+^vignettes/cli\.Rmd$
 VennDiagram.*\.log
 ^[.]?air[.]toml$
 ^\.vscode$

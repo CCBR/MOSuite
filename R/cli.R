@@ -173,7 +173,14 @@ cli_from_json <- function(method, json, debug = FALSE) {
     fcn_args[[first_arg]] <- readr::read_rds(json_args[["moo_input_rds"]])
   }
   # all other json keys should be arguments for the method
-  # TODO convert lists to vectors
+  json_args <- json_args |>
+    purrr::map(\(x) {
+      if (is.list(x)) {
+        return(unlist(x)) # convert lists to vectors
+      } else {
+        return(x)
+      }
+    })
   fcn_args <- c(
     fcn_args,
     json_args[!stringr::str_detect(names(json_args), "moo_.*_rds")]

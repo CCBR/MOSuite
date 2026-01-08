@@ -74,12 +74,15 @@
 #'   number of samples.
 #' @param legend_font_size_for_histogram legend font size for the histogram plot
 #' @param number_of_histogram_legend_columns number of columns for the histogram legend
-#' @param colors_for_plots Colors for the PCA and histogram will be picked, in order, from this list. If you have >12
-#'   samples or groups, program will choose from a wide range of random colors
+#' @param colors_for_plots Colors for the PCA and histogram will be picked, in order, from this list.
+#'   Colors must either be names in `grDevices::colors()` or valid hex codes.
+#' @param plot_corr_matrix_heatmap Datasets with a large number of samples may be too large to create a correlation
+#'   matrix heatmap. If this function takes longer than 5 minutes to run, Set to `FALSE` and the correlation matrix will
+#'   not be be created. Default is `TRUE`.
 #' @param interactive_plots set to TRUE to make PCA and Histogram plots interactive with `plotly`, allowing you to hover
 #'   your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
-#'   is set to TRUE. Default is FALSE.
-#' @param plots_subdir subdirectory in where plots will be saved if `save_plots` is `TRUE`
+#'   is set to `TRUE`. Default is `FALSE`.
+#' @param plots_subdir subdirectory in `figures/` where plots will be saved if `save_plots` is `TRUE`
 #'
 #' @return `multiOmicDataSet` with filtered counts
 #' @export
@@ -127,6 +130,7 @@ filter_counts <- function(
   legend_font_size_for_histogram = 10,
   number_of_histogram_legend_columns = 6,
   colors_for_plots = NULL,
+  plot_corr_matrix_heatmap = TRUE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   interactive_plots = FALSE,
@@ -172,17 +176,21 @@ filter_counts <- function(
     minimum_number_of_samples_with_nonzero_counts_in_total = minimum_number_of_samples_with_nonzero_counts_in_total,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group
   )
-
+  message(glue::glue("colors_for_plots {class(colors_for_plots)}"))
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
     # use consistent colors
     if (is.null(colors_for_plots)) {
       colors_for_plots <- moo@analyses[["colors"]][[group_colname]]
+    } else {
+      colors_for_plots <- as.vector(colors_for_plots)
     }
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots
     } else {
       colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
     }
+
+    message(glue::glue("colors_for_plots {class(colors_for_plots)}"))
 
     log_counts <- df_filt %>%
       dplyr::mutate(dplyr::across(
@@ -228,37 +236,41 @@ filter_counts <- function(
       number_of_legend_columns = number_of_histogram_legend_columns
     ) +
       ggplot2::labs(caption = "filtered counts")
-    corHM <- plot_corr_heatmap(
-      df_filt[, samples_to_include],
-      sample_metadata = sample_metadata,
-      sample_id_colname = sample_id_colname,
-      feature_id_colname = feature_id_colname,
-      label_colname = label_colname,
-      group_colname = group_colname,
-      color_values = colors_for_plots
-    ) +
-      ggplot2::labs(caption = "filtered counts")
+    if (isTRUE(plot_corr_matrix_heatmap)) {
+      corHM <- plot_corr_heatmap(
+        df_filt[, samples_to_include],
+        sample_metadata = sample_metadata,
+        sample_id_colname = sample_id_colname,
+        feature_id_colname = feature_id_colname,
+        label_colname = label_colname,
+        group_colname = group_colname,
+        color_values = colors_for_plots
+      ) +
+        ggplot2::labs(caption = "filtered counts")
+      print_or_save_plot(
+        corHM,
+        filename = file.path(plots_subdir, "corr_heatmap.png"),
+        print_plots = print_plots,
+        save_plots = save_plots
+      )
+    }
 
+    plot_ext <- "png"
     if (isTRUE(interactive_plots)) {
       pca_plot <- pca_plot %>% plotly::ggplotly(tooltip = c("sample", "group"))
       hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) %>%
         plotly::ggplotly(tooltip = c("sample"))
+      plot_ext <- "html"
     }
     print_or_save_plot(
       pca_plot,
-      filename = file.path(plots_subdir, "pca.png"),
+      filename = file.path(plots_subdir, glue::glue("pca.{plot_ext}")),
       print_plots = print_plots,
       save_plots = save_plots
     )
     print_or_save_plot(
       hist_plot,
-      filename = file.path(plots_subdir, "histogram.png"),
-      print_plots = print_plots,
-      save_plots = save_plots
-    )
-    print_or_save_plot(
-      corHM,
-      filename = file.path(plots_subdir, "corr_heatmap.png"),
+      filename = file.path(plots_subdir, glue::glue("histogram.{plot_ext}")),
       print_plots = print_plots,
       save_plots = save_plots
     )

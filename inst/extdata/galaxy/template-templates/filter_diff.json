@@ -1,0 +1,349 @@
+{
+    "title": "DEG Gene List",
+    "description": "Outputs dataset of significant genes from DEG table; filters genes based on statistical significance (p-value or adjusted p-value) and change (fold change, log2 fold change, or t-statistic); in addition allows for selection of DEG estimates and for sub-setting of contrasts and groups included in the output gene list.",
+    "r_function": "filter_diff",
+    "columns": [
+        {
+            "key": "feature_id_colname",
+            "displayName": "Gene Names Column",
+            "description": "The column from your input DEG Table containing the gene names. This is usually the first column of your input DEG Table. Only columns of Text type from your input DEG Table will be available to select for this parameter.",
+            "paramGroup": "Basic",
+            "sourceDataset": "DEG_Table",
+            "defaultValue": null,
+            "columnType": "STRING",
+            "isMulti": null
+        }
+    ],
+    "inputDatasets": [
+        {
+            "key": "moo_input_rds",
+            "displayName": "MOO input Rds",
+            "description": "File path to read the input multiOmicDataSet object (MOO)",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        }
+    ],
+    "parameters": [
+        {
+            "key": "moo_output_rds",
+            "displayName": "MOO output Rds",
+            "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file at the end of the function",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "significance_column",
+            "displayName": "Significance Column",
+            "description": "",
+            "paramType": "SELECT",
+            "paramGroup": "Basic",
+            "paramValues": [
+                "adjpval",
+                "pval"
+            ],
+            "defaultValue": "adjpval",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "significance_cutoff",
+            "displayName": "Significance Cutoff",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Basic",
+            "paramValues": null,
+            "defaultValue": "0.01",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "change_column",
+            "displayName": "Change Column",
+            "description": "",
+            "paramType": "SELECT",
+            "paramGroup": "Basic",
+            "paramValues": [
+                "FC",
+                "logFC",
+                "tstat"
+            ],
+            "defaultValue": "logFC",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "change_cutoff",
+            "displayName": "Change Cutoff",
+            "description": "Absolute value of the cutoff; default cutoff set to 1 in log2 scale (2-fold change)",
+            "paramType": "NUMBER",
+            "paramGroup": "Basic",
+            "paramValues": null,
+            "defaultValue": "1",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "filtering_mode",
+            "displayName": "Filtering Mode",
+            "description": "",
+            "paramType": "SELECT",
+            "paramGroup": "Basic",
+            "paramValues": [
+                "in any contrast",
+                "in all contrasts"
+            ],
+            "defaultValue": "in any contrast",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "include_estimates",
+            "displayName": "Include Estimates",
+            "description": "",
+            "paramType": "MULTISELECT",
+            "paramGroup": "Advanced",
+            "paramValues": [
+                "mean",
+                "sd",
+                "FC",
+                "logFC",
+                "tstat",
+                "pval",
+                "adjpval"
+            ],
+            "defaultValue": "c(\"FC\",\"logFC\",\"tstat\",\"pval\",\"adjpval\")",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "round_estimates",
+            "displayName": "Round Estimates",
+            "description": "",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Advanced",
+            "paramValues": null,
+            "defaultValue": "TRUE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "contrast_filter",
+            "displayName": "Contrasts Filter",
+            "description": "",
+            "paramType": "SELECT",
+            "paramGroup": "Filter",
+            "paramValues": [
+                "none",
+                "keep",
+                "remove"
+            ],
+            "defaultValue": "none",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "contrasts",
+            "displayName": "Contrasts",
+            "description": "",
+            "paramType": "VECTOR",
+            "paramGroup": "Filter",
+            "paramValues": null,
+            "defaultValue": "c()",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "groups_filter",
+            "displayName": "Groups Filter",
+            "description": "",
+            "paramType": "SELECT",
+            "paramGroup": "Filter",
+            "paramValues": [
+                "none",
+                "keep",
+                "remove"
+            ],
+            "defaultValue": "none",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "groups",
+            "displayName": "Groups",
+            "description": "",
+            "paramType": "VECTOR",
+            "paramGroup": "Filter",
+            "paramValues": null,
+            "defaultValue": "c()",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "label_font_size",
+            "displayName": "Label Font Size",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Label",
+            "paramValues": null,
+            "defaultValue": "6",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "label_distance",
+            "displayName": "Label Distance",
+            "description": "Distance of text label from top of a bar",
+            "paramType": "NUMBER",
+            "paramGroup": "Label",
+            "paramValues": null,
+            "defaultValue": "1",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "y_axis_expansion",
+            "displayName": "Y-Axis Expansion",
+            "description": "multiplicative expansion of y-axis limits; increase/decrease this number if the text label above the bar requires more/less space",
+            "paramType": "NUMBER",
+            "paramGroup": "Visualization",
+            "paramValues": null,
+            "defaultValue": "0.08",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "fill_colors",
+            "displayName": "Fill Colors ",
+            "description": "",
+            "paramType": "MULTISELECT",
+            "paramGroup": "Visualization",
+            "paramValues": [
+                "aliceblue",
+                "antiquewhite4",
+                "darkorange",
+                "gold",
+                "red3",
+                "springgreen",
+                "steelblue1",
+                "blue2",
+                "violetred3",
+                "whitesmoke",
+                "gray60",
+                "gray90",
+                "black",
+                "white"
+            ],
+            "defaultValue": "c(\"steelblue1\",\"whitesmoke\")",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "pie_chart_in_3d",
+            "displayName": "Pie Chart in 3D",
+            "description": "If TRUE, a 3D Pie chart is plotted with 'Filtering mode' set to 'in all contrasts', if FALSE, a 2D chart will be plotted for this filtering mode.",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Visualization",
+            "paramValues": null,
+            "defaultValue": "TRUE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "bar_width",
+            "displayName": "Bar Width",
+            "description": "Bar width in the bar chart plotted with Filtering mode set to 'in any contrast'",
+            "paramType": "NUMBER",
+            "paramGroup": "Visualization",
+            "paramValues": null,
+            "defaultValue": "0.4",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "draw_bar_border",
+            "displayName": "Draw Bar Border",
+            "description": "",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Visualization",
+            "paramValues": null,
+            "defaultValue": "TRUE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "rounding_decimal_for_percent_cells",
+            "displayName": "Rounding Decimal for Percent Calls",
+            "description": "applies to display of percent significant and non-significant calls",
+            "paramType": "NUMBER",
+            "paramGroup": "Advanced",
+            "paramValues": null,
+            "defaultValue": "0",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+		{
+			"key": "plot_titles_fontsize",
+			"displayName": "Font Size for Plot Titles",
+			"description": "",
+			"paramType": "NUMBER",
+			"paramGroup": "Label",
+			"paramValues": null,
+			"defaultValue": 12,
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+        {
+        "key": "save_plots",
+        "displayName": "Save Plots",
+        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+        "paramType": "BOOLEAN",
+        "paramGroup": "Visualization",
+        "paramValues": null,
+        "defaultValue": true,
+        "condition": null,
+        "content": null,
+        "objectPropertyReference": null
+        }
+    ],
+    "outputDatasetName": "Filtered Differential Counts from MultiOmics Dataset",
+    "outputs": {
+        "analysis": {
+            "type": "file",
+            "name": "moo.rds"
+        },
+        "figures": {
+            "type": "directory",
+            "name": "figures/diff/filt/"
+        }
+    }
+}

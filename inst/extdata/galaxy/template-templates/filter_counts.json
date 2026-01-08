@@ -1,0 +1,433 @@
+{
+    "title": "Filter Low Counts",
+    "description": "This template is intended for use with Bulk RNA-seq data and is often the first step in the QC portion of an analysis. It filters out Features that have very low raw counts across most or all of your samples.\n\nThis template takes as input a raw counts expression matrix and your sample metadata table. It provides as output an image consisting of three QC plots (see below) and a filtered raw counts expression matrix. You have an option to use CPM counts as input instead.\n\nThe threshold for tuning how low counts for a given gene are before they are deemed \"too low\" and filtered out of downstream analysis is a tunable parameter. By default, this parameter is set to 1, meaning any raw count value less than 1 will count as \"too low\".\n\nThe QC plots are provided to help you assess: (1) PCA Plot: the within and between group variance in expression after dimensionality reduction; (2) Count Density Histogram: the dis/similarity of count distributions between samples; and (3) Similarity Heatmap: the overall similarity of samples to one another based on unsupervised clustering.",
+    "r_function": "filter_counts",
+    "columns": [
+        {
+            "key": "feature_id_colname",
+            "displayName": "Feature ID Column",
+            "description": "The column from your input Counts Matrix containing the Feature IDs (Usually Gene or Protein ID). This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts Matrix will be available to select for this parameter.",
+            "paramGroup": "Basic",
+            "sourceDataset": "counts_matrix",
+            "defaultValue": null,
+            "columnType": "STRING",
+            "isMulti": null
+        },
+        {
+            "key": "samples_to_include",
+            "displayName": "Columns to Include",
+            "description": "Which Columns would you like to include? Usually, you will choose to \"Add all\" (see button on right). Columns excluded here will be removed in this step and from further analysis downstream of this step.",
+            "paramGroup": "Basic",
+            "sourceDataset": "counts_matrix",
+            "defaultValue": null,
+            "columnType": "ALL",
+            "isMulti": true
+        },
+        {
+            "key": "sample_id_colname",
+            "displayName": "Sample Names Column",
+            "description": "The column from your input Sample Metadata table containing the sample names. The names in this column must exactly match the names used as the sample column names of your input Counts Matrix. Only columns of Text type from your input Sample Metadata table will be available to select for this parameter.",
+            "paramGroup": "Basic",
+            "sourceDataset": "Sample_Metadata",
+            "defaultValue": null,
+            "columnType": "STRING",
+            "isMulti": null
+        },
+        {
+            "key": "group_colname",
+            "displayName": "Groups Column",
+            "description": "The column from your input Sample Metadata table containing the sample group information. This is usually a column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.). Only columns of Text type from your input Sample Metadata will be available to select for this parameter.",
+            "paramGroup": "Basic",
+            "sourceDataset": "Sample_Metadata",
+            "defaultValue": null,
+            "columnType": "STRING",
+            "isMulti": null
+        },
+        {
+            "key": "label_colname",
+            "displayName": "Labels Column",
+            "description": "The column from your input Sample Metadata table containing the sample labels as you wish them to appear in the plots produced by this template. This can be the same Sample Names Column (see above). However, you may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with your preferred Labels here. The selected column should contain unique names for each sample.",
+            "paramGroup": "Basic",
+            "sourceDataset": "Sample_Metadata",
+            "defaultValue": null,
+            "columnType": "ALL",
+            "isMulti": null
+        }
+    ],
+    "inputDatasets": [
+        {
+            "key": "moo_input_rds",
+            "displayName": "MOO input Rds",
+            "description": "File path to read the input multiOmicDataSet object (MOO)",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        }
+    ],
+    "parameters": [
+        {
+            "key": "moo_output_rds",
+            "displayName": "MOO output Rds",
+            "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file at the end of the function",
+            "paramType": "STRING",
+            "paramGroup": "basic",
+            "paramValues": null,
+            "defaultValue": "moo.rds",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "count_type",
+            "displayName": "Count Type",
+            "description": "",
+            "paramType": "STRING",
+            "paramGroup": "Basic",
+            "paramValues": null,
+            "defaultValue": "raw",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "use_cpm_counts_to_filter",
+            "displayName": "Use CPM Counts to filter",
+            "description": "If no transformation has been been performed on counts matrix (eg Raw Counts) set  to TRUE. If TRUE counts will be transformed to CPM and filtered based on given criteria.\n If gene counts matrix has been transformed (eg log2, CPM, FPKM or some form of Normalization) set to FALSE. If FALSE no further transformation will be applied and features will be filtered as is. For RNAseq data RAW counts should be transformed to CPM in order to properly filter.",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Filtering",
+            "paramValues": null,
+            "defaultValue": "TRUE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "minimum_count_value_to_be_considered_nonzero",
+            "displayName": "Minimum Count Value to be Considered Nonzero",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Filtering",
+            "paramValues": null,
+            "defaultValue": "1",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "minimum_number_of_samples_with_nonzero_counts_in_total",
+            "displayName": "Minimum Number of Samples with Nonzero Counts in Total",
+            "description": "Minimum number of samples (total) with non-zero counts",
+            "paramType": "NUMBER",
+            "paramGroup": "Filtering",
+            "paramValues": null,
+            "defaultValue": "1",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "use_group_based_filtering",
+            "displayName": "Use Group-Based Filtering",
+            "description": "If TRUE, only keeps genes that have at least a certain number of samples with nonzero CPM counts in at least one group",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Filtering",
+            "paramValues": null,
+            "defaultValue": "TRUE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "minimum_number_of_samples_with_nonzero_counts_in_a_group",
+            "displayName": "Minimum Number of Samples with Nonzero Counts in a Group",
+            "description": "Only keeps genes that have at least this number of samples with nonzero CPM counts in at least one group",
+            "paramType": "NUMBER",
+            "paramGroup": "Filtering",
+            "paramValues": null,
+            "defaultValue": "3",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "principal_component_on_x_axis",
+            "displayName": "Principal Component on X-axis",
+            "description": "The principle component to plot on the x-axis. Choices include 1, 2, 3, ... (default: 1)",
+            "paramType": "NUMBER",
+            "paramGroup": "PCA",
+            "paramValues": null,
+            "defaultValue": "1",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "principal_component_on_y_axis",
+            "displayName": "Principal Component on Y-axis",
+            "description": "The principle component to plot on the y-axis. Choices include 1, 2, 3, ... (default: 2)",
+            "paramType": "NUMBER",
+            "paramGroup": "PCA",
+            "paramValues": null,
+            "defaultValue": "2",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "legend_position_for_pca",
+            "displayName": "Legend Position for PCA",
+            "description": "Legend position relative to the plot",
+            "paramType": "SELECT",
+            "paramGroup": "PCA",
+            "paramValues": [
+                "top",
+                "bottom",
+                "left",
+                "right",
+                "none"
+            ],
+            "defaultValue": "top",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "point_size_for_pca",
+            "displayName": "Point Size for PCA",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "PCA",
+            "paramValues": null,
+            "defaultValue": "1",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "add_label_to_pca",
+            "displayName": "Add Labels to PCA",
+            "description": "Label points on graph",
+            "paramType": "BOOLEAN",
+            "paramGroup": "PCA",
+            "paramValues": null,
+            "defaultValue": "TRUE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "label_font_size",
+            "displayName": "Label Font Size for PCA",
+            "description": "Font size for sample labels. Set to 0 to remove labels.",
+            "paramType": "NUMBER",
+            "paramGroup": "PCA",
+            "paramValues": null,
+            "defaultValue": "3",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "label_offset_x_",
+            "displayName": "Label Offset (x)",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "PCA",
+            "paramValues": null,
+            "defaultValue": "2",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "label_offset_y_",
+            "displayName": "Label Offset (Y)",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "PCA",
+            "paramValues": null,
+            "defaultValue": "2",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "samples_to_rename",
+            "displayName": "Samples to Rename Manually on PCA",
+            "description": "If you do not have a Plot Labels Column (see above) in your sample metadata table, you can use this parameter to rename samples manually for display on the PCA plot. Use \"Add item\" to add each additional sample for renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to which new name: old_name: new_name",
+            "paramType": "VECTOR",
+            "paramGroup": "PCA",
+            "paramValues": null,
+            "defaultValue": "c(\"\")",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "color_histogram_by_group",
+            "displayName": "Color Histogram by Group",
+            "description": "Toggle to FALSE to label histogram by Sample Names. Toggle to TRUE to label histogram by the column you select in the \"Group Column Used to Color Histogram\" parameter (below). Default is FALSE.",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Histogram",
+            "paramValues": null,
+            "defaultValue": "FALSE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "set_min_max_for_x_axis_for_histogram",
+            "displayName": "Set Min/Max for X-axis for Histogram",
+            "description": "",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Histogram",
+            "paramValues": null,
+            "defaultValue": "FALSE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "minimum_for_x_axis_for_histogram",
+            "displayName": "Minimum for X-axis for Histogram",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Histogram",
+            "paramValues": null,
+            "defaultValue": "-1",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "maximum_for_x_axis_for_histogram",
+            "displayName": "Maximum for X-axis for Histogram",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Histogram",
+            "paramValues": null,
+            "defaultValue": "1",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "legend_font_size_for_histogram",
+            "displayName": "Legend Font Size for Histogram",
+            "description": "Legend font size",
+            "paramType": "NUMBER",
+            "paramGroup": "Histogram",
+            "paramValues": null,
+            "defaultValue": "10",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "legend_position_for_histogram",
+            "displayName": "Legend Position for Histogram",
+            "description": "Legend position on histogram plot, can be 'none' if large number of samples",
+            "paramType": "SELECT",
+            "paramGroup": "Histogram",
+            "paramValues": [
+                "right",
+                "bottom",
+                "left",
+                "top",
+                "none"
+            ],
+            "defaultValue": "top",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "number_of_histogram_legend_columns",
+            "displayName": "Number of Histogram Legend Columns",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Histogram",
+            "paramValues": null,
+            "defaultValue": "6",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "colors_for_plots",
+            "displayName": "Colors for Plots",
+            "description": "Colors for the PCA and histogram will be picked, in order, from this list. If you have >12 samples or groups, program will choose from a wide range of random colors",
+            "paramType": "MULTISELECT",
+            "paramGroup": "Visualization",
+            "paramValues": [
+                "indigo",
+                "carrot",
+                "lipstick",
+                "turquoise",
+                "lavender",
+                "jade",
+                "coral",
+                "azure",
+                "green",
+                "rum",
+                "orange",
+                "olive"
+            ],
+            "defaultValue": "c(\"indigo\",\"carrot\",\"lipstick\",\"turquoise\",\"lavender\",\"jade\",\"coral\",\"azure\",\"green\",\"rum\",\"orange\",\"olive\")",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "interactive_plots",
+            "displayName": "Interactive Plots",
+            "description": "Toggle TRUE to make PCA and Histogram plots interactive, allowing you to hover your mouse over a point or line to view sample information. The similarity heatmap will not display if this toggle is set to TRUE. Default is FALSE.",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Visualization",
+            "paramValues": null,
+            "defaultValue": "FALSE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "plot_corr_matrix_heatmap",
+            "displayName": "Plot Correlation Matrix Heatmap",
+            "description": "Datasets with a large number of samples may be too large to create a correlation matix heatmap. If this template takes longer than 5 minutes to run, Toggle switch to FALSE and the correlation matrix will not be be created. Default is TRUE.",
+            "paramType": "BOOLEAN",
+            "paramGroup": "TCGA",
+            "paramValues": null,
+            "defaultValue": "TRUE",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+        "key": "save_plots",
+        "displayName": "Save Plots",
+        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+        "paramType": "BOOLEAN",
+        "paramGroup": "Visualization",
+        "paramValues": null,
+        "defaultValue": true,
+        "condition": null,
+        "content": null,
+        "objectPropertyReference": null
+        }
+    ],
+    "outputDatasetName": "Filtered MultiOmics Dataset",
+    "outputs": {
+        "analysis": {
+            "type": "file",
+            "name": "moo.rds"
+        },
+        "figures": {
+            "type": "directory",
+            "name": "figures/filt/"
+        }
+    }
+}

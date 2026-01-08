@@ -43,6 +43,7 @@
       no duplicated IDs in gene_id
       * filtering clean counts
       Number of features after filtering: 291
+      colors_for_plots NULL
       * normalizing filt counts
       Total number of features included: 291
       Sample columns: KO_S3, Sample columns: KO_S4, Sample columns: WT_S1, Sample columns: WT_S2
@@ -83,6 +84,7 @@
       no duplicated IDs in GeneName
       * filtering clean counts
       Number of features after filtering: 7943
+      colors_for_plots NULL
       * normalizing filt counts
       Total number of features included: 7943
       Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3

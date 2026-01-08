@@ -12,3 +12,5 @@ inst/doc
 **/figures/
 VennDiagram.*.log
 *_files/
+/tmp
+vignettes/args*.json

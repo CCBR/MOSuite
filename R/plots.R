@@ -40,6 +40,8 @@ print_or_save_plot <- function(
     # select saving methods depending on plot object class
     if (inherits(plot_obj, "ggplot")) {
       ggplot2::ggsave(filename = filename, plot = plot_obj, ...)
+    } else if (inherits(plot_obj, "htmlwidget")) {
+      htmlwidgets::saveWidget(plot_obj, filename, ...)
     } else {
       graphics_device(file = filename)
       plot(plot_obj)

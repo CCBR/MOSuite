@@ -1,29 +1,79 @@
 {
-  "moo_input_rds": "moo.rds",
-  "moo_output_rds": "moo.rds",
-  "feature_id_colname": null,
-  "significance_column": "adjpval",
-  "significance_cutoff": 0.05,
-  "change_column": "logFC",
-  "change_cutoff": 1,
-  "filtering_mode": "any",
-  "include_estimates": ["FC", "logFC", "tstat", "pval", "adjpval"],
-  "round_estimates": true,
-  "rounding_decimal_for_percent_cells": 0,
-  "contrast_filter": "none",
-  "contrasts": null,
-  "groups": null,
-  "groups_filter": "none",
-  "label_font_size": 6,
-  "label_distance": 1,
-  "y_axis_expansion": 0.08,
-  "fill_colors": ["steelblue1", "whitesmoke"],
-  "pie_chart_in_3d": true,
-  "bar_width": 0.4,
-  "draw_bar_border": true,
-  "plot_type": "bar",
-  "plot_titles_fontsize": 12,
-  "print_plots": true,
-  "save_plots": true,
-  "plots_subdir": "diff/filt"
+  "moo_input_rds": null,
+  "moo_output_rds": null,
+  "feature_id_colname": {
+    "defaultValue": null
+  },
+  "significance_column": {
+    "defaultValue": "adjpval"
+  },
+  "significance_cutoff": {
+    "defaultValue": 0.05
+  },
+  "change_column": {
+    "defaultValue": "logFC"
+  },
+  "change_cutoff": {
+    "defaultValue": 1
+  },
+  "filtering_mode": {
+    "defaultValue": "any"
+  },
+  "include_estimates": {
+    "defaultValue": ["FC", "logFC", "tstat", "pval", "adjpval"]
+  },
+  "round_estimates": {
+    "defaultValue": true
+  },
+  "rounding_decimal_for_percent_cells": {
+    "defaultValue": 0
+  },
+  "contrast_filter": {
+    "defaultValue": "none"
+  },
+  "contrasts": {
+    "defaultValue": null
+  },
+  "groups": {
+    "defaultValue": null
+  },
+  "groups_filter": {
+    "defaultValue": "none"
+  },
+  "label_font_size": {
+    "defaultValue": 6
+  },
+  "label_distance": {
+    "defaultValue": 1
+  },
+  "y_axis_expansion": {
+    "defaultValue": 0.08
+  },
+  "fill_colors": {
+    "defaultValue": ["steelblue1", "whitesmoke"]
+  },
+  "pie_chart_in_3d": {
+    "defaultValue": true
+  },
+  "bar_width": {
+    "defaultValue": 0.4
+  },
+  "draw_bar_border": {
+    "defaultValue": true
+  },
+  "plot_type": {
+    "defaultValue": "bar"
+  },
+  "plot_titles_fontsize": {
+    "defaultValue": 12
+  },
+  "print_plots": {
+    "defaultValue": true
+  },
+  "save_plots": {
+    "defaultValue": true
+  },
+  "plots_subdir": {
+    "defaultValue": "diff/filt"
+  }
 }

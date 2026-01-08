@@ -81,3 +81,47 @@ test_that("mosuite --help", {
   ))
   expect_warning(cli_exec("not_a_function"), "not a known function")
 })
+
+test_that("mosuite cli E2E", {
+  new <- tempfile()
+  create_empty_dir(new)
+  # note: file paths in json files assume all files are in the current workdir
+  withr::with_dir(new = new, code = {
+    file.copy(
+      system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
+      "./"
+    )
+    file.copy(
+      system.file(
+        "extdata",
+        "nidap",
+        "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+        package = "MOSuite"
+      ),
+      "./"
+    )
+    json_paths <- system.file(
+      "extdata",
+      "json_args",
+      "common",
+      package = "MOSuite"
+    )
+    Sys.glob(glue::glue("{json_paths}/*.json")) |>
+      lapply(function(x) {
+        file.copy(x, "./")
+      })
+
+    run_function_cli("create_multiOmicDataSet_from_files")
+    run_function_cli("clean_raw_counts")
+    run_function_cli("filter_counts")
+    run_function_cli("normalize_counts")
+    run_function_cli("batch_correct_counts")
+    run_function_cli("diff_counts")
+    run_function_cli("filter_diff")
+
+    expect_true(file.exists("moo_diff_filter.rds"))
+    moo <- readr::read_rds("moo_diff_filter.rds")
+    expect_equal(names(moo@counts), c("raw", "clean", "filt", "norm", "batch"))
+    expect_equal(names(moo@analyses), c("colors", "diff", "diff_filt"))
+  })
+})
