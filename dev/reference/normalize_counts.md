@@ -31,6 +31,8 @@ normalize_counts(
   maximum_for_x_axis_for_histogram = 1,
   legend_font_size_for_histogram = 10,
   legend_position_for_histogram = "top",
+  number_of_histogram_legend_columns = 6,
+  plot_corr_matrix_heatmap = TRUE,
   colors_for_plots = NULL,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -175,11 +177,23 @@ normalize_counts(
   legend position for the histogram plot. consider setting to 'none' for
   a large number of samples.
 
+- number_of_histogram_legend_columns:
+
+  number of columns for the histogram legend
+
+- plot_corr_matrix_heatmap:
+
+  Datasets with a large number of samples may be too large to create a
+  correlation matrix heatmap. If this function takes longer than 5
+  minutes to run, Set to `FALSE` and the correlation matrix will not be
+  be created. Default is `TRUE`.
+
 - colors_for_plots:
 
   Colors for the PCA and histogram will be picked, in order, from this
-  list. If you have \>12 samples or groups, program will choose from a
-  wide range of random colors
+  list. Colors must either be names in
+  [`grDevices::colors()`](https://rdrr.io/r/grDevices/colors.html) or
+  valid hex codes.
 
 - print_plots:
 
@@ -189,7 +203,7 @@ normalize_counts(
 
 - save_plots:
 
-  Whether to save plots to files during analysis (Defaults to `FALSE`,
+  Whether to save plots to files during analysis (Defaults to `TRUE`,
   overwritable using option 'moo_save_plots' or environment variable
   'MOO_SAVE_PLOTS')
 
@@ -198,11 +212,12 @@ normalize_counts(
   set to TRUE to make PCA and Histogram plots interactive with `plotly`,
   allowing you to hover your mouse over a point or line to view sample
   information. The similarity heat map will not display if this toggle
-  is set to TRUE. Default is FALSE.
+  is set to `TRUE`. Default is `FALSE`.
 
 - plots_subdir:
 
-  subdirectory in where plots will be saved if `save_plots` is `TRUE`
+  subdirectory in `figures/` where plots will be saved if `save_plots`
+  is `TRUE`
 
 ## Value
 
@@ -242,6 +257,8 @@ moo <- multiOmicDataSet(
   )
 #> * normalizing filt counts
 #> Total number of features included: 7943
+#> Saving 6.67 x 6.67 in image
+#> Saving 6.67 x 6.67 in image
 #> Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
 head(moo@counts[["norm"]][["voom"]])
 #>            Gene       A1       A2       A3       B1       B2       B3       C1

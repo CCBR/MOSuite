@@ -93,8 +93,9 @@ batch_correct_counts(
 - colors_for_plots:
 
   Colors for the PCA and histogram will be picked, in order, from this
-  list. If you have \>12 samples or groups, program will choose from a
-  wide range of random colors
+  list. Colors must either be names in
+  [`grDevices::colors()`](https://rdrr.io/r/grDevices/colors.html) or
+  valid hex codes.
 
 - print_plots:
 
@@ -104,13 +105,14 @@ batch_correct_counts(
 
 - save_plots:
 
-  Whether to save plots to files during analysis (Defaults to `FALSE`,
+  Whether to save plots to files during analysis (Defaults to `TRUE`,
   overwritable using option 'moo_save_plots' or environment variable
   'MOO_SAVE_PLOTS')
 
 - plots_subdir:
 
-  subdirectory in where plots will be saved if `save_plots` is `TRUE`
+  subdirectory in `figures/` where plots will be saved if `save_plots`
+  is `TRUE`
 
 ## Value
 
@@ -161,6 +163,8 @@ moo <- multiOmicDataSet(
 #> Fitting L/S model and finding priors
 #> Finding parametric adjustments
 #> Adjusting the Data
+#> Saving 6.67 x 6.67 in image
+#> Saving 6.67 x 6.67 in image
 #> The total number of features in output: 7943
 #> Number of samples after batch correction: 10
 

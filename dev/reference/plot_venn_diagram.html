@@ -57,7 +57,7 @@ specified intersections.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_venn_diagram</span><span class="op">(</span></span>
-<span>  <span class="va">diff_summary_dat</span>,</span>
+<span>  <span class="va">moo_diff_summary_dat</span>,</span>
 <span>  feature_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  contrasts_colname <span class="op">=</span> <span class="st">"Contrast"</span>,</span>
 <span>  select_contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -97,7 +97,7 @@ specified intersections.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-diff-summary-dat">diff_summary_dat<a class="anchor" aria-label="anchor" href="#arg-diff-summary-dat"></a></dt>
+<dl><dt id="arg-moo-diff-summary-dat">moo_diff_summary_dat<a class="anchor" aria-label="anchor" href="#arg-moo-diff-summary-dat"></a></dt>
 <dd><p>Summarized differential expression analysis</p></dd>
 
 
@@ -109,7 +109,7 @@ used.)</p></dd>
 
 
 <dt id="arg-contrasts-colname">contrasts_colname<a class="anchor" aria-label="anchor" href="#arg-contrasts-colname"></a></dt>
-<dd><p>Name of the column in <code>diff_summary_dat</code> that contains the contrast names (default:
+<dd><p>Name of the column in <code>moo_diff_summary_dat</code> that contains the contrast names (default:
 "Contrast")</p></dd>
 
 
@@ -225,11 +225,11 @@ same colors as <code>venn_fill_colors</code>)</p></dd>
 
 
 <dt id="arg-save-plots">save_plots<a class="anchor" aria-label="anchor" href="#arg-save-plots"></a></dt>
-<dd><p>Whether to save plots to files during analysis (Defaults to <code>FALSE</code>, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')</p></dd>
+<dd><p>Whether to save plots to files during analysis (Defaults to <code>TRUE</code>, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')</p></dd>
 
 
 <dt id="arg-plots-subdir">plots_subdir<a class="anchor" aria-label="anchor" href="#arg-plots-subdir"></a></dt>
-<dd><p>subdirectory in where plots will be saved if <code>save_plots</code> is <code>TRUE</code></p></dd>
+<dd><p>subdirectory in <code>figures/</code> where plots will be saved if <code>save_plots</code> is <code>TRUE</code></p></dd>
 
 </dl></div>
 

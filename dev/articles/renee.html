@@ -172,23 +172,50 @@
 <span>    change_column <span class="op">=</span> <span class="st">"logFC"</span>,</span>
 <span>    change_cutoff <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span><span class="co">#&gt; * cleaning raw counts</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Not able to identify multiple id's in gene_id</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Columns that can be used to aggregate gene information gene_id</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Aggregating the counts for the same ID in different chromosome locations.</span></span>
 <span><span class="co">#&gt; Column used to Aggregate duplicate IDs: gene_id</span></span>
 <span><span class="co">#&gt; Number of rows before Collapse: 58929</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; no duplicated IDs in gene_id</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; * filtering clean counts</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of features after filtering: 291</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; colors_for_plots NULL</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; colors_for_plots character</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
+<span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span><span class="co">#&gt; * normalizing filt counts</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total number of features included: 291</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
+<span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span><span class="co">#&gt; Sample columns: KO_S3, Sample columns: KO_S4, Sample columns: WT_S1, Sample columns: WT_S2</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; * differential counts</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Setting first column of `counts` as gene annotation.</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total number of genes included: 291</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
+<span><span class="co">#&gt; `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span>
 <span><span class="co">#&gt; * filtering differential features</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total number of genes selected with adjpval &lt; 0.05 and | logFC | ≥ 1 is sum(selgenes)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span></span>
 <span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">norm</span><span class="op">$</span><span class="va">voom</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;              gene_id     KO_S3     KO_S4     WT_S1     WT_S2</span></span>

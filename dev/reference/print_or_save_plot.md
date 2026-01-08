@@ -38,7 +38,7 @@ print_or_save_plot(
 
 - save_plots:
 
-  Whether to save plots to files during analysis (Defaults to `FALSE`,
+  Whether to save plots to files during analysis (Defaults to `TRUE`,
   overwritable using option 'moo_save_plots' or environment variable
   'MOO_SAVE_PLOTS')
 

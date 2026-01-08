@@ -6,8 +6,11 @@
 
 ``` r
 plot_pca_3d(
-  counts_dat,
-  sample_metadata,
+  moo_counts,
+  count_type = NULL,
+  sub_count_type = NULL,
+  sample_metadata = NULL,
+  feature_id_colname = NULL,
   sample_id_colname = NULL,
   samples_to_rename = NULL,
   group_colname = "Group",
@@ -17,19 +20,43 @@ plot_pca_3d(
   label_font_size = 24,
   color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
-  plot_title = "PCA 3D"
+  plot_title = "PCA 3D",
+  plot_filename = "pca_3D.html",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "pca"
 )
 ```
 
 ## Arguments
 
-- counts_dat:
+- moo_counts:
 
-  data frame of feature counts (e.g. expected feature counts from RSEM).
+  counts dataframe or `multiOmicDataSet` containing `count_type` &
+  `sub_count_type` in the counts slot
+
+- count_type:
+
+  the type of counts to use – must be a name in the counts slot
+  (`moo@counts`)
+
+- sub_count_type:
+
+  used if `count_type` is a list in the counts slot: specify the sub
+  count type within the list. Must be a name in
+  `names(moo@counts[[count_type]])`.
 
 - sample_metadata:
 
   sample metadata as a data frame or tibble.
+
+- feature_id_colname:
+
+  The column from the counts dataa containing the Feature IDs (Usually
+  Gene or Protein ID). This is usually the first column of your input
+  Counts Matrix. Only columns of Text type from your input Counts Matrix
+  will be available to select for this parameter. (Default: `NULL` -
+  first column in the counts matrix will be used.)
 
 - sample_id_colname:
 
@@ -66,8 +93,7 @@ plot_pca_3d(
 
 - principal_components:
 
-  vector with numbered principal components to plot (Default:
-  `c(1,2,3)`)
+  vector with numbered principal components to plot
 
 - point_size:
 
@@ -86,14 +112,32 @@ plot_pca_3d(
 
   title for the plot
 
+- plot_filename:
+
+  plot output filename - only used if save_plots is TRUE
+
+- print_plots:
+
+  Whether to print plots during analysis (Defaults to `FALSE`,
+  overwritable using option 'moo_print_plots' or environment variable
+  'MOO_PRINT_PLOTS')
+
+- save_plots:
+
+  Whether to save plots to files during analysis (Defaults to `TRUE`,
+  overwritable using option 'moo_save_plots' or environment variable
+  'MOO_SAVE_PLOTS')
+
+- plots_subdir:
+
+  subdirectory in `figures/` where plots will be saved if `save_plots`
+  is `TRUE`
+
 ## Value
 
 [`plotly::plot_ly`](https://rdrr.io/pkg/plotly/man/plot_ly.html) figure
 
 ## See also
-
-[plot_pca](https://ccbr.github.io/MOSuite/dev/reference/plot_pca.md)
-generic
 
 Other PCA functions:
 [`calc_pca()`](https://ccbr.github.io/MOSuite/dev/reference/calc_pca.md),

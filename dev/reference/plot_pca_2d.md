@@ -83,7 +83,7 @@ plot_pca_2d(
 
 - principal_components:
 
-  vector with numbered principal components to plot (Default: `c(1,2)`)
+  vector with numbered principal components to plot
 
 - legend_position:
 
@@ -116,7 +116,7 @@ plot_pca_2d(
   set to TRUE to make PCA and Histogram plots interactive with `plotly`,
   allowing you to hover your mouse over a point or line to view sample
   information. The similarity heat map will not display if this toggle
-  is set to TRUE. Default is FALSE.
+  is set to `TRUE`. Default is `FALSE`.
 
 ## Value
 

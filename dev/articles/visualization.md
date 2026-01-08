@@ -52,21 +52,24 @@ moo <- moo %>%
   filter_counts(group_colname = "Group")
 #> * filtering clean counts
 #> Number of features after filtering: 7943
-#> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
-#> increasing max.overlaps
+#> colors_for_plots NULL
+#> colors_for_plots character
 ```
 
 ![](visualization_files/figure-html/nidap_filter-1.png)
 
-    #> Saving 5 x 4 in image
     #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
     #> increasing max.overlaps
 
 ![](visualization_files/figure-html/nidap_filter-2.png)
 
     #> Saving 5 x 4 in image
+    #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
+    #> increasing max.overlaps
 
 ![](visualization_files/figure-html/nidap_filter-3.png)
+
+    #> Saving 5 x 4 in image
 
 ### normalize
 
@@ -75,22 +78,22 @@ moo <- moo %>%
   normalize_counts(group_colname = "Group")
 #> * normalizing filt counts
 #> Total number of features included: 7943
-#> Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
-#> increasing max.overlaps
 ```
 
 ![](visualization_files/figure-html/nidap_norm-1.png)
 
-    #> Saving 5 x 4 in image
     #> Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
     #> increasing max.overlaps
 
 ![](visualization_files/figure-html/nidap_norm-2.png)
 
     #> Saving 5 x 4 in image
+    #> Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
+    #> increasing max.overlaps
 
 ![](visualization_files/figure-html/nidap_norm-3.png)
 
+    #> Saving 5 x 4 in image
     #> Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
 
 ### batch correct
@@ -199,10 +202,15 @@ heatmap_plot <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "vo
 #> Warning: The input is a data frame, convert it to the matrix.
 #> Warning: argument `height` is not supported in pheatmap -> Heatmap translation,
 #> skip it.
-print(heatmap_plot)
 ```
 
 ![](visualization_files/figure-html/expr_heatmap-1.png)
+
+``` r
+print(heatmap_plot)
+```
+
+![](visualization_files/figure-html/expr_heatmap-2.png)
 
 ### Volcano
 

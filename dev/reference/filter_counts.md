@@ -37,6 +37,7 @@ filter_counts(
   legend_font_size_for_histogram = 10,
   number_of_histogram_legend_columns = 6,
   colors_for_plots = NULL,
+  plot_corr_matrix_heatmap = TRUE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   interactive_plots = FALSE,
@@ -201,8 +202,16 @@ filter_counts(
 - colors_for_plots:
 
   Colors for the PCA and histogram will be picked, in order, from this
-  list. If you have \>12 samples or groups, program will choose from a
-  wide range of random colors
+  list. Colors must either be names in
+  [`grDevices::colors()`](https://rdrr.io/r/grDevices/colors.html) or
+  valid hex codes.
+
+- plot_corr_matrix_heatmap:
+
+  Datasets with a large number of samples may be too large to create a
+  correlation matrix heatmap. If this function takes longer than 5
+  minutes to run, Set to `FALSE` and the correlation matrix will not be
+  be created. Default is `TRUE`.
 
 - print_plots:
 
@@ -212,7 +221,7 @@ filter_counts(
 
 - save_plots:
 
-  Whether to save plots to files during analysis (Defaults to `FALSE`,
+  Whether to save plots to files during analysis (Defaults to `TRUE`,
   overwritable using option 'moo_save_plots' or environment variable
   'MOO_SAVE_PLOTS')
 
@@ -221,11 +230,12 @@ filter_counts(
   set to TRUE to make PCA and Histogram plots interactive with `plotly`,
   allowing you to hover your mouse over a point or line to view sample
   information. The similarity heat map will not display if this toggle
-  is set to TRUE. Default is FALSE.
+  is set to `TRUE`. Default is `FALSE`.
 
 - plots_subdir:
 
-  subdirectory in where plots will be saved if `save_plots` is `TRUE`
+  subdirectory in `figures/` where plots will be saved if `save_plots`
+  is `TRUE`
 
 ## Value
 
@@ -278,6 +288,10 @@ moo <- create_multiOmicDataSet_from_dataframes(
   )
 #> * filtering raw counts
 #> Number of features after filtering: 7943
+#> colors_for_plots NULL
+#> colors_for_plots character
+#> Saving 6.67 x 6.67 in image
+#> Saving 6.67 x 6.67 in image
 head(moo@counts$filt)
 #>      Gene   A1   A2   A3   B1   B2   B3   C1   C2   C3
 #> 1  Mrpl15 1245 1341 1476  965 1235 1784 1058 1732 1531

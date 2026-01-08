@@ -31,7 +31,6 @@ generic
 
 Other plotters for multiOmicDataSets:
 [`plot_corr_heatmap_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_moo.md),
-[`plot_expr_heatmap_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_expr_heatmap_moo.md),
 [`plot_histogram_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram_moo.md),
 [`plot_pca_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_moo.md)
 

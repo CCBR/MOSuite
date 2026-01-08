@@ -103,13 +103,14 @@ diff_counts(
 
 - save_plots:
 
-  Whether to save plots to files during analysis (Defaults to `FALSE`,
+  Whether to save plots to files during analysis (Defaults to `TRUE`,
   overwritable using option 'moo_save_plots' or environment variable
   'MOO_SAVE_PLOTS')
 
 - plots_subdir:
 
-  subdirectory in where plots will be saved if `save_plots` is `TRUE`
+  subdirectory in `figures/` where plots will be saved if `save_plots`
+  is `TRUE`
 
 ## Value
 
@@ -157,6 +158,8 @@ moo <- multiOmicDataSet(
 #> * differential counts
 #> Setting first column of `counts` as gene annotation.
 #> Total number of genes included: 7943
+#> Saving 6.67 x 6.67 in image
+#> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
 head(moo@analyses$diff)
 #> $`B-A`
 #>                Gene          FC         logFC         tstat         pval

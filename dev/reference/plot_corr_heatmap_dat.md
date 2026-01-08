@@ -54,7 +54,6 @@ Plot correlation heatmap for counts dataframe
 generic
 
 Other plotters for counts dataframes:
-[`plot_expr_heatmap_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_expr_heatmap_dat.md),
 [`plot_histogram_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram_dat.md),
 [`plot_pca_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_dat.md),
 [`plot_read_depth_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth_dat.md)

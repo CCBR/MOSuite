@@ -30,11 +30,11 @@ dfs <- list(
   "b_vs_c" = data.frame(id = c("a1", "b2", "c3"), score = rnorm(3))
 )
 dfs %>% bind_dfs_long()
-#>   id contrast      score
-#> 1 a1   a_vs_b  0.7328820
-#> 2 b2   a_vs_b  0.7725215
-#> 3 c3   a_vs_b  0.8746007
-#> 4 a1   b_vs_c -0.9348197
-#> 5 b2   b_vs_c -0.4666204
-#> 6 c3   b_vs_c -0.8571904
+#>   id contrast       score
+#> 1 a1   a_vs_b  0.87460066
+#> 2 b2   a_vs_b  0.17494063
+#> 3 c3   a_vs_b  0.03424133
+#> 4 a1   b_vs_c -0.46662045
+#> 5 b2   b_vs_c -0.85719040
+#> 6 c3   b_vs_c -1.52474418
 ```

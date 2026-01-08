@@ -181,17 +181,19 @@ files to set each function’s arguments.</p>
 package data. You can copy them to your working directory with R:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># copy the example script</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"example_script.sh"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"example_script.sh"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span>
 <span>  to <span class="op">=</span> <span class="st">"./"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co"># copy the JSON files</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"json_args"</span>, <span class="st">"common"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"json_args"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span>
 <span>  to <span class="op">=</span> <span class="st">"./"</span>,</span>
 <span>  recursive <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co"># copy the raw counts &amp; sample metadata</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"nidap"</span>, <span class="st">"Raw_Counts.csv.gz"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"nidap"</span>, <span class="st">"Raw_Counts.csv.gz"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span>
 <span>  to <span class="op">=</span> <span class="st">"./"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span></span>
@@ -216,8 +218,16 @@ figures from each step will be in <code>./figures/</code>.</p>
 below or write it by hand.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">j</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  feature_counts_filepath <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"RSEM.genes.expected_count.all_samples.txt.gz"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span>
-<span>  sample_meta_filepath <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"sample_metadata.tsv.gz"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span>,</span>
+<span>  feature_counts_filepath <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span>    <span class="st">"extdata"</span>,</span>
+<span>    <span class="st">"RSEM.genes.expected_count.all_samples.txt.gz"</span>,</span>
+<span>    package <span class="op">=</span> <span class="st">"MOSuite"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  sample_meta_filepath <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span>    <span class="st">"extdata"</span>,</span>
+<span>    <span class="st">"sample_metadata.tsv.gz"</span>,</span>
+<span>    package <span class="op">=</span> <span class="st">"MOSuite"</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  moo_output_rds <span class="op">=</span> <span class="st">"moo.rds"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://jeroen.r-universe.dev/jsonlite/reference/read_json.html" class="external-link">write_json</a></span><span class="op">(</span><span class="va">j</span>, <span class="st">"args_1.json"</span><span class="op">)</span></span></code></pre></div>
@@ -234,7 +244,11 @@ to the JSON file:</p>
 <span>    <span class="st">"RSEM.genes.expected_count.all_samples.txt.gz"</span>,</span>
 <span>    package <span class="op">=</span> <span class="st">"MOSuite"</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  sample_meta_filepath <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"sample_metadata.tsv.gz"</span>, package <span class="op">=</span> <span class="st">"MOSuite"</span><span class="op">)</span></span>
+<span>  sample_meta_filepath <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span>    <span class="st">"extdata"</span>,</span>
+<span>    <span class="st">"sample_metadata.tsv.gz"</span>,</span>
+<span>    package <span class="op">=</span> <span class="st">"MOSuite"</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">58929</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">6</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>

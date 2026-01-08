@@ -2,21 +2,25 @@
 
 ## MOSuite (development version)
 
-- Improve CLI docs to show batch correction.
-  ([\#128](https://github.com/CCBR/MOSuite/issues/128))
-- Minor documentation improvements.
-  ([\#135](https://github.com/CCBR/MOSuite/issues/135))
 - A docker image is now available.
   ([\#134](https://github.com/CCBR/MOSuite/issues/134))
   - <https://hub.docker.com/r/nciccbr/mosuite>
+- Minor documentation improvements.
+  ([\#135](https://github.com/CCBR/MOSuite/issues/135))
+- Improvements for use with Galaxy.
+  ([\#149](https://github.com/CCBR/MOSuite/issues/149))
+- Fixed bug where 3D PCA plots were not being saved.
+  ([\#149](https://github.com/CCBR/MOSuite/issues/149))
 
 ## MOSuite 0.2.0
 
-- Any user-facing function can now be called from the unix command line.
+- Any user-facing function can now be called from the unix command line
+  to support Galaxy.
   ([\#126](https://github.com/CCBR/MOSuite/issues/126),
   [\#127](https://github.com/CCBR/MOSuite/issues/127)) Usage:
-  `mosuite [function] --json=path/to/args` See the new `cli` vignette
-  for detailed instructions.
+  `mosuite [function] --json=path/to/args`
+  - It is not recommended for most users to run MOSuite via the CLI;
+    this is only intended for the Galaxy workflow.
 - MOSuite is now archived in Zenodo with a DOI:
   [10.5281/zenodo.16371580](http://doi.org/10.5281/zenodo.16371580)
 

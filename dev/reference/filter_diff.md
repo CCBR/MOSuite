@@ -160,7 +160,7 @@ filter_diff(
 
 - save_plots:
 
-  Whether to save plots to files during analysis (Defaults to `FALSE`,
+  Whether to save plots to files during analysis (Defaults to `TRUE`,
   overwritable using option 'moo_save_plots' or environment variable
   'MOO_SAVE_PLOTS')
 
@@ -210,10 +210,13 @@ moo <- multiOmicDataSet(
 #> * differential counts
 #> Setting first column of `counts` as gene annotation.
 #> Total number of genes included: 7943
+#> Saving 6.67 x 6.67 in image
+#> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
 #> Joining with `by = join_by(Gene)`
 #> Joining with `by = join_by(Gene)`
 #> * filtering differential features
 #> Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
+#> Saving 6.67 x 6.67 in image
 head(moo@analyses$diff_filt)
 #>            Gene B-A_FC B-A_logFC B-A_tstat B-A_pval B-A_adjpval C-A_FC
 #> 1 1110034G24Rik  21.70     4.440      3.20  0.00782       0.210  36.60

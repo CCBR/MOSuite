@@ -196,7 +196,7 @@ groups in the dataset are used.</p></dd>
 
 
 <dt id="arg-save-plots">save_plots<a class="anchor" aria-label="anchor" href="#arg-save-plots"></a></dt>
-<dd><p>Whether to save plots to files during analysis (Defaults to <code>FALSE</code>, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')</p></dd>
+<dd><p>Whether to save plots to files during analysis (Defaults to <code>TRUE</code>, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')</p></dd>
 
 
 <dt id="arg-plots-subdir">plots_subdir<a class="anchor" aria-label="anchor" href="#arg-plots-subdir"></a></dt>
@@ -245,10 +245,13 @@ groups in the dataset are used.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> * differential counts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Setting first column of `counts` as gene annotation.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Total number of genes included: 7943</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving 6.67 x 6.67 in image</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Gene)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Gene)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> * filtering differential features</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Total number of genes selected with adjpval &lt; 0.05 and | logFC | ≥ 1 is sum(selgenes)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving 6.67 x 6.67 in image</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">moo</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff_filt</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            Gene B-A_FC B-A_logFC B-A_tstat B-A_pval B-A_adjpval C-A_FC</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 1110034G24Rik  21.70     4.440      3.20  0.00782       0.210  36.60</span>

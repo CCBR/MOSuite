@@ -16,11 +16,6 @@ abort_packages_not_installed(...)
 
   names of packages to check
 
-## Details
-
-This is only intended to be used inside a function. It will error
-otherwise.
-
 ## Examples
 
 ``` r

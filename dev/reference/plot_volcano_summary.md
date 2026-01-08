@@ -1,7 +1,8 @@
-# Volcano Plot - Summary \[CC Produces one volcano plot for each tested contrast in the input DEG table.
+# Volcano Plot - Summary
 
-It can be sorted by either fold change, t-statistic, or p-value. The
-returned dataset includes one row for each significant gene in each
+Produces one volcano plot for each tested contrast in the input DEG
+table. It can be sorted by either fold change, t-statistic, or p-value.
+The returned dataset includes one row for each significant gene in each
 contrast, and contains columns from the DEG analysis of that contrast as
 well as columns useful to the Venn diagram template downstream.
 
@@ -49,10 +50,10 @@ plot_volcano_summary(
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = 1,
   aspect_ratio = 0,
-  plot_filename = "volcano.png",
+  plot_filename = "volcano_summary.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "figures"
+  plots_subdir = "diff"
 )
 ```
 
@@ -60,7 +61,8 @@ plot_volcano_summary(
 
 - moo_diff:
 
-  Differential expression analysis result from one or more contrasts
+  Differential expression analysis result from one or more contrasts.
+  This must be a dataframe.
 
 - feature_id_colname:
 
@@ -259,13 +261,14 @@ plot_volcano_summary(
 
 - save_plots:
 
-  Whether to save plots to files during analysis (Defaults to `FALSE`,
+  Whether to save plots to files during analysis (Defaults to `TRUE`,
   overwritable using option 'moo_save_plots' or environment variable
   'MOO_SAVE_PLOTS')
 
 - plots_subdir:
 
-  subdirectory in where plots will be saved if `save_plots` is `TRUE`
+  subdirectory in `figures/` where plots will be saved if `save_plots`
+  is `TRUE`
 
 ## Examples
 
@@ -287,6 +290,10 @@ plot_volcano_summary(nidap_deg_analysis, print_plots = TRUE)
 #> Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider increasing max.overlaps
 #> Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider increasing max.overlaps
 
+#> Saving 6.67 x 6.67 in image
+#> Warning: ggrepel: 18 unlabeled data points (too many overlaps). Consider increasing max.overlaps
+#> Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider increasing max.overlaps
+#> Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider increasing max.overlaps
 #>                   Gene Contrast          FC     logFC      tstat         pval
 #> B-A.1             Dntt      B-A  -42.746586 -5.417737 -15.687975 3.159343e-09
 #> B-A.2           Tmsb4x      B-A    3.850020  1.944866  12.910261 2.760555e-08

@@ -1,10 +1,6 @@
 # Plot histogram
 
-The first argument can be a `multiOmicDataset` object (`moo`) or a
-`data.frame` containing counts. For a `moo`, choose which counts slot to
-use with `count_type` & (optionally) `sub_count_type`. For a
-`data.frame`, you must also set `sample_metadata`. All other arguments
-are optional.
+Plot histogram
 
 ## Usage
 

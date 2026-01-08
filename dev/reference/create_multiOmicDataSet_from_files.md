@@ -1,6 +1,6 @@
-# Construct a multiOmicDataSet object from tsv files.
+# Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).
 
-Construct a multiOmicDataSet object from tsv files.
+Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).
 
 ## Usage
 
@@ -11,6 +11,7 @@ create_multiOmicDataSet_from_files(
   count_type = "raw",
   sample_id_colname = NULL,
   feature_id_colname = NULL,
+  delim = NULL,
   ...
 )
 ```
@@ -41,10 +42,17 @@ create_multiOmicDataSet_from_files(
   name of the column in `counts_dat` that contains feature/gene IDs.
   (Default: `NULL` - first column in the count data will be used.)
 
+- delim:
+
+  Delimiter used in the input files. Any delimiter accepted by
+  [`readr::read_delim()`](https://readr.tidyverse.org/reference/read_delim.html)
+  can be used. If the files are in CSV format, set `delim = ','`; for
+  TSV format, set `delim = '\t'`.
+
 - ...:
 
   additional arguments forwarded to
-  [`readr::read_delim()`](https://readr.tidyverse.org/reference/read_delim.html)
+  [`readr::read_delim()`](https://readr.tidyverse.org/reference/read_delim.html).
 
 ## Value
 
@@ -68,7 +76,8 @@ moo <- create_multiOmicDataSet_from_files(
   feature_counts_filepath = system.file("extdata",
     "RSEM.genes.expected_count.all_samples.txt.gz",
     package = "MOSuite"
-  )
+  ),
+  delim = "\t"
 )
 #> Rows: 58929 Columns: 6
 #> ── Column specification ────────────────────────────────────────────────────────

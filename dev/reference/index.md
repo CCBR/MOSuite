@@ -5,7 +5,7 @@
 - [`create_multiOmicDataSet_from_dataframes()`](https://ccbr.github.io/MOSuite/dev/reference/create_multiOmicDataSet_from_dataframes.md)
   : Construct a multiOmicDataSet object from data frames
 - [`create_multiOmicDataSet_from_files()`](https://ccbr.github.io/MOSuite/dev/reference/create_multiOmicDataSet_from_files.md)
-  : Construct a multiOmicDataSet object from tsv files.
+  : Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).
 - [`multiOmicDataSet()`](https://ccbr.github.io/MOSuite/dev/reference/multiOmicDataSet.md)
   : multiOmicDataSet class
 
@@ -48,8 +48,7 @@ for recommended usage
 - [`plot_volcano_enhanced()`](https://ccbr.github.io/MOSuite/dev/reference/plot_volcano_enhanced.md)
   : Enhanced Volcano Plot
 - [`plot_volcano_summary()`](https://ccbr.github.io/MOSuite/dev/reference/plot_volcano_summary.md)
-  : Volcano Plot - Summary \[CC Produces one volcano plot for each
-  tested contrast in the input DEG table.
+  : Volcano Plot - Summary
 - [`print_or_save_plot()`](https://ccbr.github.io/MOSuite/dev/reference/print_or_save_plot.md)
   : Print and/or save a ggplot
 
@@ -163,12 +162,6 @@ These functions are called by the main visualization functions.
 
 - [`plot_corr_heatmap_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_moo.md)
   : Plot correlation heatmap for multiOmicDataSet
-
-- [`plot_expr_heatmap_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_expr_heatmap_dat.md)
-  : Plot expression heatmap for counts dataframe
-
-- [`plot_expr_heatmap_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_expr_heatmap_moo.md)
-  : Plot expression heatmap for multiOmicDataSet
 
 - [`plot_histogram_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram_dat.md)
   : Plot histogram for counts dataframe

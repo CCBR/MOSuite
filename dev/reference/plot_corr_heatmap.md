@@ -1,10 +1,6 @@
 # Plot correlation heatmap
 
-The first argument can be a `multiOmicDataset` object (`moo`) or a
-`data.frame` containing counts. For a `moo`, choose which counts slot to
-use with `count_type` & (optionally) `sub_count_type`. For a
-`data.frame`, you must also set `sample_metadata`. All other arguments
-are optional.
+Plot correlation heatmap
 
 ## Usage
 
@@ -67,8 +63,7 @@ Other plotters:
 [`print_or_save_plot()`](https://ccbr.github.io/MOSuite/dev/reference/print_or_save_plot.md)
 
 Other heatmaps:
-[`plot_expr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_expr_heatmap.md),
-[`plot_expr_heatmap_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_expr_heatmap_dat.md)
+[`plot_expr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_expr_heatmap.md)
 
 Other moo methods:
 [`batch_correct_counts()`](https://ccbr.github.io/MOSuite/dev/reference/batch_correct_counts.md),

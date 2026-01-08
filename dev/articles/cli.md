@@ -117,17 +117,19 @@ package data. You can copy them to your working directory with R:
 
 ``` r
 # copy the example script
-file.copy(system.file("extdata", "example_script.sh", package = "MOSuite"),
+file.copy(
+  system.file("extdata", "example_script.sh", package = "MOSuite"),
   to = "./"
 )
 # copy the JSON files
 file.copy(
-  system.file("extdata", "json_args", "common", package = "MOSuite"),
+  system.file("extdata", "json_args", package = "MOSuite"),
   to = "./",
   recursive = TRUE
 )
 # copy the raw counts & sample metadata
-file.copy(system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
+file.copy(
+  system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
   to = "./"
 )
 file.copy(
@@ -158,8 +160,16 @@ You can use R code as below or write it by hand.
 
 ``` r
 j <- list(
-  feature_counts_filepath = system.file("extdata", "RSEM.genes.expected_count.all_samples.txt.gz", package = "MOSuite"),
-  sample_meta_filepath = system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite"),
+  feature_counts_filepath = system.file(
+    "extdata",
+    "RSEM.genes.expected_count.all_samples.txt.gz",
+    package = "MOSuite"
+  ),
+  sample_meta_filepath = system.file(
+    "extdata",
+    "sample_metadata.tsv.gz",
+    package = "MOSuite"
+  ),
   moo_output_rds = "moo.rds"
 )
 jsonlite::write_json(j, "args_1.json")
@@ -183,7 +193,11 @@ moo <- create_multiOmicDataSet_from_files(
     "RSEM.genes.expected_count.all_samples.txt.gz",
     package = "MOSuite"
   ),
-  sample_meta_filepath = system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
+  sample_meta_filepath = system.file(
+    "extdata",
+    "sample_metadata.tsv.gz",
+    package = "MOSuite"
+  )
 )
 #> Rows: 58929 Columns: 6
 #> ── Column specification ────────────────────────────────────────────────────────

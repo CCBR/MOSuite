@@ -11,7 +11,7 @@ specified intersections.
 
 ``` r
 plot_venn_diagram(
-  diff_summary_dat,
+  moo_diff_summary_dat,
   feature_id_colname = NULL,
   contrasts_colname = "Contrast",
   select_contrasts = c(),
@@ -49,7 +49,7 @@ plot_venn_diagram(
 
 ## Arguments
 
-- diff_summary_dat:
+- moo_diff_summary_dat:
 
   Summarized differential expression analysis
 
@@ -63,8 +63,8 @@ plot_venn_diagram(
 
 - contrasts_colname:
 
-  Name of the column in `diff_summary_dat` that contains the contrast
-  names (default: "Contrast")
+  Name of the column in `moo_diff_summary_dat` that contains the
+  contrast names (default: "Contrast")
 
 - select_contrasts:
 
@@ -188,13 +188,14 @@ plot_venn_diagram(
 
 - save_plots:
 
-  Whether to save plots to files during analysis (Defaults to `FALSE`,
+  Whether to save plots to files during analysis (Defaults to `TRUE`,
   overwritable using option 'moo_save_plots' or environment variable
   'MOO_SAVE_PLOTS')
 
 - plots_subdir:
 
-  subdirectory in where plots will be saved if `save_plots` is `TRUE`
+  subdirectory in `figures/` where plots will be saved if `save_plots`
+  is `TRUE`
 
 ## Examples
 

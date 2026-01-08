@@ -103,23 +103,50 @@ moo <- moo %>%
     change_column = "logFC",
     change_cutoff = 1
   )
+#> Saving 7.29 x 4.51 in image
 #> * cleaning raw counts
+#> 
 #> Not able to identify multiple id's in gene_id
+#> 
 #> Columns that can be used to aggregate gene information gene_id
+#> 
 #> Aggregating the counts for the same ID in different chromosome locations.
 #> Column used to Aggregate duplicate IDs: gene_id
 #> Number of rows before Collapse: 58929
+#> 
 #> no duplicated IDs in gene_id
+#> 
 #> * filtering clean counts
+#> 
 #> Number of features after filtering: 291
+#> 
+#> colors_for_plots NULL
+#> 
+#> colors_for_plots character
+#> 
+#> Saving 7.29 x 4.51 in image
+#> Saving 7.29 x 4.51 in image
 #> * normalizing filt counts
+#> 
 #> Total number of features included: 291
+#> 
+#> Saving 7.29 x 4.51 in image
+#> Saving 7.29 x 4.51 in image
 #> Sample columns: KO_S3, Sample columns: KO_S4, Sample columns: WT_S1, Sample columns: WT_S2
+#> 
 #> * differential counts
+#> 
 #> Setting first column of `counts` as gene annotation.
+#> 
 #> Total number of genes included: 291
+#> 
+#> Saving 7.29 x 4.51 in image
+#> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
 #> * filtering differential features
+#> 
 #> Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
+#> 
+#> Saving 7.29 x 4.51 in image
 
 moo@counts$norm$voom %>% head()
 #>              gene_id     KO_S3     KO_S4     WT_S1     WT_S2

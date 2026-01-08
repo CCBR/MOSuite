@@ -34,7 +34,7 @@ package name to `env`.
 
   default:
 
-  :   FALSE
+  :   TRUE
 
   option:
 

@@ -125,8 +125,8 @@ column with your preferred Labels here. The selected column should contain uniqu
 
 
 <dt id="arg-colors-for-plots">colors_for_plots<a class="anchor" aria-label="anchor" href="#arg-colors-for-plots"></a></dt>
-<dd><p>Colors for the PCA and histogram will be picked, in order, from this list. If you have &gt;12
-samples or groups, program will choose from a wide range of random colors</p></dd>
+<dd><p>Colors for the PCA and histogram will be picked, in order, from this list.
+Colors must either be names in <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code> or valid hex codes.</p></dd>
 
 
 <dt id="arg-print-plots">print_plots<a class="anchor" aria-label="anchor" href="#arg-print-plots"></a></dt>
@@ -134,11 +134,11 @@ samples or groups, program will choose from a wide range of random colors</p></d
 
 
 <dt id="arg-save-plots">save_plots<a class="anchor" aria-label="anchor" href="#arg-save-plots"></a></dt>
-<dd><p>Whether to save plots to files during analysis (Defaults to <code>FALSE</code>, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')</p></dd>
+<dd><p>Whether to save plots to files during analysis (Defaults to <code>TRUE</code>, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')</p></dd>
 
 
 <dt id="arg-plots-subdir">plots_subdir<a class="anchor" aria-label="anchor" href="#arg-plots-subdir"></a></dt>
-<dd><p>subdirectory in where plots will be saved if <code>save_plots</code> is <code>TRUE</code></p></dd>
+<dd><p>subdirectory in <code>figures/</code> where plots will be saved if <code>save_plots</code> is <code>TRUE</code></p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -190,6 +190,8 @@ samples or groups, program will choose from a wide range of random colors</p></d
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting L/S model and finding priors</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Finding parametric adjustments</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Adjusting the Data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving 6.67 x 6.67 in image</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving 6.67 x 6.67 in image</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The total number of features in output: 7943</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of samples after batch correction: 10</span>
 <span class="r-in"><span></span></span>

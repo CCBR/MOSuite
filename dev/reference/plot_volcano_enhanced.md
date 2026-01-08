@@ -44,7 +44,8 @@ plot_volcano_enhanced(
 
 - moo_diff:
 
-  Differential expression analysis result from one or more contrasts
+  Differential expression analysis result from one or more contrasts.
+  This must be a dataframe.
 
 - feature_id_colname:
 
@@ -117,7 +118,8 @@ plot_volcano_enhanced(
 
 - use_custom_lab:
 
-  If TRUE, uses custom labels for the plot.
+  If TRUE, uses custom labels for the plot (set by `change_sig_name` and
+  `change_lfc_name`)
 
 - ylim:
 
@@ -161,7 +163,7 @@ plot_volcano_enhanced(
   set to TRUE to make PCA and Histogram plots interactive with `plotly`,
   allowing you to hover your mouse over a point or line to view sample
   information. The similarity heat map will not display if this toggle
-  is set to TRUE. Default is FALSE.
+  is set to `TRUE`. Default is `FALSE`.
 
 - print_plots:
 
@@ -171,13 +173,14 @@ plot_volcano_enhanced(
 
 - save_plots:
 
-  Whether to save plots to files during analysis (Defaults to `FALSE`,
+  Whether to save plots to files during analysis (Defaults to `TRUE`,
   overwritable using option 'moo_save_plots' or environment variable
   'MOO_SAVE_PLOTS')
 
 - plots_subdir:
 
-  subdirectory in where plots will be saved if `save_plots` is `TRUE`
+  subdirectory in `figures/` where plots will be saved if `save_plots`
+  is `TRUE`
 
 - plot_filename:
 
