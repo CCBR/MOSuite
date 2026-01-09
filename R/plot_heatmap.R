@@ -325,8 +325,8 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
 #'   group_columns = c("Group", "Replicate", "Batch"),
 #'   assign_group_colors = FALSE,
 #'   assign_color_to_sample_groups = c(),
-#'   group_colors = c("indigo", "carrot", "lipstick", "turquoise", "lavender",
-#'     "jade", "coral", "azure", "green", "rum", "orange", "olive"),
+#'   group_colors = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+#'     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
 #'   heatmap_color_scheme = "Default",
 #'   autoscale_heatmap_color = TRUE,
 #'   set_min_heatmap_color = -2,
@@ -500,18 +500,18 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
   group_colors = c(
-    "indigo",
-    "carrot",
-    "lipstick",
-    "turquoise",
-    "lavender",
-    "jade",
-    "coral",
-    "azure",
-    "green",
-    "rum",
-    "orange",
-    "olive"
+    "#5954d6",
+    "#e1562c",
+    "#b80058",
+    "#00c6f8",
+    "#d163e6",
+    "#00a76c",
+    "#ff9287",
+    "#008cf9",
+    "#006e00",
+    "#796880",
+    "#FFA500",
+    "#878500"
   ),
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
@@ -890,35 +890,6 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   }
 
   # Build subsetted sample metadata table to use for figure.
-  colorlist <- c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  )
-  names(colorlist) <- c(
-    "indigo",
-    "carrot",
-    "lipstick",
-    "turquoise",
-    "lavender",
-    "jade",
-    "coral",
-    "azure",
-    "green",
-    "rum",
-    "orange",
-    "olive"
-  )
-  group_colors <- colorlist[group_colors]
 
   annotation_col <- annot %>% dplyr::select(tidyselect::all_of(group_columns))
   annotation_col <- as.data.frame(unclass(annotation_col))
