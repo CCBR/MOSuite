@@ -84,7 +84,7 @@ batch_correct_counts <- function(
   }
   # sva::ComBat() can't handle tibbles
   counts_dat <- counts_dat %>% as.data.frame()
-  sample_metadata <- moo@sample_meta
+  sample_metadata <- moo@sample_meta %>% as.data.frame()
   batch_vctr <- sample_metadata %>% dplyr::pull(batch_colname)
   message(
     glue::glue(
