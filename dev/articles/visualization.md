@@ -195,7 +195,7 @@ heatmap_plot <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "vo
 #> ℹ See vignette('programming') for more help
 #> ℹ The deprecated feature was likely used in the MOSuite package.
 #>   Please report the issue at <https://github.com/CCBR/MOSuite/issues>.
-#> This warning is displayed once every 8 hours.
+#> This warning is displayed once per session.
 #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
 #> generated.
 #> [1] "The total number of genes in heatmap: 500"
