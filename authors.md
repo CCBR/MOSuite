@@ -18,7 +18,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/CCBR/MOSuite/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/CCBR/MOSuite/blob/v0.2.1/inst/CITATION)
 
 Sovacool K, Homan P, Koparde V, Chill S (2025). *MOSuite: R package for
 differential multi-omics analysis*.
