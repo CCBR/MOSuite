@@ -32,6 +32,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/diff_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/do_math.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/extract_counts.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/figures/pca/pca_3D.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/filter_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/filter_diff.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/gene_counts.html</loc></url>
@@ -62,8 +63,6 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap_dat.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap_moo.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_expr_heatmap.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/reference/plot_expr_heatmap_dat.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/reference/plot_expr_heatmap_moo.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_histogram.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_histogram_dat.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_histogram_moo.html</loc></url>
