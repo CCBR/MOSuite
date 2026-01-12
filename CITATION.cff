@@ -8,7 +8,7 @@ message: 'To cite package "MOSuite" in publications use:'
 type: software
 license: MIT
 title: 'MOSuite: R package for differential multi-omics analysis'
-version: 0.2.0.9000
+version: 0.2.1
 doi: 10.5281/zenodo.16371580
 identifiers:
 - description: Archived snapshots of all versions
@@ -1017,6 +1017,7 @@ references:
   title: VennDiagram
   abstract: 'VennDiagram: Generate High-Resolution Venn and Euler Plots'
   notes: Suggests
+  url: https://github.com/uclahs-cds/package-VennDiagram
   repository: https://CRAN.R-project.org/package=VennDiagram
   authors:
   - family-names: Chen
