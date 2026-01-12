@@ -1,6 +1,6 @@
 # Changelog
 
-## MOSuite (development version)
+## MOSuite 0.2.1
 
 - A docker image is now available.
   ([\#134](https://github.com/CCBR/MOSuite/issues/134))
