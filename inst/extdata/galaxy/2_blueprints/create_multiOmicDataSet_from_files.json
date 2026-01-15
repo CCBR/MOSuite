@@ -31,7 +31,7 @@
     {
       "key": "moo_output_rds",
       "displayName": "MOO output Rds",
-      "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file",
+      "description": "File path to output the multiOmicDataSet object (MOO) as an Rds file at the end of the function",
       "paramType": "STRING",
       "paramGroup": "basic",
       "paramValues": null,
@@ -74,5 +74,10 @@
       "objectPropertyReference": null
     }
   ],
-  "outputs": null
+  "outputs": {
+    "analysis": {
+      "type": "file",
+      "name": "moo.rds"
+    }
+  }
 }

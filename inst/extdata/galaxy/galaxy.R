@@ -1,3 +1,5 @@
+library(dplyr)
+
 #' @keywords internal
 #' @examples
 #'
@@ -23,17 +25,27 @@ get_function_meta <- function(func_name, rd_db) {
     trimws() %>%
     as.list()
   names(arg_docs) <- arg_desc %>% dplyr::pull("arg")
-
-  arg_defaults <- lapply(formals(func_name), \(x) {
-    if (inherits(x, "name")) {
-      default <- NULL
-    } else if (inherits(x, "call")) {
-      default <- eval(x)
-    } else {
-      default <- x
+  options(
+    moo_print_plots = TRUE,
+    moo_save_plots = TRUE,
+    moo_plots_dir = "./figures",
+    print_plots = TRUE, # need if this function is defined outside the package's R source directory
+    save_plots = TRUE,
+    plots_dir = "./figures"
+  )
+  arg_defaults <- lapply(
+    formals(func_name, envir = getNamespace('MOSuite')),
+    \(x) {
+      if (inherits(x, "name")) {
+        default <- NULL
+      } else if (inherits(x, "call")) {
+        default <- eval(x, envir = getNamespace('MOSuite'))
+      } else {
+        default <- x
+      }
+      return(default)
     }
-    return(default)
-  })
+  )
   if ("..." %in% names(arg_defaults)) {
     arg_defaults <- arg_defaults %>%
       within(rm("...")) # remove `...` argument
@@ -87,7 +99,9 @@ update_function_template <- function(
   func_args,
   keep_deprecated_args = TRUE
 ) {
-  abort_packages_not_installed("Rd2md")
+  if (!rlang::is_installed('Rd2md')) {
+    stop('Required pacakge {Rd2md} is not installed')
+  }
   new_template <- list(
     r_function = template$r_function,
     title = template$title %>% Rd2md::rd_str_to_md(),
@@ -179,18 +193,23 @@ write_json <- function(
 #' @keywords internal
 write_package_json_blueprints <-
   function(
-    input_dir = file.path("inst", "extdata", "galaxy", "template-templates"),
+    input_dir = file.path("inst", "extdata", "galaxy", "1_mosuite-templates"),
     blueprints_output_dir = file.path(
       "inst",
       "extdata",
       "galaxy",
-      "code-templates"
+      "2_blueprints"
     ),
     defaults_output_dir = file.path("inst", "extdata", "json_args", "defaults")
   ) {
-    options(moo_print_plots = TRUE)
-    options(moo_save_plots = TRUE)
-    options(moo_plots_dir = "./figures")
+    options(
+      moo_print_plots = TRUE,
+      moo_save_plots = TRUE,
+      moo_plots_dir = "./figures",
+      print_plots = TRUE, # need if this function is defined outside the package's R source directory
+      save_plots = TRUE,
+      plots_dir = "./figures"
+    )
     templates <- list.files(
       input_dir,
       pattern = ".*\\.json$",

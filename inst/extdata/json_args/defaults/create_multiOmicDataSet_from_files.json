@@ -5,6 +5,9 @@
   "feature_counts_filepath": {
     "defaultValue": null
   },
+  "count_type": {
+    "defaultValue": "raw"
+  },
   "sample_id_colname": {
     "defaultValue": null
   },
