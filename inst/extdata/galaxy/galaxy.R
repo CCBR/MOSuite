@@ -1,3 +1,5 @@
+library(dplyr)
+
 #' @keywords internal
 #' @examples
 #'
