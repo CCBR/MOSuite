@@ -191,12 +191,12 @@ write_json <- function(
 #' @keywords internal
 write_package_json_blueprints <-
   function(
-    input_dir = file.path("inst", "extdata", "galaxy", "template-templates"),
+    input_dir = file.path("inst", "extdata", "galaxy", "1_mosuite-templates"),
     blueprints_output_dir = file.path(
       "inst",
       "extdata",
       "galaxy",
-      "code-templates"
+      "2_blueprints"
     ),
     defaults_output_dir = file.path("inst", "extdata", "json_args", "defaults")
   ) {
