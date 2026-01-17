@@ -458,5 +458,5 @@ aggregate_duplicate_gene_names <- function(
     )
   }
 
-  return(counts_dat)
+  return(dfout)
 }
