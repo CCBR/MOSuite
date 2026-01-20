@@ -1,7 +1,7 @@
 {
   "r_function": "plot_pca_3d",
   "title": "PCA 3D\n",
-  "description": "The first argument can be a \nlist(\"multiOmicDataset\")\n object (\nlist(\"moo\")\n) or a \nlist(\"data.frame\")\n containing counts.\nFor a \nlist(\"moo\")\n, choose which counts slot to use with \nlist(\"count_type\")\n & (optionally) \nlist(\"sub_count_type\")\n.\nFor a \nlist(\"data.frame\")\n, you must also set \nlist(\"sample_metadata\")\n.\nAll other arguments are optional.\n",
+  "description": "3D PCA for counts dataframe\n",
   "columns": [
     {
       "key": "feature_id_colname",
