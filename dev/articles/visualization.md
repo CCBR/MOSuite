@@ -272,9 +272,9 @@ dat_volcano_enhanced <- moo@analyses$diff %>%
 #> Joining with `by = join_by(GeneName)`
 #> Joining with `by = join_by(GeneName)`
 #> Genes in initial dataset: 7943
-#> Max y: 4.60041859457821
+#> Max y: 4.60041859457819
 #> Genes in initial dataset: 7943
-#> Max y: 4.32577808863476
+#> Max y: 4.32577808863472
 ```
 
 ![](visualization_files/figure-html/volcano_enhanced-1.png)
