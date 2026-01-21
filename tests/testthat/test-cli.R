@@ -79,7 +79,24 @@ test_that("mosuite --help", {
     )),
     "help_files_with_topic"
   ))
-  expect_warning(cli_exec("not_a_function"), "not a known function")
+  expect_error(cli_exec("not_a_function"), "not a known function")
+})
+
+test_that("cli_unknown suggests closest matching function", {
+  # Test with a typo that has a close match
+  result <- cli_unknown("filter_count", getNamespaceExports("MOSuite"))
+  expect_match(result, "filter_count is not a known function")
+  expect_match(result, "Did you mean 'filter_counts'")
+
+  # Test with another typo
+  result <- cli_unknown("batch_correct_count", getNamespaceExports("MOSuite"))
+  expect_match(result, "batch_correct_count is not a known function")
+  expect_match(result, "Did you mean 'batch_correct_counts'")
+
+  # Test with completely unrelated name (no suggestions)
+  result <- cli_unknown("xyz123", getNamespaceExports("MOSuite"))
+  expect_match(result, "xyz123 is not a known function")
+  expect_false(grepl("Did you mean", result))
 })
 
 test_that("mosuite cli E2E", {
