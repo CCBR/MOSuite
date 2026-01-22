@@ -144,6 +144,22 @@
             "objectPropertyReference": null
         },
         {
+            "key": "contrast_filter",
+            "displayName": "Contrasts Filter",
+            "description": "",
+            "paramType": "SELECT",
+            "paramGroup": "Filter",
+            "paramValues": [
+                "none",
+                "keep",
+                "remove"
+            ],
+            "defaultValue": "none",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
             "key": "contrasts",
             "displayName": "Contrasts",
             "description": "",
@@ -151,6 +167,22 @@
             "paramGroup": "Filter",
             "paramValues": null,
             "defaultValue": "c()",
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "groups_filter",
+            "displayName": "Groups Filter",
+            "description": "",
+            "paramType": "SELECT",
+            "paramGroup": "Filter",
+            "paramValues": [
+                "none",
+                "keep",
+                "remove"
+            ],
+            "defaultValue": "none",
             "condition": null,
             "content": null,
             "objectPropertyReference": null
@@ -278,29 +310,29 @@
             "content": null,
             "objectPropertyReference": null
         },
+		{
+			"key": "plot_titles_fontsize",
+			"displayName": "Font Size for Plot Titles",
+			"description": "",
+			"paramType": "NUMBER",
+			"paramGroup": "Label",
+			"paramValues": null,
+			"defaultValue": 12,
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
         {
-            "key": "plot_titles_fontsize",
-            "displayName": "Font Size for Plot Titles",
-            "description": "",
-            "paramType": "NUMBER",
-            "paramGroup": "Label",
-            "paramValues": null,
-            "defaultValue": 12,
-            "condition": null,
-            "content": null,
-            "objectPropertyReference": null
-        },
-        {
-            "key": "save_plots",
-            "displayName": "Save Plots",
-            "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
-            "paramType": "BOOLEAN",
-            "paramGroup": "Visualization",
-            "paramValues": null,
-            "defaultValue": true,
-            "condition": null,
-            "content": null,
-            "objectPropertyReference": null
+        "key": "save_plots",
+        "displayName": "Save Plots",
+        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+        "paramType": "BOOLEAN",
+        "paramGroup": "Visualization",
+        "paramValues": null,
+        "defaultValue": true,
+        "condition": null,
+        "content": null,
+        "objectPropertyReference": null
         }
     ],
     "outputDatasetName": "Filtered Differential Counts from MultiOmics Dataset",
