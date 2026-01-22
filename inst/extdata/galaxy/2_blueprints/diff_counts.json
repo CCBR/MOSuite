@@ -1,6 +1,10 @@
 {
   "r_function": "diff_counts",
+<<<<<<< HEAD
   "title": "Differential Analysis\n",
+=======
+  "title": "Differential Counts Analysis\n",
+>>>>>>> 251b425f55ea9f808217ce6349292ca002059f6e
   "description": "Differential expression analysis\n",
   "columns": [
     {
