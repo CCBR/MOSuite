@@ -57,6 +57,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/nidap_venn_diagram_dat.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/nidap_volcano_summary_dat.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/normalize_counts.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/dev/reference/option_params.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/options.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_dat.html</loc></url>
@@ -77,6 +78,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/plot_volcano_enhanced.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/plot_volcano_summary.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/print_or_save_plot.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/dev/reference/read_multiOmicDataSet.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/reexports.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/remove_low_count_genes.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/rename_samples.html</loc></url>
@@ -84,5 +86,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/separate_gene_meta_columns.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/set_color_pal.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/strip_ensembl_version.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/dev/reference/write_multiOmicDataSet.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/dev/reference/write_multiOmicDataSet_properties.html</loc></url>
 </urlset>
 

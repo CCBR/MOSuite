@@ -8,6 +8,12 @@
   : Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).
 - [`multiOmicDataSet()`](https://ccbr.github.io/MOSuite/dev/reference/multiOmicDataSet.md)
   : multiOmicDataSet class
+- [`read_multiOmicDataSet()`](https://ccbr.github.io/MOSuite/dev/reference/read_multiOmicDataSet.md)
+  : Read a multiOmicDataSet from disk
+- [`write_multiOmicDataSet()`](https://ccbr.github.io/MOSuite/dev/reference/write_multiOmicDataSet.md)
+  : Write a multiOmicDataSet to disk as an RDS file
+- [`write_multiOmicDataSet_properties()`](https://ccbr.github.io/MOSuite/dev/reference/write_multiOmicDataSet_properties.md)
+  : Write multiOmicDataSet properties to disk as CSV files
 
 ## Main functions
 

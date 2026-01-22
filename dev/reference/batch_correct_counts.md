@@ -1,6 +1,6 @@
 # Perform batch correction
 
-using [`sva::ComBat()`](https://rdrr.io/pkg/sva/man/ComBat.html)
+Perform batch correction using sva::ComBat()
 
 ## Usage
 
