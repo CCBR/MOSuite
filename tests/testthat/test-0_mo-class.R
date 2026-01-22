@@ -240,6 +240,7 @@ test_that("write_multiOmicDataSet_properties works", {
       plot_type = "bar",
       plot_titles_fontsize = 12
     )
+  moo_nidap@analyses$foo <- "bar"
 
   temp_dir <- tempfile(pattern = "moo-write-")
   on.exit(unlink(temp_dir, recursive = TRUE), add = TRUE)
@@ -256,6 +257,7 @@ test_that("write_multiOmicDataSet_properties works", {
     file.exists(file.path(temp_dir, "counts", "norm", "voom_counts.csv"))
   )
 
+  expect_true(file.exists(file.path(temp_dir, "analyses", "foo.rds")))
   expect_true(file.exists(file.path(
     temp_dir,
     "analyses",
