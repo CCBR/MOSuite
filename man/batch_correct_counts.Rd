@@ -72,7 +72,7 @@ Colors must either be names in \code{grDevices::colors()} or valid hex codes.}
 \code{multiOmicDataSet} with batch-corrected counts
 }
 \description{
-using \code{sva::ComBat()}
+Perform batch correction using sva::ComBat()
 }
 \examples{
 moo <- multiOmicDataSet(

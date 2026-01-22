@@ -3,7 +3,7 @@ library(dplyr)
 #' @keywords internal
 #' @examples
 #'
-#' get_function_meta(tools::Rd_db("MOSuite"), "batch_correct_counts")
+#' get_function_meta("batch_correct_counts", tools::Rd_db("MOSuite"))
 #'
 get_function_meta <- function(func_name, rd_db) {
   func_db <- rd_db[[paste0(func_name, ".Rd")]]

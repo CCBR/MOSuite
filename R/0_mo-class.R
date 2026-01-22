@@ -346,7 +346,7 @@ read_multiOmicDataSet <- function(filepath) {
 
 #' Write multiOmicDataSet properties to disk as CSV files
 #'
-#' Writes the properties of a `multiOmicDataSet` object to disk as separate files in `output_dir`.
+#' Writes the properties of a multiOmicDataSet object to disk as separate files in output_dir.
 #' Properties that are data frames are saved as CSV files, while all other objects are saved as RDS files.
 #'
 #' @param moo `multiOmicDataSet` object to write properties from

@@ -1,6 +1,6 @@
 #' Perform batch correction
 #'
-#' using `sva::ComBat()`
+#' Perform batch correction using sva::ComBat()
 #'
 #' @inheritParams filter_counts
 #' @inheritParams option_params

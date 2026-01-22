@@ -1,7 +1,7 @@
 {
   "r_function": "write_multiOmicDataSet_properties",
   "title": "Write multiOmicDataSet Properties\n",
-  "description": "Writes the properties of a \nlist(\"multiOmicDataSet\")\n object to disk as separate files in \nlist(\"output_dir\")\n.\nProperties that are data frames are saved as CSV files, while all other objects are saved as RDS files.\n",
+  "description": "Writes the properties of a multiOmicDataSet object to disk as separate files in output_dir.\nProperties that are data frames are saved as CSV files, while all other objects are saved as RDS files.\n",
   "columns": [],
   "inputDatasets": [
     {

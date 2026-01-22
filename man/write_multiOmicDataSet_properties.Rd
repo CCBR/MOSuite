@@ -15,6 +15,6 @@ write_multiOmicDataSet_properties(moo, output_dir = "moo")
 Invisibly returns the \code{output_dir} where the files were saved
 }
 \description{
-Writes the properties of a \code{multiOmicDataSet} object to disk as separate files in \code{output_dir}.
+Writes the properties of a multiOmicDataSet object to disk as separate files in output_dir.
 Properties that are data frames are saved as CSV files, while all other objects are saved as RDS files.
 }
