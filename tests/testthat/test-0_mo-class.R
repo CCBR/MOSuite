@@ -244,7 +244,7 @@ test_that("write_multiOmicDataSet_properties works", {
   temp_dir <- tempfile(pattern = "moo-write-")
   on.exit(unlink(temp_dir, recursive = TRUE), add = TRUE)
 
-  write_multiOmicDataSet_properties(moo_nidap, temp_dir)
+  expect_equal(write_multiOmicDataSet_properties(moo_nidap, temp_dir), temp_dir)
 
   expect_true(file.exists(file.path(temp_dir, "sample_metadata.csv")))
   expect_true(file.exists(file.path(temp_dir, "feature_annotation.csv")))
@@ -256,7 +256,54 @@ test_that("write_multiOmicDataSet_properties works", {
     file.exists(file.path(temp_dir, "counts", "norm", "voom_counts.csv"))
   )
 
-  expect_true(file.exists(file.path(temp_dir, "analyses", "diff.rds")))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "diff",
+    "diff_B-A.csv"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "diff",
+    "diff_C-A.csv"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "diff",
+    "diff_B-C.csv"
+  )))
   expect_true(file.exists(file.path(temp_dir, "analyses", "diff_filt.csv")))
-  expect_true(file.exists(file.path(temp_dir, "analyses", "colors.rds")))
+  expect_true(dir.exists(file.path(temp_dir, "analyses", "colors")))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Sample.rds"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Batch.rds"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Group.rds"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Label.rds"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Replicate.rds"
+  )))
 })

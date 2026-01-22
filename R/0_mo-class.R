@@ -392,6 +392,31 @@ S7::method(write_multiOmicDataSet_properties, multiOmicDataSet) <- function(
           paste0(analysis_name, ".csv")
         )
       )
+    } else if (inherits(analysis_dat, "list")) {
+      for (sub_analysis_name in names(analysis_dat)) {
+        # make sub directory for sub analysis
+        sub_analysis_dir <- file.path(analyses_dir, analysis_name)
+        if (!dir.exists(sub_analysis_dir)) {
+          dir.create(sub_analysis_dir)
+        }
+        if (inherits(analysis_dat[[sub_analysis_name]], "data.frame")) {
+          readr::write_csv(
+            analysis_dat[[sub_analysis_name]],
+            file = file.path(
+              sub_analysis_dir,
+              paste0(analysis_name, "_", sub_analysis_name, ".csv")
+            )
+          )
+        } else {
+          saveRDS(
+            analysis_dat[[sub_analysis_name]],
+            file = file.path(
+              sub_analysis_dir,
+              paste0(analysis_name, "_", sub_analysis_name, ".rds")
+            )
+          )
+        }
+      }
     } else {
       saveRDS(
         analysis_dat,
