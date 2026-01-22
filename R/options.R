@@ -35,5 +35,6 @@ NULL
 #' @title Option parameters
 #' @eval options::as_params()
 #' @name option_params
+#' @keywords internal
 #'
 NULL
