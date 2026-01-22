@@ -5017,9 +5017,15 @@
       "key": "add_deg_columns",
       "displayName": "Add DEG Columns to Output Table",
       "description": "Add additional columns from the DEG analysis to the output dataset. Default: FALSE\n",
-      "paramType": "BOOLEAN",
+      "paramType": "MULTISELECT",
       "paramGroup": "Table",
-      "paramValues": null,
+      "paramValues": [
+        "FC",
+        "logFC",
+        "tstat",
+        "pval",
+        "adjpval"
+      ],
       "defaultValue": ["FC", "logFC", "tstat", "pval", "adjpval"],
       "condition": null,
       "content": null,

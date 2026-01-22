@@ -126,7 +126,15 @@
                 "pval",
                 "adjpval"
             ],
-            "defaultValue": "c(\"FC\",\"logFC\",\"tstat\",\"pval\",\"adjpval\")",
+            "defaultValue": [
+                "mean",
+                "sd",
+                "FC",
+                "logFC",
+                "tstat",
+                "pval",
+                "adjpval"
+            ],
             "condition": null,
             "content": null,
             "objectPropertyReference": null

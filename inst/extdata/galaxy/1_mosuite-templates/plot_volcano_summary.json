@@ -5018,10 +5018,10 @@
             "key": "add_deg_columns",
             "displayName": "Add DEG Columns to Output Table",
             "description": "Select columns from input DEG results to include in the output dataset. If \"none\" is selected, then the output will contain only columns for Gene and Contrast.",
-            "paramType": "BOOLEAN",
+            "paramType": "MULTISELECT",
             "paramGroup": "Table",
-            "paramValues": null,
-            "defaultValue": false,
+            "paramValues": ["FC", "logFC", "tstat", "pval", "adjpval"],
+            "defaultValue": ["FC", "logFC", "tstat", "pval", "adjpval"],
             "condition": null,
             "content": null,
             "objectPropertyReference": null
