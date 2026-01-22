@@ -324,6 +324,35 @@ write_multiOmicDataSet_properties <- S7::new_generic(
   }
 )
 
+#' Write a multiOmicDataSet to disk as an RDS file
+#'
+#' @param moo [multiOmicDataSet] object to serialize
+#' @param filepath Path to the RDS file to write (default: "moo.rds")
+#'
+#' @return Invisibly returns `filepath`
+#' @export
+write_multiOmicDataSet <- function(moo, filepath = "moo.rds") {
+  if (!inherits(moo, multiOmicDataSet)) {
+    stop("moo must be a multiOmicDataSet")
+  }
+  readr::write_rds(moo, filepath)
+  return(invisible(filepath))
+}
+
+#' Read a multiOmicDataSet from disk
+#'
+#' @param filepath Path to an RDS file produced by [write_multiOmicDataSet()]
+#'
+#' @return [multiOmicDataSet]
+#' @export
+read_multiOmicDataSet <- function(filepath) {
+  moo <- readr::read_rds(filepath)
+  if (!inherits(moo, multiOmicDataSet)) {
+    stop("RDS does not contain a multiOmicDataSet")
+  }
+  return(moo)
+}
+
 S7::method(write_multiOmicDataSet_properties, multiOmicDataSet) <- function(
   moo,
   output_dir = "moo"
