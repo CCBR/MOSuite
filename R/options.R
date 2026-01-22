@@ -32,6 +32,7 @@ options::define_option(
 #' @eval options::as_roxygen_docs()
 NULL
 
+#' @title Option parameters
 #' @eval options::as_params()
 #' @name option_params
 #'
