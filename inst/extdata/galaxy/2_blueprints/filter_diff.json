@@ -102,8 +102,8 @@
       "paramType": "SELECT",
       "paramGroup": "Basic",
       "paramValues": [
-        "in any contrast",
-        "in all contrasts"
+        "any",
+        "all"
       ],
       "defaultValue": "any",
       "condition": null,

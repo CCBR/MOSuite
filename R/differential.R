@@ -669,7 +669,7 @@ filter_diff <- function(
     feature_id_colname <- colnames(diff_dat)[1]
   }
   if (!(filtering_mode %in% c("any", "all"))) {
-    stop(glue::glue("filter_mode not recognized: {filtering_mode}"))
+    stop(glue::glue("filtering_mode not recognized: {filtering_mode}"))
   }
   if (!(plot_type %in% c("bar", "pie"))) {
     stop(glue::glue("plot_type not recognized: {plot_type}"))

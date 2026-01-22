@@ -103,10 +103,10 @@
             "paramType": "SELECT",
             "paramGroup": "Basic",
             "paramValues": [
-                "in any contrast",
-                "in all contrasts"
+                "any",
+                "all"
             ],
-            "defaultValue": "in any contrast",
+            "defaultValue": "any",
             "condition": null,
             "content": null,
             "objectPropertyReference": null
@@ -310,29 +310,29 @@
             "content": null,
             "objectPropertyReference": null
         },
-		{
-			"key": "plot_titles_fontsize",
-			"displayName": "Font Size for Plot Titles",
-			"description": "",
-			"paramType": "NUMBER",
-			"paramGroup": "Label",
-			"paramValues": null,
-			"defaultValue": 12,
-			"condition": null,
-			"content": null,
-			"objectPropertyReference": null
-		},
         {
-        "key": "save_plots",
-        "displayName": "Save Plots",
-        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
-        "paramType": "BOOLEAN",
-        "paramGroup": "Visualization",
-        "paramValues": null,
-        "defaultValue": true,
-        "condition": null,
-        "content": null,
-        "objectPropertyReference": null
+            "key": "plot_titles_fontsize",
+            "displayName": "Font Size for Plot Titles",
+            "description": "",
+            "paramType": "NUMBER",
+            "paramGroup": "Label",
+            "paramValues": null,
+            "defaultValue": 12,
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "save_plots",
+            "displayName": "Save Plots",
+            "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Visualization",
+            "paramValues": null,
+            "defaultValue": true,
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
         }
     ],
     "outputDatasetName": "Filtered Differential Counts from MultiOmics Dataset",
