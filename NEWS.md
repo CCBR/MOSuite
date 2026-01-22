@@ -2,7 +2,7 @@
 
 - Improvements for use with Galaxy. (#168, #170, #171, @kelly-sovacool)
 - New function `write_multiOmicDataSet_properties()`. (#173, @kelly-sovacool)
-  - Wxtracts all the properties from a multiOmicDataSet and writes any data frames as csv files, other objects are written as rds files.
+  - Extracts all the properties from a multiOmicDataSet and writes any data frames as csv files, other objects are written as rds files.
 
 
 # MOSuite 0.2.1
