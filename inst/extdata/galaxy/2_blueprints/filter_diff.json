@@ -143,44 +143,12 @@
       "objectPropertyReference": null
     },
     {
-      "key": "contrast_filter",
-      "displayName": "Contrasts Filter",
-      "description": "Whether to filter `contrasts` in or our of analysis. If `\"keep\"`, only the contrast names\nlisted in `contrasts` will be included. If `\"remove`, the contrast names listed by `contrasts` will be removed. If\n`\"none\"`, all contrasts in the dataset are used. Options: `\"keep\"`, `\"remove\"`, or `\"none\"`",
-      "paramType": "SELECT",
-      "paramGroup": "Filter",
-      "paramValues": [
-        "none",
-        "keep",
-        "remove"
-      ],
-      "defaultValue": "none",
-      "condition": null,
-      "content": null,
-      "objectPropertyReference": null
-    },
-    {
       "key": "contrasts",
       "displayName": "Contrasts",
       "description": "Contrast names to filter by `contrast_filter`. If `contrast_filter` is `\"none\"`, this parameter has\nno effect.\n",
       "paramType": "VECTOR",
       "paramGroup": "Filter",
       "paramValues": null,
-      "condition": null,
-      "content": null,
-      "objectPropertyReference": null
-    },
-    {
-      "key": "groups_filter",
-      "displayName": "Groups Filter",
-      "description": "Whether to filter `groups` in or out of analysis. If `\"keep\"`, only the group names listed in\n`groups` will be included. If `\"remove\"`, the group names listed by `groups` will be removed. If `\"none\"`, all\ngroups in the dataset are used.\n",
-      "paramType": "SELECT",
-      "paramGroup": "Filter",
-      "paramValues": [
-        "none",
-        "keep",
-        "remove"
-      ],
-      "defaultValue": "none",
       "condition": null,
       "content": null,
       "objectPropertyReference": null
