@@ -374,7 +374,6 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
       sample_metadata = moo_counts@sample_meta,
       count_type = count_type,
       sub_count_type = sub_count_type,
-      principal_components = principal_components,
       feature_id_colname = feature_id_colname,
       sample_id_colname = sample_id_colname,
       samples_to_rename = samples_to_rename,
