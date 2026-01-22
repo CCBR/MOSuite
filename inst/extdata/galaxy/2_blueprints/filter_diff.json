@@ -1,6 +1,6 @@
 {
   "r_function": "filter_diff",
-  "title": "DEG Gene List\n",
+  "title": "Filter Differential Counts\n",
   "description": "Outputs dataset of significant genes from DEG table; filters genes based on statistical significance (p-value or\nadjusted p-value) and change (fold change, log2 fold change, or t-statistic); in addition allows for selection of DEG\nestimates and for sub-setting of contrasts and groups included in the output gene list.\n",
   "columns": [
     {

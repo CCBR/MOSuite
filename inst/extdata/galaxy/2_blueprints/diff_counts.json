@@ -1,6 +1,6 @@
 {
   "r_function": "diff_counts",
-  "title": "DEG Analysis\n",
+  "title": "Differential Counts Analysis\n",
   "description": "Differential expression analysis\n",
   "columns": [
     {

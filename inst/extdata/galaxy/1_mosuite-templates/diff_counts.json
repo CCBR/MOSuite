@@ -1,5 +1,5 @@
 {
-    "title": "DEG Analysis",
+    "title": "Differential Counts Analysis",
     "description": "Performs Differential Expression of Genes (DEG) Analysis.\n\nThis template takes (filtered) raw counts as its input and transforms this count data to log2-counts per million (logCPM). The normalization and DEG analysis is implemented using the Limma Voom R package.\n\nThe returned counts matrix contains normalized counts, not batch corrected counts. The DEG analysis accounts for batch using covariates, however. You can optionally also return mean and standard deviation of normalized expression within groups.\n\nThis template will support up to 2 factors",
     "r_function": "diff_counts",
     "columns": [
@@ -163,16 +163,16 @@
             "objectPropertyReference": null
         },
         {
-        "key": "save_plots",
-        "displayName": "Save Plots",
-        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
-        "paramType": "BOOLEAN",
-        "paramGroup": "Visualization",
-        "paramValues": null,
-        "defaultValue": true,
-        "condition": null,
-        "content": null,
-        "objectPropertyReference": null
+            "key": "save_plots",
+            "displayName": "Save Plots",
+            "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Visualization",
+            "paramValues": null,
+            "defaultValue": true,
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
         }
     ],
     "outputDatasetName": "Differential Counts from MultiOmics Dataset",
