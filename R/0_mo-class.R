@@ -277,6 +277,9 @@ extract_counts <- S7::new_generic(
   }
 )
 
+#' @rdname extract_counts
+#' @name extract_counts
+#' @export
 S7::method(extract_counts, multiOmicDataSet) <- function(
   moo,
   count_type,
@@ -315,6 +318,7 @@ S7::method(extract_counts, multiOmicDataSet) <- function(
   }
   return(counts_dat)
 }
+
 #' Write a multiOmicDataSet to disk as an RDS file
 #'
 #' @param moo [multiOmicDataSet] object to serialize
@@ -362,6 +366,9 @@ write_multiOmicDataSet_properties <- S7::new_generic(
   }
 )
 
+#' @rdname write_multiOmicDataSet_properties
+#' @name write_multiOmicDataSet_properties
+#' @export
 S7::method(write_multiOmicDataSet_properties, multiOmicDataSet) <- function(
   moo,
   output_dir = "moo"
