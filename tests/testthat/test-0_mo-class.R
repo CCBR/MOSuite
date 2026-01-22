@@ -194,3 +194,69 @@ test_that("extract_counts works", {
   )
   expect_error(extract_counts(moo, "norm"), "contains subtypes")
 })
+
+
+test_that("write_multiOmicDataSet_properties works", {
+  moo_nidap <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts),
+      "norm" = list("voom" = as.data.frame(nidap_norm_counts))
+    )
+  ) %>%
+    diff_counts(
+      count_type = "filt",
+      sub_count_type = NULL,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      covariates_colnames = c("Group", "Batch"),
+      contrast_colname = c("Group"),
+      contrasts = c("B-A", "C-A", "B-C"),
+      voom_normalization_method = "quantile",
+    ) %>%
+    filter_diff(
+      significance_column = "adjpval",
+      significance_cutoff = 0.05,
+      change_column = "logFC",
+      change_cutoff = 1,
+      filtering_mode = "any",
+      include_estimates = c("FC", "logFC", "tstat", "pval", "adjpval"),
+      round_estimates = TRUE,
+      rounding_decimal_for_percent_cells = 0,
+      contrast_filter = "none",
+      contrasts = c(),
+      groups = c(),
+      groups_filter = "none",
+      label_font_size = 6,
+      label_distance = 1,
+      y_axis_expansion = 0.08,
+      fill_colors = c("steelblue1", "whitesmoke"),
+      pie_chart_in_3d = TRUE,
+      bar_width = 0.4,
+      draw_bar_border = TRUE,
+      plot_type = "bar",
+      plot_titles_fontsize = 12
+    )
+
+  temp_dir <- tempfile(pattern = "moo-write-")
+  on.exit(unlink(temp_dir, recursive = TRUE), add = TRUE)
+
+  write_multiOmicDataSet_properties(moo_nidap, temp_dir)
+
+  expect_true(file.exists(file.path(temp_dir, "sample_metadata.csv")))
+  expect_true(file.exists(file.path(temp_dir, "feature_annotation.csv")))
+
+  expect_true(file.exists(file.path(temp_dir, "counts", "raw_counts.csv")))
+  expect_true(file.exists(file.path(temp_dir, "counts", "clean_counts.csv")))
+  expect_true(file.exists(file.path(temp_dir, "counts", "filt_counts.csv")))
+  expect_true(
+    file.exists(file.path(temp_dir, "counts", "norm", "voom_counts.csv"))
+  )
+
+  expect_true(file.exists(file.path(temp_dir, "analyses", "diff.rds")))
+  expect_true(file.exists(file.path(temp_dir, "analyses", "diff_filt.csv")))
+  expect_true(file.exists(file.path(temp_dir, "analyses", "colors.rds")))
+})

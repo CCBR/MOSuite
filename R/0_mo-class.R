@@ -315,3 +315,93 @@ S7::method(extract_counts, multiOmicDataSet) <- function(
   }
   return(counts_dat)
 }
+
+write_multiOmicDataSet_properties <- S7::new_generic(
+  "write_multiOmicDataSet_properties",
+  "moo",
+  function(moo, output_dir = "moo") {
+    return(S7::S7_dispatch())
+  }
+)
+
+S7::method(write_multiOmicDataSet_properties, multiOmicDataSet) <- function(
+  moo,
+  output_dir = "moo"
+) {
+  if (!dir.exists(output_dir)) {
+    dir.create(output_dir, recursive = TRUE)
+  }
+
+  # write sample metadata
+  readr::write_csv(
+    moo@sample_meta,
+    file = file.path(output_dir, "sample_metadata.csv")
+  )
+
+  # write annotation data
+  readr::write_csv(
+    moo@annotation,
+    file = file.path(output_dir, "feature_annotation.csv")
+  )
+
+  # write counts
+  counts_dir <- file.path(output_dir, "counts")
+  if (!dir.exists(counts_dir)) {
+    dir.create(counts_dir)
+  }
+  for (count_type in names(moo@counts)) {
+    counts_dat <- moo@counts[[count_type]]
+    if (inherits(counts_dat, "list")) {
+      sub_counts_dir <- file.path(counts_dir, count_type)
+      if (!dir.exists(sub_counts_dir)) {
+        dir.create(sub_counts_dir)
+      }
+      for (sub_count_type in names(counts_dat)) {
+        readr::write_csv(
+          counts_dat[[sub_count_type]],
+          file = file.path(
+            sub_counts_dir,
+            paste0(sub_count_type, "_counts.csv")
+          )
+        )
+      }
+    } else {
+      readr::write_csv(
+        counts_dat,
+        file = file.path(
+          counts_dir,
+          paste0(count_type, "_counts.csv")
+        )
+      )
+    }
+  }
+
+  # write analyses
+  analyses_dir <- file.path(output_dir, "analyses")
+  if (!dir.exists(analyses_dir)) {
+    dir.create(analyses_dir)
+  }
+
+  for (analysis_name in names(moo@analyses)) {
+    analysis_dat <- moo@analyses[[analysis_name]]
+    if (inherits(analysis_dat, "data.frame")) {
+      readr::write_csv(
+        analysis_dat,
+        file = file.path(
+          analyses_dir,
+          paste0(analysis_name, ".csv")
+        )
+      )
+    } else {
+      saveRDS(
+        analysis_dat,
+        file = file.path(
+          analyses_dir,
+          paste0(analysis_name, ".rds")
+        )
+      )
+    }
+  }
+
+  return(invisible(output_dir))
+}
