@@ -5113,7 +5113,7 @@
     ],
     "outputDatasetName": "Volcano Plot - Summary",
     "outputs": {
-        "analysis": {
+        "multiOmicDataSet": {
             "type": "file",
             "name": "summary_data.rds"
         },

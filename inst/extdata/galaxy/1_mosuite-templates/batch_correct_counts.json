@@ -155,7 +155,7 @@
     ],
     "outputDatasetName": "Batch-corrected MultiOmics Dataset",
     "outputs": {
-        "analysis": {
+        "multiOmicDataSet": {
             "type": "file",
             "name": "moo.rds"
         },

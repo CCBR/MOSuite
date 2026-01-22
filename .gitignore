@@ -14,3 +14,4 @@ VennDiagram.*.log
 *_files/
 /tmp
 vignettes/args*.json
+Rplots.pdf

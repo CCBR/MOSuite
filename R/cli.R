@@ -31,7 +31,7 @@ cli_exec_impl <- function(clargs) {
   # check for known function in MOSuite
   exports <- getNamespaceExports("MOSuite")
   if (!method %in% exports) {
-    return(cli_unknown(method, exports))
+    return(stop(cli_unknown(method, exports)))
   }
 
   # begin building call
@@ -111,20 +111,18 @@ cli_help <- function(method) {
 
 cli_unknown <- function(method, exports) {
   # report unknown command
-  warning(glue::glue("MOSuite: {method} is not a known function."))
+  msg <- glue::glue("MOSuite: {method} is not a known function.")
 
   # check for similar commands
   distance <- c(utils::adist(method, exports))
   names(distance) <- exports
   n <- min(distance)
-  if (n > 2) {
-    return(1L)
+  if (n < 4) {
+    candidates <- names(distance)[distance == n]
+    candidates_str <- paste(shQuote(candidates), collapse = " or ")
+    msg <- glue::glue(msg, "\n Did you mean {candidates_str}?")
   }
-
-  candidates <- names(distance)[distance == n]
-  fmt <- "did you mean %s?"
-  warning(fmt, paste(shQuote(candidates), collapse = " or "))
-  return(1L)
+  return(msg)
 }
 
 cli_parse <- function(text) {

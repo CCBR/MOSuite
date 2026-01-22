@@ -1,5 +1,7 @@
 # MOSuite development version
 
+- Improvements for use with Galaxy. (#168, #170, #171, @kelly-sovacool)
+
 # MOSuite 0.2.1
 
 - A docker image is now available. (#134)

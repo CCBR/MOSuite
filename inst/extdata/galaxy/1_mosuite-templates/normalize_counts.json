@@ -402,7 +402,7 @@
     ],
     "outputDatasetName": "Normalized Counts in MultiOmics Dataset",
     "outputs": {
-        "analysis": {
+        "multiOmicDataSet": {
             "type": "file",
             "name": "moo.rds"
         },
