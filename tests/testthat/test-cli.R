@@ -135,7 +135,9 @@ test_that("mosuite cli E2E", {
     run_function_cli("batch_correct_counts")
     run_function_cli("diff_counts")
     run_function_cli("filter_diff")
+    run_function_cli("write_multiOmicDataSet_properties")
 
+    expect_true(file.exists(file.path("moo", "sample_metadata.csv")))
     expect_true(file.exists("moo_diff_filter.rds"))
     moo <- readr::read_rds("moo_diff_filter.rds")
     expect_equal(names(moo@counts), c("raw", "clean", "filt", "norm", "batch"))

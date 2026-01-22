@@ -1,7 +1,7 @@
 {
   "r_function": "batch_correct_counts",
   "title": "Batch Correction\n",
-  "description": "using \nlist(\"sva::ComBat()\")\n",
+  "description": "Perform batch correction using sva::ComBat()\n",
   "columns": [
     {
       "key": "feature_id_colname",
