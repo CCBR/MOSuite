@@ -1,0 +1,53 @@
+{
+	"title": "Write multiOmicDataSet Properties",
+	"description": "Export the contents of a multiOmicDataSet (sample metadata, feature annotation, counts, and analyses) to a directory of CSV/RDS files for downstream use or inspection.",
+	"r_function": "write_multiOmicDataSet_properties",
+	"columns": [],
+	"inputDatasets": [
+		{
+			"key": "moo_input_rds",
+			"displayName": "MOO input Rds",
+			"description": "File path to the input multiOmicDataSet (MOO) RDS file.",
+			"paramType": "STRING",
+			"paramGroup": "basic",
+			"paramValues": null,
+			"defaultValue": "moo.rds",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		}
+	],
+	"parameters": [
+		{
+			"key": "output_dir",
+			"displayName": "Output Directory",
+			"description": "Directory where properties will be written (sample_metadata.csv, feature_annotation.csv, counts/, analyses/).",
+			"paramType": "STRING",
+			"paramGroup": "Basic",
+			"paramValues": null,
+			"defaultValue": "moo",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		}
+	],
+	"outputDatasetName": "multiOmicDataSet Properties",
+	"outputs": {
+		"sample_metadata": {
+			"type": "file",
+			"name": "sample_metadata.csv"
+		},
+		"feature_annotation": {
+			"type": "file",
+			"name": "feature_annotation.csv"
+		},
+		"counts": {
+			"type": "directory",
+			"name": "counts/"
+		},
+		"analyses": {
+			"type": "directory",
+			"name": "analyses/"
+		}
+	}
+}

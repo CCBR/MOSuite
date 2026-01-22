@@ -315,15 +315,6 @@ S7::method(extract_counts, multiOmicDataSet) <- function(
   }
   return(counts_dat)
 }
-
-write_multiOmicDataSet_properties <- S7::new_generic(
-  "write_multiOmicDataSet_properties",
-  "moo",
-  function(moo, output_dir = "moo") {
-    return(S7::S7_dispatch())
-  }
-)
-
 #' Write a multiOmicDataSet to disk as an RDS file
 #'
 #' @param moo [multiOmicDataSet] object to serialize
@@ -352,6 +343,24 @@ read_multiOmicDataSet <- function(filepath) {
   }
   return(moo)
 }
+
+#' Write multiOmicDataSet properties to disk as CSV files
+#'
+#' Writes the properties of a `multiOmicDataSet` object to disk as separate files in `output_dir`.
+#' Properties that are data frames are saved as CSV files, while all other objects are saved as RDS files.
+#'
+#' @param moo `multiOmicDataSet` object to write properties from
+#' @param output_dir Directory where the properties will be saved (default: "moo")
+#' @return Invisibly returns the `output_dir` where the files were saved
+#' @export
+#'
+write_multiOmicDataSet_properties <- S7::new_generic(
+  "write_multiOmicDataSet_properties",
+  "moo",
+  function(moo, output_dir = "moo") {
+    return(S7::S7_dispatch())
+  }
+)
 
 S7::method(write_multiOmicDataSet_properties, multiOmicDataSet) <- function(
   moo,
