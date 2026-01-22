@@ -216,7 +216,7 @@
     }
   ],
   "outputs": {
-    "analysis": {
+    "multiOmicDataSet": {
       "type": "file",
       "name": "plot.rds"
     },

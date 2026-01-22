@@ -81,7 +81,7 @@
     ],
     "outputDatasetName": "MultiOmics Dataset",
     "outputs": {
-        "analysis": {
+        "multiOmicDataSet": {
             "type": "file",
             "name": "moo.rds"
         }

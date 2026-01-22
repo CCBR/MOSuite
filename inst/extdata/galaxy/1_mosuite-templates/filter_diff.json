@@ -337,7 +337,7 @@
     ],
     "outputDatasetName": "Filtered Differential Counts from MultiOmics Dataset",
     "outputs": {
-        "analysis": {
+        "multiOmicDataSet": {
             "type": "file",
             "name": "moo.rds"
         },

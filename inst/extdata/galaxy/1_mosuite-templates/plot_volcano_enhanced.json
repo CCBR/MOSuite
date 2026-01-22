@@ -319,7 +319,7 @@
     ],
     "outputDatasetName": "Volcano Plot - Enhanced",
     "outputs": {
-        "analysis": {
+        "multiOmicDataSet": {
             "type": "file",
             "name": "enhanced_volcano_plot.rds"
         },

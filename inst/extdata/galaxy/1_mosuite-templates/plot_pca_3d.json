@@ -221,7 +221,7 @@
     ],
     "outputDatasetName": "3D PCA Plot",
     "outputs": {
-        "analysis": {
+        "multiOmicDataSet": {
             "type": "file",
             "name": "plot.rds"
         },

@@ -571,7 +571,7 @@
     ],
     "outputDatasetName": "Expression Heatmap Plot",
     "outputs": {
-        "analysis": {
+        "multiOmicDataSet": {
             "type": "file",
             "name": "expr_heatmap_plot.rds"
         },
