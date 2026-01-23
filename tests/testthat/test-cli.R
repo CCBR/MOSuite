@@ -136,7 +136,7 @@ test_that("mosuite cli E2E", {
     run_function_cli("diff_counts")
     run_function_cli("filter_diff")
     run_function_cli("write_multiOmicDataSet_properties")
-    # run_function_cli("plot_expr_heatmap")
+    run_function_cli("plot_expr_heatmap")
     # run_function_cli("plot_pca_2d")
     # run_function_cli("plot_pca_3d")
     # run_function_cli("plot_volcano_enhanced")
