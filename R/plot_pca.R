@@ -278,6 +278,8 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 #' @seealso [plot_pca] generic
 #' @family PCA functions
 #'
+#' @rdname plot_pca_2d
+#' @name plot_pca_2d
 S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   moo_counts,
   count_type = NULL,

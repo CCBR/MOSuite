@@ -1,5 +1,8 @@
 {
-  "counts_dat": null,
+  "moo_input_rds": "moo.rds",
+  "moo_output_rds": "moo.rds",
+  "count_type": null,
+  "sub_count_type": null,
   "sample_metadata": null,
   "sample_id_colname": null,
   "feature_id_colname": null,

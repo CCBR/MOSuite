@@ -5,8 +5,10 @@
 \title{Perform and plot a 2D Principal Components Analysis}
 \usage{
 plot_pca_2d(
-  counts_dat,
-  sample_metadata,
+  moo_counts,
+  count_type = NULL,
+  sub_count_type = NULL,
+  sample_metadata = NULL,
   sample_id_colname = NULL,
   feature_id_colname = NULL,
   group_colname = "Group",
@@ -29,7 +31,13 @@ plot_pca_2d(
 )
 }
 \arguments{
-\item{counts_dat}{data frame of feature counts (e.g. expected feature counts from RSEM).}
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
+slot}
+
+\item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
+
+\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
+Must be a name in \code{names(moo@counts[[count_type]])}.}
 
 \item{sample_metadata}{sample metadata as a data frame or tibble.}
 

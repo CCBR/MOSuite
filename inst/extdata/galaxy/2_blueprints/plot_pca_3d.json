@@ -60,7 +60,7 @@
     {
       "key": "count_type",
       "displayName": "Count Type",
-      "description": "the type of counts to use -- must be a name in the counts slot (`moo@counts`)\n",
+      "description": "type to assign the values of `counts_dat` to in the `counts` slot\n",
       "paramType": "STRING",
       "paramGroup": "Basic",
       "paramValues": null,
