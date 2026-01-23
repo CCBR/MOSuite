@@ -54,20 +54,28 @@ moo <- moo %>%
 #> Number of features after filtering: 7943
 #> colors_for_plots NULL
 #> colors_for_plots character
+#> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
+#> increasing max.overlaps
 ```
 
 ![](visualization_files/figure-html/nidap_filter-1.png)
-
-    #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
-    #> increasing max.overlaps
-
-![](visualization_files/figure-html/nidap_filter-2.png)
 
     #> Saving 5 x 4 in image
     #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
     #> increasing max.overlaps
 
+![](visualization_files/figure-html/nidap_filter-2.png)
+
+    #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
+    #> increasing max.overlaps
+
 ![](visualization_files/figure-html/nidap_filter-3.png)
+
+    #> Saving 5 x 4 in image
+    #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
+    #> increasing max.overlaps
+
+![](visualization_files/figure-html/nidap_filter-4.png)
 
     #> Saving 5 x 4 in image
 
@@ -78,20 +86,28 @@ moo <- moo %>%
   normalize_counts(group_colname = "Group")
 #> * normalizing filt counts
 #> Total number of features included: 7943
+#> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
+#> increasing max.overlaps
 ```
 
 ![](visualization_files/figure-html/nidap_norm-1.png)
 
-    #> Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
+    #> Saving 5 x 4 in image
+    #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
     #> increasing max.overlaps
 
 ![](visualization_files/figure-html/nidap_norm-2.png)
+
+    #> Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
+    #> increasing max.overlaps
+
+![](visualization_files/figure-html/nidap_norm-3.png)
 
     #> Saving 5 x 4 in image
     #> Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
     #> increasing max.overlaps
 
-![](visualization_files/figure-html/nidap_norm-3.png)
+![](visualization_files/figure-html/nidap_norm-4.png)
 
     #> Saving 5 x 4 in image
     #> Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
@@ -123,6 +139,10 @@ moo <- moo %>%
     #> Saving 5 x 4 in image
 
 ![](visualization_files/figure-html/nidap_batch-3.png)
+
+    #> Saving 5 x 4 in image
+
+![](visualization_files/figure-html/nidap_batch-4.png)
 
     #> The total number of features in output: 7943
     #> Number of samples after batch correction: 10

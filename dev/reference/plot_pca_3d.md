@@ -37,8 +37,7 @@ plot_pca_3d(
 
 - count_type:
 
-  the type of counts to use – must be a name in the counts slot
-  (`moo@counts`)
+  type to assign the values of `counts_dat` to in the `counts` slot
 
 - sub_count_type:
 

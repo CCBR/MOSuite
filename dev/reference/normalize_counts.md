@@ -259,6 +259,7 @@ moo <- multiOmicDataSet(
 #> Total number of features included: 7943
 #> Saving 6.67 x 6.67 in image
 #> Saving 6.67 x 6.67 in image
+#> Saving 6.67 x 6.67 in image
 #> Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
 head(moo@counts[["norm"]][["voom"]])
 #>            Gene       A1       A2       A3       B1       B2       B3       C1

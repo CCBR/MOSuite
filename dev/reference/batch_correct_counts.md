@@ -165,6 +165,7 @@ moo <- multiOmicDataSet(
 #> Adjusting the Data
 #> Saving 6.67 x 6.67 in image
 #> Saving 6.67 x 6.67 in image
+#> Saving 6.67 x 6.67 in image
 #> The total number of features in output: 7943
 #> Number of samples after batch correction: 10
 

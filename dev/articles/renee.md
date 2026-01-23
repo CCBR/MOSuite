@@ -126,10 +126,12 @@ moo <- moo %>%
 #> 
 #> Saving 7.29 x 4.51 in image
 #> Saving 7.29 x 4.51 in image
+#> Saving 7.29 x 4.51 in image
 #> * normalizing filt counts
 #> 
 #> Total number of features included: 291
 #> 
+#> Saving 7.29 x 4.51 in image
 #> Saving 7.29 x 4.51 in image
 #> Saving 7.29 x 4.51 in image
 #> Sample columns: KO_S3, Sample columns: KO_S4, Sample columns: WT_S1, Sample columns: WT_S2

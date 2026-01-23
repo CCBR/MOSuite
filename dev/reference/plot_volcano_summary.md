@@ -217,7 +217,7 @@ plot_volcano_summary(
 - add_deg_columns:
 
   Add additional columns from the DEG analysis to the output dataset.
-  Default: FALSE
+  Default: `"FC", "logFC", "tstat", "pval", "adjpval"`
 
 - graphics_device:
 
