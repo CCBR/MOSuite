@@ -47,7 +47,7 @@
   "interactive_plots": {
     "defaultValue": false
   },
-  "plot_subdir": {
+  "plots_subdir": {
     "defaultValue": "pca"
   },
   "plot_filename": {
