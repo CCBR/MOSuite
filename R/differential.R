@@ -944,8 +944,6 @@ filter_diff <- function(
           legend.position = "top",
           panel.grid.major.x = ggplot2::element_blank(),
           panel.grid.minor.x = ggplot2::element_blank(),
-          axis.ticks.x = ggplot2::element_blank(),
-          axis.text.x = ggplot2::element_blank(),
           strip.background = ggplot2::element_blank(),
           strip.text = ggplot2::element_text(size = plot_titles_fontsize)
         ) +
