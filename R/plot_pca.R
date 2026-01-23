@@ -127,6 +127,118 @@ S7::method(plot_pca, S7::class_data.frame) <- function(
   )
 }
 
+#' @rdname plot_pca_2d
+#' @name plot_pca_2d
+#' @export
+plot_pca_2d <- S7::new_generic(
+  "plot_pca_2d",
+  "moo_counts",
+  function(
+    moo_counts,
+    count_type = NULL,
+    sub_count_type = NULL,
+    sample_metadata = NULL,
+    sample_id_colname = NULL,
+    feature_id_colname = NULL,
+    group_colname = "Group",
+    label_colname = "Label",
+    samples_to_rename = NULL,
+    color_values = c(
+      "#5954d6",
+      "#e1562c",
+      "#b80058",
+      "#00c6f8",
+      "#d163e6",
+      "#00a76c",
+      "#ff9287",
+      "#008cf9",
+      "#006e00",
+      "#796880",
+      "#FFA500",
+      "#878500"
+    ),
+    principal_components = c(1, 2),
+    legend_position = "top",
+    point_size = 1,
+    add_label = TRUE,
+    label_font_size = 3,
+    label_offset_x_ = 2,
+    label_offset_y_ = 2,
+    interactive_plots = FALSE,
+    plots_subdir = "pca",
+    plot_filename = "pca_2D.png",
+    print_plots = options::opt("print_plots"),
+    save_plots = options::opt("save_plots")
+  ) {
+    return(S7::S7_dispatch())
+  }
+)
+
+#' @rdname plot_pca_2d
+#' @name plot_pca_2d
+#' @export
+S7::method(plot_pca_2d, multiOmicDataSet) <- function(
+  moo_counts,
+  count_type = NULL,
+  sub_count_type = NULL,
+  sample_metadata = NULL,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = "Label",
+  samples_to_rename = NULL,
+  color_values = c(
+    "#5954d6",
+    "#e1562c",
+    "#b80058",
+    "#00c6f8",
+    "#d163e6",
+    "#00a76c",
+    "#ff9287",
+    "#008cf9",
+    "#006e00",
+    "#796880",
+    "#FFA500",
+    "#878500"
+  ),
+  principal_components = c(1, 2),
+  legend_position = "top",
+  point_size = 1,
+  add_label = TRUE,
+  label_font_size = 3,
+  label_offset_x_ = 2,
+  label_offset_y_ = 2,
+  interactive_plots = FALSE,
+  plots_subdir = "pca",
+  plot_filename = "pca_2D.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots")
+) {
+  counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  return(plot_pca_2d(
+    counts_dat,
+    sample_metadata = moo_counts@sample_meta,
+    sample_id_colname = sample_id_colname,
+    feature_id_colname = feature_id_colname,
+    group_colname = group_colname,
+    label_colname = label_colname,
+    samples_to_rename = samples_to_rename,
+    color_values = color_values,
+    principal_components = principal_components,
+    legend_position = legend_position,
+    point_size = point_size,
+    add_label = add_label,
+    label_font_size = label_font_size,
+    label_offset_x_ = label_offset_x_,
+    label_offset_y_ = label_offset_y_,
+    interactive_plots = interactive_plots,
+    plots_subdir = plots_subdir,
+    plot_filename = plot_filename,
+    print_plots = print_plots,
+    save_plots = save_plots
+  ))
+}
+
 #' Perform and plot a 2D Principal Components Analysis
 #'
 #' @inheritParams create_multiOmicDataSet_from_dataframes
@@ -166,9 +278,11 @@ S7::method(plot_pca, S7::class_data.frame) <- function(
 #' @seealso [plot_pca] generic
 #' @family PCA functions
 #'
-plot_pca_2d <- function(
-  counts_dat,
-  sample_metadata,
+S7::method(plot_pca_2d, S7::class_data.frame) <- function(
+  moo_counts,
+  count_type = NULL,
+  sub_count_type = NULL,
+  sample_metadata = NULL,
   sample_id_colname = NULL,
   feature_id_colname = NULL,
   group_colname = "Group",
@@ -214,12 +328,12 @@ plot_pca_2d <- function(
     sample_id_colname <- colnames(sample_metadata)[1]
   }
   if (is.null(feature_id_colname)) {
-    feature_id_colname <- colnames(counts_dat)[1]
+    feature_id_colname <- colnames(moo_counts)[1]
   }
 
   # calculate PCA
   pca_df <- calc_pca(
-    counts_dat = counts_dat,
+    counts_dat = moo_counts,
     sample_metadata = sample_metadata,
     sample_id_colname = sample_id_colname,
     feature_id_colname = feature_id_colname
