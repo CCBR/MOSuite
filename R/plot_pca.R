@@ -131,6 +131,7 @@ S7::method(plot_pca, S7::class_data.frame) <- function(
 #'
 #' @inheritParams create_multiOmicDataSet_from_dataframes
 #' @inheritParams plot_histogram
+#' @inheritParams plot_expr_heatmap
 #' @inheritParams filter_counts
 #'
 #' @param sample_metadata sample metadata as a data frame or tibble.
@@ -195,7 +196,7 @@ plot_pca_2d <- function(
   label_offset_x_ = 2,
   label_offset_y_ = 2,
   interactive_plots = FALSE,
-  plot_subdir = "pca",
+  plots_subdir = "pca",
   plot_filename = "pca_2D.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots")
@@ -292,7 +293,7 @@ plot_pca_2d <- function(
 
   print_or_save_plot(
     pca_plot,
-    filename = file.path(plot_subdir, plot_filename),
+    filename = file.path(plots_subdir, plot_filename),
     print_plots = print_plots,
     save_plots = save_plots
   )
@@ -414,7 +415,6 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
 #' @param principal_components vector with numbered principal components to plot
 #' @param point_size size for `ggplot2::geom_point()`
 #' @param plot_title title for the plot
-#' @param plot_filename plot output filename - only used if save_plots is TRUE
 #'
 #' @export
 #' @returns `plotly::plot_ly` figure

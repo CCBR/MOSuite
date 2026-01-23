@@ -22,7 +22,7 @@ plot_pca_2d(
   label_offset_x_ = 2,
   label_offset_y_ = 2,
   interactive_plots = FALSE,
-  plot_subdir = "pca",
+  plots_subdir = "pca",
   plot_filename = "pca_2D.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots")
@@ -76,6 +76,10 @@ which new name: old_name: new_name}
 \item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover
 your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
 is set to \code{TRUE}. Default is \code{FALSE}.}
+
+\item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
+
+\item{plot_filename}{plot output filename - only used if save_plots is TRUE}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
