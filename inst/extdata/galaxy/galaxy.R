@@ -73,7 +73,8 @@ get_function_args <- function(func_meta) {
     \(x) !stringr::str_starts(x, "moo"),
     names(func_meta$args)
   )
-  func_args <- func_meta$args[func_names]
+  func_args <- lapply(func_names, \(x) func_meta$args[[x]][['defaultValue']])
+
   if (stringr::str_starts(names(func_meta$args)[1], "moo")) {
     func_names <- c("moo_input_rds", "moo_output_rds", func_names)
     func_args <- c("moo.rds", "moo.rds", func_args)
@@ -96,7 +97,6 @@ get_function_args <- function(func_meta) {
 update_function_template <- function(
   template,
   func_meta,
-  func_args,
   keep_deprecated_args = TRUE
 ) {
   if (!rlang::is_installed('Rd2md')) {
@@ -118,9 +118,9 @@ update_function_template <- function(
       arg_name <- template[[arg_type]][[i]]$key
       if (arg_name %in% names(func_meta$args)) {
         arg_meta <- template[[arg_type]][[i]]
-        arg_meta$description <- func_args[[arg_name]]$description %>%
+        arg_meta$description <- func_meta$args[[arg_name]]$description %>%
           Rd2md::rd_str_to_md()
-        arg_meta$defaultValue <- func_args[[arg_name]]$defaultValue
+        arg_meta$defaultValue <- func_meta$args[[arg_name]]$defaultValue
         args_in_template <- c(args_in_template, arg_name)
         new_template[[arg_type]][[
           length(new_template[[arg_type]]) + 1
@@ -227,15 +227,14 @@ write_package_json_blueprints <-
       # write default arguments
       func_args <- get_function_args(func_meta)
       write_json(
-        lapply(func_args, \(x) x["defaultValue"]),
+        func_args,
         file.path(defaults_output_dir, glue::glue("{r_function}.json"))
       )
 
       # write galaxy blueprint template
       updated_template <- update_function_template(
         template,
-        func_meta,
-        func_args
+        func_meta
       )
       write_json(
         updated_template,

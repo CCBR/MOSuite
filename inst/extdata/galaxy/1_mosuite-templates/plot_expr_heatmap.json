@@ -80,18 +80,6 @@
     ],
     "parameters": [
         {
-            "key": "moo_output_rds",
-            "displayName": "Plot output Rds",
-            "description": "File path to output the plot object as an Rds file",
-            "paramType": "STRING",
-            "paramGroup": "basic",
-            "paramValues": null,
-            "defaultValue": "expr_heatmap_plot.rds",
-            "condition": null,
-            "content": null,
-            "objectPropertyReference": null
-        },
-        {
             "key": "count_type",
             "displayName": "Count Type",
             "description": "",
@@ -571,10 +559,6 @@
     ],
     "outputDatasetName": "Expression Heatmap Plot",
     "outputs": {
-        "multiOmicDataSet": {
-            "type": "file",
-            "name": "expr_heatmap_plot.rds"
-        },
         "figures": {
             "type": "file",
             "name": "figures/heatmap/expr_heatmap.png"

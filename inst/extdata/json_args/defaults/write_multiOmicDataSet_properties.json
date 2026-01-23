@@ -1,7 +1,5 @@
 {
-  "moo_input_rds": null,
-  "moo_output_rds": null,
-  "output_dir": {
-    "defaultValue": "moo"
-  }
+  "moo_input_rds": "moo.rds",
+  "moo_output_rds": "moo.rds",
+  "output_dir": "moo"
 }

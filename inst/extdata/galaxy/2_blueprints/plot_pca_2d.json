@@ -1,7 +1,7 @@
 {
-  "r_function": "plot_pca_3d",
-  "title": "PCA 3D\n",
-  "description": "3D PCA for counts dataframe\n",
+  "r_function": "plot_pca_2d",
+  "title": "PCA 2D\n",
+  "description": "Perform and plot a 2D Principal Components Analysis\n",
   "columns": [
     {
       "key": "feature_id_colname",
@@ -80,13 +80,73 @@
       "objectPropertyReference": null
     },
     {
+      "key": "principal_components",
+      "displayName": "Principal Components",
+      "description": "vector with numbered principal components to plot\n",
+      "paramType": "MULTISELECT",
+      "paramGroup": "Basic",
+      "paramValues": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "defaultValue": [1, 2],
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
       "key": "point_size",
       "displayName": "Point Size",
       "description": "size for `ggplot2::geom_point()`",
       "paramType": "NUMBER",
       "paramGroup": "Visualization",
       "paramValues": null,
-      "defaultValue": 8,
+      "defaultValue": 1,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "add_label",
+      "displayName": "Add Labels",
+      "description": "whether to add text labels for the points\n",
+      "paramType": "BOOLEAN",
+      "paramGroup": "Visualization",
+      "paramValues": null,
+      "defaultValue": true,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "label_font_size",
+      "displayName": "Label Font Size",
+      "description": "label font size for the PCA plot\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Visualization",
+      "paramValues": null,
+      "defaultValue": 3,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "legend_position",
+      "displayName": "Legend Position",
+      "description": "passed to in `legend.position``ggplot2::theme()`",
+      "paramType": "SELECT",
+      "paramGroup": "Visualization",
+      "paramValues": [
+        "top",
+        "bottom",
+        "left",
+        "right",
+        "none"
+      ],
+      "defaultValue": "top",
       "condition": null,
       "content": null,
       "objectPropertyReference": null
@@ -179,13 +239,13 @@
       "objectPropertyReference": null
     },
     {
-      "key": "plot_title",
-      "displayName": "Plot Title",
-      "description": "title for the plot\n",
-      "paramType": "STRING",
+      "key": "interactive_plots",
+      "displayName": "Interactive Plots",
+      "description": "set to TRUE to make PCA and Histogram plots interactive with `plotly`, allowing you to hover\nyour mouse over a point or line to view sample information. The similarity heat map will not display if this toggle\nis set to `TRUE`. Default is `FALSE`.\n",
+      "paramType": "BOOLEAN",
       "paramGroup": "Visualization",
       "paramValues": null,
-      "defaultValue": "PCA 3D",
+      "defaultValue": false,
       "condition": null,
       "content": null,
       "objectPropertyReference": null
@@ -196,7 +256,10 @@
       "description": "Whether to save plots to files during analysis (Defaults to `TRUE`, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')\n",
       "paramType": "BOOLEAN",
       "paramGroup": "Visualization",
-      "paramValues": null,
+      "paramValues": [
+        true,
+        false
+      ],
       "defaultValue": true,
       "condition": null,
       "content": null,
@@ -206,7 +269,7 @@
   "outputs": {
     "figures": {
       "type": "file",
-      "name": "figures/pca/pca_3D.html"
+      "name": "figures/pca/pca_2D.png"
     }
   }
 }

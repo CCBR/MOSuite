@@ -1,188 +1,52 @@
 {
-  "moo_input_rds": "tests/testthat/data/moo.rds",
-  "moo_output_rds": "tests/testthat/data/moo.rds",
-  "feature_id_colname": {
-    "defaultValue": null
-  },
-  "signif_colname": {
-    "defaultValue": "pval"
-  },
-  "signif_threshold": {
-    "defaultValue": 0.05
-  },
-  "change_threshold": {
-    "defaultValue": 1
-  },
-  "value_to_sort_the_output_dataset": {
-    "defaultValue": "t-statistic"
-  },
-  "num_features_to_label": {
-    "defaultValue": 30
-  },
-  "add_features": {
-    "defaultValue": false
-  },
-  "label_features": {
-    "defaultValue": false
-  },
-  "custom_gene_list": {
-    "defaultValue": ""
-  },
-  "default_label_color": {
-    "defaultValue": "black"
-  },
-  "custom_label_color": {
-    "defaultValue": "green3"
-  },
-  "label_x_adj": {
-    "defaultValue": 0.2
-  },
-  "label_y_adj": {
-    "defaultValue": 0.2
-  },
-  "line_thickness": {
-    "defaultValue": 0.5
-  },
-  "label_font_size": {
-    "defaultValue": 4
-  },
-  "label_font_type": {
-    "defaultValue": 1
-  },
-  "displace_feature_labels": {
-    "defaultValue": false
-  },
-  "custom_gene_list_special_label_displacement": {
-    "defaultValue": ""
-  },
-  "special_label_displacement_x_axis": {
-    "defaultValue": 2
-  },
-  "special_label_displacement_y_axis": {
-    "defaultValue": 2
-  },
-  "color_of_signif_threshold_line": {
-    "defaultValue": "blue"
-  },
-  "color_of_non_significant_features": {
-    "defaultValue": "black"
-  },
-  "color_of_logfold_change_threshold_line": {
-    "defaultValue": "red"
-  },
-  "color_of_features_meeting_only_signif_threshold": {
-    "defaultValue": "lightgoldenrod2"
-  },
-  "color_for_features_meeting_pvalue_and_foldchange_thresholds": {
-    "defaultValue": "red"
-  },
-  "flip_vplot": {
-    "defaultValue": false
-  },
-  "use_default_x_axis_limit": {
-    "defaultValue": true
-  },
-  "x_axis_limit": {
-    "defaultValue": 5
-  },
-  "use_default_y_axis_limit": {
-    "defaultValue": true
-  },
-  "y_axis_limit": {
-    "defaultValue": 10
-  },
-  "point_size": {
-    "defaultValue": 2
-  },
-  "add_deg_columns": {
-    "defaultValue": [
-      "FC",
-      "logFC",
-      "tstat",
-      "pval",
-      "adjpval"
-    ]
-  },
-  "graphics_device": {
-    "defaultValue": [
-      "function (filename = \"Rplot%03d.png\", width = 480, height = 480, ",
-      "    units = \"px\", pointsize = 12, bg = \"white\", res = NA, ..., ",
-      "    type = c(\"cairo\", \"cairo-png\", \"Xlib\", \"quartz\"), antialias) ",
-      "{",
-      "    if (!is.character(filename) || length(filename) != 1L || ",
-      "        !nzchar(filename)) ",
-      "        stop(\"'filename' must be a non-empty character string\")",
-      "    if (!checkIntFormat(filename)) ",
-      "        stop(\"invalid 'filename'\")",
-      "    g <- .geometry(width, height, units, res)",
-      "    new <- list(...)",
-      "    if (missing(type)) ",
-      "        type <- getOption(\"bitmapType\")",
-      "    type <- match.arg(type)",
-      "    if (!missing(antialias)) ",
-      "        new$antialias <- match.arg(antialias, aa.cairo)",
-      "    d <- check.options(new, name.opt = \".X11.Options\", envir = .X11env)",
-      "    antialias <- match(d$antialias, aa.cairo)",
-      "    if (type == \"quartz\") {",
-      "        if (capabilities(\"aqua\")) {",
-      "            width <- g$width/ifelse(is.na(res), 72, res)",
-      "            height <- g$height/ifelse(is.na(res), 72, res)",
-      "            invisible(.External(C_Quartz, \"png\", path.expand(filename), ",
-      "                width, height, pointsize, d$family, d$antialias != ",
-      "                  \"none\", \"\", bg, \"white\", if (is.na(res)) NULL else res))",
-      "        }",
-      "        else warning(\"type = \\\"quartz\\\" is unavailable. trying \\\"Xlib\\\"\")",
-      "    }",
-      "    else if (type == \"cairo\") {",
-      "        if (capabilities(\"cairo\")) {",
-      "            invisible(.External(C_devCairo, filename, 2L, g$width, ",
-      "                g$height, pointsize, bg, res, antialias, 100L, ",
-      "                d$family, 300, optionSymbolFont(d$symbolfamily)))",
-      "        }",
-      "        else warning(\"type = \\\"cairo\\\" is unavailable. trying \\\"Xlib\\\"\")",
-      "    }",
-      "    else if (type == \"cairo-png\") {",
-      "        if (capabilities(\"cairo\")) {",
-      "            invisible(.External(C_devCairo, filename, 5L, g$width, ",
-      "                g$height, pointsize, bg, res, antialias, 100L, ",
-      "                d$family, 300, optionSymbolFont(d$symbolfamily)))",
-      "        }",
-      "        else warning(\"type = \\\"cairo-png\\\" is unavailable. trying \\\"Xlib\\\"\")",
-      "    }",
-      "    else invisible(.External2(C_X11, paste0(\"png::\", filename), ",
-      "        g$width, g$height, pointsize, d$gamma, d$colortype, d$maxcubesize, ",
-      "        bg, bg, d$fonts, res, 0L, 0L, \"\", 0, 0, d$family, optionSymbolFont(d$symbolfamily)))",
-      "}"
-    ]
-  },
-  "image_width": {
-    "defaultValue": 15
-  },
-  "image_height": {
-    "defaultValue": 15
-  },
-  "dpi": {
-    "defaultValue": 300
-  },
-  "use_default_grid_layout": {
-    "defaultValue": true
-  },
-  "number_of_rows_in_grid_layout": {
-    "defaultValue": 1
-  },
-  "aspect_ratio": {
-    "defaultValue": 0
-  },
-  "plot_filename": {
-    "defaultValue": "volcano_summary.png"
-  },
-  "print_plots": {
-    "defaultValue": true
-  },
-  "save_plots": {
-    "defaultValue": true
-  },
-  "plots_subdir": {
-    "defaultValue": "diff"
-  }
+  "moo_input_rds": "moo_diff_filter.rds",
+  "moo_output_rds": "volcano_summary_dat.rds",
+  "feature_id_colname": null,
+  "signif_colname": "pval",
+  "signif_threshold": 0.05,
+  "change_threshold": 1,
+  "value_to_sort_the_output_dataset": "t-statistic",
+  "num_features_to_label": 30,
+  "add_features": false,
+  "label_features": false,
+  "custom_gene_list": "",
+  "default_label_color": "black",
+  "custom_label_color": "green3",
+  "label_x_adj": 0.2,
+  "label_y_adj": 0.2,
+  "line_thickness": 0.5,
+  "label_font_size": 4,
+  "label_font_type": 1,
+  "displace_feature_labels": false,
+  "custom_gene_list_special_label_displacement": "",
+  "special_label_displacement_x_axis": 2,
+  "special_label_displacement_y_axis": 2,
+  "color_of_signif_threshold_line": "blue",
+  "color_of_non_significant_features": "black",
+  "color_of_logfold_change_threshold_line": "red",
+  "color_of_features_meeting_only_signif_threshold": "lightgoldenrod2",
+  "color_for_features_meeting_pvalue_and_foldchange_thresholds": "red",
+  "flip_vplot": false,
+  "use_default_x_axis_limit": true,
+  "x_axis_limit": 5,
+  "use_default_y_axis_limit": true,
+  "y_axis_limit": 10,
+  "point_size": 2,
+  "add_deg_columns": [
+    "FC",
+    "logFC",
+    "tstat",
+    "pval",
+    "adjpval"
+  ],
+  "image_width": 15,
+  "image_height": 15,
+  "dpi": 300,
+  "use_default_grid_layout": true,
+  "number_of_rows_in_grid_layout": 1,
+  "aspect_ratio": 0,
+  "plot_filename": "volcano_summary.png",
+  "print_plots": true,
+  "save_plots": true,
+  "plots_subdir": "diff"
 }

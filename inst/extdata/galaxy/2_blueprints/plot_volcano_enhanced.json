@@ -50,8 +50,8 @@
   "parameters": [
     {
       "key": "moo_output_rds",
-      "displayName": "Plot output Rds",
-      "description": "File path to output the plot object as an Rds file",
+      "displayName": "Summary dataframe output Rds",
+      "description": "File path to the summary dataframe as an Rds file",
       "paramType": "STRING",
       "paramGroup": "basic",
       "paramValues": null,
@@ -317,9 +317,9 @@
     }
   ],
   "outputs": {
-    "multiOmicDataSet": {
+    "DataFrame": {
       "type": "file",
-      "name": "enhanced_volcano_plot.rds"
+      "name": "enhanced_volcano_dataframe.rds"
     },
     "figures": {
       "type": "file",

@@ -136,6 +136,12 @@ test_that("mosuite cli E2E", {
     run_function_cli("diff_counts")
     run_function_cli("filter_diff")
     run_function_cli("write_multiOmicDataSet_properties")
+    run_function_cli("plot_expr_heatmap")
+    # run_function_cli("plot_pca_2d")
+    # run_function_cli("plot_pca_3d")
+    # run_function_cli("plot_volcano_enhanced")
+    # run_function_cli("plot_volcano_summary")
+    # run_function_cli("plot_venn_diagram")
 
     expect_true(file.exists(file.path("moo", "sample_metadata.csv")))
     expect_true(file.exists("moo_diff_filter.rds"))

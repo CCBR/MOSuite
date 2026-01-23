@@ -6,9 +6,14 @@
   "samples_to_rename": null,
   "group_colname": "Group",
   "label_colname": "Label",
-  "principal_components": [1, 2, 3],
-  "point_size": 8,
-  "label_font_size": 24,
+  "principal_components": [
+    1,
+    2
+  ],
+  "point_size": 1,
+  "add_label": true,
+  "label_font_size": 3,
+  "legend_position": "top",
   "color_values": [
     "#5954d6",
     "#e1562c",
@@ -23,8 +28,8 @@
     "#FFA500",
     "#878500"
   ],
-  "plot_title": "PCA 3D",
-  "plot_filename": "pca_3D.html",
+  "interactive_plots": false,
+  "plot_filename": "pca_2D.png",
   "print_plots": true,
   "save_plots": true,
   "plots_subdir": "pca"
