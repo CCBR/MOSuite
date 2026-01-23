@@ -1,76 +1,36 @@
 {
   "moo_input_rds": "moo_norm.rds",
-  "count_type": {
-    "defaultValue": "norm"
-  },
-  "sub_count_type": {
-    "defaultValue": "voom"
-  },
-  "sample_metadata": {
-    "defaultValue": null
-  },
-  "feature_id_colname": {
-    "defaultValue": null
-  },
-  "sample_id_colname": {
-    "defaultValue": null
-  },
-  "samples_to_rename": {
-    "defaultValue": null
-  },
-  "group_colname": {
-    "defaultValue": "Group"
-  },
-  "label_colname": {
-    "defaultValue": "Label"
-  },
-  "principal_components": {
-    "defaultValue": [
-      1,
-      2
-    ]
-  },
-  "point_size": {
-    "defaultValue": 1
-  },
-  "add_label": {
-    "defaultValue": true
-  },
-  "label_font_size": {
-    "defaultValue": 3
-  },
-  "legend_position": {
-    "defaultValue": "top"
-  },
-  "color_values": {
-    "defaultValue": [
-      "#5954d6",
-      "#e1562c",
-      "#b80058",
-      "#00c6f8",
-      "#d163e6",
-      "#00a76c",
-      "#ff9287",
-      "#008cf9",
-      "#006e00",
-      "#796880",
-      "#FFA500",
-      "#878500"
-    ]
-  },
-  "interactive_plots": {
-    "defaultValue": false
-  },
-  "plot_filename": {
-    "defaultValue": "pca_2D.png"
-  },
-  "print_plots": {
-    "defaultValue": true
-  },
-  "save_plots": {
-    "defaultValue": true
-  },
-  "plot_subdir": {
-    "defaultValue": "pca"
-  }
+  "sample_metadata": null,
+  "feature_id_colname": null,
+  "sample_id_colname": null,
+  "samples_to_rename": null,
+  "group_colname": "Group",
+  "label_colname": "Label",
+  "principal_components": [
+    1,
+    2
+  ],
+  "point_size": 1,
+  "add_label": true,
+  "label_font_size": 3,
+  "legend_position": "top",
+  "color_values": [
+    "#5954d6",
+    "#e1562c",
+    "#b80058",
+    "#00c6f8",
+    "#d163e6",
+    "#00a76c",
+    "#ff9287",
+    "#008cf9",
+    "#006e00",
+    "#796880",
+    "#FFA500",
+    "#878500"
+  ],
+  "interactive_plots": false,
+  "plot_filename": "pca_2D.png",
+  "print_plots": true,
+  "save_plots": true,
+  "plots_subdir": "pca"
 }
