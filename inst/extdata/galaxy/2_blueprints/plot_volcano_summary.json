@@ -5016,7 +5016,7 @@
     {
       "key": "add_deg_columns",
       "displayName": "Add DEG Columns to Output Table",
-      "description": "Add additional columns from the DEG analysis to the output dataset. Default: FALSE\n",
+      "description": "Add additional columns from the DEG analysis to the output dataset. Default: `\"FC\", \"logFC\", \"tstat\", \"pval\", \"adjpval\"`",
       "paramType": "MULTISELECT",
       "paramGroup": "Table",
       "paramValues": [
@@ -5117,9 +5117,9 @@
     }
   ],
   "outputs": {
-    "multiOmicDataSet": {
+    "DataFrame": {
       "type": "file",
-      "name": "summary_data.rds"
+      "name": "summary_dataframe.rds"
     },
     "figures": {
       "type": "file",

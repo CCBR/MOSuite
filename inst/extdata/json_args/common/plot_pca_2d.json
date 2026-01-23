@@ -27,15 +27,20 @@
   "principal_components": {
     "defaultValue": [
       1,
-      2,
-      3
+      2
     ]
   },
   "point_size": {
-    "defaultValue": 8
+    "defaultValue": 1
+  },
+  "add_label": {
+    "defaultValue": true
   },
   "label_font_size": {
-    "defaultValue": 24
+    "defaultValue": 3
+  },
+  "legend_position": {
+    "defaultValue": "top"
   },
   "color_values": {
     "defaultValue": [
@@ -53,11 +58,11 @@
       "#878500"
     ]
   },
-  "plot_title": {
-    "defaultValue": "PCA 3D"
+  "interactive_plots": {
+    "defaultValue": false
   },
   "plot_filename": {
-    "defaultValue": "pca_3D.html"
+    "defaultValue": "pca_2D.png"
   },
   "print_plots": {
     "defaultValue": true
@@ -65,7 +70,7 @@
   "save_plots": {
     "defaultValue": true
   },
-  "plots_subdir": {
+  "plot_subdir": {
     "defaultValue": "pca"
   }
 }

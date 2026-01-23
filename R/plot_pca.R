@@ -194,7 +194,11 @@ plot_pca_2d <- function(
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
-  interactive_plots = FALSE
+  interactive_plots = FALSE,
+  plot_subdir = "pca",
+  plot_filename = "pca_2D.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots")
 ) {
   PC <- std.dev <- percent <- cumulative <- NULL
   if (length(principal_components) != 2) {
@@ -285,6 +289,14 @@ plot_pca_2d <- function(
     pca_plot <- (pca_plot) %>%
       plotly::ggplotly(tooltip = c(sample_id_colname, group_colname))
   }
+
+  print_or_save_plot(
+    pca_plot,
+    filename = file.path(plot_subdir, plot_filename),
+    print_plots = print_plots,
+    save_plots = save_plots
+  )
+
   return(pca_plot)
 }
 

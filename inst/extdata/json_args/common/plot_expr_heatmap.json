@@ -1,6 +1,5 @@
 {
-  "moo_input_rds": "tests/testthat/data/moo.rds",
-  "moo_output_rds": "tests/testthat/data/moo.rds",
+  "moo_input_rds": "moo_norm.rds",
   "count_type": {
     "defaultValue": "norm"
   },

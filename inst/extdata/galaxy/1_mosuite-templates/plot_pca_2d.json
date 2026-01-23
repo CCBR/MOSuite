@@ -1,7 +1,7 @@
 {
-    "title": "PCA 3D",
-    "description": "This template is based on Bulk RNA-seq QC PCA template and is intended to provide interactive 3D view of a PCA plot generated from the data.",
-    "r_function": "plot_pca_3d",
+    "title": "PCA 2D",
+    "description": "This template is based on Bulk RNA-seq QC PCA template and is intended to provide a 2D PCA plot generated from the data.",
+    "r_function": "plot_pca_2d",
     "columns": [
         {
             "key": "feature_id_colname",
@@ -29,7 +29,7 @@
             "description": "The column from your sample metadata table containing sample group information. This is usually a column showing which of your experimental treatments each sample belongs to (e.g. WildType, Knockout, Tumor, Normal, Before, After, etc.).",
             "paramGroup": "Basic",
             "sourceDataset": "Sample_Metadata_Table",
-            "defaultValue": null,
+            "defaultValue": "Group",
             "columnType": "ALL",
             "isMulti": null
         },
@@ -39,7 +39,7 @@
             "description": "The column from your sample metadata table containing the sample names as you wish them to appear in the QC figure. This is often the same Sample Name Column (see parameter above). However, you may desire different labels to display on your PCA figure (e.g. shorter labels). These labels can be added as an additional column in your metadata table and used here to label your plot.",
             "paramGroup": "Basic",
             "sourceDataset": "Sample_Metadata_Table",
-            "defaultValue": null,
+            "defaultValue": "Label",
             "columnType": "ALL",
             "isMulti": null
         }
@@ -62,7 +62,7 @@
         {
             "key": "count_type",
             "displayName": "Count Type",
-            "description": "",
+            "description": "The type of counts to use from the multiOmicDataSet counts slot",
             "paramType": "STRING",
             "paramGroup": "Basic",
             "paramValues": null,
@@ -74,7 +74,7 @@
         {
             "key": "sub_count_type",
             "displayName": "Sub Count Type",
-            "description": "optional",
+            "description": "Used if count_type is a list in the counts slot: specify the sub count type within the list (optional)",
             "paramType": "STRING",
             "paramGroup": "Basic",
             "paramValues": null,
@@ -84,13 +84,76 @@
             "objectPropertyReference": null
         },
         {
+            "key": "principal_components",
+            "displayName": "Principal Components",
+            "description": "Vector with numbered principal components to plot. For 2D PCA, specify exactly 2 components (e.g., [1, 2] for PC1 vs PC2).",
+            "paramType": "MULTISELECT",
+            "paramGroup": "Basic",
+            "paramValues": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "defaultValue": [
+                1,
+                2
+            ],
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
             "key": "point_size",
             "displayName": "Point Size",
-            "description": "The size of the points in the 3D PCA plot.",
+            "description": "The size of the points in the 2D PCA plot.",
             "paramType": "NUMBER",
             "paramGroup": "Visualization",
             "paramValues": null,
-            "defaultValue": "8",
+            "defaultValue": 1,
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "add_label",
+            "displayName": "Add Labels",
+            "description": "Whether to add text labels for the points on the plot.",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Visualization",
+            "paramValues": null,
+            "defaultValue": true,
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "label_font_size",
+            "displayName": "Label Font Size",
+            "description": "The font size for point labels (if add_label is TRUE).",
+            "paramType": "NUMBER",
+            "paramGroup": "Visualization",
+            "paramValues": null,
+            "defaultValue": 3,
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
+        },
+        {
+            "key": "legend_position",
+            "displayName": "Legend Position",
+            "description": "Position of the legend on the plot.",
+            "paramType": "SELECT",
+            "paramGroup": "Visualization",
+            "paramValues": [
+                "top",
+                "bottom",
+                "left",
+                "right",
+                "none"
+            ],
+            "defaultValue": "top",
             "condition": null,
             "content": null,
             "objectPropertyReference": null
@@ -177,41 +240,57 @@
                 "gray80",
                 "lightgrey"
             ],
-            "defaultValue": "c(\"slateblue3\",\"tomato2\",\"maroon\",\"deepskyblue\",\"mediumorchid2\",\"mediumseagreen\",\"salmon\",\"dodgerblue\",\"darkgreen\",\"plum4\",\"orange\",\"yellow4\")",
+            "defaultValue": [
+                "#5954d6",
+                "#e1562c",
+                "#b80058",
+                "#00c6f8",
+                "#d163e6",
+                "#00a76c",
+                "#ff9287",
+                "#008cf9",
+                "#006e00",
+                "#796880",
+                "#FFA500",
+                "#878500"
+            ],
             "condition": null,
             "content": null,
             "objectPropertyReference": null
         },
         {
-            "key": "plot_title",
-            "displayName": "Plot Title",
-            "description": "",
-            "paramType": "STRING",
+            "key": "interactive_plots",
+            "displayName": "Interactive Plots",
+            "description": "If TRUE, creates an interactive plotly plot instead of a static ggplot.",
+            "paramType": "BOOLEAN",
             "paramGroup": "Visualization",
             "paramValues": null,
-            "defaultValue": "PCA 3D",
+            "defaultValue": false,
             "condition": null,
             "content": null,
             "objectPropertyReference": null
         },
         {
-        "key": "save_plots",
-        "displayName": "Save Plots",
-        "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
-        "paramType": "BOOLEAN",
-        "paramGroup": "Visualization",
-        "paramValues": null,
-        "defaultValue": true,
-        "condition": null,
-        "content": null,
-        "objectPropertyReference": null
+            "key": "save_plots",
+            "displayName": "Save Plots",
+            "description": "If this is `TRUE`, any plots generated during the analysis will be saved to disk.",
+            "paramType": "BOOLEAN",
+            "paramGroup": "Visualization",
+            "paramValues": [
+                true,
+                false
+            ],
+            "defaultValue": true,
+            "condition": null,
+            "content": null,
+            "objectPropertyReference": null
         }
     ],
-    "outputDatasetName": "3D PCA Plot",
+    "outputDatasetName": "2D PCA Plot",
     "outputs": {
         "figures": {
             "type": "file",
-            "name": "figures/pca/pca_3D.html"
+            "name": "figures/pca/pca_2D.png"
         }
     }
 }

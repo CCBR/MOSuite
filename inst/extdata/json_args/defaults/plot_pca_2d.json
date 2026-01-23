@@ -1,0 +1,62 @@
+{
+  "counts_dat": {
+    "defaultValue": null
+  },
+  "sample_metadata": {
+    "defaultValue": null
+  },
+  "sample_id_colname": {
+    "defaultValue": null
+  },
+  "feature_id_colname": {
+    "defaultValue": null
+  },
+  "group_colname": {
+    "defaultValue": "Group"
+  },
+  "label_colname": {
+    "defaultValue": "Label"
+  },
+  "samples_to_rename": {
+    "defaultValue": null
+  },
+  "color_values": {
+    "defaultValue": ["#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c", "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"]
+  },
+  "principal_components": {
+    "defaultValue": [1, 2]
+  },
+  "legend_position": {
+    "defaultValue": "top"
+  },
+  "point_size": {
+    "defaultValue": 1
+  },
+  "add_label": {
+    "defaultValue": true
+  },
+  "label_font_size": {
+    "defaultValue": 3
+  },
+  "label_offset_x_": {
+    "defaultValue": 2
+  },
+  "label_offset_y_": {
+    "defaultValue": 2
+  },
+  "interactive_plots": {
+    "defaultValue": false
+  },
+  "plot_subdir": {
+    "defaultValue": "pca"
+  },
+  "plot_filename": {
+    "defaultValue": "pca_2D.png"
+  },
+  "print_plots": {
+    "defaultValue": true
+  },
+  "save_plots": {
+    "defaultValue": true
+  }
+}

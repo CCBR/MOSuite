@@ -1,6 +1,6 @@
 {
-  "moo_input_rds": "tests/testthat/data/moo.rds",
-  "moo_output_rds": "tests/testthat/data/moo.rds",
+  "moo_input_rds": "volcano_summary_dat.rds",
+  "moo_output_rds": "venn_diagram_dat.rds",
   "feature_id_colname": {
     "defaultValue": null
   },

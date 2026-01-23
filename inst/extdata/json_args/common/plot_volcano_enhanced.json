@@ -1,6 +1,6 @@
 {
-  "moo_input_rds": "tests/testthat/data/moo.rds",
-  "moo_output_rds": "tests/testthat/data/moo.rds",
+  "moo_input_rds": "moo_diff_filter.rds",
+  "moo_output_rds": "volcano_enhanced_dat.rds",
   "feature_id_colname": {
     "defaultValue": null
   },
