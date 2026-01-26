@@ -37,13 +37,13 @@ cli_exec_impl <- function(clargs) {
   # begin building call
   # if --json in arguments, call cli_from_json()
   if (any(stringr::str_detect(clargs, "^--json"))) {
-    args <- list(
-      call(":::", as.symbol("MOSuite"), as.symbol("cli_from_json")),
-      method = method
-    )
+    f <- getExportedValue("MOSuite", "cli_from_json")
+    args <- list(f)
+    args$method <- method
   } else {
     # otherwise call the method directly
-    args <- list(call("::", as.symbol("MOSuite"), as.symbol(method)))
+    f <- getExportedValue("MOSuite", method)
+    args <- list(f)
   }
 
   for (clarg in clargs[-1L]) {
@@ -74,8 +74,7 @@ cli_exec_impl <- function(clargs) {
   }
 
   # invoke method with parsed arguments
-  expr <- as.call(args)
-  return(eval(expr = expr, envir = globalenv()))
+  return(do.call(args[[1L]], args[-1L], envir = globalenv()))
 }
 
 cli_usage <- function(con = stderr()) {
@@ -154,7 +153,8 @@ cli_parse <- function(text) {
 #'
 cli_from_json <- function(method, json, debug = FALSE) {
   # begin building function call
-  fcn_args <- list(call("::", as.symbol("MOSuite"), as.symbol(method)))
+  f <- getExportedValue("MOSuite", method)
+  fcn_args <- list(f)
   # get function arguments from json
   json_args <- jsonlite::read_json(json)
 
@@ -184,10 +184,15 @@ cli_from_json <- function(method, json, debug = FALSE) {
     json_args[!stringr::str_detect(names(json_args), "moo_.*_rds")]
   )
 
+  # construct call expression for debug (non-evaluated)
+  call_head <- call("::", as.symbol("MOSuite"), as.symbol(method))
+  call_expr <- as.call(c(list(call_head), fcn_args[-1L]))
+
   # invoke method with parsed arguments from json
-  expr <- as.call(fcn_args)
-  if (isFALSE(debug)) {
-    result <- eval(expr = expr, envir = globalenv())
+  if (isTRUE(debug)) {
+    return(invisible(call_expr))
+  } else {
+    result <- do.call(fcn_args[[1L]], fcn_args[-1L], envir = globalenv())
 
     # save result to output_rds
     if ("moo_output_rds" %in% names(json_args)) {
@@ -195,5 +200,5 @@ cli_from_json <- function(method, json, debug = FALSE) {
     }
   }
 
-  return(invisible(expr))
+  return(invisible(call_expr))
 }

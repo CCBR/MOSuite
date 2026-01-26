@@ -1,9 +1,12 @@
 # MOSuite development version
 
-- Improvements for use with Galaxy. (#168, #170, #171, @kelly-sovacool)
 - New function `write_multiOmicDataSet_properties()`. (#173, @kelly-sovacool)
   - Extracts all the properties from a multiOmicDataSet and writes any data frames as csv files, other objects are written as rds files.
-
+- Bug fixes: (#174, @kelly-sovacool)
+  - Fixed bugs in `plot_volcano_summary()`, `plot_volcano_enhanced()`, and `plot_pca_3d()` when used with multiOmicDataSet objects.
+  - Fixed bug in `filter_diff()` when `filtering_mode = "all"` that was causing plot rendering errors.
+  - Fixed `plot_pca_2d()` to save plots to disk correctly.
+- Improvements for use with Galaxy. (#168, #170, #171, #174, @kelly-sovacool)
 
 # MOSuite 0.2.1
 

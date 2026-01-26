@@ -133,7 +133,7 @@ B-A. Default: FALSE}
 
 \item{point_size}{Size of the points in the plot. Default: 1}
 
-\item{add_deg_columns}{Add additional columns from the DEG analysis to the output dataset. Default: FALSE}
+\item{add_deg_columns}{Add additional columns from the DEG analysis to the output dataset. Default: \verb{"FC", "logFC", "tstat", "pval", "adjpval"}}
 
 \item{graphics_device}{passed to \code{ggsave(device)}. Default: \code{grDevices::png}}
 

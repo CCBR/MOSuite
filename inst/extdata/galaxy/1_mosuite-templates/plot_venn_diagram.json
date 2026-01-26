@@ -27,12 +27,12 @@
     "inputDatasets": [
         {
             "key": "moo_input_rds",
-            "displayName": "MOO input Rds",
-            "description": "File path to read the input multiOmicDataSet object (MOO)",
+            "displayName": "DataFrame input Rds",
+            "description": "File path to read the summary dataframe (e.g. from plot_volcano_summary output)",
             "paramType": "STRING",
             "paramGroup": "basic",
             "paramValues": null,
-            "defaultValue": "moo.rds",
+            "defaultValue": "summary_dataframe.rds",
             "condition": null,
             "content": null,
             "objectPropertyReference": null
@@ -41,12 +41,12 @@
     "parameters": [
         {
             "key": "moo_output_rds",
-            "displayName": "Plot output Rds",
-            "description": "File path to output the plot object as an Rds file",
+            "displayName": "Venn diagram DataFrame Rds",
+            "description": "File path to output the venn diagram DataFrame as an Rds file",
             "paramType": "STRING",
             "paramGroup": "basic",
             "paramValues": null,
-            "defaultValue": "venn_diagram_plot.rds",
+            "defaultValue": "venn_diagram_dataframe.rds",
             "condition": null,
             "content": null,
             "objectPropertyReference": null
@@ -1092,11 +1092,11 @@
         "objectPropertyReference": null
         }
     ],
-    "outputDatasetName": "Venn Diagram Plot",
+    "outputDatasetName": "Venn Diagram",
     "outputs": {
-        "multiOmicDataSet": {
+        "DataFrame": {
             "type": "file",
-            "name": "plot.rds"
+            "name": "venn_diagram_dataframe.rds"
         },
         "figures": {
             "type": "file",

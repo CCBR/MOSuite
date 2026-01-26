@@ -30,7 +30,7 @@ plot_pca_3d(
 \item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
 slot}
 
-\item{count_type}{the type of counts to use -- must be a name in the counts slot (\code{moo@counts})}
+\item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
 
 \item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
 Must be a name in \code{names(moo@counts[[count_type]])}.}

@@ -402,3 +402,89 @@ test_that("filter_diff works for NIDAP on linux", {
   expect_equal(head(moo@analyses$diff_filt), expected_head, tolerance = 0.02)
   expect_equal(tail(moo@analyses$diff_filt), expected_tail, tolerance = 0.02)
 })
+
+test_that("filter_diff rejects invalid filtering_mode", {
+  options(moo_print_plots = FALSE)
+  moo <- moo_nidap %>%
+    diff_counts(
+      count_type = "filt",
+      sub_count_type = NULL,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      covariates_colnames = c("Group", "Batch"),
+      contrast_colname = c("Group"),
+      contrasts = c("B-A", "C-A", "B-C"),
+      voom_normalization_method = "quantile"
+    )
+
+  expect_error(
+    moo %>% filter_diff(filtering_mode = "invalid"),
+    "filtering_mode not recognized"
+  )
+})
+
+test_that("filter_diff accepts valid filtering_mode values", {
+  options(moo_print_plots = FALSE)
+  moo <- moo_nidap %>%
+    diff_counts(
+      count_type = "filt",
+      sub_count_type = NULL,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      covariates_colnames = c("Group", "Batch"),
+      contrast_colname = c("Group"),
+      contrasts = c("B-A", "C-A", "B-C"),
+      voom_normalization_method = "quantile"
+    )
+
+  expect_no_error(
+    moo %>% filter_diff(filtering_mode = "any")
+  )
+
+  expect_no_error(
+    moo %>% filter_diff(filtering_mode = "all")
+  )
+})
+
+test_that("filter_diff rejects invalid plot_type", {
+  options(moo_print_plots = FALSE)
+  moo <- moo_nidap %>%
+    diff_counts(
+      count_type = "filt",
+      sub_count_type = NULL,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      covariates_colnames = c("Group", "Batch"),
+      contrast_colname = c("Group"),
+      contrasts = c("B-A", "C-A", "B-C"),
+      voom_normalization_method = "quantile"
+    )
+
+  expect_error(
+    moo %>% filter_diff(plot_type = "invalid"),
+    "plot_type not recognized"
+  )
+})
+
+test_that("filter_diff accepts valid plot_type values", {
+  options(moo_print_plots = FALSE)
+  moo <- moo_nidap %>%
+    diff_counts(
+      count_type = "filt",
+      sub_count_type = NULL,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      covariates_colnames = c("Group", "Batch"),
+      contrast_colname = c("Group"),
+      contrasts = c("B-A", "C-A", "B-C"),
+      voom_normalization_method = "quantile"
+    )
+
+  expect_no_error(
+    moo %>% filter_diff(plot_type = "bar")
+  )
+
+  expect_no_error(
+    moo %>% filter_diff(plot_type = "pie")
+  )
+})

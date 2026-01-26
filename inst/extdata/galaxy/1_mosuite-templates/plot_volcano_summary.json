@@ -1524,10 +1524,10 @@
             "key": "label_font_size",
             "displayName": "Label Font Size",
             "description": "Font size for sample labels. Set to 0 to remove labels.",
-            "paramType": "STRING",
+            "paramType": "NUMBER",
             "paramGroup": "Gene Name Label",
             "paramValues": null,
-            "defaultValue": "4",
+            "defaultValue": 4,
             "condition": null,
             "content": null,
             "objectPropertyReference": null
@@ -4997,7 +4997,7 @@
             "paramType": "NUMBER",
             "paramGroup": "Plot",
             "paramValues": null,
-            "defaultValue": "10",
+            "defaultValue": 10,
             "condition": null,
             "content": null,
             "objectPropertyReference": null
@@ -5006,10 +5006,10 @@
             "key": "point_size",
             "displayName": "Point Size",
             "description": "Size of a each data point",
-            "paramType": "STRING",
+            "paramType": "NUMBER",
             "paramGroup": "Plot",
             "paramValues": null,
-            "defaultValue": "2",
+            "defaultValue": 2,
             "condition": null,
             "content": null,
             "objectPropertyReference": null
@@ -5018,10 +5018,10 @@
             "key": "add_deg_columns",
             "displayName": "Add DEG Columns to Output Table",
             "description": "Select columns from input DEG results to include in the output dataset. If \"none\" is selected, then the output will contain only columns for Gene and Contrast.",
-            "paramType": "BOOLEAN",
+            "paramType": "MULTISELECT",
             "paramGroup": "Table",
-            "paramValues": null,
-            "defaultValue": false,
+            "paramValues": ["FC", "logFC", "tstat", "pval", "adjpval"],
+            "defaultValue": ["FC", "logFC", "tstat", "pval", "adjpval"],
             "condition": null,
             "content": null,
             "objectPropertyReference": null
@@ -5113,9 +5113,9 @@
     ],
     "outputDatasetName": "Volcano Plot - Summary",
     "outputs": {
-        "multiOmicDataSet": {
+        "DataFrame": {
             "type": "file",
-            "name": "summary_data.rds"
+            "name": "summary_dataframe.rds"
         },
         "figures": {
             "type": "file",

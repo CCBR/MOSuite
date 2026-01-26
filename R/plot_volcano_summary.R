@@ -149,7 +149,7 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
         plot_filename,
         print_plots,
         save_plots,
-        plots_subdir,
+        plots_subdir
       )
   )
 }
@@ -201,7 +201,7 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
 #' @param use_default_y_axis_limit Set to TRUE to use the default y-axis limit. Default: TRUE
 #' @param y_axis_limit Custom y-axis limit. Default: c(0, 10)
 #' @param point_size Size of the points in the plot. Default: 1
-#' @param add_deg_columns Add additional columns from the DEG analysis to the output dataset. Default: FALSE
+#' @param add_deg_columns Add additional columns from the DEG analysis to the output dataset. Default: `"FC", "logFC", "tstat", "pval", "adjpval"`
 #' @param use_default_grid_layout Set to TRUE to use the default grid layout. Default: TRUE
 #' @param number_of_rows_in_grid_layout Number of rows in the grid layout. Default: 1
 #' @param aspect_ratio Aspect ratio of the output image. Default: 4/3
@@ -386,10 +386,16 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
     ]
     repeated_column <- rep(contrast, length(filtered_features))
 
-    ## If param empty, fill it with default value.
-    if (length(add_deg_columns) == 0) {
+    ## If param empty or FALSE, fill it with default value.
+    if (
+      is.null(add_deg_columns) ||
+        length(add_deg_columns) == 0 ||
+        isFALSE(add_deg_columns)
+    ) {
       add_deg_columns <- c("FC", "logFC", "tstat", "pval", "adjpval")
-    } else if (all(add_deg_columns == "none")) {
+    }
+
+    if (all(add_deg_columns == "none")) {
       new_df <- data.frame(filtered_features, repeated_column)
       names(new_df) <- c(feature_id_colname, "Contrast")
     } else {

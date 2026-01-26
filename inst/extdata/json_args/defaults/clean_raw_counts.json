@@ -1,37 +1,15 @@
 {
-  "moo_input_rds": null,
-  "moo_output_rds": null,
-  "count_type": {
-    "defaultValue": "raw"
-  },
-  "sample_id_colname": {
-    "defaultValue": null
-  },
-  "feature_id_colname": {
-    "defaultValue": null
-  },
-  "samples_to_rename": {
-    "defaultValue": ""
-  },
-  "cleanup_column_names": {
-    "defaultValue": true
-  },
-  "split_gene_name": {
-    "defaultValue": true
-  },
-  "aggregate_rows_with_duplicate_gene_names": {
-    "defaultValue": true
-  },
-  "gene_name_column_to_use_for_collapsing_duplicates": {
-    "defaultValue": ""
-  },
-  "print_plots": {
-    "defaultValue": true
-  },
-  "save_plots": {
-    "defaultValue": true
-  },
-  "plots_subdir": {
-    "defaultValue": "clean"
-  }
+  "moo_input_rds": "moo.rds",
+  "moo_output_rds": "moo.rds",
+  "count_type": "raw",
+  "sample_id_colname": null,
+  "feature_id_colname": null,
+  "samples_to_rename": "",
+  "cleanup_column_names": true,
+  "split_gene_name": true,
+  "aggregate_rows_with_duplicate_gene_names": true,
+  "gene_name_column_to_use_for_collapsing_duplicates": "",
+  "print_plots": true,
+  "save_plots": true,
+  "plots_subdir": "clean"
 }

@@ -76,7 +76,7 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
   plot_filename = "volcano_enhanced.png"
 ) {
   return(
-    join_dfs_wide() %>%
+    join_dfs_wide(moo_diff@analyses$diff) %>%
       plot_volcano_enhanced(
         feature_id_colname,
         signif_colname,
@@ -106,7 +106,7 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
         print_plots,
         save_plots,
         plots_subdir,
-        plot_filename,
+        plot_filename
       )
   )
 }

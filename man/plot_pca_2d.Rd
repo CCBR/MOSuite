@@ -5,8 +5,10 @@
 \title{Perform and plot a 2D Principal Components Analysis}
 \usage{
 plot_pca_2d(
-  counts_dat,
-  sample_metadata,
+  moo_counts,
+  count_type = NULL,
+  sub_count_type = NULL,
+  sample_metadata = NULL,
   sample_id_colname = NULL,
   feature_id_colname = NULL,
   group_colname = "Group",
@@ -21,11 +23,21 @@ plot_pca_2d(
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
-  interactive_plots = FALSE
+  interactive_plots = FALSE,
+  plots_subdir = "pca",
+  plot_filename = "pca_2D.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots")
 )
 }
 \arguments{
-\item{counts_dat}{data frame of feature counts (e.g. expected feature counts from RSEM).}
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
+slot}
+
+\item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
+
+\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
+Must be a name in \code{names(moo@counts[[count_type]])}.}
 
 \item{sample_metadata}{sample metadata as a data frame or tibble.}
 
@@ -72,6 +84,14 @@ which new name: old_name: new_name}
 \item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover
 your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
 is set to \code{TRUE}. Default is \code{FALSE}.}
+
+\item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
+
+\item{plot_filename}{plot output filename - only used if save_plots is TRUE}
+
+\item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
+
+\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 }
 \value{
 ggplot object
