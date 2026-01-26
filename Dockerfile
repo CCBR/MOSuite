@@ -27,6 +27,7 @@ RUN conda config --add channels conda-forge \
 # install conda packages
 RUN mamba install -y -c conda-forge \
     r-base=${R_VERSION} \
+    r-argparse \
     r-amap \
     r-broom \
     r-cffr \

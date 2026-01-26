@@ -50,6 +50,7 @@ Imports:
     tidyselect
 Suggests:
     amap,
+    argparse,
     broom,
     cffr,
     colorspace,
