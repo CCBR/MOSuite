@@ -578,6 +578,19 @@ references:
   year: '2026'
   doi: 10.32614/CRAN.package.amap
 - type: software
+  title: argparse
+  abstract: 'argparse: Command Line Optional and Positional Argument Parser'
+  notes: Suggests
+  url: https://trevorldavis.com/R/argparse/
+  repository: https://CRAN.R-project.org/package=argparse
+  authors:
+  - family-names: Davis
+    given-names: Trevor L.
+    email: trevor.l.davis@gmail.com
+    orcid: https://orcid.org/0000-0001-6341-4639
+  year: '2026'
+  doi: 10.32614/CRAN.package.argparse
+- type: software
   title: broom
   abstract: 'broom: Convert Statistical Objects into Tidy Tibbles'
   notes: Suggests
