@@ -1,0 +1,39 @@
+INFO [2026-01-29 14:19:08] [[1]]
+INFO [2026-01-29 14:19:08] vlist
+INFO [2026-01-29 14:19:08] 
+INFO [2026-01-29 14:19:08] $file
+INFO [2026-01-29 14:19:08] NULL
+INFO [2026-01-29 14:19:08] 
+INFO [2026-01-29 14:19:08] $force_unique
+INFO [2026-01-29 14:19:08] venn_force_unique
+INFO [2026-01-29 14:19:08] 
+INFO [2026-01-29 14:19:08] $print.mode
+INFO [2026-01-29 14:19:08] print_mode
+INFO [2026-01-29 14:19:08] 
+INFO [2026-01-29 14:19:08] $sigdigs
+INFO [2026-01-29 14:19:08] venn_significant_digits
+INFO [2026-01-29 14:19:08] 
+INFO [2026-01-29 14:19:08] $margin
+INFO [2026-01-29 14:19:08] venn_outer_margin
+INFO [2026-01-29 14:19:08] 
+INFO [2026-01-29 14:19:08] $main
+INFO [2026-01-29 14:19:08] [1] ""
+INFO [2026-01-29 14:19:08] 
+INFO [2026-01-29 14:19:08] $cat.cex
+INFO [2026-01-29 14:19:08] venn_font_size_for_category_names
+INFO [2026-01-29 14:19:08] 
+INFO [2026-01-29 14:19:08] $cex
+INFO [2026-01-29 14:19:08] venn_font_size_for_counts
+INFO [2026-01-29 14:19:08] 
+INFO [2026-01-29 14:19:08] $main.cex
+INFO [2026-01-29 14:19:08] [1] 3
+INFO [2026-01-29 14:19:08] 
+INFO [2026-01-29 14:19:08] $fill
+INFO [2026-01-29 14:19:08] venn_fill_colors[1:num_categories]
+INFO [2026-01-29 14:19:08] 
+INFO [2026-01-29 14:19:08] $alpha
+INFO [2026-01-29 14:19:08] venn_fill_transparency
+INFO [2026-01-29 14:19:08] 
+INFO [2026-01-29 14:19:08] $col
+INFO [2026-01-29 14:19:08] color_border
+INFO [2026-01-29 14:19:08] 
