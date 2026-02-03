@@ -1,11 +1,12 @@
 #!/usr/bin/env Rscript
 # Create hex logo for MOSuite package - Version 4
-# Design: Combine volcano plot (v2) + heatmap (v3)
+# Design: Combine volcano plot + heatmap
 
 library(ggplot2)
 library(hexSticker)
 library(ggimage)
 library(magick)
+library(tidyverse)
 
 # Create directory if it doesn't exist
 dir.create("man/figures", showWarnings = FALSE, recursive = TRUE)
@@ -38,17 +39,21 @@ emoji_layer <- ggimage::geom_image(
   inherit.aes = FALSE
 )
 
-# ---- Volcano plot layer (v2) ----
+# ---- Volcano plot layer ----
 # Continuous V-shape distribution
-n_genes <- 600
-log2fc <- rnorm(n_genes, mean = 0, sd = 1.6)
-neg_log10_pval <- abs(log2fc) * 1.2 + rnorm(n_genes, mean = 0.4, sd = 0.4)
-neg_log10_pval <- pmax(neg_log10_pval, 0)
+# n_genes <- 600
+# log2fc <- rnorm(n_genes, mean = 0, sd = 1.6)
+# neg_log10_pval <- abs(log2fc) * 1.2 + rnorm(n_genes, mean = 0.4, sd = 0.4)
+# neg_log10_pval <- pmax(neg_log10_pval, 0)
+# volcano_data <- data.frame(
+#   log2fc = log2fc,
+#   neg_log10_pval = neg_log10_pval
+# )
 
-volcano_data <- data.frame(
-  log2fc = log2fc,
-  neg_log10_pval = neg_log10_pval
-)
+load(here::here('data', 'nidap_deg_analysis.rda'))
+volcano_data <- nidap_deg_analysis |>
+  rename(log2fc = `C-A_logFC`) |>
+  mutate(neg_log10_pval = -log10(`C-A_pval`))
 
 fc_cut <- 1.0
 p_cut <- 2.5
@@ -89,7 +94,7 @@ volcano_data$color <- NA
 volcano_data$color[volcano_data$regulation == "Not significant"] <- "#999999" # Gray
 volcano_data$color[volcano_data$regulation == "Significant"] <- "#009E73" # Green
 volcano_data$color[volcano_data$regulation == "Upregulated"] <- "#0072B2" # Blue
-volcano_data$color[volcano_data$regulation == "Downregulated"] <- "#E69F00" # Orange
+volcano_data$color[volcano_data$regulation == "Downregulated"] <- "#E69F00" # Orange/Yellow
 
 # ---- Heatmap layer (v3) ----
 rows <- paste0("G", sprintf("%02d", 1:12))
@@ -128,7 +133,7 @@ p <- ggplot() +
     height = tile_height,
     color = "#D0D0D0",
     linewidth = 0.2,
-    alpha = 0.3,
+    alpha = 0.4,
     show.legend = FALSE
   ) +
   scale_fill_gradient2(
@@ -166,7 +171,8 @@ p <- ggplot() +
     data = volcano_data,
     aes(x = x, y = y, color = color),
     size = 2.0,
-    alpha = 0.2,
+    alpha = 0.17,
+    shape = 16,
     show.legend = FALSE
   ) +
   scale_color_identity() +
