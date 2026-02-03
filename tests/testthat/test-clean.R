@@ -4,11 +4,15 @@ test_that("clean_raw_counts works for NIDAP data", {
     counts_dat = as.data.frame(nidap_raw_counts)
   ) %>%
     clean_raw_counts(print_plots = TRUE)
-  expect_true(equal_dfs(
-    moo_nidap@counts[["clean"]] %>%
-      dplyr::rename(Gene = GeneName),
-    as.data.frame(nidap_clean_raw_counts)
-  ))
+  
+  actual <- moo_nidap@counts[["clean"]] %>%
+    dplyr::rename(Gene = GeneName) %>%
+    as.data.frame()
+  
+  expected <- as.data.frame(nidap_clean_raw_counts)
+  
+  cmp <- all.equal(actual, expected, check.attributes = FALSE)
+  expect_true(isTRUE(cmp), info = paste(cmp, collapse = "\n"))
 })
 
 test_that("clean_raw_counts works for RENEE data", {
