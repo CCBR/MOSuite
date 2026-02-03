@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-# Create hex logo for MOSuite package - Version 4
+# Create hex logo for MOSuite package
 # Design: Combine volcano plot + heatmap
 
 library(ggplot2)
@@ -9,11 +9,9 @@ library(magick)
 library(tidyverse)
 
 # Create directory if it doesn't exist
-dir.create("man/figures", showWarnings = FALSE, recursive = TRUE)
 
 set.seed(123)
 
-# Emoji watermark layer - B&W cow emoji inside O of MOSuite
 emoji_url <- "https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f42e.png"
 emoji_temp <- tempfile(fileext = ".png")
 download.file(emoji_url, emoji_temp, quiet = TRUE, mode = "wb")
@@ -21,8 +19,6 @@ download.file(emoji_url, emoji_temp, quiet = TRUE, mode = "wb")
 # Convert to grayscale and apply transparency
 emoji_gray <- magick::image_read(emoji_temp) |>
   magick::image_quantize(colorspace = "gray")
-# Apply transparency via channel operations
-#emoji_gray <- magick::image_transparent(emoji_gray, color = "white", fuzz = 30)
 emoji_gray_transparent <- magick::image_fx(
   emoji_gray,
   "0.4*u",
@@ -38,15 +34,6 @@ emoji_df <- data.frame(
 
 
 # ---- Volcano plot layer ----
-# Continuous V-shape distribution
-# n_genes <- 600
-# log2fc <- rnorm(n_genes, mean = 0, sd = 1.6)
-# neg_log10_pval <- abs(log2fc) * 1.2 + rnorm(n_genes, mean = 0.4, sd = 0.4)
-# neg_log10_pval <- pmax(neg_log10_pval, 0)
-# volcano_data <- data.frame(
-#   log2fc = log2fc,
-#   neg_log10_pval = neg_log10_pval
-# )
 
 load(here::here('data', 'nidap_deg_analysis.rda'))
 volcano_data <- nidap_deg_analysis |>
@@ -65,21 +52,17 @@ volcano_data <- volcano_data |>
       .default = "Not significant"
     ),
     x = scales::rescale(log2fc, to = c(0.12, 0.88)),
-    y = scales::rescale(neg_log10_pval, to = c(0.18, 0.94))
-  )
-
-volcano_data <- volcano_data |>
-  mutate(
+    y = scales::rescale(neg_log10_pval, to = c(0.18, 0.94)),
     color = case_when(
-      regulation == "Upregulated" ~ "#0072B2", # Blue
-      regulation == "Downregulated" ~ "#E69F00", # Orange/Yellow
-      regulation == "Significant" ~ "#009E73", # Green
-      regulation == "Not significant" ~ "#999999", # Gray
+      regulation == "Upregulated" ~ "#4e9db5",
+      regulation == "Downregulated" ~ "#ecba4c",
+      regulation == "Significant" ~ "#528230",
+      regulation == "Not significant" ~ "#999999",
       .default = NA_character_
     )
   )
 
-# ---- Heatmap layer (v3) ----
+# ---- Heatmap layer ----
 rows <- paste0("G", sprintf("%02d", 1:12))
 cols <- paste0("S", sprintf("%02d", 1:10))
 
@@ -102,7 +85,7 @@ heatmap_df <- expand.grid(Row = rows, Col = cols) |>
     )
   )
 
-heat_colors <- c("#0072B2", "#F7F7F7", "#E69F00")
+heat_colors <- c("#4e9db5", "#F7F7F7", "#ecba4c")
 tile_width <- (0.90 - 0.10) / length(cols)
 tile_height <- (0.96 - 0.16) / length(rows)
 
@@ -143,9 +126,10 @@ p <- ggplot() +
     size = 32,
     fontface = "bold",
     family = "sans",
-    color = "#1E3A8A"
-  ) + # emoji
+    color = "#296b7f"
+  ) +
   ggimage::geom_image(
+    # emoji
     data = emoji_df,
     aes(x = 0.366, y = 0.725, image = image),
     size = 0.07,
@@ -155,15 +139,75 @@ p <- ggplot() +
   coord_fixed(xlim = c(0, 1), ylim = c(0, 1), expand = FALSE) +
   theme_void() +
   theme(
-    plot.background = element_rect(fill = NA, color = NA),
+    plot.background = element_rect(fill = "#FFF", color = NA),
     plot.margin = margin(0, 0, 0, 0)
   )
 print(p)
 
 ggsave(
-  here::here('inst', 'extdata', 'logo', 'logo.png'),
+  here::here('inst', 'extdata', 'logo', 'mosuite_logo_with_text.png'),
   plot = p,
   dpi = 300,
   width = 2.5,
   height = 2.5
 )
+
+# background only
+
+p_background <- ggplot() +
+  geom_tile(
+    data = heatmap_df,
+    aes(x = x, y = y, fill = Value),
+    width = tile_width,
+    height = tile_height,
+    color = "#D0D0D0",
+    linewidth = 0.2,
+    alpha = 0.7,
+    show.legend = FALSE
+  ) +
+  scale_fill_gradient2(
+    low = heat_colors[1],
+    mid = heat_colors[2],
+    high = heat_colors[3],
+    midpoint = 0,
+    guide = "none"
+  ) +
+  # Volcano points on top
+  geom_point(
+    data = volcano_data,
+    aes(x = x, y = y, color = color),
+    size = 2.0,
+    alpha = 0.7,
+    shape = 16,
+    show.legend = FALSE
+  ) +
+  ggimage::geom_image(
+    # emoji
+    data = emoji_df,
+    aes(x = 0.366, y = 0.725, image = image),
+    size = 0.07,
+    inherit.aes = FALSE
+  ) +
+  scale_color_identity() +
+  coord_fixed(xlim = c(0, 1), ylim = c(0, 1), expand = FALSE) +
+  theme_void() +
+  theme(
+    plot.background = element_rect(fill = "#FFF", color = NA),
+    plot.margin = margin(0, 0, 0, 0)
+  )
+print(p_background)
+ggsave(
+  here::here('inst', 'extdata', 'logo', 'mosuite_logo_background.png'),
+  plot = p_background,
+  dpi = 300,
+  width = 2.5,
+  height = 2.5
+)
+
+usethis::use_logo(here::here(
+  'inst',
+  'extdata',
+  'logo',
+  'mosuite_logo_background.png'
+))
+pkgdown::build_favicons(overwrite = TRUE)
