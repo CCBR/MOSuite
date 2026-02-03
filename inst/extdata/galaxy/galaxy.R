@@ -1,7 +1,9 @@
+library(dplyr)
+
 #' @keywords internal
 #' @examples
 #'
-#' get_function_meta(tools::Rd_db("MOSuite"), "batch_correct_counts")
+#' get_function_meta("batch_correct_counts", tools::Rd_db("MOSuite"))
 #'
 get_function_meta <- function(func_name, rd_db) {
   func_db <- rd_db[[paste0(func_name, ".Rd")]]
@@ -23,17 +25,27 @@ get_function_meta <- function(func_name, rd_db) {
     trimws() %>%
     as.list()
   names(arg_docs) <- arg_desc %>% dplyr::pull("arg")
-
-  arg_defaults <- lapply(formals(func_name), \(x) {
-    if (inherits(x, "name")) {
-      default <- NULL
-    } else if (inherits(x, "call")) {
-      default <- eval(x)
-    } else {
-      default <- x
+  options(
+    moo_print_plots = TRUE,
+    moo_save_plots = TRUE,
+    moo_plots_dir = "./figures",
+    print_plots = TRUE, # need if this function is defined outside the package's R source directory
+    save_plots = TRUE,
+    plots_dir = "./figures"
+  )
+  arg_defaults <- lapply(
+    formals(func_name, envir = getNamespace('MOSuite')),
+    \(x) {
+      if (inherits(x, "name")) {
+        default <- NULL
+      } else if (inherits(x, "call")) {
+        default <- eval(x, envir = getNamespace('MOSuite'))
+      } else {
+        default <- x
+      }
+      return(default)
     }
-    return(default)
-  })
+  )
   if ("..." %in% names(arg_defaults)) {
     arg_defaults <- arg_defaults %>%
       within(rm("...")) # remove `...` argument
@@ -61,7 +73,8 @@ get_function_args <- function(func_meta) {
     \(x) !stringr::str_starts(x, "moo"),
     names(func_meta$args)
   )
-  func_args <- func_meta$args[func_names]
+  func_args <- lapply(func_names, \(x) func_meta$args[[x]][['defaultValue']])
+
   if (stringr::str_starts(names(func_meta$args)[1], "moo")) {
     func_names <- c("moo_input_rds", "moo_output_rds", func_names)
     func_args <- c("moo.rds", "moo.rds", func_args)
@@ -84,10 +97,11 @@ get_function_args <- function(func_meta) {
 update_function_template <- function(
   template,
   func_meta,
-  func_args,
   keep_deprecated_args = TRUE
 ) {
-  abort_packages_not_installed("Rd2md")
+  if (!rlang::is_installed('Rd2md')) {
+    stop('Required pacakge {Rd2md} is not installed')
+  }
   new_template <- list(
     r_function = template$r_function,
     title = template$title %>% Rd2md::rd_str_to_md(),
@@ -104,9 +118,9 @@ update_function_template <- function(
       arg_name <- template[[arg_type]][[i]]$key
       if (arg_name %in% names(func_meta$args)) {
         arg_meta <- template[[arg_type]][[i]]
-        arg_meta$description <- func_args[[arg_name]]$description %>%
+        arg_meta$description <- func_meta$args[[arg_name]]$description %>%
           Rd2md::rd_str_to_md()
-        arg_meta$defaultValue <- func_args[[arg_name]]$defaultValue
+        arg_meta$defaultValue <- func_meta$args[[arg_name]]$defaultValue
         args_in_template <- c(args_in_template, arg_name)
         new_template[[arg_type]][[
           length(new_template[[arg_type]]) + 1
@@ -179,18 +193,23 @@ write_json <- function(
 #' @keywords internal
 write_package_json_blueprints <-
   function(
-    input_dir = file.path("inst", "extdata", "galaxy", "template-templates"),
+    input_dir = file.path("inst", "extdata", "galaxy", "1_mosuite-templates"),
     blueprints_output_dir = file.path(
       "inst",
       "extdata",
       "galaxy",
-      "code-templates"
+      "2_blueprints"
     ),
     defaults_output_dir = file.path("inst", "extdata", "json_args", "defaults")
   ) {
-    options(moo_print_plots = TRUE)
-    options(moo_save_plots = TRUE)
-    options(moo_plots_dir = "./figures")
+    options(
+      moo_print_plots = TRUE,
+      moo_save_plots = TRUE,
+      moo_plots_dir = "./figures",
+      print_plots = TRUE, # need if this function is defined outside the package's R source directory
+      save_plots = TRUE,
+      plots_dir = "./figures"
+    )
     templates <- list.files(
       input_dir,
       pattern = ".*\\.json$",
@@ -208,15 +227,14 @@ write_package_json_blueprints <-
       # write default arguments
       func_args <- get_function_args(func_meta)
       write_json(
-        lapply(func_args, \(x) x["defaultValue"]),
+        func_args,
         file.path(defaults_output_dir, glue::glue("{r_function}.json"))
       )
 
       # write galaxy blueprint template
       updated_template <- update_function_template(
         template,
-        func_meta,
-        func_args
+        func_meta
       )
       write_json(
         updated_template,

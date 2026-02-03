@@ -31,19 +31,19 @@ cli_exec_impl <- function(clargs) {
   # check for known function in MOSuite
   exports <- getNamespaceExports("MOSuite")
   if (!method %in% exports) {
-    return(cli_unknown(method, exports))
+    return(stop(cli_unknown(method, exports)))
   }
 
   # begin building call
   # if --json in arguments, call cli_from_json()
   if (any(stringr::str_detect(clargs, "^--json"))) {
-    args <- list(
-      call(":::", as.symbol("MOSuite"), as.symbol("cli_from_json")),
-      method = method
-    )
+    f <- getExportedValue("MOSuite", "cli_from_json")
+    args <- list(f)
+    args$method <- method
   } else {
     # otherwise call the method directly
-    args <- list(call("::", as.symbol("MOSuite"), as.symbol(method)))
+    f <- getExportedValue("MOSuite", method)
+    args <- list(f)
   }
 
   for (clarg in clargs[-1L]) {
@@ -74,8 +74,7 @@ cli_exec_impl <- function(clargs) {
   }
 
   # invoke method with parsed arguments
-  expr <- as.call(args)
-  return(eval(expr = expr, envir = globalenv()))
+  return(do.call(args[[1L]], args[-1L], envir = globalenv()))
 }
 
 cli_usage <- function(con = stderr()) {
@@ -111,20 +110,18 @@ cli_help <- function(method) {
 
 cli_unknown <- function(method, exports) {
   # report unknown command
-  warning(glue::glue("MOSuite: {method} is not a known function."))
+  msg <- glue::glue("MOSuite: {method} is not a known function.")
 
   # check for similar commands
   distance <- c(utils::adist(method, exports))
   names(distance) <- exports
   n <- min(distance)
-  if (n > 2) {
-    return(1L)
+  if (n < 4) {
+    candidates <- names(distance)[distance == n]
+    candidates_str <- paste(shQuote(candidates), collapse = " or ")
+    msg <- glue::glue(msg, "\n Did you mean {candidates_str}?")
   }
-
-  candidates <- names(distance)[distance == n]
-  fmt <- "did you mean %s?"
-  warning(fmt, paste(shQuote(candidates), collapse = " or "))
-  return(1L)
+  return(msg)
 }
 
 cli_parse <- function(text) {
@@ -156,7 +153,8 @@ cli_parse <- function(text) {
 #'
 cli_from_json <- function(method, json, debug = FALSE) {
   # begin building function call
-  fcn_args <- list(call("::", as.symbol("MOSuite"), as.symbol(method)))
+  f <- getExportedValue("MOSuite", method)
+  fcn_args <- list(f)
   # get function arguments from json
   json_args <- jsonlite::read_json(json)
 
@@ -186,10 +184,15 @@ cli_from_json <- function(method, json, debug = FALSE) {
     json_args[!stringr::str_detect(names(json_args), "moo_.*_rds")]
   )
 
+  # construct call expression for debug (non-evaluated)
+  call_head <- call("::", as.symbol("MOSuite"), as.symbol(method))
+  call_expr <- as.call(c(list(call_head), fcn_args[-1L]))
+
   # invoke method with parsed arguments from json
-  expr <- as.call(fcn_args)
-  if (isFALSE(debug)) {
-    result <- eval(expr = expr, envir = globalenv())
+  if (isTRUE(debug)) {
+    return(invisible(call_expr))
+  } else {
+    result <- do.call(fcn_args[[1L]], fcn_args[-1L], envir = globalenv())
 
     # save result to output_rds
     if ("moo_output_rds" %in% names(json_args)) {
@@ -197,5 +200,5 @@ cli_from_json <- function(method, json, debug = FALSE) {
     }
   }
 
-  return(invisible(expr))
+  return(invisible(call_expr))
 }

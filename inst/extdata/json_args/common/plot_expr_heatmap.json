@@ -1,175 +1,80 @@
 {
-  "moo_input_rds": "tests/testthat/data/moo.rds",
-  "moo_output_rds": "tests/testthat/data/moo.rds",
-  "count_type": {
-    "defaultValue": "norm"
-  },
-  "sub_count_type": {
-    "defaultValue": "voom"
-  },
-  "sample_metadata": {
-    "defaultValue": null
-  },
-  "sample_id_colname": {
-    "defaultValue": null
-  },
-  "feature_id_colname": {
-    "defaultValue": null
-  },
-  "group_colname": {
-    "defaultValue": "Group"
-  },
-  "label_colname": {
-    "defaultValue": null
-  },
-  "samples_to_include": {
-    "defaultValue": null
-  },
-  "color_values": {
-    "defaultValue": [
-      "#5954d6",
-      "#e1562c",
-      "#b80058",
-      "#00c6f8",
-      "#d163e6",
-      "#00a76c",
-      "#ff9287",
-      "#008cf9",
-      "#006e00",
-      "#796880",
-      "#FFA500",
-      "#878500"
-    ]
-  },
-  "include_all_genes": {
-    "defaultValue": false
-  },
-  "filter_top_genes_by_variance": {
-    "defaultValue": true
-  },
-  "top_genes_by_variance_to_include": {
-    "defaultValue": 500
-  },
-  "specific_genes_to_include_in_heatmap": {
-    "defaultValue": "None"
-  },
-  "cluster_genes": {
-    "defaultValue": true
-  },
-  "gene_distance_metric": {
-    "defaultValue": "correlation"
-  },
-  "gene_clustering_method": {
-    "defaultValue": "average"
-  },
-  "display_gene_dendrograms": {
-    "defaultValue": true
-  },
-  "display_gene_names": {
-    "defaultValue": false
-  },
-  "center_and_rescale_expression": {
-    "defaultValue": true
-  },
-  "cluster_samples": {
-    "defaultValue": false
-  },
-  "arrange_sample_columns": {
-    "defaultValue": true
-  },
-  "order_by_gene_expression": {
-    "defaultValue": false
-  },
-  "gene_to_order_columns": {
-    "defaultValue": " "
-  },
-  "gene_expression_order": {
-    "defaultValue": "low_to_high"
-  },
-  "smpl_distance_metric": {
-    "defaultValue": "correlation"
-  },
-  "smpl_clustering_method": {
-    "defaultValue": "average"
-  },
-  "display_smpl_dendrograms": {
-    "defaultValue": true
-  },
-  "reorder_dendrogram": {
-    "defaultValue": false
-  },
-  "reorder_dendrogram_order": {
-    "defaultValue": null
-  },
-  "display_sample_names": {
-    "defaultValue": true
-  },
-  "group_columns": {
-    "defaultValue": [
-      "Group",
-      "Replicate",
-      "Batch"
-    ]
-  },
-  "assign_group_colors": {
-    "defaultValue": false
-  },
-  "assign_color_to_sample_groups": {
-    "defaultValue": null
-  },
-  "group_colors": {
-    "defaultValue": [
-      "#5954d6",
-      "#e1562c",
-      "#b80058",
-      "#00c6f8",
-      "#d163e6",
-      "#00a76c",
-      "#ff9287",
-      "#008cf9",
-      "#006e00",
-      "#796880",
-      "#FFA500",
-      "#878500"
-    ]
-  },
-  "heatmap_color_scheme": {
-    "defaultValue": "Default"
-  },
-  "autoscale_heatmap_color": {
-    "defaultValue": true
-  },
-  "set_min_heatmap_color": {
-    "defaultValue": -2
-  },
-  "set_max_heatmap_color": {
-    "defaultValue": 2
-  },
-  "aspect_ratio": {
-    "defaultValue": "Auto"
-  },
-  "legend_font_size": {
-    "defaultValue": 10
-  },
-  "gene_name_font_size": {
-    "defaultValue": 4
-  },
-  "sample_name_font_size": {
-    "defaultValue": 8
-  },
-  "display_numbers": {
-    "defaultValue": false
-  },
-  "plot_filename": {
-    "defaultValue": "expr_heatmap.png"
-  },
-  "print_plots": {
-    "defaultValue": true
-  },
-  "save_plots": {
-    "defaultValue": true
-  },
-  "plots_subdir": {
-    "defaultValue": "heatmap"
-  }
+  "moo_input_rds": "moo_norm.rds",
+  "count_type": "norm",
+  "sub_count_type": "voom",
+  "sample_metadata": null,
+  "sample_id_colname": null,
+  "feature_id_colname": null,
+  "group_colname": "Group",
+  "label_colname": null,
+  "samples_to_include": null,
+  "color_values": [
+    "#5954d6",
+    "#e1562c",
+    "#b80058",
+    "#00c6f8",
+    "#d163e6",
+    "#00a76c",
+    "#ff9287",
+    "#008cf9",
+    "#006e00",
+    "#796880",
+    "#FFA500",
+    "#878500"
+  ],
+  "include_all_genes": false,
+  "filter_top_genes_by_variance": true,
+  "top_genes_by_variance_to_include": 500,
+  "specific_genes_to_include_in_heatmap": "None",
+  "cluster_genes": true,
+  "gene_distance_metric": "correlation",
+  "gene_clustering_method": "average",
+  "display_gene_dendrograms": true,
+  "display_gene_names": false,
+  "center_and_rescale_expression": true,
+  "cluster_samples": false,
+  "arrange_sample_columns": true,
+  "order_by_gene_expression": false,
+  "gene_to_order_columns": " ",
+  "gene_expression_order": "low_to_high",
+  "smpl_distance_metric": "correlation",
+  "smpl_clustering_method": "average",
+  "display_smpl_dendrograms": true,
+  "reorder_dendrogram": false,
+  "reorder_dendrogram_order": null,
+  "display_sample_names": true,
+  "group_columns": [
+    "Group",
+    "Replicate",
+    "Batch"
+  ],
+  "assign_group_colors": false,
+  "assign_color_to_sample_groups": null,
+  "group_colors": [
+    "#5954d6",
+    "#e1562c",
+    "#b80058",
+    "#00c6f8",
+    "#d163e6",
+    "#00a76c",
+    "#ff9287",
+    "#008cf9",
+    "#006e00",
+    "#796880",
+    "#FFA500",
+    "#878500"
+  ],
+  "heatmap_color_scheme": "Default",
+  "autoscale_heatmap_color": true,
+  "set_min_heatmap_color": -2,
+  "set_max_heatmap_color": 2,
+  "aspect_ratio": "Auto",
+  "legend_font_size": 10,
+  "gene_name_font_size": 4,
+  "sample_name_font_size": 8,
+  "display_numbers": false,
+  "plot_filename": "expr_heatmap.png",
+  "print_plots": true,
+  "save_plots": true,
+  "plots_subdir": "heatmap"
 }

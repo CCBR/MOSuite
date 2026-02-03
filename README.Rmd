@@ -45,13 +45,13 @@ remotes::install_github("CCBR/MOSuite", dependencies = TRUE)
 Or install a specific version:
 
 ```r
-remotes::install_github("CCBR/MOSuite", dependencies = TRUE, ref = "v0.1.0")
+remotes::install_github("CCBR/MOSuite", dependencies = TRUE, ref = "v0.2.1")
 ```
 
 There is also a Docker container available at <https://hub.docker.com/r/nciccbr/mosuite>
 
 ```sh
-singularity exec docker://nciccbr/mosuite:v0.2.0 R -s -e \
+singularity exec docker://nciccbr/mosuite:v0.2.1 R -s -e \
   'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'
 ```
 

@@ -1,97 +1,35 @@
 {
-  "moo_input_rds": null,
-  "moo_output_rds": null,
-  "feature_id_colname": {
-    "defaultValue": null
-  },
-  "contrasts_colname": {
-    "defaultValue": "Contrast"
-  },
-  "select_contrasts": {
-    "defaultValue": null
-  },
-  "plot_type": {
-    "defaultValue": "Venn diagram"
-  },
-  "intersection_ids": {
-    "defaultValue": null
-  },
-  "venn_force_unique": {
-    "defaultValue": true
-  },
-  "venn_numbers_format": {
-    "defaultValue": "raw"
-  },
-  "venn_significant_digits": {
-    "defaultValue": 2
-  },
-  "venn_fill_colors": {
-    "defaultValue": ["darkgoldenrod2", "darkolivegreen2", "mediumpurple3", "darkorange2", "lightgreen"]
-  },
-  "venn_fill_transparency": {
-    "defaultValue": 0.2
-  },
-  "venn_border_colors": {
-    "defaultValue": "fill colors"
-  },
-  "venn_font_size_for_category_names": {
-    "defaultValue": 3
-  },
-  "venn_category_names_distance": {
-    "defaultValue": null
-  },
-  "venn_category_names_position": {
-    "defaultValue": null
-  },
-  "venn_font_size_for_counts": {
-    "defaultValue": 6
-  },
-  "venn_outer_margin": {
-    "defaultValue": 0
-  },
-  "intersections_order": {
-    "defaultValue": "degree"
-  },
-  "display_empty_intersections": {
-    "defaultValue": false
-  },
-  "intersection_bar_color": {
-    "defaultValue": "steelblue4"
-  },
-  "intersection_point_size": {
-    "defaultValue": 2.2
-  },
-  "intersection_line_width": {
-    "defaultValue": 0.7
-  },
-  "table_font_size": {
-    "defaultValue": 0.7
-  },
-  "table_content": {
-    "defaultValue": "all intersections"
-  },
-  "graphics_device": {
-    "defaultValue": ["function (filename = \"Rplot%03d.png\", width = 480, height = 480, ", "    units = \"px\", pointsize = 12, bg = \"white\", res = NA, ..., ", "    type = c(\"cairo\", \"cairo-png\", \"Xlib\", \"quartz\"), antialias) ", "{", "    if (!is.character(filename) || length(filename) != 1L || ", "        !nzchar(filename)) ", "        stop(\"'filename' must be a non-empty character string\")", "    if (!checkIntFormat(filename)) ", "        stop(\"invalid 'filename'\")", "    g <- .geometry(width, height, units, res)", "    new <- list(...)", "    if (missing(type)) ", "        type <- getOption(\"bitmapType\")", "    type <- match.arg(type)", "    if (!missing(antialias)) ", "        new$antialias <- match.arg(antialias, aa.cairo)", "    d <- check.options(new, name.opt = \".X11.Options\", envir = .X11env)", "    antialias <- match(d$antialias, aa.cairo)", "    if (type == \"quartz\") {", "        if (capabilities(\"aqua\")) {", "            width <- g$width/ifelse(is.na(res), 72, res)", "            height <- g$height/ifelse(is.na(res), 72, res)", "            invisible(.External(C_Quartz, \"png\", path.expand(filename), ", "                width, height, pointsize, d$family, d$antialias != ", "                  \"none\", \"\", bg, \"white\", if (is.na(res)) NULL else res))", "        }", "        else warning(\"type = \\\"quartz\\\" is unavailable. trying \\\"Xlib\\\"\")", "    }", "    else if (type == \"cairo\") {", "        if (capabilities(\"cairo\")) {", "            invisible(.External(C_devCairo, filename, 2L, g$width, ", "                g$height, pointsize, bg, res, antialias, 100L, ", "                d$family, 300, optionSymbolFont(d$symbolfamily)))", "        }", "        else warning(\"type = \\\"cairo\\\" is unavailable. trying \\\"Xlib\\\"\")", "    }", "    else if (type == \"cairo-png\") {", "        if (capabilities(\"cairo\")) {", "            invisible(.External(C_devCairo, filename, 5L, g$width, ", "                g$height, pointsize, bg, res, antialias, 100L, ", "                d$family, 300, optionSymbolFont(d$symbolfamily)))", "        }", "        else warning(\"type = \\\"cairo-png\\\" is unavailable. trying \\\"Xlib\\\"\")", "    }", "    else invisible(.External2(C_X11, paste0(\"png::\", filename), ", "        g$width, g$height, pointsize, d$gamma, d$colortype, d$maxcubesize, ", "        bg, bg, d$fonts, res, 0L, 0L, \"\", 0, 0, d$family, optionSymbolFont(d$symbolfamily)))", "}"]
-  },
-  "dpi": {
-    "defaultValue": 300
-  },
-  "image_width": {
-    "defaultValue": 4000
-  },
-  "image_height": {
-    "defaultValue": 3000
-  },
-  "plot_filename": {
-    "defaultValue": "venn_diagram.png"
-  },
-  "print_plots": {
-    "defaultValue": true
-  },
-  "save_plots": {
-    "defaultValue": true
-  },
-  "plots_subdir": {
-    "defaultValue": "diff"
-  }
+  "moo_input_rds": "moo.rds",
+  "moo_output_rds": "moo.rds",
+  "feature_id_colname": null,
+  "contrasts_colname": "Contrast",
+  "select_contrasts": null,
+  "plot_type": "Venn diagram",
+  "intersection_ids": null,
+  "venn_force_unique": true,
+  "venn_numbers_format": "raw",
+  "venn_significant_digits": 2,
+  "venn_fill_colors": ["darkgoldenrod2", "darkolivegreen2", "mediumpurple3", "darkorange2", "lightgreen"],
+  "venn_fill_transparency": 0.2,
+  "venn_border_colors": "fill colors",
+  "venn_font_size_for_category_names": 3,
+  "venn_category_names_distance": null,
+  "venn_category_names_position": null,
+  "venn_font_size_for_counts": 6,
+  "venn_outer_margin": 0,
+  "intersections_order": "degree",
+  "display_empty_intersections": false,
+  "intersection_bar_color": "steelblue4",
+  "intersection_point_size": 2.2,
+  "intersection_line_width": 0.7,
+  "table_font_size": 0.7,
+  "table_content": "all intersections",
+  "graphics_device": ["function (filename = \"Rplot%03d.png\", width = 480, height = 480, ", "    units = \"px\", pointsize = 12, bg = \"white\", res = NA, ..., ", "    type = c(\"cairo\", \"cairo-png\", \"Xlib\", \"quartz\"), antialias) ", "{", "    if (!is.character(filename) || length(filename) != 1L || ", "        !nzchar(filename)) ", "        stop(\"'filename' must be a non-empty character string\")", "    if (!checkIntFormat(filename)) ", "        stop(\"invalid 'filename'\")", "    g <- .geometry(width, height, units, res)", "    new <- list(...)", "    if (missing(type)) ", "        type <- getOption(\"bitmapType\")", "    type <- match.arg(type)", "    if (!missing(antialias)) ", "        new$antialias <- match.arg(antialias, aa.cairo)", "    d <- check.options(new, name.opt = \".X11.Options\", envir = .X11env)", "    antialias <- match(d$antialias, aa.cairo)", "    if (type == \"quartz\") {", "        if (capabilities(\"aqua\")) {", "            width <- g$width/ifelse(is.na(res), 72, res)", "            height <- g$height/ifelse(is.na(res), 72, res)", "            invisible(.External(C_Quartz, \"png\", path.expand(filename), ", "                width, height, pointsize, d$family, d$antialias != ", "                  \"none\", \"\", bg, \"white\", if (is.na(res)) NULL else res))", "        }", "        else warning(\"type = \\\"quartz\\\" is unavailable. trying \\\"Xlib\\\"\")", "    }", "    else if (type == \"cairo\") {", "        if (capabilities(\"cairo\")) {", "            invisible(.External(C_devCairo, filename, 2L, g$width, ", "                g$height, pointsize, bg, res, antialias, 100L, ", "                d$family, 300, optionSymbolFont(d$symbolfamily)))", "        }", "        else warning(\"type = \\\"cairo\\\" is unavailable. trying \\\"Xlib\\\"\")", "    }", "    else if (type == \"cairo-png\") {", "        if (capabilities(\"cairo\")) {", "            invisible(.External(C_devCairo, filename, 5L, g$width, ", "                g$height, pointsize, bg, res, antialias, 100L, ", "                d$family, 300, optionSymbolFont(d$symbolfamily)))", "        }", "        else warning(\"type = \\\"cairo-png\\\" is unavailable. trying \\\"Xlib\\\"\")", "    }", "    else invisible(.External2(C_X11, paste0(\"png::\", filename), ", "        g$width, g$height, pointsize, d$gamma, d$colortype, d$maxcubesize, ", "        bg, bg, d$fonts, res, 0L, 0L, \"\", 0, 0, d$family, optionSymbolFont(d$symbolfamily)))", "}"],
+  "dpi": 300,
+  "image_width": 4000,
+  "image_height": 3000,
+  "plot_filename": "venn_diagram.png",
+  "print_plots": true,
+  "save_plots": true,
+  "plots_subdir": "diff"
 }

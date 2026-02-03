@@ -27,6 +27,7 @@ RUN conda config --add channels conda-forge \
 # install conda packages
 RUN mamba install -y -c conda-forge \
     r-base=${R_VERSION} \
+    r-argparse \
     r-amap \
     r-broom \
     r-cffr \
@@ -62,7 +63,8 @@ RUN mamba install -y -c conda-forge \
 # install R package
 COPY . /opt2/MOSuite
 RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com', upgrade='never')" && \
-  R -e "library(MOSuite); devtools::test('/opt2/MOSuite')"
+  R -e "library(MOSuite); devtools::test('/opt2/MOSuite')" && \
+  R -s -e "readr::write_csv(tibble::as_tibble(installed.packages()), '/data2/r-packages_mosuite.csv')"
 
 # add mosuite exec to the path
 RUN chmod -R +x /opt2/conda/lib/R/library/MOSuite/exec

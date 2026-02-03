@@ -669,7 +669,7 @@ filter_diff <- function(
     feature_id_colname <- colnames(diff_dat)[1]
   }
   if (!(filtering_mode %in% c("any", "all"))) {
-    stop(glue::glue("filter_mode not recognized: {filtering_mode}"))
+    stop(glue::glue("filtering_mode not recognized: {filtering_mode}"))
   }
   if (!(plot_type %in% c("bar", "pie"))) {
     stop(glue::glue("plot_type not recognized: {plot_type}"))
@@ -944,8 +944,6 @@ filter_diff <- function(
           legend.position = "top",
           panel.grid.major.x = ggplot2::element_blank(),
           panel.grid.minor.x = ggplot2::element_blank(),
-          axis.ticks.x = ggplot2::element_blank(),
-          axis.text.x = ggplot2::element_blank(),
           strip.background = ggplot2::element_blank(),
           strip.text = ggplot2::element_text(size = plot_titles_fontsize)
         ) +

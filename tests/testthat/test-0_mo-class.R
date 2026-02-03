@@ -194,3 +194,202 @@ test_that("extract_counts works", {
   )
   expect_error(extract_counts(moo, "norm"), "contains subtypes")
 })
+
+
+test_that("write_multiOmicDataSet_properties works", {
+  moo_nidap <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts),
+      "norm" = list("voom" = as.data.frame(nidap_norm_counts))
+    )
+  ) %>%
+    diff_counts(
+      count_type = "filt",
+      sub_count_type = NULL,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      covariates_colnames = c("Group", "Batch"),
+      contrast_colname = c("Group"),
+      contrasts = c("B-A", "C-A", "B-C"),
+      voom_normalization_method = "quantile",
+    ) %>%
+    filter_diff(
+      significance_column = "adjpval",
+      significance_cutoff = 0.05,
+      change_column = "logFC",
+      change_cutoff = 1,
+      filtering_mode = "any",
+      include_estimates = c("FC", "logFC", "tstat", "pval", "adjpval"),
+      round_estimates = TRUE,
+      rounding_decimal_for_percent_cells = 0,
+      contrast_filter = "none",
+      contrasts = c(),
+      groups = c(),
+      groups_filter = "none",
+      label_font_size = 6,
+      label_distance = 1,
+      y_axis_expansion = 0.08,
+      fill_colors = c("steelblue1", "whitesmoke"),
+      pie_chart_in_3d = TRUE,
+      bar_width = 0.4,
+      draw_bar_border = TRUE,
+      plot_type = "bar",
+      plot_titles_fontsize = 12
+    )
+  moo_nidap@analyses$foo <- "bar"
+
+  temp_dir <- tempfile(pattern = "moo-write-")
+  on.exit(unlink(temp_dir, recursive = TRUE), add = TRUE)
+
+  expect_equal(write_multiOmicDataSet_properties(moo_nidap, temp_dir), temp_dir)
+
+  expect_true(file.exists(file.path(temp_dir, "sample_metadata.csv")))
+  expect_true(file.exists(file.path(temp_dir, "feature_annotation.csv")))
+
+  expect_true(file.exists(file.path(temp_dir, "counts", "raw_counts.csv")))
+  expect_true(file.exists(file.path(temp_dir, "counts", "clean_counts.csv")))
+  expect_true(file.exists(file.path(temp_dir, "counts", "filt_counts.csv")))
+  expect_true(
+    file.exists(file.path(temp_dir, "counts", "norm", "voom_counts.csv"))
+  )
+
+  expect_true(file.exists(file.path(temp_dir, "analyses", "foo.rds")))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "diff",
+    "diff_B-A.csv"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "diff",
+    "diff_C-A.csv"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "diff",
+    "diff_B-C.csv"
+  )))
+  expect_true(file.exists(file.path(temp_dir, "analyses", "diff_filt.csv")))
+  expect_true(dir.exists(file.path(temp_dir, "analyses", "colors")))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Sample.rds"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Batch.rds"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Group.rds"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Label.rds"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Replicate.rds"
+  )))
+})
+
+test_that("write_multiOmicDataSet and read_multiOmicDataSet work", {
+  # Create a simple moo object
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(GeneName = unique(nidap_raw_counts$GeneName)),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts)
+    )
+  )
+
+  # Write to temp file
+  temp_file <- tempfile(pattern = "moo-", fileext = ".rds")
+  on.exit(unlink(temp_file), add = TRUE)
+
+  # Test write returns filepath invisibly
+  expect_equal(write_multiOmicDataSet(moo, temp_file), temp_file)
+  expect_true(file.exists(temp_file))
+
+  # Test read
+  moo_read <- read_multiOmicDataSet(temp_file)
+  expect_true(S7::S7_inherits(moo_read, multiOmicDataSet))
+
+  # Verify all properties match
+  expect_equal(moo_read@sample_meta, moo@sample_meta)
+  expect_equal(moo_read@annotation, moo@annotation)
+  expect_equal(moo_read@counts, moo@counts)
+  expect_equal(names(moo_read@analyses), names(moo@analyses))
+})
+
+test_that("write_multiOmicDataSet validates input", {
+  expect_error(
+    write_multiOmicDataSet("not a moo"),
+    "moo must be a multiOmicDataSet"
+  )
+  expect_error(
+    write_multiOmicDataSet(list(sample_meta = data.frame())),
+    "moo must be a multiOmicDataSet"
+  )
+})
+
+test_that("read_multiOmicDataSet validates input", {
+  temp_file <- tempfile(fileext = ".rds")
+  on.exit(unlink(temp_file), add = TRUE)
+
+  # Write a non-moo object
+  readr::write_rds(list(a = 1, b = 2), temp_file)
+
+  expect_error(
+    read_multiOmicDataSet(temp_file),
+    "RDS does not contain a multiOmicDataSet"
+  )
+})
+
+test_that("write and read preserves complex moo with analyses", {
+  moo_complex <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts),
+      "norm" = list("voom" = as.data.frame(nidap_norm_counts))
+    )
+  )
+
+  temp_file <- tempfile(pattern = "moo-complex-", fileext = ".rds")
+  on.exit(unlink(temp_file), add = TRUE)
+
+  write_multiOmicDataSet(moo_complex, temp_file)
+  moo_restored <- read_multiOmicDataSet(temp_file)
+
+  expect_equal(moo_restored@sample_meta, moo_complex@sample_meta)
+  expect_equal(moo_restored@annotation, moo_complex@annotation)
+  expect_equal(moo_restored@counts$raw, moo_complex@counts$raw)
+  expect_equal(moo_restored@counts$clean, moo_complex@counts$clean)
+  expect_equal(moo_restored@counts$filt, moo_complex@counts$filt)
+  expect_equal(moo_restored@counts$norm$voom, moo_complex@counts$norm$voom)
+  expect_equal(
+    names(moo_restored@analyses$colors),
+    names(moo_complex@analyses$colors)
+  )
+})
