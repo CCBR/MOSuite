@@ -62,3 +62,42 @@ test_that("clean_raw_counts works for RENEE data", {
     )
   )
 })
+
+test_that("aggregate_duplicate_gene_names returns collapsed dfout", {
+  counts_dat <- data.frame(
+    gene_id = c("A", "A", "B"),
+    sample1 = c(1, 2, 3),
+    sample2 = c(4, 5, 6),
+    stringsAsFactors = FALSE,
+    check.names = FALSE
+  )
+  
+  # Case 1: aggregation enabled
+  out <- MOSuite:::aggregate_duplicate_gene_names(
+    counts_dat = counts_dat,
+    gene_name_column_to_use_for_collapsing_duplicates = "gene_id",
+    aggregate_rows_with_duplicate_gene_names = TRUE,
+    split_gene_name = FALSE
+  )
+  
+  expect_equal(nrow(out), 2)
+  expect_equal(sum(duplicated(out$gene_id)), 0)
+  
+  a_row <- out[out$gene_id == "A", , drop = FALSE]
+  expect_equal(a_row$sample1, 3)
+  expect_equal(a_row$sample2, 9)
+  
+  # Case 2: aggregation disabled
+  out_noagg <- MOSuite:::aggregate_duplicate_gene_names(
+    counts_dat = counts_dat,
+    gene_name_column_to_use_for_collapsing_duplicates = "gene_id",
+    aggregate_rows_with_duplicate_gene_names = FALSE,
+    split_gene_name = FALSE
+  )
+  
+  expect_equal(nrow(out_noagg), 3)
+  expect_equal(sum(duplicated(out_noagg$gene_id)), 1)
+  expect_equal(out_noagg$sample1, counts_dat$sample1)
+  expect_equal(out_noagg$sample2, counts_dat$sample2)
+})
+
