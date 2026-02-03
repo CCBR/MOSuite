@@ -56,43 +56,28 @@ volcano_data <- nidap_deg_analysis |>
 fc_cut <- 1.0
 p_cut <- 2.5
 
-volcano_data$regulation <- "Not significant"
-volcano_data$regulation[volcano_data$neg_log10_pval >= p_cut] <- "Significant"
-volcano_data$regulation[
-  volcano_data$log2fc >= fc_cut & volcano_data$neg_log10_pval >= p_cut
-] <- "Upregulated"
-volcano_data$regulation[
-  volcano_data$log2fc <= -fc_cut & volcano_data$neg_log10_pval >= p_cut
-] <- "Downregulated"
+volcano_data <- volcano_data |>
+  mutate(
+    regulation = case_when(
+      log2fc >= fc_cut & neg_log10_pval >= p_cut ~ "Upregulated",
+      log2fc <= -fc_cut & neg_log10_pval >= p_cut ~ "Downregulated",
+      neg_log10_pval >= p_cut ~ "Significant",
+      .default = "Not significant"
+    ),
+    x = scales::rescale(log2fc, to = c(0.12, 0.88)),
+    y = scales::rescale(neg_log10_pval, to = c(0.18, 0.94))
+  )
 
-volcano_data$x <- scales::rescale(volcano_data$log2fc, to = c(0.08, 0.92))
-volcano_data$y <- scales::rescale(
-  volcano_data$neg_log10_pval,
-  to = c(0.10, 0.85)
-)
-
-# Threshold lines in scaled coordinates (to match v2 guide lines)
-x_cut_low <- scales::rescale(
-  -fc_cut,
-  from = range(volcano_data$log2fc),
-  to = c(0.08, 0.92)
-)
-x_cut_high <- scales::rescale(
-  fc_cut,
-  from = range(volcano_data$log2fc),
-  to = c(0.08, 0.92)
-)
-y_cut <- scales::rescale(
-  p_cut,
-  from = range(volcano_data$neg_log10_pval),
-  to = c(0.10, 0.85)
-)
-
-volcano_data$color <- NA
-volcano_data$color[volcano_data$regulation == "Not significant"] <- "#999999" # Gray
-volcano_data$color[volcano_data$regulation == "Significant"] <- "#009E73" # Green
-volcano_data$color[volcano_data$regulation == "Upregulated"] <- "#0072B2" # Blue
-volcano_data$color[volcano_data$regulation == "Downregulated"] <- "#E69F00" # Orange/Yellow
+volcano_data <- volcano_data |>
+  mutate(
+    color = case_when(
+      regulation == "Upregulated" ~ "#0072B2", # Blue
+      regulation == "Downregulated" ~ "#E69F00", # Orange/Yellow
+      regulation == "Significant" ~ "#009E73", # Green
+      regulation == "Not significant" ~ "#999999", # Gray
+      .default = NA_character_
+    )
+  )
 
 # ---- Heatmap layer (v3) ----
 rows <- paste0("G", sprintf("%02d", 1:12))
@@ -103,21 +88,21 @@ base_matrix[1:4, 1:5] <- base_matrix[1:4, 1:5] + 2.0 # up cluster
 base_matrix[9:12, 6:10] <- base_matrix[9:12, 6:10] - 2.0 # down cluster
 base_matrix[5:8, 4:7] <- base_matrix[5:8, 4:7] + 1.0 # moderate cluster
 
-heatmap_df <- expand.grid(Row = rows, Col = cols)
-heatmap_df$Value <- as.vector(base_matrix)
-heatmap_df$Value <- scales::rescale(heatmap_df$Value, to = c(-2, 2))
+heatmap_df <- expand.grid(Row = rows, Col = cols) |>
+  mutate(
+    Value = as.vector(base_matrix),
+    Value = scales::rescale(Value, to = c(-2, 2)),
+    x = scales::rescale(
+      as.numeric(factor(Col, levels = cols)),
+      to = c(0.10, 0.90)
+    ),
+    y = scales::rescale(
+      as.numeric(factor(Row, levels = rows)),
+      to = c(0.16, 0.96)
+    )
+  )
 
 heat_colors <- c("#0072B2", "#F7F7F7", "#E69F00")
-
-# Map heatmap to the same 0-1 space as the volcano plot
-heatmap_df$x <- scales::rescale(
-  as.numeric(factor(heatmap_df$Col, levels = cols)),
-  to = c(0.10, 0.90)
-)
-heatmap_df$y <- scales::rescale(
-  as.numeric(factor(heatmap_df$Row, levels = rows)),
-  to = c(0.16, 0.96)
-)
 tile_width <- (0.90 - 0.10) / length(cols)
 tile_height <- (0.96 - 0.16) / length(rows)
 
@@ -141,27 +126,6 @@ p <- ggplot() +
     midpoint = 0,
     guide = "none"
   ) +
-  # Volcano guide lines
-  geom_vline(
-    xintercept = c(x_cut_low, x_cut_high),
-    color = "#34495E",
-    linewidth = 0.4,
-    linetype = "dashed",
-    alpha = 0.2
-  ) +
-  geom_hline(
-    yintercept = y_cut,
-    color = "#34495E",
-    linewidth = 0.4,
-    linetype = "dashed",
-    alpha = 0.2
-  ) +
-  geom_vline(
-    xintercept = 0.5,
-    color = "#2C3E50",
-    linewidth = 0.6,
-    alpha = 0.2
-  ) +
   # Volcano points on top
   geom_point(
     data = volcano_data,
@@ -174,7 +138,7 @@ p <- ggplot() +
   annotate(
     "text",
     x = 0.5,
-    y = 0.8,
+    y = 0.725,
     label = "MOSuite",
     size = 32,
     fontface = "bold",
@@ -183,7 +147,7 @@ p <- ggplot() +
   ) + # emoji
   ggimage::geom_image(
     data = emoji_df,
-    aes(x = 0.366, y = 0.8, image = image),
+    aes(x = 0.366, y = 0.725, image = image),
     size = 0.07,
     inherit.aes = FALSE
   ) +
@@ -191,32 +155,15 @@ p <- ggplot() +
   coord_fixed(xlim = c(0, 1), ylim = c(0, 1), expand = FALSE) +
   theme_void() +
   theme(
-    plot.background = element_rect(fill = "#000000", color = NA),
+    plot.background = element_rect(fill = NA, color = NA),
     plot.margin = margin(0, 0, 0, 0)
   )
-p
+print(p)
 
 ggsave(
-  here::here('inst', 'extdata', 'logo', 'logo_raw.png'),
+  here::here('inst', 'extdata', 'logo', 'logo.png'),
   plot = p,
   dpi = 300,
-  width = 2.5
+  width = 2.5,
+  height = 2.5
 )
-# Create the hex sticker
-# sticker(
-#   p,
-#   package = "MOSuite",
-#   p_size = 24,
-#   p_color = "#1E3A8A",
-#   p_family = "sans",
-#   p_fontface = "bold",
-#   s_x = 1.0,
-#   s_y = 0.95,
-#   s_width = 2,
-#   s_height = 2,
-#   h_size = 1.3,
-#   h_color = "#1E90FF",
-#   h_fill = "#F8FBFF",
-#   dpi = 300,
-#   filename = "./inst/extdata/logo/logo_raw.png"
-# )
