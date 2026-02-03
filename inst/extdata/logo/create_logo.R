@@ -19,12 +19,16 @@ emoji_temp <- tempfile(fileext = ".png")
 download.file(emoji_url, emoji_temp, quiet = TRUE, mode = "wb")
 
 # Convert to grayscale and apply transparency
-emoji_gray <- magick::image_read(emoji_temp)
-emoji_gray <- magick::image_quantize(emoji_gray, colorspace = "gray")
+emoji_gray <- magick::image_read(emoji_temp) |>
+  magick::image_quantize(colorspace = "gray")
 # Apply transparency via channel operations
 #emoji_gray <- magick::image_transparent(emoji_gray, color = "white", fuzz = 30)
-emoji_gray <- magick::image_fx(emoji_gray, "0.7*u", channel = "alpha")
-magick::image_write(emoji_gray, emoji_temp)
+emoji_gray_transparent <- magick::image_fx(
+  emoji_gray,
+  "0.4*u",
+  channel = "alpha"
+)
+magick::image_write(emoji_gray_transparent, emoji_temp)
 
 emoji_df <- data.frame(
   x = 0.366,
@@ -32,12 +36,6 @@ emoji_df <- data.frame(
   image = emoji_temp
 )
 
-emoji_layer <- ggimage::geom_image(
-  data = emoji_df,
-  aes(x = x, y = y, image = image),
-  size = 0.06,
-  inherit.aes = FALSE
-)
 
 # ---- Volcano plot layer ----
 # Continuous V-shape distribution
@@ -143,9 +141,7 @@ p <- ggplot() +
     midpoint = 0,
     guide = "none"
   ) +
-  # Subtle cow emoji watermark
-  emoji_layer +
-  # Volcano guide lines (from v2)
+  # Volcano guide lines
   geom_vline(
     xintercept = c(x_cut_low, x_cut_high),
     color = "#34495E",
@@ -175,29 +171,52 @@ p <- ggplot() +
     shape = 16,
     show.legend = FALSE
   ) +
+  annotate(
+    "text",
+    x = 0.5,
+    y = 0.8,
+    label = "MOSuite",
+    size = 32,
+    fontface = "bold",
+    family = "sans",
+    color = "#1E3A8A"
+  ) + # emoji
+  ggimage::geom_image(
+    data = emoji_df,
+    aes(x = 0.366, y = 0.8, image = image),
+    size = 0.07,
+    inherit.aes = FALSE
+  ) +
   scale_color_identity() +
   coord_fixed(xlim = c(0, 1), ylim = c(0, 1), expand = FALSE) +
   theme_void() +
   theme(
-    plot.background = element_rect(fill = NA, color = NA),
+    plot.background = element_rect(fill = "#000000", color = NA),
     plot.margin = margin(0, 0, 0, 0)
   )
+p
 
-# Create the hex sticker
-sticker(
-  p,
-  package = "MOSuite",
-  p_size = 24,
-  p_color = "#1E3A8A",
-  p_family = "sans",
-  p_fontface = "bold",
-  s_x = 1.0,
-  s_y = 0.95,
-  s_width = 2,
-  s_height = 2,
-  h_size = 1.3,
-  h_color = "#1E90FF",
-  h_fill = "#F8FBFF",
+ggsave(
+  here::here('inst', 'extdata', 'logo', 'logo_raw.png'),
+  plot = p,
   dpi = 300,
-  filename = "./inst/extdata/logo/logo_raw.png"
+  width = 2.5
 )
+# Create the hex sticker
+# sticker(
+#   p,
+#   package = "MOSuite",
+#   p_size = 24,
+#   p_color = "#1E3A8A",
+#   p_family = "sans",
+#   p_fontface = "bold",
+#   s_x = 1.0,
+#   s_y = 0.95,
+#   s_width = 2,
+#   s_height = 2,
+#   h_size = 1.3,
+#   h_color = "#1E90FF",
+#   h_fill = "#F8FBFF",
+#   dpi = 300,
+#   filename = "./inst/extdata/logo/logo_raw.png"
+# )
