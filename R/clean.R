@@ -285,6 +285,7 @@ aggregate_duplicate_gene_names <- function(
   ##################################
 
   feature_id_colname <- colnames(counts_dat)[1]
+  dfout <- counts_dat
 
   ## If user uses "Feature ID" column then switch to empty for appropriate behavior based on other parameters
   if (gene_name_column_to_use_for_collapsing_duplicates == feature_id_colname) {
