@@ -4,13 +4,13 @@ test_that("clean_raw_counts works for NIDAP data", {
     counts_dat = as.data.frame(nidap_raw_counts)
   ) %>%
     clean_raw_counts(print_plots = TRUE)
-  
+
   actual <- moo_nidap@counts[["clean"]] %>%
     dplyr::rename(Gene = GeneName) %>%
     as.data.frame()
-  
+
   expected <- as.data.frame(nidap_clean_raw_counts)
-  
+
   cmp <- all.equal(actual, expected, check.attributes = FALSE)
   expect_true(isTRUE(cmp), info = paste(cmp, collapse = "\n"))
 })
@@ -75,7 +75,7 @@ test_that("aggregate_duplicate_gene_names returns collapsed dfout", {
     stringsAsFactors = FALSE,
     check.names = FALSE
   )
-  
+
   # Case 1: aggregation enabled
   out <- MOSuite:::aggregate_duplicate_gene_names(
     counts_dat = counts_dat,
@@ -83,14 +83,14 @@ test_that("aggregate_duplicate_gene_names returns collapsed dfout", {
     aggregate_rows_with_duplicate_gene_names = TRUE,
     split_gene_name = FALSE
   )
-  
+
   expect_equal(nrow(out), 2)
   expect_equal(sum(duplicated(out$gene_id)), 0)
-  
+
   a_row <- out[out$gene_id == "A", , drop = FALSE]
   expect_equal(a_row$sample1, 3)
   expect_equal(a_row$sample2, 9)
-  
+
   # Case 2: aggregation disabled
   out_noagg <- MOSuite:::aggregate_duplicate_gene_names(
     counts_dat = counts_dat,
@@ -98,10 +98,9 @@ test_that("aggregate_duplicate_gene_names returns collapsed dfout", {
     aggregate_rows_with_duplicate_gene_names = FALSE,
     split_gene_name = FALSE
   )
-  
+
   expect_equal(nrow(out_noagg), 3)
   expect_equal(sum(duplicated(out_noagg$gene_id)), 1)
   expect_equal(out_noagg$sample1, counts_dat$sample1)
   expect_equal(out_noagg$sample2, counts_dat$sample2)
 })
-
