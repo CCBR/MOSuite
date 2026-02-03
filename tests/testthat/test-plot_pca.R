@@ -189,31 +189,6 @@ test_that("plot_pca layers are expected", {
   expect_s3_class(p$layers[[1]]$geom, "GeomPoint")
 })
 
-test_that("3DPCA works", {
-  skip()
-  plot_pca_3d(
-    nidap_filtered_counts,
-    nidap_sample_metadata,
-    group_colname = "Group",
-    label_colname = "Label",
-    color_values = c(
-      "#5954d6",
-      "#e1562c",
-      "#b80058",
-      "#00c6f8",
-      "#d163e6",
-      "#00a76c",
-      "#ff9287",
-      "#008cf9",
-      "#006e00",
-      "#796880",
-      "#FFA500",
-      "#878500"
-    ),
-    principal_components = c(1, 2, 3),
-  )
-})
-
 
 test_that("2D & 3D PCA method dispatch works", {
   moo <- multiOmicDataSet(
@@ -246,4 +221,127 @@ test_that("2D & 3D PCA method dispatch works", {
   )
   # see compare_proxy.plotly
   # expect_equal(p1, p2)
+})
+
+test_that("plot_pca_3d returns plotly object and has correct structure", {
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts)
+    )
+  )
+
+  # Test with multiOmicDataSet
+  fig_moo <- plot_pca_3d(
+    moo,
+    count_type = "filt",
+    principal_components = c(1, 2, 3),
+    group_colname = "Group",
+    label_colname = "Label",
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_s3_class(fig_moo, "plotly")
+  expect_type(fig_moo$x, "list")
+
+  # Test with data.frame
+  fig_df <- plot_pca_3d(
+    moo@counts$filt,
+    sample_metadata = moo@sample_meta,
+    principal_components = c(1, 2, 3),
+    group_colname = "Group",
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_s3_class(fig_df, "plotly")
+  expect_type(fig_df$x, "list")
+})
+
+test_that("plot_pca_3d validates principal_components length", {
+  expect_error(
+    plot_pca_3d(
+      nidap_filtered_counts,
+      sample_metadata = nidap_sample_metadata,
+      principal_components = c(1, 2),
+      save_plots = FALSE,
+      print_plots = FALSE
+    ),
+    "principal_components must contain 3 values"
+  )
+
+  expect_error(
+    plot_pca_3d(
+      nidap_filtered_counts,
+      sample_metadata = nidap_sample_metadata,
+      principal_components = c(1, 2, 3, 4),
+      save_plots = FALSE,
+      print_plots = FALSE
+    ),
+    "principal_components must contain 3 values"
+  )
+})
+
+test_that("plot_pca_2d works on multiOmicDataSet object", {
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts)
+    )
+  )
+
+  # Test with multiOmicDataSet
+  p_moo <- plot_pca_2d(
+    moo,
+    count_type = "filt",
+    principal_components = c(1, 2),
+    group_colname = "Group",
+    label_colname = "Label",
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_s3_class(p_moo, "ggplot")
+  # Should have geom_point and geom_text_repel layers
+  expect_gte(length(p_moo$layers), 2)
+  expect_s3_class(p_moo$layers[[1]]$geom, "GeomPoint")
+})
+
+test_that("plot_pca_2d works with and without labels", {
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts)
+    )
+  )
+
+  # With labels
+  p_with_labels <- plot_pca_2d(
+    moo,
+    count_type = "filt",
+    principal_components = c(1, 2),
+    add_label = TRUE,
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  # Without labels
+  p_without_labels <- plot_pca_2d(
+    moo,
+    count_type = "filt",
+    principal_components = c(1, 2),
+    add_label = FALSE,
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  # With labels should have more layers (geom_text_repel)
+  expect_gt(length(p_with_labels$layers), length(p_without_labels$layers))
 })

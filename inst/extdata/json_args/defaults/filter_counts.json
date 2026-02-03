@@ -29,6 +29,7 @@
   "legend_font_size_for_histogram": 10,
   "number_of_histogram_legend_columns": 6,
   "colors_for_plots": null,
+  "plot_corr_matrix_heatmap": true,
   "print_plots": true,
   "save_plots": true,
   "interactive_plots": false,

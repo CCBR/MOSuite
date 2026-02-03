@@ -1,0 +1,316 @@
+{
+	"codeTemplate": "DEGGeneList <- function({{{DEG_Table}}}) {\n\n## This function filters DEG table\n\n## --------- ##\n## Libraries ##\n## --------- ##\n\nlibrary(tidyverse)\nlibrary(dplyr)\nlibrary(tidyselect)\nlibrary(tibble)\nlibrary(ggplot2)\nlibrary(plotrix)\n    \n## -------------------------------- ##\n## User-Defined Template Parameters ##\n## -------------------------------- ##\n\n# Input parameters\ndeg_table <- {{{DEG_Table}}} \n\n# Basic parameters\ngene_names_column <- \"{{{Gene_Names_Column}}}\"\nsignificance_column <- \"{{{Significance_Column}}}\"\nsignificance_cutoff <- {{{Significance_Cutoff}}}\nchange_column <- \"{{{Change_Column}}}\"\nchange_cutoff <- {{{Change_Cutoff}}}\nfiltering_mode <- \"{{{Filtering_Mode}}}\"\n\n# Advanced parameters\ninclude_estimates <- {{{Include_Estimates}}}\nround_estimates <- {{{Round_Estimates}}}\nrounding_decimal_for_percent_cells = {{{Rounding_Decimal_for_Percent_Calls}}}\n\n# Filter parameters\ncontrast_filter = \"{{{Contrasts_Filter}}}\"\ncontrasts = {{{Contrasts}}}\ngroups = {{{Groups}}}\ngroups_filter = \"{{{Groups_Filter}}}\"\n\n# Label parameters\nlabel_font_size = {{{Label_Font_Size}}}\nlabel_distance = {{{Label_Distance}}}\n\n# Visualization parameters\ny_axis_expansion = {{{Y_Axis_Expansion}}}\nfill_colors ={{{Fill_Colors_}}}\npie_chart_in_3d = {{{Pie_Chart_in_3D}}}\nbar_width = {{{Bar_Width}}}\ndraw_bar_border = {{{Draw_Bar_Border}}}\nforce_barchart = {{{Force_Barchart}}}\n\n\n## -------------------------------- ##\n## Parameter Misspecifation Errors  ##\n## -------------------------------- ##\n\n## -------------------------------- ##\n## Functions                        ##\n## -------------------------------- ##\n\n## --------------- ##\n## Main Code Block ##\n## --------------- ##\n\n\n## If include_estimates param is empty due to template upgrade,\n## then fill it with default values.\nif (length(include_estimates) == 0){\n    include_estimates <- c(\"FC\",\"logFC\",\"tstat\",\"pval\",\"adjpval\")\n}\n## select DEG stat columns\nestimates = paste0(\"_\",include_estimates)\nsignif = paste0(\"_\", significance_column)\nchange = paste0(\"_\", change_column)\ndeg_table <- deg_table %>% dplyr::select(gene_names_column, ends_with(c(estimates, signif, change)))\n\n\ncontrasts_name = deg_table %>% dplyr::select(ends_with(signif)) %>% colnames() \ncontrasts_name = unlist(strsplit(contrasts_name, signif))\nif ( contrast_filter == \"keep\") {\n    contrasts_name = intersect(contrasts_name, contrasts)    \n} else if ( contrast_filter == \"remove\") {\n    contrasts_name = setdiff(contrasts_name, contrasts)    \n}\ncontrasts_name = paste0(contrasts_name, \"_\")\n\ngroups_name = deg_table %>% dplyr::select(ends_with(c(\"_mean\",\"_sd\"))) %>% colnames() \ngroups_name = unique(gsub(\"_mean|_sd\", \"\", groups_name))\nif ( groups_filter == \"keep\") {\n    groups_name = intersect(groups_name, groups)    \n} else if ( contrast_filter == \"remove\") {\n    groups_name = setdiff(groups_name, groups)    \n}\ngroups_name = paste0(groups_name,\"_\")\n\ndeg_table <- deg_table %>% dplyr::select(gene_names_column, starts_with(c(groups_name,contrasts_name)))\n\n## select filter variables\ndatsignif <- deg_table %>% \n    dplyr::select(gene_names_column, ends_with(signif)) %>%\n    tibble::column_to_rownames(gene_names_column)\ndatchange <- deg_table %>%\n    dplyr::select(gene_names_column, ends_with(change)) %>% tibble::column_to_rownames(gene_names_column)\ngenes <- deg_table[,gene_names_column]\n\n## filter genes\nsignificant <- datsignif <= significance_cutoff\nchanged <- abs(datchange) >= change_cutoff\nif (filtering_mode == \"in any contrast\") {\n    selgenes <- apply(significant & changed, 1, any)\n    select_genes <- genes[selgenes]\n    } else {\n    selgenes <- apply(significant & changed, 1, all)\n    select_genes <- genes[selgenes]\n    \n}\n# stop if 0 genes selected with the selection criteria\nif (length(select_genes) == 0) {\n    stop(\"ERROR: Selection criteria select no genes - change stringency of the Significance cutoff and/or Change cutoff parameters\")\n}\ncat(sprintf(\"Total number of genes selected with %s ≤ %g and |%s| < %g is %g\", significance_column, significance_cutoff, change_column, change_cutoff, sum(selgenes)))\n\n\n##.output dataset\nout <- deg_table %>% dplyr::filter(get(gene_names_column) %in% select_genes)\nif (round_estimates) {\n    out <- out %>% mutate_if(is.numeric, ~signif(., 3))\n}\n\n## do plot\nsignificant <- apply( datsignif, 2, function(x) x <= significance_cutoff )  \nchanged <- apply( datchange, 2, function(x) abs(x) >= change_cutoff )\ndd <- significant & changed\nif (draw_bar_border){\n    bar_border = 'black'\n} else {\n    bar_border = NA\n}\n\n## If fill_colors is blank due to template upgrade, then\n## give it default values.\nif(length(fill_colors) == 0){\n    fill_colors <- c(\"steelblue1\",\"whitesmoke\")\n}\n\nif (filtering_mode == \"in any contrast\") {\n    say_contrast = paste(colnames(dd), collapse=\" | \")\n    say_contrast = gsub(\"_pval|_adjpval\",\"\", say_contrast)\n\nVar2df <- reshape2::melt(apply(dd, 2, table))\nif (\"L1\" %in% names(Var2df)) {\n  Var2df <- Var2df %>%\n    rename(Var2 = L1)\n}\n\n    tab <-  Var2df %>% \n        dplyr::mutate(Significant=ifelse(Var1, \"TRUE\", \"FALSE\")) %>% \n        dplyr::mutate(Significant=factor(Significant, levels=c(\"TRUE\",\"FALSE\")), Count=value, Count_format=format(round(value, 1), nsmall=0, big.mark=\",\")) %>% \n        dplyr::mutate(Var2=gsub(\"_pval|_adjpval\", \"\", Var2)) %>%\n        group_by(Var2) %>% \n        dplyr::mutate(Percent=round(Count / sum(Count)*100,rounding_decimal_for_percent_cells)) %>% \n        dplyr::mutate(Label=sprintf(\"%s (%g%%)\", Count_format, Percent))\n\n    pp <- ggplot(tab, aes(x=\"\", y=Count, labels=Significant, fill=Significant)) +\n        geom_col(width=bar_width, position=\"dodge\", col=bar_border) + facet_wrap(~Var2) +\n        scale_fill_manual(values=fill_colors) + theme_bw(base_size=20) +\n        xlab(\"Contrast\") + ylab(\"Number of Genes\") +\n        geom_text(aes(label=Label), color=c(\"black\"), size=label_font_size, position=position_dodge(width=bar_width), vjust=-label_distance) +\n        theme(axis.ticks.x=element_blank(), axis.text.x=element_blank()) +\n        ggtitle(sprintf(\"%s<%g & |%s|>%g %s\", significance_column, significance_cutoff, change_column, change_cutoff, filtering_mode)) + \n        theme(legend.key.size = unit(3,\"line\"), legend.position='top') +\n        theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +\n        theme(strip.background = element_blank(), strip.text = element_text(size=26)) +\n        xlab(\"\") + \n        scale_y_continuous(name=\"\", expand=c(y_axis_expansion, 0))\nprint(pp) \n\n} else {\n    \n    say_contrast = paste(colnames(dd), collapse=\" & \")\n    say_contrast = gsub(\"_pval|_adjpval\",\"\", say_contrast)\n    dd <- apply(dd, 1, function(x) all(x==TRUE))\n            \n    if (force_barchart) {\n        dd = data.frame(dd)   \n        colnames(dd) = say_contrast                     \n        tab <- reshape2::melt(apply(dd, 2, table))  %>% \n        dplyr::mutate(Significant=ifelse(Var1, \"TRUE\", \"FALSE\")) %>% \n        dplyr::mutate(Significant=factor(Significant, levels=c(\"TRUE\",\"FALSE\")), Count=value, Count_format=format(round(value, 1), nsmall=0, big.mark=\",\")) %>% \n        group_by(Var2) %>% \n        dplyr::mutate(Percent=round(Count / sum(Count)*100,rounding_decimal_for_percent_cells)) %>% \n        dplyr::mutate(Label=sprintf(\"%s (%g%%)\", Count_format, Percent))\n\n    pp <- ggplot(tab, aes(x=\"\", y=Count, labels=Significant, fill=Significant)) +\n        geom_col(width=bar_width, position=\"dodge\", col=bar_border) + facet_wrap(~Var2) +\n        scale_fill_manual(values=fill_colors) + theme_bw(base_size=20) +\n        xlab(\"Contrast\") + ylab(\"Number of Genes\") +\n        geom_text(aes(label=Label), color=c(\"black\"), size=label_font_size, position=position_dodge(width=bar_width), vjust=-label_distance) +\n        theme(axis.ticks.x=element_blank(), axis.text.x=element_blank()) +\n        ggtitle(sprintf(\"%s<%g & |%s|>%g %s\", significance_column, significance_cutoff, change_column, change_cutoff, filtering_mode)) + \n        theme(legend.key.size = unit(3,\"line\"), legend.position='top') +\n        theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +\n        theme(strip.background = element_blank(), strip.text = element_text(size=26)) +\n        xlab(\"\") + \n        scale_y_continuous(name=\"\", expand=c(y_axis_expansion, 0))\nprint(pp) \n    } else {\n    \n    N = c( sum(dd), length(dd)-sum(dd))\n    Nk = format(round(as.numeric(N), 1), nsmall=0, big.mark=\",\")\n    P = round(N/sum(N)*100,rounding_decimal_for_percent_cells)\n    if (label_font_size > 0) {\n        labs = c(sprintf(\"Significant\\n%s (%g%%)\", Nk[1], P[1]) , sprintf(\"Non-Significant\\n%s (%g%%)\", Nk[2], P[2]))\n    } else { \n        labs = NULL\n    }\n    if (pie_chart_in_3d) {\n        pie3D(N, radius=0.8, height=0.06, col = fill_colors, theta=0.9, start=0, explode=0, labels=labs, labelcex=label_font_size, shade=0.7, sector.order=1:2, border=FALSE)\n    title(main=sprintf(\"%s<%g & |%s|>%g %s: %s\", significance_column, significance_cutoff, change_column, change_cutoff, filtering_mode, say_contrast), cex.main=4, line=-2)\n    } else {\n        labs = gsub(\"\\n\", \": \", labs)\n        pie3D(N, radius=0.8, height=0.06, col = fill_colors, theta=0.9, start=45, explode=0, labels=labs, labelcex=label_font_size, shade=0.7, sector.order=1:2, border=NULL)\n    title(main=sprintf(\"%s<%g & |%s|>%g %s: %s\", significance_column, significance_cutoff, change_column, change_cutoff, filtering_mode, say_contrast), cex.main=4, line=-2)\n    }\n}\n\n} \n\nreturn(out)\n    \n}\n\n#################################################\n## Global imports and functions included below ##\n#################################################\n\n# Functions defined here will be available to call in the code for any table.\n\n#######################\n## End of Template   ##\n#######################",
+	"columns": [
+		{
+			"key": "Gene_Names_Column",
+			"displayName": "Gene Names Column",
+			"description": "The column from your input DEG Table containing the gene names. This is usually the first column of your input DEG Table. Only columns of Text type from your input DEG Table will be available to select for this parameter.",
+			"paramGroup": "Basic",
+			"sourceDataset": "DEG_Table",
+			"defaultValue": null,
+			"columnType": "STRING",
+			"isMulti": null
+		}
+	],
+	"condaDependencies": [],
+	"description": "Outputs dataset of significant genes from DEG table; filters genes based on statistical significance (p-value or adjusted p-value) and change (fold change, log2 fold change, or t-statistic); in addition allows for selection of DEG estimates and for sub-setting of contrasts and groups included in the output gene list.",
+	"externalId": "DEG_Gene_List_CCBR_",
+	"inputDatasets": [
+		{
+			"key": "DEG_Table",
+			"displayName": "DEG Table",
+			"description": "",
+			"paramGroup": null,
+			"anchorDataset": false,
+			"dataType": "R_NATIVE_DATAFRAME",
+			"tags": []
+		}
+	],
+	"vectorLanguage": "R",
+	"codeLanguage": "R",
+	"parameters": [
+		{
+			"key": "Significance_Column",
+			"displayName": "Significance Column",
+			"description": "",
+			"paramType": "SELECT",
+			"paramGroup": "Basic",
+			"paramValues": [
+				"adjpval",
+				"pval"
+			],
+			"defaultValue": "adjpval",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Significance_Cutoff",
+			"displayName": "Significance Cutoff",
+			"description": "",
+			"paramType": "NUMBER",
+			"paramGroup": "Basic",
+			"paramValues": null,
+			"defaultValue": "0.01",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Change_Column",
+			"displayName": "Change Column",
+			"description": "",
+			"paramType": "SELECT",
+			"paramGroup": "Basic",
+			"paramValues": [
+				"FC",
+				"logFC",
+				"tstat"
+			],
+			"defaultValue": "logFC",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Change_Cutoff",
+			"displayName": "Change Cutoff",
+			"description": "Absolute value of the cutoff; default cutoff set to 1 in log2 scale (2-fold change)",
+			"paramType": "NUMBER",
+			"paramGroup": "Basic",
+			"paramValues": null,
+			"defaultValue": "1",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Filtering_Mode",
+			"displayName": "Filtering Mode",
+			"description": "",
+			"paramType": "SELECT",
+			"paramGroup": "Basic",
+			"paramValues": [
+				"in any contrast",
+				"in all contrasts"
+			],
+			"defaultValue": "in any contrast",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Include_Estimates",
+			"displayName": "Include Estimates",
+			"description": "",
+			"paramType": "MULTISELECT",
+			"paramGroup": "Advanced",
+			"paramValues": [
+				"mean",
+				"sd",
+				"FC",
+				"logFC",
+				"tstat",
+				"pval",
+				"adjpval"
+			],
+			"defaultValue": "c(\"FC\",\"logFC\",\"tstat\",\"pval\",\"adjpval\")",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Round_Estimates",
+			"displayName": "Round Estimates",
+			"description": "",
+			"paramType": "BOOLEAN",
+			"paramGroup": "Advanced",
+			"paramValues": null,
+			"defaultValue": "TRUE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Contrasts_Filter",
+			"displayName": "Contrasts Filter",
+			"description": "",
+			"paramType": "SELECT",
+			"paramGroup": "Filter",
+			"paramValues": [
+				"none",
+				"keep",
+				"remove"
+			],
+			"defaultValue": "none",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Contrasts",
+			"displayName": "Contrasts",
+			"description": "",
+			"paramType": "VECTOR",
+			"paramGroup": "Filter",
+			"paramValues": null,
+			"defaultValue": "c()",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Groups_Filter",
+			"displayName": "Groups Filter",
+			"description": "",
+			"paramType": "SELECT",
+			"paramGroup": "Filter",
+			"paramValues": [
+				"none",
+				"keep",
+				"remove"
+			],
+			"defaultValue": "none",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Groups",
+			"displayName": "Groups",
+			"description": "",
+			"paramType": "VECTOR",
+			"paramGroup": "Filter",
+			"paramValues": null,
+			"defaultValue": "c()",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Label_Font_Size",
+			"displayName": "Label Font Size",
+			"description": "",
+			"paramType": "NUMBER",
+			"paramGroup": "Label",
+			"paramValues": null,
+			"defaultValue": "6",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Label_Distance",
+			"displayName": "Label Distance",
+			"description": "Distance of text label from top of a bar",
+			"paramType": "NUMBER",
+			"paramGroup": "Label",
+			"paramValues": null,
+			"defaultValue": "1",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Y_Axis_Expansion",
+			"displayName": "Y-Axis Expansion",
+			"description": "multiplicative expansion of y-axis limits; increase/decrease this number if the text label above the bar requires more/less space",
+			"paramType": "NUMBER",
+			"paramGroup": "Visualization",
+			"paramValues": null,
+			"defaultValue": "0.08",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Fill_Colors_",
+			"displayName": "Fill Colors ",
+			"description": "",
+			"paramType": "MULTISELECT",
+			"paramGroup": "Visualization",
+			"paramValues": [
+				"aliceblue",
+				"antiquewhite4",
+				"darkorange",
+				"gold",
+				"red3",
+				"springgreen",
+				"steelblue1",
+				"blue2",
+				"violetred3",
+				"whitesmoke",
+				"gray60",
+				"gray90",
+				"black",
+				"white"
+			],
+			"defaultValue": "c(\"steelblue1\",\"whitesmoke\")",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Pie_Chart_in_3D",
+			"displayName": "Pie Chart in 3D",
+			"description": "If TRUE, a 3D Pie chart is plotted with 'Filtering mode' set to 'in all contrasts', if FALSE, a 2D chart will be plotted for this filtering mode.",
+			"paramType": "BOOLEAN",
+			"paramGroup": "Visualization",
+			"paramValues": null,
+			"defaultValue": "TRUE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Bar_Width",
+			"displayName": "Bar Width",
+			"description": "Bar width in the bar chart plotted with Filtering mode set to 'in any contrast'",
+			"paramType": "NUMBER",
+			"paramGroup": "Visualization",
+			"paramValues": null,
+			"defaultValue": "0.4",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Draw_Bar_Border",
+			"displayName": "Draw Bar Border",
+			"description": "",
+			"paramType": "BOOLEAN",
+			"paramGroup": "Visualization",
+			"paramValues": null,
+			"defaultValue": "TRUE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Force_Barchart",
+			"displayName": "Force Barchart",
+			"description": "applies only to 'Filtering mode' set to 'in all contrasts'; if TRUE, bar chart instead of pie chart is plotted",
+			"paramType": "BOOLEAN",
+			"paramGroup": "Visualization",
+			"paramValues": null,
+			"defaultValue": "TRUE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Rounding_Decimal_for_Percent_Calls",
+			"displayName": "Rounding Decimal for Percent Calls",
+			"description": "applies to display of percent significant and non-significant calls",
+			"paramType": "NUMBER",
+			"paramGroup": "Advanced",
+			"paramValues": null,
+			"defaultValue": "0",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		}
+	],
+	"title": "DEG Gene List [CCBR]",
+	"templateApiVersion": "0.1.0"
+}

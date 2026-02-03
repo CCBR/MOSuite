@@ -176,13 +176,15 @@ create_multiOmicDataSet_from_dataframes <- function(
   return(multiOmicDataSet(sample_metadata, anno_dat, counts))
 }
 
-#' Construct a multiOmicDataSet object from tsv files.
+#' Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).
 #'
 #' @inheritParams multiOmicDataSet
 #' @inheritParams create_multiOmicDataSet_from_dataframes
 #' @param sample_meta_filepath path to text file with sample IDs and metadata for differential analysis.
 #' @param feature_counts_filepath path to text file of expected feature counts (e.g. gene counts from RSEM).
-#' @param ... additional arguments forwarded to `readr::read_delim()`
+#' @param delim Delimiter used in the input files. Any delimiter accepted by `readr::read_delim()` can be used.
+#'   If the files are in CSV format, set `delim = ','`; for TSV format, set `delim = '\t'`.
+#' @param ... additional arguments forwarded to `readr::read_delim()`.
 #'
 #' @return [multiOmicDataSet] object
 #' @export
@@ -196,7 +198,8 @@ create_multiOmicDataSet_from_dataframes <- function(
 #'   feature_counts_filepath = system.file("extdata",
 #'     "RSEM.genes.expected_count.all_samples.txt.gz",
 #'     package = "MOSuite"
-#'   )
+#'   ),
+#'   delim = "\t"
 #' )
 #' moo@counts$raw %>% head()
 #' moo@sample_meta
@@ -217,10 +220,11 @@ create_multiOmicDataSet_from_files <- function(
   count_type = "raw",
   sample_id_colname = NULL,
   feature_id_colname = NULL,
+  delim = NULL,
   ...
 ) {
-  counts_dat <- readr::read_delim(feature_counts_filepath, ...)
-  sample_metadata <- readr::read_delim(sample_meta_filepath, ...)
+  counts_dat <- readr::read_delim(feature_counts_filepath, delim = delim, ...)
+  sample_metadata <- readr::read_delim(sample_meta_filepath, delim = delim, ...)
   return(
     create_multiOmicDataSet_from_dataframes(
       sample_metadata = sample_metadata,
@@ -273,6 +277,9 @@ extract_counts <- S7::new_generic(
   }
 )
 
+#' @rdname extract_counts
+#' @name extract_counts
+#' @export
 S7::method(extract_counts, multiOmicDataSet) <- function(
   moo,
   count_type,
@@ -312,12 +319,159 @@ S7::method(extract_counts, multiOmicDataSet) <- function(
   return(counts_dat)
 }
 
-#' @name moo_counts
+#' Write a multiOmicDataSet to disk as an RDS file
 #'
-#' @description
+#' @param moo [multiOmicDataSet] object to serialize
+#' @param filepath Path to the RDS file to write (default: "moo.rds")
 #'
-#' The first argument can be a `multiOmicDataset` object (`moo`) or a `data.frame` containing counts.
-#' For a `moo`, choose which counts slot to use with `count_type` & (optionally) `sub_count_type`.
-#' For a `data.frame`, you must also set `sample_metadata`.
-#' All other arguments are optional.
-NULL
+#' @return Invisibly returns `filepath`
+#' @export
+write_multiOmicDataSet <- function(moo, filepath = "moo.rds") {
+  if (!inherits(moo, multiOmicDataSet)) {
+    stop("moo must be a multiOmicDataSet")
+  }
+  readr::write_rds(moo, filepath)
+  return(invisible(filepath))
+}
+
+#' Read a multiOmicDataSet from disk
+#'
+#' @param filepath Path to an RDS file produced by [write_multiOmicDataSet()]
+#'
+#' @return [multiOmicDataSet]
+#' @export
+read_multiOmicDataSet <- function(filepath) {
+  moo <- readr::read_rds(filepath)
+  if (!inherits(moo, multiOmicDataSet)) {
+    stop("RDS does not contain a multiOmicDataSet")
+  }
+  return(moo)
+}
+
+#' Write multiOmicDataSet properties to disk as CSV files
+#'
+#' Writes the properties of a multiOmicDataSet object to disk as separate files in output_dir.
+#' Properties that are data frames are saved as CSV files, while all other objects are saved as RDS files.
+#'
+#' @param moo `multiOmicDataSet` object to write properties from
+#' @param output_dir Directory where the properties will be saved (default: "moo")
+#' @return Invisibly returns the `output_dir` where the files were saved
+#' @export
+#'
+write_multiOmicDataSet_properties <- S7::new_generic(
+  "write_multiOmicDataSet_properties",
+  "moo",
+  function(moo, output_dir = "moo") {
+    return(S7::S7_dispatch())
+  }
+)
+
+#' @rdname write_multiOmicDataSet_properties
+#' @name write_multiOmicDataSet_properties
+#' @export
+S7::method(write_multiOmicDataSet_properties, multiOmicDataSet) <- function(
+  moo,
+  output_dir = "moo"
+) {
+  if (!dir.exists(output_dir)) {
+    dir.create(output_dir, recursive = TRUE)
+  }
+
+  # write sample metadata
+  readr::write_csv(
+    moo@sample_meta,
+    file = file.path(output_dir, "sample_metadata.csv")
+  )
+
+  # write annotation data
+  readr::write_csv(
+    moo@annotation,
+    file = file.path(output_dir, "feature_annotation.csv")
+  )
+
+  # write counts
+  counts_dir <- file.path(output_dir, "counts")
+  if (!dir.exists(counts_dir)) {
+    dir.create(counts_dir)
+  }
+  for (count_type in names(moo@counts)) {
+    counts_dat <- moo@counts[[count_type]]
+    if (inherits(counts_dat, "list")) {
+      sub_counts_dir <- file.path(counts_dir, count_type)
+      if (!dir.exists(sub_counts_dir)) {
+        dir.create(sub_counts_dir)
+      }
+      for (sub_count_type in names(counts_dat)) {
+        readr::write_csv(
+          counts_dat[[sub_count_type]],
+          file = file.path(
+            sub_counts_dir,
+            paste0(sub_count_type, "_counts.csv")
+          )
+        )
+      }
+    } else {
+      readr::write_csv(
+        counts_dat,
+        file = file.path(
+          counts_dir,
+          paste0(count_type, "_counts.csv")
+        )
+      )
+    }
+  }
+
+  # write analyses
+  analyses_dir <- file.path(output_dir, "analyses")
+  if (!dir.exists(analyses_dir)) {
+    dir.create(analyses_dir)
+  }
+
+  for (analysis_name in names(moo@analyses)) {
+    analysis_dat <- moo@analyses[[analysis_name]]
+    if (inherits(analysis_dat, "data.frame")) {
+      readr::write_csv(
+        analysis_dat,
+        file = file.path(
+          analyses_dir,
+          paste0(analysis_name, ".csv")
+        )
+      )
+    } else if (inherits(analysis_dat, "list")) {
+      for (sub_analysis_name in names(analysis_dat)) {
+        # make sub directory for sub analysis
+        sub_analysis_dir <- file.path(analyses_dir, analysis_name)
+        if (!dir.exists(sub_analysis_dir)) {
+          dir.create(sub_analysis_dir)
+        }
+        if (inherits(analysis_dat[[sub_analysis_name]], "data.frame")) {
+          readr::write_csv(
+            analysis_dat[[sub_analysis_name]],
+            file = file.path(
+              sub_analysis_dir,
+              paste0(analysis_name, "_", sub_analysis_name, ".csv")
+            )
+          )
+        } else {
+          saveRDS(
+            analysis_dat[[sub_analysis_name]],
+            file = file.path(
+              sub_analysis_dir,
+              paste0(analysis_name, "_", sub_analysis_name, ".rds")
+            )
+          )
+        }
+      }
+    } else {
+      saveRDS(
+        analysis_dat,
+        file = file.path(
+          analyses_dir,
+          paste0(analysis_name, ".rds")
+        )
+      )
+    }
+  }
+
+  return(invisible(output_dir))
+}

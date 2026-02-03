@@ -13,3 +13,6 @@ inst/doc
 VennDiagram.*.log
 *_files/
 tests/testthat/Rplots.pdf
+/tmp
+vignettes/args*.json
+Rplots.pdf

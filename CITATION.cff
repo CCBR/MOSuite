@@ -8,7 +8,7 @@ message: 'To cite package "MOSuite" in publications use:'
 type: software
 license: MIT
 title: 'MOSuite: R package for differential multi-omics analysis'
-version: 0.2.0.9000
+version: 0.2.1.9001
 doi: 10.5281/zenodo.16371580
 identifiers:
 - description: Archived snapshots of all versions
@@ -246,6 +246,30 @@ references:
     orcid: https://orcid.org/0000-0002-6983-2759
   year: '2026'
   doi: 10.32614/CRAN.package.glue
+- type: software
+  title: htmlwidgets
+  abstract: 'htmlwidgets: HTML Widgets for R'
+  notes: Imports
+  url: https://github.com/ramnathv/htmlwidgets
+  repository: https://CRAN.R-project.org/package=htmlwidgets
+  authors:
+  - family-names: Vaidyanathan
+    given-names: Ramnath
+  - family-names: Xie
+    given-names: Yihui
+  - family-names: Allaire
+    given-names: JJ
+  - family-names: Cheng
+    given-names: Joe
+    email: joe@posit.co
+  - family-names: Sievert
+    given-names: Carson
+    email: carson@posit.co
+    orcid: https://orcid.org/0000-0002-4958-2844
+  - family-names: Russell
+    given-names: Kenton
+  year: '2026'
+  doi: 10.32614/CRAN.package.htmlwidgets
 - type: software
   title: jsonlite
   abstract: 'jsonlite: A Simple and Robust JSON Parser and Generator for R'
@@ -554,6 +578,19 @@ references:
   year: '2026'
   doi: 10.32614/CRAN.package.amap
 - type: software
+  title: argparse
+  abstract: 'argparse: Command Line Optional and Positional Argument Parser'
+  notes: Suggests
+  url: https://trevorldavis.com/R/argparse/
+  repository: https://CRAN.R-project.org/package=argparse
+  authors:
+  - family-names: Davis
+    given-names: Trevor L.
+    email: trevor.l.davis@gmail.com
+    orcid: https://orcid.org/0000-0001-6341-4639
+  year: '2026'
+  doi: 10.32614/CRAN.package.argparse
+- type: software
   title: broom
   abstract: 'broom: Convert Statistical Objects into Tidy Tibbles'
   notes: Suggests
@@ -760,6 +797,18 @@ references:
     email: erich.neuwirth@univie.ac.at
   year: '2026'
   doi: 10.32614/CRAN.package.RColorBrewer
+- type: software
+  title: Rd2md
+  abstract: 'Rd2md: Markdown Reference Manuals'
+  notes: Suggests
+  url: https://github.com/quantsch/rd2md
+  repository: https://CRAN.R-project.org/package=Rd2md
+  authors:
+  - family-names: Busch
+    given-names: Julian
+    email: jb@quants.ch
+  year: '2026'
+  doi: 10.32614/CRAN.package.Rd2md
 - type: software
   title: readr
   abstract: 'readr: Read Rectangular Text Data'
@@ -981,10 +1030,36 @@ references:
   title: VennDiagram
   abstract: 'VennDiagram: Generate High-Resolution Venn and Euler Plots'
   notes: Suggests
+  url: https://github.com/uclahs-cds/package-VennDiagram
   repository: https://CRAN.R-project.org/package=VennDiagram
   authors:
   - family-names: Chen
     given-names: Hanbo
   year: '2026'
   doi: 10.32614/CRAN.package.VennDiagram
+- type: software
+  title: withr
+  abstract: 'withr: Run Code ''With'' Temporarily Modified Global State'
+  notes: Suggests
+  url: https://withr.r-lib.org
+  repository: https://CRAN.R-project.org/package=withr
+  authors:
+  - family-names: Hester
+    given-names: Jim
+  - family-names: Henry
+    given-names: Lionel
+    email: lionel@posit.co
+  - family-names: Müller
+    given-names: Kirill
+    email: krlmlr+r@mailbox.org
+  - family-names: Ushey
+    given-names: Kevin
+    email: kevinushey@gmail.com
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  - family-names: Chang
+    given-names: Winston
+  year: '2026'
+  doi: 10.32614/CRAN.package.withr
 

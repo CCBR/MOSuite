@@ -2,7 +2,7 @@
 % Please edit documentation in R/0_mo-class.R
 \name{create_multiOmicDataSet_from_files}
 \alias{create_multiOmicDataSet_from_files}
-\title{Construct a multiOmicDataSet object from tsv files.}
+\title{Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).}
 \usage{
 create_multiOmicDataSet_from_files(
   sample_meta_filepath,
@@ -10,6 +10,7 @@ create_multiOmicDataSet_from_files(
   count_type = "raw",
   sample_id_colname = NULL,
   feature_id_colname = NULL,
+  delim = NULL,
   ...
 )
 }
@@ -26,13 +27,16 @@ first column in the sample metadata will be used.)}
 \item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first
 column in the count data will be used.)}
 
-\item{...}{additional arguments forwarded to \code{readr::read_delim()}}
+\item{delim}{Delimiter used in the input files. Any delimiter accepted by \code{readr::read_delim()} can be used.
+If the files are in CSV format, set \code{delim = ','}; for TSV format, set \code{delim = '\\t'}.}
+
+\item{...}{additional arguments forwarded to \code{readr::read_delim()}.}
 }
 \value{
 \link{multiOmicDataSet} object
 }
 \description{
-Construct a multiOmicDataSet object from tsv files.
+Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).
 }
 \examples{
 moo <- create_multiOmicDataSet_from_files(
@@ -43,7 +47,8 @@ moo <- create_multiOmicDataSet_from_files(
   feature_counts_filepath = system.file("extdata",
     "RSEM.genes.expected_count.all_samples.txt.gz",
     package = "MOSuite"
-  )
+  ),
+  delim = "\t"
 )
 moo@counts$raw \%>\% head()
 moo@sample_meta

@@ -1,6 +1,6 @@
 Package: MOSuite
 Title: R package for differential multi-omics analysis
-Version: 0.2.0.9000
+Version: 0.2.1.9001
 Authors@R: c(
     person("Kelly", "Sovacool", , "kelly.sovacool@nih.gov", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3283-829X")),
@@ -31,6 +31,7 @@ Imports:
     ggplot2 (< 4.0.0),
     ggrepel,
     glue,
+    htmlwidgets,
     jsonlite,
     limma,
     magrittr,
@@ -49,6 +50,7 @@ Imports:
     tidyselect
 Suggests:
     amap,
+    argparse,
     broom,
     cffr,
     colorspace,
@@ -62,6 +64,7 @@ Suggests:
     patchwork,
     plotrix,
     RColorBrewer,
+    Rd2md,
     readr,
     rmarkdown,
     roxygen2,
@@ -72,7 +75,8 @@ Suggests:
     UpSetR,
     usethis,
     V8,
-    VennDiagram
+    VennDiagram,
+    withr
 VignetteBuilder:
     knitr
 biocViews:

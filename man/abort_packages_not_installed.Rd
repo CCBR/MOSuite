@@ -14,9 +14,6 @@ Reports which packages need to be installed and the parent function name.
 See
 https://stackoverflow.com/questions/15595478/how-to-get-the-name-of-the-calling-function-inside-the-called-routine
 }
-\details{
-This is only intended to be used inside a function. It will error otherwise.
-}
 \examples{
 \dontrun{
 abort_packages_not_installed("base")

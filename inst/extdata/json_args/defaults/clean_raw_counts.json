@@ -10,5 +10,6 @@
   "aggregate_rows_with_duplicate_gene_names": true,
   "gene_name_column_to_use_for_collapsing_duplicates": "",
   "print_plots": true,
-  "save_plots": true
+  "save_plots": true,
+  "plots_subdir": "clean"
 }

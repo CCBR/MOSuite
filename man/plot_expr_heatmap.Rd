@@ -4,61 +4,18 @@
 \alias{plot_expr_heatmap}
 \title{Plot expression heatmap}
 \usage{
-plot_expr_heatmap(moo_counts, ...)
-}
-\arguments{
-\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
-slot}
-
-\item{...}{arguments forwarded to method}
-}
-\value{
-heatmap from \code{ComplexHeatmap::Heatmap()}
-}
-\description{
-The first argument can be a \code{multiOmicDataset} object (\code{moo}) or a \code{data.frame} containing counts.
-For a \code{moo}, choose which counts slot to use with \code{count_type} & (optionally) \code{sub_count_type}.
-For a \code{data.frame}, you must also set \code{sample_metadata}.
-All other arguments are optional.
-}
-\details{
-The samples (i.e. the columns) are clustered in an unsupervised fashion based
-on how similar their expression profiles are across the included genes. This
-can help identify samples that are non clustering with their group as you
-might expect based on the experimental design.
-
-By default, the top 500 genes by variance are used, as these are
-generally going to include those genes that most distinguish your samples
-from one another. You can change this as well as many other parameters about
-this heatmap if you explore the advanced options (see \link{plot_expr_heatmap_dat}).
-}
-\section{Methods}{
-\tabular{ll}{
-   link to docs \tab class \cr
-   \link{plot_expr_heatmap_moo} \tab \code{multiOmicDataSet} \cr
-   \link{plot_expr_heatmap_dat} \tab \code{data.frame} \cr
-}
-
-\subsection{Method Usage}{
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{# multiOmicDataset
-plot_expr_heatmap(moo_counts,
+plot_expr_heatmap(
+  moo_counts,
   count_type,
   sub_count_type = NULL,
-  ...)
-
-# dataframe
-plot_expr_heatmap(moo_counts,
-  sample_metadata,
+  sample_metadata = NULL,
   sample_id_colname = NULL,
   feature_id_colname = NULL,
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
-  color_values = c(
-    "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
-  ),
+  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -83,8 +40,8 @@ plot_expr_heatmap(moo_counts,
   group_columns = c("Group", "Replicate", "Batch"),
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
-  group_colors = c("indigo", "carrot", "lipstick", "turquoise", "lavender",
-    "jade", "coral", "azure", "green", "rum", "orange", "olive"),
+  group_colors = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
   set_min_heatmap_color = -2,
@@ -93,11 +50,158 @@ plot_expr_heatmap(moo_counts,
   legend_font_size = 10,
   gene_name_font_size = 4,
   sample_name_font_size = 8,
-  display_numbers = FALSE)
-}\if{html}{\out{</div>}}
+  display_numbers = FALSE,
+  plot_filename = "expr_heatmap.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "heatmap"
+)
 }
-}
+\arguments{
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
+slot}
 
+\item{count_type}{the type of counts to use. Must be a name in the counts slot (\code{names(moo@counts)}).}
+
+\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
+Must be a name in \code{names(moo@counts[[count_type]])}.}
+
+\item{sample_metadata}{sample metadata as a data frame or tibble (only required if \code{moo_counts} is a dataframe)}
+
+\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column
+must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first
+column in the sample metadata will be used.)}
+
+\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID).
+This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
+Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
+used.)}
+
+\item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a
+column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
+Before, After, etc.).}
+
+\item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in
+the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
+labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
+column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
+\code{NULL} -- \code{sample_id_colname} will be used.)}
+
+\item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or
+you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
+analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
+
+\item{color_values}{vector of colors as hex values or names recognized by R}
+
+\item{include_all_genes}{Set to TRUE if all genes are to be included. Set to FALSE if you want to filter genes by
+variance and/or provide a list of specific genes that will appear in the heatmap.}
+
+\item{filter_top_genes_by_variance}{Set to TRUE if you want to only include the top genes by variance. Set to FALSE
+if you do not want to filter genes by variance.}
+
+\item{top_genes_by_variance_to_include}{The number of genes to include if filtering genes by variance. This parameter
+is ignored if "Filter top genes by variance" is set to FALSE.}
+
+\item{specific_genes_to_include_in_heatmap}{Enter the gene symbols to be included in the heatmap, with each gene
+symbol separated with a space from the others. Alternatively, paste in a column of gene names from any spreadsheet
+application. This parameter is ignored if "Include all genes" is set to TRUE.}
+
+\item{cluster_genes}{Choose whether to cluster the rows (genes). If TRUE, rows will have clustering applied. If
+FALSE, clustering will not be applied to rows.}
+
+\item{gene_distance_metric}{Distance metric to be used in clustering genes. (TODO document options)}
+
+\item{gene_clustering_method}{Clustering method metric to be used in clustering samples. (TODO document options)}
+
+\item{display_gene_dendrograms}{Set to TRUE to show gene dendrograms. Set to FALSE to hide dendrograms.}
+
+\item{display_gene_names}{Set to TRUE to display gene names on the right side of the heatmap. Set to FALSE to hide
+gene names.}
+
+\item{center_and_rescale_expression}{Center and rescale expression for each gene across all included samples.}
+
+\item{cluster_samples}{Choose whether to cluster the columns (samples). If TRUE, columns will have clustering
+applied. If FALSE, clustering will not be applied to columns.}
+
+\item{arrange_sample_columns}{If TRUE, arranges columns by annotation groups. If FALSE, and "Cluster Samples" is
+FALSE, samples will appear in the order of input (samples to include)}
+
+\item{order_by_gene_expression}{If TRUE, set gene name below and direction for ordering}
+
+\item{gene_to_order_columns}{Gene to order columns by expression levels}
+
+\item{gene_expression_order}{Choose direction for gene order}
+
+\item{smpl_distance_metric}{Distance metric to be used in clustering samples.  (TODO document options)}
+
+\item{smpl_clustering_method}{Clustering method to be used in clustering samples.  (TODO document options)}
+
+\item{display_smpl_dendrograms}{Set to TRUE to show sample dendrograms. Set to FALSE to hide dendrogram.}
+
+\item{reorder_dendrogram}{If TRUE, set the order of the dendrogram (below)}
+
+\item{reorder_dendrogram_order}{Reorder the samples (columns) of the dendrogram by name, e.g.
+“sample2”,“sample3",“sample1".}
+
+\item{display_sample_names}{Set to TRUE if you want sample names to be displayed on the plot. Set to FALSE to hide
+sample names.}
+
+\item{group_columns}{Columns containing the sample groups for annotation tracks}
+
+\item{assign_group_colors}{If TRUE, set the groups assigned colors (below)}
+
+\item{assign_color_to_sample_groups}{Enter each sample to color in the format: group_name: color This parameter is
+ignored if "Assign Colors" is set to FALSE.}
+
+\item{group_colors}{Set group annotation colors.}
+
+\item{heatmap_color_scheme}{color scheme (TODO document options)}
+
+\item{autoscale_heatmap_color}{Set to TRUE to autoscale the heatmap colors between the maximum and minimum heatmap
+color parameters. If FALSE, set the heatmap colors between "Set max heatmap color" and "Set min heatmap color"
+(below).}
+
+\item{set_min_heatmap_color}{If Autoscale heatmap color is set to FALSE, set the minimum heatmap z-score value}
+
+\item{set_max_heatmap_color}{If Autoscale heatmap color is set to FALSE, set the maximum heatmap z-score value.}
+
+\item{aspect_ratio}{Set figure Aspect Ratio. Ratio refers to entire figure including legend. If set to Auto figure
+size is based on number of rows and columns form counts matrix. default - Auto}
+
+\item{legend_font_size}{Set Font size for figure legend. Default is 10.}
+
+\item{gene_name_font_size}{Font size for gene names. If you don't want gene labels to show, toggle "Display Gene
+Names" below to FALSE}
+
+\item{sample_name_font_size}{Font size for sample names. If you don't want to display samples names, toggle "Display
+sample names" (below) to FALSE}
+
+\item{display_numbers}{Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if
+you want to see these numbers on the plot.}
+
+\item{plot_filename}{plot output filename - only used if save_plots is TRUE}
+
+\item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
+
+\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+
+\item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
+}
+\value{
+heatmap from \code{ComplexHeatmap::Heatmap()}
+}
+\description{
+The samples (i.e. the columns) are clustered in an unsupervised fashion based
+on how similar their expression profiles are across the included genes. This
+can help identify samples that are non clustering with their group as you
+might expect based on the experimental design.
+}
+\details{
+By default, the top 500 genes by variance are used, as these are
+generally going to include those genes that most distinguish your samples
+from one another. You can change this as well as many other parameters about
+this heatmap if you explore the advanced options.
+}
 \examples{
 # plot expression heatmap for a counts slot in a multiOmicDataset Object
 moo <- multiOmicDataSet(
@@ -140,8 +244,7 @@ Other plotters:
 \code{\link{print_or_save_plot}()}
 
 Other heatmaps: 
-\code{\link{plot_corr_heatmap}()},
-\code{\link{plot_expr_heatmap_dat}}
+\code{\link{plot_corr_heatmap}()}
 
 Other moo methods: 
 \code{\link{batch_correct_counts}()},

@@ -1,5 +1,162 @@
-#' Volcano Plot - Summary [CC Produces one volcano plot for each tested contrast in the input DEG table.
+#' @rdname plot_volcano_summary
+#' @name plot_volcano_summary
+#' @export
+plot_volcano_summary <- S7::new_generic(
+  "plot_volcano_summary",
+  "moo_diff",
+  function(
+    moo_diff,
+    feature_id_colname = NULL,
+    signif_colname = "pval",
+    signif_threshold = 0.05,
+    change_threshold = 1,
+    value_to_sort_the_output_dataset = "t-statistic",
+    num_features_to_label = 30,
+    add_features = FALSE,
+    label_features = FALSE,
+    custom_gene_list = "",
+    default_label_color = "black",
+    custom_label_color = "green3",
+    label_x_adj = 0.2,
+    label_y_adj = 0.2,
+    line_thickness = 0.5,
+    label_font_size = 4,
+    label_font_type = 1,
+    displace_feature_labels = FALSE,
+    custom_gene_list_special_label_displacement = "",
+    special_label_displacement_x_axis = 2,
+    special_label_displacement_y_axis = 2,
+    color_of_signif_threshold_line = "blue",
+    color_of_non_significant_features = "black",
+    color_of_logfold_change_threshold_line = "red",
+    color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
+    color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
+    flip_vplot = FALSE,
+    use_default_x_axis_limit = TRUE,
+    x_axis_limit = 5,
+    use_default_y_axis_limit = TRUE,
+    y_axis_limit = 10,
+    point_size = 2,
+    add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
+    graphics_device = grDevices::png,
+    image_width = 15,
+    image_height = 15,
+    dpi = 300,
+    use_default_grid_layout = TRUE,
+    number_of_rows_in_grid_layout = 1,
+    aspect_ratio = 0,
+    plot_filename = "volcano_summary.png",
+    print_plots = options::opt("print_plots"),
+    save_plots = options::opt("save_plots"),
+    plots_subdir = "diff"
+  ) {
+    return(S7::S7_dispatch())
+  }
+)
+
+#' @rdname plot_volcano_summary
+#' @name plot_volcano_summary
+#' @export
+S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
+  moo_diff,
+  feature_id_colname = NULL,
+  signif_colname = "pval",
+  signif_threshold = 0.05,
+  change_threshold = 1,
+  value_to_sort_the_output_dataset = "t-statistic",
+  num_features_to_label = 30,
+  add_features = FALSE,
+  label_features = FALSE,
+  custom_gene_list = "",
+  default_label_color = "black",
+  custom_label_color = "green3",
+  label_x_adj = 0.2,
+  label_y_adj = 0.2,
+  line_thickness = 0.5,
+  label_font_size = 4,
+  label_font_type = 1,
+  displace_feature_labels = FALSE,
+  custom_gene_list_special_label_displacement = "",
+  special_label_displacement_x_axis = 2,
+  special_label_displacement_y_axis = 2,
+  color_of_signif_threshold_line = "blue",
+  color_of_non_significant_features = "black",
+  color_of_logfold_change_threshold_line = "red",
+  color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
+  flip_vplot = FALSE,
+  use_default_x_axis_limit = TRUE,
+  x_axis_limit = 5,
+  use_default_y_axis_limit = TRUE,
+  y_axis_limit = 10,
+  point_size = 2,
+  add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
+  graphics_device = grDevices::png,
+  image_width = 15,
+  image_height = 15,
+  dpi = 300,
+  use_default_grid_layout = TRUE,
+  number_of_rows_in_grid_layout = 1,
+  aspect_ratio = 0,
+  plot_filename = "volcano_summary.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff"
+) {
+  return(
+    moo_diff@analyses$diff %>%
+      join_dfs_wide() %>%
+      plot_volcano_summary(
+        feature_id_colname,
+        signif_colname,
+        signif_threshold,
+        change_threshold,
+        value_to_sort_the_output_dataset,
+        num_features_to_label,
+        add_features,
+        label_features,
+        custom_gene_list,
+        default_label_color,
+        custom_label_color,
+        label_x_adj,
+        label_y_adj,
+        line_thickness,
+        label_font_size,
+        label_font_type,
+        displace_feature_labels,
+        custom_gene_list_special_label_displacement,
+        special_label_displacement_x_axis,
+        special_label_displacement_y_axis,
+        color_of_signif_threshold_line,
+        color_of_non_significant_features,
+        color_of_logfold_change_threshold_line,
+        color_of_features_meeting_only_signif_threshold,
+        color_for_features_meeting_pvalue_and_foldchange_thresholds,
+        flip_vplot,
+        use_default_x_axis_limit,
+        x_axis_limit,
+        use_default_y_axis_limit,
+        y_axis_limit,
+        point_size,
+        add_deg_columns,
+        graphics_device,
+        image_width,
+        image_height,
+        dpi,
+        use_default_grid_layout,
+        number_of_rows_in_grid_layout,
+        aspect_ratio,
+        plot_filename,
+        print_plots,
+        save_plots,
+        plots_subdir
+      )
+  )
+}
+
+#' Volcano Plot - Summary
 #'
+#' Produces one volcano plot for each tested contrast in the input DEG table.
 #' It can be sorted by either fold change, t-statistic, or p-value. The returned dataset includes one row for each
 #' significant gene in each contrast, and contains columns from the DEG analysis of that contrast as well as columns
 #' useful to the Venn diagram template downstream.
@@ -44,7 +201,7 @@
 #' @param use_default_y_axis_limit Set to TRUE to use the default y-axis limit. Default: TRUE
 #' @param y_axis_limit Custom y-axis limit. Default: c(0, 10)
 #' @param point_size Size of the points in the plot. Default: 1
-#' @param add_deg_columns Add additional columns from the DEG analysis to the output dataset. Default: FALSE
+#' @param add_deg_columns Add additional columns from the DEG analysis to the output dataset. Default: `"FC", "logFC", "tstat", "pval", "adjpval"`
 #' @param use_default_grid_layout Set to TRUE to use the default grid layout. Default: TRUE
 #' @param number_of_rows_in_grid_layout Number of rows in the grid layout. Default: 1
 #' @param aspect_ratio Aspect ratio of the output image. Default: 4/3
@@ -57,7 +214,10 @@
 #' @examples
 #' plot_volcano_summary(nidap_deg_analysis, print_plots = TRUE)
 #'
-plot_volcano_summary <- function(
+#' @rdname plot_volcano_summary
+#' @name plot_volcano_summary
+#'
+S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   moo_diff,
   feature_id_colname = NULL,
   signif_colname = "pval",
@@ -98,10 +258,10 @@ plot_volcano_summary <- function(
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = 1,
   aspect_ratio = 0,
-  plot_filename = "volcano.png",
+  plot_filename = "volcano_summary.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "figures"
+  plots_subdir = "diff"
 ) {
   abort_packages_not_installed("patchwork")
   diff_dat <- as.data.frame(moo_diff)
@@ -226,10 +386,16 @@ plot_volcano_summary <- function(
     ]
     repeated_column <- rep(contrast, length(filtered_features))
 
-    ## If param empty, fill it with default value.
-    if (length(add_deg_columns) == 0) {
+    ## If param empty or FALSE, fill it with default value.
+    if (
+      is.null(add_deg_columns) ||
+        length(add_deg_columns) == 0 ||
+        isFALSE(add_deg_columns)
+    ) {
       add_deg_columns <- c("FC", "logFC", "tstat", "pval", "adjpval")
-    } else if (all(add_deg_columns == "none")) {
+    }
+
+    if (all(add_deg_columns == "none")) {
       new_df <- data.frame(filtered_features, repeated_column)
       names(new_df) <- c(feature_id_colname, "Contrast")
     } else {
