@@ -21,7 +21,7 @@ emoji_gray <- magick::image_read(emoji_temp) |>
   magick::image_quantize(colorspace = "gray")
 emoji_gray_transparent <- magick::image_fx(
   emoji_gray,
-  "0.4*u",
+  "0.3*u",
   channel = "alpha"
 )
 magick::image_write(emoji_gray_transparent, emoji_temp)
@@ -99,7 +99,7 @@ p <- ggplot() +
     height = tile_height,
     color = "#D0D0D0",
     linewidth = 0.2,
-    alpha = 0.4,
+    alpha = 0.5,
     show.legend = FALSE
   ) +
   scale_fill_gradient2(
@@ -114,7 +114,7 @@ p <- ggplot() +
     data = volcano_data,
     aes(x = x, y = y, color = color),
     size = 2.0,
-    alpha = 0.17,
+    alpha = 0.5,
     shape = 16,
     show.legend = FALSE
   ) +
@@ -123,7 +123,7 @@ p <- ggplot() +
     x = 0.5,
     y = 0.725,
     label = "MOSuite",
-    size = 32,
+    size = 16,
     fontface = "bold",
     family = "sans",
     color = "#296b7f"
@@ -131,8 +131,8 @@ p <- ggplot() +
   ggimage::geom_image(
     # emoji
     data = emoji_df,
-    aes(x = 0.366, y = 0.725, image = image),
-    size = 0.07,
+    aes(x = 0.33, y = 0.725, image = image),
+    size = 0.08,
     inherit.aes = FALSE
   ) +
   scale_color_identity() +
@@ -148,12 +148,11 @@ ggsave(
   here::here('inst', 'extdata', 'logo', 'mosuite_logo_with_text.png'),
   plot = p,
   dpi = 300,
-  width = 2.5,
-  height = 2.5
+  width = 3,
+  height = 3
 )
 
 # background only
-
 p_background <- ggplot() +
   geom_tile(
     data = heatmap_df,
@@ -184,8 +183,8 @@ p_background <- ggplot() +
   ggimage::geom_image(
     # emoji
     data = emoji_df,
-    aes(x = 0.366, y = 0.725, image = image),
-    size = 0.07,
+    aes(x = 0.33, y = 0.725, image = image),
+    size = 0.08,
     inherit.aes = FALSE
   ) +
   scale_color_identity() +
@@ -200,10 +199,11 @@ ggsave(
   here::here('inst', 'extdata', 'logo', 'mosuite_logo_background.png'),
   plot = p_background,
   dpi = 300,
-  width = 2.5,
-  height = 2.5
+  width = 3,
+  height = 3
 )
 
+# need to run this line interactively for it to actually overwrite the logo file
 usethis::use_logo(here::here(
   'inst',
   'extdata',
