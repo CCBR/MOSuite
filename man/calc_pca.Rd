@@ -32,7 +32,7 @@ data frame with statistics for each principal component
 Perform principal components analysis
 }
 \examples{
-calc_pca(nidap_raw_counts, nidap_sample_metadata) \%>\% head()
+calc_pca(nidap_raw_counts, nidap_sample_metadata) |> head()
 }
 \seealso{
 Other PCA functions: 

@@ -50,7 +50,7 @@ moo <- create_multiOmicDataSet_from_files(
   ),
   delim = "\t"
 )
-moo@counts$raw \%>\% head()
+moo@counts$raw |> head()
 moo@sample_meta
 
 moo_nidap <- create_multiOmicDataSet_from_files(
