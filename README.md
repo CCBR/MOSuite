@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# MOSuite <a href="https://ccbr.github.io/MOSuite/"><img src="inst/extdata/logo/mosuite_logo_with_text.png" align="right" height="120" alt="MOSuite website" /></a>
+# MOSuite <a href="https://ccbr.github.io/MOSuite/"><img src="inst/extdata/logo/mosuite_logo_with_text.png" align="right" height="160" alt="MOSuite website" /></a>
 
 R package for differential multi-omics analysis
 
