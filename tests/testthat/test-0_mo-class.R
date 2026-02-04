@@ -393,3 +393,59 @@ test_that("write and read preserves complex moo with analyses", {
     names(moo_complex@analyses$colors)
   )
 })
+
+test_that("validator returns character vector for invalid objects", {
+  # Test validator with invalid count type
+  expect_error(
+    multiOmicDataSet(
+      sample_metadata = as.data.frame(nidap_sample_metadata),
+      anno_dat = data.frame(),
+      counts_lst = list(
+        "raw" = as.data.frame(nidap_raw_counts),
+        "invalid_type" = as.data.frame(nidap_clean_raw_counts)
+      )
+    ),
+    "@counts can only contain these names"
+  )
+
+  # Test validator with missing raw counts
+  expect_error(
+    multiOmicDataSet(
+      sample_metadata = as.data.frame(nidap_sample_metadata),
+      anno_dat = data.frame(),
+      counts_lst = list(
+        "clean" = as.data.frame(nidap_clean_raw_counts)
+      )
+    ),
+    "@counts must contain at least 'raw' counts"
+  )
+
+  # Test validator with mismatched sample IDs
+  mismatched_counts <- as.data.frame(nidap_raw_counts)
+  colnames(mismatched_counts)[2] <- "WRONG_SAMPLE_ID"
+  expect_error(
+    multiOmicDataSet(
+      sample_metadata = as.data.frame(nidap_sample_metadata),
+      anno_dat = data.frame(),
+      counts_lst = list(
+        "raw" = mismatched_counts
+      )
+    ),
+    "@sample_meta"
+  )
+})
+
+test_that("validator returns NULL for valid objects", {
+  # Create a valid moo object
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts)
+    )
+  )
+  # If the validator returned an error, the object wouldn't have been created
+  # So we just check that the object exists and is the correct type
+  expect_true(S7::S7_inherits(moo, multiOmicDataSet))
+})
