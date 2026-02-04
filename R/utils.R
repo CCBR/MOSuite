@@ -6,15 +6,15 @@
 #' @keywords internal
 #' @examples
 #' \dontrun{
-#' gene_counts %>%
-#'   glue_gene_symbols() %>%
+#' gene_counts |>
+#'   glue_gene_symbols() |>
 #'   head()
 #' }
 glue_gene_symbols <- function(counts_dat) {
   if (
     "gene_id" %in% colnames(counts_dat) && "GeneName" %in% colnames(counts_dat)
   ) {
-    counts_dat <- counts_dat %>%
+    counts_dat <- counts_dat |>
       dplyr::mutate(
         gene_id = glue::glue("{gene_id}|{GeneName}"),
         .keep = "unused"
@@ -103,7 +103,7 @@ do_math <- function(add = TRUE, subtract = FALSE, left = 1, right = 2) {
 #'   "a_vs_b" = data.frame(id = c("a1", "b2", "c3"), score = runif(3)),
 #'   "b_vs_c" = data.frame(id = c("a1", "b2", "c3"), score = rnorm(3))
 #' )
-#' dfs %>% join_dfs_wide()
+#' dfs |> join_dfs_wide()
 #'
 join_dfs_wide <- function(df_list, join_fn = dplyr::left_join) {
   if (!inherits(df_list, "list")) {
@@ -113,19 +113,19 @@ join_dfs_wide <- function(df_list, join_fn = dplyr::left_join) {
     stop(glue::glue("df_list does not have names"))
   }
   # use first column as start
-  common_col <- df_list[[1]] %>%
-    dplyr::select(1) %>%
+  common_col <- df_list[[1]] |>
+    dplyr::select(1) |>
     colnames()
   dat_joined <- purrr::map(names(df_list), \(df_name) {
-    df_list[[df_name]] %>%
+    df_list[[df_name]] |>
       dplyr::rename_with(
         .cols = !tidyselect::any_of(common_col),
         .fn = \(x) {
           return(glue::glue("{df_name}_{x}"))
         }
-      ) %>%
+      ) |>
       return()
-  }) %>%
+  }) |>
     purrr::reduce(join_fn)
   return(dat_joined)
 }
@@ -147,7 +147,7 @@ join_dfs_wide <- function(df_list, join_fn = dplyr::left_join) {
 #'   "a_vs_b" = data.frame(id = c("a1", "b2", "c3"), score = runif(3)),
 #'   "b_vs_c" = data.frame(id = c("a1", "b2", "c3"), score = rnorm(3))
 #' )
-#' dfs %>% bind_dfs_long()
+#' dfs |> bind_dfs_long()
 #'
 bind_dfs_long <- function(df_list, outcolname = contrast) {
   contrast <- NULL # data variable
@@ -158,14 +158,14 @@ bind_dfs_long <- function(df_list, outcolname = contrast) {
     stop(glue::glue("df_list does not have names"))
   }
   # use first column as start
-  common_col <- df_list[[1]] %>%
-    dplyr::select(1) %>%
+  common_col <- df_list[[1]] |>
+    dplyr::select(1) |>
     colnames()
   dat_joined <- purrr::map(names(df_list), \(df_name) {
-    df_list[[df_name]] %>%
-      dplyr::mutate({{ outcolname }} := df_name, .after = common_col) %>%
+    df_list[[df_name]] |>
+      dplyr::mutate({{ outcolname }} := df_name, .after = common_col) |>
       return()
-  }) %>%
+  }) |>
     dplyr::bind_rows()
   return(dat_joined)
 }

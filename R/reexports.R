@@ -1,7 +1,7 @@
 #' dplyr pipe
-#' @importFrom dplyr %>%
+#' @importFrom dplyr |>
 #' @export
-dplyr::`%>%`
+dplyr::`|>`
 
 #' magrittr assignment pipe
 #' @importFrom magrittr %<>%

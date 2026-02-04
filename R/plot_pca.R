@@ -339,13 +339,13 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
     sample_metadata = sample_metadata,
     sample_id_colname = sample_id_colname,
     feature_id_colname = feature_id_colname
-  ) %>%
-    dplyr::filter(PC %in% principal_components) %>%
+  ) |>
+    dplyr::filter(PC %in% principal_components) |>
     # TODO consider redesigning to make rename_samples() unnecessary. Use Label column instead?
     rename_samples(samples_to_rename_manually = samples_to_rename)
 
-  pca_wide <- pca_df %>%
-    dplyr::select(-c(std.dev, percent, cumulative)) %>%
+  pca_wide <- pca_df |>
+    dplyr::select(-c(std.dev, percent, cumulative)) |>
     tidyr::pivot_wider(
       names_from = "PC",
       names_prefix = "PC",
@@ -354,10 +354,10 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   prin_comp_x <- principal_components[1]
   prin_comp_y <- principal_components[2]
   # plot PCA
-  pca_plot <- pca_wide %>%
+  pca_plot <- pca_wide |>
     dplyr::mutate(
       !!rlang::sym(group_colname) := as.character(!!rlang::sym(group_colname))
-    ) %>%
+    ) |>
     ggplot2::ggplot(ggplot2::aes(
       x = !!rlang::sym(glue::glue("PC{prin_comp_x}")),
       y = !!rlang::sym(glue::glue("PC{prin_comp_y}")),
@@ -403,7 +403,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
       )
   }
   if (isTRUE(interactive_plots)) {
-    pca_plot <- (pca_plot) %>%
+    pca_plot <- (pca_plot) |>
       plotly::ggplotly(tooltip = c(sample_id_colname, group_colname))
   }
 
@@ -598,10 +598,10 @@ S7::method(plot_pca_3d, S7::class_data.frame) <- function(
     sample_metadata = sample_metadata,
     sample_id_colname = sample_id_colname,
     feature_id_colname = feature_id_colname
-  ) %>%
+  ) |>
     dplyr::filter(PC %in% principal_components)
-  pca_wide <- pca_df %>%
-    dplyr::select(-c(std.dev, percent, cumulative)) %>%
+  pca_wide <- pca_df |>
+    dplyr::select(-c(std.dev, percent, cumulative)) |>
     tidyr::pivot_wider(
       names_from = "PC",
       names_prefix = "PC",
@@ -645,15 +645,15 @@ S7::method(plot_pca_3d, S7::class_data.frame) <- function(
 #' @keywords internal
 #' @examples
 #' \dontrun{
-#' data.frame(PC = c(1, 2, 3), percent = c(40, 10, 0.5)) %>%
+#' data.frame(PC = c(1, 2, 3), percent = c(40, 10, 0.5)) |>
 #'   get_pc_percent_lab(2)
 #' }
 get_pc_percent_lab <- function(pca_df, pc) {
   PC <- percent <- NULL
-  perc <- pca_df %>%
-    dplyr::filter(PC == pc) %>%
-    dplyr::pull(percent) %>%
-    unique() %>%
+  perc <- pca_df |>
+    dplyr::filter(PC == pc) |>
+    dplyr::pull(percent) |>
+    unique() |>
     round(digits = 1)
   return(glue::glue("PC{pc} {perc}%"))
 }
@@ -674,7 +674,7 @@ get_pc_percent_lab <- function(pca_df, pc) {
 #' @export
 #'
 #' @examples
-#' calc_pca(nidap_raw_counts, nidap_sample_metadata) %>% head()
+#' calc_pca(nidap_raw_counts, nidap_sample_metadata) |> head()
 #' @family PCA functions
 calc_pca <- function(
   counts_dat,
@@ -689,9 +689,9 @@ calc_pca <- function(
   if (is.null(feature_id_colname)) {
     feature_id_colname <- colnames(counts_dat)[1]
   }
-  counts_dat <- counts_dat %>%
-    as.data.frame() %>%
-    tibble::remove_rownames() %>%
+  counts_dat <- counts_dat |>
+    as.data.frame() |>
+    tibble::remove_rownames() |>
     tibble::column_to_rownames(feature_id_colname)
   # sample-wise PCA
   tedf <- t(counts_dat)
@@ -701,15 +701,15 @@ calc_pca <- function(
   tedf_var <- tedf_filt[, apply(tedf_filt, 2, var) != 0]
   # calculate PCA
   pca_fit <- stats::prcomp(tedf_var, scale = TRUE)
-  pca_df <- pca_fit %>%
-    broom::tidy() %>%
-    dplyr::rename(!!rlang::sym(sample_id_colname) := row) %>%
+  pca_df <- pca_fit |>
+    broom::tidy() |>
+    dplyr::rename(!!rlang::sym(sample_id_colname) := row) |>
     dplyr::left_join(
-      pca_fit %>%
-        broom::tidy(matrix = "eigenvalues") %>%
+      pca_fit |>
+        broom::tidy(matrix = "eigenvalues") |>
         dplyr::mutate(percent = percent * 100),
       by = "PC"
-    ) %>%
+    ) |>
     dplyr::left_join(sample_metadata, by = sample_id_colname)
   return(pca_df)
 }

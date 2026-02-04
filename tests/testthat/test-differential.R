@@ -11,7 +11,7 @@ moo_nidap <- multiOmicDataSet(
 
 test_that("differential analysis works for NIDAP", {
   options(moo_print_plots = FALSE)
-  deg_moo <- moo_nidap %>%
+  deg_moo <- moo_nidap |>
     diff_counts(
       count_type = "filt",
       sub_count_type = NULL,
@@ -24,13 +24,13 @@ test_that("differential analysis works for NIDAP", {
     )
 
   expect_equal(
-    deg_moo@analyses$diff %>%
-      join_dfs_wide() %>%
-      dplyr::arrange(Gene) %>%
+    deg_moo@analyses$diff |>
+      join_dfs_wide() |>
+      dplyr::arrange(Gene) |>
       dplyr::select(order(colnames(.))),
-    nidap_deg_analysis_2 %>%
-      join_dfs_wide() %>%
-      dplyr::arrange(Gene) %>%
+    nidap_deg_analysis_2 |>
+      join_dfs_wide() |>
+      dplyr::arrange(Gene) |>
       dplyr::select(order(colnames(.))),
     tolerance = 0.01
   )
@@ -44,17 +44,17 @@ test_that("diff_counts works for RENEE on macOS", {
       system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
     ),
     counts_dat = gene_counts
-  ) %>%
-    clean_raw_counts() %>%
+  ) |>
+    clean_raw_counts() |>
     filter_counts(
       group_colname = "condition",
       label_colname = "sample_id",
       minimum_count_value_to_be_considered_nonzero = 1,
       minimum_number_of_samples_with_nonzero_counts_in_total = 1,
       minimum_number_of_samples_with_nonzero_counts_in_a_group = 1
-    ) %>%
+    ) |>
     normalize_counts(group_colname = "condition", label_colname = "sample_id")
-  moo_renee <- moo_renee %>%
+  moo_renee <- moo_renee |>
     diff_counts(
       count_type = "norm",
       sub_count_type = "voom",
@@ -68,7 +68,7 @@ test_that("diff_counts works for RENEE on macOS", {
       return_mean_and_sd = TRUE,
       input_in_log_counts = TRUE
     )
-  actual <- moo_renee@analyses$diff[[1]] %>% head()
+  actual <- moo_renee@analyses$diff[[1]] |> head()
   expected <- structure(
     list(
       gene_id = c(
@@ -168,17 +168,17 @@ test_that("diff_counts behaves consistently across platforms", {
       system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
     ),
     counts_dat = gene_counts
-  ) %>%
-    clean_raw_counts() %>%
+  ) |>
+    clean_raw_counts() |>
     filter_counts(
       group_colname = "condition",
       label_colname = "sample_id",
       minimum_count_value_to_be_considered_nonzero = 1,
       minimum_number_of_samples_with_nonzero_counts_in_total = 1,
       minimum_number_of_samples_with_nonzero_counts_in_a_group = 1
-    ) %>%
+    ) |>
     normalize_counts(group_colname = "condition", label_colname = "sample_id")
-  moo_renee <- moo_renee %>%
+  moo_renee <- moo_renee |>
     diff_counts(
       count_type = "norm",
       sub_count_type = "voom",
@@ -255,16 +255,16 @@ test_that("diff_counts behaves consistently across platforms", {
 
 test_that("diff_counts errors", {
   expect_error(
-    moo_nidap %>% diff_counts(count_type = "DoesNotExist"),
+    moo_nidap |> diff_counts(count_type = "DoesNotExist"),
     "count_type DoesNotExist not in"
   )
   expect_error(
-    moo_nidap %>%
+    moo_nidap |>
       diff_counts(count_type = "raw", sub_count_type = "DoesNotExist"),
     "raw counts is not a named list"
   )
   expect_error(
-    moo_nidap %>%
+    moo_nidap |>
       diff_counts(count_type = "norm", sub_count_type = "DoesNotExist"),
     "sub_count_type DoesNotExist is not in"
   )
@@ -273,7 +273,7 @@ test_that("diff_counts errors", {
 test_that("filter_diff works for NIDAP on macOS", {
   skip_on_os("linux")
   options(moo_print_plots = FALSE)
-  moo <- moo_nidap %>%
+  moo <- moo_nidap |>
     diff_counts(
       count_type = "filt",
       sub_count_type = NULL,
@@ -283,7 +283,7 @@ test_that("filter_diff works for NIDAP on macOS", {
       contrast_colname = c("Group"),
       contrasts = c("B-A", "C-A", "B-C"),
       voom_normalization_method = "quantile",
-    ) %>%
+    ) |>
     filter_diff(
       significance_column = "adjpval",
       significance_cutoff = 0.05,
@@ -313,7 +313,7 @@ test_that("filter_diff works for NIDAP on macOS", {
 test_that("filter_diff works for NIDAP on linux", {
   skip_on_os("mac")
   options(moo_print_plots = FALSE)
-  moo <- moo_nidap %>%
+  moo <- moo_nidap |>
     diff_counts(
       count_type = "filt",
       sub_count_type = NULL,
@@ -323,7 +323,7 @@ test_that("filter_diff works for NIDAP on linux", {
       contrast_colname = c("Group"),
       contrasts = c("B-A", "C-A", "B-C"),
       voom_normalization_method = "quantile",
-    ) %>%
+    ) |>
     filter_diff(
       significance_column = "adjpval",
       significance_cutoff = 0.05,
@@ -405,7 +405,7 @@ test_that("filter_diff works for NIDAP on linux", {
 
 test_that("filter_diff rejects invalid filtering_mode", {
   options(moo_print_plots = FALSE)
-  moo <- moo_nidap %>%
+  moo <- moo_nidap |>
     diff_counts(
       count_type = "filt",
       sub_count_type = NULL,
@@ -418,14 +418,14 @@ test_that("filter_diff rejects invalid filtering_mode", {
     )
 
   expect_error(
-    moo %>% filter_diff(filtering_mode = "invalid"),
+    moo |> filter_diff(filtering_mode = "invalid"),
     "filtering_mode not recognized"
   )
 })
 
 test_that("filter_diff accepts valid filtering_mode values", {
   options(moo_print_plots = FALSE)
-  moo <- moo_nidap %>%
+  moo <- moo_nidap |>
     diff_counts(
       count_type = "filt",
       sub_count_type = NULL,
@@ -438,17 +438,17 @@ test_that("filter_diff accepts valid filtering_mode values", {
     )
 
   expect_no_error(
-    moo %>% filter_diff(filtering_mode = "any")
+    moo |> filter_diff(filtering_mode = "any")
   )
 
   expect_no_error(
-    moo %>% filter_diff(filtering_mode = "all")
+    moo |> filter_diff(filtering_mode = "all")
   )
 })
 
 test_that("filter_diff rejects invalid plot_type", {
   options(moo_print_plots = FALSE)
-  moo <- moo_nidap %>%
+  moo <- moo_nidap |>
     diff_counts(
       count_type = "filt",
       sub_count_type = NULL,
@@ -461,14 +461,14 @@ test_that("filter_diff rejects invalid plot_type", {
     )
 
   expect_error(
-    moo %>% filter_diff(plot_type = "invalid"),
+    moo |> filter_diff(plot_type = "invalid"),
     "plot_type not recognized"
   )
 })
 
 test_that("filter_diff accepts valid plot_type values", {
   options(moo_print_plots = FALSE)
-  moo <- moo_nidap %>%
+  moo <- moo_nidap |>
     diff_counts(
       count_type = "filt",
       sub_count_type = NULL,
@@ -481,10 +481,10 @@ test_that("filter_diff accepts valid plot_type values", {
     )
 
   expect_no_error(
-    moo %>% filter_diff(plot_type = "bar")
+    moo |> filter_diff(plot_type = "bar")
   )
 
   expect_no_error(
-    moo %>% filter_diff(plot_type = "pie")
+    moo |> filter_diff(plot_type = "pie")
   )
 })

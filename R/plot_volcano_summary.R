@@ -104,8 +104,8 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
   plots_subdir = "diff"
 ) {
   return(
-    moo_diff@analyses$diff %>%
-      join_dfs_wide() %>%
+    moo_diff@analyses$diff |>
+      join_dfs_wide() |>
       plot_volcano_summary(
         feature_id_colname,
         signif_colname,
@@ -301,12 +301,12 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
     message(paste0(signif_colname, " column: ", pvalcol))
 
     if (value_to_sort_the_output_dataset == "fold-change") {
-      diff_dat <- diff_dat %>%
+      diff_dat <- diff_dat |>
         dplyr::arrange(dplyr::desc(abs(diff_dat[, lfccol])))
     } else if (value_to_sort_the_output_dataset == "p-value") {
-      diff_dat <- diff_dat %>% dplyr::arrange(diff_dat[, pvalcol])
+      diff_dat <- diff_dat |> dplyr::arrange(diff_dat[, pvalcol])
     } else if (value_to_sort_the_output_dataset == "t-statistic") {
-      diff_dat <- diff_dat %>%
+      diff_dat <- diff_dat |>
         dplyr::arrange(dplyr::desc(abs(diff_dat[, tstatcol])))
     }
 
@@ -403,7 +403,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
       out_columns <- paste(contrast, add_deg_columns, sep = "_")
       deg <- diff_dat[, c(feature_id_colname, out_columns)]
       names(deg)[1] <- feature_id_colname
-      new_df <- data.frame(filtered_features, repeated_column) %>%
+      new_df <- data.frame(filtered_features, repeated_column) |>
         dplyr::left_join(deg, by = c("filtered_features" = feature_id_colname))
       names(new_df) <- c(feature_id_colname, "Contrast", add_deg_columns)
     }

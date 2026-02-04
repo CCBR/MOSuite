@@ -14,10 +14,10 @@ colors_vec <- c(
 )
 test_that("correlation heatmap works", {
   p <- plot_corr_heatmap(
-    nidap_filtered_counts %>%
+    nidap_filtered_counts |>
       dplyr::select(tidyselect::all_of(
         c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3")
-      )) %>%
+      )) |>
       as.data.frame(),
     sample_metadata = as.data.frame(nidap_sample_metadata),
     sample_id_colname = "Sample",
@@ -145,7 +145,7 @@ test_that("plot_corr_heatmap method dispatch works", {
 # TODO get heatmap working on tibbles also
 # test_that("heatmap works", {
 #   corHM <- plot_corr_heatmap(
-#     counts_dat = nidap_filtered_counts %>%
+#     counts_dat = nidap_filtered_counts |>
 #       dplyr::select(tidyselect::all_of(c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"))),
 #     sample_metadata = nidap_sample_metadata,
 #     sample_id_colname = "Sample",

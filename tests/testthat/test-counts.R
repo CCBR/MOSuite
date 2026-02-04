@@ -1,8 +1,8 @@
 test_that("counts_dat_to_matrix works", {
   expect_equal(
-    gene_counts %>%
-      dplyr::select(-GeneName) %>%
-      head() %>%
+    gene_counts |>
+      dplyr::select(-GeneName) |>
+      head() |>
       counts_dat_to_matrix(),
     structure(
       c(
@@ -57,28 +57,28 @@ test_that("calc_cpm works on RENEE data", {
   )
   moo <- create_multiOmicDataSet_from_dataframes(
     sample_meta,
-    gene_counts %>% dplyr::select(-GeneName)
+    gene_counts |> dplyr::select(-GeneName)
   )
-  moo <- moo %>% calc_cpm()
-  cpm_edger <- gene_counts %>%
-    dplyr::select(-GeneName) %>%
-    counts_dat_to_matrix() %>%
-    edgeR::cpm() %>%
-    as.data.frame() %>%
+  moo <- moo |> calc_cpm()
+  cpm_edger <- gene_counts |>
+    dplyr::select(-GeneName) |>
+    counts_dat_to_matrix() |>
+    edgeR::cpm() |>
+    as.data.frame() |>
     tibble::rownames_to_column("gene_id")
   expect_equal(moo@counts$cpm, cpm_edger)
 })
 
 test_that("calc_cpm_df works on NIDAP data", {
-  df <- nidap_clean_raw_counts %>% as.data.frame()
+  df <- nidap_clean_raw_counts |> as.data.frame()
   trans.df <- df
   trans.df[, -1] <- edgeR::cpm(as.matrix(df[, -1]))
 
   expect_equal(calc_cpm_df(df, feature_id_colname = "Gene"), trans.df)
 })
 test_that("calc_cpm_df preserves rownames", {
-  df <- nidap_clean_raw_counts %>%
-    as.data.frame() %>%
+  df <- nidap_clean_raw_counts |>
+    as.data.frame() |>
     tail()
   trans.df <- df
   trans.df[, -1] <- edgeR::cpm(as.matrix(df[, -1]))

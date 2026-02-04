@@ -96,8 +96,8 @@ S7::method(plot_read_depth, multiOmicDataSet) <- function(
 S7::method(plot_read_depth, S7::class_data.frame) <- function(moo_counts) {
   sample_names <- column_sums <- NULL
   counts_dat <- moo_counts
-  sum_df <- counts_dat %>%
-    dplyr::summarize(dplyr::across(tidyselect::where(is.numeric), sum)) %>%
+  sum_df <- counts_dat |>
+    dplyr::summarize(dplyr::across(tidyselect::where(is.numeric), sum)) |>
     tidyr::pivot_longer(
       dplyr::everything(),
       names_to = "sample_names",

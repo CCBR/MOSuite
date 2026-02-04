@@ -10,9 +10,9 @@ moo <- create_multiOmicDataSet_from_files(
     "RSEM.genes.expected_count.all_samples.txt.gz",
     package = "MOSuite"
   )
-) %>%
+) |>
   suppressMessages()
-moo@sample_meta <- moo@sample_meta %>%
+moo@sample_meta <- moo@sample_meta |>
   dplyr::mutate(
     condition = factor(condition, levels = c("wildtype", "knockout"))
   )
@@ -24,31 +24,31 @@ test_that("run_deseq2 works", {
   )
 
   min_count <- 10
-  genes_above_threshold <- moo@counts$raw %>%
+  genes_above_threshold <- moo@counts$raw |>
     tidyr::pivot_longer(
       !tidyselect::any_of(c("gene_id", "GeneName")),
       names_to = "sample_id",
       values_to = "count"
-    ) %>%
-    dplyr::group_by(gene_id) %>%
-    dplyr::summarize(count_sum = sum(count)) %>%
-    dplyr::filter(count_sum >= min_count) %>%
+    ) |>
+    dplyr::group_by(gene_id) |>
+    dplyr::summarize(count_sum = sum(count)) |>
+    dplyr::filter(count_sum >= min_count) |>
     dplyr::pull(gene_id)
-  moo@counts$filt <- moo@counts$raw %>%
+  moo@counts$filt <- moo@counts$raw |>
     dplyr::filter(gene_id %in% (genes_above_threshold))
-  moo <- moo %>%
+  moo <- moo |>
     run_deseq2(
       moo,
       design = ~condition,
       fitType = "local",
       feature_id_colname = "gene_id"
-    ) %>%
+    ) |>
     suppressMessages()
   dds <- moo@analyses$deseq2_ds
 
   # check colData
   expect_equal(
-    dds@colData %>% as.data.frame(),
+    dds@colData |> as.data.frame(),
     structure(
       list(
         sample_id = c("KO_S3", "KO_S4", "WT_S1", "WT_S2"),
@@ -71,8 +71,8 @@ test_that("run_deseq2 works", {
 
   # check some of the counts
   expect_equal(
-    dds@assays@data@listData %>%
-      as.data.frame() %>%
+    dds@assays@data@listData |>
+      as.data.frame() |>
       dplyr::filter(counts.KO_S3 > 15),
     structure(
       list(

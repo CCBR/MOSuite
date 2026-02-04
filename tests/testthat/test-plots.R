@@ -1,7 +1,7 @@
 set.seed(20250225)
 test_that("save_or_print_plot works for ComplexHeatmap", {
   p <- plot_corr_heatmap(
-    nidap_filtered_counts %>%
+    nidap_filtered_counts |>
       as.data.frame(),
     sample_metadata = as.data.frame(nidap_sample_metadata),
     sample_id_colname = "Sample",

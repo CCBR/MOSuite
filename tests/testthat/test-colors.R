@@ -53,7 +53,7 @@ test_that("get_colors_lst handles alternative palette functions", {
     "extdata",
     "sample_metadata.tsv.gz",
     package = "MOSuite"
-  ) %>%
+  ) |>
     readr::read_tsv()
   expect_message(
     expect_warning(
@@ -110,7 +110,7 @@ test_that("set_color_pal overrides the color palette", {
       )
     )
   )
-  moo2 <- moo %>%
+  moo2 <- moo |>
     set_color_pal(
       colname = "Group",
       palette_fun = RColorBrewer::brewer.pal,

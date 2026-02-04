@@ -55,7 +55,7 @@ get_colors_lst <- function(
   ...
 ) {
   dat_colnames <- colnames(sample_metadata)
-  color_lists <- dat_colnames %>%
+  color_lists <- dat_colnames |>
     purrr::map(
       .f = get_colors_vctr,
       dat = sample_metadata,
@@ -80,8 +80,8 @@ get_colors_vctr <- function(
   palette_fun = grDevices::palette.colors,
   ...
 ) {
-  obs <- dat %>%
-    dplyr::pull(colname) %>%
+  obs <- dat |>
+    dplyr::pull(colname) |>
     unique()
   withCallingHandlers(
     warning = function(cnd) {

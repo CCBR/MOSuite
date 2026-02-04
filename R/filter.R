@@ -93,7 +93,7 @@
 #'   as.data.frame(nidap_clean_raw_counts),
 #'   sample_id_colname = "Sample",
 #'   feature_id_colname = "Gene"
-#' ) %>%
+#' ) |>
 #'   filter_counts(
 #'     count_type = "raw"
 #'   )
@@ -139,8 +139,8 @@ filter_counts <- function(
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
   }
-  counts_dat <- moo@counts[[count_type]] %>% as.data.frame() # currently, this function requires data frames
-  sample_metadata <- moo@sample_meta %>% as.data.frame()
+  counts_dat <- moo@counts[[count_type]] |> as.data.frame() # currently, this function requires data frames
+  sample_metadata <- moo@sample_meta |> as.data.frame()
 
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
@@ -149,16 +149,16 @@ filter_counts <- function(
     feature_id_colname <- colnames(counts_dat)[1]
   }
   if (is.null(samples_to_include)) {
-    samples_to_include <- sample_metadata %>% dplyr::pull(sample_id_colname)
+    samples_to_include <- sample_metadata |> dplyr::pull(sample_id_colname)
   }
   if (is.null(label_colname)) {
     label_colname <- sample_id_colname
   }
   message(glue::glue("* filtering {count_type} counts"))
 
-  samples_to_include <- samples_to_include %>% unlist()
+  samples_to_include <- samples_to_include |> unlist()
 
-  df <- counts_dat %>%
+  df <- counts_dat |>
     dplyr::select(
       tidyselect::all_of(feature_id_colname),
       tidyselect::all_of(samples_to_include)
@@ -192,7 +192,7 @@ filter_counts <- function(
 
     message(glue::glue("colors_for_plots {class(colors_for_plots)}"))
 
-    log_counts <- df_filt %>%
+    log_counts <- df_filt |>
       dplyr::mutate(dplyr::across(
         tidyselect::all_of(samples_to_include),
         ~ log(.x + 0.5)
@@ -258,8 +258,8 @@ filter_counts <- function(
 
     plot_ext <- "png"
     if (isTRUE(interactive_plots)) {
-      pca_plot <- pca_plot %>% plotly::ggplotly(tooltip = c("sample", "group"))
-      hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) %>%
+      pca_plot <- pca_plot |> plotly::ggplotly(tooltip = c("sample", "group"))
+      hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) |>
         plotly::ggplotly(tooltip = c("sample"))
       plot_ext <- "html"
     }
@@ -276,7 +276,7 @@ filter_counts <- function(
       save_plots = save_plots
     )
   }
-  df_final <- df %>%
+  df_final <- df |>
     dplyr::filter(
       !!rlang::sym(feature_id_colname) %in% df_filt[, feature_id_colname]
     )
@@ -334,22 +334,22 @@ remove_low_count_genes <- function(
       dplyr::group_by_at(melted, c(group_colname, "variable")),
       sum = sum(value)
     )
-    tcounts.group <- tcounts.tot %>%
+    tcounts.group <- tcounts.tot |>
       tidyr::pivot_wider(names_from = "variable", values_from = "sum")
     tcounts.keep <- colSums(
       tcounts.group[(1:colnum + 1)] >=
         minimum_number_of_samples_with_nonzero_counts_in_a_group
     ) >=
       1
-    df_filt <- trans_df[tcounts.keep, ] %>%
+    df_filt <- trans_df[tcounts.keep, ] |>
       tibble::rownames_to_column(feature_id_colname)
   } else {
     trans_df$isexpr1 <- (rowSums(
       as.matrix(trans_df[, -1]) > minimum_count_value_to_be_considered_nonzero
     ) >=
       minimum_number_of_samples_with_nonzero_counts_in_total)
-    df_filt <- trans_df %>%
-      dplyr::filter(isexpr1) %>%
+    df_filt <- trans_df |>
+      dplyr::filter(isexpr1) |>
       dplyr::select(-isexpr1)
   }
 

@@ -7,16 +7,16 @@ test_that("normalize works for NIDAP", {
       "clean" = as.data.frame(nidap_clean_raw_counts),
       "filt" = as.data.frame(nidap_filtered_counts)
     )
-  ) %>%
+  ) |>
     normalize_counts(
       group_colname = "Group",
       label_colname = "Label",
       print_plots = TRUE
     )
   expect_true(equal_dfs(
-    moo@counts[["norm"]][["voom"]] %>%
+    moo@counts[["norm"]][["voom"]] |>
       dplyr::arrange(desc(Gene)),
-    as.data.frame(nidap_norm_counts) %>%
+    as.data.frame(nidap_norm_counts) |>
       dplyr::arrange(desc(Gene))
   ))
 })
@@ -27,8 +27,8 @@ test_that("normalize works for RENEE", {
       system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
     ),
     gene_counts
-  ) %>%
-    clean_raw_counts() %>%
+  ) |>
+    clean_raw_counts() |>
     filter_counts(
       group_colname = "condition",
       label_colname = "sample_id",
@@ -36,7 +36,7 @@ test_that("normalize works for RENEE", {
       minimum_number_of_samples_with_nonzero_counts_in_total = 1,
       minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
       print_plots = FALSE
-    ) %>%
+    ) |>
     normalize_counts(group_colname = "condition", label_colname = "sample_id")
   expect_equal(
     head(moo@counts$norm$voom),

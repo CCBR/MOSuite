@@ -45,7 +45,7 @@
 #'   as.data.frame(nidap_sample_metadata),
 #'   as.data.frame(nidap_raw_counts),
 #'   sample_id_colname = "Sample",
-#' ) %>%
+#' ) |>
 #'   clean_raw_counts(sample_id_colname = "Sample", feature_id_colname = "GeneName")
 #' head(moo@counts$clean)
 #' @family moo methods
@@ -63,8 +63,8 @@ clean_raw_counts <- function(
   save_plots = options::opt("save_plots"),
   plots_subdir = "clean"
 ) {
-  counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
-  sample_metadata <- moo@sample_meta %>% as.data.frame()
+  counts_dat <- moo@counts[[count_type]] |> as.data.frame()
+  sample_metadata <- moo@sample_meta |> as.data.frame()
 
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
@@ -206,7 +206,7 @@ separate_gene_meta_columns <- function(counts_dat, split_gene_name = TRUE) {
       counts_dat[, feature_id_colname],
       "_|-|:|\\|",
       n = 2
-    ) %>%
+    ) |>
       data.frame()
     EnsCol <- apply(Ensembl_ID, c(1, 2), function(x) {
       return(grepl("^ENS[A-Z]+[0-9]+", x))
@@ -235,7 +235,7 @@ separate_gene_meta_columns <- function(counts_dat, split_gene_name = TRUE) {
           grepl(
             "^ENS[A-Z]+[0-9]+\\.[0-9]+$",
             Ensembl_ID[, colSums(EnsCol) == nrow(Ensembl_ID)]
-          ) %>%
+          ) |>
             sum() ==
             nrow(Ensembl_ID)
         ) {
@@ -304,7 +304,7 @@ aggregate_duplicate_gene_names <- function(
   message(paste(
     "Columns that can be used to aggregate gene information",
     paste(
-      counts_dat[, !names(counts_dat) %in% nums, drop = FALSE] %>%
+      counts_dat[, !names(counts_dat) %in% nums, drop = FALSE] |>
         colnames(),
       sep = ", "
     )
@@ -333,13 +333,14 @@ aggregate_duplicate_gene_names <- function(
         grepl("Feature_id_1", colnames(counts_dat)) == FALSE
     ) {
       x <- counts_dat[
-        duplicated(counts_dat[,
+        duplicated(counts_dat[
+          ,
           gene_name_column_to_use_for_collapsing_duplicates
         ]),
         gene_name_column_to_use_for_collapsing_duplicates
-      ] %>%
-        unique() %>%
-        as.character() %>%
+      ] |>
+        unique() |>
+        as.character() |>
         glue::glue_collapse(sep = ", ")
       message(glue::glue(
         "genes with duplicate IDs in {feature_id_colname}: {x}"
@@ -351,18 +352,18 @@ aggregate_duplicate_gene_names <- function(
       x <- counts_dat[
         duplicated(counts_dat[, "Feature_id_1"]),
         "Feature_id_1"
-      ] %>%
-        unique() %>%
-        as.character() %>%
+      ] |>
+        unique() |>
+        as.character() |>
         glue::glue_collapse(sep = ", ")
       message(glue::glue("genes with duplicate IDs in {Feature_id_1}: {x}"))
 
       x <- counts_dat[
         duplicated(counts_dat[, "Feature_id_2"]),
         "Feature_id_2"
-      ] %>%
-        unique() %>%
-        as.character() %>%
+      ] |>
+        unique() |>
+        as.character() |>
         glue::glue_collapse(sep = ", ")
       message(glue::glue("genes with duplicate IDs in {Feature_id_2}: {x}"))
     }
@@ -382,37 +383,39 @@ aggregate_duplicate_gene_names <- function(
     )
 
     if (
-      sum(duplicated(counts_dat[,
+      sum(duplicated(counts_dat[
+        ,
         gene_name_column_to_use_for_collapsing_duplicates
       ])) !=
         0
     ) {
       x <- counts_dat[
-        duplicated(counts_dat[,
+        duplicated(counts_dat[
+          ,
           gene_name_column_to_use_for_collapsing_duplicates
         ]),
         gene_name_column_to_use_for_collapsing_duplicates
-      ] %>%
-        as.character() %>%
-        unique() %>%
+      ] |>
+        as.character() |>
+        unique() |>
         glue::glue_collapse(sep = ", ")
       message(glue::glue("Duplicate IDs: {x}"))
 
       dfagg <- counts_dat[, c(
         gene_name_column_to_use_for_collapsing_duplicates,
         nums
-      )] %>%
+      )] |>
         dplyr::group_by_at(
           gene_name_column_to_use_for_collapsing_duplicates
-        ) %>%
+        ) |>
         dplyr::summarise_all(sum)
 
       if (ncol(counts_dat[, !names(counts_dat) %in% nums, drop = FALSE]) > 1) {
         ## collapse non-numeric columns
-        dfagg2 <- counts_dat[, !names(counts_dat) %in% nums] %>%
+        dfagg2 <- counts_dat[, !names(counts_dat) %in% nums] |>
           dplyr::group_by_at(
             gene_name_column_to_use_for_collapsing_duplicates
-          ) %>%
+          ) |>
           dplyr::summarise_all(paste, collapse = ",")
 
         dfagg <- merge(
@@ -420,7 +423,7 @@ aggregate_duplicate_gene_names <- function(
           dfagg,
           by = eval(gene_name_column_to_use_for_collapsing_duplicates),
           sort = FALSE
-        ) %>%
+        ) |>
           as.data.frame()
       }
       dfout <- dfagg
@@ -440,12 +443,13 @@ aggregate_duplicate_gene_names <- function(
           "Duplicate IDs in {gene_name_column_to_use_for_collapsing_duplicates} Column:",
           glue::glue_collapse(
             counts_dat[
-              duplicated(counts_dat[,
+              duplicated(counts_dat[
+                ,
                 gene_name_column_to_use_for_collapsing_duplicates
               ]),
               gene_name_column_to_use_for_collapsing_duplicates
-            ] %>%
-              as.character() %>%
+            ] |>
+              as.character() |>
               unique(),
             sep = ", "
           ),

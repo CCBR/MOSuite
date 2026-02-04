@@ -14,7 +14,7 @@
 #'     levels = c("wildtype", "knockout")
 #'   )
 #' )
-#' moo <- create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts) %>%
+#' moo <- create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts) |>
 #'   calc_cpm()
 #' head(moo@counts$cpm)
 calc_cpm <- S7::new_generic("calc_cpm", "moo", function(moo, ...) {
@@ -26,7 +26,7 @@ S7::method(calc_cpm, multiOmicDataSet) <- function(
   feature_id_colname = "gene_id",
   ...
 ) {
-  moo@counts$cpm <- moo@counts$raw %>%
+  moo@counts$cpm <- moo@counts$raw |>
     calc_cpm_df(feature_id_colname = feature_id_colname)
   return(moo)
 }
@@ -41,12 +41,12 @@ S7::method(calc_cpm, multiOmicDataSet) <- function(
 #' @keywords internal
 #'
 calc_cpm_df <- function(dat, feature_id_colname = "gene_id", ...) {
-  gene_ids <- dat %>% dplyr::pull(feature_id_colname)
+  gene_ids <- dat |> dplyr::pull(feature_id_colname)
   row_names <- rownames(dat)
-  dat_cpm <- dat %>%
-    dplyr::select(-tidyselect::any_of(feature_id_colname)) %>%
-    as.matrix() %>%
-    edgeR::cpm(...) %>%
+  dat_cpm <- dat |>
+    dplyr::select(-tidyselect::any_of(feature_id_colname)) |>
+    as.matrix() |>
+    edgeR::cpm(...) |>
     as.data.frame()
   dat_cpm[[feature_id_colname]] <- gene_ids
   rownames(dat_cpm) <- if (
@@ -56,7 +56,7 @@ calc_cpm_df <- function(dat, feature_id_colname = "gene_id", ...) {
   } else {
     col
   }
-  return(dat_cpm %>% dplyr::relocate(tidyselect::all_of(feature_id_colname)))
+  return(dat_cpm |> dplyr::relocate(tidyselect::all_of(feature_id_colname)))
 }
 
 #' Convert a data frame of gene counts to a matrix
@@ -75,13 +75,13 @@ counts_dat_to_matrix <- function(counts_tbl, feature_id_colname = NULL) {
   if (is.null(feature_id_colname)) {
     feature_id_colname <- colnames(counts_tbl)[1]
   }
-  counts_dat <- counts_tbl %>%
+  counts_dat <- counts_tbl |>
     as.data.frame()
-  row.names(counts_dat) <- counts_dat %>%
+  row.names(counts_dat) <- counts_dat |>
     dplyr::pull(feature_id_colname)
   # convert counts tibble to matrix
-  counts_mat <- counts_dat %>%
-    dplyr::select(-tidyselect::any_of(feature_id_colname)) %>%
+  counts_mat <- counts_dat |>
+    dplyr::select(-tidyselect::any_of(feature_id_colname)) |>
     as.matrix()
   return(counts_mat)
 }
@@ -97,14 +97,14 @@ counts_dat_to_matrix <- function(counts_tbl, feature_id_colname = NULL) {
 #'
 #' @examples
 #' \dontrun{
-#' data.frame(a = c(0, 0.1, 2.3, 5L, 6.9)) %>% as_integer_df()
+#' data.frame(a = c(0, 0.1, 2.3, 5L, 6.9)) |> as_integer_df()
 #' }
 as_integer_df <- function(counts_tbl) {
-  counts_tbl %>%
+  counts_tbl |>
     # deseq2 requires integer counts
     dplyr::mutate(dplyr::across(
       dplyr::where(is.numeric),
       \(x) as.integer(round(x, 0))
-    )) %>%
+    )) |>
     return()
 }

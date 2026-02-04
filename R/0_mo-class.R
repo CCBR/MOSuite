@@ -55,9 +55,9 @@ multiOmicDataSet <- S7::new_class(
       errors <- c(errors, "@counts must contain at least 'raw' counts")
     } else {
       # Only validate sample IDs if raw counts exist
-      meta_sample_colnames <- self@sample_meta %>% dplyr::pull(1)
-      feature_sample_colnames <- self@counts$raw %>%
-        dplyr::select(-1) %>%
+      meta_sample_colnames <- self@sample_meta |> dplyr::pull(1)
+      feature_sample_colnames <- self@counts$raw |>
+        dplyr::select(-1) |>
         colnames()
 
       # all sample IDs in sample_meta must also be in raw counts, & vice versa
@@ -157,17 +157,17 @@ create_multiOmicDataSet_from_dataframes <- function(
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
   } else {
-    sample_metadata <- sample_metadata %>%
+    sample_metadata <- sample_metadata |>
       dplyr::relocate(!!rlang::sym(sample_id_colname))
   }
   if (is.null(feature_id_colname)) {
     feature_id_colname <- colnames(counts_dat)[1]
   } else {
-    counts_dat <- counts_dat %>%
+    counts_dat <- counts_dat |>
       dplyr::relocate(!!rlang::sym(feature_id_colname))
   }
 
-  meta_sample_colnames <- sample_metadata %>% dplyr::pull(sample_id_colname)
+  meta_sample_colnames <- sample_metadata |> dplyr::pull(sample_id_colname)
   if (!all(meta_sample_colnames %in% colnames(counts_dat))) {
     stop(
       glue::glue(
@@ -183,9 +183,9 @@ create_multiOmicDataSet_from_dataframes <- function(
   }
 
   # create anno_dat out of excess columns in count dat
-  anno_dat <- counts_dat %>%
+  anno_dat <- counts_dat |>
     dplyr::select(-tidyselect::all_of(meta_sample_colnames))
-  counts_dat <- counts_dat %>%
+  counts_dat <- counts_dat |>
     dplyr::select(
       !!rlang::sym(feature_id_colname),
       tidyselect::all_of(meta_sample_colnames)
@@ -222,7 +222,7 @@ create_multiOmicDataSet_from_dataframes <- function(
 #'   ),
 #'   delim = "\t"
 #' )
-#' moo@counts$raw %>% head()
+#' moo@counts$raw |> head()
 #' moo@sample_meta
 #'
 #' moo_nidap <- create_multiOmicDataSet_from_files(
@@ -282,12 +282,12 @@ create_multiOmicDataSet_from_files <- function(
 #'   )
 #' )
 #'
-#' moo %>%
-#'   extract_counts("filt") %>%
+#' moo |>
+#'   extract_counts("filt") |>
 #'   head()
 #'
-#' moo %>%
-#'   extract_counts("norm", "voom") %>%
+#' moo |>
+#'   extract_counts("norm", "voom") |>
 #'   head()
 #'
 extract_counts <- S7::new_generic(
