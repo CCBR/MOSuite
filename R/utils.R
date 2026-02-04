@@ -117,14 +117,14 @@ join_dfs_wide <- function(df_list, join_fn = dplyr::left_join) {
     dplyr::select(1) |>
     colnames()
   dat_joined <- purrr::map(names(df_list), \(df_name) {
-    df_list[[df_name]] |>
+    result <- df_list[[df_name]] |>
       dplyr::rename_with(
         .cols = !tidyselect::any_of(common_col),
         .fn = \(x) {
           return(glue::glue("{df_name}_{x}"))
         }
-      ) |>
-      return()
+      )
+    return(result)
   }) |>
     purrr::reduce(join_fn)
   return(dat_joined)
@@ -162,9 +162,9 @@ bind_dfs_long <- function(df_list, outcolname = contrast) {
     dplyr::select(1) |>
     colnames()
   dat_joined <- purrr::map(names(df_list), \(df_name) {
-    df_list[[df_name]] |>
-      dplyr::mutate({{ outcolname }} := df_name, .after = common_col) |>
-      return()
+    result <- df_list[[df_name]] |>
+      dplyr::mutate({{ outcolname }} := df_name, .after = common_col)
+    return(result)
   }) |>
     dplyr::bind_rows()
   return(dat_joined)

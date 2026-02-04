@@ -320,19 +320,19 @@ diff_counts <- function(
     finalres <- purrr::map(
       list(mat_mean, mat_sd, FC, logFC, tstat, pvalall, pvaladjall),
       \(mat) {
-        mat |>
+        result <- mat |>
           as.data.frame() |>
-          tibble::rownames_to_column(feature_id_colname) |>
-          return()
+          tibble::rownames_to_column(feature_id_colname)
+        return(result)
       }
     ) |>
       purrr::reduce(dplyr::left_join, by = feature_id_colname)
   } else {
     finalres <- purrr::map(list(FC, logFC, tstat, pvalall, pvaladjall), \(mat) {
-      mat |>
+      result <- mat |>
         as.data.frame() |>
-        tibble::rownames_to_column(feature_id_colname) |>
-        return()
+        tibble::rownames_to_column(feature_id_colname)
+      return(result)
     }) |>
       purrr::reduce(dplyr::left_join, by = feature_id_colname)
   }
@@ -447,7 +447,7 @@ diff_counts <- function(
 
   df_list <- contrasts |>
     purrr::map(\(contrast) {
-      finalres |>
+      result <- finalres |>
         dplyr::select(
           tidyselect::all_of(feature_id_colname),
           tidyselect::all_of(
@@ -463,8 +463,8 @@ diff_counts <- function(
           ),
           tidyselect::all_of(tidyselect::starts_with(contrast))
         ) |>
-        dplyr::rename_with(~ gsub(paste0(contrast, "_"), "", .x)) |>
-        return()
+        dplyr::rename_with(~ gsub(paste0(contrast, "_"), "", .x))
+      return(result)
     })
 
   names(df_list) <- contrasts
