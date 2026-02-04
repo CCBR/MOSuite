@@ -44,6 +44,9 @@ moo <- create_multiOmicDataSet_from_dataframes(
 ) %>%
   clean_raw_counts()
 ```
+
+### filter
+
 ```{r nidap_filter}
 moo <- moo %>%
   filter_counts(group_colname = "Group")
@@ -81,6 +84,7 @@ moo <- moo %>%
     voom_normalization_method = "quantile",
   )
 ```
+
 ### filter differential features
 
 ```{r filter_diff}
@@ -98,7 +102,8 @@ TODO
 ### 3D PCA
 
 ```{r pca_3D}
-plot_pca(moo@counts$batch,
+plot_pca(
+  moo@counts$batch,
   moo@sample_meta,
   principal_components = c(1, 2, 3),
   group_colname = "Group",
@@ -110,7 +115,11 @@ plot_pca(moo@counts$batch,
 ### Expression Heatmap
 
 ```{r expr_heatmap}
-heatmap_plot <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
+heatmap_plot <- plot_expr_heatmap(
+  moo,
+  count_type = "norm",
+  sub_count_type = "voom"
+)
 print(heatmap_plot)
 ```
 
