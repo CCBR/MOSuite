@@ -445,7 +445,7 @@ test_that("validator returns NULL for valid objects", {
       "clean" = as.data.frame(nidap_clean_raw_counts)
     )
   )
-  # If the validator returned an error, the object wouldn't have been created
+  # If the validator returned errors, the object wouldn't have been created
   # So we just check that the object exists and is the correct type
   expect_true(S7::S7_inherits(moo, multiOmicDataSet))
 })

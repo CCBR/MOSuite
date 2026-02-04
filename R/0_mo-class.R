@@ -58,18 +58,18 @@ multiOmicDataSet <- S7::new_class(
         colnames()
 
       # all sample IDs in sample_meta must also be in raw counts, & vice versa
-      not_in_meta <- setdiff(meta_sample_colnames, feature_sample_colnames)
-      if (length(not_in_meta) > 0) {
-        errors <- c(errors, glue::glue(
-          "Not all columns after the first column in the @counts$raw data are sample IDs in the @sample_meta:\n\t",
-          "{glue::glue_collapse(not_in_meta, sep = ', ')}"
-        ))
-      }
-      not_in_counts <- setdiff(feature_sample_colnames, meta_sample_colnames)
-      if (length(not_in_counts) > 0) {
+      in_meta_not_in_counts <- setdiff(meta_sample_colnames, feature_sample_colnames)
+      if (length(in_meta_not_in_counts) > 0) {
         errors <- c(errors, glue::glue(
           "Not all sample IDs in the @sample_meta are in the @counts$raw data:\n\t",
-          "{glue::glue_collapse(not_in_counts, sep = ', ')}"
+          "{glue::glue_collapse(in_meta_not_in_counts, sep = ', ')}"
+        ))
+      }
+      in_counts_not_in_meta <- setdiff(feature_sample_colnames, meta_sample_colnames)
+      if (length(in_counts_not_in_meta) > 0) {
+        errors <- c(errors, glue::glue(
+          "Not all columns after the first column in the @counts$raw data are sample IDs in the @sample_meta:\n\t",
+          "{glue::glue_collapse(in_counts_not_in_meta, sep = ', ')}"
         ))
       }
 
