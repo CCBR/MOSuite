@@ -109,14 +109,14 @@ batch_correct_counts <- function(
 
   if (batch_colname %in% covariates_colnames) {
     stop(glue::glue(
-      "Batch column ({batch_colname}) cannot be included in covariates."
+      "Batch column '{batch_colname}' cannot be included in covariates."
     ))
   }
   if (length(unique(batch_vctr)) <= 1) {
     combat_edata <- counts_dat
     warning(
       glue::glue(
-        "Batch column {batch_column} contains only 1 unique value; skipping batch correction"
+        "Batch column '{batch_colname}' contains only 1 unique value; skipping batch correction"
       )
     )
   } else {
@@ -157,7 +157,8 @@ batch_correct_counts <- function(
       feature_id_colname = feature_id_colname,
       group_colname = batch_colname,
       label_colname = label_colname,
-      color_values = colors_for_plots
+      color_values = colors_for_plots,
+      save_plots = FALSE
     ) +
       ggplot2::labs(caption = "batch-corrected counts")
 
