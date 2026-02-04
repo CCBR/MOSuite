@@ -161,7 +161,7 @@ p_background <- ggplot() +
     height = tile_height,
     color = "#D0D0D0",
     linewidth = 0.2,
-    alpha = 0.7,
+    alpha = 0.8,
     show.legend = FALSE
   ) +
   scale_fill_gradient2(
@@ -176,7 +176,7 @@ p_background <- ggplot() +
     data = volcano_data,
     aes(x = x, y = y, color = color),
     size = 2.0,
-    alpha = 0.7,
+    alpha = 0.8,
     shape = 16,
     show.legend = FALSE
   ) +
