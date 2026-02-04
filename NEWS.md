@@ -2,10 +2,15 @@
 
 - New function `write_multiOmicDataSet_properties()`. (#173, @kelly-sovacool)
   - Extracts all the properties from a multiOmicDataSet and writes any data frames as csv files, other objects are written as rds files.
+- Fixed bug in `clean_raw_counts()` where duplicate gene rows were not being aggregated correctly. (#162, @TJoshMeyer)
+- Fixed `batch_correct_counts()` to gracefully skip batch correction when only a single batch level exists; the function now warns without erroring. (#158, @TJoshMeyer)
+- Fixed `multiOmicDataSet` validator to return character vector instead of using `stop()` per S7 documentation. (#177, @copilot, @kelly-sovacool)
+- Fixed duplicate PCA figure files in `filter_counts()`, `normalize_counts()`, and `batch_correct_counts()`. (#180, @kelly-sovacool)
 - Bug fixes: (#174, @kelly-sovacool)
   - Fixed bugs in `plot_volcano_summary()`, `plot_volcano_enhanced()`, and `plot_pca_3d()` when used with multiOmicDataSet objects.
   - Fixed bug in `filter_diff()` when `filtering_mode = "all"` that was causing plot rendering errors.
   - Fixed `plot_pca_2d()` to save plots to disk correctly.
+- Replaced deprecated `arrange_()` with `arrange()` in `plot_expr_heatmap()`. (#182)
 - Improvements for use with Galaxy. (#168, #170, #171, #174, @kelly-sovacool)
 
 # MOSuite 0.2.1

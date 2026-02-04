@@ -38,54 +38,75 @@ multiOmicDataSet <- S7::new_class(
     ))
   },
   validator = function(self) {
+    errors <- character(0)
+
     # counts must only contain approved names
     approved_counts <- c("raw", "clean", "cpm", "filt", "norm", "batch")
     if (!all(names(self@counts) %in% approved_counts)) {
-      stop(
+      errors <- c(
+        errors,
         glue::glue(
-          "counts can only contain these names:\n\t{paste(approved_counts, collapse = ', ')}"
+          "@counts can only contain these names:\n\t{paste(approved_counts, collapse = ', ')}"
         )
       )
     }
 
     if (!("raw" %in% names(self@counts))) {
-      stop("counts must contain at least 'raw' counts")
-    }
-    meta_sample_colnames <- self@sample_meta %>% dplyr::pull(1)
-    feature_sample_colnames <- self@counts$raw %>%
-      dplyr::select(-1) %>%
-      colnames()
+      errors <- c(errors, "@counts must contain at least 'raw' counts")
+    } else {
+      # Only validate sample IDs if raw counts exist
+      meta_sample_colnames <- self@sample_meta %>% dplyr::pull(1)
+      feature_sample_colnames <- self@counts$raw %>%
+        dplyr::select(-1) %>%
+        colnames()
 
-    # all sample IDs in sample_meta must also be in raw counts, & vice versa
-    error_msg <- ""
-    not_in_meta <- setdiff(meta_sample_colnames, feature_sample_colnames)
-    if (length(not_in_meta) > 0) {
-      error_msg <- glue::glue(
-        "Not all columns after the first column in the raw counts data are sample IDs in the sample metadata:\n\t",
-        "{glue::glue_collapse(not_in_meta, sep = ', ')}"
+      # all sample IDs in sample_meta must also be in raw counts, & vice versa
+      in_meta_not_in_counts <- setdiff(
+        meta_sample_colnames,
+        feature_sample_colnames
       )
-    }
-    not_in_counts <- setdiff(feature_sample_colnames, meta_sample_colnames)
-    if (length(not_in_counts) > 0) {
-      error_msg <- glue::glue(
-        "Not all sample IDs in the sample metadata are in the raw count data:\n\t",
-        "{glue::glue_collapse(not_in_counts, sep = ', ')}"
+      if (length(in_meta_not_in_counts) > 0) {
+        errors <- c(
+          errors,
+          glue::glue(
+            "Not all sample IDs in the @sample_meta are in the @counts$raw data:\n\t",
+            "{glue::glue_collapse(in_meta_not_in_counts, sep = ', ')}"
+          )
+        )
+      }
+      in_counts_not_in_meta <- setdiff(
+        feature_sample_colnames,
+        meta_sample_colnames
       )
-    }
-    if (nchar(error_msg) > 0) {
-      stop(error_msg)
-    }
+      if (length(in_counts_not_in_meta) > 0) {
+        errors <- c(
+          errors,
+          glue::glue(
+            "Not all columns after the first column in the @counts$raw data are sample IDs in the @sample_meta:\n\t",
+            "{glue::glue_collapse(in_counts_not_in_meta, sep = ', ')}"
+          )
+        )
+      }
 
-    # sample IDs must be in the same order
-    if (!all(feature_sample_colnames == meta_sample_colnames)) {
-      stop(glue::glue(
-        "The sample IDs in the sample metadata do not equal the columns in the raw count data. ",
-        "Sample IDs must be in the same order."
-      ))
+      # sample IDs must be in the same order
+      if (!all(feature_sample_colnames == meta_sample_colnames)) {
+        errors <- c(
+          errors,
+          glue::glue(
+            "The sample IDs in the @sample_meta do not equal the columns in the @counts$raw data. ",
+            "Sample IDs must be in the same order."
+          )
+        )
+      }
     }
 
     # TODO any sample ID in filt or norm_cpm counts must also be in sample_meta
     # TODO counts can only contain 1 feature name column, and all other columns are sample counts
+
+    if (length(errors) > 0) {
+      return(errors)
+    }
+    return(NULL)
   }
 )
 

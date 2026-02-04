@@ -128,7 +128,8 @@ normalize_counts <- function(
       add_label = add_label_to_pca,
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
-      label_offset_x_ = label_offset_x_
+      label_offset_x_ = label_offset_x_,
+      save_plots = FALSE
     ) +
       ggplot2::labs(caption = "normalized counts")
     hist_plot <- plot_histogram(
