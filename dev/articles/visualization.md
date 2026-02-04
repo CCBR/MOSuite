@@ -47,6 +47,8 @@ moo <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> no duplicated IDs in GeneName
 
+### filter
+
 ``` r
 moo <- moo %>%
   filter_counts(group_colname = "Group")
@@ -197,7 +199,8 @@ TODO
 ### 3D PCA
 
 ``` r
-plot_pca(moo@counts$batch,
+plot_pca(
+  moo@counts$batch,
   moo@sample_meta,
   principal_components = c(1, 2, 3),
   group_colname = "Group",
@@ -209,19 +212,12 @@ plot_pca(moo@counts$batch,
 ### Expression Heatmap
 
 ``` r
-heatmap_plot <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
-#> Warning: `arrange_()` was deprecated in dplyr 0.7.0.
-#> ℹ Please use `arrange()` instead.
-#> ℹ See vignette('programming') for more help
-#> ℹ The deprecated feature was likely used in the MOSuite package.
-#>   Please report the issue at <https://github.com/CCBR/MOSuite/issues>.
-#> This warning is displayed once per session.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#> generated.
-#> [1] "The total number of genes in heatmap: 500"
-#> Warning: The input is a data frame, convert it to the matrix.
-#> Warning: argument `height` is not supported in pheatmap -> Heatmap translation,
-#> skip it.
+heatmap_plot <- plot_expr_heatmap(
+  moo,
+  count_type = "norm",
+  sub_count_type = "voom"
+)
+#> The total number of genes in heatmap: 500
 ```
 
 ![](visualization_files/figure-html/expr_heatmap-1.png)
