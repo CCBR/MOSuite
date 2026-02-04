@@ -118,7 +118,7 @@ get_colors_vctr <- function(
 #'   counts_dat = as.data.frame(nidap_raw_counts)
 #' )
 #' moo@analyses$colors$Group
-#' moo %<>% set_color_pal("Group", palette_fun = RColorBrewer::brewer.pal, name = "Set2")
+#' moo <- moo |> set_color_pal("Group", palette_fun = RColorBrewer::brewer.pal, name = "Set2")
 #' moo@analyses$colors$Group
 #'
 #' @family moo methods

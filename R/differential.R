@@ -291,7 +291,7 @@ diff_counts <- function(
     colnames(mat_mean) <- mean.df[, 1]
     colnames(mat_mean) <- paste(colnames(mat_mean), "mean", sep = "_")
     colnames(mat_mean) <- gsub("\\.", "_", colnames(mat_mean))
-    # mat_mean %<>% as.data.frame() |> tibble::rownames_to_column(feature_id_colname)
+    # mat_mean <- mat_mean |> as.data.frame() |> tibble::rownames_to_column(feature_id_colname)
 
     sd.df <- as.data.frame(tve) |>
       tibble::rownames_to_column(sample_id_colname) |>
@@ -315,7 +315,7 @@ diff_counts <- function(
     colnames(mat_sd) <- sd.df[, 1]
     colnames(mat_sd) <- paste(colnames(mat_sd), "sd", sep = "_")
     colnames(mat_sd) <- gsub("\\.", "_", colnames(mat_sd))
-    # mat_sd %<>% as.data.frame() |> tibble::rownames_to_column(feature_id_colname)
+    # mat_sd <- mat_sd |> as.data.frame() |> tibble::rownames_to_column(feature_id_colname)
 
     finalres <- purrr::map(
       list(mat_mean, mat_sd, FC, logFC, tstat, pvalall, pvaladjall),
