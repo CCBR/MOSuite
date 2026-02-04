@@ -8,23 +8,23 @@ library(dplyr)
 get_function_meta <- function(func_name, rd_db) {
   func_db <- rd_db[[paste0(func_name, ".Rd")]]
 
-  title <- tools:::.Rd_get_metadata(func_db, "title") %>% trimws()
+  title <- tools:::.Rd_get_metadata(func_db, "title") |> trimws()
   desc <- paste(
     tools:::.Rd_get_metadata(func_db, "description"),
     tools:::.Rd_get_metadata(func_db, "details"),
     sep = "\n\n"
-  ) %>%
+  ) |>
     trimws()
   arg_desc <- dplyr::as_tibble(
     tools:::.Rd_get_argument_table(func_db),
     .name_repair = "unique_quiet"
   )
   colnames(arg_desc) <- c("arg", "desc")
-  arg_docs <- arg_desc %>%
-    dplyr::pull("desc") %>%
-    trimws() %>%
+  arg_docs <- arg_desc |>
+    dplyr::pull("desc") |>
+    trimws() |>
     as.list()
-  names(arg_docs) <- arg_desc %>% dplyr::pull("arg")
+  names(arg_docs) <- arg_desc |> dplyr::pull("arg")
   options(
     moo_print_plots = TRUE,
     moo_save_plots = TRUE,
@@ -47,10 +47,10 @@ get_function_meta <- function(func_name, rd_db) {
     }
   )
   if ("..." %in% names(arg_defaults)) {
-    arg_defaults <- arg_defaults %>%
+    arg_defaults <- arg_defaults |>
       within(rm("...")) # remove `...` argument
   }
-  args_meta <- names(arg_defaults) %>%
+  args_meta <- names(arg_defaults) |>
     lapply(\(arg) {
       return(list(
         defaultValue = arg_defaults[[arg]],
@@ -104,8 +104,8 @@ update_function_template <- function(
   }
   new_template <- list(
     r_function = template$r_function,
-    title = template$title %>% Rd2md::rd_str_to_md(),
-    description = func_meta$description %>% Rd2md::rd_str_to_md(),
+    title = template$title |> Rd2md::rd_str_to_md(),
+    description = func_meta$description |> Rd2md::rd_str_to_md(),
     columns = list(),
     inputDatasets = list(),
     parameters = list(),
@@ -118,7 +118,7 @@ update_function_template <- function(
       arg_name <- template[[arg_type]][[i]]$key
       if (arg_name %in% names(func_meta$args)) {
         arg_meta <- template[[arg_type]][[i]]
-        arg_meta$description <- func_meta$args[[arg_name]]$description %>%
+        arg_meta$description <- func_meta$args[[arg_name]]$description |>
           Rd2md::rd_str_to_md()
         arg_meta$defaultValue <- func_meta$args[[arg_name]]$defaultValue
         args_in_template <- c(args_in_template, arg_name)
