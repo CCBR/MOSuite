@@ -1,6 +1,6 @@
 # MOSuite development version
 
-- Fixed duplicate PCA figure files in `filter_counts()`, `normalize_counts()`, and `batch_correct_counts()`.
+- Fixed duplicate PCA figure files in `filter_counts()`, `normalize_counts()`, and `batch_correct_counts()`. (#180, @kelly-sovacool)
 - Fixed bug in `clean_raw_counts()` where duplicate gene rows were not being aggregated correctly. (#162, @TJoshMeyer)
 - New function `write_multiOmicDataSet_properties()`. (#173, @kelly-sovacool)
   - Extracts all the properties from a multiOmicDataSet and writes any data frames as csv files, other objects are written as rds files.
