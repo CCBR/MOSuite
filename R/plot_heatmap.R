@@ -1015,7 +1015,10 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
       annot[, x] <- factor(annot[, x], levels = unique(annot[, x]))
     }
     annot <- annot %>%
-      dplyr::arrange(dplyr::across(tidyselect::all_of(group_columns)), .by_group = TRUE)
+      dplyr::arrange(
+        dplyr::across(tidyselect::all_of(group_columns)),
+        .by_group = TRUE
+      )
     df.final <- df.final[, match(
       annot[[sample_id_colname]],
       colnames(df.final)
