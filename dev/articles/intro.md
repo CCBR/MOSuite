@@ -65,11 +65,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> colors_for_plots character
 
-![](intro_files/figure-html/nidap_data-2.png)
-
-    #> Saving 7.29 x 4.51 in image
-
-![](intro_files/figure-html/nidap_data-3.png)![](intro_files/figure-html/nidap_data-4.png)
+![](intro_files/figure-html/nidap_data-2.png)![](intro_files/figure-html/nidap_data-3.png)![](intro_files/figure-html/nidap_data-4.png)
 
     #> Saving 7.29 x 4.51 in image
 
@@ -82,13 +78,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
     #> increasing max.overlaps
 
-![](intro_files/figure-html/nidap_data-6.png)
-
-    #> Saving 7.29 x 4.51 in image
-    #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
-    #> increasing max.overlaps
-
-![](intro_files/figure-html/nidap_data-7.png)
+![](intro_files/figure-html/nidap_data-6.png)![](intro_files/figure-html/nidap_data-7.png)
 
     #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
     #> increasing max.overlaps
@@ -118,11 +108,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> Adjusting the Data
 
-![](intro_files/figure-html/nidap_data-10.png)
-
-    #> Saving 7.29 x 4.51 in image
-
-![](intro_files/figure-html/nidap_data-11.png)
+![](intro_files/figure-html/nidap_data-10.png)![](intro_files/figure-html/nidap_data-11.png)
 
     #> Saving 7.29 x 4.51 in image
 

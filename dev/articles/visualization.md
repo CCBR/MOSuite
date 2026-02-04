@@ -60,13 +60,7 @@ moo <- moo %>%
 #> increasing max.overlaps
 ```
 
-![](visualization_files/figure-html/nidap_filter-1.png)
-
-    #> Saving 5 x 4 in image
-    #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
-    #> increasing max.overlaps
-
-![](visualization_files/figure-html/nidap_filter-2.png)
+![](visualization_files/figure-html/nidap_filter-1.png)![](visualization_files/figure-html/nidap_filter-2.png)
 
     #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
     #> increasing max.overlaps
@@ -92,13 +86,7 @@ moo <- moo %>%
 #> increasing max.overlaps
 ```
 
-![](visualization_files/figure-html/nidap_norm-1.png)
-
-    #> Saving 5 x 4 in image
-    #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
-    #> increasing max.overlaps
-
-![](visualization_files/figure-html/nidap_norm-2.png)
+![](visualization_files/figure-html/nidap_norm-1.png)![](visualization_files/figure-html/nidap_norm-2.png)
 
     #> Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
     #> increasing max.overlaps
@@ -132,11 +120,7 @@ moo <- moo %>%
 #> Adjusting the Data
 ```
 
-![](visualization_files/figure-html/nidap_batch-1.png)
-
-    #> Saving 5 x 4 in image
-
-![](visualization_files/figure-html/nidap_batch-2.png)
+![](visualization_files/figure-html/nidap_batch-1.png)![](visualization_files/figure-html/nidap_batch-2.png)
 
     #> Saving 5 x 4 in image
 

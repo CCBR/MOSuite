@@ -292,7 +292,6 @@ moo <- create_multiOmicDataSet_from_dataframes(
 #> colors_for_plots character
 #> Saving 6.67 x 6.67 in image
 #> Saving 6.67 x 6.67 in image
-#> Saving 6.67 x 6.67 in image
 head(moo@counts$filt)
 #>      Gene   A1   A2   A3   B1   B2   B3   C1   C2   C3
 #> 1  Mrpl15 1245 1341 1476  965 1235 1784 1058 1732 1531
