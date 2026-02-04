@@ -816,7 +816,6 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
       display_numbers = dispnum,
       number_color = "black",
       fontsize_number = 8,
-      height = 80,
       cellwidth = NA,
       cellheight = NA,
       fontsize = legend_font_size,
@@ -1071,11 +1070,11 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   labels_col <- colnames(df.final)
 
   ## Print number of genes to log.
-  print(paste0("The total number of genes in heatmap: ", nrow(df.final)))
+  message(paste0("The total number of genes in heatmap: ", nrow(df.final)))
 
   ## PH: Make the heatmap.
   p <- doheatmap(
-    dat = df.final,
+    dat = as.matrix(df.final),
     clus = cluster_samples,
     clus2 = cluster_genes,
     ht = 50,
