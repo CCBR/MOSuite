@@ -1,7 +1,7 @@
 # MOSuite development version
 
 - Fixed bug in `clean_raw_counts()` where duplicate gene rows were not being aggregated correctly. (#162, @TJoshMeyer)
-- Fixed `multiOmicDataSet` validator to return character vector instead of using `stop()` per S7 documentation. (#177, @copilot)
+- Fixed `multiOmicDataSet` validator to return character vector instead of using `stop()` per S7 documentation. (#177, @copilot, @kelly-sovacool)
 - New function `write_multiOmicDataSet_properties()`. (#173, @kelly-sovacool)
   - Extracts all the properties from a multiOmicDataSet and writes any data frames as csv files, other objects are written as rds files.
 - Bug fixes: (#174, @kelly-sovacool)
