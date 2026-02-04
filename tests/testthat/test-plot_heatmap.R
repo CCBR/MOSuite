@@ -166,15 +166,19 @@ test_that("plot_expr_heatmap works", {
       "norm" = list("voom" = as.data.frame(nidap_norm_counts))
     )
   )
-  expect_silent({
-    set.seed(20250226)
-    p_moo <- plot_expr_heatmap(
-      moo,
-      count_type = "norm",
-      sub_count_type = "voom",
-      feature_id_colname = "Gene"
-    )
-  })
+  expect_message(
+    {
+      set.seed(20250226)
+      p_moo <- plot_expr_heatmap(
+        moo,
+        count_type = "norm",
+        sub_count_type = "voom",
+        feature_id_colname = "Gene"
+      )
+    },
+    "total number of genes in heatmap",
+    fixed = FALSE
+  )
   expect_equal(
     head(p_moo@matrix),
     structure(
@@ -242,14 +246,18 @@ test_that("plot_expr_heatmap works", {
     )
   )
 
-  expect_silent({
-    set.seed(20250226)
-    p_dat <- plot_expr_heatmap(
-      as.data.frame(nidap_norm_counts),
-      sample_metadata = as.data.frame(nidap_sample_metadata),
-      feature_id_colname = "Gene"
-    )
-  })
+  expect_message(
+    {
+      set.seed(20250226)
+      p_dat <- plot_expr_heatmap(
+        as.data.frame(nidap_norm_counts),
+        sample_metadata = as.data.frame(nidap_sample_metadata),
+        feature_id_colname = "Gene"
+      )
+    },
+    "total number of genes in heatmap",
+    fixed = FALSE
+  )
 
   expect_equal(p_moo@matrix, p_dat@matrix)
 })
