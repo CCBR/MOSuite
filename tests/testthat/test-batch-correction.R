@@ -25,3 +25,40 @@ test_that("batch_correction works for NIDAP", {
       dplyr::arrange(desc(Gene))
   ))
 })
+
+test_that("batch_correction warnings & errors", {
+  moo <- create_multiOmicDataSet_from_dataframes(
+    readr::read_tsv(
+      system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
+    ) %>%
+      dplyr::mutate(batch = 1),
+    gene_counts
+  ) %>%
+    clean_raw_counts() %>%
+    filter_counts(
+      group_colname = "condition",
+      label_colname = "sample_id",
+      minimum_count_value_to_be_considered_nonzero = 1,
+      minimum_number_of_samples_with_nonzero_counts_in_total = 1,
+      minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
+      print_plots = FALSE
+    ) %>%
+    normalize_counts(group_colname = "condition", label_colname = "sample_id")
+
+  expect_warning(
+    moo %>%
+      batch_correct_counts(
+        covariates_colnames = "condition",
+        batch_colname = "batch"
+      ),
+    "Batch column 'batch' contains only 1 unique value"
+  )
+  expect_error(
+    moo %>%
+      batch_correct_counts(
+        covariates_colnames = "batch",
+        batch_colname = "batch"
+      ),
+    "Batch column 'batch' cannot be included in covariates."
+  )
+})
