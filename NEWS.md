@@ -1,5 +1,6 @@
 # MOSuite development version
 
+- Fixed duplicate PCA figure files in `filter_counts()`, `normalize_counts()`, and `batch_correct_counts()`. (#180, @kelly-sovacool)
 - Fixed bug in `clean_raw_counts()` where duplicate gene rows were not being aggregated correctly. (#162, @TJoshMeyer)
 - Fixed `batch_correct_counts()` to gracefully skip batch correction when only a single batch level exists; the function now warns without erroring. (#158, @TJoshMeyer)
 - New function `write_multiOmicDataSet_properties()`. (#173, @kelly-sovacool)

@@ -157,7 +157,8 @@ batch_correct_counts <- function(
       feature_id_colname = feature_id_colname,
       group_colname = batch_colname,
       label_colname = label_colname,
-      color_values = colors_for_plots
+      color_values = colors_for_plots,
+      save_plots = FALSE
     ) +
       ggplot2::labs(caption = "batch-corrected counts")
 
