@@ -29,7 +29,7 @@ dfs <- list(
   "a_vs_b" = data.frame(id = c("a1", "b2", "c3"), score = runif(3)),
   "b_vs_c" = data.frame(id = c("a1", "b2", "c3"), score = rnorm(3))
 )
-dfs %>% bind_dfs_long()
+dfs |> bind_dfs_long()
 #>   id contrast       score
 #> 1 a1   a_vs_b  0.87460066
 #> 2 b2   a_vs_b  0.17494063

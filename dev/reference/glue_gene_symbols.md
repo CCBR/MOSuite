@@ -23,8 +23,8 @@ column
 
 ``` r
 if (FALSE) { # \dontrun{
-gene_counts %>%
-  glue_gene_symbols() %>%
+gene_counts |>
+  glue_gene_symbols() |>
   head()
 } # }
 ```

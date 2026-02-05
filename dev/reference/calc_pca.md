@@ -53,7 +53,7 @@ Other PCA functions:
 ## Examples
 
 ``` r
-calc_pca(nidap_raw_counts, nidap_sample_metadata) %>% head()
+calc_pca(nidap_raw_counts, nidap_sample_metadata) |> head()
 #> # A tibble: 6 × 10
 #>   Sample    PC  value std.dev percent cumulative Group Replicate Batch Label
 #>   <chr>  <dbl>  <dbl>   <dbl>   <dbl>      <dbl> <chr>     <dbl> <dbl> <chr>

@@ -41,8 +41,8 @@ moo <- multiOmicDataSet(
   )
 )
 
-moo %>%
-  extract_counts("filt") %>%
+moo |>
+  extract_counts("filt") |>
   head()
 #>            Gene   A1  A2   A3   B1   B2  B3   C1  C2   C3
 #> 1 0610007P14Rik 1049 950  934 1068 1140 947 1393 907 1427
@@ -52,8 +52,8 @@ moo %>%
 #> 5 0610012G03Rik  480 589  683  324  596 673  909 933  419
 #> 6 0610037L13Rik  467 570  593  558  330 423  356 198  568
 
-moo %>%
-  extract_counts("norm", "voom") %>%
+moo |>
+  extract_counts("norm", "voom") |>
   head()
 #>            Gene       A1       A2       A3       B1       B2       B3       C1
 #> 1 0610007P14Rik 6.532994 6.192871 5.954869 6.375896 6.275880 6.119449 6.419913

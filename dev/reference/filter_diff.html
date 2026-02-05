@@ -230,7 +230,7 @@ groups in the dataset are used.</p></dd>
 <span class="r-in"><span>    <span class="st">"clean"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_clean_raw_counts</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"filt"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_filtered_counts</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="diff_counts.html">diff_counts</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    count_type <span class="op">=</span> <span class="st">"filt"</span>,</span></span>
 <span class="r-in"><span>    sub_count_type <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
@@ -240,7 +240,7 @@ groups in the dataset are used.</p></dd>
 <span class="r-in"><span>    contrast_colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B-A"</span>, <span class="st">"C-A"</span>, <span class="st">"B-C"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    voom_normalization_method <span class="op">=</span> <span class="st">"quantile"</span>,</span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">filter_diff</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> * differential counts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Setting first column of `counts` as gene annotation.</span>

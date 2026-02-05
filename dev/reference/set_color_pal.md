@@ -60,7 +60,7 @@ moo <- create_multiOmicDataSet_from_dataframes(
 moo@analyses$colors$Group
 #>         A         B         C 
 #> "#000000" "#E69F00" "#56B4E9" 
-moo %<>% set_color_pal("Group", palette_fun = RColorBrewer::brewer.pal, name = "Set2")
+moo <- moo |> set_color_pal("Group", palette_fun = RColorBrewer::brewer.pal, name = "Set2")
 moo@analyses$colors$Group
 #>         A         B         C 
 #> "#66C2A5" "#FC8D62" "#8DA0CB" 

@@ -91,15 +91,15 @@
 <span><span class="va">moo_nidap</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_multiOmicDataSet_from_dataframes.html">create_multiOmicDataSet_from_dataframes</a></span><span class="op">(</span></span>
 <span>  sample_metadata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_sample_metadata</span><span class="op">)</span>,</span>
 <span>  counts_dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_raw_counts</span><span class="op">)</span></span>
-<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/clean_raw_counts.html">clean_raw_counts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/filter_counts.html">filter_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/normalize_counts.html">normalize_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/clean_raw_counts.html">clean_raw_counts</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/filter_counts.html">filter_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/normalize_counts.html">normalize_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/batch_correct_counts.html">batch_correct_counts</a></span><span class="op">(</span></span>
 <span>    covariates_colname <span class="op">=</span> <span class="st">"Group"</span>,</span>
 <span>    batch_colname <span class="op">=</span> <span class="st">"Batch"</span>,</span>
 <span>    label_colname <span class="op">=</span> <span class="st">"Label"</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/diff_counts.html">diff_counts</a></span><span class="op">(</span></span>
 <span>    count_type <span class="op">=</span> <span class="st">"filt"</span>,</span>
 <span>    covariates_colnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group"</span>, <span class="st">"Batch"</span><span class="op">)</span>,</span>
@@ -108,7 +108,7 @@
 <span>    input_in_log_counts <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    return_mean_and_sd <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    voom_normalization_method <span class="op">=</span> <span class="st">"quantile"</span>,</span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/filter_diff.html">filter_diff</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="intro_files/figure-html/nidap_data-1.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
@@ -186,8 +186,8 @@
 <p><img src="intro_files/figure-html/nidap_data-15.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span></span>
-<span><span class="va">moo_nidap</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/join_dfs_wide.html">join_dfs_wide</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">moo_nidap</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/join_dfs_wide.html">join_dfs_wide</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
@@ -213,7 +213,7 @@
 <span><span class="co">#&gt; 5  0.4843119 0.63708764   0.8518020</span></span>
 <span><span class="co">#&gt; 6 -2.9536960 0.01233497   0.1411803</span></span>
 <span></span>
-<span><span class="va">moo_nidap</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff_filt</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">moo_nidap</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff_filt</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   GeneName B-A_FC B-A_logFC B-A_tstat B-A_pval B-A_adjpval C-A_FC C-A_logFC</span></span>
 <span><span class="co">#&gt; 1     Rrs1  -2.06    -1.040    -2.860   0.0147       0.276  -2.71     -1.44</span></span>
 <span><span class="co">#&gt; 2     Mcm3  -1.45    -0.539    -1.870   0.0869       0.544  -2.45     -1.29</span></span>

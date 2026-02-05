@@ -28,7 +28,7 @@ for more information.
 moo <- create_multiOmicDataSet_from_dataframes(
   sample_metadata = as.data.frame(nidap_sample_metadata),
   counts_dat = as.data.frame(nidap_raw_counts)
-) %>%
+) |>
   clean_raw_counts()
 ```
 
@@ -50,7 +50,7 @@ moo <- create_multiOmicDataSet_from_dataframes(
 ### filter
 
 ``` r
-moo <- moo %>%
+moo <- moo |>
   filter_counts(group_colname = "Group")
 #> * filtering clean counts
 #> Number of features after filtering: 7943
@@ -78,7 +78,7 @@ moo <- moo %>%
 ### normalize
 
 ``` r
-moo <- moo %>%
+moo <- moo |>
   normalize_counts(group_colname = "Group")
 #> * normalizing filt counts
 #> Total number of features included: 7943
@@ -105,7 +105,7 @@ moo <- moo %>%
 ### batch correct
 
 ``` r
-moo <- moo %>%
+moo <- moo |>
   batch_correct_counts(
     covariates_colname = "Group",
     batch_colname = "Batch",
@@ -136,7 +136,7 @@ moo <- moo %>%
 ### differential expression
 
 ``` r
-moo <- moo %>%
+moo <- moo |>
   diff_counts(
     count_type = "filt",
     covariates_colnames = c("Group", "Batch"),
@@ -160,7 +160,7 @@ moo <- moo %>%
 ### filter differential features
 
 ``` r
-moo <- moo %>% filter_diff()
+moo <- moo |> filter_diff()
 #> Joining with `by = join_by(GeneName)`
 #> Joining with `by = join_by(GeneName)`
 #> * filtering differential features
@@ -217,8 +217,8 @@ print(heatmap_plot)
 #### Summary
 
 ``` r
-dat_volcano_summary <- moo@analyses$diff %>%
-  join_dfs_wide() %>%
+dat_volcano_summary <- moo@analyses$diff |>
+  join_dfs_wide() |>
   plot_volcano_summary()
 #> Joining with `by = join_by(GeneName)`
 #> Joining with `by = join_by(GeneName)`
@@ -266,8 +266,8 @@ dat_volcano_summary <- moo@analyses$diff %>%
 #### Enhanced
 
 ``` r
-dat_volcano_enhanced <- moo@analyses$diff %>%
-  join_dfs_wide() %>%
+dat_volcano_enhanced <- moo@analyses$diff |>
+  join_dfs_wide() |>
   plot_volcano_enhanced()
 #> Joining with `by = join_by(GeneName)`
 #> Joining with `by = join_by(GeneName)`
@@ -282,7 +282,7 @@ dat_volcano_enhanced <- moo@analyses$diff %>%
 ### Venn Diagram
 
 ``` r
-venn_dat <- dat_volcano_summary %>% plot_venn_diagram()
+venn_dat <- dat_volcano_summary |> plot_venn_diagram()
 #> All intersections: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(79, 119, 265, 493, 149, 271, 516),c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")
 #> Intersections returned: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(79, 119, 265, 493, 149, 271, 516)
 ```

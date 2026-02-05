@@ -148,7 +148,7 @@ moo <- multiOmicDataSet(
       "voom" = as.data.frame(nidap_norm_counts)
     )
   )
-) %>%
+) |>
   batch_correct_counts(
     count_type = "norm",
     sub_count_type = "voom",

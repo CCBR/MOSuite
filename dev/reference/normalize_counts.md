@@ -250,7 +250,7 @@ moo <- multiOmicDataSet(
     "clean" = as.data.frame(nidap_clean_raw_counts),
     "filt" = as.data.frame(nidap_filtered_counts)
   )
-) %>%
+) |>
   normalize_counts(
     group_colname = "Group",
     label_colname = "Label"

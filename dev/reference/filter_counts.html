@@ -302,7 +302,7 @@ another based on unsupervised clustering.</p>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_clean_raw_counts</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  sample_id_colname <span class="op">=</span> <span class="st">"Sample"</span>,</span></span>
 <span class="r-in"><span>  feature_id_colname <span class="op">=</span> <span class="st">"Gene"</span></span></span>
-<span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">filter_counts</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    count_type <span class="op">=</span> <span class="st">"raw"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>

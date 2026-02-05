@@ -30,7 +30,7 @@ dfs <- list(
   "a_vs_b" = data.frame(id = c("a1", "b2", "c3"), score = runif(3)),
   "b_vs_c" = data.frame(id = c("a1", "b2", "c3"), score = rnorm(3))
 )
-dfs %>% join_dfs_wide()
+dfs |> join_dfs_wide()
 #> Joining with `by = join_by(id)`
 #>   id a_vs_b_score b_vs_c_score
 #> 1 a1    0.5315735   -0.8267890

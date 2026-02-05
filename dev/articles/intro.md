@@ -21,15 +21,15 @@ options(moo_print_plots = TRUE)
 moo_nidap <- create_multiOmicDataSet_from_dataframes(
   sample_metadata = as.data.frame(nidap_sample_metadata),
   counts_dat = as.data.frame(nidap_raw_counts)
-) %>%
-  clean_raw_counts() %>%
-  filter_counts(group_colname = "Group") %>%
-  normalize_counts(group_colname = "Group") %>%
+) |>
+  clean_raw_counts() |>
+  filter_counts(group_colname = "Group") |>
+  normalize_counts(group_colname = "Group") |>
   batch_correct_counts(
     covariates_colname = "Group",
     batch_colname = "Batch",
     label_colname = "Label"
-  ) %>%
+  ) |>
   diff_counts(
     count_type = "filt",
     covariates_colnames = c("Group", "Batch"),
@@ -38,7 +38,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     input_in_log_counts = FALSE,
     return_mean_and_sd = FALSE,
     voom_normalization_method = "quantile",
-  ) %>%
+  ) |>
   filter_diff()
 ```
 
@@ -139,8 +139,8 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
 
     #> Saving 7.29 x 4.51 in image
 
-    moo_nidap@analyses$diff %>%
-      join_dfs_wide() %>%
+    moo_nidap@analyses$diff |>
+      join_dfs_wide() |>
       head()
     #> Joining with `by = join_by(GeneName)`
     #> Joining with `by = join_by(GeneName)`
@@ -166,7 +166,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 5  0.4843119 0.63708764   0.8518020
     #> 6 -2.9536960 0.01233497   0.1411803
 
-    moo_nidap@analyses$diff_filt %>% head()
+    moo_nidap@analyses$diff_filt |> head()
     #>   GeneName B-A_FC B-A_logFC B-A_tstat B-A_pval B-A_adjpval C-A_FC C-A_logFC
     #> 1     Rrs1  -2.06    -1.040    -2.860   0.0147       0.276  -2.71     -1.44
     #> 2     Mcm3  -1.45    -0.539    -1.870   0.0869       0.544  -2.45     -1.29

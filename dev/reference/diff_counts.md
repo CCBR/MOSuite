@@ -144,7 +144,7 @@ moo <- multiOmicDataSet(
     "clean" = as.data.frame(nidap_clean_raw_counts),
     "filt" = as.data.frame(nidap_filtered_counts)
   )
-) %>%
+) |>
   diff_counts(
     count_type = "filt",
     sub_count_type = NULL,

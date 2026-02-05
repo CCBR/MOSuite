@@ -79,24 +79,24 @@ head(moo@annotation)
 ```
 
 ``` r
-moo <- moo %>%
-  clean_raw_counts() %>%
+moo <- moo |>
+  clean_raw_counts() |>
   filter_counts(
     group_colname = "condition",
     label_colname = "sample_id",
     minimum_count_value_to_be_considered_nonzero = 1,
     minimum_number_of_samples_with_nonzero_counts_in_total = 1,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
-  ) %>%
+  ) |>
   normalize_counts(
     group_colname = "condition",
     label_colname = "sample_id"
-  ) %>%
+  ) |>
   diff_counts(
     covariates_colnames = "condition",
     contrast_colname = "condition",
     contrasts = c("knockout-wildtype")
-  ) %>%
+  ) |>
   filter_diff(
     significance_cutoff = 0.05,
     significance_column = "adjpval",
@@ -148,7 +148,7 @@ moo <- moo %>%
 #> 
 #> Saving 7.29 x 4.51 in image
 
-moo@counts$norm$voom %>% head()
+moo@counts$norm$voom |> head()
 #>              gene_id     KO_S3     KO_S4     WT_S1     WT_S2
 #> 1  ENSG00000215458.8 11.075196 12.348091  8.816153 10.004874
 #> 2 ENSG00000160179.18  9.608634 12.770317 12.348091 12.236996

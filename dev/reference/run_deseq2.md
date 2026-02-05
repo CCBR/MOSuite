@@ -56,7 +56,7 @@ moo <- create_multiOmicDataSet_from_files(
     "RSEM.genes.expected_count.all_samples.txt.gz",
     package = "MOSuite"
   )
-) %>% filter_counts()
+) |> filter_counts()
 moo <- run_deseq2(moo, ~condition)
 } # }
 ```

@@ -148,24 +148,24 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> ENSG00000245105.3  A2M-AS1 </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> ENSG00000166535.20 A2ML1</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/clean_raw_counts.html">clean_raw_counts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/clean_raw_counts.html">clean_raw_counts</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/filter_counts.html">filter_counts</a></span><span class="op">(</span></span>
 <span>    group_colname <span class="op">=</span> <span class="st">"condition"</span>,</span>
 <span>    label_colname <span class="op">=</span> <span class="st">"sample_id"</span>,</span>
 <span>    minimum_count_value_to_be_considered_nonzero <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>    minimum_number_of_samples_with_nonzero_counts_in_total <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>    minimum_number_of_samples_with_nonzero_counts_in_a_group <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/normalize_counts.html">normalize_counts</a></span><span class="op">(</span></span>
 <span>    group_colname <span class="op">=</span> <span class="st">"condition"</span>,</span>
 <span>    label_colname <span class="op">=</span> <span class="st">"sample_id"</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/diff_counts.html">diff_counts</a></span><span class="op">(</span></span>
 <span>    covariates_colnames <span class="op">=</span> <span class="st">"condition"</span>,</span>
 <span>    contrast_colname <span class="op">=</span> <span class="st">"condition"</span>,</span>
 <span>    contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"knockout-wildtype"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/filter_diff.html">filter_diff</a></span><span class="op">(</span></span>
 <span>    significance_cutoff <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>    significance_column <span class="op">=</span> <span class="st">"adjpval"</span>,</span>
@@ -217,7 +217,7 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span></span>
-<span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">norm</span><span class="op">$</span><span class="va">voom</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">norm</span><span class="op">$</span><span class="va">voom</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;              gene_id     KO_S3     KO_S4     WT_S1     WT_S2</span></span>
 <span><span class="co">#&gt; 1  ENSG00000215458.8 11.075196 12.348091  8.816153 10.004874</span></span>
 <span><span class="co">#&gt; 2 ENSG00000160179.18  9.608634 12.770317 12.348091 12.236996</span></span>
