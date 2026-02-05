@@ -838,7 +838,7 @@ filter_diff <- function(
       ggplot2::facet_wrap(~Var2) +
       ggplot2::scale_fill_manual(values = fill_colors) +
       ggplot2::theme_bw(base_size = 20) +
-      ggplot2::xlab("Contrast") +
+      ggplot2::xlab("") +
       ggplot2::ylab("Number of Genes") +
       ggplot2::geom_text(
         ggplot2::aes(label = Label),
@@ -846,10 +846,6 @@ filter_diff <- function(
         size = label_font_size,
         position = ggplot2::position_dodge(width = bar_width),
         vjust = -label_distance
-      ) +
-      ggplot2::theme(
-        axis.ticks.x = ggplot2::element_blank(),
-        axis.text.x = ggplot2::element_blank()
       ) +
       ggplot2::ggtitle(
         sprintf(
@@ -862,6 +858,8 @@ filter_diff <- function(
         )
       ) +
       ggplot2::theme(
+        axis.ticks.x = ggplot2::element_blank(),
+        axis.text.x = ggplot2::element_blank(),
         legend.key.size = ggplot2::unit(3, "line"),
         legend.position = "top",
         panel.grid.major.x = ggplot2::element_blank(),
@@ -869,7 +867,6 @@ filter_diff <- function(
         strip.background = ggplot2::element_blank(),
         strip.text = ggplot2::element_text(size = plot_titles_fontsize)
       ) +
-      ggplot2::xlab("") +
       ggplot2::scale_y_continuous(name = "", expand = c(y_axis_expansion, 0))
     print_or_save_plot(
       pp,
@@ -885,13 +882,20 @@ filter_diff <- function(
     if (plot_type == "bar") {
       dd <- data.frame(dd)
       colnames(dd) <- say_contrast
-      tab <- reshape2::melt(apply(dd, 2, table)) |>
+      Var2df <- reshape2::melt(apply(dd, 2, table))
+      if ("L1" %in% names(Var2df)) {
+        Var2df <- Var2df |>
+          dplyr::rename(Var2 = L1)
+      }
+
+      tab <- Var2df |>
         dplyr::mutate(Significant = ifelse(Var1, "TRUE", "FALSE")) |>
         dplyr::mutate(
           Significant = factor(Significant, levels = c("TRUE", "FALSE")),
           Count = value,
           Count_format = format(round(value, 1), nsmall = 0, big.mark = ",")
         ) |>
+        dplyr::mutate(Var2 = gsub("_pval|_adjpval", "", Var2)) |>
         dplyr::group_by(Var2) |>
         dplyr::mutate(
           Percent = round(
@@ -918,7 +922,7 @@ filter_diff <- function(
         ggplot2::facet_wrap(~Var2) +
         ggplot2::scale_fill_manual(values = fill_colors) +
         ggplot2::theme_bw(base_size = 20) +
-        ggplot2::xlab("Contrast") +
+        ggplot2::xlab("") +
         ggplot2::ylab("Number of Genes") +
         ggplot2::geom_text(
           ggplot2::aes(label = Label),
@@ -947,11 +951,7 @@ filter_diff <- function(
           strip.background = ggplot2::element_blank(),
           strip.text = ggplot2::element_text(size = plot_titles_fontsize)
         ) +
-        ggplot2::xlab("") +
-        ggplot2::scale_y_continuous(
-          name = "",
-          expand = c(y_axis_expansion, 0)
-        )
+        ggplot2::scale_y_continuous(name = "", expand = c(y_axis_expansion, 0))
       print_or_save_plot(
         pp,
         filename = file.path(plots_subdir, glue::glue("{plot_type}chart.png")),
@@ -1032,9 +1032,10 @@ filter_diff <- function(
           line = -2
         )
       }
+      ### PH: END Create DEG summary PieChart
     }
-    ### PH: END Create DEG summary PieChart
   }
+
   moo@analyses$diff_filt <- out
   return(moo)
 }
