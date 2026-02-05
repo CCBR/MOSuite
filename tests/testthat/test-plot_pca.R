@@ -1,5 +1,5 @@
 test_that("calc_pca works", {
-  pca_dat <- calc_pca(nidap_clean_raw_counts, nidap_sample_metadata) %>%
+  pca_dat <- calc_pca(nidap_clean_raw_counts, nidap_sample_metadata) |>
     dplyr::filter(PC %in% c(1, 2))
   expect_equal(
     pca_dat,

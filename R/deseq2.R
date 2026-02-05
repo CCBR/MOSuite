@@ -17,7 +17,7 @@
 #'     "RSEM.genes.expected_count.all_samples.txt.gz",
 #'     package = "MOSuite"
 #'   )
-#' ) %>% filter_counts()
+#' ) |> filter_counts()
 #' moo <- run_deseq2(moo, ~condition)
 #' }
 #' @family moo methods
@@ -38,8 +38,8 @@ S7::method(run_deseq2, multiOmicDataSet) <- function(
     )
   }
   dds <- DESeq2::DESeqDataSetFromMatrix(
-    countData = moo@counts$filt %>%
-      dplyr::mutate(dplyr::across(dplyr::where(is.numeric), round)) %>% # DESeq2 requires integer counts
+    countData = moo@counts$filt |>
+      dplyr::mutate(dplyr::across(dplyr::where(is.numeric), round)) |> # DESeq2 requires integer counts
       counts_dat_to_matrix(feature_id_colname = feature_id_colname),
     colData = moo@sample_meta,
     design = design

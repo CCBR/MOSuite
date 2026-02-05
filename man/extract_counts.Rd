@@ -31,12 +31,12 @@ moo <- multiOmicDataSet(
   )
 )
 
-moo \%>\%
-  extract_counts("filt") \%>\%
+moo |>
+  extract_counts("filt") |>
   head()
 
-moo \%>\%
-  extract_counts("norm", "voom") \%>\%
+moo |>
+  extract_counts("norm", "voom") |>
   head()
 
 }

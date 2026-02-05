@@ -170,7 +170,7 @@ moo <- create_multiOmicDataSet_from_dataframes(
   as.data.frame(nidap_clean_raw_counts),
   sample_id_colname = "Sample",
   feature_id_colname = "Gene"
-) \%>\%
+) |>
   filter_counts(
     count_type = "raw"
   )

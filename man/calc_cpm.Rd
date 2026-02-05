@@ -25,7 +25,7 @@ sample_meta <- data.frame(
     levels = c("wildtype", "knockout")
   )
 )
-moo <- create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts) \%>\%
+moo <- create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts) |>
   calc_cpm()
 head(moo@counts$cpm)
 }

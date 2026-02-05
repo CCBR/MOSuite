@@ -31,7 +31,7 @@
 #'     "clean" = as.data.frame(nidap_clean_raw_counts),
 #'     "filt" = as.data.frame(nidap_filtered_counts)
 #'   )
-#' ) %>%
+#' ) |>
 #'   diff_counts(
 #'     count_type = "filt",
 #'     sub_count_type = NULL,
@@ -96,12 +96,12 @@ diff_counts <- function(
     stop("contrasts vector cannot be NULL")
   }
   # ensure these are vectors, not lists. needed when using cli with JSON for args
-  covariates_colnames <- covariates_colnames %>% unlist()
-  contrast_colname <- contrast_colname %>% unlist()
-  contrasts <- contrasts %>% unlist()
+  covariates_colnames <- covariates_colnames |> unlist()
+  contrast_colname <- contrast_colname |> unlist()
+  contrasts <- contrasts |> unlist()
 
   # TODO support tibbles
-  counts_dat <- counts_dat %>% as.data.frame()
+  counts_dat <- counts_dat |> as.data.frame()
 
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
@@ -130,12 +130,12 @@ diff_counts <- function(
   ### This code block does input data validation
   # Remove samples that are not in the contrast groups:
   groups <- unique(unlist(strsplit(contrasts, "-")))
-  sample_metadata <- sample_metadata %>%
+  sample_metadata <- sample_metadata |>
     dplyr::filter(.data[[contrast_colname]] %in% groups)
-  df.m <- df.m %>%
+  df.m <- df.m |>
     dplyr::select(tidyr::all_of(c(
       feature_id_colname,
-      sample_metadata %>% dplyr::pull(sample_id_colname)
+      sample_metadata |> dplyr::pull(sample_id_colname)
     )))
   ### PH: END Input Data Validation - from Filtering + Normalization Template
 
@@ -153,7 +153,7 @@ diff_counts <- function(
     sample_metadata[[ocv]] <- gsub(
       " ",
       "_",
-      sample_metadata %>% dplyr::pull(ocv)
+      sample_metadata |> dplyr::pull(ocv)
     )
   }
   contrasts <- gsub(" ", "_", contrasts)
@@ -161,7 +161,7 @@ diff_counts <- function(
 
   # Combine columns if 2-factor analysis
   if (length(contrast_colname) > 1) {
-    sample_metadata <- sample_metadata %>%
+    sample_metadata <- sample_metadata |>
       dplyr::mutate(
         contmerge = paste0(
           .data[[contrast_colname[1]]],
@@ -170,7 +170,7 @@ diff_counts <- function(
         )
       )
   } else {
-    sample_metadata <- sample_metadata %>%
+    sample_metadata <- sample_metadata |>
       dplyr::mutate(contmerge = .data[[contrast_colname]])
   }
 
@@ -198,7 +198,7 @@ diff_counts <- function(
   ### PH: START Limma Normalization - Same as in Normalize Counts
   # Create DGEList object from counts - counts should not be Log scale
   if (input_in_log_counts == TRUE) {
-    df_unlog <- df.m %>%
+    df_unlog <- df.m |>
       dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ 2^.x))
     x <- edgeR::DGEList(counts = df_unlog, genes = gene_names)
   } else {
@@ -225,7 +225,7 @@ diff_counts <- function(
   ### PH: START Linear Fit and and extract df.voom table. Could be added to Limma Normalization function above with an
   ### option to run lmFit
   rownames(v$E) <- v$genes$GeneID
-  # df.voom <- as.data.frame(v$E) %>% tibble::rownames_to_column(feature_id_colname)
+  # df.voom <- as.data.frame(v$E) |> tibble::rownames_to_column(feature_id_colname)
   fit <- limma::lmFit(v, design)
   cm <- limma::makeContrasts(contrasts = contrasts, levels = design)
   ### PH: END Linear Fit and and extract df.voom table.
@@ -269,79 +269,79 @@ diff_counts <- function(
   # OUTPUT: DEG Table
   if (return_mean_and_sd == TRUE) {
     tve <- t(v$E)
-    mean.df <- as.data.frame(tve) %>%
-      tibble::rownames_to_column(sample_id_colname) %>%
+    mean.df <- as.data.frame(tve) |>
+      tibble::rownames_to_column(sample_id_colname) |>
       dplyr::left_join(
-        sample_metadata %>%
+        sample_metadata |>
           dplyr::select(tidyr::all_of(
             c(sample_id_colname, contrast_colname)
           )),
         by = sample_id_colname
-      ) %>%
-      dplyr::rename(group = tidyr::all_of(contrast_colname)) %>%
-      dplyr::group_by(group) %>%
+      ) |>
+      dplyr::rename(group = tidyr::all_of(contrast_colname)) |>
+      dplyr::group_by(group) |>
       dplyr::summarise(dplyr::across(
         dplyr::where(is.numeric),
         ~ base::mean(.x)
-      )) %>%
+      )) |>
       as.data.frame()
-    mat_mean <- mean.df[, -c(1, 2)] %>%
-      as.matrix() %>%
+    mat_mean <- mean.df[, -c(1, 2)] |>
+      as.matrix() |>
       t()
     colnames(mat_mean) <- mean.df[, 1]
     colnames(mat_mean) <- paste(colnames(mat_mean), "mean", sep = "_")
     colnames(mat_mean) <- gsub("\\.", "_", colnames(mat_mean))
-    # mat_mean %<>% as.data.frame() %>% tibble::rownames_to_column(feature_id_colname)
+    # mat_mean <- mat_mean |> as.data.frame() |> tibble::rownames_to_column(feature_id_colname)
 
-    sd.df <- as.data.frame(tve) %>%
-      tibble::rownames_to_column(sample_id_colname) %>%
+    sd.df <- as.data.frame(tve) |>
+      tibble::rownames_to_column(sample_id_colname) |>
       dplyr::left_join(
-        sample_metadata %>%
+        sample_metadata |>
           dplyr::select(tidyr::all_of(
             c(sample_id_colname, contrast_colname)
           )),
         by = sample_id_colname
-      ) %>%
-      dplyr::rename(group = tidyr::all_of(contrast_colname)) %>%
-      dplyr::group_by(group) %>%
+      ) |>
+      dplyr::rename(group = tidyr::all_of(contrast_colname)) |>
+      dplyr::group_by(group) |>
       dplyr::summarise(dplyr::across(
         dplyr::where(is.numeric),
         ~ stats::sd(.x)
-      )) %>%
+      )) |>
       as.data.frame()
-    mat_sd <- sd.df[, -c(1, 2)] %>%
-      as.matrix() %>%
+    mat_sd <- sd.df[, -c(1, 2)] |>
+      as.matrix() |>
       t()
     colnames(mat_sd) <- sd.df[, 1]
     colnames(mat_sd) <- paste(colnames(mat_sd), "sd", sep = "_")
     colnames(mat_sd) <- gsub("\\.", "_", colnames(mat_sd))
-    # mat_sd %<>% as.data.frame() %>% tibble::rownames_to_column(feature_id_colname)
+    # mat_sd <- mat_sd |> as.data.frame() |> tibble::rownames_to_column(feature_id_colname)
 
     finalres <- purrr::map(
       list(mat_mean, mat_sd, FC, logFC, tstat, pvalall, pvaladjall),
       \(mat) {
-        mat %>%
-          as.data.frame() %>%
-          tibble::rownames_to_column(feature_id_colname) %>%
-          return()
+        result <- mat |>
+          as.data.frame() |>
+          tibble::rownames_to_column(feature_id_colname)
+        return(result)
       }
-    ) %>%
+    ) |>
       purrr::reduce(dplyr::left_join, by = feature_id_colname)
   } else {
     finalres <- purrr::map(list(FC, logFC, tstat, pvalall, pvaladjall), \(mat) {
-      mat %>%
-        as.data.frame() %>%
-        tibble::rownames_to_column(feature_id_colname) %>%
-        return()
-    }) %>%
+      result <- mat |>
+        as.data.frame() |>
+        tibble::rownames_to_column(feature_id_colname)
+      return(result)
+    }) |>
       purrr::reduce(dplyr::left_join, by = feature_id_colname)
   }
 
   if (return_normalized_counts == TRUE) {
-    finalres <- final_res %>%
+    finalres <- final_res |>
       dplyr::left_join(
-        v$E %>%
-          as.data.frame() %>%
+        v$E |>
+          as.data.frame() |>
           tibble::rownames_to_column(feature_id_colname),
         by = feature_id_colname
       )
@@ -445,26 +445,26 @@ diff_counts <- function(
     save_plots = save_plots
   )
 
-  df_list <- contrasts %>%
+  df_list <- contrasts |>
     purrr::map(\(contrast) {
-      finalres %>%
+      result <- finalres |>
         dplyr::select(
           tidyselect::all_of(feature_id_colname),
           tidyselect::all_of(
             purrr::map(
-              contrast %>%
-                stringr::str_split("-") %>%
-                unlist() %>%
+              contrast |>
+                stringr::str_split("-") |>
+                unlist() |>
                 paste0(., "_"),
               tidyselect::starts_with,
               vars = colnames(.)
-            ) %>%
+            ) |>
               unlist()
           ),
           tidyselect::all_of(tidyselect::starts_with(contrast))
-        ) %>%
-        dplyr::rename_with(~ gsub(paste0(contrast, "_"), "", .x)) %>%
-        return()
+        ) |>
+        dplyr::rename_with(~ gsub(paste0(contrast, "_"), "", .x))
+      return(result)
     })
 
   names(df_list) <- contrasts
@@ -489,34 +489,34 @@ get_gene_lists <- function(
   downreg_genes <- list()
   for (i in seq_len(length(contrasts))) {
     if (pval == "pval") {
-      upreg_genes[[i]] <- finalres %>%
+      upreg_genes[[i]] <- finalres |>
         dplyr::filter(
           .data[[colnames(FC)[i]]] > FClimit &
             .data[[colnames(pvalall)[i]]] < pvallimit
-        ) %>%
-        dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
+        ) |>
+        dplyr::pull(tidyselect::all_of(feature_id_colname)) |>
         length()
-      downreg_genes[[i]] <- finalres %>%
+      downreg_genes[[i]] <- finalres |>
         dplyr::filter(
           .data[[colnames(FC)[i]]] < -FClimit &
             .data[[colnames(pvalall)[i]]] < pvallimit
-        ) %>%
-        dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
+        ) |>
+        dplyr::pull(tidyselect::all_of(feature_id_colname)) |>
         length()
     } else {
-      upreg_genes[[i]] <- finalres %>%
+      upreg_genes[[i]] <- finalres |>
         dplyr::filter(
           .data[[colnames(FC)[i]]] > FClimit &
             .data[[colnames(pvaladjall)[i]]] < pvallimit
-        ) %>%
-        dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
+        ) |>
+        dplyr::pull(tidyselect::all_of(feature_id_colname)) |>
         length()
-      downreg_genes[[i]] <- finalres %>%
+      downreg_genes[[i]] <- finalres |>
         dplyr::filter(
           .data[[colnames(FC)[i]]] < -FClimit &
             .data[[colnames(pvaladjall)[i]]] < pvallimit
-        ) %>%
-        dplyr::pull(tidyselect::all_of(feature_id_colname)) %>%
+        ) |>
+        dplyr::pull(tidyselect::all_of(feature_id_colname)) |>
         length()
     }
   }
@@ -615,7 +615,7 @@ plot_mean_variance <- function(voom_elist) {
 #'     "clean" = as.data.frame(nidap_clean_raw_counts),
 #'     "filt" = as.data.frame(nidap_filtered_counts)
 #'   )
-#' ) %>%
+#' ) |>
 #'   diff_counts(
 #'     count_type = "filt",
 #'     sub_count_type = NULL,
@@ -625,7 +625,7 @@ plot_mean_variance <- function(voom_elist) {
 #'     contrast_colname = c("Group"),
 #'     contrasts = c("B-A", "C-A", "B-C"),
 #'     voom_normalization_method = "quantile",
-#'   ) %>%
+#'   ) |>
 #'   filter_diff()
 #' head(moo@analyses$diff_filt)
 filter_diff <- function(
@@ -659,8 +659,8 @@ filter_diff <- function(
   Count <- Count_format <- L1 <- Label <- Percent <- Significant <- Var1 <- Var2 <- value <- NULL
 
   # from NIDAP DEG_Gene_List template - filters DEG table
-  diff_dat <- moo@analyses$diff %>%
-    join_dfs_wide() %>%
+  diff_dat <- moo@analyses$diff |>
+    join_dfs_wide() |>
     as.data.frame()
 
   message("* filtering differential features")
@@ -678,10 +678,10 @@ filter_diff <- function(
     stop(glue::glue("contrast_filter not recognized: {contrast_filter}"))
   }
   # ensure these are vectors, not lists. needed for reading args from JSON
-  include_estimates <- include_estimates %>% unlist()
-  contrasts <- contrasts %>% unlist()
-  groups <- groups %>% unlist()
-  fill_colors <- fill_colors %>% unlist()
+  include_estimates <- include_estimates |> unlist()
+  contrasts <- contrasts |> unlist()
+  groups <- groups |> unlist()
+  fill_colors <- fill_colors |> unlist()
 
   # If include_estimates param is empty, then fill it with default values.
   if (length(include_estimates) == 0) {
@@ -691,14 +691,14 @@ filter_diff <- function(
   estimates <- paste0("_", include_estimates)
   signif <- paste0("_", significance_column)
   change <- paste0("_", change_column)
-  diff_dat <- diff_dat %>%
+  diff_dat <- diff_dat |>
     dplyr::select(
       tidyselect::all_of(feature_id_colname),
       tidyselect::ends_with(c(estimates, signif, change))
     )
 
-  contrasts_name <- diff_dat %>%
-    dplyr::select(tidyselect::ends_with(signif)) %>%
+  contrasts_name <- diff_dat |>
+    dplyr::select(tidyselect::ends_with(signif)) |>
     colnames()
   contrasts_name <- unlist(strsplit(contrasts_name, signif))
   if (contrast_filter == "keep") {
@@ -708,8 +708,8 @@ filter_diff <- function(
   }
   contrasts_name <- paste0(contrasts_name, "_")
 
-  groups_name <- diff_dat %>%
-    dplyr::select(tidyselect::ends_with(c("_mean", "_sd"))) %>%
+  groups_name <- diff_dat |>
+    dplyr::select(tidyselect::ends_with(c("_mean", "_sd"))) |>
     colnames()
   groups_name <- unique(gsub("_mean|_sd", "", groups_name))
   if (groups_filter == "keep") {
@@ -723,24 +723,24 @@ filter_diff <- function(
 
   ### PH: START Subset DEG table
 
-  diff_dat <- diff_dat %>%
+  diff_dat <- diff_dat |>
     dplyr::select(
       tidyselect::all_of(feature_id_colname),
       tidyselect::starts_with(c(groups_name, contrasts_name))
     )
 
   ## select filter variables
-  datsignif <- diff_dat %>%
+  datsignif <- diff_dat |>
     dplyr::select(
       tidyselect::all_of(feature_id_colname),
       tidyselect::ends_with(signif)
-    ) %>%
+    ) |>
     tibble::column_to_rownames(feature_id_colname)
-  datchange <- diff_dat %>%
+  datchange <- diff_dat |>
     dplyr::select(
       tidyselect::all_of(feature_id_colname),
       tidyselect::ends_with(change)
-    ) %>%
+    ) |>
     tibble::column_to_rownames(feature_id_colname)
   genes <- diff_dat[, feature_id_colname]
 
@@ -770,9 +770,9 @@ filter_diff <- function(
   )
 
   ## .output dataset
-  out <- diff_dat %>% dplyr::filter(get(feature_id_colname) %in% select_genes)
+  out <- diff_dat |> dplyr::filter(get(feature_id_colname) %in% select_genes)
   if (round_estimates) {
-    out <- out %>% dplyr::mutate_if(is.numeric, ~ signif(., 3))
+    out <- out |> dplyr::mutate_if(is.numeric, ~ signif(., 3))
   }
 
   ### PH: END Subset DEG table
@@ -800,25 +800,25 @@ filter_diff <- function(
 
     Var2df <- reshape2::melt(apply(dd, 2, table))
     if ("L1" %in% names(Var2df)) {
-      Var2df <- Var2df %>%
+      Var2df <- Var2df |>
         dplyr::rename(Var2 = L1)
     }
 
-    tab <- Var2df %>%
-      dplyr::mutate(Significant = ifelse(Var1, "TRUE", "FALSE")) %>%
+    tab <- Var2df |>
+      dplyr::mutate(Significant = ifelse(Var1, "TRUE", "FALSE")) |>
       dplyr::mutate(
         Significant = factor(Significant, levels = c("TRUE", "FALSE")),
         Count = value,
         Count_format = format(round(value, 1), nsmall = 0, big.mark = ",")
-      ) %>%
-      dplyr::mutate(Var2 = gsub("_pval|_adjpval", "", Var2)) %>%
-      dplyr::group_by(Var2) %>%
+      ) |>
+      dplyr::mutate(Var2 = gsub("_pval|_adjpval", "", Var2)) |>
+      dplyr::group_by(Var2) |>
       dplyr::mutate(
         Percent = round(
           Count / sum(Count) * 100,
           rounding_decimal_for_percent_cells
         )
-      ) %>%
+      ) |>
       dplyr::mutate(Label = sprintf("%s (%g%%)", Count_format, Percent))
 
     pp <- ggplot2::ggplot(
@@ -838,7 +838,7 @@ filter_diff <- function(
       ggplot2::facet_wrap(~Var2) +
       ggplot2::scale_fill_manual(values = fill_colors) +
       ggplot2::theme_bw(base_size = 20) +
-      ggplot2::xlab("Contrast") +
+      ggplot2::xlab("") +
       ggplot2::ylab("Number of Genes") +
       ggplot2::geom_text(
         ggplot2::aes(label = Label),
@@ -846,10 +846,6 @@ filter_diff <- function(
         size = label_font_size,
         position = ggplot2::position_dodge(width = bar_width),
         vjust = -label_distance
-      ) +
-      ggplot2::theme(
-        axis.ticks.x = ggplot2::element_blank(),
-        axis.text.x = ggplot2::element_blank()
       ) +
       ggplot2::ggtitle(
         sprintf(
@@ -862,6 +858,8 @@ filter_diff <- function(
         )
       ) +
       ggplot2::theme(
+        axis.ticks.x = ggplot2::element_blank(),
+        axis.text.x = ggplot2::element_blank(),
         legend.key.size = ggplot2::unit(3, "line"),
         legend.position = "top",
         panel.grid.major.x = ggplot2::element_blank(),
@@ -869,7 +867,6 @@ filter_diff <- function(
         strip.background = ggplot2::element_blank(),
         strip.text = ggplot2::element_text(size = plot_titles_fontsize)
       ) +
-      ggplot2::xlab("") +
       ggplot2::scale_y_continuous(name = "", expand = c(y_axis_expansion, 0))
     print_or_save_plot(
       pp,
@@ -885,20 +882,27 @@ filter_diff <- function(
     if (plot_type == "bar") {
       dd <- data.frame(dd)
       colnames(dd) <- say_contrast
-      tab <- reshape2::melt(apply(dd, 2, table)) %>%
-        dplyr::mutate(Significant = ifelse(Var1, "TRUE", "FALSE")) %>%
+      Var2df <- reshape2::melt(apply(dd, 2, table))
+      if ("L1" %in% names(Var2df)) {
+        Var2df <- Var2df |>
+          dplyr::rename(Var2 = L1)
+      }
+
+      tab <- Var2df |>
+        dplyr::mutate(Significant = ifelse(Var1, "TRUE", "FALSE")) |>
         dplyr::mutate(
           Significant = factor(Significant, levels = c("TRUE", "FALSE")),
           Count = value,
           Count_format = format(round(value, 1), nsmall = 0, big.mark = ",")
-        ) %>%
-        dplyr::group_by(Var2) %>%
+        ) |>
+        dplyr::mutate(Var2 = gsub("_pval|_adjpval", "", Var2)) |>
+        dplyr::group_by(Var2) |>
         dplyr::mutate(
           Percent = round(
             Count / sum(Count) * 100,
             rounding_decimal_for_percent_cells
           )
-        ) %>%
+        ) |>
         dplyr::mutate(Label = sprintf("%s (%g%%)", Count_format, Percent))
 
       pp <- ggplot2::ggplot(
@@ -918,7 +922,7 @@ filter_diff <- function(
         ggplot2::facet_wrap(~Var2) +
         ggplot2::scale_fill_manual(values = fill_colors) +
         ggplot2::theme_bw(base_size = 20) +
-        ggplot2::xlab("Contrast") +
+        ggplot2::xlab("") +
         ggplot2::ylab("Number of Genes") +
         ggplot2::geom_text(
           ggplot2::aes(label = Label),
@@ -947,11 +951,7 @@ filter_diff <- function(
           strip.background = ggplot2::element_blank(),
           strip.text = ggplot2::element_text(size = plot_titles_fontsize)
         ) +
-        ggplot2::xlab("") +
-        ggplot2::scale_y_continuous(
-          name = "",
-          expand = c(y_axis_expansion, 0)
-        )
+        ggplot2::scale_y_continuous(name = "", expand = c(y_axis_expansion, 0))
       print_or_save_plot(
         pp,
         filename = file.path(plots_subdir, glue::glue("{plot_type}chart.png")),
@@ -1032,9 +1032,10 @@ filter_diff <- function(
           line = -2
         )
       }
+      ### PH: END Create DEG summary PieChart
     }
-    ### PH: END Create DEG summary PieChart
   }
+
   moo@analyses$diff_filt <- out
   return(moo)
 }

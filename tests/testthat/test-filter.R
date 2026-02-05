@@ -5,17 +5,17 @@ test_that("filter_counts reproduces NIDAP results", {
     as.data.frame(nidap_clean_raw_counts),
     sample_id_colname = "Sample",
     feature_id_colname = "Gene"
-  ) %>%
-    calc_cpm(feature_id_colname = "Gene") %>%
+  ) |>
+    calc_cpm(feature_id_colname = "Gene") |>
     filter_counts(
       sample_id_colname = "Sample",
       feature_id_colname = "Gene",
       count_type = "raw",
       print_plots = TRUE
     )
-  rds_counts_filt <- moo@counts$filt %>%
+  rds_counts_filt <- moo@counts$filt |>
     dplyr::arrange(desc(Gene))
-  nidap_counts_filt <- as.data.frame(nidap_filtered_counts) %>%
+  nidap_counts_filt <- as.data.frame(nidap_filtered_counts) |>
     dplyr::arrange(desc(Gene))
 
   expect_true(equal_dfs(rds_counts_filt, nidap_counts_filt))
@@ -28,9 +28,9 @@ test_that("filter_counts works on RENEE dataset", {
     readr::read_tsv(
       system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
     ),
-    gene_counts %>% glue_gene_symbols()
+    gene_counts |> glue_gene_symbols()
   )
-  rds2 <- moo %>%
+  rds2 <- moo |>
     filter_counts(
       feature_id_colname = "gene_id",
       sample_id_colname = "sample_id",
@@ -45,7 +45,7 @@ test_that("filter_counts works on RENEE dataset", {
     )
   expect_equal(dim(rds2@counts$filt), c(291, 5))
   expect_equal(
-    rds2@counts$filt %>% dplyr::arrange(gene_id) %>% head(),
+    rds2@counts$filt |> dplyr::arrange(gene_id) |> head(),
     structure(
       list(
         gene_id = c(
@@ -66,7 +66,7 @@ test_that("filter_counts works on RENEE dataset", {
     )
   )
   expect_equal(
-    rds2@counts$filt %>% dplyr::arrange(gene_id) %>% tail(),
+    rds2@counts$filt |> dplyr::arrange(gene_id) |> tail(),
     structure(
       list(
         gene_id = c(

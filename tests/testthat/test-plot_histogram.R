@@ -81,7 +81,7 @@ sample_meta <- structure(
 )
 test_that("plot_histogram works with rownames", {
   p <- plot_histogram(
-    log_counts %>% as.data.frame() %>% tibble::rownames_to_column("Gene"),
+    log_counts |> as.data.frame() |> tibble::rownames_to_column("Gene"),
     sample_meta,
     sample_id_colname = "Sample",
     feature_id_colname = "Gene",

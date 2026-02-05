@@ -21,7 +21,7 @@ License: MIT + file LICENSE
 URL: https://github.com/CCBR/MOSuite, https://ccbr.github.io/MOSuite/
 BugReports: https://github.com/CCBR/MOSuite/issues
 Depends:
-    R (>= 3.5)
+    R (>= 4.0.0)
 Imports:
     assertthat,
     dendextend,

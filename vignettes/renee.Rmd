@@ -44,24 +44,24 @@ head(moo@annotation)
 ```
 
 ```{r analysis}
-moo <- moo %>%
-  clean_raw_counts() %>%
+moo <- moo |>
+  clean_raw_counts() |>
   filter_counts(
     group_colname = "condition",
     label_colname = "sample_id",
     minimum_count_value_to_be_considered_nonzero = 1,
     minimum_number_of_samples_with_nonzero_counts_in_total = 1,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
-  ) %>%
+  ) |>
   normalize_counts(
     group_colname = "condition",
     label_colname = "sample_id"
-  ) %>%
+  ) |>
   diff_counts(
     covariates_colnames = "condition",
     contrast_colname = "condition",
     contrasts = c("knockout-wildtype")
-  ) %>%
+  ) |>
   filter_diff(
     significance_cutoff = 0.05,
     significance_column = "adjpval",
@@ -69,7 +69,7 @@ moo <- moo %>%
     change_cutoff = 1
   )
 
-moo@counts$norm$voom %>% head()
+moo@counts$norm$voom |> head()
 ```
 
 ## The multiOmicDataSet object structure
