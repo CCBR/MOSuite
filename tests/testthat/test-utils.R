@@ -15,9 +15,7 @@ test_that("check_packages_installed works", {
     c(`not-a-package-name` = FALSE)
   )
 })
-f <- function() stop("My error!")
-expect_error(f())
-expect_error(f(), "My error!")
+
 # Tests for parse_optional_vector
 test_that("parse_optional_vector handles normal input", {
   result <- parse_optional_vector("a, b, c")
