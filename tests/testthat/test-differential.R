@@ -23,15 +23,21 @@ test_that("differential analysis works for NIDAP", {
       voom_normalization_method = "quantile",
     )
 
+  deg_moo_wide <- deg_moo@analyses$diff |>
+    join_dfs_wide() |>
+    dplyr::arrange(Gene)
+  deg_moo_wide <- deg_moo_wide |>
+    dplyr::select(colnames(deg_moo_wide) |> sort())
+
+  nidap_wide <- nidap_deg_analysis_2 |>
+    join_dfs_wide() |>
+    dplyr::arrange(Gene)
+  nidap_wide <- nidap_wide |>
+    dplyr::select(colnames(nidap_wide) |> sort())
+
   expect_equal(
-    deg_moo@analyses$diff |>
-      join_dfs_wide() |>
-      dplyr::arrange(Gene) |>
-      dplyr::select(order(colnames(.))),
-    nidap_deg_analysis_2 |>
-      join_dfs_wide() |>
-      dplyr::arrange(Gene) |>
-      dplyr::select(order(colnames(.))),
+    deg_moo_wide,
+    nidap_wide,
     tolerance = 0.01
   )
 })
