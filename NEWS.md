@@ -4,7 +4,9 @@
 
 - New function `write_multiOmicDataSet_properties()`. (#173, @kelly-sovacool)
   - Extracts all the properties from a multiOmicDataSet and writes any data frames as csv files, other objects are written as rds files.
- 
+- New utility functions to reduce code duplication across Code Ocean capsules: (#185, @kelly-sovacool)
+  `setup_capsule_environment()`, `load_moo_from_data_dir()`, `parse_optional_vector()`, `parse_vector_with_default()`, and `parse_samples_to_rename()`.
+
 ## Bug fixes
 
 - Fixed bug in `clean_raw_counts()` where duplicate gene rows were not being aggregated correctly. (#162, @TJoshMeyer)
