@@ -5016,7 +5016,7 @@
     {
       "key": "add_deg_columns",
       "displayName": "Add DEG Columns to Output Table",
-      "description": "Add additional columns from the DEG analysis to the output dataset. Default: `\"FC\", \"logFC\", \"tstat\", \"pval\", \"adjpval\"`",
+      "description": "Add additional columns from the DEG analysis to the\noutput dataset. Default: `\"FC\", \"logFC\", \"tstat\", \"pval\", \"adjpval\"`",
       "paramType": "MULTISELECT",
       "paramGroup": "Table",
       "paramValues": [
