@@ -8,14 +8,14 @@ moo <- multiOmicDataSet(
     "filt" = as.data.frame(nidap_filtered_counts),
     "norm" = list("voom" = as.data.frame(nidap_norm_counts))
   )
-) %>%
+) |>
   batch_correct_counts(
     count_type = "norm",
     sub_count_type = "voom",
     covariates_colname = "Group",
     batch_colname = "Batch",
     label_colname = "Label"
-  ) %>%
+  ) |>
   diff_counts(
     count_type = "filt",
     sub_count_type = NULL,
@@ -25,7 +25,7 @@ moo <- multiOmicDataSet(
     contrast_colname = c("Group"),
     contrasts = c("B-A", "C-A", "B-C"),
     voom_normalization_method = "quantile",
-  ) %>%
+  ) |>
   filter_diff(
     significance_column = "adjpval",
     significance_cutoff = 0.05,

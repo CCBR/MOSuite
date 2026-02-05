@@ -76,7 +76,7 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
   plot_filename = "volcano_enhanced.png"
 ) {
   return(
-    join_dfs_wide(moo_diff@analyses$diff) %>%
+    join_dfs_wide(moo_diff@analyses$diff) |>
       plot_volcano_enhanced(
         feature_id_colname,
         signif_colname,
@@ -212,15 +212,15 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
     lfccol <- change_colname[i]
     sigcol <- signif_colname[i]
     columns_of_interest <- c(label_col, change_colname[i], signif_colname[i])
-    df <- diff_dat %>%
-      dplyr::select(tidyselect::one_of(columns_of_interest)) %>%
+    df <- diff_dat |>
+      dplyr::select(tidyselect::one_of(columns_of_interest)) |>
       dplyr::mutate(
         !!rlang::sym(lfccol) := tidyr::replace_na(!!rlang::sym(lfccol), 0)
-      ) %>%
+      ) |>
       dplyr::mutate(
         !!rlang::sym(sigcol) := tidyr::replace_na(!!rlang::sym(sigcol), 1)
       )
-    # mutate(.data[[lfc.col[i]]] = replace_na(.data[[lfc.col[i]]], 0)) %>%
+    # mutate(.data[[lfc.col[i]]] = replace_na(.data[[lfc.col[i]]], 0)) |>
     # mutate(.data[[sig.col[i]]] = replace_na(.data[[sig.col[i]]], 1))
     if (use_custom_lab == TRUE) {
       if (nchar(change_lfc_name) == 0) {
@@ -247,9 +247,9 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
 
     # Select top genes by logFC or Significance
     if (value_to_sort_the_output_dataset == "fold-change") {
-      df <- df %>% dplyr::arrange(dplyr::desc(.data[[lfc_name]]))
+      df <- df |> dplyr::arrange(dplyr::desc(.data[[lfc_name]]))
     } else if (value_to_sort_the_output_dataset == "p-value") {
-      df <- df %>% dplyr::arrange(.data[[sig_name]])
+      df <- df |> dplyr::arrange(.data[[sig_name]])
     }
 
     if (is_red) {

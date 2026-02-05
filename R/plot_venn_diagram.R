@@ -92,9 +92,9 @@ S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
   plots_subdir = "diff"
 ) {
   return(
-    moo_diff_summary_dat@analyses$diff %>%
-      join_dfs_wide() %>%
-      plot_volcano_summary(print_plots = FALSE, save_plots = FALSE) %>%
+    moo_diff_summary_dat@analyses$diff |>
+      join_dfs_wide() |>
+      plot_volcano_summary(print_plots = FALSE, save_plots = FALSE) |>
       plot_venn_diagram(
         feature_id_colname,
         contrasts_colname,
@@ -303,11 +303,11 @@ S7::method(plot_venn_diagram, S7::class_data.frame) <- function(
     names(tab) <- gsub("\\{\\} | \\{\\}|\\{\\} |\\{\\} \\{\\}", "", names(tab))
     names(tab) <- sub("\\( ", "(", names(tab))
     names(tab) <- gsub(" ", " \u2229 ", names(tab))
-    tab <- tab[names(tab) != "()"] %>%
-      data.frame() %>%
-      dplyr::rename("Intersection" = Var1, "Size" = Freq) %>%
-      tibble::rownames_to_column("Id") %>%
-      dplyr::mutate(Id = as.numeric(Id)) %>%
+    tab <- tab[names(tab) != "()"] |>
+      data.frame() |>
+      dplyr::rename("Intersection" = Var1, "Size" = Freq) |>
+      tibble::rownames_to_column("Id") |>
+      dplyr::mutate(Id = as.numeric(Id)) |>
       dplyr::select(Intersection, Id, Size)
     Intersection <- gsub(
       "\\{\\} | \\{\\}|\\{\\} |\\{\\} \\{\\}",
@@ -316,10 +316,10 @@ S7::method(plot_venn_diagram, S7::class_data.frame) <- function(
     )
     Intersection <- sub("\\( ", "(", Intersection)
     Intersection <- gsub(" ", " \u2229 ", Intersection)
-    Intersection <- data.frame(Intersection) %>%
-      tibble::rownames_to_column("Gene") %>%
-      dplyr::inner_join(tab, by = c(Intersection = "Intersection")) %>%
-      dplyr::select(Gene, Intersection, Id, Size) %>%
+    Intersection <- data.frame(Intersection) |>
+      tibble::rownames_to_column("Gene") |>
+      dplyr::inner_join(tab, by = c(Intersection = "Intersection")) |>
+      dplyr::select(Gene, Intersection, Id, Size) |>
       dplyr::arrange(Id)
   } else if (num_categories == 1) {
     Intersection <- data.frame(
@@ -329,8 +329,8 @@ S7::method(plot_venn_diagram, S7::class_data.frame) <- function(
       Size = length(vlist[[1]])
     )
     tab <- table(Intersection$Intersection)
-    tab <- data.frame(Id = 1, tab) %>%
-      dplyr::rename(Intersection = Var1, Size = Freq) %>%
+    tab <- data.frame(Id = 1, tab) |>
+      dplyr::rename(Intersection = Var1, Size = Freq) |>
       dplyr::select(Intersection, Id, Size)
   }
 
@@ -351,8 +351,8 @@ S7::method(plot_venn_diagram, S7::class_data.frame) <- function(
   )
 
   if (intersections_order == "freq") {
-    tab <- tab %>% dplyr::arrange(-Size)
-    tabsel <- tabsel %>% dplyr::arrange(-Size)
+    tab <- tab |> dplyr::arrange(-Size)
+    tabsel <- tabsel |> dplyr::arrange(-Size)
   }
 
   message(glue::glue("All intersections: {paste(tab, collapse=',')}"))

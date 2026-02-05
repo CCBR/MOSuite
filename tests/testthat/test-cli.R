@@ -125,7 +125,7 @@ test_that("mosuite cli E2E", {
     )
     Sys.glob(glue::glue("{json_paths}/*.json")) |>
       lapply(function(x) {
-        file.copy(x, "./")
+        return(file.copy(x, "./"))
       })
 
     run_function_cli("create_multiOmicDataSet_from_files")

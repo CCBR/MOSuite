@@ -19,7 +19,7 @@
 #'     "clean" = as.data.frame(nidap_clean_raw_counts),
 #'     "filt" = as.data.frame(nidap_filtered_counts)
 #'   )
-#' ) %>%
+#' ) |>
 #'   normalize_counts(
 #'     group_colname = "Group",
 #'     label_colname = "Label"
@@ -60,8 +60,8 @@ normalize_counts <- function(
   interactive_plots = FALSE,
   plots_subdir = "norm"
 ) {
-  counts_dat <- moo@counts[[count_type]] %>% as.data.frame()
-  sample_metadata <- moo@sample_meta %>% as.data.frame()
+  counts_dat <- moo@counts[[count_type]] |> as.data.frame()
+  sample_metadata <- moo@sample_meta |> as.data.frame()
   plots_subdir <- file.path(plots_subdir, norm_type)
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
@@ -70,20 +70,20 @@ normalize_counts <- function(
     feature_id_colname <- colnames(counts_dat)[1]
   }
   if (is.null(samples_to_include)) {
-    samples_to_include <- sample_metadata %>% dplyr::pull(sample_id_colname)
+    samples_to_include <- sample_metadata |> dplyr::pull(sample_id_colname)
   }
   if (is.null(label_colname)) {
     label_colname <- sample_id_colname
   }
   message(glue::glue("* normalizing {count_type} counts"))
-  df.filt <- counts_dat %>%
+  df.filt <- counts_dat |>
     dplyr::select(tidyselect::all_of(samples_to_include))
 
   ## --------------- ##
   ## Main Code Block ##
   ## --------------- ##
   gene_names <- NULL
-  gene_names$feature_id <- counts_dat %>% dplyr::pull(feature_id_colname)
+  gene_names$feature_id <- counts_dat |> dplyr::pull(feature_id_colname)
 
   ### PH: START Limma Normalization
   ##############################
@@ -98,7 +98,7 @@ normalize_counts <- function(
   }
   v <- limma::voom(x, normalize = voom_normalization_method)
   rownames(v$E) <- v$genes$feature_id
-  df.voom <- as.data.frame(v$E) %>%
+  df.voom <- as.data.frame(v$E) |>
     tibble::rownames_to_column(feature_id_colname)
   message(paste0("Total number of features included: ", nrow(df.voom)))
   ### PH: END Limma Normalization

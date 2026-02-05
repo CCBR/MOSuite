@@ -41,28 +41,28 @@ See `?MOSuite::options` for more information.
 moo <- create_multiOmicDataSet_from_dataframes(
   sample_metadata = as.data.frame(nidap_sample_metadata),
   counts_dat = as.data.frame(nidap_raw_counts)
-) %>%
+) |>
   clean_raw_counts()
 ```
 
 ### filter
 
 ```{r nidap_filter}
-moo <- moo %>%
+moo <- moo |>
   filter_counts(group_colname = "Group")
 ```
 
 ### normalize
 
 ```{r nidap_norm}
-moo <- moo %>%
+moo <- moo |>
   normalize_counts(group_colname = "Group")
 ```
 
 ### batch correct
 
 ```{r nidap_batch}
-moo <- moo %>%
+moo <- moo |>
   batch_correct_counts(
     covariates_colname = "Group",
     batch_colname = "Batch",
@@ -73,7 +73,7 @@ moo <- moo %>%
 ### differential expression
 
 ```{r diff_counts}
-moo <- moo %>%
+moo <- moo |>
   diff_counts(
     count_type = "filt",
     covariates_colnames = c("Group", "Batch"),
@@ -88,7 +88,7 @@ moo <- moo %>%
 ### filter differential features
 
 ```{r filter_diff}
-moo <- moo %>% filter_diff()
+moo <- moo |> filter_diff()
 ```
 
 ## Customize plots
@@ -128,8 +128,8 @@ print(heatmap_plot)
 #### Summary
 
 ```{r volcano_summary}
-dat_volcano_summary <- moo@analyses$diff %>%
-  join_dfs_wide() %>%
+dat_volcano_summary <- moo@analyses$diff |>
+  join_dfs_wide() |>
   plot_volcano_summary()
 
 head(dat_volcano_summary)
@@ -138,8 +138,8 @@ head(dat_volcano_summary)
 #### Enhanced
 
 ```{r volcano_enhanced}
-dat_volcano_enhanced <- moo@analyses$diff %>%
-  join_dfs_wide() %>%
+dat_volcano_enhanced <- moo@analyses$diff |>
+  join_dfs_wide() |>
   plot_volcano_enhanced()
 ```
 
@@ -147,6 +147,6 @@ dat_volcano_enhanced <- moo@analyses$diff %>%
 ### Venn Diagram
 
 ```{r venn_diagram}
-venn_dat <- dat_volcano_summary %>% plot_venn_diagram()
+venn_dat <- dat_volcano_summary |> plot_venn_diagram()
 head(venn_dat)
 ```

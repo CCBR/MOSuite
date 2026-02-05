@@ -143,28 +143,28 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
     !is.null(feature_id_colname) &&
       feature_id_colname %in% colnames(counts_dat)
   ) {
-    counts_dat <- counts_dat %>%
+    counts_dat <- counts_dat |>
       tibble::column_to_rownames(var = feature_id_colname)
   }
   # drop non-numeric columns
-  counts_dat <- counts_dat %>% dplyr::select(tidyselect::where(is.numeric))
+  counts_dat <- counts_dat |> dplyr::select(tidyselect::where(is.numeric))
 
   ## Annotate
   # cannot set rownames on a tibble
-  sample_metadata <- sample_metadata %>% as.data.frame()
+  sample_metadata <- sample_metadata |> as.data.frame()
   rownames(sample_metadata) <- sample_metadata[[label_colname]]
   annoVal <- lapply(group_colname, function(x) {
     # TODO this only works on dataframes, not tibbles
-    out <- as.factor(sample_metadata %>% dplyr::pull(x)) %>% levels()
+    out <- as.factor(sample_metadata |> dplyr::pull(x)) |> levels()
     # names(out)=x
     return(out)
-  }) %>%
+  }) |>
     unlist()
   col <- color_values[seq_along(annoVal)]
   names(col) <- annoVal
 
   cols <- lapply(group_colname, function(x) {
-    ax <- as.factor(sample_metadata %>% dplyr::pull(x)) %>% levels()
+    ax <- as.factor(sample_metadata |> dplyr::pull(x)) |> levels()
     out <- col[ax]
     return(out)
   })
@@ -180,7 +180,7 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
   old <- sample_metadata[[sample_id_colname]]
   new <- sample_metadata[[label_colname]]
   names(old) <- new
-  counts_dat <- counts_dat %>% dplyr::rename(tidyselect::any_of(old))
+  counts_dat <- counts_dat |> dplyr::rename(tidyselect::any_of(old))
 
   mat <- as.matrix(counts_dat)
   tcounts <- t(mat)
@@ -190,10 +190,10 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
   m <- as.matrix(d)
 
   ## create dendogram
-  dend <- d %>%
-    stats::hclust(method = "average") %>%
-    stats::as.dendrogram() %>%
-    dendsort::dendsort() %>%
+  dend <- d |>
+    stats::hclust(method = "average") |>
+    stats::as.dendrogram() |>
+    dendsort::dendsort() |>
     rev()
 
   ### plot
@@ -666,7 +666,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
     label_colname <- sample_id_colname
   }
   if (is.null(samples_to_include)) {
-    samples_to_include <- sample_metadata %>% dplyr::pull(sample_id_colname)
+    samples_to_include <- sample_metadata |> dplyr::pull(sample_id_colname)
   }
 
   ## --------------- ##
@@ -835,9 +835,9 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
     callback <- function(hc, mat) {
       dend <- rev(dendsort::dendsort(stats::as.dendrogram(hc)))
       if (reorder_dendrogram == TRUE) {
-        dend <- dend %>% dendextend::rotate(reorder_dendrogram_order)
+        dend <- dend |> dendextend::rotate(reorder_dendrogram_order)
       } else {
-        dend <- dend %>% dendextend::rotate(c(1:stats::nobs(dend)))
+        dend <- dend |> dendextend::rotate(c(1:stats::nobs(dend)))
       }
       return(stats::as.hclust(dend))
     }
@@ -911,11 +911,11 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   }
   # Build new counts matrix containing only sample subset chosen by user.
   df.orig <- df1
-  df <- df.orig %>%
-    dplyr::group_by(Gene) %>%
+  df <- df.orig |>
+    dplyr::group_by(Gene) |>
     dplyr::summarise_all(mean)
-  df.mat <- df[, (colnames(df) != "Gene")] %>% as.data.frame()
-  # df %>% dplyr::mutate(Gene = stringr::str_replace_all(Gene, "_", " ")) -> df
+  df.mat <- df[, (colnames(df) != "Gene")] |> as.data.frame()
+  # df |> dplyr::mutate(Gene = stringr::str_replace_all(Gene, "_", " ")) -> df
   row.names(df.mat) <- df$Gene
   rownames(df.mat) <- stringr::str_wrap(rownames(df.mat), 30) # for really long geneset names
   df.mat <- as.data.frame(df.mat)
@@ -943,9 +943,9 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
       rownames(df) <- rownames(df.final)
       df.final <- df
       df.final$var <- var
-      df.final <- df.final %>%
+      df.final <- df.final |>
         tibble::rownames_to_column("Gene")
-      df.final <- df.final %>%
+      df.final <- df.final |>
         dplyr::arrange(dplyr::desc(var))
       df.final.extra.genes <- dplyr::filter(
         df.final,
@@ -1004,7 +1004,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   ## Parse input sample metadata and add annotation tracks to top of heatmap.
   annot <- sample_metadata
   # Filter to only samples user requests.
-  annot <- annot %>%
+  annot <- annot |>
     dplyr::filter(.data[[sample_id_colname]] %in% samples_to_include)
 
   # Arrange sample options.
@@ -1013,7 +1013,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
     for (x in group_columns) {
       annot[, x] <- factor(annot[, x], levels = unique(annot[, x]))
     }
-    annot <- annot %>%
+    annot <- annot |>
       dplyr::arrange(
         dplyr::across(tidyselect::all_of(group_columns)),
         .by_group = TRUE
@@ -1026,7 +1026,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
 
   # Build subsetted sample metadata table to use for figure.
 
-  annotation_col <- annot %>% dplyr::select(tidyselect::all_of(group_columns))
+  annotation_col <- annot |> dplyr::select(tidyselect::all_of(group_columns))
   annotation_col <- as.data.frame(unclass(annotation_col))
   annotation_col[] <- lapply(annotation_col, factor)
   x <- length(unlist(lapply(annotation_col, levels)))
@@ -1094,10 +1094,10 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   ## Returned matrix includes only genes & samples used in heatmap.
   # if (return_z_scores) {
   #   df.new <- data.frame(tmean.scale) # Convert to Z-scores.
-  #   df.new %>% tibble::rownames_to_column("Gene") -> df.new
+  #   df.new |> tibble::rownames_to_column("Gene") -> df.new
   #   return(df.new)
   # } else {
-  #   df.final %>% tibble::rownames_to_column("Gene") -> df.new
+  #   df.final |> tibble::rownames_to_column("Gene") -> df.new
   #   return(df.new)
   # }
 

@@ -35,24 +35,25 @@ Dataset from: <https://portal.gdc.cancer.gov/projects/TCGA-LIHC>
 counts <- read_tsv(system.file(
   "extdata", "LIHC_HTseqCounts.txt.gz",
   package = "MOSuite"
-)) %>%
+)) |>
   rename(gene_id = Gene)
 metadat <- read_tsv(system.file(
   "extdata", "LIHC_PatientData.txt.gz",
   package = "MOSuite"
-)) %>%
-  select(-sample_id) %>%
+)) |>
+  select(-sample_id) |>
   rename(sample_id = barcode)
 
 run_mosuite <- function(metadat, counts) {
-  create_multiOmicDataSet_from_dataframes(metadat, counts) %>%
-    clean_raw_counts() %>%
-    calc_cpm() %>%
-    filter_counts(
-      group_colname = "treatments_radiation_treatment_type",
-      label_colname = "sample"
-    ) %>%
-    return()
+  return(
+    create_multiOmicDataSet_from_dataframes(metadat, counts) |>
+      clean_raw_counts() |>
+      calc_cpm() |>
+      filter_counts(
+        group_colname = "treatments_radiation_treatment_type",
+        label_colname = "sample"
+      )
+  )
 }
 moo <- run_mosuite(metadat, counts)
 ```
@@ -60,16 +61,16 @@ moo <- run_mosuite(metadat, counts)
 
 ```{r subset}
 subset_mem <- lapply(c(10, 50, 100, 200, nrow(moo@sample_meta)), function(nsamples) {
-  samples_subset <- moo@sample_meta %>% slice_sample(n = nsamples)
-  counts_subset <- moo@counts$raw %>%
-    dplyr::select(gene_id, tidyselect::all_of(samples_subset %>% dplyr::pull(sample_id)))
+  samples_subset <- moo@sample_meta |> slice_sample(n = nsamples)
+  counts_subset <- moo@counts$raw |>
+    dplyr::select(gene_id, tidyselect::all_of(samples_subset |> dplyr::pull(sample_id)))
 
   moo_subset <- run_mosuite(samples_subset, counts_subset)
   return(tibble(
     n_samples = nsamples,
     object_size = lobstr::obj_size(moo_subset)
   ))
-}) %>%
+}) |>
   bind_rows()
 ```
 
@@ -89,7 +90,7 @@ sc_dat <- tibble::tribble(
   "CCBR1297", 9991, 2, 20989, 1.78,
   "CCBR1035", 170789, 19, 32100, 31.54,
   "CCBR1203", 208169, 35, 30858, 37.38
-) %>%
+) |>
   mutate(
     object_size = to_bytes(object_size_GB, "G", base = 1000),
     dataset_type = "single-cell (Seurat)"
@@ -100,7 +101,7 @@ sc_dat <- tibble::tribble(
 ```{r plot_memory}
 # what is the resource spec of default NIDAP allocation?
 palette_name <- "Set2"
-subset_mem %>%
+subset_mem |>
   ggplot(aes(n_samples, object_size, color = "")) +
   geom_point() +
   geom_line(linewidth = 0.3) +
@@ -122,10 +123,10 @@ subset_mem %>%
 
 ```{r plot_memory_comp}
 dat_comp <- bind_rows(
-  subset_mem %>% mutate(dataset_type = "bulk (S7)", object_size = as.double(object_size)),
+  subset_mem |> mutate(dataset_type = "bulk (S7)", object_size = as.double(object_size)),
   sc_dat
 )
-dat_comp %>%
+dat_comp |>
   ggplot(aes(n_samples, object_size, colour = dataset_type)) +
   geom_point() +
   geom_line(linewidth = 0.3) +

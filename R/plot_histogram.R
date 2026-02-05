@@ -192,35 +192,35 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
     feature_id_colname <- colnames(counts_dat)[1]
   }
 
-  df_long <- counts_dat %>%
+  df_long <- counts_dat |>
     tidyr::pivot_longer(
       -tidyselect::all_of(feature_id_colname),
       names_to = sample_id_colname,
       values_to = "count"
-    ) %>%
+    ) |>
     dplyr::left_join(sample_metadata, by = sample_id_colname)
 
   if (set_min_max_for_x_axis == TRUE) {
     xmin <- minimum_for_x_axis
     xmax <- maximum_for_x_axis
   } else {
-    xmin <- min(df_long %>% dplyr::pull(count))
-    xmax <- max(df_long %>% dplyr::pull(count))
+    xmin <- min(df_long |> dplyr::pull(count))
+    xmax <- max(df_long |> dplyr::pull(count))
   }
 
   if (color_by_group == TRUE) {
-    df_long <- df_long %>%
+    df_long <- df_long |>
       dplyr::mutate(
         !!rlang::sym(group_colname) := as.factor(!!rlang::sym(group_colname))
-      ) %>%
+      ) |>
       dplyr::filter(!is.na(group_colname))
-    n <- df_long %>%
-      dplyr::pull(group_colname) %>%
-      levels() %>%
+    n <- df_long |>
+      dplyr::pull(group_colname) |>
+      levels() |>
       length()
 
     # plot Density
-    hist_plot <- df_long %>%
+    hist_plot <- df_long |>
       ggplot2::ggplot(ggplot2::aes(
         x = count,
         group = !!rlang::sym(sample_id_colname)
@@ -230,12 +230,12 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
         linewidth = 1
       )
   } else {
-    n <- df_long %>%
-      dplyr::pull(sample_id_colname) %>%
-      unique() %>%
+    n <- df_long |>
+      dplyr::pull(sample_id_colname) |>
+      unique() |>
       length()
 
-    hist_plot <- df_long %>%
+    hist_plot <- df_long |>
       ggplot2::ggplot(ggplot2::aes(
         x = count,
         group = !!rlang::sym(sample_id_colname)
@@ -274,7 +274,7 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
     )
 
   if (isTRUE(interactive_plots)) {
-    hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) %>%
+    hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) |>
       plotly::ggplotly(tooltip = c(sample_id_colname))
   }
   return(hist_plot)

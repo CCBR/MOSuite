@@ -2,11 +2,11 @@ test_that("clean_raw_counts works for NIDAP data", {
   moo_nidap <- create_multiOmicDataSet_from_dataframes(
     sample_metadata = as.data.frame(nidap_sample_metadata),
     counts_dat = as.data.frame(nidap_raw_counts)
-  ) %>%
+  ) |>
     clean_raw_counts(print_plots = TRUE)
 
-  actual <- moo_nidap@counts[["clean"]] %>%
-    dplyr::rename(Gene = GeneName) %>%
+  actual <- moo_nidap@counts[["clean"]] |>
+    dplyr::rename(Gene = GeneName) |>
     as.data.frame()
 
   expected <- as.data.frame(nidap_clean_raw_counts)
@@ -21,7 +21,7 @@ test_that("clean_raw_counts works for RENEE data", {
       system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
     ),
     gene_counts
-  ) %>%
+  ) |>
     clean_raw_counts()
   expect_equal(
     head(moo@counts$clean),

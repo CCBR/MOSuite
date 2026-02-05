@@ -33,7 +33,7 @@
 #'       "voom" = as.data.frame(nidap_norm_counts)
 #'     )
 #'   )
-#' ) %>%
+#' ) |>
 #'   batch_correct_counts(
 #'     count_type = "norm",
 #'     sub_count_type = "voom",
@@ -83,16 +83,16 @@ batch_correct_counts <- function(
     counts_dat <- moo@counts[[count_type]][[sub_count_type]]
   }
   # sva::ComBat() can't handle tibbles
-  counts_dat <- counts_dat %>% as.data.frame()
-  sample_metadata <- moo@sample_meta %>% as.data.frame()
-  batch_vctr <- sample_metadata %>% dplyr::pull(batch_colname)
+  counts_dat <- counts_dat |> as.data.frame()
+  sample_metadata <- moo@sample_meta |> as.data.frame()
+  batch_vctr <- sample_metadata |> dplyr::pull(batch_colname)
   message(
     glue::glue(
       "* batch-correcting {glue::glue_collapse(c(count_type, sub_count_type),sep='-')} counts"
     )
   )
 
-  covariates_colnames <- covariates_colnames %>% unlist()
+  covariates_colnames <- covariates_colnames |> unlist()
 
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
@@ -101,7 +101,7 @@ batch_correct_counts <- function(
     feature_id_colname <- colnames(counts_dat)[1]
   }
   if (is.null(samples_to_include)) {
-    samples_to_include <- sample_metadata %>% dplyr::pull(sample_id_colname)
+    samples_to_include <- sample_metadata |> dplyr::pull(sample_id_colname)
   }
   if (is.null(label_colname)) {
     label_colname <- sample_id_colname
@@ -120,10 +120,10 @@ batch_correct_counts <- function(
       )
     )
   } else {
-    counts_matr <- counts_dat %>%
+    counts_matr <- counts_dat |>
       counts_dat_to_matrix(feature_id_colname = feature_id_colname)
     # coerce covariate columns to factors
-    sample_metadata <- sample_metadata %>%
+    sample_metadata <- sample_metadata |>
       dplyr::mutate(dplyr::across(
         tidyselect::all_of(covariates_colnames),
         ~ as.factor(.x)
@@ -141,8 +141,8 @@ batch_correct_counts <- function(
       ),
       par.prior = TRUE,
       prior.plots = FALSE
-    ) %>%
-      as.data.frame() %>%
+    ) |>
+      as.data.frame() |>
       tibble::rownames_to_column(feature_id_colname)
   }
 

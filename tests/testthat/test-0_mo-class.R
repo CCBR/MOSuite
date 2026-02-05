@@ -21,7 +21,7 @@ test_that("constructing MOO works for RENEE data", {
     )
   )
   expect_equal(
-    moo@annotation %>% head(),
+    moo@annotation |> head(),
     structure(
       list(
         gene_id = c(
@@ -39,7 +39,7 @@ test_that("constructing MOO works for RENEE data", {
     )
   )
   expect_equal(
-    moo@counts$raw %>% head(),
+    moo@counts$raw |> head(),
     structure(
       list(
         gene_id = c(
@@ -87,7 +87,7 @@ test_that("constructing MOO works from CSV files", {
     )
   )
   expect_equal(
-    moo@annotation %>% head(),
+    moo@annotation |> head(),
     structure(
       list(
         GeneName = c(
@@ -104,7 +104,7 @@ test_that("constructing MOO works from CSV files", {
     )
   )
   expect_equal(
-    moo@counts$raw %>% head(),
+    moo@counts$raw |> head(),
     structure(
       list(
         GeneName = c(
@@ -136,10 +136,10 @@ test_that("annotation minimally contains feature id column", {
     readr::read_tsv(
       system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
     ),
-    gene_counts %>% glue_gene_symbols()
+    gene_counts |> glue_gene_symbols()
   )
   expect_equal(
-    moo@annotation %>% head(),
+    moo@annotation |> head(),
     structure(
       list(
         gene_id = structure(
@@ -206,7 +206,7 @@ test_that("write_multiOmicDataSet_properties works", {
       "filt" = as.data.frame(nidap_filtered_counts),
       "norm" = list("voom" = as.data.frame(nidap_norm_counts))
     )
-  ) %>%
+  ) |>
     diff_counts(
       count_type = "filt",
       sub_count_type = NULL,
@@ -216,7 +216,7 @@ test_that("write_multiOmicDataSet_properties works", {
       contrast_colname = c("Group"),
       contrasts = c("B-A", "C-A", "B-C"),
       voom_normalization_method = "quantile",
-    ) %>%
+    ) |>
     filter_diff(
       significance_column = "adjpval",
       significance_cutoff = 0.05,
