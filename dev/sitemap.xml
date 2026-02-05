@@ -42,6 +42,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/glue_gene_symbols.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/index.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/join_dfs_wide.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/dev/reference/load_moo_from_data_dir.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/meta_tbl_to_dat.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/multiOmicDataSet.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/nidap_batch_corrected_counts.html</loc></url>
@@ -59,6 +60,9 @@
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/normalize_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/option_params.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/options.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/dev/reference/parse_optional_vector.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/dev/reference/parse_samples_to_rename.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/dev/reference/parse_vector_with_default.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_dat.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_moo.html</loc></url>
@@ -85,6 +89,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/run_deseq2.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/separate_gene_meta_columns.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/set_color_pal.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/dev/reference/setup_capsule_environment.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/strip_ensembl_version.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/write_multiOmicDataSet.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/write_multiOmicDataSet_properties.html</loc></url>
