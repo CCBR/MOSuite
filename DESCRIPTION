@@ -16,7 +16,7 @@ Description: Multi-Omics Suite provides a suite of functions to clean,
     analysis. While the package is designed for differential RNA-seq
     analysis and multi-omics datasets, it can be used for any data
     represented in a counts table. See the website for more information,
-    documentation, and examples: <https://ccbr.github.io/MOSuite/>
+    documentation, and examples at <https://ccbr.github.io/MOSuite/>.
 License: MIT + file LICENSE
 URL: https://github.com/CCBR/MOSuite, https://ccbr.github.io/MOSuite/
 BugReports: https://github.com/CCBR/MOSuite/issues
@@ -34,7 +34,6 @@ Imports:
     htmlwidgets,
     jsonlite,
     limma,
-    magrittr,
     matrixStats,
     methods,
     options,
