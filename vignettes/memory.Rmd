@@ -45,14 +45,15 @@ metadat <- read_tsv(system.file(
   rename(sample_id = barcode)
 
 run_mosuite <- function(metadat, counts) {
-  create_multiOmicDataSet_from_dataframes(metadat, counts) |>
-    clean_raw_counts() |>
-    calc_cpm() |>
-    filter_counts(
-      group_colname = "treatments_radiation_treatment_type",
-      label_colname = "sample"
-    ) |>
-    return()
+  return(
+    create_multiOmicDataSet_from_dataframes(metadat, counts) |>
+      clean_raw_counts() |>
+      calc_cpm() |>
+      filter_counts(
+        group_colname = "treatments_radiation_treatment_type",
+        label_colname = "sample"
+      )
+  )
 }
 moo <- run_mosuite(metadat, counts)
 ```

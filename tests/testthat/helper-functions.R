@@ -50,8 +50,8 @@ test_with_dir <- function(desc, ...) {
     # or local_dir()
     new = new,
     code = {
-      tmp <- capture.output(
-        test_that(desc = desc, ...)
+      capture.output(
+        testthat::test_that(desc = desc, ...) # nolint: object_usage_linter
       )
     }
   )

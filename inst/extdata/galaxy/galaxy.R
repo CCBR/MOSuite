@@ -34,12 +34,12 @@ get_function_meta <- function(func_name, rd_db) {
     plots_dir = "./figures"
   )
   arg_defaults <- lapply(
-    formals(func_name, envir = getNamespace('MOSuite')),
+    formals(func_name, envir = getNamespace("MOSuite")),
     \(x) {
       if (inherits(x, "name")) {
         default <- NULL
       } else if (inherits(x, "call")) {
-        default <- eval(x, envir = getNamespace('MOSuite'))
+        default <- eval(x, envir = getNamespace("MOSuite"))
       } else {
         default <- x
       }
@@ -73,7 +73,7 @@ get_function_args <- function(func_meta) {
     \(x) !stringr::str_starts(x, "moo"),
     names(func_meta$args)
   )
-  func_args <- lapply(func_names, \(x) func_meta$args[[x]][['defaultValue']])
+  func_args <- lapply(func_names, \(x) func_meta$args[[x]][["defaultValue"]])
 
   if (stringr::str_starts(names(func_meta$args)[1], "moo")) {
     func_names <- c("moo_input_rds", "moo_output_rds", func_names)
@@ -99,8 +99,8 @@ update_function_template <- function(
   func_meta,
   keep_deprecated_args = TRUE
 ) {
-  if (!rlang::is_installed('Rd2md')) {
-    stop('Required pacakge {Rd2md} is not installed')
+  if (!rlang::is_installed("Rd2md")) {
+    stop("Required pacakge {Rd2md} is not installed")
   }
   new_template <- list(
     r_function = template$r_function,

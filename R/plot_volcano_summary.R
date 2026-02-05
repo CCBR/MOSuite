@@ -201,7 +201,8 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
 #' @param use_default_y_axis_limit Set to TRUE to use the default y-axis limit. Default: TRUE
 #' @param y_axis_limit Custom y-axis limit. Default: c(0, 10)
 #' @param point_size Size of the points in the plot. Default: 1
-#' @param add_deg_columns Add additional columns from the DEG analysis to the output dataset. Default: `"FC", "logFC", "tstat", "pval", "adjpval"`
+#' @param add_deg_columns Add additional columns from the DEG analysis to the
+#'   output dataset. Default: `"FC", "logFC", "tstat", "pval", "adjpval"`
 #' @param use_default_grid_layout Set to TRUE to use the default grid layout. Default: TRUE
 #' @param number_of_rows_in_grid_layout Number of rows in the grid layout. Default: 1
 #' @param aspect_ratio Aspect ratio of the output image. Default: 4/3
