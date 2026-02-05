@@ -169,3 +169,164 @@ bind_dfs_long <- function(df_list, outcolname = contrast) {
     dplyr::bind_rows()
   return(dat_joined)
 }
+
+#' Set up capsule environment and directories
+#'
+#' Initializes the results directory structure and logs installed R package versions.
+#' This is a common setup task used across all Code Ocean capsules.
+#'
+#' @param base_results_dir base path to results directory (default: `../results`)
+#'
+#' @returns invisibly returns a list with `results_dir` and `plots_dir` paths
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' setup_capsule_environment()
+#' }
+#'
+#' @export
+setup_capsule_environment <- function(
+  base_results_dir = file.path("..", "results")
+) {
+  results_dir <- base_results_dir
+  plots_dir <- file.path(results_dir, "figures")
+
+  # Set options for plots directory
+  options(moo_plots_dir = plots_dir, moo_save_plots = TRUE)
+
+  # Log installed packages & versions
+  pkg_versions <- tibble::as_tibble(utils::installed.packages())
+  readr::write_csv(pkg_versions, file.path(results_dir, "r-packages.csv"))
+
+  return(invisible(list(results_dir = results_dir, plots_dir = plots_dir)))
+}
+
+#' Load multiOmicDataSet from data directory
+#'
+#' Searches the ../data directory for .rds files and loads the first matching
+#' multiOmicDataSet object. Validates that the loaded object is of the correct class.
+#'
+#' @param data_dir path to data directory containing .rds file (default: `../data`)
+#'
+#' @returns loaded multiOmicDataSet object
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' moo <- load_moo_from_data_dir()
+#' }
+#'
+#' @export
+load_moo_from_data_dir <- function(data_dir = file.path("..", "data")) {
+  regex_moo <- ".*\\.rds$"
+  data_files <- list.files(data_dir, recursive = TRUE, full.names = TRUE)
+  moo_files <- Filter(
+    \(x) stringr::str_detect(x, stringr::regex(regex_moo, ignore_case = TRUE)),
+    data_files
+  )
+
+  if (length(moo_files) == 0) {
+    stop(glue::glue("No files matching regex: {regex_moo}"))
+  }
+
+  moo_filename <- moo_files[1]
+  moo <- readr::read_rds(moo_filename)
+
+  message(glue::glue("Reading multiOmicDataSet from {moo_filename}"))
+
+  if (!inherits(moo, "MOSuite::multiOmicDataSet")) {
+    stop(glue::glue("The input is not a multiOmicDataSet. class: {class(moo)}"))
+  }
+
+  return(moo)
+}
+
+#' Parse comma-separated string into a vector
+#'
+#' Splits a comma-separated string into a trimmed character vector.
+#' Returns NULL if input is empty, NULL, or has zero length.
+#'
+#' @param x character string with comma-separated values
+#'
+#' @returns character vector or NULL if input is empty
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' parse_optional_vector("a, b, c")
+#' parse_optional_vector("")
+#' }
+#'
+#' @export
+parse_optional_vector <- function(x) {
+  if (is.null(x) || identical(x, "") || length(x) == 0) {
+    return(NULL)
+  }
+  return(trimws(unlist(strsplit(x, ","))))
+}
+
+#' Parse comma-separated string with default fallback
+#'
+#' Splits a comma-separated string into a trimmed character vector.
+#' Returns a default value if input is empty, NULL, or has zero length.
+#'
+#' @param x character string with comma-separated values
+#' @param default default value to return if x is empty
+#'
+#' @returns character vector or default value
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' parse_vector_with_default("a, b, c", "default")
+#' parse_vector_with_default("", "default")
+#' }
+#'
+#' @export
+parse_vector_with_default <- function(x, default) {
+  parsed <- parse_optional_vector(x)
+  if (is.null(parsed)) {
+    return(default)
+  }
+  return(parsed)
+}
+
+#' Parse sample rename pairs from string
+#'
+#' Parses a string containing sample rename pairs in format "old:new,old2:new2"
+#' and returns a named list where names are old sample names and values are new names.
+#'
+#' @param x character string with rename pairs in format "old:new,old2:new2"
+#'
+#' @returns named list with old names as keys and new names as values, or NULL if empty
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' parse_samples_to_rename("sample1:S1,sample2:S2")
+#' parse_samples_to_rename("")
+#' }
+#'
+#' @export
+parse_samples_to_rename <- function(x) {
+  if (is.null(x) || identical(x, "") || length(x) == 0) {
+    return(NULL)
+  }
+
+  pairs <- trimws(unlist(strsplit(x, ",")))
+  result <- list()
+
+  for (pair in pairs) {
+    parts <- trimws(unlist(strsplit(pair, ":")))
+    if (length(parts) == 2) {
+      result[[parts[1]]] <- parts[2]
+    }
+  }
+
+  if (length(result) == 0) {
+    return(NULL)
+  }
+
+  return(result)
+}
