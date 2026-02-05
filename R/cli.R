@@ -117,7 +117,10 @@ cli_unknown <- function(method, exports) {
   names(distance) <- exports
   n <- min(distance)
   if (n < 4) {
-    msg <- glue::glue(msg, "\n Did you mean {paste(shQuote(names(distance)[distance == n]), collapse = ' or ')}?")
+    msg <- glue::glue(
+      msg,
+      "\n Did you mean {paste(shQuote(names(distance)[distance == n]), collapse = ' or ')}?"
+    )
   }
   return(msg)
 }
