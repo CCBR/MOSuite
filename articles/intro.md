@@ -21,15 +21,15 @@ options(moo_print_plots = TRUE)
 moo_nidap <- create_multiOmicDataSet_from_dataframes(
   sample_metadata = as.data.frame(nidap_sample_metadata),
   counts_dat = as.data.frame(nidap_raw_counts)
-) %>%
-  clean_raw_counts() %>%
-  filter_counts(group_colname = "Group") %>%
-  normalize_counts(group_colname = "Group") %>%
+) |>
+  clean_raw_counts() |>
+  filter_counts(group_colname = "Group") |>
+  normalize_counts(group_colname = "Group") |>
   batch_correct_counts(
     covariates_colname = "Group",
     batch_colname = "Batch",
     label_colname = "Label"
-  ) %>%
+  ) |>
   diff_counts(
     count_type = "filt",
     covariates_colnames = c("Group", "Batch"),
@@ -38,7 +38,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     input_in_log_counts = FALSE,
     return_mean_and_sd = FALSE,
     voom_normalization_method = "quantile",
-  ) %>%
+  ) |>
   filter_diff()
 ```
 
@@ -65,29 +65,31 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> colors_for_plots character
 
-![](intro_files/figure-html/nidap_data-2.png)![](intro_files/figure-html/nidap_data-3.png)
+![](intro_files/figure-html/nidap_data-2.png)![](intro_files/figure-html/nidap_data-3.png)![](intro_files/figure-html/nidap_data-4.png)
 
     #> Saving 7.29 x 4.51 in image
 
-![](intro_files/figure-html/nidap_data-4.png)
+![](intro_files/figure-html/nidap_data-5.png)
 
     #> Saving 7.29 x 4.51 in image
     #> * normalizing filt counts
     #> 
     #> Total number of features included: 7943
+    #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
+    #> increasing max.overlaps
 
-![](intro_files/figure-html/nidap_data-5.png)
+![](intro_files/figure-html/nidap_data-6.png)![](intro_files/figure-html/nidap_data-7.png)
 
     #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
     #> increasing max.overlaps
 
-![](intro_files/figure-html/nidap_data-6.png)
+![](intro_files/figure-html/nidap_data-8.png)
 
     #> Saving 7.29 x 4.51 in image
     #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
     #> increasing max.overlaps
 
-![](intro_files/figure-html/nidap_data-7.png)
+![](intro_files/figure-html/nidap_data-9.png)
 
     #> Saving 7.29 x 4.51 in image
     #> Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
@@ -106,15 +108,15 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> Adjusting the Data
 
-![](intro_files/figure-html/nidap_data-8.png)
+![](intro_files/figure-html/nidap_data-10.png)![](intro_files/figure-html/nidap_data-11.png)
 
     #> Saving 7.29 x 4.51 in image
 
-![](intro_files/figure-html/nidap_data-9.png)
+![](intro_files/figure-html/nidap_data-12.png)
 
     #> Saving 7.29 x 4.51 in image
 
-![](intro_files/figure-html/nidap_data-10.png)
+![](intro_files/figure-html/nidap_data-13.png)
 
     #> The total number of features in output: 7943
     #> Number of samples after batch correction: 10
@@ -123,7 +125,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> Total number of genes included: 7943
     #> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
 
-![](intro_files/figure-html/nidap_data-11.png)
+![](intro_files/figure-html/nidap_data-14.png)
 
     #> Saving 7.29 x 4.51 in image
     #> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
@@ -133,12 +135,12 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
 
-![](intro_files/figure-html/nidap_data-12.png)
+![](intro_files/figure-html/nidap_data-15.png)
 
     #> Saving 7.29 x 4.51 in image
 
-    moo_nidap@analyses$diff %>%
-      join_dfs_wide() %>%
+    moo_nidap@analyses$diff |>
+      join_dfs_wide() |>
       head()
     #> Joining with `by = join_by(GeneName)`
     #> Joining with `by = join_by(GeneName)`
@@ -164,7 +166,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 5  0.4843119 0.63708764   0.8518020
     #> 6 -2.9536960 0.01233497   0.1411803
 
-    moo_nidap@analyses$diff_filt %>% head()
+    moo_nidap@analyses$diff_filt |> head()
     #>   GeneName B-A_FC B-A_logFC B-A_tstat B-A_pval B-A_adjpval C-A_FC C-A_logFC
     #> 1     Rrs1  -2.06    -1.040    -2.860   0.0147       0.276  -2.71     -1.44
     #> 2     Mcm3  -1.45    -0.539    -1.870   0.0869       0.544  -2.45     -1.29

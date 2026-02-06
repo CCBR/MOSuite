@@ -7,7 +7,7 @@ corrected. If your sample names are corrected here, be sure to make equivalent c
 names. If feature IDs contain multiple IDs separated by special characters (| - , or space) they will be split into
 multiple columns. If duplicate feature IDs are detected the counts are summed across duplicate feature ID rows
 within each sample. Invalid sample names will also be reported and can be automatically
-corrected. If your sample names are corrected here, be sure to make equivalent changes to your metadata table."></head><body>
+corrected. If your sample names are corrected here, be sure to make equivalent changes to your metadata table."><meta property="og:image" content="https://ccbr.github.io/MOSuite/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -15,7 +15,7 @@ corrected. If your sample names are corrected here, be sure to make equivalent c
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,9 +43,8 @@ corrected. If your sample names are corrected here, be sure to make equivalent c
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Clean Raw Counts</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.2.1/R/clean.R" class="external-link"><code>R/clean.R</code></a></small>
+      <img src="../logo.png" class="logo" alt=""><h1>Clean Raw Counts</h1>
+      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/main/R/clean.R" class="external-link"><code>R/clean.R</code></a></small>
       <div class="d-none name"><code>clean_raw_counts.Rd</code></div>
     </div>
 
@@ -185,7 +184,7 @@ to manually enter the Column ID for this field.</p></dd>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_sample_metadata</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_raw_counts</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  sample_id_colname <span class="op">=</span> <span class="st">"Sample"</span>,</span></span>
-<span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">clean_raw_counts</span><span class="op">(</span>sample_id_colname <span class="op">=</span> <span class="st">"Sample"</span>, feature_id_colname <span class="op">=</span> <span class="st">"GeneName"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Saving 6.67 x 6.67 in image</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> * cleaning raw counts</span>

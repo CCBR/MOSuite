@@ -43,6 +43,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/glue_gene_symbols.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/index.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/join_dfs_wide.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/load_moo_from_data_dir.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/meta_tbl_to_dat.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/multiOmicDataSet.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_batch_corrected_counts.html</loc></url>
@@ -58,7 +59,11 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_venn_diagram_dat.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_volcano_summary_dat.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/normalize_counts.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/option_params.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/options.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/parse_optional_vector.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/parse_samples_to_rename.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/parse_vector_with_default.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap_dat.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap_moo.html</loc></url>
@@ -78,12 +83,16 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_volcano_enhanced.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_volcano_summary.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/print_or_save_plot.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/read_multiOmicDataSet.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/reexports.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/remove_low_count_genes.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/rename_samples.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/run_deseq2.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/separate_gene_meta_columns.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/set_color_pal.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/setup_capsule_environment.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/strip_ensembl_version.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/write_multiOmicDataSet.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/write_multiOmicDataSet_properties.html</loc></url>
 </urlset>
 

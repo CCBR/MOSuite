@@ -1,6 +1,6 @@
 # Perform batch correction
 
-using [`sva::ComBat()`](https://rdrr.io/pkg/sva/man/ComBat.html)
+Perform batch correction using sva::ComBat()
 
 ## Usage
 
@@ -148,7 +148,7 @@ moo <- multiOmicDataSet(
       "voom" = as.data.frame(nidap_norm_counts)
     )
   )
-) %>%
+) |>
   batch_correct_counts(
     count_type = "norm",
     sub_count_type = "voom",

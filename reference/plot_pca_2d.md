@@ -6,8 +6,10 @@ Perform and plot a 2D Principal Components Analysis
 
 ``` r
 plot_pca_2d(
-  counts_dat,
-  sample_metadata,
+  moo_counts,
+  count_type = NULL,
+  sub_count_type = NULL,
+  sample_metadata = NULL,
   sample_id_colname = NULL,
   feature_id_colname = NULL,
   group_colname = "Group",
@@ -22,15 +24,30 @@ plot_pca_2d(
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
-  interactive_plots = FALSE
+  interactive_plots = FALSE,
+  plots_subdir = "pca",
+  plot_filename = "pca_2D.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots")
 )
 ```
 
 ## Arguments
 
-- counts_dat:
+- moo_counts:
 
-  data frame of feature counts (e.g. expected feature counts from RSEM).
+  counts dataframe or `multiOmicDataSet` containing `count_type` &
+  `sub_count_type` in the counts slot
+
+- count_type:
+
+  type to assign the values of `counts_dat` to in the `counts` slot
+
+- sub_count_type:
+
+  used if `count_type` is a list in the counts slot: specify the sub
+  count type within the list. Must be a name in
+  `names(moo@counts[[count_type]])`.
 
 - sample_metadata:
 
@@ -117,6 +134,27 @@ plot_pca_2d(
   allowing you to hover your mouse over a point or line to view sample
   information. The similarity heat map will not display if this toggle
   is set to `TRUE`. Default is `FALSE`.
+
+- plots_subdir:
+
+  subdirectory in `figures/` where plots will be saved if `save_plots`
+  is `TRUE`
+
+- plot_filename:
+
+  plot output filename - only used if save_plots is TRUE
+
+- print_plots:
+
+  Whether to print plots during analysis (Defaults to `FALSE`,
+  overwritable using option 'moo_print_plots' or environment variable
+  'MOO_PRINT_PLOTS')
+
+- save_plots:
+
+  Whether to save plots to files during analysis (Defaults to `TRUE`,
+  overwritable using option 'moo_save_plots' or environment variable
+  'MOO_SAVE_PLOTS')
 
 ## Value
 

@@ -1,15 +1,7 @@
-# dplyr pipe
+# walrus operator
 
 These objects are imported from other packages. Follow the links below
 to see their documentation.
-
-- dplyr:
-
-  [`%>%`](https://dplyr.tidyverse.org/reference/reexports.html)
-
-- magrittr:
-
-  `%<>%`
 
 - rlang:
 

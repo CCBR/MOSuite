@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,11 +61,10 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Introduction to MultiOmicsSuite</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Introduction to MultiOmicsSuite</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.2.1/vignettes/intro.Rmd" class="external-link"><code>vignettes/intro.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/main/vignettes/intro.Rmd" class="external-link"><code>vignettes/intro.Rmd</code></a></small>
       <div class="d-none name"><code>intro.Rmd</code></div>
     </div>
 
@@ -90,15 +89,15 @@
 <span><span class="va">moo_nidap</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_multiOmicDataSet_from_dataframes.html">create_multiOmicDataSet_from_dataframes</a></span><span class="op">(</span></span>
 <span>  sample_metadata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_sample_metadata</span><span class="op">)</span>,</span>
 <span>  counts_dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_raw_counts</span><span class="op">)</span></span>
-<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/clean_raw_counts.html">clean_raw_counts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/filter_counts.html">filter_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/normalize_counts.html">normalize_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/clean_raw_counts.html">clean_raw_counts</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/filter_counts.html">filter_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/normalize_counts.html">normalize_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/batch_correct_counts.html">batch_correct_counts</a></span><span class="op">(</span></span>
 <span>    covariates_colname <span class="op">=</span> <span class="st">"Group"</span>,</span>
 <span>    batch_colname <span class="op">=</span> <span class="st">"Batch"</span>,</span>
 <span>    label_colname <span class="op">=</span> <span class="st">"Label"</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/diff_counts.html">diff_counts</a></span><span class="op">(</span></span>
 <span>    count_type <span class="op">=</span> <span class="st">"filt"</span>,</span>
 <span>    covariates_colnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group"</span>, <span class="st">"Batch"</span><span class="op">)</span>,</span>
@@ -107,7 +106,7 @@
 <span>    input_in_log_counts <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    return_mean_and_sd <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    voom_normalization_method <span class="op">=</span> <span class="st">"quantile"</span>,</span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/filter_diff.html">filter_diff</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="intro_files/figure-html/nidap_data-1.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
@@ -130,21 +129,23 @@
 <span><span class="co">#&gt; colors_for_plots NULL</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; colors_for_plots character</span></span></code></pre>
-<p><img src="intro_files/figure-html/nidap_data-2.png" class="r-plt" alt="" width="700"><img src="intro_files/figure-html/nidap_data-3.png" class="r-plt" alt="" width="700"></p>
+<p><img src="intro_files/figure-html/nidap_data-2.png" class="r-plt" alt="" width="700"><img src="intro_files/figure-html/nidap_data-3.png" class="r-plt" alt="" width="700"><img src="intro_files/figure-html/nidap_data-4.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span></code></pre>
-<p><img src="intro_files/figure-html/nidap_data-4.png" class="r-plt" alt="" width="700"></p>
+<p><img src="intro_files/figure-html/nidap_data-5.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span><span class="co">#&gt; * normalizing filt counts</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of features included: 7943</span></span></code></pre>
-<p><img src="intro_files/figure-html/nidap_data-5.png" class="r-plt" alt="" width="700"></p>
+<span><span class="co">#&gt; Total number of features included: 7943</span></span>
+<span><span class="co">#&gt; Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider</span></span>
+<span><span class="co">#&gt; increasing max.overlaps</span></span></code></pre>
+<p><img src="intro_files/figure-html/nidap_data-6.png" class="r-plt" alt="" width="700"><img src="intro_files/figure-html/nidap_data-7.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider</span></span>
 <span><span class="co">#&gt; increasing max.overlaps</span></span></code></pre>
-<p><img src="intro_files/figure-html/nidap_data-6.png" class="r-plt" alt="" width="700"></p>
+<p><img src="intro_files/figure-html/nidap_data-8.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span><span class="co">#&gt; Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider</span></span>
 <span><span class="co">#&gt; increasing max.overlaps</span></span></code></pre>
-<p><img src="intro_files/figure-html/nidap_data-7.png" class="r-plt" alt="" width="700"></p>
+<p><img src="intro_files/figure-html/nidap_data-9.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span><span class="co">#&gt; Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -161,18 +162,18 @@
 <span><span class="co">#&gt; Finding parametric adjustments</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Adjusting the Data</span></span></code></pre>
-<p><img src="intro_files/figure-html/nidap_data-8.png" class="r-plt" alt="" width="700"></p>
+<p><img src="intro_files/figure-html/nidap_data-10.png" class="r-plt" alt="" width="700"><img src="intro_files/figure-html/nidap_data-11.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span></code></pre>
-<p><img src="intro_files/figure-html/nidap_data-9.png" class="r-plt" alt="" width="700"></p>
+<p><img src="intro_files/figure-html/nidap_data-12.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span></code></pre>
-<p><img src="intro_files/figure-html/nidap_data-10.png" class="r-plt" alt="" width="700"></p>
+<p><img src="intro_files/figure-html/nidap_data-13.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; The total number of features in output: 7943</span></span>
 <span><span class="co">#&gt; Number of samples after batch correction: 10</span></span>
 <span><span class="co">#&gt; * differential counts</span></span>
 <span><span class="co">#&gt; Setting first column of `counts` as gene annotation.</span></span>
 <span><span class="co">#&gt; Total number of genes included: 7943</span></span>
 <span><span class="co">#&gt; `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</span></span></code></pre>
-<p><img src="intro_files/figure-html/nidap_data-11.png" class="r-plt" alt="" width="700"></p>
+<p><img src="intro_files/figure-html/nidap_data-14.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span><span class="co">#&gt; `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
@@ -180,11 +181,11 @@
 <span><span class="co">#&gt; * filtering differential features</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total number of genes selected with adjpval &lt; 0.05 and | logFC | ≥ 1 is sum(selgenes)</span></span></code></pre>
-<p><img src="intro_files/figure-html/nidap_data-12.png" class="r-plt" alt="" width="700"></p>
+<p><img src="intro_files/figure-html/nidap_data-15.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span></span>
-<span><span class="va">moo_nidap</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/join_dfs_wide.html">join_dfs_wide</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">moo_nidap</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/join_dfs_wide.html">join_dfs_wide</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
@@ -210,7 +211,7 @@
 <span><span class="co">#&gt; 5  0.4843119 0.63708764   0.8518020</span></span>
 <span><span class="co">#&gt; 6 -2.9536960 0.01233497   0.1411803</span></span>
 <span></span>
-<span><span class="va">moo_nidap</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff_filt</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">moo_nidap</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff_filt</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   GeneName B-A_FC B-A_logFC B-A_tstat B-A_pval B-A_adjpval C-A_FC C-A_logFC</span></span>
 <span><span class="co">#&gt; 1     Rrs1  -2.06    -1.040    -2.860   0.0147       0.276  -2.71     -1.44</span></span>
 <span><span class="co">#&gt; 2     Mcm3  -1.45    -0.539    -1.870   0.0869       0.544  -2.45     -1.29</span></span>

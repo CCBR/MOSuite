@@ -148,7 +148,7 @@ moo <- create_multiOmicDataSet_from_dataframes(
   as.data.frame(nidap_sample_metadata),
   as.data.frame(nidap_raw_counts),
   sample_id_colname = "Sample",
-) %>%
+) |>
   clean_raw_counts(sample_id_colname = "Sample", feature_id_colname = "GeneName")
 #> Saving 6.67 x 6.67 in image
 #> * cleaning raw counts

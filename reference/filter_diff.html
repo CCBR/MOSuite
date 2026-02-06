@@ -3,7 +3,7 @@
 adjusted p-value) and change (fold change, log2 fold change, or t-statistic); in addition allows for selection of DEG
 estimates and for sub-setting of contrasts and groups included in the output gene list."><meta property="og:description" content="Outputs dataset of significant genes from DEG table; filters genes based on statistical significance (p-value or
 adjusted p-value) and change (fold change, log2 fold change, or t-statistic); in addition allows for selection of DEG
-estimates and for sub-setting of contrasts and groups included in the output gene list."></head><body>
+estimates and for sub-setting of contrasts and groups included in the output gene list."><meta property="og:image" content="https://ccbr.github.io/MOSuite/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -11,7 +11,7 @@ estimates and for sub-setting of contrasts and groups included in the output gen
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,9 +39,8 @@ estimates and for sub-setting of contrasts and groups included in the output gen
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Filter features from differential analysis based on statistical significance</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.2.1/R/differential.R" class="external-link"><code>R/differential.R</code></a></small>
+      <img src="../logo.png" class="logo" alt=""><h1>Filter features from differential analysis based on statistical significance</h1>
+      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/main/R/differential.R" class="external-link"><code>R/differential.R</code></a></small>
       <div class="d-none name"><code>filter_diff.Rd</code></div>
     </div>
 
@@ -230,7 +229,7 @@ groups in the dataset are used.</p></dd>
 <span class="r-in"><span>    <span class="st">"clean"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_clean_raw_counts</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"filt"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_filtered_counts</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="diff_counts.html">diff_counts</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    count_type <span class="op">=</span> <span class="st">"filt"</span>,</span></span>
 <span class="r-in"><span>    sub_count_type <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
@@ -240,7 +239,7 @@ groups in the dataset are used.</p></dd>
 <span class="r-in"><span>    contrast_colname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B-A"</span>, <span class="st">"C-A"</span>, <span class="st">"B-C"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    voom_normalization_method <span class="op">=</span> <span class="st">"quantile"</span>,</span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">filter_diff</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> * differential counts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Setting first column of `counts` as gene annotation.</span>

@@ -94,7 +94,7 @@ moo <- create_multiOmicDataSet_from_files(
 #> 
 #> ℹ Use `spec()` to retrieve the full column specification for this data.
 #> ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-moo@counts$raw %>% head()
+moo@counts$raw |> head()
 #> # A tibble: 6 × 5
 #>   gene_id            KO_S3 KO_S4 WT_S1 WT_S2
 #>   <chr>              <dbl> <dbl> <dbl> <dbl>

@@ -35,4 +35,6 @@ Authors:
 
 Other contributors:
 
+- T. Joshua Meyer <thomas.meyer@nih.gov> \[contributor\]
+
 - CCR Collaborative Bioinformatics Resource \[copyright holder\]

@@ -28,7 +28,7 @@ for more information.
 moo <- create_multiOmicDataSet_from_dataframes(
   sample_metadata = as.data.frame(nidap_sample_metadata),
   counts_dat = as.data.frame(nidap_raw_counts)
-) %>%
+) |>
   clean_raw_counts()
 ```
 
@@ -47,51 +47,57 @@ moo <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> no duplicated IDs in GeneName
 
+### filter
+
 ``` r
-moo <- moo %>%
+moo <- moo |>
   filter_counts(group_colname = "Group")
 #> * filtering clean counts
 #> Number of features after filtering: 7943
 #> colors_for_plots NULL
 #> colors_for_plots character
+#> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
+#> increasing max.overlaps
 ```
 
-![](visualization_files/figure-html/nidap_filter-1.png)
+![](visualization_files/figure-html/nidap_filter-1.png)![](visualization_files/figure-html/nidap_filter-2.png)
 
-    #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
-    #> increasing max.overlaps
-
-![](visualization_files/figure-html/nidap_filter-2.png)
-
-    #> Saving 5 x 4 in image
     #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
     #> increasing max.overlaps
 
 ![](visualization_files/figure-html/nidap_filter-3.png)
 
     #> Saving 5 x 4 in image
+    #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
+    #> increasing max.overlaps
+
+![](visualization_files/figure-html/nidap_filter-4.png)
+
+    #> Saving 5 x 4 in image
 
 ### normalize
 
 ``` r
-moo <- moo %>%
+moo <- moo |>
   normalize_counts(group_colname = "Group")
 #> * normalizing filt counts
 #> Total number of features included: 7943
+#> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
+#> increasing max.overlaps
 ```
 
-![](visualization_files/figure-html/nidap_norm-1.png)
+![](visualization_files/figure-html/nidap_norm-1.png)![](visualization_files/figure-html/nidap_norm-2.png)
 
     #> Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
     #> increasing max.overlaps
 
-![](visualization_files/figure-html/nidap_norm-2.png)
+![](visualization_files/figure-html/nidap_norm-3.png)
 
     #> Saving 5 x 4 in image
     #> Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
     #> increasing max.overlaps
 
-![](visualization_files/figure-html/nidap_norm-3.png)
+![](visualization_files/figure-html/nidap_norm-4.png)
 
     #> Saving 5 x 4 in image
     #> Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
@@ -99,7 +105,7 @@ moo <- moo %>%
 ### batch correct
 
 ``` r
-moo <- moo %>%
+moo <- moo |>
   batch_correct_counts(
     covariates_colname = "Group",
     batch_colname = "Batch",
@@ -114,15 +120,15 @@ moo <- moo %>%
 #> Adjusting the Data
 ```
 
-![](visualization_files/figure-html/nidap_batch-1.png)
-
-    #> Saving 5 x 4 in image
-
-![](visualization_files/figure-html/nidap_batch-2.png)
+![](visualization_files/figure-html/nidap_batch-1.png)![](visualization_files/figure-html/nidap_batch-2.png)
 
     #> Saving 5 x 4 in image
 
 ![](visualization_files/figure-html/nidap_batch-3.png)
+
+    #> Saving 5 x 4 in image
+
+![](visualization_files/figure-html/nidap_batch-4.png)
 
     #> The total number of features in output: 7943
     #> Number of samples after batch correction: 10
@@ -130,7 +136,7 @@ moo <- moo %>%
 ### differential expression
 
 ``` r
-moo <- moo %>%
+moo <- moo |>
   diff_counts(
     count_type = "filt",
     covariates_colnames = c("Group", "Batch"),
@@ -154,7 +160,7 @@ moo <- moo %>%
 ### filter differential features
 
 ``` r
-moo <- moo %>% filter_diff()
+moo <- moo |> filter_diff()
 #> Joining with `by = join_by(GeneName)`
 #> Joining with `by = join_by(GeneName)`
 #> * filtering differential features
@@ -177,7 +183,8 @@ TODO
 ### 3D PCA
 
 ``` r
-plot_pca(moo@counts$batch,
+plot_pca(
+  moo@counts$batch,
   moo@sample_meta,
   principal_components = c(1, 2, 3),
   group_colname = "Group",
@@ -189,19 +196,12 @@ plot_pca(moo@counts$batch,
 ### Expression Heatmap
 
 ``` r
-heatmap_plot <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
-#> Warning: `arrange_()` was deprecated in dplyr 0.7.0.
-#> ℹ Please use `arrange()` instead.
-#> ℹ See vignette('programming') for more help
-#> ℹ The deprecated feature was likely used in the MOSuite package.
-#>   Please report the issue at <https://github.com/CCBR/MOSuite/issues>.
-#> This warning is displayed once per session.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#> generated.
-#> [1] "The total number of genes in heatmap: 500"
-#> Warning: The input is a data frame, convert it to the matrix.
-#> Warning: argument `height` is not supported in pheatmap -> Heatmap translation,
-#> skip it.
+heatmap_plot <- plot_expr_heatmap(
+  moo,
+  count_type = "norm",
+  sub_count_type = "voom"
+)
+#> The total number of genes in heatmap: 500
 ```
 
 ![](visualization_files/figure-html/expr_heatmap-1.png)
@@ -217,8 +217,8 @@ print(heatmap_plot)
 #### Summary
 
 ``` r
-dat_volcano_summary <- moo@analyses$diff %>%
-  join_dfs_wide() %>%
+dat_volcano_summary <- moo@analyses$diff |>
+  join_dfs_wide() |>
   plot_volcano_summary()
 #> Joining with `by = join_by(GeneName)`
 #> Joining with `by = join_by(GeneName)`
@@ -266,15 +266,15 @@ dat_volcano_summary <- moo@analyses$diff %>%
 #### Enhanced
 
 ``` r
-dat_volcano_enhanced <- moo@analyses$diff %>%
-  join_dfs_wide() %>%
+dat_volcano_enhanced <- moo@analyses$diff |>
+  join_dfs_wide() |>
   plot_volcano_enhanced()
 #> Joining with `by = join_by(GeneName)`
 #> Joining with `by = join_by(GeneName)`
 #> Genes in initial dataset: 7943
-#> Max y: 4.60041859457819
+#> Max y: 4.60041859457821
 #> Genes in initial dataset: 7943
-#> Max y: 4.32577808863472
+#> Max y: 4.32577808863476
 ```
 
 ![](visualization_files/figure-html/volcano_enhanced-1.png)
@@ -282,7 +282,7 @@ dat_volcano_enhanced <- moo@analyses$diff %>%
 ### Venn Diagram
 
 ``` r
-venn_dat <- dat_volcano_summary %>% plot_venn_diagram()
+venn_dat <- dat_volcano_summary |> plot_venn_diagram()
 #> All intersections: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(79, 119, 265, 493, 149, 271, 516),c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")
 #> Intersections returned: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(79, 119, 265, 493, 149, 271, 516)
 ```

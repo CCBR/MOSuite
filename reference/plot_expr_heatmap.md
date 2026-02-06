@@ -372,25 +372,14 @@ moo <- multiOmicDataSet(
   )
 )
 p <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
-#> Warning: `arrange_()` was deprecated in dplyr 0.7.0.
-#> ℹ Please use `arrange()` instead.
-#> ℹ See vignette('programming') for more help
-#> ℹ The deprecated feature was likely used in the MOSuite package.
-#>   Please report the issue at <https://github.com/CCBR/MOSuite/issues>.
-#> [1] "The total number of genes in heatmap: 500"
-#> Warning: The input is a data frame, convert it to the matrix.
-#> Warning: argument `height` is not supported in pheatmap -> Heatmap translation,
-#> skip it.
+#> The total number of genes in heatmap: 500
 
 # customize the plot
 plot_expr_heatmap(moo,
   count_type = "norm", sub_count_type = "voom",
   top_genes_by_variance_to_include = 100
 )
-#> [1] "The total number of genes in heatmap: 100"
-#> Warning: The input is a data frame, convert it to the matrix.
-#> Warning: argument `height` is not supported in pheatmap -> Heatmap translation,
-#> skip it.
+#> The total number of genes in heatmap: 100
 
 
 # plot expression heatmap for a counts dataframe
@@ -404,9 +393,6 @@ plot_expr_heatmap(
   label_colname = "Label",
   top_genes_by_variance_to_include = 100
 )
-#> [1] "The total number of genes in heatmap: 100"
-#> Warning: The input is a data frame, convert it to the matrix.
-#> Warning: argument `height` is not supported in pheatmap -> Heatmap translation,
-#> skip it.
+#> The total number of genes in heatmap: 100
 
 ```
