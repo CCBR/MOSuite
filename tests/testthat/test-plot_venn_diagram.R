@@ -26,3 +26,21 @@ test_that("plot_venn_diagram raises condition for empty df", {
     "Dataframe is empty"
   )
 })
+
+test_that("plot_venn_diagram handles intersection matrix without recursive evaluation error", {
+  # This test ensures that the fix for the recursive default argument reference error works
+  # The error occurred when Intersection was being reassigned while still being referenced
+  expect_no_error({
+    result <- plot_venn_diagram(
+      nidap_volcano_summary_dat,
+      print_plots = FALSE,
+      save_plots = FALSE
+    )
+  })
+  # Verify the result is a data frame with expected columns
+  expect_s3_class(result, "data.frame")
+  expect_true("Gene" %in% colnames(result))
+  expect_true("Intersection" %in% colnames(result))
+  expect_true("Id" %in% colnames(result))
+  expect_true("Size" %in% colnames(result))
+})
