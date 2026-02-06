@@ -32,8 +32,11 @@ test_that("plot_venn_diagram raises condition for empty df", {
 
 test_that("intersection matrix assignment avoids recursive evaluation error", {
   # This test demonstrates the fix for the recursive default argument reference error
-  # The error occurred with this pattern: Intersection <- sapply(colnames(Intersection), function(x) Intersection[, x])
-  # The fix uses a temporary variable: intersection_matrix <- Intersection; Intersection <- sapply(colnames(intersection_matrix), ...)
+  # The error occurred with this pattern:
+  #   Intersection <- sapply(colnames(Intersection), function(x) Intersection[, x])
+  # The fix uses a temporary variable:
+  #   intersection_matrix <- Intersection;
+  #   Intersection <- sapply(colnames(intersection_matrix), ...)
 
   # Call plot_venn_diagram directly to ensure the fix works in practice
   expect_no_error({
