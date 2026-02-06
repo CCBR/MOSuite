@@ -289,8 +289,9 @@ S7::method(plot_venn_diagram, S7::class_data.frame) <- function(
     }
 
     # generate intersection frequency table and gene list (all intersections for the output dataset/table not the plot)
-    Intersection <- sapply(colnames(Intersection), function(x) {
-      return(ifelse(Intersection[, x] == 1, x, "{}"))
+    intersection_matrix <- Intersection
+    Intersection <- sapply(colnames(intersection_matrix), function(x) {
+      return(ifelse(intersection_matrix[, x] == 1, x, "{}"))
     })
     rownames(Intersection) <- rownames(sets)
     Intersection <- apply(Intersection, 1, function(x) {

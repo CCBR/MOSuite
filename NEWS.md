@@ -1,5 +1,7 @@
 ## development version
 
+- Fix recursion error in `plot_venn_diagram()`. (#188, @kelly-sovacool)
+
 ## MOSuite 0.3.0
 
 ### New features
