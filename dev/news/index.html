@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.1.9001</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,30 @@
       <small>Source: <a href="https://github.com/CCBR/MOSuite/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="mosuite-030">MOSuite 0.3.0<a class="anchor" aria-label="anchor" href="#mosuite-030"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-3-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-3-0"></a></h3>
+<ul><li>New function <code><a href="../reference/write_multiOmicDataSet_properties.html">write_multiOmicDataSet_properties()</a></code>. (<a href="https://github.com/CCBR/MOSuite/issues/173" class="external-link">#173</a>, <a href="https://github.com/kelly-sovacool" class="external-link">@kelly-sovacool</a>)
+<ul><li>Extracts all the properties from a multiOmicDataSet and writes any data frames as csv files, other objects are written as rds files.</li>
+</ul></li>
+<li>New utility functions to reduce code duplication across Code Ocean capsules: (<a href="https://github.com/CCBR/MOSuite/issues/185" class="external-link">#185</a>, <a href="https://github.com/kelly-sovacool" class="external-link">@kelly-sovacool</a>) <code><a href="../reference/setup_capsule_environment.html">setup_capsule_environment()</a></code>, <code><a href="../reference/load_moo_from_data_dir.html">load_moo_from_data_dir()</a></code>, <code><a href="../reference/parse_optional_vector.html">parse_optional_vector()</a></code>, <code><a href="../reference/parse_vector_with_default.html">parse_vector_with_default()</a></code>, and <code><a href="../reference/parse_samples_to_rename.html">parse_samples_to_rename()</a></code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-3-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-0"></a></h3>
+<ul><li>Fixed bug in <code><a href="../reference/clean_raw_counts.html">clean_raw_counts()</a></code> where duplicate gene rows were not being aggregated correctly. (<a href="https://github.com/CCBR/MOSuite/issues/162" class="external-link">#162</a>, <a href="https://github.com/TJoshMeyer" class="external-link">@TJoshMeyer</a>)</li>
+<li>Fixed <code><a href="../reference/batch_correct_counts.html">batch_correct_counts()</a></code> to gracefully skip batch correction when only a single batch level exists; the function now warns without erroring. (<a href="https://github.com/CCBR/MOSuite/issues/158" class="external-link">#158</a>, <a href="https://github.com/TJoshMeyer" class="external-link">@TJoshMeyer</a>)</li>
+<li>Fixed <code>multiOmicDataSet</code> validator to return character vector instead of using <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> per S7 documentation. (<a href="https://github.com/CCBR/MOSuite/issues/177" class="external-link">#177</a>, <a href="https://github.com/copilot" class="external-link">@copilot</a>, <a href="https://github.com/kelly-sovacool" class="external-link">@kelly-sovacool</a>)</li>
+<li>Fixed duplicate PCA figure files in <code><a href="../reference/filter_counts.html">filter_counts()</a></code>, <code><a href="../reference/normalize_counts.html">normalize_counts()</a></code>, and <code><a href="../reference/batch_correct_counts.html">batch_correct_counts()</a></code>. (<a href="https://github.com/CCBR/MOSuite/issues/180" class="external-link">#180</a>, <a href="https://github.com/kelly-sovacool" class="external-link">@kelly-sovacool</a>)</li>
+<li>Bug fixes: (<a href="https://github.com/CCBR/MOSuite/issues/174" class="external-link">#174</a>, <a href="https://github.com/kelly-sovacool" class="external-link">@kelly-sovacool</a>)
+<ul><li>Fixed bugs in <code><a href="../reference/plot_volcano_summary.html">plot_volcano_summary()</a></code>, <code><a href="../reference/plot_volcano_enhanced.html">plot_volcano_enhanced()</a></code>, and <code><a href="../reference/plot_pca_3d.html">plot_pca_3d()</a></code> when used with multiOmicDataSet objects.</li>
+<li>Fixed bug in <code><a href="../reference/filter_diff.html">filter_diff()</a></code> when <code>filtering_mode = "all"</code> that was causing plot rendering errors.</li>
+<li>Fixed <code><a href="../reference/plot_pca_2d.html">plot_pca_2d()</a></code> to save plots to disk correctly.</li>
+</ul></li>
+<li>Replaced deprecated <code><a href="https://dplyr.tidyverse.org/reference/defunct-lazyeval.html" class="external-link">arrange_()</a></code> with <code><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange()</a></code> in <code><a href="../reference/plot_expr_heatmap.html">plot_expr_heatmap()</a></code>. (<a href="https://github.com/CCBR/MOSuite/issues/182" class="external-link">#182</a>, <a href="https://github.com/kelly-sovacool" class="external-link">@kelly-sovacool</a>)</li>
+<li>Improvements for use with Galaxy. (<a href="https://github.com/CCBR/MOSuite/issues/168" class="external-link">#168</a>, <a href="https://github.com/CCBR/MOSuite/issues/170" class="external-link">#170</a>, <a href="https://github.com/CCBR/MOSuite/issues/171" class="external-link">#171</a>, <a href="https://github.com/CCBR/MOSuite/issues/174" class="external-link">#174</a>, <a href="https://github.com/kelly-sovacool" class="external-link">@kelly-sovacool</a>)</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.1" id="mosuite-021">MOSuite 0.2.1<a class="anchor" aria-label="anchor" href="#mosuite-021"></a></h2>
 <ul><li>A docker image is now available. (<a href="https://github.com/CCBR/MOSuite/issues/134" class="external-link">#134</a>)
