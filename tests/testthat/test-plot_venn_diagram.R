@@ -6,7 +6,10 @@ test_that("plot_venn_diagram works with defaults", {
       save_plots = TRUE
     )
   )
-  # expect_equal(plot_venn_diagram(nidap_volcano_summary_dat), as.data.frame(nidap_venn_diagram_dat))
+  expect_equal(
+    plot_venn_diagram(nidap_volcano_summary_dat),
+    as.data.frame(nidap_venn_diagram_dat)
+  )
 })
 test_that("plot_venn_diagram raises condition for empty df", {
   expect_error(
@@ -27,9 +30,12 @@ test_that("plot_venn_diagram raises condition for empty df", {
   )
 })
 
-test_that("plot_venn_diagram handles intersection matrix without recursive evaluation error", {
-  # This test ensures that the fix for the recursive default argument reference error works
-  # The error occurred when Intersection was being reassigned while still being referenced
+test_that("intersection matrix assignment avoids recursive evaluation error", {
+  # This test demonstrates the fix for the recursive default argument reference error
+  # The error occurred with this pattern: Intersection <- sapply(colnames(Intersection), function(x) Intersection[, x])
+  # The fix uses a temporary variable: intersection_matrix <- Intersection; Intersection <- sapply(colnames(intersection_matrix), ...)
+
+  # Call plot_venn_diagram directly to ensure the fix works in practice
   expect_no_error({
     result <- plot_venn_diagram(
       nidap_volcano_summary_dat,
@@ -37,7 +43,8 @@ test_that("plot_venn_diagram handles intersection matrix without recursive evalu
       save_plots = FALSE
     )
   })
-  # Verify the result is a data frame with expected columns
+
+  # Verify the result has the expected structure
   expect_s3_class(result, "data.frame")
   expect_true("Gene" %in% colnames(result))
   expect_true("Intersection" %in% colnames(result))
