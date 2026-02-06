@@ -8,17 +8,17 @@ message: 'To cite package "MOSuite" in publications use:'
 type: software
 license: MIT
 title: 'MOSuite: R package for differential multi-omics analysis'
-version: 0.2.1.9001
+version: 0.3.0
 doi: 10.5281/zenodo.16371580
 identifiers:
 - description: Archived snapshots of all versions
   type: doi
   value: 10.5281/zenodo.16371580
-abstract: 'Multi-Omics Suite provides a suite of functions to clean, filter, batch-correct,
+abstract: Multi-Omics Suite provides a suite of functions to clean, filter, batch-correct,
   normalize, visualize, and perform differential analysis. While the package is designed
   for differential RNA-seq analysis and multi-omics datasets, it can be used for any
   data represented in a counts table. See the website for more information, documentation,
-  and examples: <https://ccbr.github.io/MOSuite/>'
+  and examples at <https://ccbr.github.io/MOSuite/>.
 authors:
 - family-names: Sovacool
   given-names: Kelly
@@ -342,21 +342,6 @@ references:
     given-names: Lizhong
   year: '2026'
   doi: 10.18129/B9.bioc.limma
-- type: software
-  title: magrittr
-  abstract: 'magrittr: A Forward-Pipe Operator for R'
-  notes: Imports
-  url: https://magrittr.tidyverse.org
-  repository: https://CRAN.R-project.org/package=magrittr
-  authors:
-  - family-names: Bache
-    given-names: Stefan Milton
-    email: stefan@stefanbache.dk
-  - family-names: Wickham
-    given-names: Hadley
-    email: hadley@posit.co
-  year: '2026'
-  doi: 10.32614/CRAN.package.magrittr
 - type: software
   title: matrixStats
   abstract: 'matrixStats: Functions that Apply to Rows and Columns of Matrices (and
