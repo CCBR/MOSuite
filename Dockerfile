@@ -37,6 +37,7 @@ RUN mamba install -y -c conda-forge \
     "r-ggplot2 <4.0.0" \
     r-ggrepel \
     r-gridExtra \
+    r-here \
     r-matrix \
     r-mgcv \
     r-patchwork \

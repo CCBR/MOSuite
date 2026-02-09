@@ -80,8 +80,8 @@ Suggests:
 VignetteBuilder:
     knitr
 biocViews:
-Config/Needs/dev: cffr, covr, goodpractice, lintr, pkgdown, rcmdcheck,
-    xml2
+Config/Needs/dev: cffr, covr, goodpractice, here, lintr, pkgdown,
+    rcmdcheck, xml2
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Encoding: UTF-8
