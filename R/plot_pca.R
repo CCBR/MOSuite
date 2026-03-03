@@ -390,6 +390,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
     ggplot2::ylab(get_pc_percent_lab(pca_df, prin_comp_y))
 
   if (add_label == TRUE) {
+    abort_packages_not_installed("ggrepel")
     pca_plot <- pca_plot +
       ggrepel::geom_text_repel(
         ggplot2::aes(
