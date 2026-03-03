@@ -8,7 +8,7 @@ message: 'To cite package "MOSuite" in publications use:'
 type: software
 license: MIT
 title: 'MOSuite: R package for differential multi-omics analysis'
-version: 0.3.0.9000
+version: 0.3.0.9001
 doi: 10.5281/zenodo.16371580
 identifiers:
 - description: Archived snapshots of all versions
@@ -97,7 +97,6 @@ references:
   - family-names: Galili
     given-names: Tal
     email: tal.galili@gmail.com
-    website: https://www.r-statistics.com
   - family-names: Jefferis
     given-names: Gregory
     email: jefferis@gmail.com
@@ -154,12 +153,12 @@ references:
   authors:
   - family-names: Chen
     given-names: Yunshun
+  - family-names: Chen
+    given-names: Lizhong
   - family-names: Lun
     given-names: Aaron TL
   - family-names: McCarthy
     given-names: Davis J
-  - family-names: Chen
-    given-names: Lizhong
   - family-names: Baldoni
     given-names: Pedro
   - family-names: Ritchie
@@ -218,19 +217,6 @@ references:
   doi: 10.32614/CRAN.package.ggplot2
   version: < 4.0.0
 - type: software
-  title: ggrepel
-  abstract: 'ggrepel: Automatically Position Non-Overlapping Text Labels with ''ggplot2'''
-  notes: Imports
-  url: https://ggrepel.slowkow.com/
-  repository: https://CRAN.R-project.org/package=ggrepel
-  authors:
-  - family-names: Slowikowski
-    given-names: Kamil
-    email: kslowikowski@gmail.com
-    orcid: https://orcid.org/0000-0002-2843-6370
-  year: '2026'
-  doi: 10.32614/CRAN.package.ggrepel
-- type: software
   title: glue
   abstract: 'glue: Interpreted String Literals'
   notes: Imports
@@ -282,9 +268,6 @@ references:
     email: jeroenooms@gmail.com
     orcid: https://orcid.org/0000-0002-4035-0289
   year: '2026'
-  identifiers:
-  - type: url
-    value: https://arxiv.org/abs/1403.2805
   doi: 10.32614/CRAN.package.jsonlite
 - type: software
   title: limma
@@ -661,7 +644,7 @@ references:
   authors:
   - family-names: Gu
     given-names: Zuguang
-    email: z.gu@dkfz.de
+    email: guzuguang@suat-sz.edu.cn
     orcid: https://orcid.org/0000-0002-7395-8709
   year: '2026'
   doi: 10.18129/B9.bioc.ComplexHeatmap
@@ -704,13 +687,25 @@ references:
   authors:
   - family-names: Blighe
     given-names: Kevin
-    email: kevin@clinicalbioinformatics.co.uk
   - family-names: Rana
     given-names: Sharmila
   - family-names: Lewis
     given-names: Myles
   year: '2026'
   doi: 10.18129/B9.bioc.EnhancedVolcano
+- type: software
+  title: ggrepel
+  abstract: 'ggrepel: Automatically Position Non-Overlapping Text Labels with ''ggplot2'''
+  notes: Suggests
+  url: https://ggrepel.slowkow.com/
+  repository: https://CRAN.R-project.org/package=ggrepel
+  authors:
+  - family-names: Slowikowski
+    given-names: Kamil
+    email: kslowikowski@gmail.com
+    orcid: https://orcid.org/0000-0002-2843-6370
+  year: '2026'
+  doi: 10.32614/CRAN.package.ggrepel
 - type: software
   title: gridExtra
   abstract: 'gridExtra: Miscellaneous Functions for "Grid" Graphics'
