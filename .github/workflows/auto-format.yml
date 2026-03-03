@@ -43,9 +43,6 @@ jobs:
           extra-packages: local::.
           needs: dev
 
-      - name: Format R code with air
-        uses: rstudio/shiny-workflows/format-r-code@v1
-
       - name: update Galaxy blueprints
         shell: Rscript {0}
         run: |
@@ -76,6 +73,10 @@ jobs:
         uses: citation-file-format/cffconvert-github-action@2.0.0
         with:
           args: "--format codemeta --outfile codemeta.json"
+
+      - name: format
+        uses: pre-commit/action@v3.0.1
+        continue-on-error: true
 
       - name: commit & push
         run: |
