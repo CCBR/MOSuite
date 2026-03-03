@@ -35,7 +35,7 @@
       "paramType": "STRING",
       "paramGroup": "basic",
       "paramValues": null,
-      "defaultValue": "summary_data.rds",
+      "defaultValue": "moo.rds",
       "condition": null,
       "content": null,
       "objectPropertyReference": null
