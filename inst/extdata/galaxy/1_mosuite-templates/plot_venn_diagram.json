@@ -46,7 +46,7 @@
             "paramType": "STRING",
             "paramGroup": "basic",
             "paramValues": null,
-            "defaultValue": "venn_diagram_dataframe.rds",
+            "defaultValue": "moo.rds",
             "condition": null,
             "content": null,
             "objectPropertyReference": null

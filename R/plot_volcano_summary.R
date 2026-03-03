@@ -264,7 +264,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   save_plots = options::opt("save_plots"),
   plots_subdir = "diff"
 ) {
-  abort_packages_not_installed("patchwork")
+  abort_packages_not_installed("patchwork", "ggrepel")
   diff_dat <- as.data.frame(moo_diff)
 
   ## -------------------------------- ##
