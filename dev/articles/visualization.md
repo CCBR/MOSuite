@@ -2,8 +2,6 @@
 
 ``` r
 library(MOSuite)
-#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
-#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 ```
 
 ## Default plots from each step
@@ -56,20 +54,11 @@ moo <- moo |>
 #> Number of features after filtering: 7943
 #> colors_for_plots NULL
 #> colors_for_plots character
-#> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
-#> increasing max.overlaps
 ```
 
-![](visualization_files/figure-html/nidap_filter-1.png)![](visualization_files/figure-html/nidap_filter-2.png)
-
-    #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
-    #> increasing max.overlaps
-
-![](visualization_files/figure-html/nidap_filter-3.png)
+![](visualization_files/figure-html/nidap_filter-1.png)![](visualization_files/figure-html/nidap_filter-2.png)![](visualization_files/figure-html/nidap_filter-3.png)
 
     #> Saving 5 x 4 in image
-    #> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
-    #> increasing max.overlaps
 
 ![](visualization_files/figure-html/nidap_filter-4.png)
 
@@ -82,20 +71,11 @@ moo <- moo |>
   normalize_counts(group_colname = "Group")
 #> * normalizing filt counts
 #> Total number of features included: 7943
-#> Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
-#> increasing max.overlaps
 ```
 
-![](visualization_files/figure-html/nidap_norm-1.png)![](visualization_files/figure-html/nidap_norm-2.png)
-
-    #> Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
-    #> increasing max.overlaps
-
-![](visualization_files/figure-html/nidap_norm-3.png)
+![](visualization_files/figure-html/nidap_norm-1.png)![](visualization_files/figure-html/nidap_norm-2.png)![](visualization_files/figure-html/nidap_norm-3.png)
 
     #> Saving 5 x 4 in image
-    #> Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
-    #> increasing max.overlaps
 
 ![](visualization_files/figure-html/nidap_norm-4.png)
 
@@ -234,34 +214,27 @@ dat_volcano_summary <- moo@analyses$diff |>
 #> Fold change column: B-C_logFC
 #> pval column: B-C_pval
 #> Total number of features included in volcano plot: 7943
-#> Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider
-#> increasing max.overlaps
-#> Warning: ggrepel: 29 unlabeled data points (too many overlaps). Consider increasing max.overlaps
-#> ggrepel: 29 unlabeled data points (too many overlaps). Consider increasing max.overlaps
 ```
 
 ![](visualization_files/figure-html/volcano_summary-1.png)
 
     #> Saving 5 x 4 in image
-    #> Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider increasing max.overlaps
-    #> ggrepel: 29 unlabeled data points (too many overlaps). Consider increasing max.overlaps
-    #> ggrepel: 29 unlabeled data points (too many overlaps). Consider increasing max.overlaps
 
     head(dat_volcano_summary)
     #>       GeneName Contrast         FC     logFC     tstat         pval
-    #> B-A.1     Dntt      B-A -42.746586 -5.417737 -15.68797 3.159343e-09
-    #> B-A.2   Tmsb4x      B-A   3.850020  1.944866  12.91026 2.760555e-08
-    #> B-A.3     Flt3      B-A  -7.714394 -2.947553 -11.38084 1.093405e-07
-    #> B-A.4  Tspan13      B-A  -7.038498 -2.815268 -11.03127 1.531110e-07
-    #> B-A.5    Tapt1      B-A  -5.291816 -2.403763 -10.65847 2.214593e-07
-    #> B-A.6    Itgb7      B-A   8.873823  3.149556  10.56147 2.442070e-07
+    #> B-A.1     Dntt      B-A -42.727551 -5.417095 -15.54572 3.460410e-09
+    #> B-A.2   Tmsb4x      B-A   3.845863  1.943307  12.82926 2.930649e-08
+    #> B-A.3     Flt3      B-A  -7.743692 -2.953022 -11.29797 1.173487e-07
+    #> B-A.4  Tspan13      B-A  -7.035795 -2.814713 -11.06018 1.476477e-07
+    #> B-A.5    Tapt1      B-A  -5.297586 -2.405335 -10.64544 2.226279e-07
+    #> B-A.6    Itgb7      B-A   8.882141  3.150907  10.62882 2.263833e-07
     #>            adjpval
-    #> B-A.1 2.509467e-05
-    #> B-A.2 1.096354e-04
-    #> B-A.3 2.894973e-04
-    #> B-A.4 3.040401e-04
-    #> B-A.5 3.232894e-04
-    #> B-A.6 3.232894e-04
+    #> B-A.1 2.748604e-05
+    #> B-A.2 1.163907e-04
+    #> B-A.3 2.931915e-04
+    #> B-A.4 2.931915e-04
+    #> B-A.5 2.996937e-04
+    #> B-A.6 2.996937e-04
 
 #### Enhanced
 
@@ -272,9 +245,9 @@ dat_volcano_enhanced <- moo@analyses$diff |>
 #> Joining with `by = join_by(GeneName)`
 #> Joining with `by = join_by(GeneName)`
 #> Genes in initial dataset: 7943
-#> Max y: 4.60041859457819
+#> Max y: 4.56088783571366
 #> Genes in initial dataset: 7943
-#> Max y: 4.32577808863472
+#> Max y: 4.34744066227962
 ```
 
 ![](visualization_files/figure-html/volcano_enhanced-1.png)
@@ -283,8 +256,8 @@ dat_volcano_enhanced <- moo@analyses$diff |>
 
 ``` r
 venn_dat <- dat_volcano_summary |> plot_venn_diagram()
-#> All intersections: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(79, 119, 265, 493, 149, 271, 516),c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")
-#> Intersections returned: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(79, 119, 265, 493, 149, 271, 516)
+#> All intersections: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516),c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")
+#> Intersections returned: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516)
 ```
 
 ![](visualization_files/figure-html/venn_diagram-1.png)
@@ -292,10 +265,10 @@ venn_dat <- dat_volcano_summary |> plot_venn_diagram()
 ``` r
 head(venn_dat)
 #>    Gene      Intersection Id Size
-#> 1  Dntt (B-A ∩ B-C ∩ C-A)  1   79
-#> 2  Flt3 (B-A ∩ B-C ∩ C-A)  1   79
-#> 3   Id2 (B-A ∩ B-C ∩ C-A)  1   79
-#> 4 Eltd1 (B-A ∩ B-C ∩ C-A)  1   79
-#> 5 Runx3 (B-A ∩ B-C ∩ C-A)  1   79
-#> 6 Dusp6 (B-A ∩ B-C ∩ C-A)  1   79
+#> 1  Dntt (B-A ∩ B-C ∩ C-A)  1   80
+#> 2  Flt3 (B-A ∩ B-C ∩ C-A)  1   80
+#> 3   Id2 (B-A ∩ B-C ∩ C-A)  1   80
+#> 4 Eltd1 (B-A ∩ B-C ∩ C-A)  1   80
+#> 5 Runx3 (B-A ∩ B-C ∩ C-A)  1   80
+#> 6 Dusp6 (B-A ∩ B-C ∩ C-A)  1   80
 ```

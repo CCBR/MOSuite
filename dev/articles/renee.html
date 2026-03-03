@@ -73,8 +73,6 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CCBR/MOSuite" class="external-link">MOSuite</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
-<span><span class="co">#&gt; 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
@@ -278,18 +276,18 @@
 <span><span class="co">#&gt;  .. $ diff     :List of 1</span></span>
 <span><span class="co">#&gt;  ..  ..$ knockout-wildtype:'data.frame': 291 obs. of  6 variables:</span></span>
 <span><span class="co">#&gt;  ..  .. ..$ gene_id: chr [1:291] "ENSG00000215458.8" "ENSG00000160179.18" "ENSG00000258017.1" "ENSG00000282393.1" ...</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ FC     : num [1:291] 4.69 -2.13 1.32 1.32 1.32 ...</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ logFC  : num [1:291] 2.23 -1.09 0.396 0.396 0.396 ...</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ tstat  : num [1:291] 2.956 -0.957 0.557 0.557 0.557 ...</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ pval   : num [1:291] 0.0648 0.4135 0.6188 0.6188 0.6188 ...</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ adjpval: num [1:291] 0.185 0.658 0.69 0.69 0.69 ...</span></span>
-<span><span class="co">#&gt;  .. $ diff_filt:'data.frame':    54 obs. of  6 variables:</span></span>
-<span><span class="co">#&gt;  ..  ..$ gene_id                  : chr [1:54] "ENSG00000154734.15" "ENSG00000154736.6" "ENSG00000232855.6" "ENSG00000231324.1" ...</span></span>
-<span><span class="co">#&gt;  ..  ..$ knockout-wildtype_FC     : num [1:54] -54.2 -35.5 -7.17 -2.77 6.7 -6.39 -27.8 -5.62 6.25 6.7 ...</span></span>
-<span><span class="co">#&gt;  ..  ..$ knockout-wildtype_logFC  : num [1:54] -5.76 -5.15 -2.84 -1.47 2.74 -2.68 -4.8 -2.49 2.64 2.74 ...</span></span>
-<span><span class="co">#&gt;  ..  ..$ knockout-wildtype_tstat  : num [1:54] -103 -31.1 -14.8 -6.67 8.72 -13.4 -14.4 -11.1 6.94 8.72 ...</span></span>
-<span><span class="co">#&gt;  ..  ..$ knockout-wildtype_pval   : num [1:54] 4.16e-06 1.19e-04 9.54e-04 8.40e-03 4.07e-03 1.26e-03 1.02e-03 2.09e-03 7.57e-03 4.07e-03 ...</span></span>
-<span><span class="co">#&gt;  ..  ..$ knockout-wildtype_adjpval: num [1:54] 0.000695 0.00493 0.0139 0.0479 0.0296 0.0146 0.014 0.0194 0.0468 0.0296 ...</span></span></code></pre></div>
+<span><span class="co">#&gt;  ..  .. ..$ FC     : num [1:291] 5.02 -2.14 1.32 1.32 1.32 ...</span></span>
+<span><span class="co">#&gt;  ..  .. ..$ logFC  : num [1:291] 2.327 -1.094 0.396 0.396 0.396 ...</span></span>
+<span><span class="co">#&gt;  ..  .. ..$ tstat  : num [1:291] 3.098 -0.948 0.945 0.945 0.945 ...</span></span>
+<span><span class="co">#&gt;  ..  .. ..$ pval   : num [1:291] 0.0596 0.4186 0.4196 0.4196 0.4196 ...</span></span>
+<span><span class="co">#&gt;  ..  .. ..$ adjpval: num [1:291] 0.175 0.49 0.49 0.49 0.49 ...</span></span>
+<span><span class="co">#&gt;  .. $ diff_filt:'data.frame':    58 obs. of  6 variables:</span></span>
+<span><span class="co">#&gt;  ..  ..$ gene_id                  : chr [1:58] "ENSG00000154734.15" "ENSG00000154736.6" "ENSG00000232855.6" "ENSG00000231324.1" ...</span></span>
+<span><span class="co">#&gt;  ..  ..$ knockout-wildtype_FC     : num [1:58] -54.2 -35.6 -7.21 -2.76 6.7 -28.4 -6.43 -27.8 -5.6 6.25 ...</span></span>
+<span><span class="co">#&gt;  ..  ..$ knockout-wildtype_logFC  : num [1:58] -5.76 -5.15 -2.85 -1.46 2.74 -4.83 -2.69 -4.8 -2.49 2.64 ...</span></span>
+<span><span class="co">#&gt;  ..  ..$ knockout-wildtype_tstat  : num [1:58] -89.9 -26.5 -13.6 -6.39 10.5 -7.27 -12.4 -15.7 -10.4 8.19 ...</span></span>
+<span><span class="co">#&gt;  ..  ..$ knockout-wildtype_pval   : num [1:58] 7.21e-06 2.10e-04 1.30e-03 9.94e-03 2.67e-03 7.08e-03 1.68e-03 8.81e-04 2.72e-03 5.14e-03 ...</span></span>
+<span><span class="co">#&gt;  ..  ..$ knockout-wildtype_adjpval: num [1:58] 0.00119 0.00595 0.0145 0.0402 0.0208 0.0326 0.0158 0.0117 0.0208 0.0245 ...</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

@@ -286,14 +286,8 @@ plot_volcano_summary(nidap_deg_analysis, print_plots = TRUE)
 #> Fold change column: B-C_logFC
 #> pval column: B-C_pval
 #> Total number of features included in volcano plot: 7943
-#> Warning: ggrepel: 18 unlabeled data points (too many overlaps). Consider increasing max.overlaps
-#> Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider increasing max.overlaps
-#> Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider increasing max.overlaps
 
 #> Saving 6.67 x 6.67 in image
-#> Warning: ggrepel: 18 unlabeled data points (too many overlaps). Consider increasing max.overlaps
-#> Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider increasing max.overlaps
-#> Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider increasing max.overlaps
 #>                   Gene Contrast          FC     logFC      tstat         pval
 #> B-A.1             Dntt      B-A  -42.746586 -5.417737 -15.687975 3.159343e-09
 #> B-A.2           Tmsb4x      B-A    3.850020  1.944866  12.910261 2.760555e-08
