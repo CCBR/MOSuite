@@ -3,8 +3,15 @@ title: "MOSuite analysis report"
 date: today
 format: html
 params:
-    counts_tsv: 'RSEM.genes.expected_count.all_samples.txt.gz'
-    samplesheet_tsv: 'sample_metadata.tsv.gz'
+    counts_tsv: 'inst/extdata/nidap/Raw_Counts.csv.gz'
+    samplesheet_tsv: 'inst/extdata/nidap/Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz'
+    group_colname: 'Group'
+    batch_colname: 'Batch'
+    label_colname: 'Label'
+    contrasts:
+      - B-A
+      - C-A
+      - B-C
     print_plots: true
 engine: knitr
 ---
@@ -12,9 +19,11 @@ engine: knitr
 ```{r deps}
 library(MOSuite)
 library(dplyr)
-
+library(knitr)
 options(moo_prints_plots = params$print_plots)
 ```
+
+## Load data
 
 ```{r initialize}
 # create multi-omic object
@@ -22,33 +31,96 @@ moo <- create_multiOmicDataSet_from_files(
   sample_meta_filepath = params$samplesheet_tsv,
   feature_counts_filepath = params$counts_tsv
 )
+
+group_colname <- params$group_colname
+batch_colname <- params$batch_colname
+label_colname <- params$label_colname
+contrasts_vctr <- params$contrasts
+message(contrasts_vctr)
+message(class(contrasts_vctr))
 ```
 
-```{r analyze}
-moo %<>%
-  clean_raw_counts() %>%
-  filter_counts(
-    group_colname = "condition",
-    label_colname = "sample_id",
-    minimum_count_value_to_be_considered_nonzero = 1,
-    minimum_number_of_samples_with_nonzero_counts_in_total = 1,
-    minimum_number_of_samples_with_nonzero_counts_in_a_group = 1,
-  ) %>%
-  normalize_counts(
-    group_colname = "condition",
-    label_colname = "sample_id"
-  ) %>%
-  diff_counts(
-    covariates_colnames = "condition",
-    contrast_colname = "condition",
-    contrasts = c("knockout-wildtype")
-  ) %>%
-  filter_diff(
-    significance_cutoff = 0.05,
-    significance_column = "adjpval",
-    change_column = "logFC",
-    change_cutoff = 1
-  )
+## Processing
 
-moo@analyses$diff_filt %>% head() %>% knitr::kable()
+```{r analyze}
+moo |>
+  clean_raw_counts() |>
+  filter_counts(group_colname = group_colname) |>
+  normalize_counts(group_colname = group_colname) |>
+  batch_correct_counts(
+    covariates_colname = group_colname,
+    batch_colname = batch_colname,
+    label_colname = label_colname
+  ) |>
+  diff_counts(
+    count_type = "filt",
+    covariates_colnames = c(group_colname, batch_colname),
+    contrast_colname = c(group_colname),
+    contrasts = contrasts_vctr,
+    input_in_log_counts = FALSE,
+    return_mean_and_sd = FALSE,
+    voom_normalization_method = "quantile",
+  ) |>
+  filter_diff()
+
+moo@analyses$diff |>
+  join_dfs_wide() |>
+  head() |>
+  kable()
+
+moo@analyses$diff_filt |> head() |> kable()
+```
+
+## Visualization
+
+### 3D PCA
+
+```{r pca_3D}
+plot_pca(
+  moo@counts$batch,
+  moo@sample_meta,
+  principal_components = c(1, 2, 3),
+  group_colname = group_colname,
+  label_colname = label_colname,
+  color_values = moo@analyses[["colors"]][[group_colname]]
+)
+```
+
+### Expression Heatmap
+
+```{r expr_heatmap}
+heatmap_plot <- plot_expr_heatmap(
+  moo,
+  count_type = "norm",
+  sub_count_type = "voom"
+)
+print(heatmap_plot)
+```
+
+### Volcano
+
+#### Summary
+
+```{r volcano_summary}
+dat_volcano_summary <- moo@analyses$diff |>
+  join_dfs_wide() |>
+  plot_volcano_summary()
+
+head(dat_volcano_summary)
+```
+
+#### Enhanced
+
+```{r volcano_enhanced}
+dat_volcano_enhanced <- moo@analyses$diff |>
+  join_dfs_wide() |>
+  plot_volcano_enhanced()
+```
+
+
+### Venn Diagram
+
+```{r venn_diagram}
+venn_dat <- dat_volcano_summary |> plot_venn_diagram()
+head(venn_dat)
 ```

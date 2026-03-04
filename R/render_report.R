@@ -8,7 +8,13 @@
 #' @export
 #'
 #' @example
-#' render_report(execute_params = list(counts_tsv = system.file("extdata", "RSEM.genes.expected_count.all_samples.txt.gz", package = "MOSuite"), samplesheet_tsv = system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")))
+#' render_report(execute_params = list(
+#'   counts_tsv = system.file("extdata", "nidap", "Raw_Counts.csv.gz",
+#'                            package = "MOSuite"),
+#'   samplesheet_tsv = system.file("extdata", "nidap",
+#'     "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+#'     package = "MOSuite")
+#' ))
 render_report <- function(
   qmd_template = system.file("quarto", "report.qmd", package = "MOSuite"),
   ...
