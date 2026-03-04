@@ -17,7 +17,7 @@ Round doubles to integers and convert to integer type
 }
 \examples{
 \dontrun{
-data.frame(a = c(0, 0.1, 2.3, 5L, 6.9)) \%>\% as_integer_df()
+data.frame(a = c(0, 0.1, 2.3, 5L, 6.9)) |> as_integer_df()
 }
 }
 \keyword{internal}

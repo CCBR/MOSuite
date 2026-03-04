@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# MOSuite
+# MOSuite <a href="https://ccbr.github.io/MOSuite/"><img src="inst/extdata/logo/mosuite_logo_with_text.png" align="right" height="160" alt="MOSuite website" /></a>
 
 R package for differential multi-omics analysis
 
@@ -9,13 +9,10 @@ R package for differential multi-omics analysis
 
 [![R-CMD-check](https://github.com/CCBR/MOSuite/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CCBR/MOSuite/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/CCBR/MOSuite/graph/badge.svg?token=730OAPA4NU)](https://codecov.io/gh/CCBR/MOSuite)
+[![CodeQL](https://github.com/CCBR/MOSuite/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/CCBR/MOSuite/actions/workflows/github-code-scanning/codeql)
 [![version](https://img.shields.io/github/v/release/ccbr/mosuite)](https://github.com/CCBR/MOSuite/releases/latest)
+[![docker](https://img.shields.io/docker/v/nciccbr/mosuite?logo=docker&label=docker&color=blue)](https://hub.docker.com/r/nciccbr/mosuite)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16371580.svg)](https://doi.org/10.5281/zenodo.16371580)
-
-<!--
-[![docker](https://img.shields.io/docker/v/nciccbr/mosuite?logo=docker&label=docker&color=blue
-)](https://hub.docker.com/r/nciccbr/mosuite)
--->
 <!-- badges: end -->
 
 Multi-Omics Suite provides a suite of functions to clean, filter,
@@ -39,11 +36,16 @@ remotes::install_github("CCBR/MOSuite", dependencies = TRUE)
 Or install a specific version:
 
 ``` r
-remotes::install_github("CCBR/MOSuite", dependencies = TRUE, ref = "v0.1.0")
+remotes::install_github("CCBR/MOSuite", dependencies = TRUE, ref = "v0.2.1")
 ```
 
-There is also a docker image available at
+There is also a Docker container available at
 <https://hub.docker.com/r/nciccbr/mosuite>
+
+``` sh
+singularity exec docker://nciccbr/mosuite:v0.2.1 R -s -e \
+  'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'
+```
 
 ## Usage
 

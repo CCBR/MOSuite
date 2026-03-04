@@ -15,18 +15,17 @@ permissions:
 
 jobs:
   R-CMD-check:
-    runs-on: ${{ matrix.config.os }}
-
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     strategy:
       fail-fast: false
       matrix:
         config:
-          - { os: ubuntu-latest, r: "release" }
-          - { os: ubuntu-latest, r: "4.3" }
-          #- { os: ubuntu-latest, r: "devel" }
+          - { os: ubuntu-latest, r: 'release' }
+          - { os: ubuntu-latest, r: 'oldrel-1' }
+          - { os: macos-latest, r: 'release' }
 
+    runs-on: ${{ matrix.config.os }}
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
@@ -34,24 +33,48 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: r-lib/actions/setup-pandoc@v2
-
-      - uses: r-lib/actions/setup-r@v2
+      - uses: CCBR/actions/install-r-pak@main
         with:
+          versions-file: .github/package-versions.txt
+          extra-packages: local::.
+          needs: dev
           r-version: ${{ matrix.config.r }}
-          use-public-rspm: true
-
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
+          http-user-agent: ${{ matrix.config.http-user-agent }}
 
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: CCBR/actions/install-r-pak@main
+        with:
+          r-version: 4.5
+          versions-file: .github/package-versions.txt
+          needs: dev
+
+      - name: Good Practice checks
+        shell: Rscript {0}
+        run: |
+          g <- goodpractice::gp()
+          g
+          n_failed <- length(goodpractice::failed_checks(g))
+          if (n_failed > 0) {
+            warning(paste(n_failed, "failed checks"))
+          }
+
+      - name: Lint
+        shell: Rscript {0}
+        run: lintr::lint_package()
+        env:
+          LINTR_ERROR_ON_LINT: false
+
   check: # make sure all check jobs pass. https://github.com/orgs/community/discussions/4324#discussioncomment-3477871
     runs-on: ubuntu-latest
-    needs: [R-CMD-check]
+    needs: [R-CMD-check, lint]
     if: always()
     steps:
       - name: Successful build

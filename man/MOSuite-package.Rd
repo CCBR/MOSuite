@@ -34,6 +34,7 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item T. Joshua Meyer \email{thomas.meyer@nih.gov} [contributor]
   \item CCR Collaborative Bioinformatics Resource [copyright holder]
 }
 

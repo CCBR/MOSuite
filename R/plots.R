@@ -15,13 +15,15 @@
 #' @export
 #' @family plotters
 #' @keywords plotters
-print_or_save_plot <- function(plot_obj,
-                               filename,
-                               print_plots = options::opt("print_plots"),
-                               save_plots = options::opt("save_plots"),
-                               plots_dir = options::opt("plots_dir"),
-                               graphics_device = grDevices::png,
-                               ...) {
+print_or_save_plot <- function(
+  plot_obj,
+  filename,
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_dir = options::opt("plots_dir"),
+  graphics_device = grDevices::png,
+  ...
+) {
   if (isTRUE(print_plots)) {
     print(plot_obj)
   }
@@ -38,6 +40,8 @@ print_or_save_plot <- function(plot_obj,
     # select saving methods depending on plot object class
     if (inherits(plot_obj, "ggplot")) {
       ggplot2::ggsave(filename = filename, plot = plot_obj, ...)
+    } else if (inherits(plot_obj, "htmlwidget")) {
+      htmlwidgets::saveWidget(plot_obj, filename, ...)
     } else {
       graphics_device(file = filename)
       plot(plot_obj)

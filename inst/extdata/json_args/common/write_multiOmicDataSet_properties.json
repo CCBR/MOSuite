@@ -1,0 +1,6 @@
+{
+  "moo_input_rds": "moo_diff_filter.rds",
+  "output_dir": {
+    "defaultValue": "moo"
+  }
+}

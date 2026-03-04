@@ -7,7 +7,8 @@
 plot_corr_heatmap(moo_counts, ...)
 }
 \arguments{
-\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
+slot}
 
 \item{...}{arguments forwarded to method \link{plot_corr_heatmap_dat}}
 }
@@ -15,10 +16,7 @@ plot_corr_heatmap(moo_counts, ...)
 heatmap from \code{ComplexHeatmap::Heatmap()}
 }
 \description{
-The first argument can be a \code{multiOmicDataset} object (\code{moo}) or a \code{data.frame} containing counts.
-For a \code{moo}, choose which counts slot to use with \code{count_type} & (optionally) \code{sub_count_type}.
-For a \code{data.frame}, you must also set \code{sample_metadata}.
-All other arguments are optional.
+Plot correlation heatmap
 }
 \section{Methods}{
 \tabular{ll}{
@@ -78,8 +76,7 @@ Other plotters:
 \code{\link{print_or_save_plot}()}
 
 Other heatmaps: 
-\code{\link{plot_expr_heatmap}()},
-\code{\link{plot_expr_heatmap_dat}}
+\code{\link{plot_expr_heatmap}()}
 
 Other moo methods: 
 \code{\link{batch_correct_counts}()},

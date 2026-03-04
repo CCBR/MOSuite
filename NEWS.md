@@ -1,20 +1,52 @@
-# MOSuite (development version)
+## development version
 
-# MOSuite 0.2.0
+- Fix recursion error in `plot_venn_diagram()`. (#188, @kelly-sovacool)
 
-- Any user-facing function can now be called from the unix command line.  (#126, #127)
+## MOSuite 0.3.0
+
+### New features
+
+- New function `write_multiOmicDataSet_properties()`. (#173, @kelly-sovacool)
+  - Extracts all the properties from a multiOmicDataSet and writes any data frames as csv files, other objects are written as rds files.
+- New utility functions to reduce code duplication across Code Ocean capsules: (#185, @kelly-sovacool)
+  `setup_capsule_environment()`, `load_moo_from_data_dir()`, `parse_optional_vector()`, `parse_vector_with_default()`, and `parse_samples_to_rename()`.
+
+### Bug fixes
+
+- Fixed bug in `clean_raw_counts()` where duplicate gene rows were not being aggregated correctly. (#162, @TJoshMeyer)
+- Fixed `batch_correct_counts()` to gracefully skip batch correction when only a single batch level exists; the function now warns without erroring. (#158, @TJoshMeyer)
+- Fixed `multiOmicDataSet` validator to return character vector instead of using `stop()` per S7 documentation. (#177, @copilot, @kelly-sovacool)
+- Fixed duplicate PCA figure files in `filter_counts()`, `normalize_counts()`, and `batch_correct_counts()`. (#180, @kelly-sovacool)
+- Bug fixes: (#174, @kelly-sovacool)
+  - Fixed bugs in `plot_volcano_summary()`, `plot_volcano_enhanced()`, and `plot_pca_3d()` when used with multiOmicDataSet objects.
+  - Fixed bug in `filter_diff()` when `filtering_mode = "all"` that was causing plot rendering errors.
+  - Fixed `plot_pca_2d()` to save plots to disk correctly.
+- Replaced deprecated `arrange_()` with `arrange()` in `plot_expr_heatmap()`. (#182, @kelly-sovacool)
+- Improvements for use with Galaxy. (#168, #170, #171, #174, @kelly-sovacool)
+
+## MOSuite 0.2.1
+
+- A docker image is now available. (#134)
+  - <https://hub.docker.com/r/nciccbr/mosuite>
+- Minor documentation improvements. (#135)
+- Improvements for use with Galaxy. (#149)
+- Fixed bug where 3D PCA plots were not being saved. (#149)
+
+## MOSuite 0.2.0
+
+- Any user-facing function can now be called from the unix command line to support Galaxy.  (#126, #127)
   Usage: `mosuite [function] --json=path/to/args`
-  See the new `cli` vignette for detailed instructions.
+  - It is not recommended for most users to run MOSuite via the CLI; this is only intended for the Galaxy workflow.
 - MOSuite is now archived in Zenodo with a DOI: [10.5281/zenodo.16371580](http://doi.org/10.5281/zenodo.16371580)
 
-# MOSuite 0.1.0
+## MOSuite 0.1.0
 
 This is the first release of MOSuite 🎉
 
 - Note: at the start of development, this package was called reneeTools.
   Later it was renamed to MOSuite. (#76)
 
-## Main functions & classes
+### Main functions & classes
 
 - `multiOmicDataSet` (#16, #28)
   - `create_multiOmicDataSet_from_files()`
@@ -28,7 +60,7 @@ This is the first release of MOSuite 🎉
 - `diff_counts()` (#102)
 - `filter_diff()` (#110)
 
-### visualization
+#### visualization
 
 - `plot_histogram()` (#96)
 - `plot_corr_heatmap()` (#96)
@@ -38,7 +70,7 @@ This is the first release of MOSuite 🎉
 - `plot_volcano_summary()` (#112)
 - `plot_venn_diagram()` (#111)
 
-## vignettes
+### vignettes
 
 - `intro`
 - `visualization`

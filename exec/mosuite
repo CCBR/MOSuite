@@ -2,4 +2,4 @@
 
 # inspired by https://github.com/rstudio/renv/blob/d0eb86349d35679eb6920ca59072bd7369fe620f/inst/bin/renv
 
-R --no-save --no-restore -s -e "MOSuite::cli_exec()" --args "$@"
+R --no-save --no-restore -s -e "getExportedValue('MOSuite','cli_exec')()" --args "$@"

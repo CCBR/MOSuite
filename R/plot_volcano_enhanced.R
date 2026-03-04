@@ -1,25 +1,143 @@
+#' @rdname plot_volcano_enhanced
+#' @name plot_volcano_enhanced
+#' @export
+plot_volcano_enhanced <- S7::new_generic(
+  "plot_volcano_enhanced",
+  "moo_diff",
+  function(
+    moo_diff,
+    feature_id_colname = NULL,
+    signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+    signif_threshold = 0.05,
+    change_colname = c("B-A_logFC", "B-C_logFC"),
+    change_threshold = 1.0,
+    value_to_sort_the_output_dataset = "p-value",
+    num_features_to_label = 30,
+    use_only_addition_labels = FALSE,
+    additional_labels = "",
+    is_red = TRUE,
+    lab_size = 4,
+    change_sig_name = "p-value",
+    change_lfc_name = "log2FC",
+    title = "Volcano Plots",
+    use_custom_lab = FALSE,
+    ylim = 0,
+    custom_xlim = "",
+    xlim_additional = 0,
+    ylim_additional = 0,
+    axis_lab_size = 24,
+    point_size = 2,
+    image_width = 3000,
+    image_height = 3000,
+    dpi = 300,
+    interactive_plots = FALSE,
+    print_plots = options::opt("print_plots"),
+    save_plots = options::opt("save_plots"),
+    plots_subdir = "diff",
+    plot_filename = "volcano_enhanced.png"
+  ) {
+    return(S7::S7_dispatch())
+  }
+)
+
+#' @rdname plot_volcano_enhanced
+#' @name plot_volcano_enhanced
+#' @export
+S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
+  moo_diff,
+  feature_id_colname = NULL,
+  signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+  signif_threshold = 0.05,
+  change_colname = c("B-A_logFC", "B-C_logFC"),
+  change_threshold = 1.0,
+  value_to_sort_the_output_dataset = "p-value",
+  num_features_to_label = 30,
+  use_only_addition_labels = FALSE,
+  additional_labels = "",
+  is_red = TRUE,
+  lab_size = 4,
+  change_sig_name = "p-value",
+  change_lfc_name = "log2FC",
+  title = "Volcano Plots",
+  use_custom_lab = FALSE,
+  ylim = 0,
+  custom_xlim = "",
+  xlim_additional = 0,
+  ylim_additional = 0,
+  axis_lab_size = 24,
+  point_size = 2,
+  image_width = 3000,
+  image_height = 3000,
+  dpi = 300,
+  interactive_plots = FALSE,
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff",
+  plot_filename = "volcano_enhanced.png"
+) {
+  return(
+    join_dfs_wide(moo_diff@analyses$diff) |>
+      plot_volcano_enhanced(
+        feature_id_colname,
+        signif_colname,
+        signif_threshold,
+        change_colname,
+        change_threshold,
+        value_to_sort_the_output_dataset,
+        num_features_to_label,
+        use_only_addition_labels,
+        additional_labels,
+        is_red,
+        lab_size,
+        change_sig_name,
+        change_lfc_name,
+        title,
+        use_custom_lab,
+        ylim,
+        custom_xlim,
+        xlim_additional,
+        ylim_additional,
+        axis_lab_size,
+        point_size,
+        image_width,
+        image_height,
+        dpi,
+        interactive_plots,
+        print_plots,
+        save_plots,
+        plots_subdir,
+        plot_filename
+      )
+  )
+}
+
 #' Enhanced Volcano Plot
 #'
-#' Uses [Bioconductor's Enhanced Volcano Plot](https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html).
+#' Uses [Bioconductor's Enhanced Volcano
+#' Plot](https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html).
 #'
 #' @inheritParams option_params
 #' @inheritParams filter_counts
 #'
-#' @param moo_diff Differential expression analysis result from one or more contrasts
-#' @param signif_colname column name of significance values (e.g., adjusted p-values or FDR). This column will be used to determine which points are considered significant in the volcano plot.
-#' @param signif_threshold Numeric value specifying the significance cutoff for p-values (i.e. filters on `signif_colname`)
+#' @param moo_diff Differential expression analysis result from one or more contrasts. This must be a dataframe.
+#' @param signif_colname column name of significance values (e.g., adjusted p-values or FDR). This column will be used
+#'   to determine which points are considered significant in the volcano plot.
+#' @param signif_threshold Numeric value specifying the significance cutoff for p-values (i.e. filters on
+#'   `signif_colname`)
 #' @param change_colname column name of fold change values.
-#' @param change_threshold Numeric value specifying the fold change cutoff for significance (i.e. filters on `change_colname`)
+#' @param change_threshold Numeric value specifying the fold change cutoff for significance (i.e. filters on
+#'   `change_colname`)
 #' @param value_to_sort_the_output_dataset How to sort the output dataset. Options are "fold-change" or "p-value".
 #' @param num_features_to_label Number of top features/genes to label in the volcano plot. Default is 30.
-#' @param use_only_addition_labels If `TRUE`, only the additional labels specified in `additional_labels` will be used for labeling in the volcano plot, ignoring the top features.
+#' @param use_only_addition_labels If `TRUE`, only the additional labels specified in `additional_labels` will be used
+#'   for labeling in the volcano plot, ignoring the top features.
 #' @param additional_labels comma-separated string of feature names or IDs to include in the volcano plot.
 #' @param is_red Logical. If TRUE, highlights points in red.
 #' @param lab_size Size of the labels in the volcano plot.
 #' @param change_sig_name Name for the significance column in the plot. Default is "p-value".
 #' @param change_lfc_name Name for the fold change column in the plot. Default is "log2FC".
 #' @param title Title of the plot. Default is "Volcano Plots".
-#' @param use_custom_lab If TRUE, uses custom labels for the plot.
+#' @param use_custom_lab If TRUE, uses custom labels for the plot (set by `change_sig_name` and `change_lfc_name`)
 #' @param ylim Y-axis limits for the plot.
 #' @param custom_xlim Custom X-axis limits for the plot.
 #' @param xlim_additional Additional space to add to the X-axis limits.
@@ -37,36 +155,40 @@
 #' @examples
 #' plot_volcano_enhanced(nidap_deg_analysis, print_plots = TRUE)
 #'
-plot_volcano_enhanced <- function(moo_diff,
-                                  feature_id_colname = NULL,
-                                  signif_colname = c("B-A_adjpval", "B-C_adjpval"),
-                                  signif_threshold = 0.05,
-                                  change_colname = c("B-A_logFC", "B-C_logFC"),
-                                  change_threshold = 1.0,
-                                  value_to_sort_the_output_dataset = "p-value",
-                                  num_features_to_label = 30,
-                                  use_only_addition_labels = FALSE,
-                                  additional_labels = "",
-                                  is_red = TRUE,
-                                  lab_size = 4,
-                                  change_sig_name = "p-value",
-                                  change_lfc_name = "log2FC",
-                                  title = "Volcano Plots",
-                                  use_custom_lab = FALSE,
-                                  ylim = 0,
-                                  custom_xlim = "",
-                                  xlim_additional = 0,
-                                  ylim_additional = 0,
-                                  axis_lab_size = 24,
-                                  point_size = 2,
-                                  image_width = 3000,
-                                  image_height = 3000,
-                                  dpi = 300,
-                                  interactive_plots = FALSE,
-                                  print_plots = options::opt("print_plots"),
-                                  save_plots = options::opt("save_plots"),
-                                  plots_subdir = "diff",
-                                  plot_filename = "volcano_enhanced.png") {
+#' @rdname plot_volcano_enhanced
+#' @name plot_volcano_enhanced
+S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
+  moo_diff,
+  feature_id_colname = NULL,
+  signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+  signif_threshold = 0.05,
+  change_colname = c("B-A_logFC", "B-C_logFC"),
+  change_threshold = 1.0,
+  value_to_sort_the_output_dataset = "p-value",
+  num_features_to_label = 30,
+  use_only_addition_labels = FALSE,
+  additional_labels = "",
+  is_red = TRUE,
+  lab_size = 4,
+  change_sig_name = "p-value",
+  change_lfc_name = "log2FC",
+  title = "Volcano Plots",
+  use_custom_lab = FALSE,
+  ylim = 0,
+  custom_xlim = "",
+  xlim_additional = 0,
+  ylim_additional = 0,
+  axis_lab_size = 24,
+  point_size = 2,
+  image_width = 3000,
+  image_height = 3000,
+  dpi = 300,
+  interactive_plots = FALSE,
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff",
+  plot_filename = "volcano_enhanced.png"
+) {
   abort_packages_not_installed("EnhancedVolcano")
   ### PH
   # Input - DEG table from Limma DEG template
@@ -84,17 +206,21 @@ plot_volcano_enhanced <- function(moo_diff,
   plots_list <- list()
 
   # user can select multiple comparisons to create volcano plots
-  for (i in 1:length(change_colname)) {
+  for (i in seq_along(change_colname)) {
     ### PH: START Build table for Volcano plot
 
     lfccol <- change_colname[i]
     sigcol <- signif_colname[i]
     columns_of_interest <- c(label_col, change_colname[i], signif_colname[i])
-    df <- diff_dat %>%
-      dplyr::select(tidyselect::one_of(columns_of_interest)) %>%
-      dplyr::mutate(!!rlang::sym(lfccol) := tidyr::replace_na(!!rlang::sym(lfccol), 0)) %>%
-      dplyr::mutate(!!rlang::sym(sigcol) := tidyr::replace_na(!!rlang::sym(sigcol), 1))
-    # mutate(.data[[lfc.col[i]]] = replace_na(.data[[lfc.col[i]]], 0)) %>%
+    df <- diff_dat |>
+      dplyr::select(tidyselect::one_of(columns_of_interest)) |>
+      dplyr::mutate(
+        !!rlang::sym(lfccol) := tidyr::replace_na(!!rlang::sym(lfccol), 0)
+      ) |>
+      dplyr::mutate(
+        !!rlang::sym(sigcol) := tidyr::replace_na(!!rlang::sym(sigcol), 1)
+      )
+    # mutate(.data[[lfc.col[i]]] = replace_na(.data[[lfc.col[i]]], 0)) |>
     # mutate(.data[[sig.col[i]]] = replace_na(.data[[sig.col[i]]], 1))
     if (use_custom_lab == TRUE) {
       if (nchar(change_lfc_name) == 0) {
@@ -110,7 +236,8 @@ plot_volcano_enhanced <- function(moo_diff,
     }
 
     ### PH: START Creating rank based on pvalue and fold change
-    ## This is unique to this template and could be useful as a generic tool to create rankes for GSEA. Recommend extracting this function
+    # This is unique to this template and could be useful as a generic tool to create rankes for GSEA. Recommend
+    # extracting this function
     group <- gsub("_pval|p_val_", "", sig_name)
     rank[[i]] <- -log10(df[[sig_name]]) * sign(df[[lfc_name]])
     names(rank)[i] <- paste0("C_", group, "_rank")
@@ -120,14 +247,16 @@ plot_volcano_enhanced <- function(moo_diff,
 
     # Select top genes by logFC or Significance
     if (value_to_sort_the_output_dataset == "fold-change") {
-      df <- df %>% dplyr::arrange(dplyr::desc(.data[[lfc_name]]))
+      df <- df |> dplyr::arrange(dplyr::desc(.data[[lfc_name]]))
     } else if (value_to_sort_the_output_dataset == "p-value") {
-      df <- df %>% dplyr::arrange(.data[[sig_name]])
+      df <- df |> dplyr::arrange(.data[[sig_name]])
     }
 
     if (is_red) {
-      df_sub <- df[df[[sigcol]] <= signif_threshold &
-        abs(df[[lfccol]]) >= change_threshold, ]
+      df_sub <- df[
+        df[[sigcol]] <= signif_threshold &
+          abs(df[[lfccol]]) >= change_threshold,
+      ]
     } else {
       df_sub <- df
     }
@@ -144,7 +273,9 @@ plot_volcano_enhanced <- function(moo_diff,
     additional_labels <- additional_labels[filter]
 
     if (length(missing_labels) > 0) {
-      message(glue::glue(("Could not find missing labels:\t{paste(missing_labels, collapse = ', ')}")))
+      message(glue::glue(
+        ("Could not find missing labels:\t{paste(missing_labels, collapse = ', ')}")
+      ))
     }
 
     if (use_only_addition_labels) {
@@ -157,11 +288,11 @@ plot_volcano_enhanced <- function(moo_diff,
     significant[] <- "Not significant"
     significant[which(abs(df[, 2]) > change_threshold)] <- "Fold change only"
     significant[which(df[, 3] < signif_threshold)] <- "Significant only"
-    significant[which(abs(df[, 2]) > change_threshold &
-      df[, 3] < signif_threshold)] <- "Significant and fold change"
+    significant[which(
+      abs(df[, 2]) > change_threshold & df[, 3] < signif_threshold
+    )] <- "Significant and fold change"
 
     ### PH: END Build table for Volcano plot
-
 
     ### PH: START Create Volcano plot
 
@@ -202,8 +333,6 @@ plot_volcano_enhanced <- function(moo_diff,
     }
     maxy <- ceiling(maxy)
 
-
-
     ## X-axis custom range change:
     if (custom_xlim == "") {
       xlim <- c(
@@ -211,7 +340,10 @@ plot_volcano_enhanced <- function(moo_diff,
         ceiling(max(df[, lfc_name])) + xlim_additional
       )
     } else if (grepl(",", custom_xlim) == FALSE) {
-      xlim <- c(-1 * as.numeric(trimws(custom_xlim)), as.numeric(trimws(custom_xlim)))
+      xlim <- c(
+        -1 * as.numeric(trimws(custom_xlim)),
+        as.numeric(trimws(custom_xlim))
+      )
     } else {
       split_values <- strsplit(custom_xlim, ",")[[1]]
 
@@ -244,7 +376,6 @@ plot_volcano_enhanced <- function(moo_diff,
       }
     }
 
-
     volcano_plot <- EnhancedVolcano::EnhancedVolcano(
       df,
       x = lfc_name,
@@ -253,7 +384,7 @@ plot_volcano_enhanced <- function(moo_diff,
       selectLab = genes_to_label,
       title = title,
       # CHANGE NW: See line 78
-      subtitle <- group,
+      subtitle = group,
       xlab = xlab,
       ylab = ylab,
       xlim = xlim,
@@ -278,7 +409,7 @@ plot_volcano_enhanced <- function(moo_diff,
         selectLab = NULL,
         title = title,
         # CHANGE NW: See line 78
-        subtitle <- group,
+        subtitle = group,
         xlab = xlab,
         ylab = ylab,
         xlim = xlim,
@@ -325,11 +456,15 @@ plot_volcano_enhanced <- function(moo_diff,
     plots_list[[i]] <- volcano_plot
   }
   plot_patchwork <- patchwork::wrap_plots(plots_list)
-  print_or_save_plot(plot_patchwork,
+  print_or_save_plot(
+    plot_patchwork,
     filename = file.path(plots_subdir, plot_filename),
-    print_plots = print_plots, save_plots = save_plots,
+    print_plots = print_plots,
+    save_plots = save_plots,
     units = "px",
-    width = image_width, height = image_height, dpi = dpi
+    width = image_width,
+    height = image_height,
+    dpi = dpi
   )
 
   df_final <- cbind(diff_dat, do.call(cbind, rank))

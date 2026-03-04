@@ -8,7 +8,8 @@
 
 \item{count_type}{the type of counts to use. Must be a name in the counts slot (\code{names(moo@counts)}).}
 
-\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list. Must be a name in \code{names(moo@counts[[count_type]])}.}
+\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
+Must be a name in \code{names(moo@counts[[count_type]])}.}
 
 \item{...}{arguments forwarded to method \link{plot_corr_heatmap_dat}}
 }
@@ -19,7 +20,6 @@ Plot correlation heatmap for multiOmicDataSet
 \link{plot_corr_heatmap} generic
 
 Other plotters for multiOmicDataSets: 
-\code{\link{plot_expr_heatmap_moo}},
 \code{\link{plot_histogram_moo}},
 \code{\link{plot_pca_moo}},
 \code{\link{plot_read_depth_moo}}

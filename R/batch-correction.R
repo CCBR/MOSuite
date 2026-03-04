@@ -1,6 +1,6 @@
 #' Perform batch correction
 #'
-#' using `sva::ComBat()`
+#' Perform batch correction using sva::ComBat()
 #'
 #' @inheritParams filter_counts
 #' @inheritParams option_params
@@ -33,7 +33,7 @@
 #'       "voom" = as.data.frame(nidap_norm_counts)
 #'     )
 #'   )
-#' ) %>%
+#' ) |>
 #'   batch_correct_counts(
 #'     count_type = "norm",
 #'     sub_count_type = "voom",
@@ -45,19 +45,21 @@
 #' head(moo@counts[["batch"]])
 #'
 #' @family moo methods
-batch_correct_counts <- function(moo,
-                                 count_type = "norm",
-                                 sub_count_type = "voom",
-                                 sample_id_colname = NULL,
-                                 feature_id_colname = NULL,
-                                 samples_to_include = NULL,
-                                 covariates_colnames = "Group",
-                                 batch_colname = "Batch",
-                                 label_colname = NULL,
-                                 colors_for_plots = NULL,
-                                 print_plots = options::opt("print_plots"),
-                                 save_plots = options::opt("save_plots"),
-                                 plots_subdir = "batch") {
+batch_correct_counts <- function(
+  moo,
+  count_type = "norm",
+  sub_count_type = "voom",
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  samples_to_include = NULL,
+  covariates_colnames = "Group",
+  batch_colname = "Batch",
+  label_colname = NULL,
+  colors_for_plots = NULL,
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "batch"
+) {
   abort_packages_not_installed("sva")
   # select correct counts matrix
   if (!(count_type %in% names(moo@counts))) {
@@ -80,11 +82,17 @@ batch_correct_counts <- function(moo,
     }
     counts_dat <- moo@counts[[count_type]][[sub_count_type]]
   }
-  sample_metadata <- moo@sample_meta
-  batch_vctr <- sample_metadata %>% dplyr::pull(batch_colname)
-  message(glue::glue("* batch-correcting {glue::glue_collapse(c(count_type, sub_count_type),sep='-')} counts"))
+  # sva::ComBat() can't handle tibbles
+  counts_dat <- counts_dat |> as.data.frame()
+  sample_metadata <- moo@sample_meta |> as.data.frame()
+  batch_vctr <- sample_metadata |> dplyr::pull(batch_colname)
+  message(
+    glue::glue(
+      "* batch-correcting {glue::glue_collapse(c(count_type, sub_count_type),sep='-')} counts"
+    )
+  )
 
-  covariates_colnames %<>% unlist()
+  covariates_colnames <- covariates_colnames |> unlist()
 
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
@@ -93,7 +101,7 @@ batch_correct_counts <- function(moo,
     feature_id_colname <- colnames(counts_dat)[1]
   }
   if (is.null(samples_to_include)) {
-    samples_to_include <- sample_metadata %>% dplyr::pull(sample_id_colname)
+    samples_to_include <- sample_metadata |> dplyr::pull(sample_id_colname)
   }
   if (is.null(label_colname)) {
     label_colname <- sample_id_colname
@@ -101,37 +109,44 @@ batch_correct_counts <- function(moo,
 
   if (batch_colname %in% covariates_colnames) {
     stop(glue::glue(
-      "Batch column ({batch_colname}) cannot be included in covariates."
+      "Batch column '{batch_colname}' cannot be included in covariates."
     ))
   }
   if (length(unique(batch_vctr)) <= 1) {
     combat_edata <- counts_dat
     warning(
       glue::glue(
-        "Batch column {batch_column} contains only 1 unique value; skipping batch correction"
+        "Batch column '{batch_colname}' contains only 1 unique value; skipping batch correction"
       )
     )
   } else {
-    counts_matr <- counts_dat %>%
+    counts_matr <- counts_dat |>
       counts_dat_to_matrix(feature_id_colname = feature_id_colname)
     # coerce covariate columns to factors
-    sample_metadata %<>%
-      dplyr::mutate(dplyr::across(tidyselect::all_of(covariates_colnames), ~ as.factor(.x)))
+    sample_metadata <- sample_metadata |>
+      dplyr::mutate(dplyr::across(
+        tidyselect::all_of(covariates_colnames),
+        ~ as.factor(.x)
+      ))
     # run batch correction
     combat_edata <- sva::ComBat(
       counts_matr,
       batch = batch_vctr,
-      mod = stats::model.matrix(stats::as.formula(paste(
-        "~", paste(covariates_colnames, sep = "+", collapse = "+")
-      )), data = sample_metadata),
+      mod = stats::model.matrix(
+        stats::as.formula(paste(
+          "~",
+          paste(covariates_colnames, sep = "+", collapse = "+")
+        )),
+        data = sample_metadata
+      ),
       par.prior = TRUE,
       prior.plots = FALSE
-    ) %>%
-      as.data.frame() %>%
+    ) |>
+      as.data.frame() |>
       tibble::rownames_to_column(feature_id_colname)
   }
 
-  if (isTRUE(print_plots) | isTRUE(save_plots)) {
+  if (isTRUE(print_plots) || isTRUE(save_plots)) {
     if (is.null(colors_for_plots)) {
       colors_for_plots <- moo@analyses[["colors"]][[batch_colname]]
     }
@@ -142,8 +157,10 @@ batch_correct_counts <- function(moo,
       feature_id_colname = feature_id_colname,
       group_colname = batch_colname,
       label_colname = label_colname,
-      color_values = colors_for_plots
-    ) + ggplot2::labs(caption = "batch-corrected counts")
+      color_values = colors_for_plots,
+      save_plots = FALSE
+    ) +
+      ggplot2::labs(caption = "batch-corrected counts")
 
     hist_plot <- plot_histogram(
       combat_edata,
@@ -154,7 +171,8 @@ batch_correct_counts <- function(moo,
       label_colname = label_colname,
       color_values = colors_for_plots,
       color_by_group = TRUE
-    ) + ggplot2::labs(caption = "batch-corrected counts")
+    ) +
+      ggplot2::labs(caption = "batch-corrected counts")
     corHM_plot <- plot_corr_heatmap(
       combat_edata,
       sample_metadata = sample_metadata,
@@ -163,23 +181,32 @@ batch_correct_counts <- function(moo,
       group_colname = batch_colname,
       label_colname = label_colname,
       color_values = colors_for_plots
-    ) + ggplot2::labs(caption = "batch-corrected counts")
+    ) +
+      ggplot2::labs(caption = "batch-corrected counts")
 
-    print_or_save_plot(pca_plot,
+    print_or_save_plot(
+      pca_plot,
       filename = file.path(plots_subdir, "pca.png"),
-      print_plots = print_plots, save_plots = save_plots
+      print_plots = print_plots,
+      save_plots = save_plots
     )
-    print_or_save_plot(hist_plot,
+    print_or_save_plot(
+      hist_plot,
       filename = file.path(plots_subdir, "histogram.png"),
-      print_plots = print_plots, save_plots = save_plots
+      print_plots = print_plots,
+      save_plots = save_plots
     )
-    print_or_save_plot(corHM_plot,
+    print_or_save_plot(
+      corHM_plot,
       filename = file.path(plots_subdir, "corr_heatmap.png"),
-      print_plots = print_plots, save_plots = save_plots
+      print_plots = print_plots,
+      save_plots = save_plots
     )
   }
 
-  message(glue::glue("The total number of features in output: {nrow(combat_edata)}"))
+  message(glue::glue(
+    "The total number of features in output: {nrow(combat_edata)}"
+  ))
   message(glue::glue(
     "Number of samples after batch correction: {ncol(combat_edata)}"
   ))

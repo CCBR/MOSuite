@@ -1,9 +1,9 @@
 options::set_option_name_fn(function(package, name) {
-  tolower(paste0("moo_", name))
+  return(tolower(paste0("moo_", name)))
 })
 
 options::set_envvar_name_fn(function(package, name) {
-  gsub("[^A-Z0-9]", "_", toupper(paste0("moo_", name)))
+  return(gsub("[^A-Z0-9]", "_", toupper(paste0("moo_", name))))
 })
 
 options::define_option(
@@ -15,7 +15,7 @@ options::define_option(
 )
 options::define_option(
   option = "save_plots",
-  default = FALSE,
+  default = TRUE,
   desc = "Whether to save plots to files during analysis",
   option_name = "moo_save_plots",
   envvar_name = "MOO_SAVE_PLOTS"
@@ -32,7 +32,9 @@ options::define_option(
 #' @eval options::as_roxygen_docs()
 NULL
 
+#' @title Option parameters
 #' @eval options::as_params()
 #' @name option_params
+#' @keywords internal
 #'
 NULL

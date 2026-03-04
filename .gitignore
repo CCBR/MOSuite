@@ -11,3 +11,11 @@ inst/doc
 /README.html
 **/figures/
 VennDiagram.*.log
+*_files/
+tests/testthat/Rplots.pdf
+/tmp
+vignettes/args*.json
+Rplots.pdf
+moo_input.rds
+plot-volc-enh.json
+volc-sum-params.json

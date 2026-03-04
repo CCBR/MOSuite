@@ -7,7 +7,8 @@
 plot_histogram(moo_counts, ...)
 }
 \arguments{
-\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
+slot}
 
 \item{...}{arguments forwarded to method}
 }
@@ -15,10 +16,7 @@ plot_histogram(moo_counts, ...)
 ggplot object
 }
 \description{
-The first argument can be a \code{multiOmicDataset} object (\code{moo}) or a \code{data.frame} containing counts.
-For a \code{moo}, choose which counts slot to use with \code{count_type} & (optionally) \code{sub_count_type}.
-For a \code{data.frame}, you must also set \code{sample_metadata}.
-All other arguments are optional.
+Plot histogram
 }
 \section{Methods}{
 \tabular{ll}{

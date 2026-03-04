@@ -11,6 +11,10 @@ permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   auto-format:
     runs-on: ubuntu-latest
@@ -22,20 +26,34 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
       - uses: actions/checkout@v4
-        if: github.event_name == 'push'
+        if: github.event_name != 'pull_request'
         with:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
-      - uses: r-lib/actions/setup-pandoc@v2
-      - uses: r-lib/actions/setup-r@v2
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          needs: Suggests
 
-      - name: render README.Rmd
+      - name: git config
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - uses: CCBR/actions/install-r-pak@main
+        with:
+          r-version: 4.5
+          versions-file: .github/package-versions.txt
+          extra-packages: local::.
+          needs: dev
+
+      - name: update Galaxy blueprints
+        shell: Rscript {0}
+        run: |
+          source('inst/extdata/galaxy/galaxy.R')
+          write_package_json_blueprints()
+
+      - name: render README.Rmd & docs
         shell: Rscript {0}
         run: |
           rmarkdown::render("README.Rmd")
+          roxygen2::roxygenize()
 
       - name: update citation
         shell: Rscript {0}
@@ -51,13 +69,17 @@ jobs:
           # Create your CITATION.cff file
           cff_write(cf)
 
+      - name: update codemeta
+        uses: citation-file-format/cffconvert-github-action@2.0.0
+        with:
+          args: "--format codemeta --outfile codemeta.json"
+
       - name: format
         uses: pre-commit/action@v3.0.1
         continue-on-error: true
 
       - name: commit & push
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "ci: 🤖 auto-format" && git push || echo "nothing to commit"
+          git commit -m "ci: 🤖 auto-format" || echo "nothing to commit"
+          git push || echo "nothing to push"

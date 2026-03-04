@@ -3,22 +3,16 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
-\alias{\%>\%}
-\alias{\%<>\%}
 \alias{:=}
 \alias{!!}
 \alias{.data}
-\title{dplyr pipe}
+\title{walrus operator}
 \keyword{internal}
 \description{
 These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{dplyr}{\code{\link[dplyr:reexports]{\%>\%}}}
-
-  \item{magrittr}{\code{\link[magrittr:compound]{\%<>\%}}}
-
   \item{rlang}{\code{\link[rlang:dyn-dots]{:=}}, \code{\link[rlang:injection-operator]{!!}}, \code{\link[rlang:dot-data]{.data}}}
 }}
 

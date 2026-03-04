@@ -26,16 +26,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: r-lib/actions/setup-pandoc@v2
-
-      - uses: r-lib/actions/setup-r@v2
+      - uses: CCBR/actions/install-r-pak@main
         with:
-          use-public-rspm: true
-
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::pkgdown, local::.
-          needs: website
+          r-version: 4.5
+          versions-file: .github/package-versions.txt
+          extra-packages: local::.
+          needs: dev
 
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)

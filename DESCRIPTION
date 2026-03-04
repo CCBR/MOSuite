@@ -1,7 +1,6 @@
 Package: MOSuite
 Title: R package for differential multi-omics analysis
-Version: 0.2.0.9000
-Date: 2025-08-26
+Version: 0.3.0.9001
 Authors@R: c(
     person("Kelly", "Sovacool", , "kelly.sovacool@nih.gov", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3283-829X")),
@@ -10,6 +9,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0001-8978-8495")),
     person("Samantha", "Chill", , "samantha.chill@nih.gov", role = "aut",
            comment = c(ORCID = "0000-0002-8734-9875")),
+    person("T. Joshua", "Meyer", , "thomas.meyer@nih.gov", role = "ctb"),
     person("CCR Collaborative Bioinformatics Resource", role = "cph")
   )
 Description: Multi-Omics Suite provides a suite of functions to clean,
@@ -17,24 +17,23 @@ Description: Multi-Omics Suite provides a suite of functions to clean,
     analysis. While the package is designed for differential RNA-seq
     analysis and multi-omics datasets, it can be used for any data
     represented in a counts table. See the website for more information,
-    documentation, and examples: <https://ccbr.github.io/MOSuite/>
+    documentation, and examples at <https://ccbr.github.io/MOSuite/>.
 License: MIT + file LICENSE
 URL: https://github.com/CCBR/MOSuite, https://ccbr.github.io/MOSuite/
 BugReports: https://github.com/CCBR/MOSuite/issues
 Depends:
-    R (>= 3.5)
+    R (>= 4.0.0)
 Imports:
     assertthat,
     dendextend,
     DESeq2,
     dplyr,
     edgeR,
-    ggplot2,
-    ggrepel,
+    ggplot2 (< 4.0.0),
     glue,
+    htmlwidgets,
     jsonlite,
     limma,
-    magrittr,
     matrixStats,
     methods,
     options,
@@ -50,6 +49,7 @@ Imports:
     tidyselect
 Suggests:
     amap,
+    argparse,
     broom,
     cffr,
     colorspace,
@@ -57,6 +57,7 @@ Suggests:
     dendsort,
     docopt,
     EnhancedVolcano,
+    ggrepel,
     gridExtra,
     knitr,
     lobstr,
@@ -64,8 +65,10 @@ Suggests:
     plotrix,
     quarto,
     RColorBrewer,
+    Rd2md,
     readr,
     rmarkdown,
+    roxygen2,
     scales,
     styler,
     sva,
@@ -73,13 +76,17 @@ Suggests:
     UpSetR,
     usethis,
     V8,
-    VennDiagram
+    VennDiagram,
+    withr
 VignetteBuilder:
     knitr
 biocViews:
+Config/Needs/dev: cffr, covr, goodpractice, here, lintr, pkgdown,
+    rcmdcheck, xml2
 Config/testthat/edition: 3
+Config/testthat/parallel: true
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3

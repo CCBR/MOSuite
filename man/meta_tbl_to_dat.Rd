@@ -9,7 +9,8 @@ meta_tbl_to_dat(meta_tbl, sample_id_colname = sample_id)
 \arguments{
 \item{meta_tbl}{tibble with \code{sample_id} column}
 
-\item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} - first column in the sample metadata will be used.)}
+\item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} -
+first column in the sample metadata will be used.)}
 }
 \value{
 dataframe where row names are the sample IDs

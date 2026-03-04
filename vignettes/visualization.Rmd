@@ -41,25 +41,28 @@ See `?MOSuite::options` for more information.
 moo <- create_multiOmicDataSet_from_dataframes(
   sample_metadata = as.data.frame(nidap_sample_metadata),
   counts_dat = as.data.frame(nidap_raw_counts)
-) %>%
+) |>
   clean_raw_counts()
 ```
+
+### filter
+
 ```{r nidap_filter}
-moo %<>%
+moo <- moo |>
   filter_counts(group_colname = "Group")
 ```
 
 ### normalize
 
 ```{r nidap_norm}
-moo %<>%
+moo <- moo |>
   normalize_counts(group_colname = "Group")
 ```
 
 ### batch correct
 
 ```{r nidap_batch}
-moo %<>%
+moo <- moo |>
   batch_correct_counts(
     covariates_colname = "Group",
     batch_colname = "Batch",
@@ -70,7 +73,7 @@ moo %<>%
 ### differential expression
 
 ```{r diff_counts}
-moo %<>%
+moo <- moo |>
   diff_counts(
     count_type = "filt",
     covariates_colnames = c("Group", "Batch"),
@@ -81,10 +84,11 @@ moo %<>%
     voom_normalization_method = "quantile",
   )
 ```
+
 ### filter differential features
 
 ```{r filter_diff}
-moo %<>% filter_diff()
+moo <- moo |> filter_diff()
 ```
 
 ## Customize plots
@@ -98,7 +102,8 @@ TODO
 ### 3D PCA
 
 ```{r pca_3D}
-plot_pca(moo@counts$batch,
+plot_pca(
+  moo@counts$batch,
   moo@sample_meta,
   principal_components = c(1, 2, 3),
   group_colname = "Group",
@@ -110,17 +115,21 @@ plot_pca(moo@counts$batch,
 ### Expression Heatmap
 
 ```{r expr_heatmap}
-heatmap_plot <- plot_expr_heatmap(moo, count_type = "norm", sub_count_type = "voom")
+heatmap_plot <- plot_expr_heatmap(
+  moo,
+  count_type = "norm",
+  sub_count_type = "voom"
+)
 print(heatmap_plot)
 ```
 
 ### Volcano
 
-= #### Summary
+#### Summary
 
 ```{r volcano_summary}
-dat_volcano_summary <- moo@analyses$diff %>%
-  join_dfs_wide() %>%
+dat_volcano_summary <- moo@analyses$diff |>
+  join_dfs_wide() |>
   plot_volcano_summary()
 
 head(dat_volcano_summary)
@@ -129,8 +138,8 @@ head(dat_volcano_summary)
 #### Enhanced
 
 ```{r volcano_enhanced}
-dat_volcano_enhanced <- moo@analyses$diff %>%
-  join_dfs_wide() %>%
+dat_volcano_enhanced <- moo@analyses$diff |>
+  join_dfs_wide() |>
   plot_volcano_enhanced()
 ```
 
@@ -138,6 +147,6 @@ dat_volcano_enhanced <- moo@analyses$diff %>%
 ### Venn Diagram
 
 ```{r venn_diagram}
-venn_dat <- dat_volcano_summary %>% plot_venn_diagram()
+venn_dat <- dat_volcano_summary |> plot_venn_diagram()
 head(venn_dat)
 ```

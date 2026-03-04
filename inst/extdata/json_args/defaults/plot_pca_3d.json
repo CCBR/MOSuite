@@ -1,0 +1,21 @@
+{
+  "moo_input_rds": "moo.rds",
+  "moo_output_rds": "moo.rds",
+  "count_type": null,
+  "sub_count_type": null,
+  "sample_metadata": null,
+  "feature_id_colname": null,
+  "sample_id_colname": null,
+  "samples_to_rename": null,
+  "group_colname": "Group",
+  "label_colname": "Label",
+  "principal_components": [1, 2, 3],
+  "point_size": 8,
+  "label_font_size": 24,
+  "color_values": ["#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c", "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"],
+  "plot_title": "PCA 3D",
+  "plot_filename": "pca_3D.html",
+  "print_plots": true,
+  "save_plots": true,
+  "plots_subdir": "pca"
+}

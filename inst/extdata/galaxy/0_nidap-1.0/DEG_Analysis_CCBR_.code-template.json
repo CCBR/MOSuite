@@ -1,0 +1,153 @@
+{
+	"codeTemplate": "DEG_Analysis <- function({{{Counts_Matrix}}}, {{{Sample_Metadata}}}) {\n    \n    ## --------- ##\n    ## Libraries ##\n    ## --------- ##\n    \n    library(limma)\n    library(tidyverse)\n    library(edgeR)\n    library(stringr)\n    library(grid)\n    library(gridExtra)\n    \n\n    ## -------------------------------- ##\n    ## User-Defined Template Parameters ##\n    ## -------------------------------- ##\n\n    #Basic Parameters:\n    counts_matrix <- {{{Counts_Matrix}}} \n    sample_metadata <- {{{Sample_Metadata}}}\n    gene_names_column=\"{{{Feature_Gene_Names_Column}}}\"\n    sample_name_column<-\"{{{Sample_Names_Column}}}\"\n    columns_to_include = {{{Columns_to_Include}}}\n    contrast_variable_column<-{{{Contrast_Variable_Column}}}\n    contrasts<-{{{Contrasts}}}\n    covariates_columns={{{Covariates_Column_s_}}}\n\n    #Advanced Parameters:\n    input_in_log_counts <- {{{input_in_log_counts}}}\n    return_mean_and_sd<-{{{return_mean_and_sd}}}\n    return_normalized_counts<-{{{Return_Normalized_Counts}}}\n    normalization_method<-\"{{{Normalization_Method}}}\"\n    \n    ##--------------- ##\n    ## Error Messages ##\n    ## -------------- ##\n\n    if(make.names(colnames(counts_matrix))!=colnames(counts_matrix)){\n        print(\"Error: The following counts matrix column names are not valid:\\n\")\n        print(colnames(counts_matrix)[make.names(colnames(counts_matrix))!=colnames(counts_matrix)])\n\n        print(\"Likely causes are columns starting with numbers or other special characters eg spaces.\")\n        stop(\"Bad column names.\")\n    }\n    \n    ## --------------- ##\n    ## Main Code Block ##\n    ## --------------- ##\n    \n    samples_to_include=columns_to_include[columns_to_include%in%sample_metadata[,sample_name_column,drop=T]]\n    anno_col=columns_to_include[columns_to_include%in%sample_metadata[,sample_name_column,drop=T]==F]\n\n    samples_to_include <- samples_to_include[samples_to_include != gene_names_column]\n    samples_to_include <- samples_to_include[samples_to_include != \"Gene\"]\n    samples_to_include <- samples_to_include[samples_to_include != \"GeneName\"]\n    \n\n    ##create unique rownames to correctly add back Annocolumns at end of template\n    counts_matrix[,gene_names_column]=paste0(counts_matrix[,gene_names_column],'_',1:nrow(counts_matrix))\n\n    anno_col=c(anno_col,gene_names_column)%>%unique\n    anno_tbl=counts_matrix[,anno_col,drop=F]%>%as.data.frame\n\n    df.m <- counts_matrix[,c(gene_names_column,samples_to_include)]\n    gene_names <- NULL\n    gene_names$GeneID <- counts_matrix[,gene_names_column]\n    \n    ### This code block does input data validation\n    sample_metadata <- sample_metadata[match(colnames(df.m),sample_metadata[,sample_name_column]),]\n    sample_metadata <- sample_metadata[rowSums(is.na(sample_metadata)) != ncol(sample_metadata), ]\n    df.m <- df.m[,match(sample_metadata[,sample_name_column],colnames(df.m))]\n    \n    #Create DGEList object from counts\n    if(input_in_log_counts == TRUE){\n        x <- DGEList(counts=2^df.m, genes=gene_names)\n    } else {\n        x <- DGEList(counts=df.m, genes=gene_names) \n    }\n    \n    #Put covariates in order \n    covariates_columns=covariates_columns[order(covariates_columns!=contrast_variable_column)]\n    \n    for(ocv in covariates_columns){\n        sample_metadata[,ocv]=gsub(\" \",\"_\",sample_metadata[,ocv])\n    }\n\n    contrasts=gsub(\" \",\"_\",contrasts)\n    cov <- covariates_columns[!covariates_columns %in% contrast_variable_column]\n\n    #Combine columns if 2-factor analysis\n    if(length(contrast_variable_column)>1){\n        sample_metadata %>% dplyr::mutate(contmerge = paste0(.data[[contrast_variable_column[1]]],\".\",.data[[contrast_variable_column[2]]])) -> sample_metadata\n    } else {\n        sample_metadata %>% dplyr::mutate(contmerge = .data[[contrast_variable_column]]) -> sample_metadata\n    }\n\n    contrast_var <- factor(sample_metadata$contmerge)\n\n    if(length(cov) >0){\n        dm.formula <- as.formula(paste(\"~0 +\", paste(\"contmerge\", paste(cov, sep=\"+\", collapse=\"+\"),sep=\"+\")))\n        design=model.matrix(dm.formula, sample_metadata)\n        colnames(design) <- gsub(\"contmerge\",\"\",colnames(design))\n    } else {\n        dm.formula <- as.formula(~0 + contmerge)\n        design=model.matrix(dm.formula, sample_metadata)\n        colnames(design) <- levels(contrast_var)\n    }\n\n    #colnames(design) <- str_replace_all(colnames(design), contrast_variable_column, \"\")\n    \n    if (normalization_method %in% c(\"TMM\",\"TMMwzp\",\"RLE\",\"upperquartile\")){\n        x <- calcNormFactors(x, method = normalization_method) \n        rownames(x) <- x$genes$GeneID\n        v <- voom(x,design=design,normalize=\"none\")\n    } else {\n        v <- voom(x,design=design,normalize=normalization_method,save.plot = TRUE)\n    }\n    \n    rownames(v$E) <- v$genes$GeneID\n    as.data.frame(v$E) %>% rownames_to_column(\"Gene\") -> df.voom\n    fit <- lmFit(v, design)\n    cm <- makeContrasts(contrasts = contrasts, levels=design)\n\n    #Print Mean-variance Plot\n    sx <- v$voom.xy$x\n    sy <- v$voom.xy$y\n    xyplot <- as.data.frame(cbind(sx,sy))\n    voomline <- as.data.frame(cbind(x=v$voom.line$x,y=v$voom.line$y))\n    \n    g <- ggplot() +\n        geom_point(data=xyplot, aes(x=sx,y=sy),size=1) +\n        theme_bw() +\n        geom_smooth(data=voomline, aes(x=x,y=y),color = \"red\") +\n        ggtitle(\"voom: Mean-variance trend\") +\n        xlab(v$voom.xy$xlab) + ylab(v$voom.xy$ylab) + \n        theme(axis.title=element_text(size=12),\n        plot.title = element_text(size = 14, face = \"bold\",hjust = 0.5))\n\n    #Print out sample numbers:\n    #\n    sampsize <- colSums(design)\n    titleval <- \"Please note Sample size:\"\n    titletext <- paste(names(sampsize), sampsize, sep = \"=\", collapse = \" \\n \") \n    titleall <- paste(titleval,\"\\n\",titletext,\"\\n\\n\\n\")\n\n    contrast <- colnames(cm)\n    connames <- strsplit(contrast,\"-\")\n    connames <- lapply(connames,function(x) {gsub(\"\\\\(\",\"\",gsub(\"\\\\)\",\"\",x))})\n    contrastsize <- lapply(connames,function(x) sampsize[unlist(x)])\n    footnotetext <- paste(contrast, contrastsize, sep = \" : \", collapse = \"\\n\") \n    footnotetext <- paste(\"\\n\\n\\nContrasts:\\n\",footnotetext)\n\n    textall <- textGrob(paste0(titleall, footnotetext),gp=gpar(fontsize=10))\n\n\n    #Run Contrasts\n    fit2 <- contrasts.fit(fit, cm)\n    fit2 <- eBayes(fit2)\n    logFC = fit2$coefficients\n    colnames(logFC)=paste(colnames(logFC),\"logFC\",sep=\"_\")\n    tstat = fit2$t\n    colnames(tstat)=paste(colnames(tstat),\"tstat\",sep=\"_\")\n    FC = 2^fit2$coefficients\n    FC = ifelse(FC<1,-1/FC,FC)\n    colnames(FC)=paste(colnames(FC),\"FC\",sep=\"_\")\n    pvalall=fit2$p.value\n    colnames(pvalall)=paste(colnames(pvalall),\"pval\",sep=\"_\")\n    pvaladjall=apply(pvalall,2,function(x) p.adjust(x,\"BH\"))\n    colnames(pvaladjall)=paste(colnames(fit2$coefficients),\"adjpval\",sep=\"_\")\n\n    \n    if(return_mean_and_sd == TRUE){\n        tve <- t(v$E)        \n        mean.df <- as.data.frame(tve) %>% rownames_to_column(\"Sample\") %>% dplyr::mutate(group=sample_metadata[sample_metadata[,sample_name_column]==Sample,contrast_variable_column]) %>% group_by(group) %>% summarise_all(funs(mean)) %>% as.data.frame()\n        mean.df[,-c(1,2)] %>% as.matrix() %>% t() -> mean\n        colnames(mean) <- mean.df[,1]\n        colnames(mean)=paste(colnames(mean),\"mean\", sep=\"_\")\n        colnames(mean) = gsub(\"\\\\.\", \"_\", colnames(mean))\n        \n        sd.df <- as.data.frame(tve) %>% rownames_to_column(\"Sample\") %>% dplyr::mutate(group=sample_metadata[sample_metadata[,sample_name_column]==Sample,contrast_variable_column]) %>% group_by(group) %>% summarise_all(funs(sd)) %>% as.data.frame()\n        sd.df[,-c(1,2)] %>% as.matrix() %>% t() -> sd\n        colnames(sd) <- sd.df[,1]\n        colnames(sd)=paste(colnames(sd), \"sd\",sep=\"_\")\n        colnames(sd) = gsub(\"\\\\.\", \"_\", colnames(sd))\n    finalres=as.data.frame(cbind(mean, sd,  FC, logFC, tstat, pvalall, pvaladjall)) \n    } else {\n        finalres=as.data.frame(cbind(FC, logFC, tstat, pvalall, pvaladjall))\n    }\n\n    if(return_normalized_counts == TRUE){\n        finalres = as.data.frame(cbind(finalres, v$E))\n    }\n\n    finalres %>% rownames_to_column(\"Gene\") -> finalres\n    print(paste0(\"Total number of genes included: \", nrow(finalres)))\n\n\n    getgenelists <- function(FClimit,pvallimit,pval){\n        upreggenes <- list()\n        downreggenes <- list()\n        for(i in 1:length(contrasts)){\n            if(pval == \"pval\"){\n            finalres %>% dplyr::filter(.data[[colnames(FC)[i]]] > FClimit & .data[[colnames(pvalall)[i]]] < pvallimit) %>% pull(Gene) %>% length() -> upreggenes[[i]] \n            finalres %>% dplyr::filter(.data[[colnames(FC)[i]]] < -FClimit & .data[[colnames(pvalall)[i]]] < pvallimit) %>% pull(Gene) %>% length() -> downreggenes[[i]]        \n        } else {\n            finalres %>% dplyr::filter(.data[[colnames(FC)[i]]] > FClimit & .data[[colnames(pvaladjall)[i]]] < pvallimit) %>% pull(Gene) %>% length() -> upreggenes[[i]] \n            finalres %>% dplyr::filter(.data[[colnames(FC)[i]]] < -FClimit & .data[[colnames(pvaladjall)[i]]] < pvallimit) %>% pull(Gene) %>% length() -> downreggenes[[i]] \n        }\n        }\n        names(upreggenes) <- contrasts\n        names(downreggenes) <- contrasts\n        allreggenes <- rbind(unlist(upreggenes),unlist(downreggenes))\n        rownames(allreggenes) <- c(paste0(\"upreg>\",FClimit, \", \",pval,\"<\",pvallimit),paste0(\"downreg<-\",FClimit, \", \",pval,\"<\",pvallimit))\n        return(allreggenes)\n    }\n\n\n    FCpval1 <- getgenelists(FClimit = 1.2, pvallimit = 0.05,\"pval\")\n    FCpval2 <- getgenelists(FClimit = 1.2, pvallimit = 0.01,\"pval\")\n    FCadjpval1 <- getgenelists(FClimit = 1.2, pvallimit = 0.05,\"adjpval\")\n    FCadjpval2 <- getgenelists(FClimit = 1.2, pvallimit = 0.01,\"adjpval\")\n\n    wraplines <- function(y){\n        j = unlist(strsplit(y,\"-\"))\n        k = strwrap(j, width = 10)\n        l = paste(k,collapse=\"\\n-\")\n        return(l)\n    }\n    \n    pvaltab <- rbind(FCpval1,FCpval2,FCadjpval1,FCadjpval2)\n    colnames(pvaltab) <- sapply(colnames(pvaltab), function(x) wraplines(x))\n    table2 <- tableGrob(pvaltab, theme=ttheme_default(base_size = 10))\n    table2$layout$clip <- \"off\"\n\n    layout <- rbind(c(1,2),\n                    c(1,2),\n                   c(3,3))\n    \n\n    #Printing all together (tables and plot)\n    grid.newpage()\n    grid.arrange(textall, g, table2, layout_matrix=layout)\n\n    #Printing in brand new multiviz\n    grid.newpage()\n    print(g)\n    grid.newpage()\n    grid.draw(textall)\n    grid.newpage()\n    grid.draw(table2)\n\n\n### add back Anno columns and Remove row number from Feature Column\n    colnames(finalres)[colnames(finalres)%in%\"Gene\"]=gene_names_column\n\n    finalres=merge(anno_tbl,finalres,by=gene_names_column,all.y=T)\n   finalres[,gene_names_column]=gsub('_[0-9]+$',\"\",finalres[,gene_names_column])\n\n\n    call_me_alias<-colnames(finalres)\n    colnames(finalres)<-gsub(\"\\\\(|\\\\)\",\"\", call_me_alias)\n    df.final<-createDataFrame(finalres)\n   \n    return(df.final) \n}\n\n\n\n",
+	"columns": [
+		{
+			"key": "Feature_Gene_Names_Column",
+			"displayName": "Feature/Gene Names Column",
+			"description": "The column from your counts matrix containing the  Feature ID (gene names).",
+			"paramGroup": "Basic",
+			"sourceDataset": "Counts_Matrix",
+			"defaultValue": null,
+			"columnType": "STRING",
+			"isMulti": null
+		},
+		{
+			"key": "Sample_Names_Column",
+			"displayName": "Sample Names Column",
+			"description": "Column containing sample names",
+			"paramGroup": "Basic",
+			"sourceDataset": "Sample_Metadata",
+			"defaultValue": null,
+			"columnType": "ALL",
+			"isMulti": null
+		},
+		{
+			"key": "Columns_to_Include",
+			"displayName": "Columns to Include",
+			"description": "Select the sample columns from the input counts matrix that you want to process. Only numeric columns can be selected.",
+			"paramGroup": "Basic",
+			"sourceDataset": "Counts_Matrix",
+			"defaultValue": null,
+			"columnType": "ALL",
+			"isMulti": true
+		},
+		{
+			"key": "Contrast_Variable_Column",
+			"displayName": "Contrast Variable Column",
+			"description": "The column in the input Sample Metadata that contains the group variables you wish to find differential expression between. User can add up to 2 columns (2-factor analysis)",
+			"paramGroup": "Basic",
+			"sourceDataset": "Sample_Metadata",
+			"defaultValue": null,
+			"columnType": "ALL",
+			"isMulti": true
+		},
+		{
+			"key": "Covariates_Column_s_",
+			"displayName": "Covariates Column(s)",
+			"description": "Columns to be used as covariates in linear modeling. Must include column from \"Contrast Variable\". Most commonly your covariate will be group and batch (if you have different batches in your data).",
+			"paramGroup": "Basic",
+			"sourceDataset": "Sample_Metadata",
+			"defaultValue": null,
+			"columnType": "ALL",
+			"isMulti": true
+		}
+	],
+	"condaDependencies": [],
+	"description": "Performs Differential Expression of Genes (DEG) Analysis.\n\nThis template takes (filtered) raw counts as its input and transforms this count data to log2-counts per million (logCPM). The normalization and DEG analysis is implemented using the Limma Voom R package.\n\nThe returned counts matrix contains normalized counts, not batch corrected counts. The DEG analysis accounts for batch using covariates, however. You can optionally also return mean and standard deviation of normalized expression within groups.\n\nThis template will support up to 2 factors",
+	"externalId": "DEG_Analysis_CCBR_",
+	"inputDatasets": [
+		{
+			"key": "Counts_Matrix",
+			"displayName": "Counts Matrix",
+			"description": "Input counts dataset having one column for feature (such as gene, isoform, peptide etc) names, and the rest containing counts for each sample. This might be the raw counts file or the low-counts-removed dataset.",
+			"paramGroup": "Basic",
+			"anchorDataset": false,
+			"dataType": "R_NATIVE_DATAFRAME",
+			"tags": []
+		},
+		{
+			"key": "Sample_Metadata",
+			"displayName": "Sample Metadata",
+			"description": "Dataset containing sample group information created during the process of requesting analysis (counts file)",
+			"paramGroup": "Basic",
+			"anchorDataset": false,
+			"dataType": "R_NATIVE_DATAFRAME",
+			"tags": []
+		}
+	],
+	"vectorLanguage": "R",
+	"codeLanguage": "R",
+	"parameters": [
+		{
+			"key": "Contrasts",
+			"displayName": "Contrasts",
+			"description": "Specify each contrast in the format group1-group2, e.g. treated-control",
+			"paramType": "VECTOR",
+			"paramGroup": "Basic",
+			"paramValues": null,
+			"defaultValue": null,
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "input_in_log_counts",
+			"displayName": "Input in log Counts",
+			"description": "Set to TRUE if input is in log counts.",
+			"paramType": "BOOLEAN",
+			"paramGroup": "Advanced",
+			"paramValues": null,
+			"defaultValue": "FALSE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "return_mean_and_sd",
+			"displayName": "Return Mean and SD",
+			"description": "if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for contrast(s)",
+			"paramType": "BOOLEAN",
+			"paramGroup": "Advanced",
+			"paramValues": null,
+			"defaultValue": "FALSE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Return_Normalized_Counts",
+			"displayName": "Return Normalized Counts",
+			"description": "if TRUE, return normalized counts for samples included in the limma model",
+			"paramType": "BOOLEAN",
+			"paramGroup": "Advanced",
+			"paramValues": null,
+			"defaultValue": "TRUE",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		},
+		{
+			"key": "Normalization_Method",
+			"displayName": "Normalization Method",
+			"description": "Normalization method to be applied to the logCPM values",
+			"paramType": "SELECT",
+			"paramGroup": "Advanced",
+			"paramValues": [
+				"none",
+				"scale",
+				"quantile",
+				"cyclicloess",
+				"TMM",
+				"TMMwzp",
+				"RLE",
+				"upperquartile"
+			],
+			"defaultValue": "quantile",
+			"condition": null,
+			"content": null,
+			"objectPropertyReference": null
+		}
+	],
+	"title": "DEG Analysis [CCBR]",
+	"templateApiVersion": "0.1.0"
+}

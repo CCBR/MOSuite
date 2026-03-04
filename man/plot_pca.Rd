@@ -7,9 +7,11 @@
 plot_pca(moo_counts, principal_components = c(1, 2), ...)
 }
 \arguments{
-\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
+slot}
 
-\item{principal_components}{vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3 for a 3D pca with plotly. (Default: \code{c(1,2)})}
+\item{principal_components}{vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3
+for a 3D pca with plotly. (Default: \code{c(1,2)})}
 
 \item{...}{additional arguments forwarded to method (see Details below)}
 }
@@ -17,10 +19,7 @@ plot_pca(moo_counts, principal_components = c(1, 2), ...)
 PCA plot (2D or 3D depending on the number of \code{principal_components})
 }
 \description{
-The first argument can be a \code{multiOmicDataset} object (\code{moo}) or a \code{data.frame} containing counts.
-For a \code{moo}, choose which counts slot to use with \code{count_type} & (optionally) \code{sub_count_type}.
-For a \code{data.frame}, you must also set \code{sample_metadata}.
-All other arguments are optional.
+Perform and plot a Principal Components Analysis
 }
 \details{
 See the low-level function docs for additional arguments
