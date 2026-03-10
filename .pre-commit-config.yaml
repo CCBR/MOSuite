@@ -11,6 +11,11 @@ exclude: |
       ^renv*
    )
 repos:
+  - repo: https://github.com/CCBR/Tools
+    rev: v0.5
+    hooks:
+      - id: detect-absolute-paths
+        exclude: ^.gitignore, .*.gitignore, .*.diff$
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v1.2.3
     hooks:
