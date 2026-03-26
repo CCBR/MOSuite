@@ -23,7 +23,7 @@ repos:
     rev: v2.4.2
     hooks:
       - id: codespell
-        args: ["--ignore-words-list=entrace"]
+        args: ["-I=.github/WORDLIST.txt"]
   # R formatting
   - repo: https://github.com/posit-dev/air-pre-commit
     rev: 0.8.2
