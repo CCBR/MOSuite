@@ -26,7 +26,7 @@ repos:
         args: ["--ignore-words-list=entrace"]
   # R formatting
   - repo: https://github.com/posit-dev/air-pre-commit
-    rev: 0.8.2
+    rev: 0.9.0
     hooks:
       - id: air-format
   - repo: https://github.com/lorenzwalthert/precommit
@@ -40,7 +40,7 @@ repos:
         verbose: true
   # Python formatting
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 26.3.0
+    rev: 26.3.1
     hooks:
       - id: black
   # enforce commit format
