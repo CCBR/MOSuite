@@ -79,10 +79,6 @@ ADD .github/.Rprofile /opt2/conda/lib/R/
 COPY ./inst/extdata/example_script.sh /data2/
 COPY ./inst/extdata/json_args/ /data2/json_args/
 
-# Save Dockerfile in the container
-COPY Dockerfile /opt2/Dockerfile_${REPONAME}.${BUILD_TAG}
-RUN chmod a+r /opt2/Dockerfile_${REPONAME}.${BUILD_TAG}
-
 # cleanup
 WORKDIR /data2
 RUN apt-get clean && apt-get purge \
