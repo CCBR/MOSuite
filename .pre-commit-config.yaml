@@ -23,10 +23,10 @@ repos:
     rev: v2.4.2
     hooks:
       - id: codespell
-        args: ["--ignore-words-list=entrace"]
+        args: ["-I=.github/WORDLIST.txt"]
   # R formatting
   - repo: https://github.com/posit-dev/air-pre-commit
-    rev: 0.8.2
+    rev: 0.9.0
     hooks:
       - id: air-format
   - repo: https://github.com/lorenzwalthert/precommit
@@ -38,11 +38,6 @@ repos:
       - id: lintr
         args: [--warn_only]
         verbose: true
-  # Python formatting
-  - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 26.3.0
-    hooks:
-      - id: black
   # enforce commit format
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.4.0
