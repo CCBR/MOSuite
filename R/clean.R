@@ -101,7 +101,7 @@ clean_raw_counts <- function(
     if (length(cl2[(cl2) != colnames(counts_dat)]) > 0) {
       message(
         glue::glue(
-          "Columns had special characters relpaced with underscore: ",
+          "Columns had special characters replaced with underscore: ",
           glue::glue_collapse(
             colnames(counts_dat)[(colnames(counts_dat)) != cl2],
             sep = ", "
