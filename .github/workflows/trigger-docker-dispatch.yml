@@ -1,0 +1,61 @@
+name: trigger-docker-dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      docker_image_tag:
+        description: "Tag to apply to the built docker image (e.g. 'v0.3.0')"
+        required: false
+        default: ""
+  release:
+    types: [ published ]
+
+jobs:
+  trigger-docker-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: prepare payload
+        id: prepare-payload
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            docker_image_tag="${{ github.ref_name }}"
+          elif [  -n '${{ github.event.inputs.docker_image_tag }}' ]; then
+            docker_image_tag="${{ github.event.inputs.docker_image_tag }}"
+          else
+            docker_image_tag="$(grep 'Version:' ./DESCRIPTION | sed 's/Version: /v/')"
+          fi
+
+          owner_repo="${{ github.repository }}"
+          ref=${{ github.ref_name }}
+          dockerfile_path="Dockerfile"
+          docker_image_name="mosuite"
+
+          payload=$(jq -n \
+            --arg owner_repo "$owner_repo" \
+            --arg ref "$ref" \
+            --arg dockerfile_path "$dockerfile_path" \
+            --arg docker_image_name "$docker_image_name" \
+            --arg docker_image_tag "$docker_image_tag" \
+            '{owner_repo: $owner_repo, ref: $ref, dockerfile_path: $dockerfile_path, docker_image_name: $docker_image_name, docker_image_tag: $docker_image_tag}')
+          echo "payload=$payload" >> $GITHUB_OUTPUT
+
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.CCBR_BOT_APP_ID }}
+          private-key: ${{ secrets.CCBR_BOT_PRIVATE_KEY }}
+          owner: CCBR
+
+      - name: Trigger Docker Build
+        uses: peter-evans/repository-dispatch@v4
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          repository: CCBR/dockers2
+          event-type: trigger-docker-build
+          client-payload: ${{ steps.prepare-payload.outputs.payload }}
