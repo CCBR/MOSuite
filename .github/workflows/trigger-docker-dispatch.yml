@@ -4,7 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       docker_image_tag:
-        description: "Tag to apply to the built docker image (e.g. 'v0.3.0')"
+        description: "Tag to apply to the built docker image (e.g. 'v0.3.0'). If not
+          specified, it will be determine from the DESCRIPTION file."
         required: false
         default: ""
   release:
@@ -35,7 +36,7 @@ jobs:
           dockerfile_path="Dockerfile"
           docker_image_name="mosuite"
 
-          payload=$(jq -n \
+          payload=$(jq -cn \
             --arg owner_repo "$owner_repo" \
             --arg ref "$ref" \
             --arg dockerfile_path "$dockerfile_path" \
