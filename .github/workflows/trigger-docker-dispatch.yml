@@ -5,7 +5,7 @@ on:
     inputs:
       docker_image_tag:
         description: "Tag to apply to the built docker image (e.g. 'v0.3.0'). If not
-          specified, it will be determine from the DESCRIPTION file."
+          specified, it will be determined from the DESCRIPTION file."
         required: false
         default: ""
   release:
