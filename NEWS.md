@@ -1,8 +1,8 @@
 ## development version
 
 - Fix recursion error in `plot_venn_diagram()`. (#188, @kelly-sovacool)
-- Fix S3/S7 dispatch argument mismatch in `plot_read_depth()` and `plot_histogram()`: the `data.frame` methods now accept `...` so that extra arguments forwarded from the `multiOmicDataSet` dispatch (e.g. `sample_id_colname`, `feature_id_colname`, `print_plots`, `save_plots`) no longer cause "unused argument" errors. (#199, @copilot)
-- Fix crash in `remove_low_count_genes()` when `use_group_based_filtering = TRUE`: coerce the result of `pivot_wider()` to a plain `data.frame` before bracket-indexing to avoid grouped-tibble column-selection errors. (#199, @copilot)
+- Fix S3/S7 dispatch argument mismatch in `plot_read_depth()` and `plot_histogram()`. (#200, @copilot, @kelly-sovacool)
+- Fix crash in `remove_low_count_genes()` when `use_group_based_filtering = TRUE`. (#200, @copilot, @kelly-sovacool)
 
 ## MOSuite 0.3.0
 
