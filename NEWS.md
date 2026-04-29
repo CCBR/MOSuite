@@ -1,7 +1,7 @@
 ## development version
 
 - Fix recursion error in `plot_venn_diagram()`. (#188, @kelly-sovacool)
-- Fix color palette selection to silently fall back to random colors when the number of categories exceeds the palette maximum (e.g. Okabe-Ito's 9-color limit), preventing repeated warnings during object creation or plotting. (#199, @copilot)
+- Fix color palette selection to silently fall back to random colors when the number of categories exceeds the palette maximum (e.g. Okabe-Ito's 9-color limit), preventing repeated warnings during object creation or plotting. (#199)
 
 ## MOSuite 0.3.0
 
