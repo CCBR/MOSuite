@@ -83,18 +83,33 @@ get_colors_vctr <- function(
   obs <- dat |>
     dplyr::pull(colname) |>
     unique()
-  withCallingHandlers(
+  n_obs <- length(obs)
+
+  warned_cnd <- NULL
+  colors_vctr <- withCallingHandlers(
     warning = function(cnd) {
-      return(message(glue::glue(
-        'Warning raised in get_color_vctr() for column "{colname}"'
-      )))
+      warned_cnd <<- cnd
+      invokeRestart("muffleWarning")
     },
-    colors_vctr <- palette_fun(n = length(obs), ...)
+    palette_fun(n = n_obs, ...)
   )
+
+  # if fewer colors were returned than needed (e.g. when n exceeds the palette maximum,
+  # such as Okabe-Ito's maximum of 9), silently fall back to random colors
+  if (length(colors_vctr) < n_obs) {
+    colors_vctr <- get_random_colors(n_obs)
+  } else if (!is.null(warned_cnd)) {
+    # warning was raised but we still have enough colors (e.g. brewer.pal warns when n < 3
+    # but returns 3 colors); convert to a message and re-raise the original warning
+    message(glue::glue(
+      'Warning raised in get_color_vctr() for column "{colname}"'
+    ))
+    warning(conditionMessage(warned_cnd))
+  }
 
   # if more colors are returned than are in the observations, truncate the vector.
   # this occurs when using RColorBrewer::brewer.pal with n < 3
-  colors_vctr <- colors_vctr[seq_len(length(obs))]
+  colors_vctr <- colors_vctr[seq_len(n_obs)]
 
   names(colors_vctr) <- obs
   return(colors_vctr)
