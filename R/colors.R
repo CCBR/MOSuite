@@ -101,7 +101,9 @@ get_colors_vctr <- function(
   } else if (!is.null(warned_cnd)) {
     # warning was raised but we still have enough colors (e.g. brewer.pal warns when n < 3
     # but returns 3 colors); convert to a message and re-raise the original warning
-    message(glue::glue('Warning raised in get_color_vctr() for column "{colname}"'))
+    message(glue::glue(
+      'Warning raised in get_color_vctr() for column "{colname}"'
+    ))
     warning(conditionMessage(warned_cnd))
   }
 
