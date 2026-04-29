@@ -84,6 +84,7 @@ S7::method(plot_read_depth, multiOmicDataSet) <- function(
 #' @name plot_read_depth_dat
 #'
 #' @param moo_counts counts dataframe
+#' @param ... additional arguments (ignored; accepted for compatibility with the moo dispatch)
 #'
 #' @return ggplot barplot
 #'
@@ -93,7 +94,7 @@ S7::method(plot_read_depth, multiOmicDataSet) <- function(
 #'
 #' @seealso [plot_read_depth] generic
 #' @family plotters for counts dataframes
-S7::method(plot_read_depth, S7::class_data.frame) <- function(moo_counts) {
+S7::method(plot_read_depth, S7::class_data.frame) <- function(moo_counts, ...) {
   sample_names <- column_sums <- NULL
   counts_dat <- moo_counts
   sum_df <- counts_dat |>

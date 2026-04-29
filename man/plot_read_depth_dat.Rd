@@ -5,6 +5,8 @@
 \title{Plot read depth for \code{data.frame}}
 \arguments{
 \item{moo_counts}{counts dataframe}
+
+\item{...}{additional arguments (ignored; accepted for compatibility with the moo dispatch)}
 }
 \value{
 ggplot barplot

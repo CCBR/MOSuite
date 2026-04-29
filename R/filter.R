@@ -335,7 +335,8 @@ remove_low_count_genes <- function(
       sum = sum(value)
     )
     tcounts.group <- tcounts.tot |>
-      tidyr::pivot_wider(names_from = "variable", values_from = "sum")
+      tidyr::pivot_wider(names_from = "variable", values_from = "sum") |>
+      as.data.frame()
     tcounts.keep <- colSums(
       tcounts.group[(1:colnum + 1)] >=
         minimum_number_of_samples_with_nonzero_counts_in_a_group
