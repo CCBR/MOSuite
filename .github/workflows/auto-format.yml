@@ -3,6 +3,7 @@ name: auto-format
 on:
   workflow_dispatch:
   pull_request:
+    branches: [main, master]
 
 env:
   GH_TOKEN: ${{ github.token }}
@@ -20,16 +21,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-        if: github.event_name == 'pull_request'
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          ref: ${{ github.head_ref }}
-      - uses: actions/checkout@v4
-        if: github.event_name != 'pull_request'
-        with:
-          fetch-depth: 0
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
 
       - name: git config
         run: |

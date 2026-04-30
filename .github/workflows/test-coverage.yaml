@@ -1,12 +1,28 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+name: test-coverage
+
 on:
   push:
     branches: [main, master]
+    paths:
+      - "R/**"
+      - "tests/**"
+      - "DESCRIPTION"
+      - "NAMESPACE"
+      - ".github/workflows/test-coverage.yaml"
   pull_request:
     branches: [main, master]
+    paths:
+      - "R/**"
+      - "tests/**"
+      - "DESCRIPTION"
+      - "NAMESPACE"
+      - ".github/workflows/test-coverage.yaml"
 
-name: test-coverage
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions: read-all
 
