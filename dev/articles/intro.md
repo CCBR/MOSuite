@@ -1,6 +1,7 @@
 # Introduction to MultiOmicsSuite
 
 ``` r
+
 library(MOSuite)
 library(dplyr)
 #> 
@@ -14,6 +15,7 @@ library(dplyr)
 ```
 
 ``` r
+
 options(moo_print_plots = TRUE)
 
 moo_nidap <- create_multiOmicDataSet_from_dataframes(
@@ -181,6 +183,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
 ## The multiOmicDataSet object structure
 
 ``` r
+
 str(moo_nidap)
 #> <MOSuite::multiOmicDataSet>
 #>  @ sample_meta:'data.frame': 9 obs. of  5 variables:

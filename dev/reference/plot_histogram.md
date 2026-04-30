@@ -25,11 +25,11 @@ ggplot object
 
 ## Methods
 
-|                                                                                          |                    |
-|------------------------------------------------------------------------------------------|--------------------|
-| link to docs                                                                             | class              |
+|  |  |
+|----|----|
+| link to docs | class |
 | [plot_histogram_moo](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram_moo.md) | `multiOmicDataSet` |
-| [plot_histogram_dat](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram_dat.md) | `data.frame`       |
+| [plot_histogram_dat](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram_dat.md) | `data.frame` |
 
 ## See also
 

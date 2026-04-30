@@ -16,6 +16,7 @@ You can install the development version of MOSuite from
 [GitHub](https://github.com/CCBR/MOSuite) with:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("CCBR/MOSuite", dependencies = TRUE)
 ```
@@ -23,6 +24,7 @@ remotes::install_github("CCBR/MOSuite", dependencies = TRUE)
 Or install a specific version:
 
 ``` r
+
 remotes::install_github("CCBR/MOSuite", dependencies = TRUE, ref = "v0.2.1")
 ```
 

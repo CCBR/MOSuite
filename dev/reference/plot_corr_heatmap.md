@@ -27,11 +27,11 @@ heatmap from
 
 ## Methods
 
-|                                                                                                |                    |
-|------------------------------------------------------------------------------------------------|--------------------|
-| link to docs                                                                                   | class              |
+|  |  |
+|----|----|
+| link to docs | class |
 | [plot_corr_heatmap_moo](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_moo.md) | `multiOmicDataSet` |
-| [plot_corr_heatmap_dat](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_dat.md) | `data.frame`       |
+| [plot_corr_heatmap_dat](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_dat.md) | `data.frame` |
 
 ### Method Usage
 

@@ -27,11 +27,11 @@ ggplot barplot
 
 ## Methods
 
-|                                                                                            |                    |
-|--------------------------------------------------------------------------------------------|--------------------|
-| link to docs                                                                               | class              |
+|  |  |
+|----|----|
+| link to docs | class |
 | [plot_read_depth_moo](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth_moo.md) | `multiOmicDataSet` |
-| [plot_read_depth_dat](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth_dat.md) | `data.frame`       |
+| [plot_read_depth_dat](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth_dat.md) | `data.frame` |
 
 ## See also
 

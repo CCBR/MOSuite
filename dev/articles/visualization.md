@@ -1,6 +1,7 @@
 # Visualization with built-in plots
 
 ``` r
+
 library(MOSuite)
 ```
 
@@ -9,6 +10,7 @@ library(MOSuite)
 Default plots can be printed to the screen and/or saved to the disk.
 
 ``` r
+
 # set options to print & save the plots
 options(moo_print_plots = TRUE)
 options(moo_save_plots = TRUE)
@@ -23,6 +25,7 @@ for more information.
 ### clean
 
 ``` r
+
 moo <- create_multiOmicDataSet_from_dataframes(
   sample_metadata = as.data.frame(nidap_sample_metadata),
   counts_dat = as.data.frame(nidap_raw_counts)
@@ -48,6 +51,7 @@ moo <- create_multiOmicDataSet_from_dataframes(
 ### filter
 
 ``` r
+
 moo <- moo |>
   filter_counts(group_colname = "Group")
 #> * filtering clean counts
@@ -67,6 +71,7 @@ moo <- moo |>
 ### normalize
 
 ``` r
+
 moo <- moo |>
   normalize_counts(group_colname = "Group")
 #> * normalizing filt counts
@@ -85,6 +90,7 @@ moo <- moo |>
 ### batch correct
 
 ``` r
+
 moo <- moo |>
   batch_correct_counts(
     covariates_colname = "Group",
@@ -116,6 +122,7 @@ moo <- moo |>
 ### differential expression
 
 ``` r
+
 moo <- moo |>
   diff_counts(
     count_type = "filt",
@@ -140,6 +147,7 @@ moo <- moo |>
 ### filter differential features
 
 ``` r
+
 moo <- moo |> filter_diff()
 #> Joining with `by = join_by(GeneName)`
 #> Joining with `by = join_by(GeneName)`
@@ -163,6 +171,7 @@ TODO
 ### 3D PCA
 
 ``` r
+
 plot_pca(
   moo@counts$batch,
   moo@sample_meta,
@@ -176,6 +185,7 @@ plot_pca(
 ### Expression Heatmap
 
 ``` r
+
 heatmap_plot <- plot_expr_heatmap(
   moo,
   count_type = "norm",
@@ -187,6 +197,7 @@ heatmap_plot <- plot_expr_heatmap(
 ![](visualization_files/figure-html/expr_heatmap-1.png)
 
 ``` r
+
 print(heatmap_plot)
 ```
 
@@ -197,6 +208,7 @@ print(heatmap_plot)
 #### Summary
 
 ``` r
+
 dat_volcano_summary <- moo@analyses$diff |>
   join_dfs_wide() |>
   plot_volcano_summary()
@@ -239,6 +251,7 @@ dat_volcano_summary <- moo@analyses$diff |>
 #### Enhanced
 
 ``` r
+
 dat_volcano_enhanced <- moo@analyses$diff |>
   join_dfs_wide() |>
   plot_volcano_enhanced()
@@ -255,6 +268,7 @@ dat_volcano_enhanced <- moo@analyses$diff |>
 ### Venn Diagram
 
 ``` r
+
 venn_dat <- dat_volcano_summary |> plot_venn_diagram()
 #> All intersections: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516),c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")
 #> Intersections returned: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516)
@@ -263,6 +277,7 @@ venn_dat <- dat_volcano_summary |> plot_venn_diagram()
 ![](visualization_files/figure-html/venn_diagram-1.png)
 
 ``` r
+
 head(venn_dat)
 #>    Gene      Intersection Id Size
 #> 1  Dntt (B-A ∩ B-C ∩ C-A)  1   80
