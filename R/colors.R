@@ -95,8 +95,11 @@ get_colors_vctr <- function(
   )
 
   # if fewer colors were returned than needed (e.g. when n exceeds the palette maximum,
-  # such as Okabe-Ito's maximum of 9), silently fall back to random colors
+  # such as Okabe-Ito's maximum of 9), fall back to random colors
   if (length(colors_vctr) < n_obs) {
+    message(glue::glue(
+      'Number of unique values ({n_obs}) in column "{colname}" exceeds the palette maximum. Falling back to random colors.'
+    ))
     colors_vctr <- get_random_colors(n_obs)
   } else if (!is.null(warned_cnd)) {
     # warning was raised but we still have enough colors (e.g. brewer.pal warns when n < 3

@@ -69,13 +69,14 @@ test_that("get_colors_lst handles alternative palette functions", {
 })
 test_that("get_colors_vctr falls back to random colors when n exceeds palette max", {
   # Okabe-Ito palette has a maximum of 9 colors. When n > 9, the function
-  # should silently fall back to get_random_colors() without emitting a warning.
+  # should fall back to get_random_colors() and emit a message.
   dat_many_cats <- data.frame(
     group = paste0("cat", seq_len(12))
   )
   expect_no_warning(
-    expect_no_message(
-      result <- get_colors_vctr(dat_many_cats, "group")
+    expect_message(
+      result <- get_colors_vctr(dat_many_cats, "group"),
+      "exceeds the palette maximum"
     )
   )
   expect_length(result, 12)
