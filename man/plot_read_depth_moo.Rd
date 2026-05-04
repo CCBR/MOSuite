@@ -3,10 +3,6 @@
 \name{plot_read_depth_moo}
 \alias{plot_read_depth_moo}
 \title{Plot read depth for multiOmicDataSet}
-\usage{
-## S7 method for class <MOSuite::multiOmicDataSet>
-plot_read_depth(moo_counts, count_type, sub_count_type = NULL, ...)
-}
 \arguments{
 \item{moo_counts}{\code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
 

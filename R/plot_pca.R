@@ -35,13 +35,6 @@
 #'  - [plot_pca_2d] - used when there are **2** principal components
 #'  - [plot_pca_3d] - used when there are **3** principal components
 #'
-#' # Methods
-#'
-#' | link to docs  | class  |
-#' |---|---|
-#' | [plot_pca_moo] | `multiOmicDataSet` |
-#' | [plot_pca_dat] | `data.frame`       |
-#'
 #' @export
 #' @return PCA plot (2D or 3D depending on the number of `principal_components`)
 #'
@@ -59,6 +52,9 @@ plot_pca <- S7::new_generic(
 
 #' Plot 2D or 3D PCA for multiOmicDataset
 #'
+#' @rdname plot_pca
+#' @exportS7Method
+#'
 #' @param moo_counts `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
 #' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
 #' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list.
@@ -69,8 +65,6 @@ plot_pca <- S7::new_generic(
 #'
 #' @returns PCA plot
 #'
-#' @name plot_pca_moo
-#' @exportS7Method
 #' @seealso [plot_pca] generic
 #' @family plotters for multiOmicDataSets
 S7::method(plot_pca, multiOmicDataSet) <- function(
@@ -93,14 +87,15 @@ S7::method(plot_pca, multiOmicDataSet) <- function(
 
 #' Plot 2D or 3D PCA for counts dataframe
 #'
+#' @rdname plot_pca
+#' @exportS7Method
+#'
 #' @param moo_counts counts dataframe
 #' @param sample_metadata **Required** if `moo_counts` is a `data.frame`: sample metadata as a data frame or tibble.
 #' @param principal_components vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3
 #'   for a 3D pca with plotly. (Default: `c(1,2)`)
 #' @param ... additional arguments forwarded to [plot_pca_2d()] (if 2 PCs) or [plot_pca_3d()] (if 3 PCs).
 #'
-#' @name plot_pca_dat
-#' @exportS7Method
 #' @seealso [plot_pca] generic
 #' @family plotters for counts dataframes
 S7::method(plot_pca, S7::class_data.frame) <- function(

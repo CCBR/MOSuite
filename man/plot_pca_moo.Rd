@@ -3,16 +3,6 @@
 \name{plot_pca_moo}
 \alias{plot_pca_moo}
 \title{Plot 2D or 3D PCA for multiOmicDataset}
-\usage{
-## S7 method for class <MOSuite::multiOmicDataSet>
-plot_pca(
-  moo_counts,
-  count_type,
-  sub_count_type = NULL,
-  principal_components = c(1, 2),
-  ...
-)
-}
 \arguments{
 \item{moo_counts}{\code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
 

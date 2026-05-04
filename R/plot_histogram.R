@@ -32,15 +32,6 @@
 #'   label_colname = "Label"
 #' )
 #'
-#' @details
-#'
-#' # Methods
-#'
-#' | link to docs  | class  |
-#' |---|---|
-#' | [plot_histogram_moo] | `multiOmicDataSet` |
-#' | [plot_histogram_dat] | `data.frame`       |
-#'
 #' @family plotters
 #' @keywords plotters
 #' @family moo methods
@@ -50,6 +41,9 @@ plot_histogram <- S7::new_generic(
 )
 
 #' Plot histogram for multiOmicDataSet
+#'
+#' @rdname plot_histogram
+#' @exportS7Method
 #'
 #' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts
 #'   slot
@@ -73,8 +67,6 @@ plot_histogram <- S7::new_generic(
 #'   group_colname = "Group", color_by_group = TRUE
 #' )
 #'
-#' @name plot_histogram_moo
-#' @exportS7Method
 #' @seealso [plot_histogram] generic
 #' @family plotters for multiOmicDataSets
 S7::method(plot_histogram, multiOmicDataSet) <- function(
@@ -92,6 +84,9 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 }
 
 #' Plot histogram for counts dataframe
+#'
+#' @rdname plot_histogram
+#' @exportS7Method
 #'
 #' @param moo_counts counts dataframe (**required**)
 #' @param sample_metadata sample metadata as a data frame or tibble (**required**)
@@ -147,8 +142,7 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 #' )
 #'
 #' @seealso [plot_histogram] generic
-#' @name plot_histogram_dat
-#' @exportS7Method
+#'
 #' @family plotters for counts dataframes
 S7::method(plot_histogram, S7::class_data.frame) <- function(
   moo_counts,
