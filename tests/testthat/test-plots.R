@@ -77,23 +77,23 @@ test_that("print_or_save_plot adds caption to ggplot labels", {
 test_that("print_or_save_plot prints ComplexHeatmap with caption without error", {
   p <- corr_heatmap_fixture()
   outfile <- tempfile(fileext = ".png")
-  grDevices::png(outfile)
-  expect_no_error(
-    print_or_save_plot(
-      p,
-      filename = outfile,
-      print_plots = TRUE,
-      save_plots = FALSE,
-      plots_dir = "",
-      caption = "batch-corrected counts"
+  withr::with_png(outfile, {
+    expect_no_error(
+      print_or_save_plot(
+        p,
+        filename = outfile,
+        print_plots = TRUE,
+        save_plots = FALSE,
+        plots_dir = "",
+        caption = "batch-corrected counts"
+      )
     )
-  )
-  grDevices::dev.off()
+  })
 })
 
 test_that("save_or_print_plot works for ComplexHeatmap", {
   p <- corr_heatmap_fixture()
-  skip()
+  skip("snapshot tests are unreliable across platforms; covered by non-snapshot tests above")
   expect_snapshot_file(
     print_or_save_plot(
       p,
@@ -107,7 +107,7 @@ test_that("save_or_print_plot works for ComplexHeatmap", {
 })
 test_that("save_or_print_plot works for ggplot", {
   p <- plot_read_depth(nidap_clean_raw_counts)
-  skip()
+  skip("snapshot tests are unreliable across platforms; covered by non-snapshot tests above")
   expect_snapshot_file(
     print_or_save_plot(
       p,
