@@ -12,6 +12,7 @@
 ^data-raw$
 ^doc$
 ^Dockerfile$
+^docker$
 ^docs$
 ^figures$
 ^LICENSE\.md$
