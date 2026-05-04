@@ -246,8 +246,7 @@ filter_counts <- function(
         label_colname = label_colname,
         group_colname = group_colname,
         color_values = colors_for_plots
-      ) +
-        ggplot2::labs(caption = "filtered counts")
+      )
       print_or_save_plot(
         corHM,
         filename = file.path(plots_subdir, "corr_heatmap.png"),

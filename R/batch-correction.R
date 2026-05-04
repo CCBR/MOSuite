@@ -181,8 +181,7 @@ batch_correct_counts <- function(
       group_colname = batch_colname,
       label_colname = label_colname,
       color_values = colors_for_plots
-    ) +
-      ggplot2::labs(caption = "batch-corrected counts")
+    )
 
     print_or_save_plot(
       pca_plot,

@@ -25,7 +25,11 @@ print_or_save_plot <- function(
   ...
 ) {
   if (isTRUE(print_plots)) {
-    print(plot_obj)
+    if (inherits(plot_obj, c("Heatmap", "HeatmapList"))) {
+      ComplexHeatmap::draw(plot_obj)
+    } else {
+      print(plot_obj)
+    }
   }
   if (isTRUE(save_plots)) {
     # create output directory if it doesn't exist
@@ -42,6 +46,10 @@ print_or_save_plot <- function(
       ggplot2::ggsave(filename = filename, plot = plot_obj, ...)
     } else if (inherits(plot_obj, "htmlwidget")) {
       htmlwidgets::saveWidget(plot_obj, filename, ...)
+    } else if (inherits(plot_obj, c("Heatmap", "HeatmapList"))) {
+      graphics_device(file = filename)
+      ComplexHeatmap::draw(plot_obj)
+      grDevices::dev.off()
     } else {
       graphics_device(file = filename)
       plot(plot_obj)

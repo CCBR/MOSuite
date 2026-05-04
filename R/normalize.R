@@ -156,8 +156,7 @@ normalize_counts <- function(
         group_colname = group_colname,
         label_colname = label_colname,
         color_values = colors_for_plots
-      ) +
-        ggplot2::labs(caption = "normalized counts")
+      )
       print_or_save_plot(
         corHM_plot,
         filename = file.path(plots_subdir, "corr_heatmap.png"),
