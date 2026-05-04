@@ -51,6 +51,8 @@ column you select in the "Group Column Used to Color Histogram" parameter (below
 \item{interactive_plots}{set to TRUE to make the plot interactive with \code{plotly}, allowing you to hover your mouse
 over a point or line to view sample information. The similarity heat map will not display if this toggle is set to
 TRUE. Default is FALSE.}
+
+\item{...}{additional arguments (ignored; accepted for compatibility with the moo dispatch)}
 }
 \description{
 Plot histogram for counts dataframe
