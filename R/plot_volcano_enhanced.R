@@ -1,3 +1,12 @@
+#' Enhanced Volcano Plot
+#'
+#' Uses [Bioconductor's Enhanced Volcano
+#' Plot](https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html).
+#' An S7 generic with methods for `multiOmicDataSet` and `data.frame`.
+#'
+#' @param moo_diff multiOmicDataSet or differential expression analysis result data frame.
+#' @param ... additional arguments forwarded to the method.
+#'
 #' @export
 plot_volcano_enhanced <- S7::new_generic(
   "plot_volcano_enhanced",

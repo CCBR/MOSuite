@@ -9,14 +9,15 @@
 #'   the `sample_meta`.
 #' @param analyses_lst named list of analysis results, e.g. DESeq results object
 #'
-#' @property sample_meta sample metadata as a data frame or tibble. The first column is assumed to contain the sample
+#' @prop sample_meta sample metadata as a data frame or tibble. The first column is assumed to contain the sample
 #'   IDs which must correspond to column names in the raw counts.
-#' @property annotation data frame of feature annotations, such as gene symbols or any other information about the
+#' @prop annotation data frame of feature annotations, such as gene symbols or any other information about the
 #'   features in the counts list.
-#' @property counts named list of counts data frames (e.g. `raw`, `clean`, `cpm`, `filt`, `norm`, `batch`). Each data
+#' @prop counts named list of counts data frames (e.g. `raw`, `clean`, `cpm`, `filt`, `norm`, `batch`). Each data
 #'   frame is expected to contain a feature ID column as the first column, and all remaining columns are sample IDs.
-#' @property analyses named list of analysis results (e.g. DESeq2 results, colors).
+#' @prop analyses named list of analysis results (e.g. DESeq2 results, colors).
 #'
+#' @returns A `multiOmicDataSet` S7 object.
 #' @export
 #'
 #' @family moo constructors

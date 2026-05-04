@@ -1,3 +1,14 @@
+#' Plot a venn diagram, UpSet plot, or table of intersections
+#'
+#' Generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across
+#' tested contrasts). This Venn diagram is available for up to five sets; Intersection plot is available for any number
+#' of sets. Specific sets can be selected for the visualizations and the returned dataset may include all (default) or
+#' specified intersections.
+#' An S7 generic with methods for `multiOmicDataSet` and `data.frame`.
+#'
+#' @param moo_diff_summary_dat multiOmicDataSet or summarized differential expression analysis data frame.
+#' @param ... additional arguments forwarded to the method.
+#'
 #' @export
 plot_venn_diagram <- S7::new_generic(
   "plot_venn_diagram",
