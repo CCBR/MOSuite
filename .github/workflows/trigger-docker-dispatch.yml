@@ -40,8 +40,8 @@ jobs:
 
           owner_repo="${{ github.repository }}"
           ref=${{ github.ref_name }}
-          dockerfile_path="${{ env.dockerfile_path }}"
-          docker_image_name="${{ env.docker_image_name }}"
+          dockerfile_path="${{ matrix.config.dockerfile_path }}"
+          docker_image_name="${{ matrix.config.docker_image_name }}"
 
           payload=$(jq -cn \
             --arg owner_repo "$owner_repo" \
