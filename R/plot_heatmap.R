@@ -56,7 +56,6 @@ plot_corr_heatmap <- S7::new_generic("plot_corr_heatmap", "moo_counts")
 
 #' Plot correlation heatmap for multiOmicDataSet
 #'
-#' @exportS7Method
 #' @rdname plot_corr_heatmap
 #'
 #' @param moo_counts `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
@@ -83,7 +82,6 @@ S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
 
 #' Plot correlation heatmap for counts dataframe
 #'
-#' @exportS7Method
 #' @rdname plot_corr_heatmap
 #'
 #' @param moo_counts counts dataframe (**Required**)
@@ -431,7 +429,6 @@ plot_expr_heatmap <- S7::new_generic(
 
 
 #' @rdname plot_expr_heatmap
-#' @exportS7Method
 S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
   moo_counts,
   count_type,
@@ -563,7 +560,6 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
 }
 
 #' @rdname plot_expr_heatmap
-#' @exportS7Method
 S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   moo_counts,
   count_type,

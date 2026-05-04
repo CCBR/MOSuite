@@ -58,7 +58,6 @@ plot_venn_diagram <- S7::new_generic(
 )
 
 #' @rdname plot_venn_diagram
-#' @exportS7Method
 S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
   moo_diff_summary_dat,
   feature_id_colname = NULL,
@@ -172,7 +171,6 @@ S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
 #' @param table_font_size Font size for the table in the plot. Default: 3
 #' @param table_content Content of the table in the plot. Default: NULL
 #'
-#' @exportS7Method
 #' @keywords plotters
 #'
 #' @examples

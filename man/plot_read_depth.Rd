@@ -2,17 +2,33 @@
 % Please edit documentation in R/plot_read_depth.R
 \name{plot_read_depth}
 \alias{plot_read_depth}
+\alias{plot_read_depth,MOSuite::multiOmicDataSet-method}
+\alias{plot_read_depth,data.frame-method}
 \title{Plot read depth as a bar plot}
 \usage{
 plot_read_depth(moo_counts, ...)
+
+## S7 method for class <MOSuite::multiOmicDataSet>
+plot_read_depth(moo_counts, count_type, sub_count_type = NULL, ...)
+
+## S7 method for class <data.frame>
+plot_read_depth(moo_counts, ...)
 }
 \arguments{
-\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
-slot}
+\item{moo_counts}{counts dataframe}
 
-\item{...}{arguments forwarded to method}
+\item{...}{additional arguments (ignored; accepted for compatibility with the moo dispatch)}
+
+\item{count_type}{the type of counts to use. Must be a name in the counts slot (\code{names(moo@counts)}).}
+
+\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
+Must be a name in \code{names(moo@counts[[count_type]])}.}
 }
 \value{
+ggplot barplot
+
+ggplot barplot
+
 ggplot barplot
 }
 \description{
@@ -22,8 +38,8 @@ For a \code{moo}, choose which counts slot to use with \code{count_type} & (opti
 \section{Methods}{
 \tabular{ll}{
    link to docs \tab class \cr
-   \link{plot_read_depth_moo} \tab \code{multiOmicDataSet} \cr
-   \link{plot_read_depth_dat} \tab \code{data.frame} \cr
+   \code{\link[=plot_read_depth]{plot_read_depth()}} \tab \code{multiOmicDataSet} \cr
+   \code{\link[=plot_read_depth]{plot_read_depth()}} \tab \code{data.frame} \cr
 }
 }
 
@@ -43,8 +59,25 @@ plot_read_depth(moo, count_type = "clean")
 # dataframe
 plot_read_depth(nidap_clean_raw_counts)
 
+# multiOmicDataSet
+moo <- multiOmicDataSet(
+  sample_metadata = nidap_sample_metadata,
+  anno_dat = data.frame(),
+  counts_lst = list(
+    "raw" = nidap_raw_counts,
+    "clean" = nidap_clean_raw_counts
+  )
+)
+
+plot_read_depth(moo, count_type = "clean")
+
+# dataframe
+plot_read_depth(nidap_clean_raw_counts)
+
 }
 \seealso{
+\code{\link[=plot_read_depth]{plot_read_depth()}} generic
+
 Other plotters:
 \code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
 \code{\link[=plot_expr_heatmap]{plot_expr_heatmap()}},
@@ -65,7 +98,19 @@ Other moo methods:
 \code{\link[=plot_pca]{plot_pca()}},
 \code{\link[=run_deseq2]{run_deseq2()}},
 \code{\link[=set_color_pal]{set_color_pal()}}
+
+Other plotters for multiOmicDataSets:
+\code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
+\code{\link[=plot_histogram]{plot_histogram()}},
+\code{\link[=plot_pca]{plot_pca()}}
+
+Other plotters for counts dataframes:
+\code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
+\code{\link[=plot_histogram]{plot_histogram()}},
+\code{\link[=plot_pca]{plot_pca()}}
 }
 \concept{moo methods}
 \concept{plotters}
+\concept{plotters for counts dataframes}
+\concept{plotters for multiOmicDataSets}
 \keyword{plotters}

@@ -309,7 +309,6 @@ extract_counts <- S7::new_generic(
 )
 
 #' @rdname extract_counts
-#' @exportS7Method
 S7::method(extract_counts, multiOmicDataSet) <- function(
   moo,
   count_type,
@@ -397,7 +396,6 @@ write_multiOmicDataSet_properties <- S7::new_generic(
 )
 
 #' @rdname write_multiOmicDataSet_properties
-#' @exportS7Method
 S7::method(write_multiOmicDataSet_properties, multiOmicDataSet) <- function(
   moo,
   output_dir = "moo"

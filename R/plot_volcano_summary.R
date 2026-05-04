@@ -64,7 +64,6 @@ plot_volcano_summary <- S7::new_generic(
 )
 
 #' @rdname plot_volcano_summary
-#' @exportS7Method
 S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
   moo_diff,
   feature_id_colname = NULL,
@@ -210,7 +209,6 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
 #' @param graphics_device passed to `ggsave(device)`. Default: `grDevices::png`
 #' @param plot_filename Filename for the output plot. Default: "volcano_plot.png"
 #'
-#' @exportS7Method
 #' @keywords plotters volcano
 #'
 #' @examples

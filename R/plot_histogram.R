@@ -43,7 +43,6 @@ plot_histogram <- S7::new_generic(
 #' Plot histogram for multiOmicDataSet
 #'
 #' @rdname plot_histogram
-#' @exportS7Method
 #'
 #' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts
 #'   slot
@@ -51,7 +50,7 @@ plot_histogram <- S7::new_generic(
 #'   the counts slot (`moo@counts`).
 #' @param sub_count_type Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub
 #'   count type within the list
-#' @param ... arguments forwarded to method: [plot_histogram_dat()]
+#' @param ... arguments forwarded to method: [plot_histogram()]
 #' @examples
 #' # plot histogram for a counts slot in a multiOmicDataset Object
 #' moo <- multiOmicDataSet(
@@ -86,7 +85,6 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 #' Plot histogram for counts dataframe
 #'
 #' @rdname plot_histogram
-#' @exportS7Method
 #'
 #' @param moo_counts counts dataframe (**required**)
 #' @param sample_metadata sample metadata as a data frame or tibble (**required**)

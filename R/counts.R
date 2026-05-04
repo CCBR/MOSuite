@@ -21,7 +21,6 @@ calc_cpm <- S7::new_generic("calc_cpm", "moo", function(moo, ...) {
   return(S7::S7_dispatch())
 })
 
-#' @exportS7Method
 S7::method(calc_cpm, multiOmicDataSet) <- function(
   moo,
   feature_id_colname = "gene_id",

@@ -48,7 +48,6 @@ plot_volcano_enhanced <- S7::new_generic(
 )
 
 #' @rdname plot_volcano_enhanced
-#' @exportS7Method
 S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
   moo_diff,
   feature_id_colname = NULL,
@@ -150,7 +149,6 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
 #' @param dpi dots-per-inch of the output image (see `ggsave()`) - only used if save_plots is TRUE
 #' @param plot_filename plot output filename - only used if save_plots is TRUE
 #'
-#' @exportS7Method
 #' @keywords plotters volcano
 #'
 #' @examples

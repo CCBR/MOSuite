@@ -2,29 +2,71 @@
 % Please edit documentation in R/plot_heatmap.R
 \name{plot_corr_heatmap}
 \alias{plot_corr_heatmap}
+\alias{plot_corr_heatmap,MOSuite::multiOmicDataSet-method}
+\alias{plot_corr_heatmap,data.frame-method}
 \title{Plot correlation heatmap}
 \usage{
 plot_corr_heatmap(moo_counts, ...)
+
+## S7 method for class <MOSuite::multiOmicDataSet>
+plot_corr_heatmap(moo_counts, count_type, sub_count_type = NULL, ...)
+
+## S7 method for class <data.frame>
+plot_corr_heatmap(
+  moo_counts,
+  sample_metadata,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = "Label",
+  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500")
+)
 }
 \arguments{
-\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
-slot}
+\item{moo_counts}{counts dataframe (\strong{Required})}
 
-\item{...}{arguments forwarded to method \link{plot_corr_heatmap_dat}}
+\item{...}{arguments forwarded to method}
+
+\item{count_type}{the type of counts to use. Must be a name in the counts slot (\code{names(moo@counts)}).}
+
+\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
+Must be a name in \code{names(moo@counts[[count_type]])}.}
+
+\item{sample_metadata}{sample metadata as a data frame or tibble (\strong{Required})}
+
+\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column
+must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first
+column in the sample metadata will be used.)}
+
+\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).
+This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
+Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
+used.)}
+
+\item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a
+column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
+Before, After, etc.).}
+
+\item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in
+the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
+labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
+column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
+\code{NULL} -- \code{sample_id_colname} will be used.)}
+
+\item{color_values}{vector of colors as hex values or names recognized by R}
 }
 \value{
 heatmap from \code{ComplexHeatmap::Heatmap()}
 }
 \description{
 Plot correlation heatmap
-}
-\section{Methods}{
-\tabular{ll}{
-   link to docs \tab class \cr
-   \link{plot_corr_heatmap_moo} \tab \code{multiOmicDataSet} \cr
-   \link{plot_corr_heatmap_dat} \tab \code{data.frame} \cr
-}
 
+Plot correlation heatmap for multiOmicDataSet
+
+Plot correlation heatmap for counts dataframe
+}
+\details{
 \subsection{Method Usage}{
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{# multiOmicDataSet
@@ -47,7 +89,6 @@ plot_corr_heatmap(moo_counts,
 }\if{html}{\out{</div>}}
 }
 }
-
 \examples{
 # plot correlation heatmap for a counts slot in a multiOmicDataset Object
 moo <- multiOmicDataSet(
@@ -68,6 +109,8 @@ plot_corr_heatmap(
 )
 }
 \seealso{
+\code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}} generic
+
 Other plotters:
 \code{\link[=plot_expr_heatmap]{plot_expr_heatmap()}},
 \code{\link[=plot_histogram]{plot_histogram()}},
@@ -91,8 +134,20 @@ Other moo methods:
 \code{\link[=plot_read_depth]{plot_read_depth()}},
 \code{\link[=run_deseq2]{run_deseq2()}},
 \code{\link[=set_color_pal]{set_color_pal()}}
+
+Other plotters for multiOmicDataSets:
+\code{\link[=plot_histogram]{plot_histogram()}},
+\code{\link[=plot_pca]{plot_pca()}},
+\code{\link[=plot_read_depth]{plot_read_depth()}}
+
+Other plotters for counts dataframes:
+\code{\link[=plot_histogram]{plot_histogram()}},
+\code{\link[=plot_pca]{plot_pca()}},
+\code{\link[=plot_read_depth]{plot_read_depth()}}
 }
 \concept{heatmaps}
 \concept{moo methods}
 \concept{plotters}
+\concept{plotters for counts dataframes}
+\concept{plotters for multiOmicDataSets}
 \keyword{plotters}
