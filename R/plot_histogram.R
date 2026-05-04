@@ -41,8 +41,6 @@
 #' | [plot_histogram_moo] | `multiOmicDataSet` |
 #' | [plot_histogram_dat] | `data.frame`       |
 #'
-#' @name plot_histogram
-#' @rdname plot_histogram
 #' @family plotters
 #' @keywords plotters
 #' @family moo methods
@@ -76,7 +74,7 @@ plot_histogram <- S7::new_generic(
 #' )
 #'
 #' @name plot_histogram_moo
-#' @method plot_histogram multiOmicDataSet
+#' @exportS7Method
 #' @seealso [plot_histogram] generic
 #' @family plotters for multiOmicDataSets
 S7::method(plot_histogram, multiOmicDataSet) <- function(
@@ -150,7 +148,7 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 #'
 #' @seealso [plot_histogram] generic
 #' @name plot_histogram_dat
-#' @method plot_histogram data.frame
+#' @exportS7Method
 #' @family plotters for counts dataframes
 S7::method(plot_histogram, S7::class_data.frame) <- function(
   moo_counts,

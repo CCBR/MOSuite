@@ -1,5 +1,3 @@
-#' @rdname plot_venn_diagram
-#' @name plot_venn_diagram
 #' @export
 plot_venn_diagram <- S7::new_generic(
   "plot_venn_diagram",
@@ -49,8 +47,7 @@ plot_venn_diagram <- S7::new_generic(
 )
 
 #' @rdname plot_venn_diagram
-#' @name plot_venn_diagram
-#' @export
+#' @exportS7Method
 S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
   moo_diff_summary_dat,
   feature_id_colname = NULL,
@@ -171,14 +168,13 @@ S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
 #' @param table_font_size Font size for the table in the plot. Default: 3
 #' @param table_content Content of the table in the plot. Default: NULL
 #'
-#' @export
+#' @exportS7Method
 #' @keywords plotters
 #'
 #' @examples
 #' plot_venn_diagram(nidap_volcano_summary_dat, print_plots = TRUE)
 #'
 #' @rdname plot_venn_diagram
-#' @name plot_venn_diagram
 S7::method(plot_venn_diagram, S7::class_data.frame) <- function(
   moo_diff_summary_dat,
   feature_id_colname = NULL,

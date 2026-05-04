@@ -25,6 +25,7 @@ run_deseq2 <- S7::new_generic("run_deseq2", "moo", function(moo, design, ...) {
   return(S7::S7_dispatch())
 })
 
+#' @exportS7Method
 S7::method(run_deseq2, multiOmicDataSet) <- function(
   moo,
   design,

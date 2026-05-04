@@ -67,7 +67,7 @@ Suggests:
     Rd2md,
     readr,
     rmarkdown,
-    roxygen2,
+    roxygen2 (>= 8.0.0),
     scales,
     styler,
     sva,

@@ -70,6 +70,7 @@ plot_pca <- S7::new_generic(
 #' @returns PCA plot
 #'
 #' @name plot_pca_moo
+#' @exportS7Method
 #' @seealso [plot_pca] generic
 #' @family plotters for multiOmicDataSets
 S7::method(plot_pca, multiOmicDataSet) <- function(
@@ -99,6 +100,7 @@ S7::method(plot_pca, multiOmicDataSet) <- function(
 #' @param ... additional arguments forwarded to [plot_pca_2d()] (if 2 PCs) or [plot_pca_3d()] (if 3 PCs).
 #'
 #' @name plot_pca_dat
+#' @exportS7Method
 #' @seealso [plot_pca] generic
 #' @family plotters for counts dataframes
 S7::method(plot_pca, S7::class_data.frame) <- function(
@@ -127,8 +129,6 @@ S7::method(plot_pca, S7::class_data.frame) <- function(
   )
 }
 
-#' @rdname plot_pca_2d
-#' @name plot_pca_2d
 #' @export
 plot_pca_2d <- S7::new_generic(
   "plot_pca_2d",
@@ -175,8 +175,7 @@ plot_pca_2d <- S7::new_generic(
 )
 
 #' @rdname plot_pca_2d
-#' @name plot_pca_2d
-#' @export
+#' @exportS7Method
 S7::method(plot_pca_2d, multiOmicDataSet) <- function(
   moo_counts,
   count_type = NULL,
@@ -272,14 +271,13 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 #' @param point_size size for `ggplot2::geom_point()`
 #' @param add_label whether to add text labels for the points
 #'
-#' @export
+#' @exportS7Method
 #' @return ggplot object
 #'
 #' @seealso [plot_pca] generic
 #' @family PCA functions
 #'
 #' @rdname plot_pca_2d
-#' @name plot_pca_2d
 S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   moo_counts,
   count_type = NULL,
@@ -418,8 +416,6 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   return(pca_plot)
 }
 
-#' @rdname plot_pca_3d
-#' @name plot_pca_3d
 #' @export
 plot_pca_3d <- S7::new_generic(
   "plot_pca_3d",
@@ -462,8 +458,7 @@ plot_pca_3d <- S7::new_generic(
 )
 
 #' @rdname plot_pca_3d
-#' @name plot_pca_3d
-#' @export
+#' @exportS7Method
 S7::method(plot_pca_3d, multiOmicDataSet) <- function(
   moo_counts,
   count_type = NULL,
@@ -533,13 +528,12 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
 #' @param point_size size for `ggplot2::geom_point()`
 #' @param plot_title title for the plot
 #'
-#' @export
+#' @exportS7Method
 #' @returns `plotly::plot_ly` figure
 #'
 #' @family PCA functions
 #'
 #' @rdname plot_pca_3d
-#' @name plot_pca_3d
 S7::method(plot_pca_3d, S7::class_data.frame) <- function(
   moo_counts,
   count_type = NULL,

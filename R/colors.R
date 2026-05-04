@@ -148,6 +148,7 @@ set_color_pal <- S7::new_generic(
   }
 )
 
+#' @exportS7Method
 S7::method(set_color_pal, multiOmicDataSet) <- function(
   moo,
   colname,

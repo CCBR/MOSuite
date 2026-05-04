@@ -8,6 +8,15 @@
 #'   frame is expected to contain a `feature_id` column as the first column, and all remaining columns are sample IDs in
 #'   the `sample_meta`.
 #' @param analyses_lst named list of analysis results, e.g. DESeq results object
+#'
+#' @property sample_meta sample metadata as a data frame or tibble. The first column is assumed to contain the sample
+#'   IDs which must correspond to column names in the raw counts.
+#' @property annotation data frame of feature annotations, such as gene symbols or any other information about the
+#'   features in the counts list.
+#' @property counts named list of counts data frames (e.g. `raw`, `clean`, `cpm`, `filt`, `norm`, `batch`). Each data
+#'   frame is expected to contain a feature ID column as the first column, and all remaining columns are sample IDs.
+#' @property analyses named list of analysis results (e.g. DESeq2 results, colors).
+#'
 #' @export
 #'
 #' @family moo constructors
@@ -299,8 +308,7 @@ extract_counts <- S7::new_generic(
 )
 
 #' @rdname extract_counts
-#' @name extract_counts
-#' @export
+#' @exportS7Method
 S7::method(extract_counts, multiOmicDataSet) <- function(
   moo,
   count_type,
@@ -388,8 +396,7 @@ write_multiOmicDataSet_properties <- S7::new_generic(
 )
 
 #' @rdname write_multiOmicDataSet_properties
-#' @name write_multiOmicDataSet_properties
-#' @export
+#' @exportS7Method
 S7::method(write_multiOmicDataSet_properties, multiOmicDataSet) <- function(
   moo,
   output_dir = "moo"

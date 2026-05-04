@@ -1,5 +1,3 @@
-#' @rdname plot_volcano_summary
-#' @name plot_volcano_summary
 #' @export
 plot_volcano_summary <- S7::new_generic(
   "plot_volcano_summary",
@@ -55,8 +53,7 @@ plot_volcano_summary <- S7::new_generic(
 )
 
 #' @rdname plot_volcano_summary
-#' @name plot_volcano_summary
-#' @export
+#' @exportS7Method
 S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
   moo_diff,
   feature_id_colname = NULL,
@@ -209,14 +206,13 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
 #' @param graphics_device passed to `ggsave(device)`. Default: `grDevices::png`
 #' @param plot_filename Filename for the output plot. Default: "volcano_plot.png"
 #'
-#' @export
+#' @exportS7Method
 #' @keywords plotters volcano
 #'
 #' @examples
 #' plot_volcano_summary(nidap_deg_analysis, print_plots = TRUE)
 #'
 #' @rdname plot_volcano_summary
-#' @name plot_volcano_summary
 #'
 S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   moo_diff,
