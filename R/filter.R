@@ -251,7 +251,8 @@ filter_counts <- function(
         corHM,
         filename = file.path(plots_subdir, "corr_heatmap.png"),
         print_plots = print_plots,
-        save_plots = save_plots
+        save_plots = save_plots,
+        caption = "filtered counts"
       )
     }
 

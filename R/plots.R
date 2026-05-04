@@ -9,6 +9,9 @@
 #' @param plot_obj plot object (e.g. ggplot, ComplexHeatmap...)
 #' @param filename name of the output file. will be joined with the `plots_dir` option.
 #' @param graphics_device Default: `grDevice::png()`. Only used if the plot is not a ggplot.
+#' @param caption optional caption text to add to the plot. For ggplot objects, this is
+#'   added via `ggplot2::labs(caption = caption)`. For `ComplexHeatmap` objects, the
+#'   caption is rendered at the bottom of the graphics device using `grid::grid.text()`.
 #' @param ... arguments forwarded to `ggplot2::ggsave()`
 #'
 #' @return invisibly returns the path where the plot image was saved to the disk
@@ -22,11 +25,27 @@ print_or_save_plot <- function(
   save_plots = options::opt("save_plots"),
   plots_dir = options::opt("plots_dir"),
   graphics_device = grDevices::png,
+  caption = NULL,
   ...
 ) {
+  draw_heatmap_with_caption <- function(hm) {
+    ComplexHeatmap::draw(hm)
+    if (!is.null(caption)) {
+      grid::grid.text(
+        caption,
+        x = grid::unit(0.5, "npc"),
+        y = grid::unit(2, "mm"),
+        just = "bottom",
+        gp = grid::gpar(fontsize = 9, col = "grey40")
+      )
+    }
+  }
+  if (!is.null(caption) && inherits(plot_obj, "ggplot")) {
+    plot_obj <- plot_obj + ggplot2::labs(caption = caption)
+  }
   if (isTRUE(print_plots)) {
     if (inherits(plot_obj, c("Heatmap", "HeatmapList"))) {
-      ComplexHeatmap::draw(plot_obj)
+      draw_heatmap_with_caption(plot_obj)
     } else {
       print(plot_obj)
     }
@@ -48,7 +67,7 @@ print_or_save_plot <- function(
       htmlwidgets::saveWidget(plot_obj, filename, ...)
     } else if (inherits(plot_obj, c("Heatmap", "HeatmapList"))) {
       graphics_device(file = filename)
-      ComplexHeatmap::draw(plot_obj)
+      draw_heatmap_with_caption(plot_obj)
       grDevices::dev.off()
     } else {
       graphics_device(file = filename)

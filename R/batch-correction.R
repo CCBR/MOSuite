@@ -199,7 +199,8 @@ batch_correct_counts <- function(
       corHM_plot,
       filename = file.path(plots_subdir, "corr_heatmap.png"),
       print_plots = print_plots,
-      save_plots = save_plots
+      save_plots = save_plots,
+      caption = "batch-corrected counts"
     )
   }
 
