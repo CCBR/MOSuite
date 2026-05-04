@@ -2,6 +2,13 @@
 
 Plot histogram for multiOmicDataSet
 
+## Usage
+
+``` r
+## S7 method for class <MOSuite::multiOmicDataSet>
+plot_histogram(moo_counts, count_type, sub_count_type = NULL, ...)
+```
+
 ## Arguments
 
 - moo_counts:

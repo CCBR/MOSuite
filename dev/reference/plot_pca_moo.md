@@ -2,6 +2,19 @@
 
 Plot 2D or 3D PCA for multiOmicDataset
 
+## Usage
+
+``` r
+## S7 method for class <MOSuite::multiOmicDataSet>
+plot_pca(
+  moo_counts,
+  count_type,
+  sub_count_type = NULL,
+  principal_components = c(1, 2),
+  ...
+)
+```
+
 ## Arguments
 
 - moo_counts:

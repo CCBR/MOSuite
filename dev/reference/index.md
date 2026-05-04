@@ -163,16 +163,16 @@ for recommended usage
 
 These functions are called by the main visualization functions.
 
-- [`plot_corr_heatmap_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_dat.md)
+- [`plot_corr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_dat.md)
   : Plot correlation heatmap for counts dataframe
 
-- [`plot_corr_heatmap_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_moo.md)
+- [`plot_corr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_moo.md)
   : Plot correlation heatmap for multiOmicDataSet
 
-- [`plot_histogram_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram_dat.md)
+- [`plot_histogram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram_dat.md)
   : Plot histogram for counts dataframe
 
-- [`plot_histogram_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram_moo.md)
+- [`plot_histogram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram_moo.md)
   : Plot histogram for multiOmicDataSet
 
 - [`plot_pca_2d()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_2d.md)
@@ -181,16 +181,16 @@ These functions are called by the main visualization functions.
 - [`plot_pca_3d()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_3d.md)
   : 3D PCA for counts dataframe
 
-- [`plot_pca_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_dat.md)
+- [`plot_pca()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_dat.md)
   : Plot 2D or 3D PCA for counts dataframe
 
-- [`plot_pca_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_moo.md)
+- [`plot_pca()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_moo.md)
   : Plot 2D or 3D PCA for multiOmicDataset
 
-- [`plot_read_depth_dat`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth_dat.md)
+- [`plot_read_depth()`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth_dat.md)
   :
 
   Plot read depth for `data.frame`
 
-- [`plot_read_depth_moo`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth_moo.md)
+- [`plot_read_depth()`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth_moo.md)
   : Plot read depth for multiOmicDataSet

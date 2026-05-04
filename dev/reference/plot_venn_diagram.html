@@ -89,6 +89,80 @@ specified intersections.</p>
 <span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span>,</span>
 <span>  save_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"save_plots"</span><span class="op">)</span>,</span>
 <span>  plots_subdir <span class="op">=</span> <span class="st">"diff"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## S7 method for class &lt;MOSuite::multiOmicDataSet&gt;</span></span>
+<span><span class="fu">plot_venn_diagram</span><span class="op">(</span></span>
+<span>  <span class="va">moo_diff_summary_dat</span>,</span>
+<span>  feature_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  contrasts_colname <span class="op">=</span> <span class="st">"Contrast"</span>,</span>
+<span>  select_contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  plot_type <span class="op">=</span> <span class="st">"Venn diagram"</span>,</span>
+<span>  intersection_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  venn_force_unique <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  venn_numbers_format <span class="op">=</span> <span class="st">"raw"</span>,</span>
+<span>  venn_significant_digits <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  venn_fill_colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"darkgoldenrod2"</span>, <span class="st">"darkolivegreen2"</span>, <span class="st">"mediumpurple3"</span>,</span>
+<span>    <span class="st">"darkorange2"</span>, <span class="st">"lightgreen"</span><span class="op">)</span>,</span>
+<span>  venn_fill_transparency <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  venn_border_colors <span class="op">=</span> <span class="st">"fill colors"</span>,</span>
+<span>  venn_font_size_for_category_names <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  venn_category_names_distance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  venn_category_names_position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  venn_font_size_for_counts <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  venn_outer_margin <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  intersections_order <span class="op">=</span> <span class="st">"degree"</span>,</span>
+<span>  display_empty_intersections <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  intersection_bar_color <span class="op">=</span> <span class="st">"steelblue4"</span>,</span>
+<span>  intersection_point_size <span class="op">=</span> <span class="fl">2.2</span>,</span>
+<span>  intersection_line_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>  table_font_size <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>  table_content <span class="op">=</span> <span class="st">"all intersections"</span>,</span>
+<span>  graphics_device <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span>,</span>
+<span>  dpi <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  image_width <span class="op">=</span> <span class="fl">4000</span>,</span>
+<span>  image_height <span class="op">=</span> <span class="fl">3000</span>,</span>
+<span>  plot_filename <span class="op">=</span> <span class="st">"venn_diagram.png"</span>,</span>
+<span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span>,</span>
+<span>  save_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"save_plots"</span><span class="op">)</span>,</span>
+<span>  plots_subdir <span class="op">=</span> <span class="st">"diff"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## S7 method for class &lt;data.frame&gt;</span></span>
+<span><span class="fu">plot_venn_diagram</span><span class="op">(</span></span>
+<span>  <span class="va">moo_diff_summary_dat</span>,</span>
+<span>  feature_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  contrasts_colname <span class="op">=</span> <span class="st">"Contrast"</span>,</span>
+<span>  select_contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  plot_type <span class="op">=</span> <span class="st">"Venn diagram"</span>,</span>
+<span>  intersection_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  venn_force_unique <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  venn_numbers_format <span class="op">=</span> <span class="st">"raw"</span>,</span>
+<span>  venn_significant_digits <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  venn_fill_colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"darkgoldenrod2"</span>, <span class="st">"darkolivegreen2"</span>, <span class="st">"mediumpurple3"</span>,</span>
+<span>    <span class="st">"darkorange2"</span>, <span class="st">"lightgreen"</span><span class="op">)</span>,</span>
+<span>  venn_fill_transparency <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  venn_border_colors <span class="op">=</span> <span class="st">"fill colors"</span>,</span>
+<span>  venn_font_size_for_category_names <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  venn_category_names_distance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  venn_category_names_position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  venn_font_size_for_counts <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  venn_outer_margin <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  intersections_order <span class="op">=</span> <span class="st">"degree"</span>,</span>
+<span>  display_empty_intersections <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  intersection_bar_color <span class="op">=</span> <span class="st">"steelblue4"</span>,</span>
+<span>  intersection_point_size <span class="op">=</span> <span class="fl">2.2</span>,</span>
+<span>  intersection_line_width <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>  table_font_size <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>  table_content <span class="op">=</span> <span class="st">"all intersections"</span>,</span>
+<span>  graphics_device <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span>,</span>
+<span>  dpi <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  image_width <span class="op">=</span> <span class="fl">4000</span>,</span>
+<span>  image_height <span class="op">=</span> <span class="fl">3000</span>,</span>
+<span>  plot_filename <span class="op">=</span> <span class="st">"venn_diagram.png"</span>,</span>
+<span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span>,</span>
+<span>  save_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"save_plots"</span><span class="op">)</span>,</span>
+<span>  plots_subdir <span class="op">=</span> <span class="st">"diff"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 

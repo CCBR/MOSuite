@@ -66,6 +66,52 @@
 <span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span>,</span>
 <span>  save_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"save_plots"</span><span class="op">)</span>,</span>
 <span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## S7 method for class &lt;MOSuite::multiOmicDataSet&gt;</span></span>
+<span><span class="fu">plot_pca_3d</span><span class="op">(</span></span>
+<span>  <span class="va">moo_counts</span>,</span>
+<span>  count_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sub_count_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sample_metadata <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  feature_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sample_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  samples_to_rename <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  group_colname <span class="op">=</span> <span class="st">"Group"</span>,</span>
+<span>  label_colname <span class="op">=</span> <span class="st">"Label"</span>,</span>
+<span>  principal_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  point_size <span class="op">=</span> <span class="fl">8</span>,</span>
+<span>  label_font_size <span class="op">=</span> <span class="fl">24</span>,</span>
+<span>  color_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5954d6"</span>, <span class="st">"#e1562c"</span>, <span class="st">"#b80058"</span>, <span class="st">"#00c6f8"</span>, <span class="st">"#d163e6"</span>, <span class="st">"#00a76c"</span>,</span>
+<span>    <span class="st">"#ff9287"</span>, <span class="st">"#008cf9"</span>, <span class="st">"#006e00"</span>, <span class="st">"#796880"</span>, <span class="st">"#FFA500"</span>, <span class="st">"#878500"</span><span class="op">)</span>,</span>
+<span>  plot_title <span class="op">=</span> <span class="st">"PCA 3D"</span>,</span>
+<span>  plot_filename <span class="op">=</span> <span class="st">"pca_3D.html"</span>,</span>
+<span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span>,</span>
+<span>  save_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"save_plots"</span><span class="op">)</span>,</span>
+<span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## S7 method for class &lt;data.frame&gt;</span></span>
+<span><span class="fu">plot_pca_3d</span><span class="op">(</span></span>
+<span>  <span class="va">moo_counts</span>,</span>
+<span>  count_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sub_count_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sample_metadata <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  feature_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sample_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  samples_to_rename <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  group_colname <span class="op">=</span> <span class="st">"Group"</span>,</span>
+<span>  label_colname <span class="op">=</span> <span class="st">"Label"</span>,</span>
+<span>  principal_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  point_size <span class="op">=</span> <span class="fl">8</span>,</span>
+<span>  label_font_size <span class="op">=</span> <span class="fl">24</span>,</span>
+<span>  color_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5954d6"</span>, <span class="st">"#e1562c"</span>, <span class="st">"#b80058"</span>, <span class="st">"#00c6f8"</span>, <span class="st">"#d163e6"</span>, <span class="st">"#00a76c"</span>,</span>
+<span>    <span class="st">"#ff9287"</span>, <span class="st">"#008cf9"</span>, <span class="st">"#006e00"</span>, <span class="st">"#796880"</span>, <span class="st">"#FFA500"</span>, <span class="st">"#878500"</span><span class="op">)</span>,</span>
+<span>  plot_title <span class="op">=</span> <span class="st">"PCA 3D"</span>,</span>
+<span>  plot_filename <span class="op">=</span> <span class="st">"pca_3D.html"</span>,</span>
+<span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span>,</span>
+<span>  save_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"save_plots"</span><span class="op">)</span>,</span>
+<span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 

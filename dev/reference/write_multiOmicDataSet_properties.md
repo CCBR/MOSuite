@@ -8,6 +8,9 @@ files, while all other objects are saved as RDS files.
 
 ``` r
 write_multiOmicDataSet_properties(moo, output_dir = "moo")
+
+## S7 method for class <MOSuite::multiOmicDataSet>
+write_multiOmicDataSet_properties(moo, output_dir = "moo")
 ```
 
 ## Arguments

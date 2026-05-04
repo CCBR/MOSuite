@@ -2,6 +2,22 @@
 
 Plot correlation heatmap for counts dataframe
 
+## Usage
+
+``` r
+## S7 method for class <data.frame>
+plot_corr_heatmap(
+  moo_counts,
+  sample_metadata,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = "Label",
+  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500")
+)
+```
+
 ## Arguments
 
 - moo_counts:

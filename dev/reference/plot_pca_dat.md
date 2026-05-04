@@ -2,6 +2,13 @@
 
 Plot 2D or 3D PCA for counts dataframe
 
+## Usage
+
+``` r
+## S7 method for class <data.frame>
+plot_pca(moo_counts, sample_metadata, principal_components = c(1, 2), ...)
+```
+
 ## Arguments
 
 - moo_counts:

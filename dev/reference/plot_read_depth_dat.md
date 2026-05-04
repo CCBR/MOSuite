@@ -2,6 +2,13 @@
 
 Plot read depth for `data.frame`
 
+## Usage
+
+``` r
+## S7 method for class <data.frame>
+plot_read_depth(moo_counts, ...)
+```
+
 ## Arguments
 
 - moo_counts:

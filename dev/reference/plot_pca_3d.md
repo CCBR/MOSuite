@@ -26,6 +26,52 @@ plot_pca_3d(
   save_plots = options::opt("save_plots"),
   plots_subdir = "pca"
 )
+
+## S7 method for class <MOSuite::multiOmicDataSet>
+plot_pca_3d(
+  moo_counts,
+  count_type = NULL,
+  sub_count_type = NULL,
+  sample_metadata = NULL,
+  feature_id_colname = NULL,
+  sample_id_colname = NULL,
+  samples_to_rename = NULL,
+  group_colname = "Group",
+  label_colname = "Label",
+  principal_components = c(1, 2, 3),
+  point_size = 8,
+  label_font_size = 24,
+  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  plot_title = "PCA 3D",
+  plot_filename = "pca_3D.html",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "pca"
+)
+
+## S7 method for class <data.frame>
+plot_pca_3d(
+  moo_counts,
+  count_type = NULL,
+  sub_count_type = NULL,
+  sample_metadata = NULL,
+  feature_id_colname = NULL,
+  sample_id_colname = NULL,
+  samples_to_rename = NULL,
+  group_colname = "Group",
+  label_colname = "Label",
+  principal_components = c(1, 2, 3),
+  point_size = 8,
+  label_font_size = 24,
+  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  plot_title = "PCA 3D",
+  plot_filename = "pca_3D.html",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "pca"
+)
 ```
 
 ## Arguments
