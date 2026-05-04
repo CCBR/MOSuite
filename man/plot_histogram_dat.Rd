@@ -3,6 +3,30 @@
 \name{plot_histogram_dat}
 \alias{plot_histogram_dat}
 \title{Plot histogram for counts dataframe}
+\usage{
+## S7 method for class <data.frame>
+plot_histogram(
+  moo_counts,
+  sample_metadata,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = "Label",
+  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_by_group = FALSE,
+  set_min_max_for_x_axis = FALSE,
+  minimum_for_x_axis = -1,
+  maximum_for_x_axis = 1,
+  x_axis_label = "Counts",
+  y_axis_label = "Density",
+  legend_position = "top",
+  legend_font_size = 10,
+  number_of_legend_columns = 6,
+  interactive_plots = FALSE,
+  ...
+)
+}
 \arguments{
 \item{moo_counts}{counts dataframe (\strong{required})}
 
@@ -82,7 +106,7 @@ plot_histogram(
 \seealso{
 \link{plot_histogram} generic
 
-Other plotters for counts dataframes: 
+Other plotters for counts dataframes:
 \code{\link{plot_corr_heatmap_dat}},
 \code{\link{plot_pca_dat}},
 \code{\link{plot_read_depth_dat}}

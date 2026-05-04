@@ -5,6 +5,9 @@
 \title{Extract count data}
 \usage{
 extract_counts(moo, count_type, sub_count_type = NULL)
+
+## S7 method for class <MOSuite::multiOmicDataSet>
+extract_counts(moo, count_type, sub_count_type = NULL)
 }
 \arguments{
 \item{moo}{multiOmicDataSet containing \code{count_type} & \code{sub_count_type} in the counts slot}

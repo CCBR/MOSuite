@@ -23,8 +23,8 @@ the \code{sample_meta}.}
 multiOmicDataSet class
 }
 \seealso{
-Other moo constructors: 
-\code{\link{create_multiOmicDataSet_from_dataframes}()},
-\code{\link{create_multiOmicDataSet_from_files}()}
+Other moo constructors:
+\code{\link[=create_multiOmicDataSet_from_dataframes]{create_multiOmicDataSet_from_dataframes()}},
+\code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}}
 }
 \concept{moo constructors}

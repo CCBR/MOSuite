@@ -56,8 +56,8 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(sample_meta_nidap, raw_coun
 
 }
 \seealso{
-Other moo constructors: 
-\code{\link{create_multiOmicDataSet_from_files}()},
-\code{\link{multiOmicDataSet}()}
+Other moo constructors:
+\code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}},
+\code{\link[=multiOmicDataSet]{multiOmicDataSet()}}
 }
 \concept{moo constructors}

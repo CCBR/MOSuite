@@ -3,6 +3,16 @@
 \name{plot_pca_moo}
 \alias{plot_pca_moo}
 \title{Plot 2D or 3D PCA for multiOmicDataset}
+\usage{
+## S7 method for class <MOSuite::multiOmicDataSet>
+plot_pca(
+  moo_counts,
+  count_type,
+  sub_count_type = NULL,
+  principal_components = c(1, 2),
+  ...
+)
+}
 \arguments{
 \item{moo_counts}{\code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
 
@@ -25,7 +35,7 @@ Plot 2D or 3D PCA for multiOmicDataset
 \seealso{
 \link{plot_pca} generic
 
-Other plotters for multiOmicDataSets: 
+Other plotters for multiOmicDataSets:
 \code{\link{plot_corr_heatmap_moo}},
 \code{\link{plot_histogram_moo}},
 \code{\link{plot_read_depth_moo}}
