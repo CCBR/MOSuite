@@ -104,6 +104,11 @@ Plot histogram for counts dataframe
   The similarity heat map will not display if this toggle is set to
   TRUE. Default is FALSE.
 
+- ...:
+
+  additional arguments (ignored; accepted for compatibility with the moo
+  dispatch)
+
 ## See also
 
 [plot_histogram](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.md)

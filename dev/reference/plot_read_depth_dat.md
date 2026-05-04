@@ -8,6 +8,11 @@ Plot read depth for `data.frame`
 
   counts dataframe
 
+- ...:
+
+  additional arguments (ignored; accepted for compatibility with the moo
+  dispatch)
+
 ## Value
 
 ggplot barplot
