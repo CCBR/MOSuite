@@ -3,6 +3,10 @@
 \name{plot_corr_heatmap_moo}
 \alias{plot_corr_heatmap_moo}
 \title{Plot correlation heatmap for multiOmicDataSet}
+\usage{
+## S7 method for class <MOSuite::multiOmicDataSet>
+plot_corr_heatmap(moo_counts, count_type, sub_count_type = NULL, ...)
+}
 \arguments{
 \item{moo_counts}{\code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot}
 
@@ -19,7 +23,7 @@ Plot correlation heatmap for multiOmicDataSet
 \seealso{
 \link{plot_corr_heatmap} generic
 
-Other plotters for multiOmicDataSets: 
+Other plotters for multiOmicDataSets:
 \code{\link{plot_histogram_moo}},
 \code{\link{plot_pca_moo}},
 \code{\link{plot_read_depth_moo}}

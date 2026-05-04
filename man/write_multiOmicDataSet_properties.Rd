@@ -5,6 +5,9 @@
 \title{Write multiOmicDataSet properties to disk as CSV files}
 \usage{
 write_multiOmicDataSet_properties(moo, output_dir = "moo")
+
+## S7 method for class <MOSuite::multiOmicDataSet>
+write_multiOmicDataSet_properties(moo, output_dir = "moo")
 }
 \arguments{
 \item{moo}{\code{multiOmicDataSet} object to write properties from}

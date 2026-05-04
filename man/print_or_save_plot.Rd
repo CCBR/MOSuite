@@ -39,12 +39,12 @@ If \code{plot_obj} is a ggplot, \code{ggplot2::ggsave()} is used to save the ima
 Otherwise, \code{graphics_device} is used (\code{grDevice::png()} by default).
 }
 \seealso{
-Other plotters: 
-\code{\link{plot_corr_heatmap}()},
-\code{\link{plot_expr_heatmap}()},
-\code{\link{plot_histogram}()},
-\code{\link{plot_pca}()},
-\code{\link{plot_read_depth}()}
+Other plotters:
+\code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
+\code{\link[=plot_expr_heatmap]{plot_expr_heatmap()}},
+\code{\link[=plot_histogram]{plot_histogram()}},
+\code{\link[=plot_pca]{plot_pca()}},
+\code{\link[=plot_read_depth]{plot_read_depth()}}
 }
 \concept{plotters}
 \keyword{plotters}

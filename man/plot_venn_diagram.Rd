@@ -39,6 +39,80 @@ plot_venn_diagram(
   save_plots = options::opt("save_plots"),
   plots_subdir = "diff"
 )
+
+## S7 method for class <MOSuite::multiOmicDataSet>
+plot_venn_diagram(
+  moo_diff_summary_dat,
+  feature_id_colname = NULL,
+  contrasts_colname = "Contrast",
+  select_contrasts = c(),
+  plot_type = "Venn diagram",
+  intersection_ids = c(),
+  venn_force_unique = TRUE,
+  venn_numbers_format = "raw",
+  venn_significant_digits = 2,
+  venn_fill_colors = c("darkgoldenrod2", "darkolivegreen2", "mediumpurple3",
+    "darkorange2", "lightgreen"),
+  venn_fill_transparency = 0.2,
+  venn_border_colors = "fill colors",
+  venn_font_size_for_category_names = 3,
+  venn_category_names_distance = c(),
+  venn_category_names_position = c(),
+  venn_font_size_for_counts = 6,
+  venn_outer_margin = 0,
+  intersections_order = "degree",
+  display_empty_intersections = FALSE,
+  intersection_bar_color = "steelblue4",
+  intersection_point_size = 2.2,
+  intersection_line_width = 0.7,
+  table_font_size = 0.7,
+  table_content = "all intersections",
+  graphics_device = grDevices::png,
+  dpi = 300,
+  image_width = 4000,
+  image_height = 3000,
+  plot_filename = "venn_diagram.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff"
+)
+
+## S7 method for class <data.frame>
+plot_venn_diagram(
+  moo_diff_summary_dat,
+  feature_id_colname = NULL,
+  contrasts_colname = "Contrast",
+  select_contrasts = c(),
+  plot_type = "Venn diagram",
+  intersection_ids = c(),
+  venn_force_unique = TRUE,
+  venn_numbers_format = "raw",
+  venn_significant_digits = 2,
+  venn_fill_colors = c("darkgoldenrod2", "darkolivegreen2", "mediumpurple3",
+    "darkorange2", "lightgreen"),
+  venn_fill_transparency = 0.2,
+  venn_border_colors = "fill colors",
+  venn_font_size_for_category_names = 3,
+  venn_category_names_distance = c(),
+  venn_category_names_position = c(),
+  venn_font_size_for_counts = 6,
+  venn_outer_margin = 0,
+  intersections_order = "degree",
+  display_empty_intersections = FALSE,
+  intersection_bar_color = "steelblue4",
+  intersection_point_size = 2.2,
+  intersection_line_width = 0.7,
+  table_font_size = 0.7,
+  table_content = "all intersections",
+  graphics_device = grDevices::png,
+  dpi = 300,
+  image_width = 4000,
+  image_height = 3000,
+  plot_filename = "venn_diagram.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff"
+)
 }
 \arguments{
 \item{moo_diff_summary_dat}{Summarized differential expression analysis}

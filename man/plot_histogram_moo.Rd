@@ -3,6 +3,10 @@
 \name{plot_histogram_moo}
 \alias{plot_histogram_moo}
 \title{Plot histogram for multiOmicDataSet}
+\usage{
+## S7 method for class <MOSuite::multiOmicDataSet>
+plot_histogram(moo_counts, count_type, sub_count_type = NULL, ...)
+}
 \arguments{
 \item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
 slot}
@@ -37,7 +41,7 @@ plot_histogram(moo,
 \seealso{
 \link{plot_histogram} generic
 
-Other plotters for multiOmicDataSets: 
+Other plotters for multiOmicDataSets:
 \code{\link{plot_corr_heatmap_moo}},
 \code{\link{plot_pca_moo}},
 \code{\link{plot_read_depth_moo}}

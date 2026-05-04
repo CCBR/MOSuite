@@ -99,18 +99,18 @@ head(moo@counts[["batch"]])
 
 }
 \seealso{
-Other moo methods: 
-\code{\link{clean_raw_counts}()},
-\code{\link{diff_counts}()},
-\code{\link{filter_counts}()},
-\code{\link{filter_diff}()},
-\code{\link{normalize_counts}()},
-\code{\link{plot_corr_heatmap}()},
-\code{\link{plot_expr_heatmap}()},
-\code{\link{plot_histogram}()},
-\code{\link{plot_pca}()},
-\code{\link{plot_read_depth}()},
-\code{\link{run_deseq2}()},
-\code{\link{set_color_pal}()}
+Other moo methods:
+\code{\link[=clean_raw_counts]{clean_raw_counts()}},
+\code{\link[=diff_counts]{diff_counts()}},
+\code{\link[=filter_counts]{filter_counts()}},
+\code{\link[=filter_diff]{filter_diff()}},
+\code{\link[=normalize_counts]{normalize_counts()}},
+\code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
+\code{\link[=plot_expr_heatmap]{plot_expr_heatmap()}},
+\code{\link[=plot_histogram]{plot_histogram()}},
+\code{\link[=plot_pca]{plot_pca()}},
+\code{\link[=plot_read_depth]{plot_read_depth()}},
+\code{\link[=run_deseq2]{run_deseq2()}},
+\code{\link[=set_color_pal]{set_color_pal()}}
 }
 \concept{moo methods}
