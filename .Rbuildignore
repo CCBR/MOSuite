@@ -21,6 +21,7 @@
 ^README\.Rmd$
 ^README\.html$
 ^README_files$
+^tests/figures$
 ^vignettes/figures/$
 ^vignettes/memory\.Rmd$
 ^vignettes/cli\.Rmd$
