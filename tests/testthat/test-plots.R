@@ -29,66 +29,49 @@ corr_heatmap_fixture <- function() {
 test_that("print_or_save_plot saves ComplexHeatmap to disk without error", {
   p <- corr_heatmap_fixture()
   outfile <- tempfile(fileext = ".png")
-  expect_no_error(
-    print_or_save_plot(
-      p,
-      filename = outfile,
-      print_plots = FALSE,
-      save_plots = TRUE,
-      plots_dir = ""
-    )
+  result <- print_or_save_plot(
+    p,
+    filename = outfile,
+    print_plots = FALSE,
+    save_plots = TRUE,
+    plots_dir = "",
+    caption = "filtered counts"
   )
+  expect_equal(result, outfile)
   expect_true(file.exists(outfile))
+  expect_gt(file.size(outfile), 0)
 })
 
-test_that("print_or_save_plot adds caption to ComplexHeatmap when saving", {
-  p <- corr_heatmap_fixture()
-  outfile <- tempfile(fileext = ".png")
-  expect_no_error(
-    print_or_save_plot(
-      p,
-      filename = outfile,
-      print_plots = FALSE,
-      save_plots = TRUE,
-      plots_dir = "",
-      caption = "filtered counts"
-    )
-  )
-  expect_true(file.exists(outfile))
-})
-
-test_that("print_or_save_plot adds caption to ggplot labels", {
+test_that("print_or_save_plot saves ggplot without error", {
   p <- plot_read_depth(nidap_clean_raw_counts)
-  expect_null(p$labels$caption)
   outfile <- tempfile(fileext = ".png")
-  expect_no_error(
-    print_or_save_plot(
-      p,
-      filename = outfile,
-      print_plots = FALSE,
-      save_plots = TRUE,
-      plots_dir = "",
-      caption = "normalized counts"
-    )
+  result <- print_or_save_plot(
+    p,
+    filename = outfile,
+    print_plots = FALSE,
+    save_plots = TRUE,
+    plots_dir = "",
+    caption = "normalized counts"
   )
+  expect_equal(result, outfile)
   expect_true(file.exists(outfile))
+  expect_gt(file.size(outfile), 0)
 })
 
 test_that("print_or_save_plot prints ComplexHeatmap with caption without error", {
   p <- corr_heatmap_fixture()
   outfile <- tempfile(fileext = ".png")
   withr::with_png(outfile, {
-    expect_no_error(
-      print_or_save_plot(
-        p,
-        filename = outfile,
-        print_plots = TRUE,
-        save_plots = FALSE,
-        plots_dir = "",
-        caption = "batch-corrected counts"
-      )
+    result <- print_or_save_plot(
+      p,
+      filename = outfile,
+      print_plots = TRUE,
+      save_plots = FALSE,
+      plots_dir = "",
+      caption = "batch-corrected counts"
     )
   })
+  expect_equal(result, outfile)
 })
 
 test_that("save_or_print_plot works for ComplexHeatmap", {
