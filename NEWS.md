@@ -1,6 +1,8 @@
 ## development version
 
 - Fix recursion error in `plot_venn_diagram()`. (#188, @kelly-sovacool)
+- Fix S3/S7 dispatch argument mismatch in `plot_read_depth()` and `plot_histogram()`. (#200, @copilot, @kelly-sovacool)
+- Fix crash in `remove_low_count_genes()` when `use_group_based_filtering = TRUE`. (#200, @copilot, @kelly-sovacool)
 
 ## MOSuite 0.3.0
 

@@ -583,3 +583,21 @@ test_that("plot_histogram result is the same for MOO or dataframe", {
     plot_histogram(nidap_raw_counts, sample_meta = nidap_sample_metadata)
   )
 })
+
+test_that("plot_histogram accepts print_plots and save_plots via moo dispatch without error", {
+  moo <- multiOmicDataSet(
+    sample_metadata = nidap_sample_metadata,
+    anno_dat = data.frame(),
+    counts_lst = list("raw" = nidap_raw_counts)
+  )
+  expect_no_error(
+    plot_histogram(
+      moo,
+      count_type = "raw",
+      group_colname = "Group",
+      color_by_group = TRUE,
+      print_plots = FALSE,
+      save_plots = FALSE
+    )
+  )
+})

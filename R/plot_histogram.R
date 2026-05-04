@@ -126,6 +126,7 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 #' @param interactive_plots set to TRUE to make the plot interactive with `plotly`, allowing you to hover your mouse
 #'   over a point or line to view sample information. The similarity heat map will not display if this toggle is set to
 #'   TRUE. Default is FALSE.
+#' @param ... additional arguments (ignored; accepted for compatibility with the moo dispatch)
 #' @examples
 #'
 #' # plot histogram for a counts dataframe directly
@@ -181,7 +182,8 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
   legend_position = "top",
   legend_font_size = 10,
   number_of_legend_columns = 6,
-  interactive_plots = FALSE
+  interactive_plots = FALSE,
+  ...
 ) {
   count <- NULL
   counts_dat <- moo_counts
