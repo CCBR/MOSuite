@@ -1,4 +1,4 @@
-FROM nciccbr/ccbr_ubuntu_22.04:v4
+FROM nciccbr/ccbr_ubuntu_24.04:v1
 
 # build time variables
 ARG BUILD_DATE="000000"
@@ -8,7 +8,7 @@ ENV BUILD_TAG=${BUILD_TAG}
 ARG REPONAME="000000"
 ENV REPONAME=${REPONAME}
 
-ARG R_VERSION=4.3.3
+ARG R_VERSION=4.6.0
 ENV R_VERSION=${R_VERSION}
 
 SHELL ["/bin/bash", "-lc"]
@@ -40,6 +40,7 @@ RUN mamba install -y -c conda-forge \
     r-here \
     r-matrix \
     r-mgcv \
+    r-pak \
     r-patchwork \
     r-plotly \
     r-rcolorbrewer \
@@ -63,21 +64,11 @@ RUN mamba install -y -c conda-forge \
 
 # install R package
 COPY . /opt2/MOSuite
-RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com', upgrade='never')" && \
-  R -e "library(MOSuite); devtools::test('/opt2/MOSuite')" && \
-  R -s -e "readr::write_csv(tibble::as_tibble(installed.packages()), '/data2/r-packages_mosuite.csv')"
-
-# add mosuite exec to the path
-RUN chmod -R +x /opt2/conda/lib/R/library/MOSuite/exec
-ENV PATH="$PATH:/opt2/conda/lib/R/library/MOSuite/exec"
-RUN mosuite --help
+RUN R -e "pak::local_install_dev_deps('/opt2/MOSuite', repos='http://cran.rstudio.com', upgrade='never')" && \
+  R -s -e "readr::write_csv(tibble::as_tibble(installed.packages()), '/data2/r-packages_mosuite-minimal.csv')"
 
 # copy .Rprofile to R_HOME
 ADD .github/.Rprofile /opt2/conda/lib/R/
-
-# copy example script & json to data
-COPY ./inst/extdata/example_script.sh /data2/
-COPY ./inst/extdata/json_args/ /data2/json_args/
 
 # cleanup
 WORKDIR /data2

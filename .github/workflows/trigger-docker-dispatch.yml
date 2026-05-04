@@ -11,15 +11,18 @@ on:
   release:
     types: [ published ]
 
-env:
-  dockerfile_path: "Dockerfile"
-  docker_image_name: "mosuite"
 
 jobs:
-  trigger-docker-build:
+  trigger-docker-build-mosuite:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { dockerfile_path: "docker/Dockerfile", docker_image_name: "mosuite" }
+          - { dockerfiel_path: "docker/Dockerfile_minimal", docker_image_name: "mosuite-minimal" }
     steps:
       - uses: actions/checkout@v6
         with:
