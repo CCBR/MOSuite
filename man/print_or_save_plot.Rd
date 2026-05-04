@@ -11,6 +11,7 @@ print_or_save_plot(
   save_plots = options::opt("save_plots"),
   plots_dir = options::opt("plots_dir"),
   graphics_device = grDevices::png,
+  caption = NULL,
   ...
 )
 }
@@ -26,6 +27,10 @@ print_or_save_plot(
 \item{plots_dir}{Path where plots are saved when \code{moo_save_plots} is \code{TRUE} (Defaults to \code{"figures/"}, overwritable using option 'moo_plots_dir' or environment variable 'MOO_PLOTS_DIR')}
 
 \item{graphics_device}{Default: \code{grDevice::png()}. Only used if the plot is not a ggplot.}
+
+\item{caption}{optional caption text to add to the plot. For ggplot objects, this is
+added via \code{ggplot2::labs(caption = caption)}. For \code{ComplexHeatmap} objects, the
+caption is rendered at the bottom of the graphics device using \code{grid::grid.text()}.}
 
 \item{...}{arguments forwarded to \code{ggplot2::ggsave()}}
 }
