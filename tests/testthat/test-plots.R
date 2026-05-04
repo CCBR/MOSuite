@@ -76,7 +76,9 @@ test_that("print_or_save_plot prints ComplexHeatmap with caption without error",
 
 test_that("save_or_print_plot works for ComplexHeatmap", {
   p <- corr_heatmap_fixture()
-  skip("snapshot tests are unreliable across platforms; covered by non-snapshot tests above")
+  skip(
+    "snapshot tests are unreliable across platforms; covered by non-snapshot tests above"
+  )
   expect_snapshot_file(
     print_or_save_plot(
       p,
@@ -90,7 +92,9 @@ test_that("save_or_print_plot works for ComplexHeatmap", {
 })
 test_that("save_or_print_plot works for ggplot", {
   p <- plot_read_depth(nidap_clean_raw_counts)
-  skip("snapshot tests are unreliable across platforms; covered by non-snapshot tests above")
+  skip(
+    "snapshot tests are unreliable across platforms; covered by non-snapshot tests above"
+  )
   expect_snapshot_file(
     print_or_save_plot(
       p,
