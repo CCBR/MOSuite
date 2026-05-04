@@ -117,11 +117,6 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
   )
 }
 
-#' Enhanced Volcano Plot
-#'
-#' Uses [Bioconductor's Enhanced Volcano
-#' Plot](https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html).
-#'
 #' @inheritParams option_params
 #' @inheritParams filter_counts
 #'

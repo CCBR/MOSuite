@@ -139,13 +139,6 @@ S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
   )
 }
 
-#' Plot a venn diagram, UpSet plot, or table of intersections
-#'
-#' generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across
-#' tested contrasts). This Venn diagram is available for up to five sets; Intersection plot is available for any number
-#' of sets. Specific sets can be selected for the visualizations and the returned dataset may include all (default) or
-#' specified intersections.
-#'
 #' @inheritParams option_params
 #' @inheritParams filter_counts
 #' @inheritParams plot_volcano_enhanced

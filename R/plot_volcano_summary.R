@@ -162,13 +162,6 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
   )
 }
 
-#' Volcano Plot - Summary
-#'
-#' Produces one volcano plot for each tested contrast in the input DEG table.
-#' It can be sorted by either fold change, t-statistic, or p-value. The returned dataset includes one row for each
-#' significant gene in each contrast, and contains columns from the DEG analysis of that contrast as well as columns
-#' useful to the Venn diagram template downstream.
-#'
 #' @inheritParams option_params
 #' @inheritParams plot_volcano_enhanced
 #' @inheritParams filter_counts
