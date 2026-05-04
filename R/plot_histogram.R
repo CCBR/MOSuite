@@ -151,7 +151,6 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 #' @seealso [plot_histogram] generic
 #' @name plot_histogram_dat
 #' @usage NULL
-#' @method plot_histogram data.frame
 #' @family plotters for counts dataframes
 S7::method(plot_histogram, S7::class_data.frame) <- function(
   moo_counts,
