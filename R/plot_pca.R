@@ -32,8 +32,8 @@
 #'  See the low-level function docs for additional arguments
 #'  depending on whether you're plotting 2 or 3 PCs:
 #'
-#'  - [plot_pca_2d] - used when there are **2** principal components
-#'  - [plot_pca_3d] - used when there are **3** principal components
+#'  - [plot_pca_2d()] - used when there are **2** principal components
+#'  - [plot_pca_3d()] - used when there are **3** principal components
 #'
 #' @export
 #' @return PCA plot (2D or 3D depending on the number of `principal_components`)
@@ -65,7 +65,7 @@ plot_pca <- S7::new_generic(
 #'
 #' @returns PCA plot
 #'
-#' @seealso [plot_pca] generic
+#' @seealso [plot_pca()] generic
 #' @family plotters for multiOmicDataSets
 S7::method(plot_pca, multiOmicDataSet) <- function(
   moo_counts,
@@ -96,7 +96,7 @@ S7::method(plot_pca, multiOmicDataSet) <- function(
 #'   for a 3D pca with plotly. (Default: `c(1,2)`)
 #' @param ... additional arguments forwarded to [plot_pca_2d()] (if 2 PCs) or [plot_pca_3d()] (if 3 PCs).
 #'
-#' @seealso [plot_pca] generic
+#' @seealso [plot_pca()] generic
 #' @family plotters for counts dataframes
 S7::method(plot_pca, S7::class_data.frame) <- function(
   moo_counts,
@@ -269,7 +269,7 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 #' @exportS7Method
 #' @return ggplot object
 #'
-#' @seealso [plot_pca] generic
+#' @seealso [plot_pca()] generic
 #' @family PCA functions
 #'
 #' @rdname plot_pca_2d

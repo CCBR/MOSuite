@@ -32,8 +32,8 @@
 #'
 #' | link to docs  | class  |
 #' |---|---|
-#' | [plot_read_depth_moo] | `multiOmicDataSet` |
-#' | [plot_read_depth_dat] | `data.frame`       |
+#' | [plot_read_depth_moo()] | `multiOmicDataSet` |
+#' | [plot_read_depth_dat()] | `data.frame`       |
 #'
 #' @family plotters
 #' @keywords plotters
@@ -68,7 +68,7 @@ plot_read_depth <- S7::new_generic(
 #'
 #' plot_read_depth(moo, count_type = "clean")
 #'
-#' @seealso [plot_read_depth] generic
+#' @seealso [plot_read_depth()] generic
 #' @family plotters for multiOmicDataSets
 S7::method(plot_read_depth, multiOmicDataSet) <- function(
   moo_counts,
@@ -94,7 +94,7 @@ S7::method(plot_read_depth, multiOmicDataSet) <- function(
 #' # dataframe
 #' plot_read_depth(nidap_clean_raw_counts)
 #'
-#' @seealso [plot_read_depth] generic
+#' @seealso [plot_read_depth()] generic
 #' @family plotters for counts dataframes
 S7::method(plot_read_depth, S7::class_data.frame) <- function(moo_counts, ...) {
   sample_names <- column_sums <- NULL

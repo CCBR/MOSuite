@@ -51,7 +51,7 @@ plot_histogram <- S7::new_generic(
 #'   the counts slot (`moo@counts`).
 #' @param sub_count_type Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub
 #'   count type within the list
-#' @param ... arguments forwarded to method: [plot_histogram_dat]
+#' @param ... arguments forwarded to method: [plot_histogram_dat()]
 #' @examples
 #' # plot histogram for a counts slot in a multiOmicDataset Object
 #' moo <- multiOmicDataSet(
@@ -67,7 +67,7 @@ plot_histogram <- S7::new_generic(
 #'   group_colname = "Group", color_by_group = TRUE
 #' )
 #'
-#' @seealso [plot_histogram] generic
+#' @seealso [plot_histogram()] generic
 #' @family plotters for multiOmicDataSets
 S7::method(plot_histogram, multiOmicDataSet) <- function(
   moo_counts,
@@ -141,7 +141,7 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 #'   color_by_group = TRUE
 #' )
 #'
-#' @seealso [plot_histogram] generic
+#' @seealso [plot_histogram()] generic
 #'
 #' @family plotters for counts dataframes
 S7::method(plot_histogram, S7::class_data.frame) <- function(
