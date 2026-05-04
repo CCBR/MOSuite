@@ -1,6 +1,7 @@
 set.seed(20250225)
-test_that("save_or_print_plot works for ComplexHeatmap", {
-  p <- plot_corr_heatmap(
+
+corr_heatmap_fixture <- function() {
+  plot_corr_heatmap(
     nidap_filtered_counts |>
       as.data.frame(),
     sample_metadata = as.data.frame(nidap_sample_metadata),
@@ -23,6 +24,75 @@ test_that("save_or_print_plot works for ComplexHeatmap", {
       "#878500"
     )
   )
+}
+
+test_that("print_or_save_plot saves ComplexHeatmap to disk without error", {
+  p <- corr_heatmap_fixture()
+  outfile <- tempfile(fileext = ".png")
+  expect_no_error(
+    print_or_save_plot(
+      p,
+      filename = outfile,
+      print_plots = FALSE,
+      save_plots = TRUE,
+      plots_dir = ""
+    )
+  )
+  expect_true(file.exists(outfile))
+})
+
+test_that("print_or_save_plot adds caption to ComplexHeatmap when saving", {
+  p <- corr_heatmap_fixture()
+  outfile <- tempfile(fileext = ".png")
+  expect_no_error(
+    print_or_save_plot(
+      p,
+      filename = outfile,
+      print_plots = FALSE,
+      save_plots = TRUE,
+      plots_dir = "",
+      caption = "filtered counts"
+    )
+  )
+  expect_true(file.exists(outfile))
+})
+
+test_that("print_or_save_plot adds caption to ggplot labels", {
+  p <- plot_read_depth(nidap_clean_raw_counts)
+  expect_null(p$labels$caption)
+  outfile <- tempfile(fileext = ".png")
+  expect_no_error(
+    print_or_save_plot(
+      p,
+      filename = outfile,
+      print_plots = FALSE,
+      save_plots = TRUE,
+      plots_dir = "",
+      caption = "normalized counts"
+    )
+  )
+  expect_true(file.exists(outfile))
+})
+
+test_that("print_or_save_plot prints ComplexHeatmap with caption without error", {
+  p <- corr_heatmap_fixture()
+  outfile <- tempfile(fileext = ".png")
+  grDevices::png(outfile)
+  expect_no_error(
+    print_or_save_plot(
+      p,
+      filename = outfile,
+      print_plots = TRUE,
+      save_plots = FALSE,
+      plots_dir = "",
+      caption = "batch-corrected counts"
+    )
+  )
+  grDevices::dev.off()
+})
+
+test_that("save_or_print_plot works for ComplexHeatmap", {
+  p <- corr_heatmap_fixture()
   skip()
   expect_snapshot_file(
     print_or_save_plot(
