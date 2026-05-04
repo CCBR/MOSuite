@@ -37,7 +37,7 @@ calc_pca(nidap_raw_counts, nidap_sample_metadata) |> head()
 \seealso{
 Other PCA functions:
 \code{\link[=plot_pca]{plot_pca()}},
-\code{\link[=plot_pca_2d]{plot_pca_2d()}},
-\code{\link[=plot_pca_3d]{plot_pca_3d()}}
+\code{\link{plot_pca_2d,MOSuite::multiOmicDataSet-method}},
+\code{\link{plot_pca_3d,MOSuite::multiOmicDataSet-method}}
 }
 \concept{PCA functions}

@@ -69,8 +69,8 @@ Other plotters:
 
 Other PCA functions:
 \code{\link[=calc_pca]{calc_pca()}},
-\code{\link[=plot_pca_2d]{plot_pca_2d()}},
-\code{\link[=plot_pca_3d]{plot_pca_3d()}}
+\code{\link{plot_pca_2d,MOSuite::multiOmicDataSet-method}},
+\code{\link{plot_pca_3d,MOSuite::multiOmicDataSet-method}}
 
 Other moo methods:
 \code{\link[=batch_correct_counts]{batch_correct_counts()}},
