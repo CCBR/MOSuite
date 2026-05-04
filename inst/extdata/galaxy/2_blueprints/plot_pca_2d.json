@@ -71,7 +71,7 @@
     {
       "key": "sub_count_type",
       "displayName": "Sub Count Type",
-      "description": "used if `count_type` is a list in the counts slot: specify the sub count type within the list.\nMust be a name in `names(moo@counts[[count_type]])`.\n",
+      "description": "Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub\ncount type within the list\n",
       "paramType": "STRING",
       "paramGroup": "Basic",
       "paramValues": null,
@@ -241,7 +241,7 @@
     {
       "key": "interactive_plots",
       "displayName": "Interactive Plots",
-      "description": "set to TRUE to make PCA and Histogram plots interactive with `plotly`, allowing you to hover\nyour mouse over a point or line to view sample information. The similarity heat map will not display if this toggle\nis set to `TRUE`. Default is `FALSE`.\n",
+      "description": "set to TRUE to make the plot interactive with `plotly`, allowing you to hover your mouse\nover a point or line to view sample information. The similarity heat map will not display if this toggle is set to\nTRUE. Default is FALSE.\n",
       "paramType": "BOOLEAN",
       "paramGroup": "Visualization",
       "paramValues": null,
