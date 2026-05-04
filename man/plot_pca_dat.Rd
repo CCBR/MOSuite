@@ -3,10 +3,6 @@
 \name{plot_pca_dat}
 \alias{plot_pca_dat}
 \title{Plot 2D or 3D PCA for counts dataframe}
-\usage{
-## S7 method for class <data.frame>
-plot_pca(moo_counts, sample_metadata, principal_components = c(1, 2), ...)
-}
 \arguments{
 \item{moo_counts}{counts dataframe}
 

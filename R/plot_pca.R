@@ -70,6 +70,7 @@ plot_pca <- S7::new_generic(
 #' @returns PCA plot
 #'
 #' @name plot_pca_moo
+#' @usage NULL
 #' @seealso [plot_pca] generic
 #' @family plotters for multiOmicDataSets
 S7::method(plot_pca, multiOmicDataSet) <- function(
@@ -99,6 +100,7 @@ S7::method(plot_pca, multiOmicDataSet) <- function(
 #' @param ... additional arguments forwarded to [plot_pca_2d()] (if 2 PCs) or [plot_pca_3d()] (if 3 PCs).
 #'
 #' @name plot_pca_dat
+#' @usage NULL
 #' @seealso [plot_pca] generic
 #' @family plotters for counts dataframes
 S7::method(plot_pca, S7::class_data.frame) <- function(

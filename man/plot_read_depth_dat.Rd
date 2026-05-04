@@ -3,10 +3,6 @@
 \name{plot_read_depth_dat}
 \alias{plot_read_depth_dat}
 \title{Plot read depth for \code{data.frame}}
-\usage{
-## S7 method for class <data.frame>
-plot_read_depth(moo_counts, ...)
-}
 \arguments{
 \item{moo_counts}{counts dataframe}
 

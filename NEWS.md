@@ -4,6 +4,7 @@
 - Fix S3/S7 dispatch argument mismatch in `plot_read_depth()` and `plot_histogram()`. (#200, @copilot, @kelly-sovacool)
 - Fix crash in `remove_low_count_genes()` when `use_group_based_filtering = TRUE`. (#200, @copilot, @kelly-sovacool)
 - Fix color palette selection to fall back to random colors with a message when the number of categories exceeds the palette maximum. (#204, @copilot, @kelly-sovacool)
+- Fix `devtools::check()` WARNINGs from S7 method Rd files with invalid `\usage{}` sections. (#209, @copilot)
 
 ## MOSuite 0.3.0
 

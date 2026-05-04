@@ -46,6 +46,7 @@ plot_read_depth <- S7::new_generic(
 #' Plot read depth for multiOmicDataSet
 #'
 #' @name plot_read_depth_moo
+#' @usage NULL
 #'
 #' @param moo_counts `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
 #' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
@@ -82,6 +83,7 @@ S7::method(plot_read_depth, multiOmicDataSet) <- function(
 #' Plot read depth for `data.frame`
 #'
 #' @name plot_read_depth_dat
+#' @usage NULL
 #'
 #' @param moo_counts counts dataframe
 #' @param ... additional arguments (ignored; accepted for compatibility with the moo dispatch)

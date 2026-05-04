@@ -71,7 +71,7 @@ plot_corr_heatmap <- S7::new_generic("plot_corr_heatmap", "moo_counts")
 #' @param ... arguments forwarded to method [plot_corr_heatmap_dat]
 #'
 #' @name plot_corr_heatmap_moo
-#' @method plot_corr_heatmap multiOmicDataSet
+#' @usage NULL
 #' @seealso [plot_corr_heatmap] generic
 #' @family plotters for multiOmicDataSets
 S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
@@ -110,6 +110,7 @@ S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
 #' @param color_values vector of colors as hex values or names recognized by R
 #'
 #' @name plot_corr_heatmap_dat
+#' @usage NULL
 #' @seealso [plot_corr_heatmap] generic
 #' @family plotters for counts dataframes
 S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
