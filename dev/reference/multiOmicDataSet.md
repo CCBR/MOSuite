@@ -32,8 +32,35 @@ multiOmicDataSet(sample_metadata, anno_dat, counts_lst, analyses_lst = list())
 
   named list of analysis results, e.g. DESeq results object
 
+## Value
+
+A `multiOmicDataSet` S7 object.
+
 ## See also
 
 Other moo constructors:
 [`create_multiOmicDataSet_from_dataframes()`](https://ccbr.github.io/MOSuite/dev/reference/create_multiOmicDataSet_from_dataframes.md),
 [`create_multiOmicDataSet_from_files()`](https://ccbr.github.io/MOSuite/dev/reference/create_multiOmicDataSet_from_files.md)
+
+## Additional properties
+
+- `@sample_meta`:
+
+  sample metadata as a data frame or tibble. The first column is assumed
+  to contain the sample IDs which must correspond to column names in the
+  raw counts.
+
+- `@annotation`:
+
+  data frame of feature annotations, such as gene symbols or any other
+  information about the features in the counts list.
+
+- `@counts`:
+
+  named list of counts data frames (e.g. `raw`, `clean`, `cpm`, `filt`,
+  `norm`, `batch`). Each data frame is expected to contain a feature ID
+  column as the first column, and all remaining columns are sample IDs.
+
+- `@analyses`:
+
+  named list of analysis results (e.g. DESeq2 results, colors).

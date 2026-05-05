@@ -1,4 +1,6 @@
-# 3D PCA for counts dataframe
+# Perform and plot a 3D Principal Components Analysis
+
+Perform and plot a 3D Principal Components Analysis
 
 3D PCA for counts dataframe
 
@@ -78,18 +80,17 @@ plot_pca_3d(
 
 - moo_counts:
 
-  counts dataframe or `multiOmicDataSet` containing `count_type` &
-  `sub_count_type` in the counts slot
+  counts dataframe
 
 - count_type:
 
-  type to assign the values of `counts_dat` to in the `counts` slot
+  the type of counts to use. Ignored when `moo_counts` is already a
+  dataframe.
 
 - sub_count_type:
 
   used if `count_type` is a list in the counts slot: specify the sub
-  count type within the list. Must be a name in
-  `names(moo@counts[[count_type]])`.
+  count type within the list.
 
 - sample_metadata:
 
@@ -97,44 +98,26 @@ plot_pca_3d(
 
 - feature_id_colname:
 
-  The column from the counts dataa containing the Feature IDs (Usually
-  Gene or Protein ID). This is usually the first column of your input
-  Counts Matrix. Only columns of Text type from your input Counts Matrix
-  will be available to select for this parameter. (Default: `NULL` -
-  first column in the counts matrix will be used.)
+  The column from the counts data containing feature IDs. If `NULL`,
+  first column is used.
 
 - sample_id_colname:
 
-  The column from the sample metadata containing the sample names. The
-  names in this column must exactly match the names used as the sample
-  column names of your input Counts Matrix. (Default: `NULL` - first
-  column in the sample metadata will be used.)
+  The column from sample metadata containing sample names. If `NULL`,
+  first column is used.
 
 - samples_to_rename:
 
-  If you do not have a Plot Labels Column in your sample metadata table,
-  you can use this parameter to rename samples manually for display on
-  the PCA plot. Use "Add item" to add each additional sample for
-  renaming. Use the following format to describe which old name (in your
-  sample metadata table) you want to rename to which new name: old_name:
-  new_name
+  optional named mapping in `old_name: new_name` format for display
+  labels.
 
 - group_colname:
 
-  The column from the sample metadata containing the sample group
-  information. This is usually a column showing to which experimental
-  treatments each sample belongs (e.g. WildType, Knockout, Tumor,
-  Normal, Before, After, etc.).
+  The column from sample metadata containing sample group information.
 
 - label_colname:
 
-  The column from the sample metadata containing the sample labels as
-  you wish them to appear in the plots produced by this template. This
-  can be the same Sample Names Column. However, you may desire different
-  labels to display on your figure (e.g. shorter labels are sometimes
-  preferred on plots). In that case, select the column with your
-  preferred Labels here. The selected column should contain unique names
-  for each sample. (Default: `NULL` – `sample_id_colname` will be used.)
+  The column from sample metadata containing sample labels.
 
 - principal_components:
 
@@ -147,11 +130,11 @@ plot_pca_3d(
 
 - label_font_size:
 
-  label font size for the PCA plot
+  font size used for labels in the interactive figure.
 
 - color_values:
 
-  vector of colors as hex values or names recognized by R
+  vector of colors as hex values or names recognized by R.
 
 - plot_title:
 
@@ -159,24 +142,19 @@ plot_pca_3d(
 
 - plot_filename:
 
-  plot output filename - only used if save_plots is TRUE
+  output filename when saving plots.
 
 - print_plots:
 
-  Whether to print plots during analysis (Defaults to `FALSE`,
-  overwritable using option 'moo_print_plots' or environment variable
-  'MOO_PRINT_PLOTS')
+  whether to print plot to the active graphics device.
 
 - save_plots:
 
-  Whether to save plots to files during analysis (Defaults to `TRUE`,
-  overwritable using option 'moo_save_plots' or environment variable
-  'MOO_SAVE_PLOTS')
+  whether to save plot to disk.
 
 - plots_subdir:
 
-  subdirectory in `figures/` where plots will be saved if `save_plots`
-  is `TRUE`
+  output subdirectory for saved plots.
 
 ## Value
 

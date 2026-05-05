@@ -2,6 +2,10 @@
 
 Plot correlation heatmap
 
+Plot correlation heatmap for multiOmicDataSet
+
+Plot correlation heatmap for counts dataframe
+
 ## Usage
 
 ``` r
@@ -18,20 +22,64 @@ plot_corr_heatmap(moo_counts, ...)
 - ...:
 
   arguments forwarded to method
-  [plot_corr_heatmap_dat](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_dat.md)
+
+- count_type:
+
+  the type of counts to use. Must be a name in the counts slot
+  (`names(moo@counts)`).
+
+- sub_count_type:
+
+  used if `count_type` is a list in the counts slot: specify the sub
+  count type within the list. Must be a name in
+  `names(moo@counts[[count_type]])`.
+
+- sample_metadata:
+
+  sample metadata as a data frame or tibble (**Required**)
+
+- sample_id_colname:
+
+  The column from the sample metadata containing the sample names. The
+  names in this column must exactly match the names used as the sample
+  column names of your input Counts Matrix. (Default: `NULL` - first
+  column in the sample metadata will be used.)
+
+- feature_id_colname:
+
+  The column from the counts data containing the Feature IDs (Usually
+  Gene or Protein ID). This is usually the first column of your input
+  Counts Matrix. Only columns of Text type from your input Counts Matrix
+  will be available to select for this parameter. (Default: `NULL` -
+  first column in the counts matrix will be used.)
+
+- group_colname:
+
+  The column from the sample metadata containing the sample group
+  information. This is usually a column showing to which experimental
+  treatments each sample belongs (e.g. WildType, Knockout, Tumor,
+  Normal, Before, After, etc.).
+
+- label_colname:
+
+  The column from the sample metadata containing the sample labels as
+  you wish them to appear in the plots produced by this template. This
+  can be the same Sample Names Column. However, you may desire different
+  labels to display on your figure (e.g. shorter labels are sometimes
+  preferred on plots). In that case, select the column with your
+  preferred Labels here. The selected column should contain unique names
+  for each sample. (Default: `NULL` – `sample_id_colname` will be used.)
+
+- color_values:
+
+  vector of colors as hex values or names recognized by R
 
 ## Value
 
 heatmap from
 [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html)
 
-## Methods
-
-|  |  |
-|----|----|
-| link to docs | class |
-| [plot_corr_heatmap_moo](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_moo.md) | `multiOmicDataSet` |
-| [plot_corr_heatmap_dat](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_dat.md) | `data.frame` |
+## Details
 
 ### Method Usage
 
@@ -54,6 +102,8 @@ heatmap from
       ))
 
 ## See also
+
+`plot_corr_heatmap()` generic
 
 Other plotters:
 [`plot_expr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_expr_heatmap.md),
@@ -78,6 +128,16 @@ Other moo methods:
 [`plot_read_depth()`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth.md),
 [`run_deseq2()`](https://ccbr.github.io/MOSuite/dev/reference/run_deseq2.md),
 [`set_color_pal()`](https://ccbr.github.io/MOSuite/dev/reference/set_color_pal.md)
+
+Other plotters for multiOmicDataSets:
+[`plot_histogram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.md),
+[`plot_pca()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca.md),
+[`plot_read_depth()`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth.md)
+
+Other plotters for counts dataframes:
+[`plot_histogram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.md),
+[`plot_pca()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca.md),
+[`plot_read_depth()`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth.md)
 
 ## Examples
 

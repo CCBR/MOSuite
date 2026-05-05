@@ -19,21 +19,39 @@ plot_read_depth(moo_counts, ...)
 
 - ...:
 
-  arguments forwarded to method
+  additional arguments (ignored; accepted for compatibility with the moo
+  dispatch)
+
+- count_type:
+
+  the type of counts to use. Must be a name in the counts slot
+  (`names(moo@counts)`).
+
+- sub_count_type:
+
+  used if `count_type` is a list in the counts slot: specify the sub
+  count type within the list. Must be a name in
+  `names(moo@counts[[count_type]])`.
 
 ## Value
 
 ggplot barplot
 
+ggplot barplot
+
+ggplot barplot
+
 ## Methods
 
-|  |  |
-|----|----|
-| link to docs | class |
-| [plot_read_depth_moo](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth_moo.md) | `multiOmicDataSet` |
-| [plot_read_depth_dat](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth_dat.md) | `data.frame` |
+|                     |                    |
+|---------------------|--------------------|
+| link to docs        | class              |
+| `plot_read_depth()` | `multiOmicDataSet` |
+| `plot_read_depth()` | `data.frame`       |
 
 ## See also
+
+`plot_read_depth()` generic
 
 Other plotters:
 [`plot_corr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap.md),
@@ -56,9 +74,36 @@ Other moo methods:
 [`run_deseq2()`](https://ccbr.github.io/MOSuite/dev/reference/run_deseq2.md),
 [`set_color_pal()`](https://ccbr.github.io/MOSuite/dev/reference/set_color_pal.md)
 
+Other plotters for multiOmicDataSets:
+[`plot_corr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap.md),
+[`plot_histogram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.md),
+[`plot_pca()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca.md)
+
+Other plotters for counts dataframes:
+[`plot_corr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap.md),
+[`plot_histogram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.md),
+[`plot_pca()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca.md)
+
 ## Examples
 
 ``` r
+# multiOmicDataSet
+moo <- multiOmicDataSet(
+  sample_metadata = nidap_sample_metadata,
+  anno_dat = data.frame(),
+  counts_lst = list(
+    "raw" = nidap_raw_counts,
+    "clean" = nidap_clean_raw_counts
+  )
+)
+
+plot_read_depth(moo, count_type = "clean")
+
+
+# dataframe
+plot_read_depth(nidap_clean_raw_counts)
+
+
 # multiOmicDataSet
 moo <- multiOmicDataSet(
   sample_metadata = nidap_sample_metadata,

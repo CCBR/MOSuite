@@ -2,6 +2,7 @@
 
 Uses [Bioconductor's Enhanced Volcano
 Plot](https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html).
+An S7 generic with methods for `multiOmicDataSet` and `data.frame`.
 
 ## Usage
 

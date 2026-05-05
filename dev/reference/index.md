@@ -6,8 +6,30 @@
   : Construct a multiOmicDataSet object from data frames
 - [`create_multiOmicDataSet_from_files()`](https://ccbr.github.io/MOSuite/dev/reference/create_multiOmicDataSet_from_files.md)
   : Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).
+- [`extract_counts()`](https://ccbr.github.io/MOSuite/dev/reference/extract_counts.md)
+  : Extract count data
 - [`multiOmicDataSet()`](https://ccbr.github.io/MOSuite/dev/reference/multiOmicDataSet.md)
   : multiOmicDataSet class
+- [`plot_corr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap.md)
+  : Plot correlation heatmap
+- [`plot_expr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_expr_heatmap.md)
+  : Plot expression heatmap
+- [`plot_histogram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.md)
+  : Plot histogram
+- [`plot_pca()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca.md)
+  : Perform and plot a Principal Components Analysis
+- [`plot_pca_2d()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_2d.md)
+  : Perform and plot a 2D Principal Components Analysis
+- [`plot_pca_3d()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_3d.md)
+  : Perform and plot a 3D Principal Components Analysis
+- [`plot_read_depth()`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth.md)
+  : Plot read depth as a bar plot
+- [`plot_venn_diagram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_venn_diagram.md)
+  : Plot a venn diagram, UpSet plot, or table of intersections
+- [`plot_volcano_enhanced()`](https://ccbr.github.io/MOSuite/dev/reference/plot_volcano_enhanced.md)
+  : Enhanced Volcano Plot
+- [`plot_volcano_summary()`](https://ccbr.github.io/MOSuite/dev/reference/plot_volcano_summary.md)
+  : Volcano Plot - Summary
 - [`read_multiOmicDataSet()`](https://ccbr.github.io/MOSuite/dev/reference/read_multiOmicDataSet.md)
   : Read a multiOmicDataSet from disk
 - [`write_multiOmicDataSet()`](https://ccbr.github.io/MOSuite/dev/reference/write_multiOmicDataSet.md)
@@ -163,34 +185,7 @@ for recommended usage
 
 These functions are called by the main visualization functions.
 
-- [`plot_corr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_dat.md)
-  : Plot correlation heatmap for counts dataframe
-
-- [`plot_corr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap_moo.md)
-  : Plot correlation heatmap for multiOmicDataSet
-
-- [`plot_histogram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram_dat.md)
-  : Plot histogram for counts dataframe
-
-- [`plot_histogram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram_moo.md)
-  : Plot histogram for multiOmicDataSet
-
 - [`plot_pca_2d()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_2d.md)
   : Perform and plot a 2D Principal Components Analysis
-
 - [`plot_pca_3d()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_3d.md)
-  : 3D PCA for counts dataframe
-
-- [`plot_pca()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_dat.md)
-  : Plot 2D or 3D PCA for counts dataframe
-
-- [`plot_pca()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_moo.md)
-  : Plot 2D or 3D PCA for multiOmicDataset
-
-- [`plot_read_depth()`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth_dat.md)
-  :
-
-  Plot read depth for `data.frame`
-
-- [`plot_read_depth()`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth_moo.md)
-  : Plot read depth for multiOmicDataSet
+  : Perform and plot a 3D Principal Components Analysis
