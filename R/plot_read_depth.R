@@ -45,9 +45,9 @@ plot_read_depth <- S7::new_generic(
 
 #' Plot read depth for multiOmicDataSet
 #'
-#' @rdname plot_read_depth-methods
+#' @rdname plot_read_depth
+#' @usage NULL
 #'
-#' @param moo_counts `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
 #' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
 #' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list.
 #'   Must be a name in `names(moo@counts[[count_type]])`.
@@ -81,9 +81,9 @@ S7::method(plot_read_depth, multiOmicDataSet) <- function(
 
 #' Plot read depth for `data.frame`
 #'
-#' @rdname plot_read_depth-methods
+#' @rdname plot_read_depth
+#' @usage NULL
 #'
-#' @param moo_counts counts dataframe
 #' @param ... additional arguments (ignored; accepted for compatibility with the moo dispatch)
 #'
 #' @return ggplot barplot
