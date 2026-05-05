@@ -67,7 +67,7 @@ Suggests:
     Rd2md,
     readr,
     rmarkdown,
-    roxygen2,
+    roxygen2 (>= 8.0.0),
     scales,
     styler,
     sva,
@@ -89,3 +89,4 @@ LazyData: true
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
 Config/roxygen2/version: 8.0.0
+RoxygenNote: 8.0.0

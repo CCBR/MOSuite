@@ -32,17 +32,6 @@
 #'   label_colname = "Label"
 #' )
 #'
-#' @details
-#'
-#' # Methods
-#'
-#' | link to docs  | class  |
-#' |---|---|
-#' | [plot_histogram_moo] | `multiOmicDataSet` |
-#' | [plot_histogram_dat] | `data.frame`       |
-#'
-#' @name plot_histogram
-#' @rdname plot_histogram
 #' @family plotters
 #' @keywords plotters
 #' @family moo methods
@@ -53,13 +42,13 @@ plot_histogram <- S7::new_generic(
 
 #' Plot histogram for multiOmicDataSet
 #'
-#' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts
-#'   slot
+#' @rdname plot_histogram
+#' @usage NULL
+#'
 #' @param count_type Required if `moo_counts` is a `multiOmicDataSet`: the type of counts to use -- must be a name in
 #'   the counts slot (`moo@counts`).
 #' @param sub_count_type Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub
 #'   count type within the list
-#' @param ... arguments forwarded to method: [plot_histogram_dat]
 #' @examples
 #' # plot histogram for a counts slot in a multiOmicDataset Object
 #' moo <- multiOmicDataSet(
@@ -75,9 +64,7 @@ plot_histogram <- S7::new_generic(
 #'   group_colname = "Group", color_by_group = TRUE
 #' )
 #'
-#' @name plot_histogram_moo
-#' @method plot_histogram multiOmicDataSet
-#' @seealso [plot_histogram] generic
+#' @seealso [plot_histogram()] generic
 #' @family plotters for multiOmicDataSets
 S7::method(plot_histogram, multiOmicDataSet) <- function(
   moo_counts,
@@ -95,7 +82,9 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 
 #' Plot histogram for counts dataframe
 #'
-#' @param moo_counts counts dataframe (**required**)
+#' @rdname plot_histogram
+#' @usage NULL
+#'
 #' @param sample_metadata sample metadata as a data frame or tibble (**required**)
 #' @param sample_id_colname The column from the sample metadata containing the sample names. The names in this column
 #'   must exactly match the names used as the sample column names of your input Counts Matrix. (Default: `NULL` - first
@@ -148,9 +137,8 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 #'   color_by_group = TRUE
 #' )
 #'
-#' @seealso [plot_histogram] generic
-#' @name plot_histogram_dat
-#' @method plot_histogram data.frame
+#' @seealso [plot_histogram()] generic
+#'
 #' @family plotters for counts dataframes
 S7::method(plot_histogram, S7::class_data.frame) <- function(
   moo_counts,
