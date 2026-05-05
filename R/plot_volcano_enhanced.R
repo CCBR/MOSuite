@@ -1,5 +1,11 @@
-#' @rdname plot_volcano_enhanced
-#' @name plot_volcano_enhanced
+#' Enhanced Volcano Plot
+#'
+#' Uses [Bioconductor's Enhanced Volcano
+#' Plot](https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html).
+#' An S7 generic with methods for `multiOmicDataSet` and `data.frame`.
+#'
+#' @param moo_diff multiOmicDataSet or differential expression analysis result data frame.
+#'
 #' @export
 plot_volcano_enhanced <- S7::new_generic(
   "plot_volcano_enhanced",
@@ -41,8 +47,6 @@ plot_volcano_enhanced <- S7::new_generic(
 )
 
 #' @rdname plot_volcano_enhanced
-#' @name plot_volcano_enhanced
-#' @export
 S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
   moo_diff,
   feature_id_colname = NULL,
@@ -111,11 +115,6 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
   )
 }
 
-#' Enhanced Volcano Plot
-#'
-#' Uses [Bioconductor's Enhanced Volcano
-#' Plot](https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html).
-#'
 #' @inheritParams option_params
 #' @inheritParams filter_counts
 #'
@@ -149,14 +148,12 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
 #' @param dpi dots-per-inch of the output image (see `ggsave()`) - only used if save_plots is TRUE
 #' @param plot_filename plot output filename - only used if save_plots is TRUE
 #'
-#' @export
 #' @keywords plotters volcano
 #'
 #' @examples
 #' plot_volcano_enhanced(nidap_deg_analysis, print_plots = TRUE)
 #'
 #' @rdname plot_volcano_enhanced
-#' @name plot_volcano_enhanced
 S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
   moo_diff,
   feature_id_colname = NULL,

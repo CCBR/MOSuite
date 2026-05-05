@@ -872,6 +872,7 @@ references:
     given-names: Manuel
   year: '2026'
   doi: 10.32614/CRAN.package.roxygen2
+  version: '>= 8.0.0'
 - type: software
   title: scales
   abstract: 'scales: Scale Functions for Visualization'

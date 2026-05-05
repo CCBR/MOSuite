@@ -2,6 +2,7 @@
 % Please edit documentation in R/0_mo-class.R
 \name{write_multiOmicDataSet_properties}
 \alias{write_multiOmicDataSet_properties}
+\alias{write_multiOmicDataSet_properties,MOSuite::multiOmicDataSet-method}
 \title{Write multiOmicDataSet properties to disk as CSV files}
 \usage{
 write_multiOmicDataSet_properties(moo, output_dir = "moo")

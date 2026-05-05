@@ -2,7 +2,7 @@
 #'
 #' @param moo_counts counts dataframe or `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts
 #'   slot
-#' @param ... arguments forwarded to method [plot_corr_heatmap_dat]
+#' @param ... arguments forwarded to method
 #'
 #' @export
 #' @returns heatmap from `ComplexHeatmap::Heatmap()`
@@ -26,13 +26,6 @@
 #' )
 #' @details
 #'
-#' # Methods
-#'
-#' | link to docs  | class  |
-#' |---|---|
-#' | [plot_corr_heatmap_moo] | `multiOmicDataSet` |
-#' | [plot_corr_heatmap_dat] | `data.frame`       |
-#'
 #' ## Method Usage
 #'
 #' ```
@@ -55,7 +48,6 @@
 #'   ))
 #' ```
 #'
-#' @rdname plot_corr_heatmap
 #' @family plotters
 #' @family heatmaps
 #' @keywords plotters
@@ -64,15 +56,14 @@ plot_corr_heatmap <- S7::new_generic("plot_corr_heatmap", "moo_counts")
 
 #' Plot correlation heatmap for multiOmicDataSet
 #'
-#' @param moo_counts `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
+#' @rdname plot_corr_heatmap
+#' @usage NULL
+#'
 #' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
 #' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list.
 #'   Must be a name in `names(moo@counts[[count_type]])`.
-#' @param ... arguments forwarded to method [plot_corr_heatmap_dat]
 #'
-#' @name plot_corr_heatmap_moo
-#' @method plot_corr_heatmap multiOmicDataSet
-#' @seealso [plot_corr_heatmap] generic
+#' @seealso [plot_corr_heatmap()] generic
 #' @family plotters for multiOmicDataSets
 S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
   moo_counts,
@@ -90,7 +81,9 @@ S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
 
 #' Plot correlation heatmap for counts dataframe
 #'
-#' @param moo_counts counts dataframe (**Required**)
+#' @rdname plot_corr_heatmap
+#' @usage NULL
+#'
 #' @param sample_metadata sample metadata as a data frame or tibble (**Required**)
 #' @param sample_id_colname The column from the sample metadata containing the sample names. The names in this column
 #'   must exactly match the names used as the sample column names of your input Counts Matrix. (Default: `NULL` - first
@@ -109,8 +102,7 @@ S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
 #'   `NULL` -- `sample_id_colname` will be used.)
 #' @param color_values vector of colors as hex values or names recognized by R
 #'
-#' @name plot_corr_heatmap_dat
-#' @seealso [plot_corr_heatmap] generic
+#' @seealso [plot_corr_heatmap()] generic
 #' @family plotters for counts dataframes
 S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
   moo_counts,
@@ -347,8 +339,6 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
 #'   top_genes_by_variance_to_include = 100
 #' )
 #'
-#' @name plot_expr_heatmap
-#' @rdname plot_expr_heatmap
 #' @family plotters
 #' @family heatmaps
 #' @family moo methods
@@ -438,8 +428,6 @@ plot_expr_heatmap <- S7::new_generic(
 
 
 #' @rdname plot_expr_heatmap
-#' @name plot_expr_heatmap
-#' @method plot_expr_heatmap multiOmicDataSet
 S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
   moo_counts,
   count_type,
@@ -570,9 +558,7 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
   return(heatmap_plot)
 }
 
-#' @name plot_expr_heatmap
 #' @rdname plot_expr_heatmap
-#' @method plot_expr_heatmap data.frame
 S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   moo_counts,
   count_type,

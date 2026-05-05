@@ -22,6 +22,9 @@
 ^README\.Rmd$
 ^README\.html$
 ^README_files$
+^report_files$
+^inst/quarto/report_files$
+^tests/figures$
 ^vignettes/figures/$
 ^vignettes/memory\.Rmd$
 ^vignettes/cli\.Rmd$
