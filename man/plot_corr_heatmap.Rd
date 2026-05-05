@@ -41,6 +41,12 @@ column with your preferred Labels here. The selected column should contain uniqu
 \code{NULL} -- \code{sample_id_colname} will be used.)}
 
 \item{color_values}{vector of colors as hex values or names recognized by R}
+
+\item{show_row_names}{Whether to display row names (sample names on the left). Default is \code{TRUE}.}
+
+\item{show_column_names}{Whether to display column names (sample names on the bottom). Default is \code{TRUE}.}
+
+\item{names_font_size}{Font size for row and column names. Default is \code{15}.}
 }
 \value{
 heatmap from \code{ComplexHeatmap::Heatmap()}
@@ -71,7 +77,10 @@ plot_corr_heatmap(moo_counts,
   color_values = c(
     "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
-  ))
+  ),
+  show_row_names = TRUE,
+  show_column_names = TRUE,
+  names_font_size = 15)
 }\if{html}{\out{</div>}}
 }
 }

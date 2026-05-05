@@ -53,6 +53,7 @@ plot_expr_heatmap(
   gene_name_font_size = 4,
   sample_name_font_size = 8,
   display_numbers = FALSE,
+  border_color = NA,
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -107,6 +108,7 @@ plot_expr_heatmap(
   gene_name_font_size = 4,
   sample_name_font_size = 8,
   display_numbers = FALSE,
+  border_color = NA,
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -161,6 +163,7 @@ plot_expr_heatmap(
   gene_name_font_size = 4,
   sample_name_font_size = 8,
   display_numbers = FALSE,
+  border_color = NA,
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -288,6 +291,9 @@ sample names" (below) to FALSE}
 
 \item{display_numbers}{Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if
 you want to see these numbers on the plot.}
+
+\item{border_color}{Color of the borders of heatmap cells. Set to \code{NA} for no border (default). Passed to
+\code{ComplexHeatmap::pheatmap()}.}
 
 \item{plot_filename}{plot output filename - only used if save_plots is TRUE}
 

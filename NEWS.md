@@ -5,6 +5,7 @@
 - Fix crash in `remove_low_count_genes()` when `use_group_based_filtering = TRUE`. (#200, @copilot, @kelly-sovacool)
 - Fix color palette selection to fall back to random colors with a message when the number of categories exceeds the palette maximum. (#204, @copilot, @kelly-sovacool)
 - Update S7 class, generic, and method documentation to use roxygen2 v8.0.0 S7 support(#206, @copilot)
+- Expose additional `ComplexHeatmap` arguments in heatmap functions: `border_color` in `plot_expr_heatmap()`, and `show_row_names`, `show_column_names`, `names_font_size` in `plot_corr_heatmap()`. (@copilot)
 
 ## MOSuite 0.3.0
 

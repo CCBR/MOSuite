@@ -45,7 +45,10 @@
 #'   color_values = c(
 #'     "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
 #'     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
-#'   ))
+#'   ),
+#'   show_row_names = TRUE,
+#'   show_column_names = TRUE,
+#'   names_font_size = 15)
 #' ```
 #'
 #' @family plotters
@@ -101,6 +104,9 @@ S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
 #'   column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
 #'   `NULL` -- `sample_id_colname` will be used.)
 #' @param color_values vector of colors as hex values or names recognized by R
+#' @param show_row_names Whether to display row names (sample names on the left). Default is `TRUE`.
+#' @param show_column_names Whether to display column names (sample names on the bottom). Default is `TRUE`.
+#' @param names_font_size Font size for row and column names. Default is `15`.
 #'
 #' @seealso [plot_corr_heatmap()] generic
 #' @family plotters for counts dataframes
@@ -124,7 +130,10 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
     "#796880",
     "#FFA500",
     "#878500"
-  )
+  ),
+  show_row_names = TRUE,
+  show_column_names = TRUE,
+  names_font_size = 15
 ) {
   abort_packages_not_installed("amap", "ComplexHeatmap", "dendsort")
   counts_dat <- moo_counts
@@ -202,8 +211,10 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
     cluster_rows = dend,
     cluster_columns = dend,
     top_annotation = anno,
-    row_names_gp = grid::gpar(fontsize = 15),
-    column_names_gp = grid::gpar(fontsize = 15),
+    show_row_names = show_row_names,
+    show_column_names = show_column_names,
+    row_names_gp = grid::gpar(fontsize = names_font_size),
+    column_names_gp = grid::gpar(fontsize = names_font_size),
     col = new.palette(20)
   )
 
@@ -302,6 +313,8 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
 #'   sample names" (below) to FALSE
 #' @param display_numbers Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if
 #'   you want to see these numbers on the plot.
+#' @param border_color Color of the borders of heatmap cells. Set to `NA` for no border (default). Passed to
+#'   `ComplexHeatmap::pheatmap()`.
 #' @param plot_filename plot output filename - only used if save_plots is TRUE
 #'
 #' @export
@@ -417,6 +430,7 @@ plot_expr_heatmap <- S7::new_generic(
     gene_name_font_size = 4,
     sample_name_font_size = 8,
     display_numbers = FALSE,
+    border_color = NA,
     plot_filename = "expr_heatmap.png",
     print_plots = options::opt("print_plots"),
     save_plots = options::opt("save_plots"),
@@ -499,6 +513,7 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
   gene_name_font_size = 4,
   sample_name_font_size = 8,
   display_numbers = FALSE,
+  border_color = NA,
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -550,6 +565,7 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
     gene_name_font_size,
     sample_name_font_size,
     display_numbers,
+    border_color,
     plot_filename = plot_filename,
     print_plots,
     save_plots,
@@ -630,6 +646,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   gene_name_font_size = 4,
   sample_name_font_size = 8,
   display_numbers = FALSE,
+  border_color = NA,
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -735,7 +752,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   ## Stratagy is to use Pheatmap to create heatmap then output as Complex Heatmap to add Annotations
 
   ## Begin doheatmap() function:
-  doheatmap <- function(dat, clus, clus2, ht, rn, cn, col, dispnum) {
+  doheatmap <- function(dat, clus, clus2, ht, rn, cn, col, dispnum, border_color) {
     col.pal <- np[[col]]
     # if (=FALSE) {
     #   col.pal = rev(col.pal)
@@ -799,6 +816,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
       treeheight_row = gene_treeheight,
       kmeans_k = NA,
       breaks = breaks,
+      border_color = border_color,
       display_numbers = dispnum,
       number_color = "black",
       fontsize_number = 8,
@@ -1067,7 +1085,8 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
     rn = display_gene_names,
     cn = display_sample_names,
     col = heatmap_color_scheme,
-    dispnum = display_numbers
+    dispnum = display_numbers,
+    border_color = border_color
   )
   p@matrix_color_mapping@name <- " "
   p@matrix_legend_param$at <- as.numeric(formatC(p@matrix_legend_param$at, 2))
