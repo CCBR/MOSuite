@@ -32,15 +32,8 @@
 #'  See the low-level function docs for additional arguments
 #'  depending on whether you're plotting 2 or 3 PCs:
 #'
-#'  - [plot_pca_2d] - used when there are **2** principal components
-#'  - [plot_pca_3d] - used when there are **3** principal components
-#'
-#' # Methods
-#'
-#' | link to docs  | class  |
-#' |---|---|
-#' | [plot_pca_moo] | `multiOmicDataSet` |
-#' | [plot_pca_dat] | `data.frame`       |
+#'  - [plot_pca_2d()] - used when there are **2** principal components
+#'  - [plot_pca_3d()] - used when there are **3** principal components
 #'
 #' @export
 #' @return PCA plot (2D or 3D depending on the number of `principal_components`)
@@ -59,18 +52,16 @@ plot_pca <- S7::new_generic(
 
 #' Plot 2D or 3D PCA for multiOmicDataset
 #'
-#' @param moo_counts `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
+#' @rdname plot_pca
+#' @usage NULL
+#'
 #' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
 #' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list.
 #'   Must be a name in `names(moo@counts[[count_type]])`.
-#' @param principal_components vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3
-#'   for a 3D pca with plotly. (Default: `c(1,2)`)
-#' @param ... additional arguments forwarded to [plot_pca_2d()] (if 2 PCs) or [plot_pca_3d()] (if 3 PCs).
 #'
 #' @returns PCA plot
 #'
-#' @name plot_pca_moo
-#' @seealso [plot_pca] generic
+#' @seealso [plot_pca()] generic
 #' @family plotters for multiOmicDataSets
 S7::method(plot_pca, multiOmicDataSet) <- function(
   moo_counts,
@@ -92,14 +83,12 @@ S7::method(plot_pca, multiOmicDataSet) <- function(
 
 #' Plot 2D or 3D PCA for counts dataframe
 #'
-#' @param moo_counts counts dataframe
-#' @param sample_metadata **Required** if `moo_counts` is a `data.frame`: sample metadata as a data frame or tibble.
-#' @param principal_components vector with numbered principal components to plot. Use 2 for a 2D pca with ggplot, or 3
-#'   for a 3D pca with plotly. (Default: `c(1,2)`)
-#' @param ... additional arguments forwarded to [plot_pca_2d()] (if 2 PCs) or [plot_pca_3d()] (if 3 PCs).
+#' @rdname plot_pca
+#' @usage NULL
 #'
-#' @name plot_pca_dat
-#' @seealso [plot_pca] generic
+#' @param sample_metadata **Required** if `moo_counts` is a `data.frame`: sample metadata as a data frame or tibble.
+#'
+#' @seealso [plot_pca()] generic
 #' @family plotters for counts dataframes
 S7::method(plot_pca, S7::class_data.frame) <- function(
   moo_counts,
@@ -127,8 +116,10 @@ S7::method(plot_pca, S7::class_data.frame) <- function(
   )
 }
 
+#' Perform and plot a 2D Principal Components Analysis
+#'
 #' @rdname plot_pca_2d
-#' @name plot_pca_2d
+#' @aliases plot_pca_2d
 #' @export
 plot_pca_2d <- S7::new_generic(
   "plot_pca_2d",
@@ -175,8 +166,6 @@ plot_pca_2d <- S7::new_generic(
 )
 
 #' @rdname plot_pca_2d
-#' @name plot_pca_2d
-#' @export
 S7::method(plot_pca_2d, multiOmicDataSet) <- function(
   moo_counts,
   count_type = NULL,
@@ -272,14 +261,12 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 #' @param point_size size for `ggplot2::geom_point()`
 #' @param add_label whether to add text labels for the points
 #'
-#' @export
 #' @return ggplot object
 #'
-#' @seealso [plot_pca] generic
+#' @seealso [plot_pca()] generic
 #' @family PCA functions
 #'
 #' @rdname plot_pca_2d
-#' @name plot_pca_2d
 S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   moo_counts,
   count_type = NULL,
@@ -418,8 +405,10 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   return(pca_plot)
 }
 
+#' Perform and plot a 3D Principal Components Analysis
+#'
 #' @rdname plot_pca_3d
-#' @name plot_pca_3d
+#' @aliases plot_pca_3d
 #' @export
 plot_pca_3d <- S7::new_generic(
   "plot_pca_3d",
@@ -462,8 +451,6 @@ plot_pca_3d <- S7::new_generic(
 )
 
 #' @rdname plot_pca_3d
-#' @name plot_pca_3d
-#' @export
 S7::method(plot_pca_3d, multiOmicDataSet) <- function(
   moo_counts,
   count_type = NULL,
@@ -524,22 +511,31 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
 
 #' 3D PCA for counts dataframe
 #'
-#' @inheritParams plot_pca_2d
-#' @inheritParams filter_counts
-#' @inheritParams plot_histogram
-#' @inheritParams plot_expr_heatmap
+#' @param moo_counts counts dataframe
+#' @param count_type the type of counts to use. Ignored when `moo_counts` is already a dataframe.
+#' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list.
+#' @param sample_metadata sample metadata as a data frame or tibble.
+#' @param feature_id_colname The column from the counts data containing feature IDs. If `NULL`, first column is used.
+#' @param sample_id_colname The column from sample metadata containing sample names. If `NULL`, first column is used.
+#' @param samples_to_rename optional named mapping in `old_name: new_name` format for display labels.
+#' @param group_colname The column from sample metadata containing sample group information.
+#' @param label_colname The column from sample metadata containing sample labels.
+#' @param label_font_size font size used for labels in the interactive figure.
+#' @param color_values vector of colors as hex values or names recognized by R.
+#' @param plot_filename output filename when saving plots.
+#' @param print_plots whether to print plot to the active graphics device.
+#' @param save_plots whether to save plot to disk.
+#' @param plots_subdir output subdirectory for saved plots.
 #'
 #' @param principal_components vector with numbered principal components to plot
 #' @param point_size size for `ggplot2::geom_point()`
 #' @param plot_title title for the plot
 #'
-#' @export
 #' @returns `plotly::plot_ly` figure
 #'
 #' @family PCA functions
 #'
 #' @rdname plot_pca_3d
-#' @name plot_pca_3d
 S7::method(plot_pca_3d, S7::class_data.frame) <- function(
   moo_counts,
   count_type = NULL,

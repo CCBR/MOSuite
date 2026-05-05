@@ -1,5 +1,13 @@
-#' @rdname plot_venn_diagram
-#' @name plot_venn_diagram
+#' Plot a venn diagram, UpSet plot, or table of intersections
+#'
+#' Generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across
+#' tested contrasts). This Venn diagram is available for up to five sets; Intersection plot is available for any number
+#' of sets. Specific sets can be selected for the visualizations and the returned dataset may include all (default) or
+#' specified intersections.
+#' An S7 generic with methods for `multiOmicDataSet` and `data.frame`.
+#'
+#' @param moo_diff_summary_dat multiOmicDataSet or summarized differential expression analysis data frame.
+#'
 #' @export
 plot_venn_diagram <- S7::new_generic(
   "plot_venn_diagram",
@@ -49,8 +57,6 @@ plot_venn_diagram <- S7::new_generic(
 )
 
 #' @rdname plot_venn_diagram
-#' @name plot_venn_diagram
-#' @export
 S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
   moo_diff_summary_dat,
   feature_id_colname = NULL,
@@ -131,13 +137,6 @@ S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
   )
 }
 
-#' Plot a venn diagram, UpSet plot, or table of intersections
-#'
-#' generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across
-#' tested contrasts). This Venn diagram is available for up to five sets; Intersection plot is available for any number
-#' of sets. Specific sets can be selected for the visualizations and the returned dataset may include all (default) or
-#' specified intersections.
-#'
 #' @inheritParams option_params
 #' @inheritParams filter_counts
 #' @inheritParams plot_volcano_enhanced
@@ -171,14 +170,12 @@ S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
 #' @param table_font_size Font size for the table in the plot. Default: 3
 #' @param table_content Content of the table in the plot. Default: NULL
 #'
-#' @export
 #' @keywords plotters
 #'
 #' @examples
 #' plot_venn_diagram(nidap_volcano_summary_dat, print_plots = TRUE)
 #'
 #' @rdname plot_venn_diagram
-#' @name plot_venn_diagram
 S7::method(plot_venn_diagram, S7::class_data.frame) <- function(
   moo_diff_summary_dat,
   feature_id_colname = NULL,

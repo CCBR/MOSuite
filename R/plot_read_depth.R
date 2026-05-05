@@ -32,8 +32,8 @@
 #'
 #' | link to docs  | class  |
 #' |---|---|
-#' | [plot_read_depth_moo] | `multiOmicDataSet` |
-#' | [plot_read_depth_dat] | `data.frame`       |
+#' | [plot_read_depth()] | `multiOmicDataSet` |
+#' | [plot_read_depth()] | `data.frame`       |
 #'
 #' @family plotters
 #' @keywords plotters
@@ -45,9 +45,9 @@ plot_read_depth <- S7::new_generic(
 
 #' Plot read depth for multiOmicDataSet
 #'
-#' @name plot_read_depth_moo
+#' @rdname plot_read_depth
+#' @usage NULL
 #'
-#' @param moo_counts `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
 #' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
 #' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list.
 #'   Must be a name in `names(moo@counts[[count_type]])`.
@@ -67,7 +67,7 @@ plot_read_depth <- S7::new_generic(
 #'
 #' plot_read_depth(moo, count_type = "clean")
 #'
-#' @seealso [plot_read_depth] generic
+#' @seealso [plot_read_depth()] generic
 #' @family plotters for multiOmicDataSets
 S7::method(plot_read_depth, multiOmicDataSet) <- function(
   moo_counts,
@@ -81,9 +81,9 @@ S7::method(plot_read_depth, multiOmicDataSet) <- function(
 
 #' Plot read depth for `data.frame`
 #'
-#' @name plot_read_depth_dat
+#' @rdname plot_read_depth
+#' @usage NULL
 #'
-#' @param moo_counts counts dataframe
 #' @param ... additional arguments (ignored; accepted for compatibility with the moo dispatch)
 #'
 #' @return ggplot barplot
@@ -92,7 +92,7 @@ S7::method(plot_read_depth, multiOmicDataSet) <- function(
 #' # dataframe
 #' plot_read_depth(nidap_clean_raw_counts)
 #'
-#' @seealso [plot_read_depth] generic
+#' @seealso [plot_read_depth()] generic
 #' @family plotters for counts dataframes
 S7::method(plot_read_depth, S7::class_data.frame) <- function(moo_counts, ...) {
   sample_names <- column_sums <- NULL

@@ -1,7 +1,7 @@
 {
   "r_function": "plot_volcano_enhanced",
   "title": "Plot Volcano - Enhanced\n",
-  "description": "Uses \nlist(list(\"https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html\"), list(\"Bioconductor's Enhanced Volcano Plot\"))\n.\n",
+  "description": "Uses \nlist(list(\"https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html\"), list(\"Bioconductor's Enhanced Volcano Plot\"))\n.\nAn S7 generic with methods for \nlist(\"multiOmicDataSet\")\n and \nlist(\"data.frame\")\n.\n",
   "columns": [
     {
       "key": "feature_id_colname",
