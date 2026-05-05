@@ -92,8 +92,8 @@ slot}
 
 \item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
 
-\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
-Must be a name in \code{names(moo@counts[[count_type]])}.}
+\item{sub_count_type}{Used if \code{moo_counts} is a \code{multiOmicDataSet} AND if \code{count_type} is a list, specify the sub
+count type within the list}
 
 \item{sample_metadata}{sample metadata as a data frame or tibble.}
 
@@ -137,9 +137,9 @@ which new name: old_name: new_name}
 
 \item{label_offset_y_}{label offset y for the PCA plot}
 
-\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover
-your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
-is set to \code{TRUE}. Default is \code{FALSE}.}
+\item{interactive_plots}{set to TRUE to make the plot interactive with \code{plotly}, allowing you to hover your mouse
+over a point or line to view sample information. The similarity heat map will not display if this toggle is set to
+TRUE. Default is FALSE.}
 
 \item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 

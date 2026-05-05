@@ -1,7 +1,7 @@
 {
   "r_function": "plot_pca_3d",
   "title": "PCA 3D\n",
-  "description": "3D PCA for counts dataframe\n",
+  "description": "Perform and plot a 3D Principal Components Analysis\n3D PCA for counts dataframe\n",
   "columns": [
     {
       "key": "feature_id_colname",
