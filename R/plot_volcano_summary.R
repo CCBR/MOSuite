@@ -7,7 +7,6 @@
 #' An S7 generic with methods for `multiOmicDataSet` and `data.frame`.
 #'
 #' @param moo_diff multiOmicDataSet or differential expression analysis result data frame.
-#' @param ... additional arguments forwarded to the method.
 #'
 #' @export
 plot_volcano_summary <- S7::new_generic(

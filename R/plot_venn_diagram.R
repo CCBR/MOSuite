@@ -7,7 +7,6 @@
 #' An S7 generic with methods for `multiOmicDataSet` and `data.frame`.
 #'
 #' @param moo_diff_summary_dat multiOmicDataSet or summarized differential expression analysis data frame.
-#' @param ... additional arguments forwarded to the method.
 #'
 #' @export
 plot_venn_diagram <- S7::new_generic(

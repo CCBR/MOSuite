@@ -255,8 +255,6 @@ output dataset. Default: \verb{"FC", "logFC", "tstat", "pval", "adjpval"}}
 \item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 
 \item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
-
-\item{...}{additional arguments forwarded to the method.}
 }
 \description{
 Produces one volcano plot for each tested contrast in the input DEG table.

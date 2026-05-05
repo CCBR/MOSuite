@@ -176,8 +176,6 @@ is set to \code{TRUE}. Default is \code{FALSE}.}
 \item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 
 \item{plot_filename}{plot output filename - only used if save_plots is TRUE}
-
-\item{...}{additional arguments forwarded to the method.}
 }
 \description{
 Uses \href{https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html}{Bioconductor's Enhanced Volcano Plot}.

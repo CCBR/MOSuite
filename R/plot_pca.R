@@ -52,7 +52,7 @@ plot_pca <- S7::new_generic(
 
 #' Plot 2D or 3D PCA for multiOmicDataset
 #'
-#' @rdname plot_pca
+#' @rdname plot_pca-methods
 #'
 #' @param moo_counts `multiOmicDataSet` containing `count_type` & `sub_count_type` in the counts slot
 #' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
@@ -86,7 +86,7 @@ S7::method(plot_pca, multiOmicDataSet) <- function(
 
 #' Plot 2D or 3D PCA for counts dataframe
 #'
-#' @rdname plot_pca
+#' @rdname plot_pca-methods
 #'
 #' @param moo_counts counts dataframe
 #' @param sample_metadata **Required** if `moo_counts` is a `data.frame`: sample metadata as a data frame or tibble.
@@ -122,6 +122,10 @@ S7::method(plot_pca, S7::class_data.frame) <- function(
   )
 }
 
+#' Perform and plot a 2D Principal Components Analysis
+#'
+#' @rdname plot_pca_2d
+#' @aliases plot_pca_2d
 #' @export
 plot_pca_2d <- S7::new_generic(
   "plot_pca_2d",
@@ -407,6 +411,10 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   return(pca_plot)
 }
 
+#' Perform and plot a 3D Principal Components Analysis
+#'
+#' @rdname plot_pca_3d
+#' @aliases plot_pca_3d
 #' @export
 plot_pca_3d <- S7::new_generic(
   "plot_pca_3d",
