@@ -2,8 +2,6 @@
 % Please edit documentation in R/plot_pca.R
 \name{plot_pca}
 \alias{plot_pca}
-\alias{plot_pca,MOSuite::multiOmicDataSet-method}
-\alias{plot_pca,data.frame-method}
 \title{Perform and plot a Principal Components Analysis}
 \usage{
 plot_pca(moo_counts, principal_components = c(1, 2), ...)
@@ -16,25 +14,12 @@ slot}
 for a 3D pca with plotly. (Default: \code{c(1,2)})}
 
 \item{...}{additional arguments forwarded to method (see Details below)}
-
-\item{count_type}{the type of counts to use. Must be a name in the counts slot (\code{names(moo@counts)}).}
-
-\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
-Must be a name in \code{names(moo@counts[[count_type]])}.}
-
-\item{sample_metadata}{\strong{Required} if \code{moo_counts} is a \code{data.frame}: sample metadata as a data frame or tibble.}
 }
 \value{
 PCA plot (2D or 3D depending on the number of \code{principal_components})
-
-PCA plot
 }
 \description{
 Perform and plot a Principal Components Analysis
-
-Plot 2D or 3D PCA for multiOmicDataset
-
-Plot 2D or 3D PCA for counts dataframe
 }
 \details{
 See the low-level function docs for additional arguments
@@ -67,7 +52,10 @@ plot_pca(nidap_clean_raw_counts,
 
 }
 \seealso{
-\code{\link[=plot_pca]{plot_pca()}} generic
+\itemize{
+\item \code{\link[=plot_pca.multiOmicDataSet]{plot_pca.multiOmicDataSet()}}
+\item \code{\link[=plot_pca.data.frame]{plot_pca.data.frame()}}
+}
 
 Other plotters:
 \code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
@@ -94,20 +82,8 @@ Other moo methods:
 \code{\link[=plot_read_depth]{plot_read_depth()}},
 \code{\link[=run_deseq2]{run_deseq2()}},
 \code{\link[=set_color_pal]{set_color_pal()}}
-
-Other plotters for multiOmicDataSets:
-\code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
-\code{\link[=plot_histogram]{plot_histogram()}},
-\code{\link[=plot_read_depth]{plot_read_depth()}}
-
-Other plotters for counts dataframes:
-\code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
-\code{\link[=plot_histogram]{plot_histogram()}},
-\code{\link[=plot_read_depth]{plot_read_depth()}}
 }
 \concept{PCA functions}
 \concept{moo methods}
 \concept{plotters}
-\concept{plotters for counts dataframes}
-\concept{plotters for multiOmicDataSets}
 \keyword{plotters}
