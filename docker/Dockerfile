@@ -32,6 +32,7 @@ RUN mamba install -y -c conda-forge \
     r-plotly \
     r-rcolorbrewer \
     r-readr \
+    r-remotes \
     r-rmarkdown \
     r-survival \
     r-upsetr \
