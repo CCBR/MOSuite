@@ -21,6 +21,10 @@
 ^README\.Rmd$
 ^README\.html$
 ^README_files$
+^Rplots\.pdf$
+^moo_input\.rds$
+^plot-volc-enh\.json$
+^volc-sum-params\.json$
 ^report_files$
 ^inst/quarto/report_files$
 ^tests/figures$

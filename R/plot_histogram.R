@@ -32,6 +32,10 @@
 #'   label_colname = "Label"
 #' )
 #'
+#' @seealso
+#' - [plot_histogram.multiOmicDataSet()]
+#' - [plot_histogram.data.frame()]
+#'
 #' @family plotters
 #' @keywords plotters
 #' @family moo methods
@@ -42,7 +46,8 @@ plot_histogram <- S7::new_generic(
 
 #' Plot histogram for multiOmicDataSet
 #'
-#' @rdname plot_histogram
+#' @rdname plot_histogram.multiOmicDataSet
+#' @aliases plot_histogram.multiOmicDataSet
 #' @usage NULL
 #'
 #' @param count_type Required if `moo_counts` is a `multiOmicDataSet`: the type of counts to use -- must be a name in
@@ -82,7 +87,8 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 
 #' Plot histogram for counts dataframe
 #'
-#' @rdname plot_histogram
+#' @rdname plot_histogram.data.frame
+#' @aliases plot_histogram.data.frame
 #' @usage NULL
 #'
 #' @param sample_metadata sample metadata as a data frame or tibble (**required**)
