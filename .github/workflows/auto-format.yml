@@ -3,10 +3,7 @@ name: auto-format
 on:
   workflow_dispatch:
   pull_request:
-    branches: [main, master]
-
-env:
-  GH_TOKEN: ${{ github.token }}
+    branches: [ main, master ]
 
 permissions:
   contents: write
@@ -21,15 +18,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.CCBR_BOT_APP_ID }}
+          private-key: ${{ secrets.CCBR_BOT_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+
       - uses: actions/checkout@v6
         with:
+          token: ${{ steps.generate-token.outputs.token }}
           fetch-depth: 0
-          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref ||
+            github.ref_name }}
 
       - name: git config
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "CCBR-bot"
+          git config --global user.email "258092125+ccbr-bot@users.noreply.github.com"
 
       - uses: CCBR/actions/install-r-pak@main
         with:

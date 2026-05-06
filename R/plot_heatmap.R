@@ -48,6 +48,10 @@
 #'   ))
 #' ```
 #'
+#' @seealso
+#' - [plot_corr_heatmap.multiOmicDataSet()]
+#' - [plot_corr_heatmap.data.frame()]
+#'
 #' @family plotters
 #' @family heatmaps
 #' @keywords plotters
@@ -56,12 +60,15 @@ plot_corr_heatmap <- S7::new_generic("plot_corr_heatmap", "moo_counts")
 
 #' Plot correlation heatmap for multiOmicDataSet
 #'
-#' @rdname plot_corr_heatmap
-#' @usage NULL
-#'
+#' @param moo_counts a `multiOmicDataSet` object
 #' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
 #' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list.
 #'   Must be a name in `names(moo@counts[[count_type]])`.
+#' @param ... additional arguments forwarded to [plot_corr_heatmap()] for `data.frame`
+#'
+#' @rdname plot_corr_heatmap-multiOmicDataSet
+#' @aliases plot_corr_heatmap.multiOmicDataSet
+#' @usage NULL
 #'
 #' @seealso [plot_corr_heatmap()] generic
 #' @family plotters for multiOmicDataSets
@@ -81,9 +88,7 @@ S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
 
 #' Plot correlation heatmap for counts dataframe
 #'
-#' @rdname plot_corr_heatmap
-#' @usage NULL
-#'
+#' @param moo_counts a `data.frame` of counts
 #' @param sample_metadata sample metadata as a data frame or tibble (**Required**)
 #' @param sample_id_colname The column from the sample metadata containing the sample names. The names in this column
 #'   must exactly match the names used as the sample column names of your input Counts Matrix. (Default: `NULL` - first
@@ -101,6 +106,10 @@ S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
 #'   column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
 #'   `NULL` -- `sample_id_colname` will be used.)
 #' @param color_values vector of colors as hex values or names recognized by R
+#'
+#' @rdname plot_corr_heatmap-data.frame
+#' @aliases plot_corr_heatmap.data.frame
+#' @usage NULL
 #'
 #' @seealso [plot_corr_heatmap()] generic
 #' @family plotters for counts dataframes
