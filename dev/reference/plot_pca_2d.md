@@ -101,8 +101,9 @@ plot_pca_2d(
 
 - sub_count_type:
 
-  Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a
-  list, specify the sub count type within the list
+  used if `count_type` is a list in the counts slot: specify the sub
+  count type within the list. Must be a name in
+  `names(moo@counts[[count_type]])`.
 
 - sample_metadata:
 
@@ -185,10 +186,10 @@ plot_pca_2d(
 
 - interactive_plots:
 
-  set to TRUE to make the plot interactive with `plotly`, allowing you
-  to hover your mouse over a point or line to view sample information.
-  The similarity heat map will not display if this toggle is set to
-  TRUE. Default is FALSE.
+  set to TRUE to make PCA and Histogram plots interactive with `plotly`,
+  allowing you to hover your mouse over a point or line to view sample
+  information. The similarity heat map will not display if this toggle
+  is set to `TRUE`. Default is `FALSE`.
 
 - plots_subdir:
 

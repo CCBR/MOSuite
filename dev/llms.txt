@@ -76,20 +76,24 @@ guidelines](https://ccbr.github.io/MOSuite/dev/CONTRIBUTING.md).
   : Extract count data
 - [`multiOmicDataSet()`](https://ccbr.github.io/MOSuite/dev/reference/multiOmicDataSet.md)
   : multiOmicDataSet class
-- [`plot_corr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap.md)
-  : Plot correlation heatmap
+- [`plot_corr_heatmap,MOSuite::multiOmicDataSet-method`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap-multiOmicDataSet.md)
+  [`plot_corr_heatmap.multiOmicDataSet`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap-multiOmicDataSet.md)
+  : Plot correlation heatmap for multiOmicDataSet
 - [`plot_expr_heatmap()`](https://ccbr.github.io/MOSuite/dev/reference/plot_expr_heatmap.md)
   : Plot expression heatmap
-- [`plot_histogram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.md)
-  : Plot histogram
-- [`plot_pca()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca.md)
-  : Perform and plot a Principal Components Analysis
+- [`plot_histogram,MOSuite::multiOmicDataSet-method`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.multiOmicDataSet.md)
+  [`plot_histogram.multiOmicDataSet`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.multiOmicDataSet.md)
+  : Plot histogram for multiOmicDataSet
+- [`plot_pca,MOSuite::multiOmicDataSet-method`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca.multiOmicDataSet.md)
+  [`plot_pca.multiOmicDataSet`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca.multiOmicDataSet.md)
+  : Plot 2D or 3D PCA for multiOmicDataset
 - [`plot_pca_2d()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_2d.md)
   : Perform and plot a 2D Principal Components Analysis
 - [`plot_pca_3d()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_3d.md)
   : Perform and plot a 3D Principal Components Analysis
-- [`plot_read_depth()`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth.md)
-  : Plot read depth as a bar plot
+- [`plot_read_depth,MOSuite::multiOmicDataSet-method`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth.multiOmicDataSet.md)
+  [`plot_read_depth.multiOmicDataSet`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth.multiOmicDataSet.md)
+  : Plot read depth for multiOmicDataSet
 - [`plot_venn_diagram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_venn_diagram.md)
   : Plot a venn diagram, UpSet plot, or table of intersections
 - [`plot_volcano_enhanced()`](https://ccbr.github.io/MOSuite/dev/reference/plot_volcano_enhanced.md)
@@ -251,10 +255,45 @@ for recommended usage
 
 These functions are called by the main visualization functions.
 
+- [`plot_corr_heatmap,data.frame-method`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap-data.frame.md)
+  [`plot_corr_heatmap.data.frame`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap-data.frame.md)
+  : Plot correlation heatmap for counts dataframe
+
+- [`plot_corr_heatmap,MOSuite::multiOmicDataSet-method`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap-multiOmicDataSet.md)
+  [`plot_corr_heatmap.multiOmicDataSet`](https://ccbr.github.io/MOSuite/dev/reference/plot_corr_heatmap-multiOmicDataSet.md)
+  : Plot correlation heatmap for multiOmicDataSet
+
+- [`plot_histogram,data.frame-method`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.data.frame.md)
+  [`plot_histogram.data.frame`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.data.frame.md)
+  : Plot histogram for counts dataframe
+
+- [`plot_histogram,MOSuite::multiOmicDataSet-method`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.multiOmicDataSet.md)
+  [`plot_histogram.multiOmicDataSet`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.multiOmicDataSet.md)
+  : Plot histogram for multiOmicDataSet
+
+- [`plot_pca,data.frame-method`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca.data.frame.md)
+  [`plot_pca.data.frame`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca.data.frame.md)
+  : Plot 2D or 3D PCA for counts dataframe
+
+- [`plot_pca,MOSuite::multiOmicDataSet-method`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca.multiOmicDataSet.md)
+  [`plot_pca.multiOmicDataSet`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca.multiOmicDataSet.md)
+  : Plot 2D or 3D PCA for multiOmicDataset
+
 - [`plot_pca_2d()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_2d.md)
   : Perform and plot a 2D Principal Components Analysis
+
 - [`plot_pca_3d()`](https://ccbr.github.io/MOSuite/dev/reference/plot_pca_3d.md)
   : Perform and plot a 3D Principal Components Analysis
+
+- [`plot_read_depth,data.frame-method`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth.data.frame.md)
+  [`plot_read_depth.data.frame`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth.data.frame.md)
+  :
+
+  Plot read depth for `data.frame`
+
+- [`plot_read_depth,MOSuite::multiOmicDataSet-method`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth.multiOmicDataSet.md)
+  [`plot_read_depth.multiOmicDataSet`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth.multiOmicDataSet.md)
+  : Plot read depth for multiOmicDataSet
 
 # Articles
 
