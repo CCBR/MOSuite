@@ -11,19 +11,6 @@ ENV REPONAME=${REPONAME}
 ARG R_VERSION=4.6.0
 ENV R_VERSION=${R_VERSION}
 
-SHELL ["/bin/bash", "-lc"]
-
-# Install conda and give write permissions to conda folder
-RUN echo 'export PATH=/opt2/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
-    wget --quiet "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" -O ~/miniforge3.sh && \
-    /bin/bash ~/miniforge3.sh -b -p /opt2/conda && \
-    rm ~/miniforge3.sh && chmod 777 -R /opt2/conda/
-ENV PATH="/opt2/conda/bin:$PATH"
-
-# Pin channels and update
-RUN conda config --add channels conda-forge \
- && conda config --add channels bioconda \
- && conda config --set channel_priority strict
 # install conda packages
 RUN mamba install -y -c conda-forge \
     r-base=${R_VERSION} \
