@@ -11,7 +11,6 @@ on:
   release:
     types: [ published ]
 
-
 jobs:
   trigger-docker-build-mosuite:
     runs-on: ubuntu-latest
@@ -22,7 +21,10 @@ jobs:
       matrix:
         config:
           - { dockerfile_path: "docker/Dockerfile", docker_image_name: "mosuite" }
-          - { dockerfiel_path: "docker/Dockerfile_minimal", docker_image_name: "mosuite-minimal" }
+          - {
+              dockerfile_path: "docker/Dockerfile_minimal",
+              docker_image_name: "mosuite-minimal",
+            }
     steps:
       - uses: actions/checkout@v6
         with:
