@@ -1,7 +1,5 @@
 test_that("plot_volcano_enhanced works on nidap dataset", {
-  skip_on_ci(
-    "snapshot tests are unreliable across platforms; covered by non-snapshot tests below"
-  )
+  skip_on_ci()
   expect_snapshot(
     df_volc_enh <- plot_volcano_enhanced(
       nidap_deg_analysis,
