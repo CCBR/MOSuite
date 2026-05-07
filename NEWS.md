@@ -1,4 +1,4 @@
-## development version
+## MOSuite 0.3.1
 
 - Fix recursion error in `plot_venn_diagram()`. (#188, @kelly-sovacool)
 - Fix S7 dispatch argument mismatch in `plot_read_depth()` and `plot_histogram()`. (#200, @copilot, @kelly-sovacool)
