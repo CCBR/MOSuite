@@ -21,6 +21,7 @@ RUN mamba install -y -c conda-forge \
     r-colorspace \
     r-dendextend \
     r-devtools \
+    r-dplyr \
     "r-ggplot2 <4.0.0" \
     r-ggrepel \
     r-gridExtra \
@@ -41,6 +42,7 @@ RUN mamba install -y -c conda-forge \
     bioconductor-annotate \
     bioconductor-complexheatmap \
     bioconductor-delayedarray \
+    bioconductor-deseq2 \
     bioconductor-edger \
     bioconductor-genomicranges \
     bioconductor-keggrest \
