@@ -1,0 +1,74 @@
+name: docker
+
+on:
+  workflow_dispatch:
+    inputs:
+      docker_image_tag:
+        description: "Tag to apply to the built docker image (e.g. 'v0.3.0'). If not
+          specified, it will be determined from the DESCRIPTION file."
+        required: false
+        default: ""
+  release:
+    types: [ published ]
+
+env:
+  R_VERSION: 4.4
+  CONTEXT: "./"
+  NAMESPACE: "nciccbr"
+jobs:
+  build-docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { dockerfile_path: "docker/Dockerfile", image_name: "mosuite" }
+          - { dockerfile_path: "docker/Dockerfile_minimal", image_name: "mosuite-minimal" }
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref_name }}
+      - name: prepare variables
+        id: vars
+        run: |
+          image_name="${{ matrix.config.image_name }}"
+
+          if [ "${{ github.event_name }}" = "release" ]; then
+            version="${{ github.ref_name }}"
+          elif [ -n "${{ github.event.inputs.docker_image_tag }}" ]; then
+            version="${{ github.event.inputs.docker_image_tag }}"
+          else
+            version="$(grep 'Version:' ./DESCRIPTION | sed 's/Version: /v/')"
+          fi
+
+          docker_tags="${NAMESPACE}/${image_name}:${version}"
+          if [ "${{ github.event_name }}" = "release" ]; then
+            docker_tags="${docker_tags},${NAMESPACE}/${image_name}:latest"
+          fi
+
+          echo "date=$(date +"%Y-%m-%d")" >> "$GITHUB_OUTPUT"
+          echo "dockerfile_path=${{ matrix.config.dockerfile_path }}" >> "$GITHUB_OUTPUT"
+          echo "image_name=${image_name}" >> "$GITHUB_OUTPUT"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "docker_tags=${docker_tags}" >> "$GITHUB_OUTPUT"
+
+      - name: Login to DockerHub
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.vars.outputs.docker_tags }}
+          context: ${{ env.CONTEXT }}
+          file: ${{ steps.vars.outputs.dockerfile_path }}
+          build-args: |
+            BUILD_DATE=${{ steps.vars.outputs.date }}
+            BUILD_TAG=${{ steps.vars.outputs.version }}
+            REPONAME=${{ steps.vars.outputs.image_name }}
+            R_VERSION=${{ env.R_VERSION }}
