@@ -66,9 +66,10 @@ diff_counts(
 
 - covariates_colnames:
 
-  Columns to be used as covariates in linear modeling. Must include
-  column from "Contrast Variable". Most commonly your covariate will be
-  group and batch (if you have different batches in your data).
+  The column name(s) from the sample metadata containing variable(s) of
+  interest, such as phenotype. Most commonly this will be the same
+  column selected for your Groups Column. Some experimental designs may
+  require that you add additional covariate columns here.
 
 - contrast_colname:
 

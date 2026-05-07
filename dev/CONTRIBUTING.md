@@ -3,8 +3,11 @@
 ## Proposing changes with issues
 
 If you want to make a change, it’s a good idea to first [open an
-issue](https://code-review.tidyverse.org/issues/) and make sure someone
-from the team agrees that it’s needed.
+issue](https://github.com/CCBR/MOSuite/issues) and make sure someone
+from the team agrees that it’s needed. Before opening an issue, check
+the existing issues to make sure you’re not opening a duplicate, and
+follow these guidelines to ensure your issue will be high-quality:
+<https://code-review.tidyverse.org/issues/>.
 
 If you’ve decided to work on an issue, [assign yourself to the
 issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/assigning-issues-and-pull-requests-to-other-github-users#assigning-an-individual-issue-or-pull-request)
