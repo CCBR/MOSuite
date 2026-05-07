@@ -29,6 +29,60 @@ plot_pca_2d(
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots")
 )
+
+## S7 method for class <MOSuite::multiOmicDataSet>
+plot_pca_2d(
+  moo_counts,
+  count_type = NULL,
+  sub_count_type = NULL,
+  sample_metadata = NULL,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = "Label",
+  samples_to_rename = NULL,
+  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  principal_components = c(1, 2),
+  legend_position = "top",
+  point_size = 1,
+  add_label = TRUE,
+  label_font_size = 3,
+  label_offset_x_ = 2,
+  label_offset_y_ = 2,
+  interactive_plots = FALSE,
+  plots_subdir = "pca",
+  plot_filename = "pca_2D.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots")
+)
+
+## S7 method for class <data.frame>
+plot_pca_2d(
+  moo_counts,
+  count_type = NULL,
+  sub_count_type = NULL,
+  sample_metadata = NULL,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = "Label",
+  samples_to_rename = NULL,
+  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  principal_components = c(1, 2),
+  legend_position = "top",
+  point_size = 1,
+  add_label = TRUE,
+  label_font_size = 3,
+  label_offset_x_ = 2,
+  label_offset_y_ = 2,
+  interactive_plots = FALSE,
+  plots_subdir = "pca",
+  plot_filename = "pca_2D.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots")
+)
 }
 \arguments{
 \item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
@@ -102,9 +156,9 @@ Perform and plot a 2D Principal Components Analysis
 \seealso{
 \link{plot_pca} generic
 
-Other PCA functions: 
-\code{\link{calc_pca}()},
-\code{\link{plot_pca}()},
-\code{\link{plot_pca_3d}()}
+Other PCA functions:
+\code{\link[=calc_pca]{calc_pca()}},
+\code{\link[=plot_pca]{plot_pca()}},
+\code{\link[=plot_pca_3d]{plot_pca_3d()}}
 }
 \concept{PCA functions}

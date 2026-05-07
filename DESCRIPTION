@@ -83,10 +83,10 @@ VignetteBuilder:
 biocViews:
 Config/Needs/dev: cffr, covr, goodpractice, here, lintr, pkgdown,
     rcmdcheck, xml2
+Config/roxygen2/version: 8.0.0
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
