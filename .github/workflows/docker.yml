@@ -11,6 +11,10 @@ on:
   release:
     types: [ published ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   R_VERSION: 4.4
   CONTEXT: "./"
