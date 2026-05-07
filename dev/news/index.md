@@ -1,5 +1,47 @@
 # Changelog
 
+## MOSuite 0.3.1
+
+- Fix recursion error in
+  [`plot_venn_diagram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_venn_diagram.md).
+  ([\#188](https://github.com/CCBR/MOSuite/issues/188),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+- Fix S7 dispatch argument mismatch in
+  [`plot_read_depth()`](https://ccbr.github.io/MOSuite/dev/reference/plot_read_depth.md)
+  and
+  [`plot_histogram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.md).
+  ([\#200](https://github.com/CCBR/MOSuite/issues/200),
+  [@copilot](https://github.com/copilot),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+- Fix crash in
+  [`remove_low_count_genes()`](https://ccbr.github.io/MOSuite/dev/reference/remove_low_count_genes.md)
+  when `use_group_based_filtering = TRUE`.
+  ([\#200](https://github.com/CCBR/MOSuite/issues/200),
+  [@copilot](https://github.com/copilot),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+- Fix color palette selection to fall back to random colors with a
+  message when the number of categories exceeds the palette maximum.
+  ([\#204](https://github.com/CCBR/MOSuite/issues/204),
+  [@copilot](https://github.com/copilot),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+- Update S7 class, generic, and method documentation to use roxygen2
+  v8.0.0. ([\#206](https://github.com/CCBR/MOSuite/issues/206),
+  [\#212](https://github.com/CCBR/MOSuite/issues/212),
+  [@copilot](https://github.com/copilot),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+- A docker container with only MOSuite’s dependencies, not MOSuite
+  itself, is now available:
+  <https://hub.docker.com/r/nciccbr/mosuite-minimal>.
+  ([\#209](https://github.com/CCBR/MOSuite/issues/209),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+- Minor bug fixes in
+  [`calc_cpm_df()`](https://ccbr.github.io/MOSuite/dev/reference/calc_cpm_df.md),
+  [`create_multiOmicDataSet_from_dataframes()`](https://ccbr.github.io/MOSuite/dev/reference/create_multiOmicDataSet_from_dataframes.md),
+  and
+  [`diff_counts()`](https://ccbr.github.io/MOSuite/dev/reference/diff_counts.md)
+  docstring. ([\#214](https://github.com/CCBR/MOSuite/issues/214),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+
 ## MOSuite 0.3.0
 
 ### New features
