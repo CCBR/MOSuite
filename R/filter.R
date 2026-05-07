@@ -216,6 +216,7 @@ filter_counts <- function(
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_,
+      print_plots = FALSE,
       save_plots = FALSE
     ) +
       ggplot2::labs(caption = "filtered counts")
