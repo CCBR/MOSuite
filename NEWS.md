@@ -6,6 +6,7 @@
 - Fix color palette selection to fall back to random colors with a message when the number of categories exceeds the palette maximum. (#204, @copilot, @kelly-sovacool)
 - Update S7 class, generic, and method documentation to use roxygen2 v8.0.0. (#206, #212, @copilot, @kelly-sovacool)
 - A docker container with only MOSuite's dependencies, not MOSuite itself, is now available: <https://hub.docker.com/r/nciccbr/mosuite-minimal>. (#209, @kelly-sovacool)
+- Minor bug fixes in `calc_cpm_df()`, `create_multiOmicDataSet_from_dataframes()`, and `diff_counts()` docstring. (#214, @kelly-sovacool)
 
 ## MOSuite 0.3.0
 

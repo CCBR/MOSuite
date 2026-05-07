@@ -74,7 +74,11 @@ test_that("calc_cpm_df works on NIDAP data", {
   trans.df <- df
   trans.df[, -1] <- edgeR::cpm(as.matrix(df[, -1]))
 
-  expect_equal(calc_cpm_df(df, feature_id_colname = "Gene"), trans.df)
+  expect_equal(
+    calc_cpm_df(df, feature_id_colname = "Gene"),
+    trans.df,
+    ignore_attr = TRUE
+  )
 })
 test_that("calc_cpm_df preserves rownames", {
   df <- nidap_clean_raw_counts |>
@@ -83,5 +87,20 @@ test_that("calc_cpm_df preserves rownames", {
   trans.df <- df
   trans.df[, -1] <- edgeR::cpm(as.matrix(df[, -1]))
 
-  expect_equal(calc_cpm_df(df, feature_id_colname = "Gene"), trans.df)
+  expect_equal(
+    calc_cpm_df(df, feature_id_colname = "Gene"),
+    trans.df,
+    ignore_attr = TRUE
+  )
+})
+
+test_that("calc_cpm_df preserves non-integer character rownames", {
+  df <- nidap_clean_raw_counts |> as.data.frame()
+  rownames(df) <- paste0("row_", seq_len(nrow(df)))
+  trans.df <- df
+  trans.df[, -1] <- edgeR::cpm(as.matrix(df[, -1]))
+
+  result <- calc_cpm_df(df, feature_id_colname = "Gene")
+  expect_equal(rownames(result), rownames(trans.df))
+  expect_equal(result, trans.df, ignore_attr = TRUE)
 })
