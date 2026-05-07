@@ -21,7 +21,9 @@ render_report <- function(
 ) {
   abort_packages_not_installed(c("quarto", "knitr", "rmarkdown"))
   qmd_src = basename(qmd_template)
-  file.copy(qmd_template, qmd_src, overwrite = TRUE)
+  if (!file.exists(qmd_src)) {
+    file.copy(qmd_template, qmd_src)
+  }
   return(quarto::quarto_render(
     input = qmd_src,
     ...
