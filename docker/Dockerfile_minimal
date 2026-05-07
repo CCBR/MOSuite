@@ -53,7 +53,7 @@ RUN mamba install -y -c conda-forge \
 # using --mount avoids copying the context into the image
 RUN --mount=type=bind,source=.,target=/opt2/MOSuite \
     R -e "pak::local_install_dev_deps('/opt2/MOSuite', upgrade=FALSE)" && \
-    R -e "devtools::test()" && \
+    R -e "devtools::test('/opt2/MOSuite')" && \
     R -s -e "readr::write_csv(tibble::as_tibble(installed.packages()), '/data2/r-packages_mosuite-minimal.csv')"
 
 # copy .Rprofile to R_HOME
