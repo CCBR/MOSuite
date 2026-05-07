@@ -27,13 +27,17 @@ ggplot barplot
 
 ## Methods
 
-|                                                                                        |                    |
-|----------------------------------------------------------------------------------------|--------------------|
-| link to docs                                                                           | class              |
-| [plot_read_depth_moo](https://ccbr.github.io/MOSuite/reference/plot_read_depth_moo.md) | `multiOmicDataSet` |
-| [plot_read_depth_dat](https://ccbr.github.io/MOSuite/reference/plot_read_depth_dat.md) | `data.frame`       |
+|                     |                    |
+|---------------------|--------------------|
+| link to docs        | class              |
+| `plot_read_depth()` | `multiOmicDataSet` |
+| `plot_read_depth()` | `data.frame`       |
 
 ## See also
+
+- [`plot_read_depth.multiOmicDataSet()`](https://ccbr.github.io/MOSuite/reference/plot_read_depth.multiOmicDataSet.md)
+
+- [`plot_read_depth.data.frame()`](https://ccbr.github.io/MOSuite/reference/plot_read_depth.data.frame.md)
 
 Other plotters:
 [`plot_corr_heatmap()`](https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap.md),

@@ -18,20 +18,13 @@ plot_corr_heatmap(moo_counts, ...)
 - ...:
 
   arguments forwarded to method
-  [plot_corr_heatmap_dat](https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap_dat.md)
 
 ## Value
 
 heatmap from
 [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html)
 
-## Methods
-
-|                                                                                            |                    |
-|--------------------------------------------------------------------------------------------|--------------------|
-| link to docs                                                                               | class              |
-| [plot_corr_heatmap_moo](https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap_moo.md) | `multiOmicDataSet` |
-| [plot_corr_heatmap_dat](https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap_dat.md) | `data.frame`       |
+## Details
 
 ### Method Usage
 
@@ -54,6 +47,10 @@ heatmap from
       ))
 
 ## See also
+
+- [`plot_corr_heatmap.multiOmicDataSet()`](https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap-multiOmicDataSet.md)
+
+- [`plot_corr_heatmap.data.frame()`](https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap-data.frame.md)
 
 Other plotters:
 [`plot_expr_heatmap()`](https://ccbr.github.io/MOSuite/reference/plot_expr_heatmap.md),

@@ -11,7 +11,7 @@ estimates and for sub-setting of contrasts and groups included in the output gen
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,7 @@ estimates and for sub-setting of contrasts and groups included in the output gen
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Filter features from differential analysis based on statistical significance</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/main/R/differential.R" class="external-link"><code>R/differential.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.3.1/R/differential.R" class="external-link"><code>R/differential.R</code></a></small>
       <div class="d-none name"><code>filter_diff.Rd</code></div>
     </div>
 
@@ -253,26 +253,26 @@ groups in the dataset are used.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Saving 6.67 x 6.67 in image</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">moo</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff_filt</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            Gene B-A_FC B-A_logFC B-A_tstat B-A_pval B-A_adjpval C-A_FC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1110034G24Rik  21.70     4.440      3.20  0.00782       0.210  36.60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 3110082I17Rik  -1.73    -0.789     -1.35  0.20300       0.710 -21.90</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 4632428N05Rik   2.43     1.280      2.76  0.01770       0.303   4.66</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 4833439L19Rik  -1.38    -0.460     -1.18  0.26000       0.758  -3.59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 4930523C07Rik  -2.30    -1.200     -1.62  0.13300       0.617   4.50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 5430427O19Rik  -2.22    -1.150     -2.46  0.03070       0.377  -4.49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1110034G24Rik  21.60     4.440      3.21  0.00768       0.208  36.60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 3110082I17Rik  -1.74    -0.795     -1.36  0.19900       0.706 -22.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 4632428N05Rik   2.43     1.280      2.75  0.01810       0.307   4.66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 4833439L19Rik  -1.38    -0.460     -1.18  0.26000       0.757  -3.58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 4930523C07Rik  -2.30    -1.200     -1.62  0.13300       0.618   4.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 5430427O19Rik  -2.22    -1.150     -2.45  0.03090       0.378  -4.50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   C-A_logFC C-A_tstat C-A_pval C-A_adjpval B-C_FC B-C_logFC B-C_tstat B-C_pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      5.20      4.15 0.001410     0.02700  -1.69    -0.758    -0.838 0.419000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     -4.46     -3.80 0.002650     0.03830  12.70     3.670     2.930 0.012900</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      2.22      5.25 0.000222     0.00929  -1.92    -0.941    -3.150 0.008590</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     -1.84     -3.76 0.002810     0.03950   2.61     1.380     2.630 0.022200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      2.17      4.50 0.000767     0.01910 -10.30    -3.370    -5.040 0.000311</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     -2.17     -3.68 0.003270     0.04320   2.02     1.010     1.530 0.153000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      5.19      4.17 0.001360     0.02640  -1.69    -0.759    -0.834 0.421000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     -4.46     -3.82 0.002550     0.03720  12.70     3.660     2.940 0.012600</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      2.22      5.22 0.000230     0.00962  -1.92    -0.942    -3.170 0.008350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     -1.84     -3.76 0.002830     0.03960   2.60     1.380     2.630 0.022400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      2.17      4.49 0.000779     0.01930 -10.40    -3.370    -5.030 0.000316</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     -2.17     -3.67 0.003320     0.04370   2.03     1.020     1.530 0.153000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   B-C_adjpval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1      0.7070</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.1440</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.1240</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.1420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.1220</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4      0.1860</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.0224</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0.4420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0.4410</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

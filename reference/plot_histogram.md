@@ -23,15 +23,11 @@ plot_histogram(moo_counts, ...)
 
 ggplot object
 
-## Methods
-
-|                                                                                      |                    |
-|--------------------------------------------------------------------------------------|--------------------|
-| link to docs                                                                         | class              |
-| [plot_histogram_moo](https://ccbr.github.io/MOSuite/reference/plot_histogram_moo.md) | `multiOmicDataSet` |
-| [plot_histogram_dat](https://ccbr.github.io/MOSuite/reference/plot_histogram_dat.md) | `data.frame`       |
-
 ## See also
+
+- [`plot_histogram.multiOmicDataSet()`](https://ccbr.github.io/MOSuite/reference/plot_histogram.multiOmicDataSet.md)
+
+- [`plot_histogram.data.frame()`](https://ccbr.github.io/MOSuite/reference/plot_histogram.data.frame.md)
 
 Other plotters:
 [`plot_corr_heatmap()`](https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap.md),

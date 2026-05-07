@@ -25,6 +25,9 @@ Useful links:
 
 Authors:
 
+- Kelly Sovacool <kelly.sovacool@nih.gov>
+  ([ORCID](https://orcid.org/0000-0003-3283-829X))
+
 - Philip Homan <philip.homan@nih.gov>
 
 - Vishal Koparde <vishal.koparde@nih.gov>

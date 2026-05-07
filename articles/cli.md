@@ -70,6 +70,7 @@ After installing the R package, you can use
 `mosuite` executable file with R:
 
 ``` r
+
 # remotes::install_github("CCBR/MOSuite", dependencies = TRUE)
 system.file("exec", "mosuite", package = "MOSuite")
 #> [1] "/home/runner/work/_temp/Library/MOSuite/exec/mosuite"
@@ -116,6 +117,7 @@ The example script and accompanying JSON files are included in the
 package data. You can copy them to your working directory with R:
 
 ``` r
+
 # copy the example script
 file.copy(
   system.file("extdata", "example_script.sh", package = "MOSuite"),
@@ -159,6 +161,7 @@ Create a JSON file with arguments for
 You can use R code as below or write it by hand.
 
 ``` r
+
 j <- list(
   feature_counts_filepath = system.file(
     "extdata",
@@ -186,6 +189,7 @@ mosuite create_multiOmicDataSet_from_files --json=args_1.json
 This is equivalent to running the following R code:
 
 ``` r
+
 library(MOSuite)
 moo <- create_multiOmicDataSet_from_files(
   feature_counts_filepath = system.file(
@@ -225,6 +229,7 @@ Create a JSON file of arguments for
 with R (or write it by hand):
 
 ``` r
+
 j <- list(
   moo_input_rds = "moo.rds",
   moo_output_rds = "moo.rds",
@@ -251,6 +256,7 @@ bundled with the package. You can copy them to your current directory
 like so:
 
 ``` r
+
 file.copy(
   system.file("extdata", "json_args", "defaults", package = "MOSuite"),
   to = "./",

@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Visualization with built-in plots</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/main/vignettes/visualization.Rmd" class="external-link"><code>vignettes/visualization.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.3.1/vignettes/visualization.Rmd" class="external-link"><code>vignettes/visualization.Rmd</code></a></small>
       <div class="d-none name"><code>visualization.Rmd</code></div>
     </div>
 
@@ -120,36 +120,22 @@ disk.</p>
 <span><span class="co">#&gt; * filtering clean counts</span></span>
 <span><span class="co">#&gt; Number of features after filtering: 7943</span></span>
 <span><span class="co">#&gt; colors_for_plots NULL</span></span>
-<span><span class="co">#&gt; colors_for_plots character</span></span>
-<span><span class="co">#&gt; Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider</span></span>
-<span><span class="co">#&gt; increasing max.overlaps</span></span></code></pre></div>
-<p><img src="visualization_files/figure-html/nidap_filter-1.png" class="r-plt" alt="" width="480"><img src="visualization_files/figure-html/nidap_filter-2.png" class="r-plt" alt="" width="480"></p>
-<pre><code><span><span class="co">#&gt; Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider</span></span>
-<span><span class="co">#&gt; increasing max.overlaps</span></span></code></pre>
-<p><img src="visualization_files/figure-html/nidap_filter-3.png" class="r-plt" alt="" width="480"></p>
-<pre><code><span><span class="co">#&gt; Saving 5 x 4 in image</span></span>
-<span><span class="co">#&gt; Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider</span></span>
-<span><span class="co">#&gt; increasing max.overlaps</span></span></code></pre>
+<span><span class="co">#&gt; colors_for_plots character</span></span></code></pre></div>
+<p><img src="visualization_files/figure-html/nidap_filter-1.png" class="r-plt" alt="" width="480"><img src="visualization_files/figure-html/nidap_filter-2.png" class="r-plt" alt="" width="480"><img src="visualization_files/figure-html/nidap_filter-3.png" class="r-plt" alt="" width="480"></p>
+<pre><code><span><span class="co">#&gt; Saving 5 x 4 in image</span></span></code></pre>
 <p><img src="visualization_files/figure-html/nidap_filter-4.png" class="r-plt" alt="" width="480"></p>
 <pre><code><span><span class="co">#&gt; Saving 5 x 4 in image</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="normalize">normalize<a class="anchor" aria-label="anchor" href="#normalize"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/normalize_counts.html">normalize_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; * normalizing filt counts</span></span>
-<span><span class="co">#&gt; Total number of features included: 7943</span></span>
-<span><span class="co">#&gt; Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider</span></span>
-<span><span class="co">#&gt; increasing max.overlaps</span></span></code></pre></div>
-<p><img src="visualization_files/figure-html/nidap_norm-1.png" class="r-plt" alt="" width="480"><img src="visualization_files/figure-html/nidap_norm-2.png" class="r-plt" alt="" width="480"></p>
-<pre><code><span><span class="co">#&gt; Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider</span></span>
-<span><span class="co">#&gt; increasing max.overlaps</span></span></code></pre>
-<p><img src="visualization_files/figure-html/nidap_norm-3.png" class="r-plt" alt="" width="480"></p>
-<pre><code><span><span class="co">#&gt; Saving 5 x 4 in image</span></span>
-<span><span class="co">#&gt; Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider</span></span>
-<span><span class="co">#&gt; increasing max.overlaps</span></span></code></pre>
+<span><span class="co">#&gt; Total number of features included: 7943</span></span></code></pre></div>
+<p><img src="visualization_files/figure-html/nidap_norm-1.png" class="r-plt" alt="" width="480"><img src="visualization_files/figure-html/nidap_norm-2.png" class="r-plt" alt="" width="480"><img src="visualization_files/figure-html/nidap_norm-3.png" class="r-plt" alt="" width="480"></p>
+<pre><code><span><span class="co">#&gt; Saving 5 x 4 in image</span></span></code></pre>
 <p><img src="visualization_files/figure-html/nidap_norm-4.png" class="r-plt" alt="" width="480"></p>
 <pre><code><span><span class="co">#&gt; Saving 5 x 4 in image</span></span>
 <span><span class="co">#&gt; Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3</span></span></code></pre>
@@ -157,7 +143,7 @@ disk.</p>
 <div class="section level3">
 <h3 id="batch-correct">batch correct<a class="anchor" aria-label="anchor" href="#batch-correct"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/batch_correct_counts.html">batch_correct_counts</a></span><span class="op">(</span></span>
 <span>    covariates_colname <span class="op">=</span> <span class="st">"Group"</span>,</span>
@@ -182,7 +168,7 @@ disk.</p>
 <div class="section level3">
 <h3 id="differential-expression">differential expression<a class="anchor" aria-label="anchor" href="#differential-expression"></a>
 </h3>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/diff_counts.html">diff_counts</a></span><span class="op">(</span></span>
 <span>    count_type <span class="op">=</span> <span class="st">"filt"</span>,</span>
@@ -204,7 +190,7 @@ disk.</p>
 <div class="section level3">
 <h3 id="filter-differential-features">filter differential features<a class="anchor" aria-label="anchor" href="#filter-differential-features"></a>
 </h3>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/filter_diff.html">filter_diff</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
@@ -227,7 +213,7 @@ disk.</p>
 <div class="section level3">
 <h3 id="d-pca">3D PCA<a class="anchor" aria-label="anchor" href="#d-pca"></a>
 </h3>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_pca.html">plot_pca</a></span><span class="op">(</span></span>
 <span>  <span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">batch</span>,</span>
 <span>  <span class="va">moo</span><span class="op">@</span><span class="va">sample_meta</span>,</span>
@@ -237,12 +223,12 @@ disk.</p>
 <span>  color_values <span class="op">=</span> <span class="va">moo</span><span class="op">@</span><span class="va">analyses</span><span class="op">[[</span><span class="st">"colors"</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"Group"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="plotly html-widget html-fill-item" id="htmlwidget-36aa3d2a04d42bbc2145" style="width:480px;height:384px;"></div>
-<script type="application/json" data-for="htmlwidget-36aa3d2a04d42bbc2145">{"x":{"visdat":{"2ee64e20ac72":["function () ","plotlyVisDat"]},"cur_data":"2ee64e20ac72","attrs":{"2ee64e20ac72":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"size":8},"hoverinfo":"text","text":{},"color":{},"size":24,"colors":["#000000","#E69F00","#56B4E9"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"PC1"},"yaxis":{"title":"PC2"},"zaxis":{"title":"PC3"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-37.029887404207201,-46.202726529239861,-47.38832948806099],"y":[33.200566070307481,40.838627625724087,28.814546147005061],"z":[4.7406847243840753,-10.906448043253107,-13.204218047115665],"mode":"markers","marker":{"color":"rgba(0,0,0,1)","size":8,"sizemode":"area","line":{"color":"rgba(0,0,0,1)"}},"hoverinfo":["text","text","text"],"text":["A1","A2","A3"],"type":"scatter3d","name":"A","textfont":{"color":"rgba(0,0,0,1)","size":55},"error_y":{"color":"rgba(0,0,0,1)","width":55},"error_x":{"color":"rgba(0,0,0,1)","width":55},"line":{"color":"rgba(0,0,0,1)","width":55},"frame":null},{"x":[-28.694926741752855,-13.178325203869919,-15.174264901109929],"y":[-29.61351670342993,-34.916643374714155,-65.245132469700437],"z":[25.172778558047206,13.33410158127648,7.1777565898973972],"mode":"markers","marker":{"color":"rgba(230,159,0,1)","size":8,"sizemode":"area","line":{"color":"rgba(230,159,0,1)"}},"hoverinfo":["text","text","text"],"text":["B1","B2","B3"],"type":"scatter3d","name":"B","textfont":{"color":"rgba(230,159,0,1)","size":55},"error_y":{"color":"rgba(230,159,0,1)","width":55},"error_x":{"color":"rgba(230,159,0,1)","width":55},"line":{"color":"rgba(230,159,0,1)","width":55},"frame":null},{"x":[54.383108042646434,77.413153148631366,55.872199076963142],"y":[-0.31296701193077309,31.436049026500836,-4.2015293097620674],"z":[-44.49320374920331,67.633314692756514,-49.454766306789836],"mode":"markers","marker":{"color":"rgba(86,180,233,1)","size":8,"sizemode":"area","line":{"color":"rgba(86,180,233,1)"}},"hoverinfo":["text","text","text"],"text":["C1","C2","C3"],"type":"scatter3d","name":"C","textfont":{"color":"rgba(86,180,233,1)","size":55},"error_y":{"color":"rgba(86,180,233,1)","width":55},"error_x":{"color":"rgba(86,180,233,1)","width":55},"line":{"color":"rgba(86,180,233,1)","width":55},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-36aa3d2a04d42bbc2145">{"x":{"visdat":{"2c9a56fdef21":["function () ","plotlyVisDat"]},"cur_data":"2c9a56fdef21","attrs":{"2c9a56fdef21":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"size":8},"hoverinfo":"text","text":{},"color":{},"size":24,"colors":["#000000","#E69F00","#56B4E9"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"PC1"},"yaxis":{"title":"PC2"},"zaxis":{"title":"PC3"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-37.029887404207201,-46.202726529239861,-47.38832948806099],"y":[33.200566070307481,40.838627625724087,28.814546147005061],"z":[4.7406847243840753,-10.906448043253107,-13.204218047115665],"mode":"markers","marker":{"color":"rgba(0,0,0,1)","size":8,"sizemode":"area","line":{"color":"rgba(0,0,0,1)"}},"hoverinfo":["text","text","text"],"text":["A1","A2","A3"],"type":"scatter3d","name":"A","textfont":{"color":"rgba(0,0,0,1)","size":55},"error_y":{"color":"rgba(0,0,0,1)","width":55},"error_x":{"color":"rgba(0,0,0,1)","width":55},"line":{"color":"rgba(0,0,0,1)","width":55},"frame":null},{"x":[-28.694926741752855,-13.178325203869919,-15.174264901109929],"y":[-29.61351670342993,-34.916643374714155,-65.245132469700437],"z":[25.172778558047206,13.33410158127648,7.1777565898973972],"mode":"markers","marker":{"color":"rgba(230,159,0,1)","size":8,"sizemode":"area","line":{"color":"rgba(230,159,0,1)"}},"hoverinfo":["text","text","text"],"text":["B1","B2","B3"],"type":"scatter3d","name":"B","textfont":{"color":"rgba(230,159,0,1)","size":55},"error_y":{"color":"rgba(230,159,0,1)","width":55},"error_x":{"color":"rgba(230,159,0,1)","width":55},"line":{"color":"rgba(230,159,0,1)","width":55},"frame":null},{"x":[54.383108042646434,77.413153148631366,55.872199076963142],"y":[-0.31296701193077309,31.436049026500836,-4.2015293097620674],"z":[-44.49320374920331,67.633314692756514,-49.454766306789836],"mode":"markers","marker":{"color":"rgba(86,180,233,1)","size":8,"sizemode":"area","line":{"color":"rgba(86,180,233,1)"}},"hoverinfo":["text","text","text"],"text":["C1","C2","C3"],"type":"scatter3d","name":"C","textfont":{"color":"rgba(86,180,233,1)","size":55},"error_y":{"color":"rgba(86,180,233,1)","width":55},"error_x":{"color":"rgba(86,180,233,1)","width":55},"line":{"color":"rgba(86,180,233,1)","width":55},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="section level3">
 <h3 id="expression-heatmap">Expression Heatmap<a class="anchor" aria-label="anchor" href="#expression-heatmap"></a>
 </h3>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">heatmap_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_expr_heatmap.html">plot_expr_heatmap</a></span><span class="op">(</span></span>
 <span>  <span class="va">moo</span>,</span>
 <span>  count_type <span class="op">=</span> <span class="st">"norm"</span>,</span>
@@ -250,7 +236,7 @@ disk.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; The total number of genes in heatmap: 500</span></span></code></pre></div>
 <p><img src="visualization_files/figure-html/expr_heatmap-1.png" class="r-plt" alt="" width="480"></p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">heatmap_plot</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualization_files/figure-html/expr_heatmap-2.png" class="r-plt" alt="" width="480"></p>
 </div>
@@ -260,7 +246,7 @@ disk.</p>
 <div class="section level4">
 <h4 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h4>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat_volcano_summary</span> <span class="op">&lt;-</span> <span class="va">moo</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/join_dfs_wide.html">join_dfs_wide</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/plot_volcano_summary.html">plot_volcano_summary</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -277,66 +263,59 @@ disk.</p>
 <span><span class="co">#&gt; Preparing table for contrast: B-C</span></span>
 <span><span class="co">#&gt; Fold change column: B-C_logFC</span></span>
 <span><span class="co">#&gt; pval column: B-C_pval</span></span>
-<span><span class="co">#&gt; Total number of features included in volcano plot: 7943</span></span>
-<span><span class="co">#&gt; Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider</span></span>
-<span><span class="co">#&gt; increasing max.overlaps</span></span>
-<span><span class="co">#&gt; Warning: ggrepel: 29 unlabeled data points (too many overlaps). Consider increasing max.overlaps</span></span>
-<span><span class="co">#&gt; ggrepel: 29 unlabeled data points (too many overlaps). Consider increasing max.overlaps</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of features included in volcano plot: 7943</span></span></code></pre></div>
 <p><img src="visualization_files/figure-html/volcano_summary-1.png" class="r-plt" alt="" width="480"></p>
 <pre><code><span><span class="co">#&gt; Saving 5 x 4 in image</span></span>
-<span><span class="co">#&gt; Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider increasing max.overlaps</span></span>
-<span><span class="co">#&gt; ggrepel: 29 unlabeled data points (too many overlaps). Consider increasing max.overlaps</span></span>
-<span><span class="co">#&gt; ggrepel: 29 unlabeled data points (too many overlaps). Consider increasing max.overlaps</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat_volcano_summary</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       GeneName Contrast         FC     logFC     tstat         pval</span></span>
-<span><span class="co">#&gt; B-A.1     Dntt      B-A -42.746586 -5.417737 -15.68797 3.159343e-09</span></span>
-<span><span class="co">#&gt; B-A.2   Tmsb4x      B-A   3.850020  1.944866  12.91026 2.760555e-08</span></span>
-<span><span class="co">#&gt; B-A.3     Flt3      B-A  -7.714394 -2.947553 -11.38084 1.093405e-07</span></span>
-<span><span class="co">#&gt; B-A.4  Tspan13      B-A  -7.038498 -2.815268 -11.03127 1.531110e-07</span></span>
-<span><span class="co">#&gt; B-A.5    Tapt1      B-A  -5.291816 -2.403763 -10.65847 2.214593e-07</span></span>
-<span><span class="co">#&gt; B-A.6    Itgb7      B-A   8.873823  3.149556  10.56147 2.442070e-07</span></span>
+<span><span class="co">#&gt; B-A.1     Dntt      B-A -42.727551 -5.417095 -15.54572 3.460410e-09</span></span>
+<span><span class="co">#&gt; B-A.2   Tmsb4x      B-A   3.845863  1.943307  12.82926 2.930649e-08</span></span>
+<span><span class="co">#&gt; B-A.3     Flt3      B-A  -7.743692 -2.953022 -11.29797 1.173487e-07</span></span>
+<span><span class="co">#&gt; B-A.4  Tspan13      B-A  -7.035795 -2.814713 -11.06018 1.476477e-07</span></span>
+<span><span class="co">#&gt; B-A.5    Tapt1      B-A  -5.297586 -2.405335 -10.64544 2.226279e-07</span></span>
+<span><span class="co">#&gt; B-A.6    Itgb7      B-A   8.882141  3.150907  10.62882 2.263833e-07</span></span>
 <span><span class="co">#&gt;            adjpval</span></span>
-<span><span class="co">#&gt; B-A.1 2.509467e-05</span></span>
-<span><span class="co">#&gt; B-A.2 1.096354e-04</span></span>
-<span><span class="co">#&gt; B-A.3 2.894973e-04</span></span>
-<span><span class="co">#&gt; B-A.4 3.040401e-04</span></span>
-<span><span class="co">#&gt; B-A.5 3.232894e-04</span></span>
-<span><span class="co">#&gt; B-A.6 3.232894e-04</span></span></code></pre>
+<span><span class="co">#&gt; B-A.1 2.748604e-05</span></span>
+<span><span class="co">#&gt; B-A.2 1.163907e-04</span></span>
+<span><span class="co">#&gt; B-A.3 2.931915e-04</span></span>
+<span><span class="co">#&gt; B-A.4 2.931915e-04</span></span>
+<span><span class="co">#&gt; B-A.5 2.996937e-04</span></span>
+<span><span class="co">#&gt; B-A.6 2.996937e-04</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="enhanced">Enhanced<a class="anchor" aria-label="anchor" href="#enhanced"></a>
 </h4>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat_volcano_enhanced</span> <span class="op">&lt;-</span> <span class="va">moo</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/join_dfs_wide.html">join_dfs_wide</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/plot_volcano_enhanced.html">plot_volcano_enhanced</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
 <span><span class="co">#&gt; Genes in initial dataset: 7943</span></span>
-<span><span class="co">#&gt; Max y: 4.60041859457821</span></span>
+<span><span class="co">#&gt; Max y: 4.56088783571366</span></span>
 <span><span class="co">#&gt; Genes in initial dataset: 7943</span></span>
-<span><span class="co">#&gt; Max y: 4.32577808863476</span></span></code></pre></div>
+<span><span class="co">#&gt; Max y: 4.34744066227959</span></span></code></pre></div>
 <p><img src="visualization_files/figure-html/volcano_enhanced-1.png" class="r-plt" alt="" width="480"></p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="venn-diagram">Venn Diagram<a class="anchor" aria-label="anchor" href="#venn-diagram"></a>
 </h3>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">venn_dat</span> <span class="op">&lt;-</span> <span class="va">dat_volcano_summary</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/plot_venn_diagram.html">plot_venn_diagram</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; All intersections: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(79, 119, 265, 493, 149, 271, 516),c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")</span></span>
-<span><span class="co">#&gt; Intersections returned: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(79, 119, 265, 493, 149, 271, 516)</span></span></code></pre></div>
+<span><span class="co">#&gt; All intersections: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516),c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")</span></span>
+<span><span class="co">#&gt; Intersections returned: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516)</span></span></code></pre></div>
 <p><img src="visualization_files/figure-html/venn_diagram-1.png" class="r-plt" alt="" width="480"></p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">venn_dat</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    Gene      Intersection Id Size</span></span>
-<span><span class="co">#&gt; 1  Dntt (B-A ∩ B-C ∩ C-A)  1   79</span></span>
-<span><span class="co">#&gt; 2  Flt3 (B-A ∩ B-C ∩ C-A)  1   79</span></span>
-<span><span class="co">#&gt; 3   Id2 (B-A ∩ B-C ∩ C-A)  1   79</span></span>
-<span><span class="co">#&gt; 4 Eltd1 (B-A ∩ B-C ∩ C-A)  1   79</span></span>
-<span><span class="co">#&gt; 5 Runx3 (B-A ∩ B-C ∩ C-A)  1   79</span></span>
-<span><span class="co">#&gt; 6 Dusp6 (B-A ∩ B-C ∩ C-A)  1   79</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  Dntt (B-A ∩ B-C ∩ C-A)  1   80</span></span>
+<span><span class="co">#&gt; 2  Flt3 (B-A ∩ B-C ∩ C-A)  1   80</span></span>
+<span><span class="co">#&gt; 3   Id2 (B-A ∩ B-C ∩ C-A)  1   80</span></span>
+<span><span class="co">#&gt; 4 Eltd1 (B-A ∩ B-C ∩ C-A)  1   80</span></span>
+<span><span class="co">#&gt; 5 Runx3 (B-A ∩ B-C ∩ C-A)  1   80</span></span>
+<span><span class="co">#&gt; 6 Dusp6 (B-A ∩ B-C ∩ C-A)  1   80</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

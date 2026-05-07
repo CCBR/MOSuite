@@ -2,9 +2,65 @@
 
 Perform and plot a 2D Principal Components Analysis
 
+Perform and plot a 2D Principal Components Analysis
+
 ## Usage
 
 ``` r
+plot_pca_2d(
+  moo_counts,
+  count_type = NULL,
+  sub_count_type = NULL,
+  sample_metadata = NULL,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = "Label",
+  samples_to_rename = NULL,
+  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  principal_components = c(1, 2),
+  legend_position = "top",
+  point_size = 1,
+  add_label = TRUE,
+  label_font_size = 3,
+  label_offset_x_ = 2,
+  label_offset_y_ = 2,
+  interactive_plots = FALSE,
+  plots_subdir = "pca",
+  plot_filename = "pca_2D.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots")
+)
+
+## S7 method for class <MOSuite::multiOmicDataSet>
+plot_pca_2d(
+  moo_counts,
+  count_type = NULL,
+  sub_count_type = NULL,
+  sample_metadata = NULL,
+  sample_id_colname = NULL,
+  feature_id_colname = NULL,
+  group_colname = "Group",
+  label_colname = "Label",
+  samples_to_rename = NULL,
+  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  principal_components = c(1, 2),
+  legend_position = "top",
+  point_size = 1,
+  add_label = TRUE,
+  label_font_size = 3,
+  label_offset_x_ = 2,
+  label_offset_y_ = 2,
+  interactive_plots = FALSE,
+  plots_subdir = "pca",
+  plot_filename = "pca_2D.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots")
+)
+
+## S7 method for class <data.frame>
 plot_pca_2d(
   moo_counts,
   count_type = NULL,
@@ -162,7 +218,8 @@ ggplot object
 
 ## See also
 
-[plot_pca](https://ccbr.github.io/MOSuite/reference/plot_pca.md) generic
+[`plot_pca()`](https://ccbr.github.io/MOSuite/reference/plot_pca.md)
+generic
 
 Other PCA functions:
 [`calc_pca()`](https://ccbr.github.io/MOSuite/reference/calc_pca.md),

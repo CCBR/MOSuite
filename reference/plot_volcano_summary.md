@@ -4,11 +4,108 @@ Produces one volcano plot for each tested contrast in the input DEG
 table. It can be sorted by either fold change, t-statistic, or p-value.
 The returned dataset includes one row for each significant gene in each
 contrast, and contains columns from the DEG analysis of that contrast as
-well as columns useful to the Venn diagram template downstream.
+well as columns useful to the Venn diagram template downstream. An S7
+generic with methods for `multiOmicDataSet` and `data.frame`.
 
 ## Usage
 
 ``` r
+plot_volcano_summary(
+  moo_diff,
+  feature_id_colname = NULL,
+  signif_colname = "pval",
+  signif_threshold = 0.05,
+  change_threshold = 1,
+  value_to_sort_the_output_dataset = "t-statistic",
+  num_features_to_label = 30,
+  add_features = FALSE,
+  label_features = FALSE,
+  custom_gene_list = "",
+  default_label_color = "black",
+  custom_label_color = "green3",
+  label_x_adj = 0.2,
+  label_y_adj = 0.2,
+  line_thickness = 0.5,
+  label_font_size = 4,
+  label_font_type = 1,
+  displace_feature_labels = FALSE,
+  custom_gene_list_special_label_displacement = "",
+  special_label_displacement_x_axis = 2,
+  special_label_displacement_y_axis = 2,
+  color_of_signif_threshold_line = "blue",
+  color_of_non_significant_features = "black",
+  color_of_logfold_change_threshold_line = "red",
+  color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
+  flip_vplot = FALSE,
+  use_default_x_axis_limit = TRUE,
+  x_axis_limit = 5,
+  use_default_y_axis_limit = TRUE,
+  y_axis_limit = 10,
+  point_size = 2,
+  add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
+  graphics_device = grDevices::png,
+  image_width = 15,
+  image_height = 15,
+  dpi = 300,
+  use_default_grid_layout = TRUE,
+  number_of_rows_in_grid_layout = 1,
+  aspect_ratio = 0,
+  plot_filename = "volcano_summary.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff"
+)
+
+## S7 method for class <MOSuite::multiOmicDataSet>
+plot_volcano_summary(
+  moo_diff,
+  feature_id_colname = NULL,
+  signif_colname = "pval",
+  signif_threshold = 0.05,
+  change_threshold = 1,
+  value_to_sort_the_output_dataset = "t-statistic",
+  num_features_to_label = 30,
+  add_features = FALSE,
+  label_features = FALSE,
+  custom_gene_list = "",
+  default_label_color = "black",
+  custom_label_color = "green3",
+  label_x_adj = 0.2,
+  label_y_adj = 0.2,
+  line_thickness = 0.5,
+  label_font_size = 4,
+  label_font_type = 1,
+  displace_feature_labels = FALSE,
+  custom_gene_list_special_label_displacement = "",
+  special_label_displacement_x_axis = 2,
+  special_label_displacement_y_axis = 2,
+  color_of_signif_threshold_line = "blue",
+  color_of_non_significant_features = "black",
+  color_of_logfold_change_threshold_line = "red",
+  color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
+  flip_vplot = FALSE,
+  use_default_x_axis_limit = TRUE,
+  x_axis_limit = 5,
+  use_default_y_axis_limit = TRUE,
+  y_axis_limit = 10,
+  point_size = 2,
+  add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
+  graphics_device = grDevices::png,
+  image_width = 15,
+  image_height = 15,
+  dpi = 300,
+  use_default_grid_layout = TRUE,
+  number_of_rows_in_grid_layout = 1,
+  aspect_ratio = 0,
+  plot_filename = "volcano_summary.png",
+  print_plots = options::opt("print_plots"),
+  save_plots = options::opt("save_plots"),
+  plots_subdir = "diff"
+)
+
+## S7 method for class <data.frame>
 plot_volcano_summary(
   moo_diff,
   feature_id_colname = NULL,
@@ -61,8 +158,8 @@ plot_volcano_summary(
 
 - moo_diff:
 
-  Differential expression analysis result from one or more contrasts.
-  This must be a dataframe.
+  multiOmicDataSet or differential expression analysis result data
+  frame.
 
 - feature_id_colname:
 
@@ -286,14 +383,8 @@ plot_volcano_summary(nidap_deg_analysis, print_plots = TRUE)
 #> Fold change column: B-C_logFC
 #> pval column: B-C_pval
 #> Total number of features included in volcano plot: 7943
-#> Warning: ggrepel: 18 unlabeled data points (too many overlaps). Consider increasing max.overlaps
-#> Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider increasing max.overlaps
-#> Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider increasing max.overlaps
 
 #> Saving 6.67 x 6.67 in image
-#> Warning: ggrepel: 18 unlabeled data points (too many overlaps). Consider increasing max.overlaps
-#> Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider increasing max.overlaps
-#> Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider increasing max.overlaps
 #>                   Gene Contrast          FC     logFC      tstat         pval
 #> B-A.1             Dntt      B-A  -42.746586 -5.417737 -15.687975 3.159343e-09
 #> B-A.2           Tmsb4x      B-A    3.850020  1.944866  12.910261 2.760555e-08

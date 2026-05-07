@@ -6,6 +6,9 @@ Extract count data
 
 ``` r
 extract_counts(moo, count_type, sub_count_type = NULL)
+
+## S7 method for class <MOSuite::multiOmicDataSet>
+extract_counts(moo, count_type, sub_count_type = NULL)
 ```
 
 ## Arguments
