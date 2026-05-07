@@ -50,9 +50,11 @@ RUN mamba install -y -c conda-forge \
   && conda clean -afy
 
 # install dependencies, but not the R package itself
-RUN R -e "pak::local_install_dev_deps(upgrade='never')" && \
-  R -e "devtools::test()" && \
-  R -s -e "readr::write_csv(tibble::as_tibble(installed.packages()), '/data2/r-packages_mosuite-minimal.csv')"
+# using --mount avoids copying the context into the image
+RUN --mount=type=bind,source=.,target=/opt2/MOSuite \
+    R -e "pak::local_install_dev_deps('/opt2/MOSuite', upgrade='never')" && \
+    R -e "devtools::test()" && \
+    R -s -e "readr::write_csv(tibble::as_tibble(installed.packages()), '/data2/r-packages_mosuite-minimal.csv')"
 
 # copy .Rprofile to R_HOME
 ADD .github/.Rprofile /opt2/conda/lib/R/
