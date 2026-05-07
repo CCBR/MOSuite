@@ -216,6 +216,7 @@ filter_counts <- function(
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_,
+      print_plots = FALSE,
       save_plots = FALSE
     ) +
       ggplot2::labs(caption = "filtered counts")
@@ -246,13 +247,13 @@ filter_counts <- function(
         label_colname = label_colname,
         group_colname = group_colname,
         color_values = colors_for_plots
-      ) +
-        ggplot2::labs(caption = "filtered counts")
+      )
       print_or_save_plot(
         corHM,
         filename = file.path(plots_subdir, "corr_heatmap.png"),
         print_plots = print_plots,
-        save_plots = save_plots
+        save_plots = save_plots,
+        caption = "filtered counts"
       )
     }
 

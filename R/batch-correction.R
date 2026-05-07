@@ -158,6 +158,7 @@ batch_correct_counts <- function(
       group_colname = batch_colname,
       label_colname = label_colname,
       color_values = colors_for_plots,
+      print_plots = FALSE,
       save_plots = FALSE
     ) +
       ggplot2::labs(caption = "batch-corrected counts")
@@ -181,8 +182,7 @@ batch_correct_counts <- function(
       group_colname = batch_colname,
       label_colname = label_colname,
       color_values = colors_for_plots
-    ) +
-      ggplot2::labs(caption = "batch-corrected counts")
+    )
 
     print_or_save_plot(
       pca_plot,
@@ -200,7 +200,8 @@ batch_correct_counts <- function(
       corHM_plot,
       filename = file.path(plots_subdir, "corr_heatmap.png"),
       print_plots = print_plots,
-      save_plots = save_plots
+      save_plots = save_plots,
+      caption = "batch-corrected counts"
     )
   }
 
