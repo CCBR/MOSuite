@@ -50,7 +50,7 @@ RUN mamba install -y -c conda-forge \
   && conda clean -afy
 
 # install dependencies, but not the R package itself
-RUN R -e "pak::local_install_dev_deps('/opt2/MOSuite', upgrade='never')" && \
+RUN R -e "pak::local_install_dev_deps(upgrade='never')" && \
   R -e "devtools::test()" && \
   R -s -e "readr::write_csv(tibble::as_tibble(installed.packages()), '/data2/r-packages_mosuite-minimal.csv')"
 
