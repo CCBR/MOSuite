@@ -12,8 +12,6 @@
 #' @param contrast_colname The column in the metadata that contains the group variables you wish to find differential
 #'   expression between. Up to 2 columns (2-factor analysis) can be used.
 #' @param contrasts Specify each contrast in the format group1-group2, e.g. treated-control
-#' @param covariates_colnames Columns to be used as covariates in linear modeling. Must include column from "Contrast
-#'   Variable". Most commonly your covariate will be group and batch (if you have different batches in your data).
 #' @param return_mean_and_sd if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for
 #'   contrast(s)
 #'

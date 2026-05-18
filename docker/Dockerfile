@@ -22,6 +22,7 @@ RUN mamba install -y -c conda-forge \
     r-dendextend \
     r-devtools \
     r-ggplot2 \
+    r-dplyr \
     r-ggrepel \
     r-gridExtra \
     r-here \
@@ -41,6 +42,7 @@ RUN mamba install -y -c conda-forge \
     bioconductor-annotate \
     bioconductor-complexheatmap \
     bioconductor-delayedarray \
+    bioconductor-deseq2 \
     bioconductor-edger \
     bioconductor-genomicranges \
     bioconductor-keggrest \

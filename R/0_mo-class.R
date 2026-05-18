@@ -260,7 +260,7 @@ create_multiOmicDataSet_from_files <- function(
     create_multiOmicDataSet_from_dataframes(
       sample_metadata = sample_metadata,
       counts_dat = counts_dat,
-      count_type = "raw",
+      count_type = count_type,
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname
     )

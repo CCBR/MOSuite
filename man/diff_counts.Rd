@@ -42,8 +42,9 @@ used.)}
 you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
 analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
 
-\item{covariates_colnames}{Columns to be used as covariates in linear modeling. Must include column from "Contrast
-Variable". Most commonly your covariate will be group and batch (if you have different batches in your data).}
+\item{covariates_colnames}{The column name(s) from the sample metadata containing variable(s) of interest, such as
+phenotype. Most commonly this will be the same column selected for your Groups Column. Some experimental designs
+may require that you add additional covariate columns here.}
 
 \item{contrast_colname}{The column in the metadata that contains the group variables you wish to find differential
 expression between. Up to 2 columns (2-factor analysis) can be used.}

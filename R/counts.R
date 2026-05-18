@@ -54,7 +54,7 @@ calc_cpm_df <- function(dat, feature_id_colname = "gene_id", ...) {
   ) {
     as.integer(row_names)
   } else {
-    col
+    row_names
   }
   return(dat_cpm |> dplyr::relocate(tidyselect::all_of(feature_id_colname)))
 }

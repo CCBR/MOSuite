@@ -42,7 +42,7 @@
     {
       "key": "covariates_colnames",
       "displayName": "Covariates Column(s)",
-      "description": "Columns to be used as covariates in linear modeling. Must include column from \"Contrast\nVariable\". Most commonly your covariate will be group and batch (if you have different batches in your data).\n",
+      "description": "The column name(s) from the sample metadata containing variable(s) of interest, such as\nphenotype. Most commonly this will be the same column selected for your Groups Column. Some experimental designs\nmay require that you add additional covariate columns here.\n",
       "paramGroup": "Basic",
       "sourceDataset": "Sample_Metadata",
       "columnType": "ALL",
