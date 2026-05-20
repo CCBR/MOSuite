@@ -67,12 +67,12 @@ print_or_save_plot <- function(
       htmlwidgets::saveWidget(plot_obj, filename, ...)
     } else if (inherits(plot_obj, c("Heatmap", "HeatmapList"))) {
       graphics_device(file = filename)
+      on.exit(grDevices::dev.off(), add = TRUE)
       draw_heatmap_with_caption(plot_obj)
-      grDevices::dev.off()
     } else {
       graphics_device(file = filename)
+      on.exit(grDevices::dev.off(), add = TRUE)
       plot(plot_obj)
-      grDevices::dev.off()
     }
   }
   return(invisible(filename))
