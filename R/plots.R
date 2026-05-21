@@ -3,12 +3,12 @@
 #' If `save_plots` is `TRUE`, the plot will be saved as an image to the path at
 #' `file.path(plots_dir, filename)`.
 #' If `plot_obj` is a ggplot, `ggplot2::ggsave()` is used to save the image.
-#' Otherwise, `graphics_device` is used (`grDevice::png()` by default).
+#' Otherwise, `graphics_device` is used (`grDevices::png()` by default).
 #'
 #' @inheritParams option_params
 #' @param plot_obj plot object (e.g. ggplot, ComplexHeatmap...)
 #' @param filename name of the output file. will be joined with the `plots_dir` option.
-#' @param graphics_device Default: `grDevice::png()`. Only used if the plot is not a ggplot.
+#' @param graphics_device Default: `grDevices::png()`. Only used if the plot is not a ggplot.
 #' @param caption optional caption text to add to the plot. For ggplot objects, this is
 #'   added via `ggplot2::labs(caption = caption)`. For `ComplexHeatmap` objects, the
 #'   caption is rendered at the bottom of the graphics device using `grid::grid.text()`.
