@@ -960,9 +960,12 @@ references:
   abstract: 'UpSetR: A More Scalable Alternative to Venn and Euler Diagrams for Visualizing
     Intersecting Sets'
   notes: Suggests
-  url: http://github.com/hms-dbmi/UpSetR
+  url: https://github.com/hms-dbmi/UpSetR
   repository: https://CRAN.R-project.org/package=UpSetR
   authors:
+  - family-names: Conway
+    given-names: Jake
+    email: jake.conway@pathai.com
   - family-names: Gehlenborg
     given-names: Nils
     email: nils@hms.harvard.edu
