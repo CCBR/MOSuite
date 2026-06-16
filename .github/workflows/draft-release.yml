@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0 # required to include tags
-      - uses: CCBR/actions/draft-release@latest
+      - uses: CCBR/actions/draft-release@r-pkgs
         with:
           github-token: ${{ github.token }}
           version-tag: ${{ github.event.inputs.version-tag }}
