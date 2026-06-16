@@ -32,13 +32,15 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
     steps:
       - uses: actions/checkout@v6
-      - uses: CCBR/actions/install-r-pak@main
+      - uses: r-lib/actions/setup-r@v2
         with:
-          versions-file: .github/package-versions.txt
-          extra-packages: local::.
-          needs: dev
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
+          use-public-rspm: true
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: local::.
+          needs: dev
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
@@ -47,10 +49,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: CCBR/actions/install-r-pak@main
+      - uses: r-lib/actions/setup-r@v2
         with:
-          r-version: 4.5
-          versions-file: .github/package-versions.txt
+          r-version: '4.5'
+          use-public-rspm: true
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
           needs: dev
       - name: Lint
         shell: Rscript {0}
