@@ -28,3 +28,4 @@ jobs:
         with:
           github-token: ${{ github.token }}
           version-tag: ${{ github.event.inputs.version-tag }}
+          ccbr-actions-version: r-pkgs
