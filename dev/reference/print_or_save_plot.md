@@ -4,7 +4,7 @@ If `save_plots` is `TRUE`, the plot will be saved as an image to the
 path at `file.path(plots_dir, filename)`. If `plot_obj` is a ggplot,
 [`ggplot2::ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)
 is used to save the image. Otherwise, `graphics_device` is used
-(`grDevice::png()` by default).
+([`grDevices::png()`](https://rdrr.io/r/grDevices/png.html) by default).
 
 ## Usage
 
@@ -16,6 +16,7 @@ print_or_save_plot(
   save_plots = options::opt("save_plots"),
   plots_dir = options::opt("plots_dir"),
   graphics_device = grDevices::png,
+  caption = NULL,
   ...
 )
 ```
@@ -50,7 +51,15 @@ print_or_save_plot(
 
 - graphics_device:
 
-  Default: `grDevice::png()`. Only used if the plot is not a ggplot.
+  Default: [`grDevices::png()`](https://rdrr.io/r/grDevices/png.html).
+  Only used if the plot is not a ggplot.
+
+- caption:
+
+  optional caption text to add to the plot. For ggplot objects, this is
+  added via `ggplot2::labs(caption = caption)`. For `ComplexHeatmap`
+  objects, the caption is rendered at the bottom of the graphics device
+  using [`grid::grid.text()`](https://rdrr.io/r/grid/grid.text.html).
 
 - ...:
 

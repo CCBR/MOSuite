@@ -13,7 +13,7 @@
   ([\#200](https://github.com/CCBR/MOSuite/issues/200),
   [@copilot](https://github.com/copilot),
   [@kelly-sovacool](https://github.com/kelly-sovacool))
-- Fix crash in
+- Fix bug in
   [`remove_low_count_genes()`](https://ccbr.github.io/MOSuite/dev/reference/remove_low_count_genes.md)
   when `use_group_based_filtering = TRUE`.
   ([\#200](https://github.com/CCBR/MOSuite/issues/200),

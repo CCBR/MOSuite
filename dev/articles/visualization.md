@@ -1,7 +1,6 @@
 # Visualization with built-in plots
 
 ``` r
-
 library(MOSuite)
 #> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 #> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
@@ -12,7 +11,6 @@ library(MOSuite)
 Default plots can be printed to the screen and/or saved to the disk.
 
 ``` r
-
 # set options to print & save the plots
 options(moo_print_plots = TRUE)
 options(moo_save_plots = TRUE)
@@ -27,7 +25,6 @@ for more information.
 ### clean
 
 ``` r
-
 moo <- create_multiOmicDataSet_from_dataframes(
   sample_metadata = as.data.frame(nidap_sample_metadata),
   counts_dat = as.data.frame(nidap_raw_counts)
@@ -53,7 +50,6 @@ moo <- create_multiOmicDataSet_from_dataframes(
 ### filter
 
 ``` r
-
 moo <- moo |>
   filter_counts(group_colname = "Group")
 #> * filtering clean counts
@@ -62,29 +58,28 @@ moo <- moo |>
 #> colors_for_plots character
 ```
 
-![](visualization_files/figure-html/nidap_filter-1.png)![](visualization_files/figure-html/nidap_filter-2.png)![](visualization_files/figure-html/nidap_filter-3.png)
+![](visualization_files/figure-html/nidap_filter-1.png)![](visualization_files/figure-html/nidap_filter-2.png)
 
     #> Saving 5 x 4 in image
 
-![](visualization_files/figure-html/nidap_filter-4.png)
+![](visualization_files/figure-html/nidap_filter-3.png)
 
     #> Saving 5 x 4 in image
 
 ### normalize
 
 ``` r
-
 moo <- moo |>
   normalize_counts(group_colname = "Group")
 #> * normalizing filt counts
 #> Total number of features included: 7943
 ```
 
-![](visualization_files/figure-html/nidap_norm-1.png)![](visualization_files/figure-html/nidap_norm-2.png)![](visualization_files/figure-html/nidap_norm-3.png)
+![](visualization_files/figure-html/nidap_norm-1.png)![](visualization_files/figure-html/nidap_norm-2.png)
 
     #> Saving 5 x 4 in image
 
-![](visualization_files/figure-html/nidap_norm-4.png)
+![](visualization_files/figure-html/nidap_norm-3.png)
 
     #> Saving 5 x 4 in image
     #> Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
@@ -92,7 +87,6 @@ moo <- moo |>
 ### batch correct
 
 ``` r
-
 moo <- moo |>
   batch_correct_counts(
     covariates_colname = "Group",
@@ -108,15 +102,15 @@ moo <- moo |>
 #> Adjusting the Data
 ```
 
-![](visualization_files/figure-html/nidap_batch-1.png)![](visualization_files/figure-html/nidap_batch-2.png)
+![](visualization_files/figure-html/nidap_batch-1.png)
+
+    #> Saving 5 x 4 in image
+
+![](visualization_files/figure-html/nidap_batch-2.png)
 
     #> Saving 5 x 4 in image
 
 ![](visualization_files/figure-html/nidap_batch-3.png)
-
-    #> Saving 5 x 4 in image
-
-![](visualization_files/figure-html/nidap_batch-4.png)
 
     #> The total number of features in output: 7943
     #> Number of samples after batch correction: 10
@@ -124,7 +118,6 @@ moo <- moo |>
 ### differential expression
 
 ``` r
-
 moo <- moo |>
   diff_counts(
     count_type = "filt",
@@ -149,7 +142,6 @@ moo <- moo |>
 ### filter differential features
 
 ``` r
-
 moo <- moo |> filter_diff()
 #> Joining with `by = join_by(GeneName)`
 #> Joining with `by = join_by(GeneName)`
@@ -173,7 +165,6 @@ TODO
 ### 3D PCA
 
 ``` r
-
 plot_pca(
   moo@counts$batch,
   moo@sample_meta,
@@ -187,7 +178,6 @@ plot_pca(
 ### Expression Heatmap
 
 ``` r
-
 heatmap_plot <- plot_expr_heatmap(
   moo,
   count_type = "norm",
@@ -199,7 +189,6 @@ heatmap_plot <- plot_expr_heatmap(
 ![](visualization_files/figure-html/expr_heatmap-1.png)
 
 ``` r
-
 print(heatmap_plot)
 ```
 
@@ -210,7 +199,6 @@ print(heatmap_plot)
 #### Summary
 
 ``` r
-
 dat_volcano_summary <- moo@analyses$diff |>
   join_dfs_wide() |>
   plot_volcano_summary()
@@ -253,7 +241,6 @@ dat_volcano_summary <- moo@analyses$diff |>
 #### Enhanced
 
 ``` r
-
 dat_volcano_enhanced <- moo@analyses$diff |>
   join_dfs_wide() |>
   plot_volcano_enhanced()
@@ -261,7 +248,22 @@ dat_volcano_enhanced <- moo@analyses$diff |>
 #> Joining with `by = join_by(GeneName)`
 #> Genes in initial dataset: 7943
 #> Max y: 4.56088783571366
+#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+#> ℹ Please use `linewidth` instead.
+#> ℹ The deprecated feature was likely used in the EnhancedVolcano package.
+#>   Please report the issue to the authors.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
+#> Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
+#> ℹ Please use the `linewidth` argument instead.
+#> ℹ The deprecated feature was likely used in the EnhancedVolcano package.
+#>   Please report the issue to the authors.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> Genes in initial dataset: 7943
+#> 
 #> Max y: 4.34744066227962
 ```
 
@@ -270,7 +272,6 @@ dat_volcano_enhanced <- moo@analyses$diff |>
 ### Venn Diagram
 
 ``` r
-
 venn_dat <- dat_volcano_summary |> plot_venn_diagram()
 #> All intersections: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516),c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")
 #> Intersections returned: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516)
@@ -279,7 +280,6 @@ venn_dat <- dat_volcano_summary |> plot_venn_diagram()
 ![](visualization_files/figure-html/venn_diagram-1.png)
 
 ``` r
-
 head(venn_dat)
 #>    Gene      Intersection Id Size
 #> 1  Dntt (B-A ∩ B-C ∩ C-A)  1   80
