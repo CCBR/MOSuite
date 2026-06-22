@@ -261,6 +261,14 @@ plot_volcano_enhanced(
 plot_volcano_enhanced(nidap_deg_analysis, print_plots = TRUE)
 #> Genes in initial dataset: 7943
 #> Max y: 4.60041859457819
+#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+#> ℹ Please use `linewidth` instead.
+#> ℹ The deprecated feature was likely used in the EnhancedVolcano package.
+#>   Please report the issue to the authors.
+#> Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
+#> ℹ Please use the `linewidth` argument instead.
+#> ℹ The deprecated feature was likely used in the EnhancedVolcano package.
+#>   Please report the issue to the authors.
 #> Genes in initial dataset: 7943
 #> Max y: 4.32577808863472
 

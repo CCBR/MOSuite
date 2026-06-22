@@ -118,7 +118,6 @@ Other plotters for counts dataframes:
 ## Examples
 
 ``` r
-
 # plot histogram for a counts dataframe directly
 plot_histogram(
   nidap_clean_raw_counts,

@@ -1,7 +1,6 @@
 # RSEM counts from RENEE
 
 ``` r
-
 library(MOSuite)
 #> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 #> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
@@ -19,7 +18,6 @@ library(dplyr)
 ## RENEE dataset
 
 ``` r
-
 # replace these lines with the actual paths to your files
 gene_counts_tsv <- system.file("extdata",
   "RSEM.genes.expected_count.all_samples.txt.gz",
@@ -81,7 +79,6 @@ head(moo@annotation)
 ```
 
 ``` r
-
 moo <- moo |>
   clean_raw_counts() |>
   filter_counts(
@@ -164,7 +161,6 @@ moo@counts$norm$voom |> head()
 ## The multiOmicDataSet object structure
 
 ``` r
-
 str(moo)
 #> <MOSuite::multiOmicDataSet>
 #>  @ sample_meta: spc_tbl_ [4 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)

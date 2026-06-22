@@ -1,7 +1,6 @@
 # Introduction to MultiOmicsSuite
 
 ``` r
-
 library(MOSuite)
 #> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 #> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
@@ -17,7 +16,6 @@ library(dplyr)
 ```
 
 ``` r
-
 options(moo_print_plots = TRUE)
 
 moo_nidap <- create_multiOmicDataSet_from_dataframes(
@@ -67,22 +65,22 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> colors_for_plots character
 
-![](intro_files/figure-html/nidap_data-2.png)![](intro_files/figure-html/nidap_data-3.png)![](intro_files/figure-html/nidap_data-4.png)
+![](intro_files/figure-html/nidap_data-2.png)![](intro_files/figure-html/nidap_data-3.png)
 
     #> Saving 7.29 x 4.51 in image
 
-![](intro_files/figure-html/nidap_data-5.png)
+![](intro_files/figure-html/nidap_data-4.png)
 
     #> Saving 7.29 x 4.51 in image
     #> * normalizing filt counts
     #> 
     #> Total number of features included: 7943
 
-![](intro_files/figure-html/nidap_data-6.png)![](intro_files/figure-html/nidap_data-7.png)![](intro_files/figure-html/nidap_data-8.png)
+![](intro_files/figure-html/nidap_data-5.png)![](intro_files/figure-html/nidap_data-6.png)
 
     #> Saving 7.29 x 4.51 in image
 
-![](intro_files/figure-html/nidap_data-9.png)
+![](intro_files/figure-html/nidap_data-7.png)
 
     #> Saving 7.29 x 4.51 in image
     #> Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
@@ -101,15 +99,15 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> Adjusting the Data
 
-![](intro_files/figure-html/nidap_data-10.png)![](intro_files/figure-html/nidap_data-11.png)
+![](intro_files/figure-html/nidap_data-8.png)
 
     #> Saving 7.29 x 4.51 in image
 
-![](intro_files/figure-html/nidap_data-12.png)
+![](intro_files/figure-html/nidap_data-9.png)
 
     #> Saving 7.29 x 4.51 in image
 
-![](intro_files/figure-html/nidap_data-13.png)
+![](intro_files/figure-html/nidap_data-10.png)
 
     #> The total number of features in output: 7943
     #> Number of samples after batch correction: 10
@@ -118,7 +116,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> Total number of genes included: 7943
     #> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
 
-![](intro_files/figure-html/nidap_data-14.png)
+![](intro_files/figure-html/nidap_data-11.png)
 
     #> Saving 7.29 x 4.51 in image
     #> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
@@ -128,7 +126,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
 
-![](intro_files/figure-html/nidap_data-15.png)
+![](intro_files/figure-html/nidap_data-12.png)
 
     #> Saving 7.29 x 4.51 in image
 
@@ -185,7 +183,6 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
 ## The multiOmicDataSet object structure
 
 ``` r
-
 str(moo_nidap)
 #> <MOSuite::multiOmicDataSet>
 #>  @ sample_meta:'data.frame': 9 obs. of  5 variables:
