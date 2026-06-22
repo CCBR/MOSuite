@@ -21,3 +21,4 @@ jobs:
         with:
           github-token: ${{ github.token }}
           update-sliding-tags: false
+          ccbr-actions-version: latest
