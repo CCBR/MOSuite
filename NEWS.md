@@ -1,4 +1,4 @@
-## development version
+## 0.3.2
 
 - Support ggplot2 v4.0.0 for correlation heatmap plots in `filter_counts()`, `normalize_counts()`, and `batch_correct_counts()`. (#205, @copilot, @kelly-sovacool)
 

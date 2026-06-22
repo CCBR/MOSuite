@@ -8,7 +8,7 @@ message: 'To cite package "MOSuite" in publications use:'
 type: software
 license: MIT
 title: 'MOSuite: R package for differential multi-omics analysis'
-version: 0.3.1.9001
+version: 0.3.2
 doi: 10.5281/zenodo.16371580
 identifiers:
 - description: Archived snapshots of all versions
@@ -71,10 +71,13 @@ references:
   url: https://www.R-project.org/
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
   year: '2026'
+  doi: 10.32614/R.manuals
   version: '>= 4.0.0'
 - type: software
   title: assertthat
@@ -277,51 +280,8 @@ references:
   authors:
   - family-names: Smyth
     given-names: Gordon
-  - family-names: Hu
-    given-names: Yifang
-  - family-names: Ritchie
-    given-names: Matthew
-  - family-names: Silver
-    given-names: Jeremy
-  - family-names: Wettenhall
-    given-names: James
-  - family-names: McCarthy
-    given-names: Davis
-  - family-names: Wu
-    given-names: Di
-  - family-names: Shi
-    given-names: Wei
-  - family-names: Phipson
-    given-names: Belinda
-  - family-names: Lun
-    given-names: Aaron
-  - family-names: Thorne
-    given-names: Natalie
-  - family-names: Oshlack
-    given-names: Alicia
-  - family-names: Graaf
-    given-names: Carolyn
-    name-particle: de
-  - family-names: Chen
-    given-names: Yunshun
-  - family-names: Giner
-    given-names: Goknur
-  - family-names: Langaas
-    given-names: Mette
-  - family-names: Ferkingstad
-    given-names: Egil
-  - family-names: Davy
-    given-names: Marcus
-  - family-names: Pepin
-    given-names: Francois
-  - family-names: Choi
-    given-names: Dongseok
-  - family-names: Law
-    given-names: Charity
-  - family-names: Li
-    given-names: Mengbo
-  - family-names: Chen
-    given-names: Lizhong
+    email: smyth@wehi.edu.au
+    orcid: https://orcid.org/0000-0001-9221-2892
   year: '2026'
   doi: 10.18129/B9.bioc.limma
 - type: software
@@ -343,10 +303,13 @@ references:
   notes: Imports
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
   year: '2026'
+  doi: 10.32614/R.manuals
 - type: software
   title: options
   abstract: 'options: Simple, Consistent Package Options'
@@ -469,10 +432,13 @@ references:
   notes: Imports
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
   year: '2026'
+  doi: 10.32614/R.manuals
 - type: software
   title: stringr
   abstract: 'stringr: Simple, Consistent Wrappers for Common String Operations'
