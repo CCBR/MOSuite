@@ -375,9 +375,9 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
         linewidth = 1
       ),
       axis.ticks = ggplot2::element_line(linewidth = 1),
-      legend.text = ggplot2::element_text(size = 18)
+      legend.text = ggplot2::element_text(size = 18),
+      aspect.ratio = 1
     ) +
-    ggplot2::coord_fixed(ratio = 1.5) +
     ggplot2::scale_colour_manual(values = color_values) +
     ggplot2::xlab(get_pc_percent_lab(pca_df, prin_comp_x)) +
     ggplot2::ylab(get_pc_percent_lab(pca_df, prin_comp_y))
@@ -401,12 +401,24 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
       plotly::ggplotly(tooltip = c(sample_id_colname, group_colname))
   }
 
-  print_or_save_plot(
-    pca_plot,
-    filename = file.path(plots_subdir, plot_filename),
-    print_plots = print_plots,
-    save_plots = save_plots
-  )
+  if (inherits(pca_plot, "ggplot")) {
+    print_or_save_plot(
+      pca_plot,
+      filename = file.path(plots_subdir, plot_filename),
+      print_plots = print_plots,
+      save_plots = save_plots,
+      width = 7,
+      height = 7,
+      units = "in"
+    )
+  } else {
+    print_or_save_plot(
+      pca_plot,
+      filename = file.path(plots_subdir, plot_filename),
+      print_plots = print_plots,
+      save_plots = save_plots
+    )
+  }
 
   return(pca_plot)
 }

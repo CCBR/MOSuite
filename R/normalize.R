@@ -171,7 +171,10 @@ normalize_counts <- function(
       pca_plot,
       filename = file.path(plots_subdir, "pca.png"),
       print_plots = print_plots,
-      save_plots = save_plots
+      save_plots = save_plots,
+      width = 7,
+      height = 7,
+      units = "in"
     )
     print_or_save_plot(
       hist_plot,

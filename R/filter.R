@@ -264,12 +264,24 @@ filter_counts <- function(
         plotly::ggplotly(tooltip = c("sample"))
       plot_ext <- "html"
     }
-    print_or_save_plot(
-      pca_plot,
-      filename = file.path(plots_subdir, glue::glue("pca.{plot_ext}")),
-      print_plots = print_plots,
-      save_plots = save_plots
-    )
+    if (identical(plot_ext, "png")) {
+      print_or_save_plot(
+        pca_plot,
+        filename = file.path(plots_subdir, glue::glue("pca.{plot_ext}")),
+        print_plots = print_plots,
+        save_plots = save_plots,
+        width = 7,
+        height = 7,
+        units = "in"
+      )
+    } else {
+      print_or_save_plot(
+        pca_plot,
+        filename = file.path(plots_subdir, glue::glue("pca.{plot_ext}")),
+        print_plots = print_plots,
+        save_plots = save_plots
+      )
+    }
     print_or_save_plot(
       hist_plot,
       filename = file.path(plots_subdir, glue::glue("histogram.{plot_ext}")),
