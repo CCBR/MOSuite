@@ -251,3 +251,76 @@ test_that("remove_low_count_genes works with group-based filtering (no grouped t
   expect_true("Gene" %in% colnames(result))
   expect_true(nrow(result) > 0)
 })
+
+test_that("filter_counts forwards plotting parameters", {
+  pca_args <- NULL
+  histogram_args <- NULL
+
+  local_mocked_bindings(
+    plot_pca = function(...) {
+      pca_args <<- list(...)
+      ggplot2::ggplot()
+    },
+    plot_histogram = function(...) {
+      histogram_args <<- list(...)
+      ggplot2::ggplot()
+    },
+    print_or_save_plot = function(...) invisible(NULL),
+    .package = "MOSuite"
+  )
+
+  moo <- create_multiOmicDataSet_from_dataframes(
+    as.data.frame(nidap_sample_metadata),
+    as.data.frame(nidap_clean_raw_counts),
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene"
+  ) |>
+    calc_cpm(feature_id_colname = "Gene")
+
+  filter_counts(
+    moo,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    label_colname = "Label",
+    count_type = "raw",
+    samples_to_rename = c("A1:Alpha 1"),
+    add_label_to_pca = FALSE,
+    principal_component_on_x_axis = 2,
+    principal_component_on_y_axis = 3,
+    legend_position_for_pca = "bottom",
+    label_offset_x_ = 4,
+    label_offset_y_ = 5,
+    label_font_size = 6,
+    point_size_for_pca = 7,
+    color_histogram_by_group = TRUE,
+    set_min_max_for_x_axis_for_histogram = TRUE,
+    minimum_for_x_axis_for_histogram = -2,
+    maximum_for_x_axis_for_histogram = 2,
+    legend_font_size_for_histogram = 11,
+    legend_position_for_histogram = "right",
+    number_of_histogram_legend_columns = 2,
+    colors_for_plots = c("red", "blue", "green"),
+    plot_corr_matrix_heatmap = FALSE,
+    print_plots = TRUE,
+    save_plots = FALSE
+  )
+
+  expect_equal(pca_args$samples_to_rename, c("A1:Alpha 1"))
+  expect_equal(pca_args$principal_components, c(2, 3))
+  expect_equal(pca_args$legend_position, "bottom")
+  expect_equal(pca_args$point_size, 7)
+  expect_false(pca_args$add_label)
+  expect_equal(pca_args$label_font_size, 6)
+  expect_equal(pca_args$label_offset_x_, 4)
+  expect_equal(pca_args$label_offset_y_, 5)
+  expect_equal(pca_args$color_values, c("red", "blue", "green"))
+
+  expect_true(histogram_args$color_by_group)
+  expect_true(histogram_args$set_min_max_for_x_axis)
+  expect_equal(histogram_args$minimum_for_x_axis, -2)
+  expect_equal(histogram_args$maximum_for_x_axis, 2)
+  expect_equal(histogram_args$legend_font_size, 11)
+  expect_equal(histogram_args$legend_position, "right")
+  expect_equal(histogram_args$number_of_legend_columns, 2)
+  expect_equal(histogram_args$color_values, c("red", "blue", "green"))
+})

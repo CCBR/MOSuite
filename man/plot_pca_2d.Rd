@@ -90,10 +90,9 @@ plot_pca_2d(
 \item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
 slot}
 
-\item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
+\item{count_type}{the type of counts to use when \code{moo_counts} is a \code{multiOmicDataSet}; ignored for data frame input.}
 
-\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
-Must be a name in \code{names(moo@counts[[count_type]])}.}
+\item{sub_count_type}{used when \code{count_type} refers to a list of count matrices; ignored for data frame input.}
 
 \item{sample_metadata}{sample metadata as a data frame or tibble.}
 
@@ -131,19 +130,17 @@ which new name: old_name: new_name}
 
 \item{add_label}{whether to add text labels for the points}
 
-\item{label_font_size}{label font size for the PCA plot}
+\item{label_font_size}{font size for text labels on the PCA plot.}
 
-\item{label_offset_x_}{label offset x for the PCA plot}
+\item{label_offset_x_}{horizontal offset for text labels on the PCA plot.}
 
-\item{label_offset_y_}{label offset y for the PCA plot}
+\item{label_offset_y_}{vertical offset for text labels on the PCA plot.}
 
-\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover
-your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
-is set to \code{TRUE}. Default is \code{FALSE}.}
+\item{interactive_plots}{set to TRUE to make the PCA plot interactive with \code{plotly}.}
 
-\item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
+\item{plots_subdir}{subdirectory in \verb{figures/} where PCA plots are saved.}
 
-\item{plot_filename}{plot output filename - only used if save_plots is TRUE}
+\item{plot_filename}{output filename for the PCA plot image.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 

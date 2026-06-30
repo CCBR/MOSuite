@@ -266,6 +266,14 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 #' @param legend_position passed to in `legend.position` `ggplot2::theme()`
 #' @param point_size size for `ggplot2::geom_point()`
 #' @param add_label whether to add text labels for the points
+#' @param count_type the type of counts to use when `moo_counts` is a `multiOmicDataSet`; ignored for data frame input.
+#' @param sub_count_type used when `count_type` refers to a list of count matrices; ignored for data frame input.
+#' @param label_font_size font size for text labels on the PCA plot.
+#' @param label_offset_x_ horizontal offset for text labels on the PCA plot.
+#' @param label_offset_y_ vertical offset for text labels on the PCA plot.
+#' @param interactive_plots set to TRUE to make the PCA plot interactive with `plotly`.
+#' @param plots_subdir subdirectory in `figures/` where PCA plots are saved.
+#' @param plot_filename output filename for the PCA plot image.
 #'
 #' @return ggplot object
 #'
