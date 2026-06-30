@@ -56,7 +56,8 @@ expression between. Up to 2 columns (2-factor analysis) can be used.}
 \item{return_mean_and_sd}{if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for
 contrast(s)}
 
-\item{voom_normalization_method}{Normalization method to be applied to the logCPM values when using \code{limma::voom}}
+\item{voom_normalization_method}{Normalization method for differential expression. edgeR methods are applied with
+\code{calcNormFactors} before voom; limma methods are passed to voom normalize.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 

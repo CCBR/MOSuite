@@ -14,6 +14,8 @@
 #' @param contrasts Specify each contrast in the format group1-group2, e.g. treated-control
 #' @param return_mean_and_sd if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for
 #'   contrast(s)
+#' @param voom_normalization_method Normalization method for differential expression. edgeR methods are applied with
+#'   `calcNormFactors` before voom; limma methods are passed to voom normalize.
 #'
 #' @returns `multiOmicDataSet` with `diff` added to the `analyses` slot (i.e. `moo@analyses$diff`)
 #' @export
