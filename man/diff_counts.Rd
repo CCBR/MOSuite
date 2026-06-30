@@ -16,7 +16,8 @@ diff_counts(
   contrasts = NULL,
   input_in_log_counts = FALSE,
   return_mean_and_sd = FALSE,
-  voom_normalization_method = "quantile",
+  normalization_method = "quantile",
+  voom_normalization_method = NULL,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   plots_subdir = "diff"
@@ -56,8 +57,10 @@ expression between. Up to 2 columns (2-factor analysis) can be used.}
 \item{return_mean_and_sd}{if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for
 contrast(s)}
 
-\item{voom_normalization_method}{Normalization method for differential expression. edgeR methods are applied with
+\item{normalization_method}{Normalization method for differential expression. edgeR methods are applied with
 \code{calcNormFactors} before voom; limma methods are passed to voom normalize.}
+
+\item{voom_normalization_method}{Deprecated. Use \code{normalization_method} instead.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
@@ -89,7 +92,7 @@ moo <- multiOmicDataSet(
     covariates_colnames = c("Group", "Batch"),
     contrast_colname = c("Group"),
     contrasts = c("B-A", "C-A", "B-C"),
-    voom_normalization_method = "quantile",
+    normalization_method = "quantile",
   )
 head(moo@analyses$diff)
 }

@@ -121,7 +121,7 @@ moo <- multiOmicDataSet(
     covariates_colnames = c("Group", "Batch"),
     contrast_colname = c("Group"),
     contrasts = c("B-A", "C-A", "B-C"),
-    voom_normalization_method = "quantile",
+    normalization_method = "quantile",
   ) |>
   filter_diff()
 head(moo@analyses$diff_filt)

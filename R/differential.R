@@ -14,8 +14,9 @@
 #' @param contrasts Specify each contrast in the format group1-group2, e.g. treated-control
 #' @param return_mean_and_sd if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for
 #'   contrast(s)
-#' @param voom_normalization_method Normalization method for differential expression. edgeR methods are applied with
+#' @param normalization_method Normalization method for differential expression. edgeR methods are applied with
 #'   `calcNormFactors` before voom; limma methods are passed to voom normalize.
+#' @param voom_normalization_method Deprecated. Use `normalization_method` instead.
 #'
 #' @returns `multiOmicDataSet` with `diff` added to the `analyses` slot (i.e. `moo@analyses$diff`)
 #' @export
@@ -40,7 +41,7 @@
 #'     covariates_colnames = c("Group", "Batch"),
 #'     contrast_colname = c("Group"),
 #'     contrasts = c("B-A", "C-A", "B-C"),
-#'     voom_normalization_method = "quantile",
+#'     normalization_method = "quantile",
 #'   )
 #' head(moo@analyses$diff)
 diff_counts <- function(
@@ -56,13 +57,21 @@ diff_counts <- function(
   input_in_log_counts = FALSE,
   return_mean_and_sd = FALSE,
   # return_normalized_counts = FALSE,
-  voom_normalization_method = "quantile",
+  normalization_method = "quantile",
+  voom_normalization_method = NULL,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   plots_subdir = "diff"
 ) {
   final_res <- group <- . <- NULL
   return_normalized_counts <- FALSE
+  if (!is.null(voom_normalization_method)) {
+    warning(
+      "`voom_normalization_method` is deprecated; use `normalization_method` instead.",
+      call. = FALSE
+    )
+    normalization_method <- voom_normalization_method
+  }
   sample_metadata <- moo@sample_meta
   message(glue::glue("* differential counts"))
   # select correct counts matrix
@@ -207,16 +216,16 @@ diff_counts <- function(
 
   # TODO add this to existing norm function & document options
   if (
-    voom_normalization_method %in% c("TMM", "TMMwzp", "RLE", "upperquartile")
+    normalization_method %in% c("TMM", "TMMwzp", "RLE", "upperquartile")
   ) {
-    x <- edgeR::calcNormFactors(x, method = voom_normalization_method)
+    x <- edgeR::calcNormFactors(x, method = normalization_method)
     rownames(x) <- x$genes$GeneID
     v <- limma::voom(x, design = design, normalize = "none")
   } else {
     v <- limma::voom(
       x,
       design = design,
-      normalize = voom_normalization_method,
+      normalize = normalization_method,
       save.plot = TRUE
     )
   }
@@ -624,7 +633,7 @@ plot_mean_variance <- function(voom_elist) {
 #'     covariates_colnames = c("Group", "Batch"),
 #'     contrast_colname = c("Group"),
 #'     contrasts = c("B-A", "C-A", "B-C"),
-#'     voom_normalization_method = "quantile",
+#'     normalization_method = "quantile",
 #'   ) |>
 #'   filter_diff()
 #' head(moo@analyses$diff_filt)
