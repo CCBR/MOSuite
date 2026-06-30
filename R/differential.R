@@ -72,6 +72,16 @@ diff_counts <- function(
     )
     normalization_method <- voom_normalization_method
   }
+  valid_normalization_methods <- c(
+    "TMM", "TMMwzp", "RLE", "upperquartile",
+    "none", "scale", "quantile", "cyclicloess"
+  )
+  if (length(normalization_method) != 1 ||
+    !(normalization_method %in% valid_normalization_methods)) {
+    stop(glue::glue(
+      "normalization_method must be one of: {paste(valid_normalization_methods, collapse = ', ')}"
+    ))
+  }
   sample_metadata <- moo@sample_meta
   message(glue::glue("* differential counts"))
   # select correct counts matrix
@@ -215,6 +225,8 @@ diff_counts <- function(
   }
 
   # TODO add this to existing norm function & document options
+  # edgeR methods estimate normalization factors before voom; limma methods are
+  # passed directly to voom's normalize argument.
   if (
     normalization_method %in% c("TMM", "TMMwzp", "RLE", "upperquartile")
   ) {
