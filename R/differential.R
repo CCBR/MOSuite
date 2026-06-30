@@ -214,7 +214,7 @@ diff_counts <- function(
   }
   ### PH: End Create Design Formula/Table
 
-  ### PH: START Limma Normalization - Same as in Normalize Counts
+  ### PH: START Differential Expression Normalization
   # Create DGEList object from counts - counts should not be Log scale
   if (input_in_log_counts == TRUE) {
     df_unlog <- df.m |>
@@ -224,24 +224,25 @@ diff_counts <- function(
     x <- edgeR::DGEList(counts = df.m, genes = gene_names)
   }
 
-  # TODO add this to existing norm function & document options
-  # edgeR methods estimate normalization factors before voom; limma methods are
-  # passed directly to voom's normalize argument.
+  # This follows the RNAseq123 edgeR-to-limma workflow pattern:
+  # https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html
+  # edgeR methods estimate normalization factors on the DGEList before voom,
+  # and limma methods are passed directly to voom's normalize.method argument.
   if (
     normalization_method %in% c("TMM", "TMMwzp", "RLE", "upperquartile")
   ) {
     x <- edgeR::calcNormFactors(x, method = normalization_method)
     rownames(x) <- x$genes$GeneID
-    v <- limma::voom(x, design = design, normalize = "none")
+    v <- limma::voom(x, design = design, normalize.method = "none")
   } else {
     v <- limma::voom(
       x,
       design = design,
-      normalize = normalization_method,
+      normalize.method = normalization_method,
       save.plot = TRUE
     )
   }
-  ### PH: END Limma Normalization - Same as in Normalize Counts
+  ### PH: END Differential Expression Normalization
 
   ### PH: START Linear Fit and and extract df.voom table. Could be added to Limma Normalization function above with an
   ### option to run lmFit
