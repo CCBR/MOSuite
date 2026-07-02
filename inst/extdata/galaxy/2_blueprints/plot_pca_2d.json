@@ -154,7 +154,7 @@
     {
       "key": "color_values",
       "displayName": "Color Values",
-      "description": "vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor\nlevel order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in the\nmetadata column.\n",
+      "description": "vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor\nlevel order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in\nthe metadata column.\n",
       "paramType": "MULTISELECT",
       "paramGroup": "Visualization",
       "paramValues": [
