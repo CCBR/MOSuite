@@ -181,8 +181,6 @@ filter_counts <- function(
     # use consistent colors
     if (is.null(colors_for_plots)) {
       colors_for_plots <- moo@analyses[["colors"]][[group_colname]]
-    } else {
-      colors_for_plots <- as.vector(colors_for_plots)
     }
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots

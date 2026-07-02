@@ -118,6 +118,42 @@ get_colors_vctr <- function(
   return(colors_vctr)
 }
 
+resolve_plot_colors <- function(
+  dat,
+  colname,
+  color_values = NULL,
+  palette_fun = grDevices::palette.colors,
+  ...
+) {
+  obs <- dat |>
+    dplyr::pull(colname) |>
+    unique() |>
+    stats::na.omit() |>
+    as.character()
+
+  if (length(obs) == 0) {
+    return(color_values)
+  }
+
+  if (is.null(color_values)) {
+    return(get_colors_vctr(dat, colname, palette_fun = palette_fun, ...))
+  }
+
+  if (!is.null(names(color_values))) {
+    if (all(obs %in% names(color_values))) {
+      return(color_values)
+    }
+  }
+
+  if (length(color_values) < length(obs)) {
+    stop(glue::glue(
+      "color_values must contain at least {length(obs)} colors for column {colname}"
+    ))
+  }
+
+  stats::setNames(unname(color_values)[seq_along(obs)], obs)
+}
+
 #' Set color palette for a single group/column
 #'
 #' This allows you to set custom palettes individually for groups in the dataset

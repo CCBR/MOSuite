@@ -354,6 +354,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
     )
   prin_comp_x <- principal_components[1]
   prin_comp_y <- principal_components[2]
+  color_values <- resolve_plot_colors(pca_wide, group_colname, color_values)
   # plot PCA
   pca_plot <- pca_wide |>
     dplyr::mutate(
@@ -633,6 +634,7 @@ S7::method(plot_pca_3d, S7::class_data.frame) <- function(
   prin_comp_x <- principal_components[1]
   prin_comp_y <- principal_components[2]
   prin_comp_z <- principal_components[3]
+  color_values <- resolve_plot_colors(pca_wide, group_colname, color_values)
 
   fig <- plotly::plot_ly(
     pca_wide,

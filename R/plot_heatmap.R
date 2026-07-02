@@ -154,20 +154,8 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
   # cannot set rownames on a tibble
   sample_metadata <- sample_metadata |> as.data.frame()
   rownames(sample_metadata) <- sample_metadata[[label_colname]]
-  annoVal <- lapply(group_colname, function(x) {
-    # TODO this only works on dataframes, not tibbles
-    out <- as.factor(sample_metadata |> dplyr::pull(x)) |> levels()
-    # names(out)=x
-    return(out)
-  }) |>
-    unlist()
-  col <- color_values[seq_along(annoVal)]
-  names(col) <- annoVal
-
   cols <- lapply(group_colname, function(x) {
-    ax <- as.factor(sample_metadata |> dplyr::pull(x)) |> levels()
-    out <- col[ax]
-    return(out)
+    resolve_plot_colors(sample_metadata, x, color_values)
   })
   names(cols) <- (group_colname)
 
@@ -1032,18 +1020,19 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   }
   rownames(annotation_col) <- annot[[label_colname]]
   annot_col <- list()
-  b <- 1
-  i <- 1
-  while (i <= length(group_columns)) {
-    cnam <- group_columns[i]
-    grp <- as.factor(annotation_col[, i])
-    c <- b + length(levels(grp)) - 1
-    col <- group_colors[b:c]
-    names(col) <- levels(grp)
-    assign(cnam, col)
-    annot_col <- append(annot_col, mget(cnam))
-    b <- c + 1
-    i <- i + 1
+  next_color <- 1
+  for (cnam in group_columns) {
+    group_levels <- stats::na.omit(unique(annot[[cnam]]))
+
+    if (!is.null(names(group_colors)) && all(as.character(group_levels) %in% names(group_colors))) {
+      col <- resolve_plot_colors(annot, cnam, group_colors)
+    } else {
+      color_slice <- group_colors[next_color:(next_color + length(group_levels) - 1)]
+      col <- resolve_plot_colors(annot, cnam, color_slice)
+      next_color <- next_color + length(group_levels)
+    }
+
+    annot_col[[cnam]] <- col
   }
 
   if (assign_group_colors == TRUE) {

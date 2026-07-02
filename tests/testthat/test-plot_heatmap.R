@@ -121,6 +121,27 @@ test_that("correlation heatmap works", {
   )
 })
 
+test_that("correlation heatmap resolves annotation colors by first observed group order", {
+  counts_dat <- nidap_filtered_counts[, c("Gene", "B1", "B2", "B3", "A1", "A2", "A3", "C1", "C2", "C3")]
+  sample_metadata <- as.data.frame(nidap_sample_metadata)
+  sample_metadata <- sample_metadata[match(colnames(counts_dat)[-1], sample_metadata$Sample), ]
+
+  p <- plot_corr_heatmap(
+    counts_dat,
+    sample_metadata = sample_metadata,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    label_colname = "Label",
+    group_colname = "Group",
+    color_values = c("#5954d6", "#e1562c", "#b80058")
+  )
+
+  expect_equal(
+    p@top_annotation@anno_list$Group@color_mapping@colors[c("B", "A", "C")],
+    c(B = "#5954D6FF", A = "#E1562CFF", C = "#B80058FF")
+  )
+})
+
 test_that("plot_corr_heatmap method dispatch works", {
   moo <- multiOmicDataSet(
     sample_metadata = as.data.frame(nidap_sample_metadata),
@@ -260,4 +281,28 @@ test_that("plot_expr_heatmap works", {
   )
 
   expect_equal(p_moo@matrix, p_dat@matrix)
+})
+
+test_that("plot_expr_heatmap resolves annotation colors by first observed group order", {
+  counts_dat <- nidap_norm_counts[, c("Gene", "B1", "B2", "B3", "A1", "A2", "A3", "C1", "C2", "C3")]
+  sample_metadata <- as.data.frame(nidap_sample_metadata)
+  sample_metadata <- sample_metadata[match(colnames(counts_dat)[-1], sample_metadata$Sample), ]
+
+  expect_message(
+    p <- plot_expr_heatmap(
+      as.data.frame(counts_dat),
+      sample_metadata = sample_metadata,
+      feature_id_colname = "Gene",
+      samples_to_include = colnames(counts_dat)[-1],
+      group_columns = "Group",
+      group_colors = c("#5954d6", "#e1562c", "#b80058")
+    ),
+    "total number of genes in heatmap",
+    fixed = FALSE
+  )
+
+  expect_equal(
+    p@top_annotation@anno_list$Group@color_mapping@colors[c("B", "A", "C")],
+    c(B = "#5954D6FF", A = "#E1562CFF", C = "#B80058FF")
+  )
 })

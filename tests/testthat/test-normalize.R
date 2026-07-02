@@ -185,7 +185,7 @@ test_that("normalize_counts forwards plotting parameters", {
     legend_font_size_for_histogram = 11,
     legend_position_for_histogram = "right",
     number_of_histogram_legend_columns = 2,
-    colors_for_plots = c("red", "blue", "green"),
+    colors_for_plots = c(A = "red", B = "blue", C = "green"),
     plot_corr_matrix_heatmap = FALSE,
     print_plots = TRUE,
     save_plots = FALSE
@@ -199,7 +199,7 @@ test_that("normalize_counts forwards plotting parameters", {
   expect_equal(pca_args$label_font_size, 6)
   expect_equal(pca_args$label_offset_x_, 4)
   expect_equal(pca_args$label_offset_y_, 5)
-  expect_equal(pca_args$color_values, c("red", "blue", "green"))
+  expect_equal(pca_args$color_values, c(A = "red", B = "blue", C = "green"))
 
   expect_false(histogram_args$color_by_group)
   expect_true(histogram_args$set_min_max_for_x_axis)

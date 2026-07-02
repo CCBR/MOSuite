@@ -83,6 +83,50 @@ test_that("get_colors_vctr falls back to random colors when n exceeds palette ma
   expect_named(result, paste0("cat", seq_len(12)))
 })
 
+test_that("resolve_plot_colors preserves named color mappings", {
+  dat <- data.frame(group = c("B", "A", "C", "A"))
+  colors <- c(A = "red", B = "blue", C = "green")
+
+  expect_equal(resolve_plot_colors(dat, "group", colors), colors)
+})
+
+test_that("resolve_plot_colors names palettes by first observed category order", {
+  dat <- data.frame(group = c("B", "A", "C", "A"))
+  colors <- c("red", "blue", "green")
+
+  expect_equal(
+    resolve_plot_colors(dat, "group", colors),
+    c(B = "red", A = "blue", C = "green")
+  )
+})
+
+test_that("resolve_plot_colors generates colors when none are supplied", {
+  dat <- data.frame(group = c("B", "A", "C", "A"))
+
+  expect_equal(
+    resolve_plot_colors(dat, "group"),
+    c(B = "#000000", A = "#E69F00", C = "#56B4E9")
+  )
+})
+
+test_that("resolve_plot_colors rejects too few explicit colors", {
+  dat <- data.frame(group = c("B", "A", "C", "A"))
+
+  expect_error(
+    resolve_plot_colors(dat, "group", c("red", "blue")),
+    "must contain at least 3 colors"
+  )
+})
+
+test_that("resolve_plot_colors treats non-matching names as palette labels", {
+  dat <- data.frame(group = c("B", "A", "C", "A"))
+
+  expect_equal(
+    resolve_plot_colors(dat, "group", c(indigo = "red", carrot = "blue", jade = "green")),
+    c(B = "red", A = "blue", C = "green")
+  )
+})
+
 test_that("set_color_pal overrides the color palette", {
   moo <- create_multiOmicDataSet_from_dataframes(
     sample_metadata = as.data.frame(nidap_sample_metadata),

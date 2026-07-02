@@ -210,10 +210,7 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
         !!rlang::sym(group_colname) := as.factor(!!rlang::sym(group_colname))
       ) |>
       dplyr::filter(!is.na(group_colname))
-    n <- df_long |>
-      dplyr::pull(group_colname) |>
-      levels() |>
-      length()
+    color_values <- resolve_plot_colors(df_long, group_colname, color_values)
 
     # plot Density
     hist_plot <- df_long |>
@@ -226,10 +223,7 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
         linewidth = 1
       )
   } else {
-    n <- df_long |>
-      dplyr::pull(sample_id_colname) |>
-      unique() |>
-      length()
+    color_values <- resolve_plot_colors(df_long, sample_id_colname, color_values)
 
     hist_plot <- df_long |>
       ggplot2::ggplot(ggplot2::aes(
@@ -264,7 +258,7 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
     ggplot2::ggtitle("Frequency Histogram") +
     ggplot2::xlim(xmin, xmax) +
     # scale_linetype_manual(values=rep(c('solid', 'dashed','dotted','twodash'),n)) +
-    ggplot2::scale_colour_manual(values = color_values[1:n]) +
+    ggplot2::scale_colour_manual(values = color_values) +
     ggplot2::guides(
       linetype = ggplot2::guide_legend(ncol = number_of_legend_columns)
     )
