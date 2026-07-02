@@ -31,7 +31,7 @@ filter_counts(
   minimum_for_x_axis_for_histogram = -1,
   maximum_for_x_axis_for_histogram = 1,
   legend_position_for_histogram = "top",
-  legend_font_size_for_histogram = 10,
+  legend_font_size_for_histogram = NULL,
   number_of_histogram_legend_columns = 6,
   colors_for_plots = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
@@ -121,7 +121,7 @@ the column you select in the "Group Column Used to Color Histogram" parameter (b
 \item{legend_position_for_histogram}{legend position for the histogram plot. consider setting to 'none' for a large
 number of samples.}
 
-\item{legend_font_size_for_histogram}{legend font size for the histogram plot}
+\item{legend_font_size_for_histogram}{legend font size for the histogram plot. If \code{NULL}, the size is scaled automatically.}
 
 \item{number_of_histogram_legend_columns}{number of columns for the histogram legend}
 

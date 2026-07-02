@@ -28,7 +28,7 @@ normalize_counts(
   set_min_max_for_x_axis_for_histogram = FALSE,
   minimum_for_x_axis_for_histogram = -1,
   maximum_for_x_axis_for_histogram = 1,
-  legend_font_size_for_histogram = 10,
+  legend_font_size_for_histogram = NULL,
   legend_position_for_histogram = "top",
   number_of_histogram_legend_columns = 6,
   plot_corr_matrix_heatmap = TRUE,
@@ -106,7 +106,7 @@ the column you select in the "Group Column Used to Color Histogram" parameter (b
 
 \item{maximum_for_x_axis_for_histogram}{x-axis maximum for histogram plot}
 
-\item{legend_font_size_for_histogram}{legend font size for the histogram plot}
+\item{legend_font_size_for_histogram}{legend font size for the histogram plot. If \code{NULL}, the size is scaled automatically.}
 
 \item{legend_position_for_histogram}{legend position for the histogram plot. consider setting to 'none' for a large
 number of samples.}

@@ -72,7 +72,7 @@
 #' @param maximum_for_x_axis_for_histogram x-axis maximum for histogram plot
 #' @param legend_position_for_histogram legend position for the histogram plot. consider setting to 'none' for a large
 #'   number of samples.
-#' @param legend_font_size_for_histogram legend font size for the histogram plot
+#' @param legend_font_size_for_histogram legend font size for the histogram plot. If `NULL`, the size is scaled automatically.
 #' @param number_of_histogram_legend_columns number of columns for the histogram legend
 #' @param colors_for_plots Colors for the PCA and histogram will be picked, in order, from this list.
 #'   Colors must either be names in `grDevices::colors()` or valid hex codes. Defaults to the MOSuite palette returned
@@ -132,7 +132,7 @@ filter_counts <- function(
   minimum_for_x_axis_for_histogram = -1,
   maximum_for_x_axis_for_histogram = 1,
   legend_position_for_histogram = "top",
-  legend_font_size_for_histogram = 10,
+  legend_font_size_for_histogram = NULL,
   number_of_histogram_legend_columns = 6,
   colors_for_plots = c(
     "#5954d6",

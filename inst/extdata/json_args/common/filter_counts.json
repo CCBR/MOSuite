@@ -24,7 +24,7 @@
     "set_min_max_for_x_axis_for_histogram": false,
     "minimum_for_x_axis_for_histogram": -1.0,
     "maximum_for_x_axis_for_histogram": 1.0,
-    "legend_font_size_for_histogram": 10.0,
+    "legend_font_size_for_histogram": null,
     "legend_position_for_histogram": "top",
     "number_of_histogram_legend_columns": 6.0,
     "colors_for_plots": [
