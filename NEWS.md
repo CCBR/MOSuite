@@ -1,5 +1,9 @@
 ## MOSuite development version
 
+- Align plot color defaults with the MOSuite Code Ocean capsule defaults while preserving fallback random colors when a requested palette is too short.
+- Improve top and bottom legend wrapping and automatic legend text sizing for PCA and histogram plots with many or long labels.
+- Align PCA and histogram plotting defaults used by `filter_counts()` and `normalize_counts()` with the affected Code Ocean capsules: MOSuite-filter-counts, MOSuite-normalize-counts, MOSuite-plot-pca-2D, and MOSuite-plot-pca-3D.
+
 ## 0.3.2
 
 - Support ggplot2 v4.0.0 for correlation heatmap plots in `filter_counts()`, `normalize_counts()`, and `batch_correct_counts()`. (#205, @copilot, @kelly-sovacool)
