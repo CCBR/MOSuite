@@ -202,8 +202,8 @@ you could choose to remove certain samples. Samples excluded here will be remove
 analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
 
 \item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
-level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in the
-metadata column.}
+level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
+the metadata column.}
 
 \item{include_all_genes}{Set to TRUE if all genes are to be included. Set to FALSE if you want to filter genes by
 variance and/or provide a list of specific genes that will appear in the heatmap.}

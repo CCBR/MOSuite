@@ -198,7 +198,7 @@
       "paramType": "NUMBER",
       "paramGroup": "PCA",
       "paramValues": null,
-      "defaultValue": 1,
+      "defaultValue": 3,
       "condition": null,
       "content": null,
       "objectPropertyReference": null
@@ -314,11 +314,10 @@
     {
       "key": "legend_font_size_for_histogram",
       "displayName": "Legend Font Size for Histogram",
-      "description": "legend font size for the histogram plot\n",
+      "description": "legend font size for the histogram plot. If `NULL`, the size is scaled automatically.\n",
       "paramType": "NUMBER",
       "paramGroup": "Histogram",
       "paramValues": null,
-      "defaultValue": 10,
       "condition": null,
       "content": null,
       "objectPropertyReference": null
@@ -356,7 +355,7 @@
     {
       "key": "colors_for_plots",
       "displayName": "Colors for Plots",
-      "description": "Colors for the PCA and histogram will be picked, in order, from this list.\nColors must either be names in `grDevices::colors()` or valid hex codes.\n",
+      "description": "Colors for the PCA and histogram will be picked, in order, from this list.\nColors must either be names in `grDevices::colors()` or valid hex codes. Defaults to the MOSuite palette returned\nby `get_mosuite_colors()`. Unnamed colors are assigned by factor level order when the grouping column is a factor;\notherwise, they are assigned in the order groups first appear in the metadata column. If more groups are present than colors provided,\nsupplied colors are used first and additional colors are generated from the selected palette for the remaining groups;\nrandom colors are used only if that palette returns fewer colors than the number of groups.\n",
       "paramType": "MULTISELECT",
       "paramGroup": "Visualization",
       "paramValues": [
@@ -373,6 +372,7 @@
         "#FFA500",
         "#878500"
       ],
+      "defaultValue": ["#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c", "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"],
       "condition": null,
       "content": null,
       "objectPropertyReference": null

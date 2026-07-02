@@ -90,7 +90,8 @@ plot_pca_2d(
 )
 }
 \arguments{
-\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot.}
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
+slot}
 
 \item{count_type}{the type of counts to use when \code{moo_counts} is a \code{multiOmicDataSet}; ignored for data frame input.}
 
@@ -123,8 +124,8 @@ renaming. Use the following format to describe which old name (in your sample me
 which new name: old_name: new_name}
 
 \item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
-level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in the
-metadata column.}
+level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+the metadata column.}
 
 \item{principal_components}{vector with numbered principal components to plot}
 

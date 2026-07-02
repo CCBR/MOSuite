@@ -60,9 +60,12 @@ column with your preferred Labels here. The selected column should contain uniqu
 \code{NULL} -- \code{sample_id_colname} will be used.)}
 
 \item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list.
-Colors must either be names in \code{grDevices::colors()} or valid hex codes. Unnamed colors are assigned by factor
-level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in the
-metadata column.}
+Colors must either be names in \code{grDevices::colors()} or valid hex codes. Defaults to the MOSuite palette returned
+by \code{get_mosuite_colors()}. Unnamed colors are assigned by factor level order when the grouping column is a factor;
+otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
+than colors provided,
+supplied colors are used first and additional colors are generated from the selected palette for the remaining
+groups; random colors are used only if that palette returns fewer colors than the number of groups.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 

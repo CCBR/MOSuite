@@ -114,7 +114,7 @@
     {
       "key": "colors_for_plots",
       "displayName": "Colors for plots",
-      "description": "Colors for the PCA and histogram will be picked, in order, from this list.\nColors must either be names in `grDevices::colors()` or valid hex codes.\n",
+      "description": "Colors for the PCA and histogram will be picked, in order, from this list.\nColors must either be names in `grDevices::colors()` or valid hex codes. Unnamed colors are assigned by factor\nlevel order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in the\nmetadata column.\n",
       "paramType": "MULTISELECT",
       "paramGroup": "Visualization",
       "paramValues": [
