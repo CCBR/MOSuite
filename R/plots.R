@@ -115,9 +115,12 @@ get_legend_column_count <- function(
 
   max_label_length <- max(nchar(labels), 1)
   text_size_multiplier <- legend_text_size / 10
-  columns_by_label_length <- max(1, floor(
-    max_label_characters_per_row / (max_label_length * text_size_multiplier)
-  ))
+  columns_by_label_length <- max(
+    1,
+    floor(
+      max_label_characters_per_row / (max_label_length * text_size_multiplier)
+    )
+  )
   legend_columns <- min(length(labels), columns_by_label_length)
   if (!is.null(ncol)) {
     legend_columns <- min(ncol, legend_columns)

@@ -169,7 +169,11 @@ test_that("resolve_plot_colors treats non-matching names as palette labels", {
   dat <- data.frame(group = c("B", "A", "C", "A"))
 
   expect_equal(
-    resolve_plot_colors(dat, "group", c(indigo = "red", carrot = "blue", jade = "green")),
+    resolve_plot_colors(
+      dat,
+      "group",
+      c(indigo = "red", carrot = "blue", jade = "green")
+    ),
     c(B = "red", A = "blue", C = "green")
   )
 })

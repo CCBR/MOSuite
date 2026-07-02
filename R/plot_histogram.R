@@ -227,10 +227,16 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
         linewidth = 1
       )
   } else {
-    color_values <- resolve_plot_colors(df_long, sample_id_colname, color_values)
+    color_values <- resolve_plot_colors(
+      df_long,
+      sample_id_colname,
+      color_values
+    )
     df_long <- df_long |>
       dplyr::mutate(
-        !!rlang::sym(sample_id_colname) := as.character(!!rlang::sym(sample_id_colname))
+        !!rlang::sym(sample_id_colname) := as.character(
+          !!rlang::sym(sample_id_colname)
+        )
       )
 
     hist_plot <- df_long |>
@@ -244,7 +250,10 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
       )
   }
 
-  legend_font_size <- get_legend_text_size(names(color_values), legend_font_size)
+  legend_font_size <- get_legend_text_size(
+    names(color_values),
+    legend_font_size
+  )
 
   hist_plot <- hist_plot +
     ggplot2::xlab(x_axis_label) +

@@ -175,7 +175,12 @@ resolve_plot_colors <- function(
     message(glue::glue(
       "color_values contains {length(color_values)} colors for {length(obs)} values in column {colname}. Generating {n_missing} additional colors."
     ))
-    generated_colors <- get_colors_vctr(dat, colname, palette_fun = palette_fun, ...)
+    generated_colors <- get_colors_vctr(
+      dat,
+      colname,
+      palette_fun = palette_fun,
+      ...
+    )
     color_values <- c(
       unname(color_values),
       unname(generated_colors)[seq.int(length(color_values) + 1, length(obs))]

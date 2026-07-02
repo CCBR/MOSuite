@@ -99,7 +99,9 @@ test_that("plot_histogram wraps long top and bottom sample-name legends", {
     colnames(counts_dat)
   )
   sample_metadata <- sample_meta
-  sample_metadata$Sample <- unname(long_sample_names[as.character(sample_metadata$Sample)])
+  sample_metadata$Sample <- unname(long_sample_names[as.character(
+    sample_metadata$Sample
+  )])
   sample_metadata$Label <- sample_metadata$Sample
 
   for (legend_position in c("top", "bottom")) {
@@ -571,7 +573,18 @@ test_that("plot_histogram works with rownames", {
 
 test_that("plot_histogram resolves group colors by first observed group order", {
   color_values <- c("#5954d6", "#e1562c", "#b80058")
-  counts_dat <- nidap_filtered_counts[, c("Gene", "B1", "B2", "B3", "A1", "A2", "A3", "C1", "C2", "C3")]
+  counts_dat <- nidap_filtered_counts[, c(
+    "Gene",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "C1",
+    "C2",
+    "C3"
+  )]
   plot <- plot_histogram(
     counts_dat,
     sample_metadata = nidap_sample_metadata,
@@ -582,7 +595,11 @@ test_that("plot_histogram resolves group colors by first observed group order", 
     color_by_group = TRUE
   )
   scales <- ggplot2::ggplot_build(plot)$plot$scales$scales
-  colour_scale <- scales[[which(vapply(scales, function(scale) "colour" %in% scale$aesthetics, logical(1)))[[1]]]]
+  colour_scale <- scales[[which(vapply(
+    scales,
+    function(scale) "colour" %in% scale$aesthetics,
+    logical(1)
+  ))[[1]]]]
 
   expect_equal(
     colour_scale$palette.cache,
@@ -592,9 +609,23 @@ test_that("plot_histogram resolves group colors by first observed group order", 
 
 test_that("plot_histogram resolves group colors by factor level order", {
   color_values <- c("#5954d6", "#e1562c", "#b80058")
-  counts_dat <- nidap_filtered_counts[, c("Gene", "B1", "B2", "B3", "A1", "A2", "A3", "C1", "C2", "C3")]
+  counts_dat <- nidap_filtered_counts[, c(
+    "Gene",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "C1",
+    "C2",
+    "C3"
+  )]
   sample_metadata <- nidap_sample_metadata
-  sample_metadata$Group <- factor(sample_metadata$Group, levels = c("C", "A", "B"))
+  sample_metadata$Group <- factor(
+    sample_metadata$Group,
+    levels = c("C", "A", "B")
+  )
 
   plot <- plot_histogram(
     counts_dat,
@@ -606,7 +637,11 @@ test_that("plot_histogram resolves group colors by factor level order", {
     color_by_group = TRUE
   )
   scales <- ggplot2::ggplot_build(plot)$plot$scales$scales
-  colour_scale <- scales[[which(vapply(scales, function(scale) "colour" %in% scale$aesthetics, logical(1)))[[1]]]]
+  colour_scale <- scales[[which(vapply(
+    scales,
+    function(scale) "colour" %in% scale$aesthetics,
+    logical(1)
+  ))[[1]]]]
 
   expect_equal(
     colour_scale$palette.cache,
@@ -626,7 +661,11 @@ test_that("plot_histogram resolves sample colors by first observed sample order"
     color_by_group = FALSE
   )
   scales <- ggplot2::ggplot_build(plot)$plot$scales$scales
-  colour_scale <- scales[[which(vapply(scales, function(scale) "colour" %in% scale$aesthetics, logical(1)))[[1]]]]
+  colour_scale <- scales[[which(vapply(
+    scales,
+    function(scale) "colour" %in% scale$aesthetics,
+    logical(1)
+  ))[[1]]]]
 
   expect_equal(
     colour_scale$palette.cache,

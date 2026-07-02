@@ -363,7 +363,10 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   prin_comp_x <- principal_components[1]
   prin_comp_y <- principal_components[2]
   color_values <- resolve_plot_colors(pca_wide, group_colname, color_values)
-  legend_font_size <- get_legend_text_size(names(color_values), legend_font_size)
+  legend_font_size <- get_legend_text_size(
+    names(color_values),
+    legend_font_size
+  )
   # plot PCA
   pca_plot <- pca_wide |>
     dplyr::mutate(

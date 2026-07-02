@@ -322,7 +322,10 @@ test_that("filter_counts forwards plotting parameters", {
   expect_equal(histogram_args$legend_font_size, 11)
   expect_equal(histogram_args$legend_position, "right")
   expect_equal(histogram_args$number_of_legend_columns, 2)
-  expect_equal(histogram_args$color_values, c(A = "red", B = "blue", C = "green"))
+  expect_equal(
+    histogram_args$color_values,
+    c(A = "red", B = "blue", C = "green")
+  )
 })
 
 test_that("filter_counts forwards the default MOSuite plot colors", {

@@ -1022,7 +1022,10 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
       data.frame(group_color_index = seq_len(x)),
       "group_color_index"
     )
-    more_cols <- unname(generated_group_colors)[seq.int(length(group_colors) + 1, x)]
+    more_cols <- unname(generated_group_colors)[seq.int(
+      length(group_colors) + 1,
+      x
+    )]
     group_colors <- c(group_colors, more_cols)
   }
   rownames(annotation_col) <- annot[[label_colname]]
@@ -1031,10 +1034,15 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   for (cnam in group_columns) {
     group_levels <- stats::na.omit(unique(annot[[cnam]]))
 
-    if (!is.null(names(group_colors)) && all(as.character(group_levels) %in% names(group_colors))) {
+    if (
+      !is.null(names(group_colors)) &&
+        all(as.character(group_levels) %in% names(group_colors))
+    ) {
       col <- resolve_plot_colors(annot, cnam, group_colors)
     } else {
-      color_slice <- group_colors[next_color:(next_color + length(group_levels) - 1)]
+      color_slice <- group_colors[
+        next_color:(next_color + length(group_levels) - 1)
+      ]
       col <- resolve_plot_colors(annot, cnam, color_slice)
     }
 

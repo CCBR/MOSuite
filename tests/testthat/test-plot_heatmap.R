@@ -122,9 +122,22 @@ test_that("correlation heatmap works", {
 })
 
 test_that("correlation heatmap resolves annotation colors by first observed group order", {
-  counts_dat <- nidap_filtered_counts[, c("Gene", "B1", "B2", "B3", "A1", "A2", "A3", "C1", "C2", "C3")]
+  counts_dat <- nidap_filtered_counts[, c(
+    "Gene",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "C1",
+    "C2",
+    "C3"
+  )]
   sample_metadata <- as.data.frame(nidap_sample_metadata)
-  sample_metadata <- sample_metadata[match(colnames(counts_dat)[-1], sample_metadata$Sample), ]
+  sample_metadata <- sample_metadata[
+    match(colnames(counts_dat)[-1], sample_metadata$Sample),
+  ]
 
   p <- plot_corr_heatmap(
     counts_dat,
@@ -284,9 +297,22 @@ test_that("plot_expr_heatmap works", {
 })
 
 test_that("plot_expr_heatmap resolves annotation colors by first observed group order", {
-  counts_dat <- nidap_norm_counts[, c("Gene", "B1", "B2", "B3", "A1", "A2", "A3", "C1", "C2", "C3")]
+  counts_dat <- nidap_norm_counts[, c(
+    "Gene",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "C1",
+    "C2",
+    "C3"
+  )]
   sample_metadata <- as.data.frame(nidap_sample_metadata)
-  sample_metadata <- sample_metadata[match(colnames(counts_dat)[-1], sample_metadata$Sample), ]
+  sample_metadata <- sample_metadata[
+    match(colnames(counts_dat)[-1], sample_metadata$Sample),
+  ]
 
   expect_message(
     p <- plot_expr_heatmap(
