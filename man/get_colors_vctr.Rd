@@ -4,7 +4,7 @@
 \alias{get_colors_vctr}
 \title{Get vector of colors for observations in one column of a data frame}
 \usage{
-get_colors_vctr(dat, colname, palette_fun = grDevices::palette.colors, ...)
+get_colors_vctr(dat, colname, palette_fun = get_mosuite_colors, ...)
 }
 \arguments{
 \item{dat}{data frame}
@@ -12,7 +12,7 @@ get_colors_vctr(dat, colname, palette_fun = grDevices::palette.colors, ...)
 \item{colname}{column name in \code{dat}}
 
 \item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default:
-\code{grDevices::palette.colors()}}
+MOSuite's default plot palette.}
 
 \item{...}{additional arguments forwarded to \code{palette_fun}}
 }

@@ -13,37 +13,37 @@ test_that("get_colors_lst works on nidap_sample_metadata", {
     get_colors_lst(nidap_sample_metadata),
     list(
       Sample = c(
-        A1 = "#000000",
-        A2 = "#E69F00",
-        A3 = "#56B4E9",
-        B1 = "#009E73",
-        B2 = "#F0E442",
-        B3 = "#0072B2",
-        C1 = "#D55E00",
-        C2 = "#CC79A7",
-        C3 = "#999999"
+        A1 = "#5954d6",
+        A2 = "#e1562c",
+        A3 = "#b80058",
+        B1 = "#00c6f8",
+        B2 = "#d163e6",
+        B3 = "#00a76c",
+        C1 = "#ff9287",
+        C2 = "#008cf9",
+        C3 = "#006e00"
       ),
       Group = c(
-        A = "#000000",
-        B = "#E69F00",
-        C = "#56B4E9"
+        A = "#5954d6",
+        B = "#e1562c",
+        C = "#b80058"
       ),
       Replicate = c(
-        `1` = "#000000",
-        `2` = "#E69F00",
-        `3` = "#56B4E9"
+        `1` = "#5954d6",
+        `2` = "#e1562c",
+        `3` = "#b80058"
       ),
-      Batch = c(`1` = "#000000", `2` = "#E69F00"),
+      Batch = c(`1` = "#5954d6", `2` = "#e1562c"),
       Label = c(
-        A1 = "#000000",
-        A2 = "#E69F00",
-        A3 = "#56B4E9",
-        B1 = "#009E73",
-        B2 = "#F0E442",
-        B3 = "#0072B2",
-        C1 = "#D55E00",
-        C2 = "#CC79A7",
-        C3 = "#999999"
+        A1 = "#5954d6",
+        A2 = "#e1562c",
+        A3 = "#b80058",
+        B1 = "#00c6f8",
+        B2 = "#d163e6",
+        B3 = "#00a76c",
+        C1 = "#ff9287",
+        C2 = "#008cf9",
+        C3 = "#006e00"
       )
     )
   )
@@ -68,10 +68,10 @@ test_that("get_colors_lst handles alternative palette functions", {
   )
 })
 test_that("get_colors_vctr falls back to random colors when n exceeds palette max", {
-  # Okabe-Ito palette has a maximum of 9 colors. When n > 9, the function
+  # MOSuite's default palette has 12 colors. When n > 12, the function
   # should fall back to get_random_colors() and emit a message.
   dat_many_cats <- data.frame(
-    group = paste0("cat", seq_len(12))
+    group = paste0("cat", seq_len(13))
   )
   expect_no_warning(
     expect_message(
@@ -79,8 +79,8 @@ test_that("get_colors_vctr falls back to random colors when n exceeds palette ma
       "exceeds the palette maximum"
     )
   )
-  expect_length(result, 12)
-  expect_named(result, paste0("cat", seq_len(12)))
+  expect_length(result, 13)
+  expect_named(result, paste0("cat", seq_len(13)))
 })
 
 test_that("resolve_plot_colors preserves named color mappings", {
@@ -105,7 +105,7 @@ test_that("resolve_plot_colors generates colors when none are supplied", {
 
   expect_equal(
     resolve_plot_colors(dat, "group"),
-    c(B = "#000000", A = "#E69F00", C = "#56B4E9")
+    c(B = "#5954d6", A = "#e1562c", C = "#b80058")
   )
 })
 
@@ -136,37 +136,37 @@ test_that("set_color_pal overrides the color palette", {
     moo@analyses$colors,
     list(
       Sample = c(
-        A1 = "#000000",
-        A2 = "#E69F00",
-        A3 = "#56B4E9",
-        B1 = "#009E73",
-        B2 = "#F0E442",
-        B3 = "#0072B2",
-        C1 = "#D55E00",
-        C2 = "#CC79A7",
-        C3 = "#999999"
+        A1 = "#5954d6",
+        A2 = "#e1562c",
+        A3 = "#b80058",
+        B1 = "#00c6f8",
+        B2 = "#d163e6",
+        B3 = "#00a76c",
+        C1 = "#ff9287",
+        C2 = "#008cf9",
+        C3 = "#006e00"
       ),
       Group = c(
-        A = "#000000",
-        B = "#E69F00",
-        C = "#56B4E9"
+        A = "#5954d6",
+        B = "#e1562c",
+        C = "#b80058"
       ),
       Replicate = c(
-        `1` = "#000000",
-        `2` = "#E69F00",
-        `3` = "#56B4E9"
+        `1` = "#5954d6",
+        `2` = "#e1562c",
+        `3` = "#b80058"
       ),
-      Batch = c(`1` = "#000000", `2` = "#E69F00"),
+      Batch = c(`1` = "#5954d6", `2` = "#e1562c"),
       Label = c(
-        A1 = "#000000",
-        A2 = "#E69F00",
-        A3 = "#56B4E9",
-        B1 = "#009E73",
-        B2 = "#F0E442",
-        B3 = "#0072B2",
-        C1 = "#D55E00",
-        C2 = "#CC79A7",
-        C3 = "#999999"
+        A1 = "#5954d6",
+        A2 = "#e1562c",
+        A3 = "#b80058",
+        B1 = "#00c6f8",
+        B2 = "#d163e6",
+        B3 = "#00a76c",
+        C1 = "#ff9287",
+        C2 = "#008cf9",
+        C3 = "#006e00"
       )
     )
   )
@@ -180,15 +180,15 @@ test_that("set_color_pal overrides the color palette", {
     moo2@analyses$colors,
     list(
       Sample = c(
-        A1 = "#000000",
-        A2 = "#E69F00",
-        A3 = "#56B4E9",
-        B1 = "#009E73",
-        B2 = "#F0E442",
-        B3 = "#0072B2",
-        C1 = "#D55E00",
-        C2 = "#CC79A7",
-        C3 = "#999999"
+        A1 = "#5954d6",
+        A2 = "#e1562c",
+        A3 = "#b80058",
+        B1 = "#00c6f8",
+        B2 = "#d163e6",
+        B3 = "#00a76c",
+        C1 = "#ff9287",
+        C2 = "#008cf9",
+        C3 = "#006e00"
       ),
       Group = c(
         A = "#66C2A5",
@@ -196,21 +196,21 @@ test_that("set_color_pal overrides the color palette", {
         C = "#8DA0CB"
       ),
       Replicate = c(
-        `1` = "#000000",
-        `2` = "#E69F00",
-        `3` = "#56B4E9"
+        `1` = "#5954d6",
+        `2` = "#e1562c",
+        `3` = "#b80058"
       ),
-      Batch = c(`1` = "#000000", `2` = "#E69F00"),
+      Batch = c(`1` = "#5954d6", `2` = "#e1562c"),
       Label = c(
-        A1 = "#000000",
-        A2 = "#E69F00",
-        A3 = "#56B4E9",
-        B1 = "#009E73",
-        B2 = "#F0E442",
-        B3 = "#0072B2",
-        C1 = "#D55E00",
-        C2 = "#CC79A7",
-        C3 = "#999999"
+        A1 = "#5954d6",
+        A2 = "#e1562c",
+        A3 = "#b80058",
+        B1 = "#00c6f8",
+        B2 = "#d163e6",
+        B3 = "#00a76c",
+        C1 = "#ff9287",
+        C2 = "#008cf9",
+        C3 = "#006e00"
       )
     )
   )

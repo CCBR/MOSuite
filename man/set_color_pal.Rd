@@ -4,7 +4,7 @@
 \alias{set_color_pal}
 \title{Set color palette for a single group/column}
 \usage{
-set_color_pal(moo, colname, palette_fun = grDevices::palette.colors, ...)
+set_color_pal(moo, colname, palette_fun = get_mosuite_colors, ...)
 }
 \arguments{
 \item{moo}{\code{multiOmicDataSet} object (see \code{create_multiOmicDataSet_from_dataframes()})}
@@ -12,7 +12,7 @@ set_color_pal(moo, colname, palette_fun = grDevices::palette.colors, ...)
 \item{colname}{group column name to set the palette for}
 
 \item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default:
-\code{grDevices::palette.colors()}}
+MOSuite's default plot palette.}
 
 \item{...}{additional arguments forwarded to \code{palette_fun}}
 }

@@ -1029,8 +1029,9 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
     } else {
       color_slice <- group_colors[next_color:(next_color + length(group_levels) - 1)]
       col <- resolve_plot_colors(annot, cnam, color_slice)
-      next_color <- next_color + length(group_levels)
     }
+
+    next_color <- next_color + length(group_levels)
 
     annot_col[[cnam]] <- col
   }

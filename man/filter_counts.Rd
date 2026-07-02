@@ -26,7 +26,7 @@ filter_counts(
   label_offset_y_ = 2,
   label_offset_x_ = 2,
   samples_to_rename = c(""),
-  color_histogram_by_group = FALSE,
+  color_histogram_by_group = TRUE,
   set_min_max_for_x_axis_for_histogram = FALSE,
   minimum_for_x_axis_for_histogram = -1,
   maximum_for_x_axis_for_histogram = 1,
@@ -109,7 +109,7 @@ renaming. Use the following format to describe which old name (in your sample me
 which new name: old_name: new_name}
 
 \item{color_histogram_by_group}{Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by
-the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.}
+the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is TRUE.}
 
 \item{set_min_max_for_x_axis_for_histogram}{whether to set min/max value for histogram x-axis}
 
