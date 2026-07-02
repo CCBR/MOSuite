@@ -11,8 +11,9 @@ get_colors_vctr(dat, colname, palette_fun = get_mosuite_colors, ...)
 
 \item{colname}{column name in \code{dat}}
 
-\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default:
-MOSuite's default plot palette.}
+\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Defaults to
+MOSuite's default plot palette. To use the previous R default palette behavior, pass
+\code{grDevices::palette.colors}.}
 
 \item{...}{additional arguments forwarded to \code{palette_fun}}
 }

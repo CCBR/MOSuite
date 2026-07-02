@@ -11,8 +11,9 @@ set_color_pal(moo, colname, palette_fun = get_mosuite_colors, ...)
 
 \item{colname}{group column name to set the palette for}
 
-\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default:
-MOSuite's default plot palette.}
+\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Defaults to
+MOSuite's default plot palette. To use the previous R default palette behavior, pass
+\code{grDevices::palette.colors}.}
 
 \item{...}{additional arguments forwarded to \code{palette_fun}}
 }

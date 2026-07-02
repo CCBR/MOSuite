@@ -324,3 +324,57 @@ test_that("filter_counts forwards plotting parameters", {
   expect_equal(histogram_args$number_of_legend_columns, 2)
   expect_equal(histogram_args$color_values, c(A = "red", B = "blue", C = "green"))
 })
+
+test_that("filter_counts forwards the default MOSuite plot colors", {
+  pca_args <- NULL
+  histogram_args <- NULL
+  default_colors <- c(
+    "#5954d6",
+    "#e1562c",
+    "#b80058",
+    "#00c6f8",
+    "#d163e6",
+    "#00a76c",
+    "#ff9287",
+    "#008cf9",
+    "#006e00",
+    "#796880",
+    "#FFA500",
+    "#878500"
+  )
+
+  local_mocked_bindings(
+    plot_pca = function(...) {
+      pca_args <<- list(...)
+      ggplot2::ggplot()
+    },
+    plot_histogram = function(...) {
+      histogram_args <<- list(...)
+      ggplot2::ggplot()
+    },
+    print_or_save_plot = function(...) invisible(NULL),
+    .package = "MOSuite"
+  )
+
+  moo <- create_multiOmicDataSet_from_dataframes(
+    as.data.frame(nidap_sample_metadata),
+    as.data.frame(nidap_clean_raw_counts),
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene"
+  ) |>
+    calc_cpm(feature_id_colname = "Gene")
+
+  filter_counts(
+    moo,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    label_colname = "Label",
+    count_type = "raw",
+    plot_corr_matrix_heatmap = FALSE,
+    print_plots = TRUE,
+    save_plots = FALSE
+  )
+
+  expect_equal(pca_args$color_values, default_colors)
+  expect_equal(histogram_args$color_values, default_colors)
+})

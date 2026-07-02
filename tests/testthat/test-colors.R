@@ -109,13 +109,45 @@ test_that("resolve_plot_colors generates colors when none are supplied", {
   )
 })
 
-test_that("resolve_plot_colors rejects too few explicit colors", {
+test_that("resolve_plot_colors generates additional colors for too few explicit colors", {
   dat <- data.frame(group = c("B", "A", "C", "A"))
 
-  expect_error(
-    resolve_plot_colors(dat, "group", c("red", "blue")),
-    "must contain at least 3 colors"
+  expect_message(
+    result <- resolve_plot_colors(dat, "group", c("red", "blue")),
+    "Generating 1 additional colors"
   )
+  expect_named(result, c("B", "A", "C"))
+  expect_equal(unname(result[1:2]), c("red", "blue"))
+  expect_equal(unname(result[3]), "#b80058")
+})
+
+test_that("resolve_plot_colors uses random fallback only through get_colors_vctr", {
+  dat <- data.frame(group = paste0("cat", seq_len(13)))
+  colors <- c(
+    "#5954d6",
+    "#e1562c",
+    "#b80058",
+    "#00c6f8",
+    "#d163e6",
+    "#00a76c",
+    "#ff9287",
+    "#008cf9",
+    "#006e00",
+    "#796880",
+    "#FFA500",
+    "#878500"
+  )
+
+  expect_message(
+    expect_message(
+      result <- resolve_plot_colors(dat, "group", colors),
+      "Generating 1 additional colors"
+    ),
+    "exceeds the palette maximum"
+  )
+  expect_named(result, paste0("cat", seq_len(13)))
+  expect_equal(unname(result[seq_along(colors)]), colors)
+  expect_match(unname(result[13]), "^#[0-9A-F]{6}$")
 })
 
 test_that("resolve_plot_colors treats non-matching names as palette labels", {

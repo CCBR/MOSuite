@@ -210,3 +210,57 @@ test_that("normalize_counts forwards plotting parameters", {
   expect_equal(histogram_args$number_of_legend_columns, 2)
   expect_equal(histogram_args$color_values, moo@analyses[["colors"]][["Label"]])
 })
+
+test_that("normalize_counts forwards the default MOSuite plot colors", {
+  pca_args <- NULL
+  histogram_args <- NULL
+  default_colors <- c(
+    "#5954d6",
+    "#e1562c",
+    "#b80058",
+    "#00c6f8",
+    "#d163e6",
+    "#00a76c",
+    "#ff9287",
+    "#008cf9",
+    "#006e00",
+    "#796880",
+    "#FFA500",
+    "#878500"
+  )
+
+  local_mocked_bindings(
+    plot_pca = function(...) {
+      pca_args <<- list(...)
+      ggplot2::ggplot()
+    },
+    plot_histogram = function(...) {
+      histogram_args <<- list(...)
+      ggplot2::ggplot()
+    },
+    print_or_save_plot = function(...) invisible(NULL),
+    .package = "MOSuite"
+  )
+
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts)
+    )
+  )
+
+  normalize_counts(
+    moo,
+    group_colname = "Group",
+    label_colname = "Label",
+    plot_corr_matrix_heatmap = FALSE,
+    print_plots = TRUE,
+    save_plots = FALSE
+  )
+
+  expect_equal(pca_args$color_values, default_colors)
+  expect_equal(histogram_args$color_values, default_colors)
+})

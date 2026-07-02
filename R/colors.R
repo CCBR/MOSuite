@@ -47,7 +47,7 @@ get_mosuite_colors <- function(n, ...) {
     "#FFA500",
     "#878500"
   )
-  colors[seq_len(min(n, length(colors)))]
+  return(colors[seq_len(min(n, length(colors)))])
 }
 
 
@@ -55,8 +55,9 @@ get_mosuite_colors <- function(n, ...) {
 #'
 #' @inheritParams create_multiOmicDataSet_from_dataframes
 #'
-#' @param palette_fun Function for selecting colors. Assumed to contain `n` for the number of colors. Default:
-#'   MOSuite's default plot palette.
+#' @param palette_fun Function for selecting colors. Assumed to contain `n` for the number of colors. Defaults to
+#'   MOSuite's default plot palette. To use the previous R default palette behavior, pass
+#'   `grDevices::palette.colors`.
 #' @param ... additional arguments forwarded to `palette_fun`
 #'
 #' @returns named list, with each column in `sample_metadata` containing entry with a named vector of colors
@@ -164,12 +165,18 @@ resolve_plot_colors <- function(
   }
 
   if (length(color_values) < length(obs)) {
-    stop(glue::glue(
-      "color_values must contain at least {length(obs)} colors for column {colname}"
+    n_missing <- length(obs) - length(color_values)
+    message(glue::glue(
+      "color_values contains {length(color_values)} colors for {length(obs)} values in column {colname}. Generating {n_missing} additional colors."
     ))
+    generated_colors <- get_colors_vctr(dat, colname, palette_fun = palette_fun, ...)
+    color_values <- c(
+      unname(color_values),
+      unname(generated_colors)[seq.int(length(color_values) + 1, length(obs))]
+    )
   }
 
-  stats::setNames(unname(color_values)[seq_along(obs)], obs)
+  return(stats::setNames(unname(color_values)[seq_along(obs)], obs))
 }
 
 #' Set color palette for a single group/column

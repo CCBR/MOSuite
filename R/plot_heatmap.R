@@ -155,7 +155,7 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
   sample_metadata <- sample_metadata |> as.data.frame()
   rownames(sample_metadata) <- sample_metadata[[label_colname]]
   cols <- lapply(group_colname, function(x) {
-    resolve_plot_colors(sample_metadata, x, color_values)
+    return(resolve_plot_colors(sample_metadata, x, color_values))
   })
   names(cols) <- (group_colname)
 
@@ -1014,8 +1014,11 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   annotation_col[] <- lapply(annotation_col, factor)
   x <- length(unlist(lapply(annotation_col, levels)))
   if (x > length(group_colors)) {
-    k <- x - length(group_colors)
-    more_cols <- get_random_colors(k)
+    generated_group_colors <- get_colors_vctr(
+      data.frame(group_color_index = seq_len(x)),
+      "group_color_index"
+    )
+    more_cols <- unname(generated_group_colors)[seq.int(length(group_colors) + 1, x)]
     group_colors <- c(group_colors, more_cols)
   }
   rownames(annotation_col) <- annot[[label_colname]]

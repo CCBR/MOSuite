@@ -32,7 +32,8 @@ normalize_counts(
   legend_position_for_histogram = "top",
   number_of_histogram_legend_columns = 6,
   plot_corr_matrix_heatmap = TRUE,
-  colors_for_plots = NULL,
+  colors_for_plots = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   interactive_plots = FALSE,
@@ -117,7 +118,10 @@ matrix heatmap. If this function takes longer than 5 minutes to run, Set to \cod
 not be be created. Default is \code{TRUE}.}
 
 \item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list.
-Colors must either be names in \code{grDevices::colors()} or valid hex codes.}
+Colors must either be names in \code{grDevices::colors()} or valid hex codes. Defaults to the MOSuite palette returned
+by \code{get_mosuite_colors()}. If more groups are present than colors provided, supplied colors are used first and
+additional colors are generated from the selected palette for the remaining groups; random colors are used only if
+that palette returns fewer colors than the number of groups.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
