@@ -18,7 +18,8 @@ MOSuite's default plot palette. To use the previous R default palette behavior, 
 \item{...}{additional arguments forwarded to \code{palette_fun}}
 }
 \value{
-named vector of colors for each unique observation in \code{dat$colname}
+named vector of colors for each unique observation in \code{dat$colname}. Factor columns use factor level order;
+other columns use first-observed order.
 }
 \description{
 Get vector of colors for observations in one column of a data frame

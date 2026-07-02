@@ -50,6 +50,17 @@ get_mosuite_colors <- function(n, ...) {
   return(colors[seq_len(min(n, length(colors)))])
 }
 
+get_observed_values <- function(dat, colname) {
+  values <- dplyr::pull(dat, colname)
+  observed_values <- stats::na.omit(as.character(values))
+
+  if (is.factor(values)) {
+    return(levels(values)[levels(values) %in% observed_values])
+  }
+
+  return(unique(observed_values))
+}
+
 
 #' Create named list of default colors for plotting
 #'
@@ -90,7 +101,8 @@ get_colors_lst <- function(
 #' @inheritParams get_colors_lst
 #' @param dat data frame
 #' @param colname column name in `dat`
-#' @returns named vector of colors for each unique observation in `dat$colname`
+#' @returns named vector of colors for each unique observation in `dat$colname`. Factor columns use factor level order;
+#'   other columns use first-observed order.
 #' @export
 #'
 get_colors_vctr <- function(
@@ -99,9 +111,7 @@ get_colors_vctr <- function(
   palette_fun = get_mosuite_colors,
   ...
 ) {
-  obs <- dat |>
-    dplyr::pull(colname) |>
-    unique()
+  obs <- get_observed_values(dat, colname)
   n_obs <- length(obs)
 
   warned_cnd <- NULL
@@ -144,11 +154,7 @@ resolve_plot_colors <- function(
   palette_fun = get_mosuite_colors,
   ...
 ) {
-  obs <- dat |>
-    dplyr::pull(colname) |>
-    unique() |>
-    stats::na.omit() |>
-    as.character()
+  obs <- get_observed_values(dat, colname)
 
   if (length(obs) == 0) {
     return(color_values)

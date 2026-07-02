@@ -15,7 +15,7 @@
   "principal_component_on_x_axis": 1,
   "principal_component_on_y_axis": 2,
   "legend_position_for_pca": "top",
-  "point_size_for_pca": 1,
+  "point_size_for_pca": 3,
   "add_label_to_pca": true,
   "label_font_size": 3,
   "label_offset_y_": 2,

@@ -156,7 +156,7 @@ plot_pca_2d <- S7::new_generic(
     ),
     principal_components = c(1, 2),
     legend_position = "top",
-    point_size = 1,
+    point_size = 3,
     add_label = TRUE,
     label_font_size = 3,
     label_offset_x_ = 2,
@@ -198,7 +198,7 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
   ),
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 1,
+  point_size = 3,
   add_label = TRUE,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -261,7 +261,9 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 #'   parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for
 #'   renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to
 #'   which new name: old_name: new_name
-#' @param color_values vector of colors as hex values or names recognized by R
+#' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+#'   level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+#'   the metadata column.
 #' @param principal_components vector with numbered principal components to plot
 #' @param legend_position passed to in `legend.position` `ggplot2::theme()`
 #' @param point_size size for `ggplot2::geom_point()`
@@ -307,7 +309,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   ),
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 1,
+  point_size = 3,
   add_label = TRUE,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -548,7 +550,9 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
 #' @param group_colname The column from sample metadata containing sample group information.
 #' @param label_colname The column from sample metadata containing sample labels.
 #' @param label_font_size font size used for labels in the interactive figure.
-#' @param color_values vector of colors as hex values or names recognized by R.
+#' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+#'   level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+#'   the metadata column.
 #' @param plot_filename output filename when saving plots.
 #' @param print_plots whether to print plot to the active graphics device.
 #' @param save_plots whether to save plot to disk.

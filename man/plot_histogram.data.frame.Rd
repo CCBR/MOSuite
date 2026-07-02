@@ -26,7 +26,9 @@ labels to display on your figure (e.g. shorter labels are sometimes preferred on
 column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
 \code{NULL} -- \code{sample_id_colname} will be used.)}
 
-\item{color_values}{vector of colors as hex values or names recognized by R}
+\item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in the
+metadata column.}
 
 \item{color_by_group}{Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by the
 column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.}

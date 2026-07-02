@@ -107,7 +107,9 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 #'   labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
 #'   column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
 #'   `NULL` -- `sample_id_colname` will be used.)
-#' @param color_values vector of colors as hex values or names recognized by R
+#' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+#'   level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+#'   the metadata column.
 #' @param color_by_group Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by the
 #'   column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.
 #' @param set_min_max_for_x_axis whether to override the default for `ggplot2::xlim()` (default: `FALSE`)
@@ -206,11 +208,12 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
 
   if (color_by_group == TRUE) {
     df_long <- df_long |>
-      dplyr::mutate(
-        !!rlang::sym(group_colname) := as.factor(!!rlang::sym(group_colname))
-      ) |>
-      dplyr::filter(!is.na(group_colname))
+      dplyr::filter(!is.na(!!rlang::sym(group_colname)))
     color_values <- resolve_plot_colors(df_long, group_colname, color_values)
+    df_long <- df_long |>
+      dplyr::mutate(
+        !!rlang::sym(group_colname) := as.character(!!rlang::sym(group_colname))
+      )
 
     # plot Density
     hist_plot <- df_long |>
@@ -224,6 +227,10 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
       )
   } else {
     color_values <- resolve_plot_colors(df_long, sample_id_colname, color_values)
+    df_long <- df_long |>
+      dplyr::mutate(
+        !!rlang::sym(sample_id_colname) := as.character(!!rlang::sym(sample_id_colname))
+      )
 
     hist_plot <- df_long |>
       ggplot2::ggplot(ggplot2::aes(

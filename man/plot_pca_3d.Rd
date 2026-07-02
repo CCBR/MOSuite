@@ -99,7 +99,9 @@ plot_pca_3d(
 
 \item{label_font_size}{font size used for labels in the interactive figure.}
 
-\item{color_values}{vector of colors as hex values or names recognized by R.}
+\item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in the
+metadata column.}
 
 \item{plot_title}{title for the plot}
 

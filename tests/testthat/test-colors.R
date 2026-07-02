@@ -100,6 +100,21 @@ test_that("resolve_plot_colors names palettes by first observed category order",
   )
 })
 
+test_that("color vectors use factor level order when grouping column is a factor", {
+  dat <- data.frame(
+    group = factor(c("B", "A", "C", "A"), levels = c("C", "A", "B", "D"))
+  )
+
+  expect_equal(
+    get_colors_vctr(dat, "group"),
+    c(C = "#5954d6", A = "#e1562c", B = "#b80058")
+  )
+  expect_equal(
+    resolve_plot_colors(dat, "group", c("red", "blue", "green")),
+    c(C = "red", A = "blue", B = "green")
+  )
+})
+
 test_that("resolve_plot_colors generates colors when none are supplied", {
   dat <- data.frame(group = c("B", "A", "C", "A"))
 

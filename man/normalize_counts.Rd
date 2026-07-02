@@ -23,7 +23,7 @@ normalize_counts(
   label_offset_x_ = 2,
   label_offset_y_ = 2,
   label_font_size = 3,
-  point_size_for_pca = 1,
+  point_size_for_pca = 3,
   color_histogram_by_group = TRUE,
   set_min_max_for_x_axis_for_histogram = FALSE,
   minimum_for_x_axis_for_histogram = -1,
@@ -119,9 +119,10 @@ not be be created. Default is \code{TRUE}.}
 
 \item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list.
 Colors must either be names in \code{grDevices::colors()} or valid hex codes. Defaults to the MOSuite palette returned
-by \code{get_mosuite_colors()}. If more groups are present than colors provided, supplied colors are used first and
-additional colors are generated from the selected palette for the remaining groups; random colors are used only if
-that palette returns fewer colors than the number of groups.}
+by \code{get_mosuite_colors()}. Unnamed colors are assigned by factor level order when the grouping column is a factor;
+otherwise, they are assigned in the order groups first appear in the metadata column. If more groups are present than colors provided,
+supplied colors are used first and additional colors are generated from the selected palette for the remaining groups;
+random colors are used only if that palette returns fewer colors than the number of groups.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 

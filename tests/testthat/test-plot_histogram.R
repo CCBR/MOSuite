@@ -536,6 +536,30 @@ test_that("plot_histogram resolves group colors by first observed group order", 
   )
 })
 
+test_that("plot_histogram resolves group colors by factor level order", {
+  color_values <- c("#5954d6", "#e1562c", "#b80058")
+  counts_dat <- nidap_filtered_counts[, c("Gene", "B1", "B2", "B3", "A1", "A2", "A3", "C1", "C2", "C3")]
+  sample_metadata <- nidap_sample_metadata
+  sample_metadata$Group <- factor(sample_metadata$Group, levels = c("C", "A", "B"))
+
+  plot <- plot_histogram(
+    counts_dat,
+    sample_metadata = sample_metadata,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    color_values = color_values,
+    color_by_group = TRUE
+  )
+  scales <- ggplot2::ggplot_build(plot)$plot$scales$scales
+  colour_scale <- scales[[which(vapply(scales, function(scale) "colour" %in% scale$aesthetics, logical(1)))[[1]]]]
+
+  expect_equal(
+    colour_scale$palette.cache,
+    c(C = "#5954d6", A = "#e1562c", B = "#b80058")
+  )
+})
+
 test_that("plot_histogram resolves sample colors by first observed sample order", {
   color_values <- c("#5954d6", "#e1562c", "#b80058", "#00c6f8")
   counts_dat <- nidap_filtered_counts[, c("Gene", "B1", "A1", "C1", "A2")]

@@ -20,7 +20,7 @@ plot_pca_2d(
     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 1,
+  point_size = 3,
   add_label = TRUE,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -47,7 +47,7 @@ plot_pca_2d(
     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 1,
+  point_size = 3,
   add_label = TRUE,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -74,7 +74,7 @@ plot_pca_2d(
     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 1,
+  point_size = 3,
   add_label = TRUE,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -87,8 +87,7 @@ plot_pca_2d(
 )
 }
 \arguments{
-\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
-slot}
+\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts slot.}
 
 \item{count_type}{the type of counts to use when \code{moo_counts} is a \code{multiOmicDataSet}; ignored for data frame input.}
 
@@ -120,7 +119,9 @@ parameter to rename samples manually for display on the PCA plot. Use "Add item"
 renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to
 which new name: old_name: new_name}
 
-\item{color_values}{vector of colors as hex values or names recognized by R}
+\item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in the
+metadata column.}
 
 \item{principal_components}{vector with numbered principal components to plot}
 

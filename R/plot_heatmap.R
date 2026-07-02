@@ -105,7 +105,9 @@ S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
 #'   labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
 #'   column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
 #'   `NULL` -- `sample_id_colname` will be used.)
-#' @param color_values vector of colors as hex values or names recognized by R
+#' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+#'   level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
+#'   the metadata column.
 #'
 #' @rdname plot_corr_heatmap-data.frame
 #' @aliases plot_corr_heatmap.data.frame
@@ -243,7 +245,9 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
 #'   labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
 #'   column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
 #'   `NULL` -- `sample_id_colname` will be used.)
-#' @param color_values vector of colors as hex values or names recognized by R
+#' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+#'   level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
+#'   the metadata column.
 #' @param samples_to_include Which samples would you like to include? Usually, you will choose all sample columns, or
 #'   you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
 #'   analysis downstream of this step. (Default: `NULL` - all sample IDs in `moo@sample_meta` will be used.)

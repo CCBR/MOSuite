@@ -20,7 +20,7 @@ filter_counts(
   principal_component_on_x_axis = 1,
   principal_component_on_y_axis = 2,
   legend_position_for_pca = "top",
-  point_size_for_pca = 1,
+  point_size_for_pca = 3,
   add_label_to_pca = TRUE,
   label_font_size = 3,
   label_offset_y_ = 2,
@@ -127,9 +127,10 @@ number of samples.}
 
 \item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list.
 Colors must either be names in \code{grDevices::colors()} or valid hex codes. Defaults to the MOSuite palette returned
-by \code{get_mosuite_colors()}. If more groups are present than colors provided, supplied colors are used first and
-additional colors are generated from the selected palette for the remaining groups; random colors are used only if
-that palette returns fewer colors than the number of groups.}
+by \code{get_mosuite_colors()}. Unnamed colors are assigned by factor level order when the grouping column is a factor;
+otherwise, they are assigned in the order groups first appear in the metadata column. If more groups are present than colors provided,
+supplied colors are used first and additional colors are generated from the selected palette for the remaining groups;
+random colors are used only if that palette returns fewer colors than the number of groups.}
 
 \item{plot_corr_matrix_heatmap}{Datasets with a large number of samples may be too large to create a correlation
 matrix heatmap. If this function takes longer than 5 minutes to run, Set to \code{FALSE} and the correlation matrix will

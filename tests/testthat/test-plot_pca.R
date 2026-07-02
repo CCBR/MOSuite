@@ -243,6 +243,44 @@ test_that("2D and 3D PCA resolve unnamed colors by first observed group order", 
   expect_equal(pca_3d_colors, expected_colors)
 })
 
+test_that("2D and 3D PCA resolve unnamed colors by factor level order", {
+  color_values <- c("#5954d6", "#e1562c", "#b80058")
+  expected_colors <- c(C = "#5954d6", A = "#e1562c", B = "#b80058")
+  counts_dat <- nidap_filtered_counts[, c("Gene", "B1", "B2", "B3", "A1", "A2", "A3", "C1", "C2", "C3")]
+  sample_metadata <- nidap_sample_metadata
+  sample_metadata$Group <- factor(sample_metadata$Group, levels = c("C", "A", "B"))
+
+  pca_2d <- plot_pca_2d(
+    counts_dat,
+    sample_metadata = sample_metadata,
+    feature_id_colname = "Gene",
+    color_values = color_values,
+    add_label = FALSE,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+  pca_2d_colors <- get_colour_scale(pca_2d)$palette.cache[names(expected_colors)]
+
+  pca_3d <- plot_pca_3d(
+    counts_dat,
+    sample_metadata = sample_metadata,
+    feature_id_colname = "Gene",
+    color_values = color_values,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+  pca_3d_traces <- plotly::plotly_build(pca_3d)$x$data
+  pca_3d_colors <- stats::setNames(
+    normalize_color_values(vapply(pca_3d_traces, function(trace) trace$marker$color, character(1))),
+    vapply(pca_3d_traces, function(trace) trace$name, character(1))
+  )[names(expected_colors)]
+
+  expected_colors <- stats::setNames(normalize_color_values(expected_colors), names(expected_colors))
+
+  expect_equal(normalize_color_values(pca_2d_colors), unname(expected_colors))
+  expect_equal(pca_3d_colors, expected_colors)
+})
+
 test_that("2D PCA preserves named color mappings", {
   color_values <- c(C = "#5954d6", A = "#e1562c", B = "#b80058")
 
