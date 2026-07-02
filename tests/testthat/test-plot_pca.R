@@ -207,6 +207,44 @@ get_colour_scale <- function(plot) {
   scales[[which(vapply(scales, function(scale) "colour" %in% scale$aesthetics, logical(1)))[[1]]]]
 }
 
+get_colour_guide_ncol <- function(plot) {
+  plot$guides$guides$colour$params$ncol
+}
+
+test_that("2D PCA wraps long top and bottom sample-name legends", {
+  sample_columns <- setdiff(colnames(nidap_filtered_counts), "Gene")
+  long_sample_names <- stats::setNames(
+    sprintf("SampleName%05d", seq_along(sample_columns)),
+    sample_columns
+  )
+  counts_dat <- nidap_filtered_counts
+  colnames(counts_dat) <- ifelse(
+    colnames(counts_dat) %in% names(long_sample_names),
+    unname(long_sample_names[colnames(counts_dat)]),
+    colnames(counts_dat)
+  )
+  sample_metadata <- nidap_sample_metadata
+  sample_metadata$Sample <- unname(long_sample_names[as.character(sample_metadata$Sample)])
+  sample_metadata$Label <- sample_metadata$Sample
+
+  for (legend_position in c("top", "bottom")) {
+    pca_2d <- plot_pca_2d(
+      counts_dat,
+      sample_metadata = sample_metadata,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      group_colname = "Sample",
+      label_colname = "Label",
+      legend_position = legend_position,
+      add_label = FALSE,
+      print_plots = FALSE,
+      save_plots = FALSE
+    )
+
+    expect_equal(get_colour_guide_ncol(pca_2d), 3)
+  }
+})
+
 test_that("2D and 3D PCA resolve unnamed colors by first observed group order", {
   color_values <- c("#5954d6", "#e1562c", "#b80058")
   expected_colors <- c(B = "#5954d6", A = "#e1562c", C = "#b80058")

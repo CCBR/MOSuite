@@ -118,7 +118,8 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 #' @param x_axis_label text label for the x axis `ggplot2::xlab()`
 #' @param y_axis_label text label for the y axis `ggplot2::ylab()`
 #' @param legend_position passed to in `legend.position` `ggplot2::theme()`
-#' @param legend_font_size passed to `ggplot2::element_text()` via `ggplot2::theme()`
+#' @param legend_font_size passed to `ggplot2::element_text()` via `ggplot2::theme()`. If `NULL`, the size is scaled
+#'   automatically based on the number and length of legend labels.
 #' @param number_of_legend_columns passed to `ncol` in `ggplot2::guide_legend()`
 #' @param interactive_plots set to TRUE to make the plot interactive with `plotly`, allowing you to hover your mouse
 #'   over a point or line to view sample information. The similarity heat map will not display if this toggle is set to
@@ -176,7 +177,7 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
   x_axis_label = "Counts",
   y_axis_label = "Density",
   legend_position = "top",
-  legend_font_size = 10,
+  legend_font_size = NULL,
   number_of_legend_columns = 6,
   interactive_plots = FALSE,
   ...
@@ -243,6 +244,8 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
       )
   }
 
+  legend_font_size <- get_legend_text_size(names(color_values), legend_font_size)
+
   hist_plot <- hist_plot +
     ggplot2::xlab(x_axis_label) +
     ggplot2::ylab(y_axis_label) +
@@ -265,10 +268,15 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
     ggplot2::ggtitle("Frequency Histogram") +
     ggplot2::xlim(xmin, xmax) +
     # scale_linetype_manual(values=rep(c('solid', 'dashed','dotted','twodash'),n)) +
-    ggplot2::scale_colour_manual(values = color_values) +
-    ggplot2::guides(
-      linetype = ggplot2::guide_legend(ncol = number_of_legend_columns)
-    )
+    ggplot2::scale_colour_manual(values = color_values)
+
+  hist_plot <- add_colour_legend_layout(
+    hist_plot,
+    labels = names(color_values),
+    legend_position = legend_position,
+    ncol = number_of_legend_columns,
+    legend_text_size = legend_font_size
+  )
 
   if (isTRUE(interactive_plots)) {
     hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) |>

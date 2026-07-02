@@ -45,7 +45,8 @@ column you select in the "Group Column Used to Color Histogram" parameter (below
 
 \item{legend_position}{passed to in \code{legend.position} \code{ggplot2::theme()}}
 
-\item{legend_font_size}{passed to \code{ggplot2::element_text()} via \code{ggplot2::theme()}}
+\item{legend_font_size}{passed to \code{ggplot2::element_text()} via \code{ggplot2::theme()}. If \code{NULL}, the size is scaled
+automatically based on the number and length of legend labels.}
 
 \item{number_of_legend_columns}{passed to \code{ncol} in \code{ggplot2::guide_legend()}}
 

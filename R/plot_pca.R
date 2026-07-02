@@ -158,6 +158,7 @@ plot_pca_2d <- S7::new_generic(
     legend_position = "top",
     point_size = 3,
     add_label = TRUE,
+    legend_font_size = NULL,
     label_font_size = 3,
     label_offset_x_ = 2,
     label_offset_y_ = 2,
@@ -200,6 +201,7 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
   legend_position = "top",
   point_size = 3,
   add_label = TRUE,
+  legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
@@ -223,6 +225,7 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
     legend_position = legend_position,
     point_size = point_size,
     add_label = add_label,
+    legend_font_size = legend_font_size,
     label_font_size = label_font_size,
     label_offset_x_ = label_offset_x_,
     label_offset_y_ = label_offset_y_,
@@ -268,6 +271,8 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 #' @param legend_position passed to in `legend.position` `ggplot2::theme()`
 #' @param point_size size for `ggplot2::geom_point()`
 #' @param add_label whether to add text labels for the points
+#' @param legend_font_size font size for the PCA legend text. If `NULL`, the size is scaled automatically based on the
+#'   number and length of legend labels.
 #' @param count_type the type of counts to use when `moo_counts` is a `multiOmicDataSet`; ignored for data frame input.
 #' @param sub_count_type used when `count_type` refers to a list of count matrices; ignored for data frame input.
 #' @param label_font_size font size for text labels on the PCA plot.
@@ -311,6 +316,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   legend_position = "top",
   point_size = 3,
   add_label = TRUE,
+  legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
@@ -357,6 +363,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   prin_comp_x <- principal_components[1]
   prin_comp_y <- principal_components[2]
   color_values <- resolve_plot_colors(pca_wide, group_colname, color_values)
+  legend_font_size <- get_legend_text_size(names(color_values), legend_font_size)
   # plot PCA
   pca_plot <- pca_wide |>
     dplyr::mutate(
@@ -386,12 +393,19 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
         linewidth = 1
       ),
       axis.ticks = ggplot2::element_line(linewidth = 1),
-      legend.text = ggplot2::element_text(size = 18),
+      legend.text = ggplot2::element_text(size = legend_font_size),
       aspect.ratio = 1
     ) +
     ggplot2::scale_colour_manual(values = color_values) +
     ggplot2::xlab(get_pc_percent_lab(pca_df, prin_comp_x)) +
     ggplot2::ylab(get_pc_percent_lab(pca_df, prin_comp_y))
+
+  pca_plot <- add_colour_legend_layout(
+    pca_plot,
+    labels = names(color_values),
+    legend_position = legend_position,
+    legend_text_size = legend_font_size
+  )
 
   if (add_label == TRUE) {
     abort_packages_not_installed("ggrepel")

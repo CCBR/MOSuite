@@ -79,6 +79,60 @@ sample_meta <- structure(
   row.names = c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
   class = "data.frame"
 )
+
+get_histogram_colour_guide_ncol <- function(plot) {
+  plot$guides$guides$colour$params$ncol
+}
+
+test_that("plot_histogram wraps long top and bottom sample-name legends", {
+  counts_dat <- log_counts |>
+    as.data.frame() |>
+    tibble::rownames_to_column("Gene")
+  sample_columns <- setdiff(colnames(counts_dat), "Gene")
+  long_sample_names <- stats::setNames(
+    sprintf("SampleName%05d", seq_along(sample_columns)),
+    sample_columns
+  )
+  colnames(counts_dat) <- ifelse(
+    colnames(counts_dat) %in% names(long_sample_names),
+    unname(long_sample_names[colnames(counts_dat)]),
+    colnames(counts_dat)
+  )
+  sample_metadata <- sample_meta
+  sample_metadata$Sample <- unname(long_sample_names[as.character(sample_metadata$Sample)])
+  sample_metadata$Label <- sample_metadata$Sample
+
+  for (legend_position in c("top", "bottom")) {
+    plot <- plot_histogram(
+      counts_dat,
+      sample_metadata = sample_metadata,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      color_by_group = FALSE,
+      legend_position = legend_position,
+      number_of_legend_columns = 6
+    )
+
+    expect_equal(get_histogram_colour_guide_ncol(plot), 3)
+  }
+})
+
+test_that("plot_histogram legend columns target the colour guide", {
+  plot <- plot_histogram(
+    log_counts |>
+      as.data.frame() |>
+      tibble::rownames_to_column("Gene"),
+    sample_meta,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    color_by_group = FALSE,
+    legend_position = "top",
+    number_of_legend_columns = 2
+  )
+
+  expect_equal(get_histogram_colour_guide_ncol(plot), 2)
+})
+
 test_that("plot_histogram works with rownames", {
   p <- plot_histogram(
     log_counts |> as.data.frame() |> tibble::rownames_to_column("Gene"),

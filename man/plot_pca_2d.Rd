@@ -22,6 +22,7 @@ plot_pca_2d(
   legend_position = "top",
   point_size = 3,
   add_label = TRUE,
+  legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
@@ -49,6 +50,7 @@ plot_pca_2d(
   legend_position = "top",
   point_size = 3,
   add_label = TRUE,
+  legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
@@ -76,6 +78,7 @@ plot_pca_2d(
   legend_position = "top",
   point_size = 3,
   add_label = TRUE,
+  legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
@@ -130,6 +133,9 @@ metadata column.}
 \item{point_size}{size for \code{ggplot2::geom_point()}}
 
 \item{add_label}{whether to add text labels for the points}
+
+\item{legend_font_size}{font size for the PCA legend text. If \code{NULL}, the size is scaled automatically based on the
+number and length of legend labels.}
 
 \item{label_font_size}{font size for text labels on the PCA plot.}
 
