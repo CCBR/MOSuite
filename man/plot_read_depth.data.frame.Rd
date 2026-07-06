@@ -5,6 +5,15 @@
 \alias{plot_read_depth.data.frame}
 \title{Plot read depth for \code{data.frame}}
 \arguments{
+\item{sample_metadata}{sample metadata dataframe, required when \code{group_colname} is supplied.}
+
+\item{sample_id_colname}{column in sample metadata containing sample IDs.}
+
+\item{group_colname}{sample metadata column used to color bars. Leave blank to use the current single-color bar fill.}
+
+\item{color_values}{colors used when \code{group_colname} is supplied. Named vectors are matched to group values;
+unnamed vectors follow group order and are extended with MOSuite colors when too few colors are supplied.}
+
 \item{...}{additional arguments (ignored; accepted for compatibility with the moo dispatch)}
 }
 \value{

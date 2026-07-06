@@ -9,6 +9,10 @@
 #' @inheritParams filter_counts
 #' @inheritParams option_params
 #'
+#' @param group_colname sample metadata column used to color the read-depth plot. Leave blank to use the current
+#'   single-color bar fill.
+#' @param colors_for_plots colors used when `group_colname` is supplied. Named vectors are matched to group values;
+#'   unnamed vectors follow group order and are extended with MOSuite colors when too few colors are supplied.
 #' @param cleanup_column_names Invalid raw counts column names can cause errors
 #'   in the downstream analysis. If this is `TRUE`, any invalid column names
 #'   will be automatically altered to a correct format. These format changes
@@ -55,6 +59,21 @@ clean_raw_counts <- function(
   sample_id_colname = NULL,
   feature_id_colname = NULL,
   samples_to_rename = "",
+  group_colname = "",
+  colors_for_plots = c(
+    "#5954d6",
+    "#e1562c",
+    "#b80058",
+    "#00c6f8",
+    "#d163e6",
+    "#00a76c",
+    "#ff9287",
+    "#008cf9",
+    "#006e00",
+    "#796880",
+    "#FFA500",
+    "#878500"
+  ),
   cleanup_column_names = TRUE,
   split_gene_name = TRUE,
   aggregate_rows_with_duplicate_gene_names = TRUE,
@@ -74,7 +93,13 @@ clean_raw_counts <- function(
   }
   # Sample Read Counts Plot
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
-    read_plot <- plot_read_depth(counts_dat)
+    read_plot <- plot_read_depth(
+      counts_dat,
+      sample_metadata = sample_metadata,
+      sample_id_colname = sample_id_colname,
+      group_colname = group_colname,
+      color_values = colors_for_plots
+    )
     print_or_save_plot(
       read_plot,
       filename = file.path(plots_subdir, "read_depth.png"),

@@ -9,6 +9,13 @@
 
 \item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
 Must be a name in \code{names(moo@counts[[count_type]])}.}
+
+\item{sample_id_colname}{column in sample metadata containing sample IDs.}
+
+\item{group_colname}{sample metadata column used to color bars. Leave blank to use the current single-color bar fill.}
+
+\item{color_values}{colors used when \code{group_colname} is supplied. Named vectors are matched to group values;
+unnamed vectors follow group order and are extended with MOSuite colors when too few colors are supplied.}
 }
 \value{
 ggplot barplot
