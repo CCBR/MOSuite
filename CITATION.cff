@@ -713,7 +713,7 @@ references:
   authors:
   - family-names: Auguie
     given-names: Baptiste
-    email: baptiste.auguie@gmail.com
+    email: baptiste.auguie@vuw.ac.nz
   year: '2026'
   doi: 10.32614/CRAN.package.gridExtra
 - type: software
