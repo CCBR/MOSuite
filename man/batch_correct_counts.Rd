@@ -14,9 +14,28 @@ batch_correct_counts(
   covariates_colnames = "Group",
   batch_colname = "Batch",
   label_colname = NULL,
-  colors_for_plots = NULL,
+  samples_to_rename = c(""),
+  add_label_to_pca = TRUE,
+  principal_component_on_x_axis = 1,
+  principal_component_on_y_axis = 2,
+  legend_position_for_pca = "top",
+  label_offset_x_ = 2,
+  label_offset_y_ = 2,
+  label_font_size = 3,
+  point_size_for_pca = 3,
+  color_histogram_by_group = TRUE,
+  set_min_max_for_x_axis_for_histogram = FALSE,
+  minimum_for_x_axis_for_histogram = -1,
+  maximum_for_x_axis_for_histogram = 1,
+  legend_font_size_for_histogram = NULL,
+  legend_position_for_histogram = "top",
+  number_of_histogram_legend_columns = 6,
+  plot_corr_matrix_heatmap = TRUE,
+  colors_for_plots = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
+    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
+  interactive_plots = FALSE,
   plots_subdir = "batch"
 )
 }
@@ -59,6 +78,49 @@ labels to display on your figure (e.g. shorter labels are sometimes preferred on
 column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
 \code{NULL} -- \code{sample_id_colname} will be used.)}
 
+\item{samples_to_rename}{If you do not have a Plot Labels Column in your sample metadata table, you can use this
+parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for
+renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to
+which new name: old_name: new_name}
+
+\item{add_label_to_pca}{label points on the PCA plot}
+
+\item{principal_component_on_x_axis}{The principal component to plot on the x-axis for the PCA plot. Choices include
+1, 2, 3, ... (default: 1)}
+
+\item{principal_component_on_y_axis}{The principal component to plot on the y-axis for the PCA plot. Choices include
+1, 2, 3, ... (default: 2)}
+
+\item{legend_position_for_pca}{legend position for the PCA plot}
+
+\item{label_offset_x_}{label offset x for the PCA plot}
+
+\item{label_offset_y_}{label offset y for the PCA plot}
+
+\item{label_font_size}{label font size for the PCA plot}
+
+\item{point_size_for_pca}{geom point size for the PCA plot}
+
+\item{color_histogram_by_group}{Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by
+the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is TRUE.}
+
+\item{set_min_max_for_x_axis_for_histogram}{whether to set min/max value for histogram x-axis}
+
+\item{minimum_for_x_axis_for_histogram}{x-axis minimum for histogram plot}
+
+\item{maximum_for_x_axis_for_histogram}{x-axis maximum for histogram plot}
+
+\item{legend_font_size_for_histogram}{legend font size for the histogram plot. If \code{NULL}, the size is scaled automatically.}
+
+\item{legend_position_for_histogram}{legend position for the histogram plot. consider setting to 'none' for a large
+number of samples.}
+
+\item{number_of_histogram_legend_columns}{number of columns for the histogram legend}
+
+\item{plot_corr_matrix_heatmap}{Datasets with a large number of samples may be too large to create a correlation
+matrix heatmap. If this function takes longer than 5 minutes to run, Set to \code{FALSE} and the correlation matrix will
+not be be created. Default is \code{TRUE}.}
+
 \item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list.
 Colors must either be names in \code{grDevices::colors()} or valid hex codes. Defaults to the MOSuite palette returned
 by \code{get_mosuite_colors()}. Unnamed colors are assigned by factor level order when the grouping column is a factor;
@@ -70,6 +132,10 @@ groups; random colors are used only if that palette returns fewer colors than th
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
 \item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+
+\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover
+your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
+is set to \code{TRUE}. Default is \code{FALSE}.}
 
 \item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
