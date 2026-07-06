@@ -5,6 +5,8 @@
   "sample_id_colname": null,
   "feature_id_colname": null,
   "samples_to_rename": "",
+  "group_colname": "",
+  "colors_for_plots": ["#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c", "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"],
   "cleanup_column_names": true,
   "split_gene_name": true,
   "aggregate_rows_with_duplicate_gene_names": true,
