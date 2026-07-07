@@ -20,7 +20,7 @@ engine: knitr
 library(MOSuite)
 library(dplyr)
 library(knitr)
-options(moo_prints_plots = params$print_plots)
+options(moo_print_plots = params$print_plots)
 ```
 
 ## Load data
