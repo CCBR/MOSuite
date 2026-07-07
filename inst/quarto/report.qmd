@@ -58,7 +58,7 @@ message(class(contrasts_vctr))
 ## Processing
 
 ```{r analyze}
-moo |>
+moo <- moo |>
   clean_raw_counts() |>
   filter_counts(group_colname = group_colname) |>
   normalize_counts(group_colname = group_colname) |>
