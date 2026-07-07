@@ -20,3 +20,12 @@ render_report(
 \description{
 Copy the Quarto template to the current working directory and render it using \code{quarto::quarto_render()}. The rendered report will be saved in the current working directory. You can specify additional arguments to \code{quarto::quarto_render()} to customize the rendering process.
 }
+\examples{
+render_report(execute_params = list(
+  counts_tsv = system.file("extdata", "nidap", "Raw_Counts.csv.gz",
+                           package = "MOSuite"),
+  samplesheet_tsv = system.file("extdata", "nidap",
+    "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+    package = "MOSuite")
+))
+}

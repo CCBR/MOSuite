@@ -18,14 +18,6 @@ ggplot object
 \description{
 Plot histogram
 }
-\section{Methods}{
-\tabular{ll}{
-   link to docs \tab class \cr
-   \link{plot_histogram_moo} \tab \code{multiOmicDataSet} \cr
-   \link{plot_histogram_dat} \tab \code{data.frame} \cr
-}
-}
-
 \examples{
 # plot histogram for a counts slot in a multiOmicDataset Object
 moo <- multiOmicDataSet(
@@ -53,6 +45,11 @@ plot_histogram(
 
 }
 \seealso{
+\itemize{
+\item \code{\link[=plot_histogram.multiOmicDataSet]{plot_histogram.multiOmicDataSet()}}
+\item \code{\link[=plot_histogram.data.frame]{plot_histogram.data.frame()}}
+}
+
 Other plotters:
 \code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
 \code{\link[=plot_expr_heatmap]{plot_expr_heatmap()}},

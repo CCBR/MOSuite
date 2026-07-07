@@ -1,7 +1,7 @@
 {
   "r_function": "plot_venn_diagram",
   "title": "Venn Diagram\n",
-  "description": "generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across\ntested contrasts). This Venn diagram is available for up to five sets; Intersection plot is available for any number\nof sets. Specific sets can be selected for the visualizations and the returned dataset may include all (default) or\nspecified intersections.\n",
+  "description": "Generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across\ntested contrasts). This Venn diagram is available for up to five sets; Intersection plot is available for any number\nof sets. Specific sets can be selected for the visualizations and the returned dataset may include all (default) or\nspecified intersections.\nAn S7 generic with methods for \nlist(\"multiOmicDataSet\")\n and \nlist(\"data.frame\")\n.\n",
   "columns": [
     {
       "key": "feature_id_colname",

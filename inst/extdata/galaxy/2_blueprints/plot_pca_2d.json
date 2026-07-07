@@ -1,7 +1,7 @@
 {
   "r_function": "plot_pca_2d",
   "title": "PCA 2D\n",
-  "description": "Perform and plot a 2D Principal Components Analysis\n",
+  "description": "Perform and plot a 2D Principal Components Analysis\nPerform and plot a 2D Principal Components Analysis\n",
   "columns": [
     {
       "key": "feature_id_colname",

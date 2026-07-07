@@ -1,0 +1,92 @@
+name: syncweaver-source-dispatch
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: Optional source ref to dispatch (defaults to release tag for release events, or current ref for manual runs).
+        required: false
+        type: string
+      source_repo:
+        description: Optional source repository override in OWNER/REPO format (defaults to current repository).
+        required: false
+        type: string
+      orchestrator-repo:
+        description: Optional orchestrator repository override in OWNER/REPO format.
+        required: false
+        default: CCBR/syncweaver
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  notify-syncweaver:
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_REPOSITORY: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.source_repo || github.repository }}
+      SOURCE_REF: ${{ github.event_name == 'release' && github.event.release.tag_name || github.event.inputs.source_ref || github.ref_name }}
+      ORCHESTRATOR_REPO: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs['orchestrator-repo'] || vars['orchestrator-repo'] || 'CCBR/syncweaver' }}
+    steps:
+      - name: Validate dispatch payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${SOURCE_REPOSITORY//[[:space:]]/}" ]]; then
+            echo "Error: source repository cannot be empty." >&2
+            exit 1
+          fi
+          if [[ -z "${SOURCE_REF//[[:space:]]/}" ]]; then
+            echo "Error: source ref cannot be empty." >&2
+            exit 1
+          fi
+          if [[ -z "${ORCHESTRATOR_REPO//[[:space:]]/}" ]]; then
+            echo "Error: orchestrator repository cannot be empty." >&2
+            exit 1
+          fi
+          if [[ "${ORCHESTRATOR_REPO}" != */* ]]; then
+            echo "Error: orchestrator repository must be in OWNER/REPO format." >&2
+            exit 1
+          fi
+          if [[ -z "${{ vars.CCBR_BOT_APP_ID }}" ]]; then
+            echo "Error: vars.CCBR_BOT_APP_ID is required to generate a dispatch token." >&2
+            exit 1
+          fi
+          if [[ -z "${{ secrets.CCBR_BOT_PRIVATE_KEY }}" ]]; then
+            echo "Error: secrets.CCBR_BOT_PRIVATE_KEY is required to generate a dispatch token." >&2
+            exit 1
+          fi
+
+      - name: Resolve orchestrator repository owner and name
+        id: orchestrator_repo
+        shell: bash
+        run: |
+          set -euo pipefail
+          owner="${ORCHESTRATOR_REPO%%/*}"
+          repo="${ORCHESTRATOR_REPO#*/}"
+          if [[ -z "${owner}" || -z "${repo}" ]]; then
+            echo "Error: failed to parse orchestrator repository '${ORCHESTRATOR_REPO}'." >&2
+            exit 1
+          fi
+          echo "owner=${owner}" >> "$GITHUB_OUTPUT"
+          echo "repository=${repo}" >> "$GITHUB_OUTPUT"
+
+      - name: Generate CCBR-bot token
+        id: ccbr_bot
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.CCBR_BOT_APP_ID }}
+          private-key: ${{ secrets.CCBR_BOT_PRIVATE_KEY }}
+          owner: ${{ steps.orchestrator_repo.outputs.owner }}
+          repositories: ${{ steps.orchestrator_repo.outputs.repository }}
+
+      - name: Dispatch syncweaver-update-hosts workflow in orchestrator repo
+        uses: peter-evans/repository-dispatch@v4
+        with:
+          token: ${{ steps.ccbr_bot.outputs.token }}
+          repository: ${{ env.ORCHESTRATOR_REPO }}
+          event-type: syncweaver-update-hosts
+          client-payload: >-
+            {"source_repository": ${{ toJson(env.SOURCE_REPOSITORY) }}, "ref": ${{ toJson(env.SOURCE_REF) }}}

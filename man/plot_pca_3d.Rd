@@ -2,7 +2,9 @@
 % Please edit documentation in R/plot_pca.R
 \name{plot_pca_3d}
 \alias{plot_pca_3d}
-\title{3D PCA for counts dataframe}
+\alias{plot_pca_3d,MOSuite::multiOmicDataSet-method}
+\alias{plot_pca_3d,data.frame-method}
+\title{Perform and plot a 3D Principal Components Analysis}
 \usage{
 plot_pca_3d(
   moo_counts,
@@ -73,62 +75,48 @@ plot_pca_3d(
 )
 }
 \arguments{
-\item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
-slot}
+\item{moo_counts}{counts dataframe}
 
-\item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
+\item{count_type}{the type of counts to use. Ignored when \code{moo_counts} is already a dataframe.}
 
-\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
-Must be a name in \code{names(moo@counts[[count_type]])}.}
+\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.}
 
 \item{sample_metadata}{sample metadata as a data frame or tibble.}
 
-\item{feature_id_colname}{The column from the counts dataa containing the Feature IDs (Usually Gene or Protein ID).
-This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
-Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
-used.)}
+\item{feature_id_colname}{The column from the counts data containing feature IDs. If \code{NULL}, first column is used.}
 
-\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column
-must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first
-column in the sample metadata will be used.)}
+\item{sample_id_colname}{The column from sample metadata containing sample names. If \code{NULL}, first column is used.}
 
-\item{samples_to_rename}{If you do not have a Plot Labels Column in your sample metadata table, you can use this
-parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for
-renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to
-which new name: old_name: new_name}
+\item{samples_to_rename}{optional named mapping in \code{old_name: new_name} format for display labels.}
 
-\item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a
-column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
-Before, After, etc.).}
+\item{group_colname}{The column from sample metadata containing sample group information.}
 
-\item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in
-the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
-labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
-column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
-\code{NULL} -- \code{sample_id_colname} will be used.)}
+\item{label_colname}{The column from sample metadata containing sample labels.}
 
 \item{principal_components}{vector with numbered principal components to plot}
 
 \item{point_size}{size for \code{ggplot2::geom_point()}}
 
-\item{label_font_size}{label font size for the PCA plot}
+\item{label_font_size}{font size used for labels in the interactive figure.}
 
-\item{color_values}{vector of colors as hex values or names recognized by R}
+\item{color_values}{vector of colors as hex values or names recognized by R.}
 
 \item{plot_title}{title for the plot}
 
-\item{plot_filename}{plot output filename - only used if save_plots is TRUE}
+\item{plot_filename}{output filename when saving plots.}
 
-\item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
+\item{print_plots}{whether to print plot to the active graphics device.}
 
-\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+\item{save_plots}{whether to save plot to disk.}
 
-\item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
+\item{plots_subdir}{output subdirectory for saved plots.}
 }
 \value{
 \code{plotly::plot_ly} figure
 }
 \description{
+Perform and plot a 3D Principal Components Analysis
+
 3D PCA for counts dataframe
 }
 \seealso{

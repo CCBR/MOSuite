@@ -10,7 +10,7 @@ plot_corr_heatmap(moo_counts, ...)
 \item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
 slot}
 
-\item{...}{arguments forwarded to method \link{plot_corr_heatmap_dat}}
+\item{...}{arguments forwarded to method}
 }
 \value{
 heatmap from \code{ComplexHeatmap::Heatmap()}
@@ -18,13 +18,7 @@ heatmap from \code{ComplexHeatmap::Heatmap()}
 \description{
 Plot correlation heatmap
 }
-\section{Methods}{
-\tabular{ll}{
-   link to docs \tab class \cr
-   \link{plot_corr_heatmap_moo} \tab \code{multiOmicDataSet} \cr
-   \link{plot_corr_heatmap_dat} \tab \code{data.frame} \cr
-}
-
+\details{
 \subsection{Method Usage}{
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{# multiOmicDataSet
@@ -47,7 +41,6 @@ plot_corr_heatmap(moo_counts,
 }\if{html}{\out{</div>}}
 }
 }
-
 \examples{
 # plot correlation heatmap for a counts slot in a multiOmicDataset Object
 moo <- multiOmicDataSet(
@@ -68,6 +61,11 @@ plot_corr_heatmap(
 )
 }
 \seealso{
+\itemize{
+\item \code{\link[=plot_corr_heatmap.multiOmicDataSet]{plot_corr_heatmap.multiOmicDataSet()}}
+\item \code{\link[=plot_corr_heatmap.data.frame]{plot_corr_heatmap.data.frame()}}
+}
+
 Other plotters:
 \code{\link[=plot_expr_heatmap]{plot_expr_heatmap()}},
 \code{\link[=plot_histogram]{plot_histogram()}},

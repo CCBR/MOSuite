@@ -2,6 +2,8 @@
 % Please edit documentation in R/plot_pca.R
 \name{plot_pca_2d}
 \alias{plot_pca_2d}
+\alias{plot_pca_2d,MOSuite::multiOmicDataSet-method}
+\alias{plot_pca_2d,data.frame-method}
 \title{Perform and plot a 2D Principal Components Analysis}
 \usage{
 plot_pca_2d(
@@ -152,9 +154,11 @@ ggplot object
 }
 \description{
 Perform and plot a 2D Principal Components Analysis
+
+Perform and plot a 2D Principal Components Analysis
 }
 \seealso{
-\link{plot_pca} generic
+\code{\link[=plot_pca]{plot_pca()}} generic
 
 Other PCA functions:
 \code{\link[=calc_pca]{calc_pca()}},

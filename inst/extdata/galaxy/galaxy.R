@@ -102,10 +102,27 @@ update_function_template <- function(
   if (!rlang::is_installed("Rd2md")) {
     stop("Required pacakge {Rd2md} is not installed")
   }
+
+  safe_rd_to_md <- function(x) {
+    if (is.null(x) || length(x) == 0) {
+      return("")
+    }
+    x_chr <- as.character(x)
+    if (length(x_chr) == 0 || all(is.na(x_chr))) {
+      return("")
+    }
+    return(tryCatch(
+      Rd2md::rd_str_to_md(x_chr),
+      error = function(e) {
+        paste(x_chr, collapse = "\n")
+      }
+    ))
+  }
+
   new_template <- list(
     r_function = template$r_function,
-    title = template$title |> Rd2md::rd_str_to_md(),
-    description = func_meta$description |> Rd2md::rd_str_to_md(),
+    title = safe_rd_to_md(template$title),
+    description = safe_rd_to_md(func_meta$description),
     columns = list(),
     inputDatasets = list(),
     parameters = list(),
@@ -118,8 +135,7 @@ update_function_template <- function(
       arg_name <- template[[arg_type]][[i]]$key
       if (arg_name %in% names(func_meta$args)) {
         arg_meta <- template[[arg_type]][[i]]
-        arg_meta$description <- func_meta$args[[arg_name]]$description |>
-          Rd2md::rd_str_to_md()
+        arg_meta$description <- safe_rd_to_md(func_meta$args[[arg_name]]$description)
         arg_meta$defaultValue <- func_meta$args[[arg_name]]$defaultValue
         args_in_template <- c(args_in_template, arg_name)
         new_template[[arg_type]][[

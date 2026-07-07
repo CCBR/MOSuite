@@ -11,6 +11,7 @@ print_or_save_plot(
   save_plots = options::opt("save_plots"),
   plots_dir = options::opt("plots_dir"),
   graphics_device = grDevices::png,
+  caption = NULL,
   ...
 )
 }
@@ -25,7 +26,11 @@ print_or_save_plot(
 
 \item{plots_dir}{Path where plots are saved when \code{moo_save_plots} is \code{TRUE} (Defaults to \code{"figures/"}, overwritable using option 'moo_plots_dir' or environment variable 'MOO_PLOTS_DIR')}
 
-\item{graphics_device}{Default: \code{grDevice::png()}. Only used if the plot is not a ggplot.}
+\item{graphics_device}{Default: \code{grDevices::png()}. Only used if the plot is not a ggplot.}
+
+\item{caption}{optional caption text to add to the plot. For ggplot objects, this is
+added via \code{ggplot2::labs(caption = caption)}. For \code{ComplexHeatmap} objects, the
+caption is rendered at the bottom of the graphics device using \code{grid::grid.text()}.}
 
 \item{...}{arguments forwarded to \code{ggplot2::ggsave()}}
 }
@@ -36,7 +41,7 @@ invisibly returns the path where the plot image was saved to the disk
 If \code{save_plots} is \code{TRUE}, the plot will be saved as an image to the path at
 \code{file.path(plots_dir, filename)}.
 If \code{plot_obj} is a ggplot, \code{ggplot2::ggsave()} is used to save the image.
-Otherwise, \code{graphics_device} is used (\code{grDevice::png()} by default).
+Otherwise, \code{graphics_device} is used (\code{grDevices::png()} by default).
 }
 \seealso{
 Other plotters:

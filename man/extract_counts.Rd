@@ -2,6 +2,7 @@
 % Please edit documentation in R/0_mo-class.R
 \name{extract_counts}
 \alias{extract_counts}
+\alias{extract_counts,MOSuite::multiOmicDataSet-method}
 \title{Extract count data}
 \usage{
 extract_counts(moo, count_type, sub_count_type = NULL)

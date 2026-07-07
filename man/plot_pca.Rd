@@ -25,18 +25,10 @@ Perform and plot a Principal Components Analysis
 See the low-level function docs for additional arguments
 depending on whether you're plotting 2 or 3 PCs:
 \itemize{
-\item \link{plot_pca_2d} - used when there are \strong{2} principal components
-\item \link{plot_pca_3d} - used when there are \strong{3} principal components
+\item \code{\link[=plot_pca_2d]{plot_pca_2d()}} - used when there are \strong{2} principal components
+\item \code{\link[=plot_pca_3d]{plot_pca_3d()}} - used when there are \strong{3} principal components
 }
 }
-\section{Methods}{
-\tabular{ll}{
-   link to docs \tab class \cr
-   \link{plot_pca_moo} \tab \code{multiOmicDataSet} \cr
-   \link{plot_pca_dat} \tab \code{data.frame} \cr
-}
-}
-
 \examples{
 # multiOmicDataSet
 moo <- multiOmicDataSet(
@@ -60,6 +52,11 @@ plot_pca(nidap_clean_raw_counts,
 
 }
 \seealso{
+\itemize{
+\item \code{\link[=plot_pca.multiOmicDataSet]{plot_pca.multiOmicDataSet()}}
+\item \code{\link[=plot_pca.data.frame]{plot_pca.data.frame()}}
+}
+
 Other plotters:
 \code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
 \code{\link[=plot_expr_heatmap]{plot_expr_heatmap()}},

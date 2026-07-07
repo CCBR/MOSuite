@@ -2,6 +2,8 @@
 % Please edit documentation in R/plot_volcano_summary.R
 \name{plot_volcano_summary}
 \alias{plot_volcano_summary}
+\alias{plot_volcano_summary,MOSuite::multiOmicDataSet-method}
+\alias{plot_volcano_summary,data.frame-method}
 \title{Volcano Plot - Summary}
 \usage{
 plot_volcano_summary(
@@ -148,7 +150,7 @@ plot_volcano_summary(
 )
 }
 \arguments{
-\item{moo_diff}{Differential expression analysis result from one or more contrasts. This must be a dataframe.}
+\item{moo_diff}{multiOmicDataSet or differential expression analysis result data frame.}
 
 \item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).
 This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
@@ -259,6 +261,7 @@ Produces one volcano plot for each tested contrast in the input DEG table.
 It can be sorted by either fold change, t-statistic, or p-value. The returned dataset includes one row for each
 significant gene in each contrast, and contains columns from the DEG analysis of that contrast as well as columns
 useful to the Venn diagram template downstream.
+An S7 generic with methods for \code{multiOmicDataSet} and \code{data.frame}.
 }
 \examples{
 plot_volcano_summary(nidap_deg_analysis, print_plots = TRUE)

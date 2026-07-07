@@ -19,6 +19,9 @@ the \code{sample_meta}.}
 
 \item{analyses_lst}{named list of analysis results, e.g. DESeq results object}
 }
+\value{
+A \code{multiOmicDataSet} S7 object.
+}
 \description{
 multiOmicDataSet class
 }
@@ -28,3 +31,18 @@ Other moo constructors:
 \code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}}
 }
 \concept{moo constructors}
+\section{Additional properties}{
+
+\describe{
+\item{\code{@sample_meta}}{sample metadata as a data frame or tibble. The first column is assumed to contain the sample
+IDs which must correspond to column names in the raw counts.}
+
+\item{\code{@annotation}}{data frame of feature annotations, such as gene symbols or any other information about the
+features in the counts list.}
+
+\item{\code{@counts}}{named list of counts data frames (e.g. \code{raw}, \code{clean}, \code{cpm}, \code{filt}, \code{norm}, \code{batch}). Each data
+frame is expected to contain a feature ID column as the first column, and all remaining columns are sample IDs.}
+
+\item{\code{@analyses}}{named list of analysis results (e.g. DESeq2 results, colors).}
+}}
+

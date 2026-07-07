@@ -1,6 +1,6 @@
 Package: MOSuite
 Title: R package for differential multi-omics analysis
-Version: 0.3.0.9001
+Version: 0.3.2.9000
 Authors@R: c(
     person("Kelly", "Sovacool", , "kelly.sovacool@nih.gov", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3283-829X")),
@@ -29,7 +29,7 @@ Imports:
     DESeq2,
     dplyr,
     edgeR,
-    ggplot2 (< 4.0.0),
+    ggplot2,
     glue,
     htmlwidgets,
     jsonlite,
@@ -68,7 +68,7 @@ Suggests:
     Rd2md,
     readr,
     rmarkdown,
-    roxygen2,
+    roxygen2 (>= 8.0.0),
     scales,
     styler,
     sva,
@@ -81,7 +81,7 @@ Suggests:
 VignetteBuilder:
     knitr
 biocViews:
-Config/Needs/dev: cffr, covr, goodpractice, here, lintr, pkgdown,
+Config/Needs/dev: cffr, covr, here, lintr, pkgdown,
     rcmdcheck, xml2
 Config/roxygen2/version: 8.0.0
 Config/testthat/edition: 3
@@ -90,3 +90,4 @@ Encoding: UTF-8
 LazyData: true
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
+RoxygenNote: 8.0.0

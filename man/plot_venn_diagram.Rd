@@ -2,6 +2,8 @@
 % Please edit documentation in R/plot_venn_diagram.R
 \name{plot_venn_diagram}
 \alias{plot_venn_diagram}
+\alias{plot_venn_diagram,MOSuite::multiOmicDataSet-method}
+\alias{plot_venn_diagram,data.frame-method}
 \title{Plot a venn diagram, UpSet plot, or table of intersections}
 \usage{
 plot_venn_diagram(
@@ -187,10 +189,11 @@ same colors as \code{venn_fill_colors})}
 \item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \description{
-generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across
+Generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across
 tested contrasts). This Venn diagram is available for up to five sets; Intersection plot is available for any number
 of sets. Specific sets can be selected for the visualizations and the returned dataset may include all (default) or
 specified intersections.
+An S7 generic with methods for \code{multiOmicDataSet} and \code{data.frame}.
 }
 \examples{
 plot_venn_diagram(nidap_volcano_summary_dat, print_plots = TRUE)

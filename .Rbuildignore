@@ -12,6 +12,7 @@
 ^data-raw$
 ^doc$
 ^Dockerfile$
+^docker$
 ^docs$
 ^figures$
 ^LICENSE\.md$
@@ -21,9 +22,17 @@
 ^README\.Rmd$
 ^README\.html$
 ^README_files$
+^Rplots\.pdf$
+^moo_input\.rds$
+^plot-volc-enh\.json$
+^volc-sum-params\.json$
+^report_files$
+^inst/quarto/report_files$
+^tests/figures$
 ^vignettes/figures/$
 ^vignettes/memory\.Rmd$
 ^vignettes/cli\.Rmd$
 VennDiagram.*\.log
 ^[.]?air[.]toml$
 ^\.vscode$
+^SECURITY\.md$

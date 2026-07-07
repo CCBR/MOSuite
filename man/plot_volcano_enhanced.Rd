@@ -2,6 +2,8 @@
 % Please edit documentation in R/plot_volcano_enhanced.R
 \name{plot_volcano_enhanced}
 \alias{plot_volcano_enhanced}
+\alias{plot_volcano_enhanced,MOSuite::multiOmicDataSet-method}
+\alias{plot_volcano_enhanced,data.frame-method}
 \title{Enhanced Volcano Plot}
 \usage{
 plot_volcano_enhanced(
@@ -177,6 +179,7 @@ is set to \code{TRUE}. Default is \code{FALSE}.}
 }
 \description{
 Uses \href{https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html}{Bioconductor's Enhanced Volcano Plot}.
+An S7 generic with methods for \code{multiOmicDataSet} and \code{data.frame}.
 }
 \examples{
 plot_volcano_enhanced(nidap_deg_analysis, print_plots = TRUE)

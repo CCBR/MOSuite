@@ -1,6 +1,7 @@
 set.seed(20250225)
-test_that("save_or_print_plot works for ComplexHeatmap", {
-  p <- plot_corr_heatmap(
+
+corr_heatmap_fixture <- function() {
+  plot_corr_heatmap(
     nidap_filtered_counts |>
       as.data.frame(),
     sample_metadata = as.data.frame(nidap_sample_metadata),
@@ -23,7 +24,59 @@ test_that("save_or_print_plot works for ComplexHeatmap", {
       "#878500"
     )
   )
-  skip()
+}
+
+test_that("print_or_save_plot saves ComplexHeatmap to disk without error", {
+  p <- corr_heatmap_fixture()
+  outfile <- tempfile(fileext = ".png")
+  result <- print_or_save_plot(
+    p,
+    filename = outfile,
+    print_plots = FALSE,
+    save_plots = TRUE,
+    plots_dir = "",
+    caption = "filtered counts"
+  )
+  expect_equal(result, outfile)
+  expect_true(file.exists(outfile))
+  expect_gt(file.size(outfile), 0)
+})
+
+test_that("print_or_save_plot saves ggplot without error", {
+  p <- plot_read_depth(nidap_clean_raw_counts)
+  outfile <- tempfile(fileext = ".png")
+  result <- print_or_save_plot(
+    p,
+    filename = outfile,
+    print_plots = FALSE,
+    save_plots = TRUE,
+    plots_dir = "",
+    caption = "normalized counts"
+  )
+  expect_equal(result, outfile)
+  expect_true(file.exists(outfile))
+  expect_gt(file.size(outfile), 0)
+})
+
+test_that("print_or_save_plot prints ComplexHeatmap with caption without error", {
+  p <- corr_heatmap_fixture()
+  outfile <- tempfile(fileext = ".png")
+  withr::with_png(outfile, {
+    result <- print_or_save_plot(
+      p,
+      filename = outfile,
+      print_plots = TRUE,
+      save_plots = FALSE,
+      plots_dir = "",
+      caption = "batch-corrected counts"
+    )
+  })
+  expect_equal(result, outfile)
+})
+
+test_that("save_or_print_plot works for ComplexHeatmap", {
+  p <- corr_heatmap_fixture()
+  skip_on_ci()
   expect_snapshot_file(
     print_or_save_plot(
       p,
@@ -37,7 +90,7 @@ test_that("save_or_print_plot works for ComplexHeatmap", {
 })
 test_that("save_or_print_plot works for ggplot", {
   p <- plot_read_depth(nidap_clean_raw_counts)
-  skip()
+  skip_on_ci()
   expect_snapshot_file(
     print_or_save_plot(
       p,

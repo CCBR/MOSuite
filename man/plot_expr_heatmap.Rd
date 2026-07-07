@@ -2,6 +2,8 @@
 % Please edit documentation in R/plot_heatmap.R
 \name{plot_expr_heatmap}
 \alias{plot_expr_heatmap}
+\alias{plot_expr_heatmap,MOSuite::multiOmicDataSet-method}
+\alias{plot_expr_heatmap,data.frame-method}
 \title{Plot expression heatmap}
 \usage{
 plot_expr_heatmap(

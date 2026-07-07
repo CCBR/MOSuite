@@ -67,6 +67,22 @@ test_that("get_colors_lst handles alternative palette functions", {
     "Warning raised in "
   )
 })
+test_that("get_colors_vctr falls back to random colors when n exceeds palette max", {
+  # Okabe-Ito palette has a maximum of 9 colors. When n > 9, the function
+  # should fall back to get_random_colors() and emit a message.
+  dat_many_cats <- data.frame(
+    group = paste0("cat", seq_len(12))
+  )
+  expect_no_warning(
+    expect_message(
+      result <- get_colors_vctr(dat_many_cats, "group"),
+      "exceeds the palette maximum"
+    )
+  )
+  expect_length(result, 12)
+  expect_named(result, paste0("cat", seq_len(12)))
+})
+
 test_that("set_color_pal overrides the color palette", {
   moo <- create_multiOmicDataSet_from_dataframes(
     sample_metadata = as.data.frame(nidap_sample_metadata),

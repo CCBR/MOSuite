@@ -22,8 +22,8 @@ For a \code{moo}, choose which counts slot to use with \code{count_type} & (opti
 \section{Methods}{
 \tabular{ll}{
    link to docs \tab class \cr
-   \link{plot_read_depth_moo} \tab \code{multiOmicDataSet} \cr
-   \link{plot_read_depth_dat} \tab \code{data.frame} \cr
+   \code{\link[=plot_read_depth]{plot_read_depth()}} \tab \code{multiOmicDataSet} \cr
+   \code{\link[=plot_read_depth]{plot_read_depth()}} \tab \code{data.frame} \cr
 }
 }
 
@@ -45,6 +45,11 @@ plot_read_depth(nidap_clean_raw_counts)
 
 }
 \seealso{
+\itemize{
+\item \code{\link[=plot_read_depth.multiOmicDataSet]{plot_read_depth.multiOmicDataSet()}}
+\item \code{\link[=plot_read_depth.data.frame]{plot_read_depth.data.frame()}}
+}
+
 Other plotters:
 \code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
 \code{\link[=plot_expr_heatmap]{plot_expr_heatmap()}},
