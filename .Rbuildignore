@@ -36,5 +36,4 @@ VennDiagram.*\.log
 ^[.]?air[.]toml$
 ^\.vscode$
 ^\.git$
-^PCA_COLOR_MATCH_NOTES\.md$
 ^SECURITY\.md$
