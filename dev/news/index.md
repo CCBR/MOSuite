@@ -1,5 +1,16 @@
 # Changelog
 
+## MOSuite 0.3.2
+
+- Support ggplot2 v4.0.0 for correlation heatmap plots in
+  [`filter_counts()`](https://ccbr.github.io/MOSuite/dev/reference/filter_counts.md),
+  [`normalize_counts()`](https://ccbr.github.io/MOSuite/dev/reference/normalize_counts.md),
+  and
+  [`batch_correct_counts()`](https://ccbr.github.io/MOSuite/dev/reference/batch_correct_counts.md).
+  ([\#205](https://github.com/CCBR/MOSuite/issues/205),
+  [@copilot](https://github.com/copilot),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+
 ## MOSuite 0.3.1
 
 - Fix recursion error in
