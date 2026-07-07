@@ -35,5 +35,4 @@
 VennDiagram.*\.log
 ^[.]?air[.]toml$
 ^\.vscode$
-^\.git$
 ^SECURITY\.md$
