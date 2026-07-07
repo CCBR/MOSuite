@@ -176,6 +176,19 @@ filter_counts <- function(
     minimum_number_of_samples_with_nonzero_counts_in_total = minimum_number_of_samples_with_nonzero_counts_in_total,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group
   )
+  if (nrow(df_filt) == 0) {
+    warning(
+      "No features remain after filtering. ",
+      "Consider relaxing the filtering thresholds ",
+      "(e.g. minimum_count_value_to_be_considered_nonzero, ",
+      "minimum_number_of_samples_with_nonzero_counts_in_total, or ",
+      "minimum_number_of_samples_with_nonzero_counts_in_a_group). ",
+      "Skipping QC plots."
+    )
+    moo@counts[["filt"]] <- df[0, ]
+    return(moo)
+  }
+
   message(glue::glue("colors_for_plots {class(colors_for_plots)}"))
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
     # use consistent colors
