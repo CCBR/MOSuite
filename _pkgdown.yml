@@ -53,6 +53,7 @@ reference:
 - title: Visualization
   contents:
     - has_keyword("plotters")
+    - render_report
 - subtitle: Color selectors
   contents:
     - contains("color")
