@@ -98,7 +98,8 @@ get_colors_vctr <- function(
   # such as Okabe-Ito's maximum of 9), fall back to random colors
   if (length(colors_vctr) < n_obs) {
     message(glue::glue(
-      'Number of unique values ({n_obs}) in column "{colname}" exceeds the palette maximum. Falling back to random colors.'
+      "Number of unique values ({n_obs}) in column \"{colname}\" ",
+      "exceeds the palette maximum. Falling back to random colors."
     ))
     colors_vctr <- get_random_colors(n_obs)
   } else if (!is.null(warned_cnd)) {

@@ -16,9 +16,9 @@ test_that("render_report runs in a temporary directory", {
           "sample_metadata.tsv.gz",
           package = "MOSuite"
         ),
-        group_colname = 'condition',
-        label_colname = 'sample_id',
-        batch_colname = 'sample_id',
+        group_colname = "condition",
+        label_colname = "sample_id",
+        batch_colname = "sample_id",
         contrasts = c("knockout-wildtype")
       )
     )
