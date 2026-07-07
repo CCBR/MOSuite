@@ -34,7 +34,9 @@ render_report <- function(
   if (!file.exists(qmd_src)) {
     ok <- file.copy(qmd_template, qmd_src, overwrite = FALSE)
     if (!isTRUE(ok)) {
-      stop(glue::glue("Failed to copy template from '{qmd_template}' to '{qmd_src}'"))
+      stop(glue::glue(
+        "Failed to copy template from '{qmd_template}' to '{qmd_src}'"
+      ))
     }
   }
   return(quarto::quarto_render(
