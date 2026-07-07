@@ -3,6 +3,7 @@ linters: linters_with_defaults(
     commented_code_linter = NULL,
     object_name_linter = NULL,
     object_length_linter = object_length_linter(60L),
+    object_usage_linter = NULL,
     return_linter = return_linter(
       return_style = "explicit"
     ),
