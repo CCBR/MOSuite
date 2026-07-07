@@ -13,12 +13,18 @@ render_report(
 \arguments{
 \item{qmd_template}{Path to the Quarto report file (default is the template report in the package).}
 
-\item{qmd_src}{Optional path to copy the Quarto report template to before rendering. If \code{NULL} (default), the template will be copied to the current working directory with the same filename as the template. If a file already exists at \code{qmd_src}, it will not be overwritten.}
+\item{qmd_src}{Optional path to copy the Quarto report template to before
+rendering. If \code{NULL} (default), the template will be copied to the current
+working directory with the same filename as the template. If a file already
+exists at \code{qmd_src}, it will not be overwritten.}
 
 \item{...}{Additional arguments passed to \code{quarto::quarto_render()}, such as a named list of parameters.}
 }
 \description{
-Copy the Quarto template to the current working directory and render it using \code{quarto::quarto_render()}. The rendered report will be saved in the current working directory. You can specify additional arguments to \code{quarto::quarto_render()} to customize the rendering process.
+Copy the Quarto template to the current working directory and render it
+using \code{quarto::quarto_render()}. The rendered report will be saved in the
+current working directory. You can specify additional arguments to
+\code{quarto::quarto_render()} to customize the rendering process.
 }
 \examples{
 render_report(execute_params = list(
