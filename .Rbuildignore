@@ -35,3 +35,4 @@
 VennDiagram.*\.log
 ^[.]?air[.]toml$
 ^\.vscode$
+^SECURITY\.md$
