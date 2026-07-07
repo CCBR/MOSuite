@@ -1,7 +1,10 @@
 test_that("render_report runs in a temporary directory", {
   skip_if_not_installed("quarto")
+  skip_if_not_installed("knitr")
+  skip_if_not_installed("rmarkdown")
 
-  withr::local_dir(tempdir())
+  tmp <- withr::local_tempdir()
+  withr::local_dir(tmp)
 
   expect_no_error(
     render_report(

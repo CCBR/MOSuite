@@ -20,16 +20,31 @@ engine: knitr
 library(MOSuite)
 library(dplyr)
 library(knitr)
-options(moo_prints_plots = params$print_plots)
+options(moo_print_plots = params$print_plots)
 ```
 
 ## Load data
 
 ```{r initialize}
 # create multi-omic object
+counts_tsv <- params$counts_tsv
+if (is.null(counts_tsv) || !nzchar(counts_tsv) || !file.exists(counts_tsv)) {
+  counts_tsv <- system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite")
+}
+
+samplesheet_tsv <- params$samplesheet_tsv
+if (is.null(samplesheet_tsv) || !nzchar(samplesheet_tsv) || !file.exists(samplesheet_tsv)) {
+  samplesheet_tsv <- system.file(
+    "extdata",
+    "nidap",
+    "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+    package = "MOSuite"
+  )
+}
+
 moo <- create_multiOmicDataSet_from_files(
-  sample_meta_filepath = params$samplesheet_tsv,
-  feature_counts_filepath = params$counts_tsv
+  sample_meta_filepath = samplesheet_tsv,
+  feature_counts_filepath = counts_tsv
 )
 
 group_colname <- params$group_colname
@@ -43,7 +58,7 @@ message(class(contrasts_vctr))
 ## Processing
 
 ```{r analyze}
-moo |>
+moo <- moo |>
   clean_raw_counts() |>
   filter_counts(group_colname = group_colname) |>
   normalize_counts(group_colname = group_colname) |>
