@@ -16,7 +16,7 @@ on:
       orchestrator-repo:
         description: Optional orchestrator repository override in OWNER/REPO format.
         required: false
-        default: CCBR/syncweaver
+        default: NIDAP-Community/syncweaver-orchestrator
         type: string
 
 permissions:
@@ -28,7 +28,7 @@ jobs:
     env:
       SOURCE_REPOSITORY: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.source_repo || github.repository }}
       SOURCE_REF: ${{ github.event_name == 'release' && github.event.release.tag_name || github.event.inputs.source_ref || github.ref_name }}
-      ORCHESTRATOR_REPO: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs['orchestrator-repo'] || vars['orchestrator-repo'] || 'CCBR/syncweaver' }}
+      ORCHESTRATOR_REPO: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs['orchestrator-repo'] || vars['orchestrator-repo'] || 'NIDAP-Community/syncweaver-orchestrator' }}
     steps:
       - name: Validate dispatch payload
         shell: bash
