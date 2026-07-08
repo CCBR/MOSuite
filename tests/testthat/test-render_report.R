@@ -9,13 +9,13 @@ test_that("render_report runs in a temporary directory", {
   expect_no_error(
     render_report(
       execute_params = list(
-        counts_tsv = system.file(
+        counts_csv = system.file(
           "extdata",
           "nidap",
           "Raw_Counts.csv.gz",
           package = "MOSuite"
         ),
-        samplesheet_tsv = system.file(
+        samplesheet_csv = system.file(
           "extdata",
           "nidap",
           "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
