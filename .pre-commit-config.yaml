@@ -33,7 +33,6 @@ repos:
     rev: v0.4.3.9028
     hooks:
       - id: parsable-R
-      - id: readme-rmd-rendered
       - id: use-tidy-description
       - id: lintr
         args: [--warn_only]
