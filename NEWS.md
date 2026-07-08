@@ -1,6 +1,7 @@
 ## MOSuite development version
 
 - New report template & helper function: `render_report()`. (#120, @kelly-sovacool)
+- Fix ggplot2 size deprecation warning in `plot_volcano_summary()`. (#228, @kelly-sovacool)
 
 ## MOSuite 0.3.2
 
