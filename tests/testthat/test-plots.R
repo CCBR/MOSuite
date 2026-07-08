@@ -1,7 +1,7 @@
 set.seed(20250225)
 
 corr_heatmap_fixture <- function() {
-  plot_corr_heatmap(
+  return(plot_corr_heatmap(
     nidap_filtered_counts |>
       as.data.frame(),
     sample_metadata = as.data.frame(nidap_sample_metadata),
@@ -23,7 +23,7 @@ corr_heatmap_fixture <- function() {
       "#FFA500",
       "#878500"
     )
-  )
+  ))
 }
 
 test_that("print_or_save_plot saves ComplexHeatmap to disk without error", {
