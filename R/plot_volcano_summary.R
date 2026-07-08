@@ -501,7 +501,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
         nudge_x = nudge_x_all,
         nudge_y = nudge_y_all,
         size = label_font_size,
-        segment.size = line_thickness
+        segment.linewidth = line_thickness
       ) +
       ggplot2::xlim(-xmax, xmax) +
       ggplot2::ylim(0, ymax) +

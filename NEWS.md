@@ -1,5 +1,7 @@
 ## MOSuite development version
 
+- Fix ggplot2 size deprecation warning in `plot_volcano_summary()`. (#228, @kelly-sovacool)
+
 ## MOSuite 0.3.2
 
 - Support ggplot2 v4.0.0 for correlation heatmap plots in `filter_counts()`, `normalize_counts()`, and `batch_correct_counts()`. (#205, @copilot, @kelly-sovacool)
