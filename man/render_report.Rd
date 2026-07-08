@@ -28,9 +28,9 @@ current working directory. You can specify additional arguments to
 }
 \examples{
 render_report(execute_params = list(
-  counts_tsv = system.file("extdata", "nidap", "Raw_Counts.csv.gz",
+  counts_csv = system.file("extdata", "nidap", "Raw_Counts.csv.gz",
                            package = "MOSuite"),
-  samplesheet_tsv = system.file("extdata", "nidap",
+  samplesheet_csv = system.file("extdata", "nidap",
     "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
     package = "MOSuite")
 ))
