@@ -77,13 +77,14 @@ test_that("print_or_save_plot prints ComplexHeatmap with caption without error",
 test_that("save_or_print_plot works for ComplexHeatmap", {
   p <- corr_heatmap_fixture()
   skip_on_ci()
+  tmp <- withr::local_tempdir()
   expect_snapshot_file(
     print_or_save_plot(
       p,
       filename = "heatmap.png",
       print_plots = FALSE,
       save_plots = TRUE,
-      plots_dir = "."
+      plots_dir = tmp
     ),
     "heatmap.png"
   )
@@ -91,13 +92,14 @@ test_that("save_or_print_plot works for ComplexHeatmap", {
 test_that("save_or_print_plot works for ggplot", {
   p <- plot_read_depth(nidap_clean_raw_counts)
   skip_on_ci()
+  tmp <- withr::local_tempdir()
   expect_snapshot_file(
     print_or_save_plot(
       p,
       filename = "read_depth.png",
       print_plots = FALSE,
       save_plots = TRUE,
-      plots_dir = "."
+      plots_dir = tmp
     ),
     "read_depth.png"
   )
