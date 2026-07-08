@@ -208,14 +208,20 @@ dat_volcano_summary <- moo@analyses$diff |>
 #> Fold change column: B-A_logFC
 #> pval column: B-A_pval
 #> Total number of features included in volcano plot: 7943
+#> Warning in ggrepel::geom_text_repel(data = grm[custom_gene_list_ind, ], :
+#> Ignoring unknown parameters: `segment.linewidth`
 #> Preparing table for contrast: C-A
 #> Fold change column: C-A_logFC
 #> pval column: C-A_pval
 #> Total number of features included in volcano plot: 7943
+#> Warning in ggrepel::geom_text_repel(data = grm[custom_gene_list_ind, ], :
+#> Ignoring unknown parameters: `segment.linewidth`
 #> Preparing table for contrast: B-C
 #> Fold change column: B-C_logFC
 #> pval column: B-C_pval
 #> Total number of features included in volcano plot: 7943
+#> Warning in ggrepel::geom_text_repel(data = grm[custom_gene_list_ind, ], :
+#> Ignoring unknown parameters: `segment.linewidth`
 ```
 
 ![](visualization_files/figure-html/volcano_summary-1.png)
