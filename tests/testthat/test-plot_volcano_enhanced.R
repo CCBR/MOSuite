@@ -10,10 +10,15 @@ test_that("plot_volcano_enhanced works on nidap dataset", {
 })
 
 test_that("plot_volcano_enhanced returns a data frame", {
-  result <- plot_volcano_enhanced(
-    nidap_deg_analysis,
-    save_plots = FALSE,
-    print_plots = FALSE
+  # size aesthetic deprecation warning comes from EnhancedVolcano upstream (v1.30.0)
+  expect_warning(
+    result <- plot_volcano_enhanced(
+      nidap_deg_analysis,
+      save_plots = FALSE,
+      print_plots = FALSE
+    ),
+    regexp = "Using `size` aesthetic for lines was deprecated",
+    fixed = FALSE
   )
 
   expect_s3_class(result, "data.frame")
@@ -22,11 +27,15 @@ test_that("plot_volcano_enhanced returns a data frame", {
 })
 
 test_that("plot_volcano_enhanced respects num_features_to_label", {
-  result <- plot_volcano_enhanced(
-    nidap_deg_analysis,
-    num_features_to_label = 10,
-    save_plots = FALSE,
-    print_plots = FALSE
+  expect_warning(
+    result <- plot_volcano_enhanced(
+      nidap_deg_analysis,
+      num_features_to_label = 10,
+      save_plots = FALSE,
+      print_plots = FALSE
+    ),
+    regexp = "Using `size` aesthetic for lines was deprecated",
+    fixed = FALSE
   )
 
   expect_s3_class(result, "data.frame")
@@ -46,11 +55,14 @@ test_that("plot_volcano_enhanced works with multiOmicDataSet", {
     )
   )
 
-  # Test that it returns a data frame
-  result <- plot_volcano_enhanced(
-    moo,
-    save_plots = FALSE,
-    print_plots = FALSE
+  expect_warning(
+    result <- plot_volcano_enhanced(
+      moo,
+      save_plots = FALSE,
+      print_plots = FALSE
+    ),
+    regexp = "Using `size` aesthetic for lines was deprecated",
+    fixed = FALSE
   )
 
   expect_s3_class(result, "data.frame")
