@@ -5,6 +5,8 @@
 #' current working directory. You can specify additional arguments to
 #' `quarto::quarto_render()` to customize the rendering process.
 #'
+#' You can edit the copy of `report.qmd` in the current working directory to customize the report.
+#'
 #' @param qmd_template Path to the Quarto report file (default is the template report in the package).
 #' @param qmd_src Optional path to copy the Quarto report template to before
 #'   rendering. If `NULL` (default), the template will be copied to the current

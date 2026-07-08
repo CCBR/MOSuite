@@ -26,6 +26,9 @@ using \code{quarto::quarto_render()}. The rendered report will be saved in the
 current working directory. You can specify additional arguments to
 \code{quarto::quarto_render()} to customize the rendering process.
 }
+\details{
+You can edit the copy of \code{report.qmd} in the current working directory to customize the report.
+}
 \examples{
 render_report(execute_params = list(
   counts_csv = system.file("extdata", "nidap", "Raw_Counts.csv.gz",
