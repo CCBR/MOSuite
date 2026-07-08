@@ -3,8 +3,8 @@ title: "MOSuite analysis report"
 date: today
 format: html
 params:
-    counts_tsv: 'inst/extdata/nidap/Raw_Counts.csv.gz'
-    samplesheet_tsv: 'inst/extdata/nidap/Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz'
+    counts_csv: 'inst/extdata/nidap/Raw_Counts.csv.gz'
+    samplesheet_csv: 'inst/extdata/nidap/Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz'
     group_colname: 'Group'
     batch_colname: 'Batch'
     label_colname: 'Label'
@@ -27,14 +27,23 @@ options(moo_print_plots = params$print_plots)
 
 ```{r initialize}
 # create multi-omic object
-counts_tsv <- params$counts_tsv
-if (is.null(counts_tsv) || !nzchar(counts_tsv) || !file.exists(counts_tsv)) {
-  counts_tsv <- system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite")
+counts_csv <- params$counts_csv
+if (is.null(counts_csv) || !nzchar(counts_csv) || !file.exists(counts_csv)) {
+  counts_csv <- system.file(
+    "extdata",
+    "nidap",
+    "Raw_Counts.csv.gz",
+    package = "MOSuite"
+  )
 }
 
-samplesheet_tsv <- params$samplesheet_tsv
-if (is.null(samplesheet_tsv) || !nzchar(samplesheet_tsv) || !file.exists(samplesheet_tsv)) {
-  samplesheet_tsv <- system.file(
+samplesheet_csv <- params$samplesheet_csv
+if (
+  is.null(samplesheet_csv) ||
+    !nzchar(samplesheet_csv) ||
+    !file.exists(samplesheet_csv)
+) {
+  samplesheet_csv <- system.file(
     "extdata",
     "nidap",
     "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
@@ -43,16 +52,31 @@ if (is.null(samplesheet_tsv) || !nzchar(samplesheet_tsv) || !file.exists(samples
 }
 
 moo <- create_multiOmicDataSet_from_files(
-  sample_meta_filepath = samplesheet_tsv,
-  feature_counts_filepath = counts_tsv
+  sample_meta_filepath = samplesheet_csv,
+  feature_counts_filepath = counts_csv
 )
 
 group_colname <- params$group_colname
 batch_colname <- params$batch_colname
 label_colname <- params$label_colname
 contrasts_vctr <- params$contrasts
-message(contrasts_vctr)
-message(class(contrasts_vctr))
+knitr::kable(
+  data.frame(
+    Parameter = names(params),
+    Value = sapply(params, paste, collapse = ", ")
+  ),
+  caption = "Parameter values"
+)
+
+knitr::kable(
+  readr::read_csv(samplesheet_csv, n_max = 10),
+  caption = "Sample sheet (first 10 rows)"
+)
+
+knitr::kable(
+  readr::read_csv(counts_csv, n_max = 10),
+  caption = "Counts data (first 10 rows)"
+)
 ```
 
 ## Processing
