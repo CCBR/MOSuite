@@ -18,10 +18,6 @@ moo@sample_meta <- moo@sample_meta |>
   )
 
 test_that("run_deseq2 works", {
-  skip_if(
-    nzchar(Sys.getenv("_R_CHECK_PACKAGE_NAME_")),
-    "Skipping DESeq2 integration test during R CMD check."
-  )
 
   expect_error(
     run_deseq2(moo, design = ~condition),
