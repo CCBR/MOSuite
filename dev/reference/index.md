@@ -83,6 +83,8 @@ for recommended usage
   : Volcano Plot - Summary
 - [`print_or_save_plot()`](https://ccbr.github.io/MOSuite/dev/reference/print_or_save_plot.md)
   : Print and/or save a ggplot
+- [`render_report()`](https://ccbr.github.io/MOSuite/dev/reference/render_report.md)
+  : Render the template report
 
 ### Color selectors
 

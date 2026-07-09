@@ -88,6 +88,8 @@
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/reexports.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/remove_low_count_genes.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/rename_samples.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/dev/reference/render_report.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/dev/reference/report.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/run_deseq2.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/separate_gene_meta_columns.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/set_color_pal.html</loc></url>
