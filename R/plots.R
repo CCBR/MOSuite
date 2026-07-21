@@ -184,7 +184,8 @@ add_colour_legend_layout <- function(
   legend_position = "top",
   ncol = NULL,
   legend_text_size = 10,
-  max_label_characters_per_row = 45
+  max_label_characters_per_row = 45,
+  guide_override_aes = NULL
 ) {
   legend_columns <- get_legend_column_count(
     labels = labels,
@@ -198,9 +199,14 @@ add_colour_legend_layout <- function(
     return(plot)
   }
 
+  guide_args <- list(ncol = legend_columns, byrow = TRUE)
+  if (!is.null(guide_override_aes)) {
+    guide_args$override.aes <- guide_override_aes
+  }
+
   plot +
     ggplot2::guides(
-      colour = ggplot2::guide_legend(ncol = legend_columns, byrow = TRUE)
+      colour = do.call(ggplot2::guide_legend, guide_args)
     ) +
     ggplot2::theme(
       legend.box = "vertical"

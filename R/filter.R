@@ -122,7 +122,7 @@ filter_counts <- function(
   principal_component_on_x_axis = 1,
   principal_component_on_y_axis = 2,
   legend_position_for_pca = "top",
-  point_size_for_pca = 3,
+  point_size_for_pca = 5,
   add_label_to_pca = TRUE,
   label_font_size = 3,
   label_offset_y_ = 2,
@@ -249,9 +249,12 @@ filter_counts <- function(
       maximum_for_x_axis = maximum_for_x_axis_for_histogram,
       legend_position = legend_position_for_histogram,
       legend_font_size = legend_font_size_for_histogram,
-      number_of_legend_columns = number_of_histogram_legend_columns
-    ) +
-      ggplot2::labs(caption = "filtered counts")
+      number_of_legend_columns = number_of_histogram_legend_columns,
+      interactive_plots = interactive_plots
+    )
+    if (!isTRUE(interactive_plots)) {
+      hist_plot <- hist_plot + ggplot2::labs(caption = "filtered counts")
+    }
     if (isTRUE(plot_corr_matrix_heatmap)) {
       corHM <- plot_corr_heatmap(
         df_filt[, samples_to_include],
@@ -273,9 +276,7 @@ filter_counts <- function(
 
     plot_ext <- "png"
     if (isTRUE(interactive_plots)) {
-      pca_plot <- pca_plot |> plotly::ggplotly(tooltip = c("sample", "group"))
-      hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) |>
-        plotly::ggplotly(tooltip = c("sample"))
+      pca_plot <- pca_plot |> plotly::ggplotly(tooltip = "text")
       plot_ext <- "html"
     }
     if (identical(plot_ext, "png")) {

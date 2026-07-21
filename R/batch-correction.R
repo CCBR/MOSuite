@@ -63,7 +63,7 @@ batch_correct_counts <- function(
   label_offset_x_ = 2,
   label_offset_y_ = 2,
   label_font_size = 3,
-  point_size_for_pca = 3,
+  point_size_for_pca = 5,
   color_histogram_by_group = TRUE,
   set_min_max_for_x_axis_for_histogram = FALSE,
   minimum_for_x_axis_for_histogram = -1,
@@ -221,9 +221,12 @@ batch_correct_counts <- function(
       maximum_for_x_axis = maximum_for_x_axis_for_histogram,
       legend_position = legend_position_for_histogram,
       legend_font_size = legend_font_size_for_histogram,
-      number_of_legend_columns = number_of_histogram_legend_columns
-    ) +
-      ggplot2::labs(caption = "batch-corrected counts")
+      number_of_legend_columns = number_of_histogram_legend_columns,
+      interactive_plots = interactive_plots
+    )
+    if (!isTRUE(interactive_plots)) {
+      hist_plot <- hist_plot + ggplot2::labs(caption = "batch-corrected counts")
+    }
     if (isTRUE(plot_corr_matrix_heatmap)) {
       corHM_plot <- plot_corr_heatmap(
         combat_edata,
@@ -245,9 +248,7 @@ batch_correct_counts <- function(
 
     plot_ext <- "png"
     if (isTRUE(interactive_plots)) {
-      pca_plot <- pca_plot |> plotly::ggplotly(tooltip = c("sample", "group"))
-      hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) |>
-        plotly::ggplotly(tooltip = c("sample"))
+      pca_plot <- pca_plot |> plotly::ggplotly(tooltip = "text")
       plot_ext <- "html"
     }
     if (identical(plot_ext, "png")) {
