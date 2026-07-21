@@ -135,6 +135,9 @@ batch_correct_counts <- function(
     samples_to_include <- sample_metadata |> dplyr::pull(sample_id_colname)
   }
   pca_label_colname <- if (isTRUE(add_label_to_pca)) label_colname else NULL
+  if (is.null(label_colname)) {
+    label_colname <- sample_id_colname
+  }
 
   if (batch_colname %in% covariates_colnames) {
     stop(glue::glue(
