@@ -90,22 +90,12 @@ build_histogram_hover_text <- function(
   sample_id_colname,
   group_colname = NULL
 ) {
-  sample_text <- paste0(
-    sample_id_colname,
-    ": ",
-    histogram_data[[sample_id_colname]]
-  )
-
-  if (is.null(group_colname) || !group_colname %in% colnames(histogram_data)) {
-    return(sample_text)
-  }
-
-  paste0(
-    sample_text,
-    "<br>",
-    group_colname,
-    ": ",
-    histogram_data[[group_colname]]
+  format_hover_text(
+    histogram_data,
+    primary_colname = sample_id_colname,
+    secondary_colname = group_colname,
+    missing_col_context = "histogram",
+    require_secondary = FALSE
   )
 }
 

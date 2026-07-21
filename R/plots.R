@@ -78,6 +78,44 @@ print_or_save_plot <- function(
   return(invisible(filename))
 }
 
+format_hover_text <- function(
+  plot_data,
+  primary_colname,
+  secondary_colname = NULL,
+  missing_col_context = "plot",
+  require_secondary = TRUE
+) {
+  required_cols <- primary_colname
+  if (isTRUE(require_secondary) && !is.null(secondary_colname)) {
+    required_cols <- c(required_cols, secondary_colname)
+  }
+
+  missing_cols <- setdiff(required_cols, colnames(plot_data))
+  if (length(missing_cols) > 0) {
+    stop(glue::glue(
+      "Missing required {missing_col_context} metadata column(s): {glue::glue_collapse(missing_cols, sep = ", ")}"
+    ))
+  }
+
+  primary_text <- paste0(
+    primary_colname,
+    ": ",
+    plot_data[[primary_colname]]
+  )
+
+  if (is.null(secondary_colname) || !secondary_colname %in% colnames(plot_data)) {
+    return(primary_text)
+  }
+
+  paste0(
+    primary_text,
+    "<br>",
+    secondary_colname,
+    ": ",
+    plot_data[[secondary_colname]]
+  )
+}
+
 #' Compute a wrapped colour legend column count
 #'
 #' Computes a conservative number of legend columns for horizontal ggplot colour
