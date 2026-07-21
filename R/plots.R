@@ -93,7 +93,8 @@ format_hover_text <- function(
   missing_cols <- setdiff(required_cols, colnames(plot_data))
   if (length(missing_cols) > 0) {
     stop(glue::glue(
-      "Missing required {missing_col_context} metadata column(s): {glue::glue_collapse(missing_cols, sep = ", ")}"
+      "Missing required {missing_col_context} metadata column(s): {glue::glue_collapse(missing_cols, sep = ",
+      ")}"
     ))
   }
 
@@ -103,7 +104,9 @@ format_hover_text <- function(
     plot_data[[primary_colname]]
   )
 
-  if (is.null(secondary_colname) || !secondary_colname %in% colnames(plot_data)) {
+  if (
+    is.null(secondary_colname) || !secondary_colname %in% colnames(plot_data)
+  ) {
     return(primary_text)
   }
 
