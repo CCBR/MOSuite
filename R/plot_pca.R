@@ -138,7 +138,7 @@ build_pca_hover_text <- function(
   missing_cols <- setdiff(required_cols, colnames(pca_data))
   if (length(missing_cols) > 0) {
     stop(glue::glue(
-      "Missing required PCA metadata column(s): {glue::glue_collapse(missing_cols, sep = \", \")}" 
+      "Missing required PCA metadata column(s): {glue::glue_collapse(missing_cols, sep = \", \")}"
     ))
   }
 
