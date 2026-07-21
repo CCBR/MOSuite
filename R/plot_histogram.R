@@ -257,12 +257,18 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
         text = histogram_hover_text
       )
     }
+    # The problem here is that static histograms should keep density curves in
+    # the plot while showing line-style legend keys instead of box-like keys.
+    # We build geom_density() args as a list so static output can add
+    # key_glyph, but the interactive ggplotly() path can skip that tweak.
+    # Passing the legend-key change into ggplotly() made interactive density
+    # traces misbehave, so we apply it only for non-interactive plots.
     density_layer_args <- list(
       mapping = ggplot2::aes(colour = !!rlang::sym(group_colname)),
       linewidth = 1
     )
     if (!isTRUE(interactive_plots)) {
-      density_layer_args$key_glyph <- "path"
+      density_layer_args$key_glyph <- ggplot2::draw_key_path
     }
 
     # plot Density
@@ -299,12 +305,16 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
         text = histogram_hover_text
       )
     }
+    # Use the same strategy for sample-colored histograms: solve the static
+    # legend-key problem without changing the interactive density conversion.
+    # Static output gets line-style legend keys, while interactive output
+    # avoids the key_glyph change that breaks ggplotly().
     density_layer_args <- list(
       mapping = ggplot2::aes(colour = !!rlang::sym(sample_id_colname)),
       linewidth = 1
     )
     if (!isTRUE(interactive_plots)) {
-      density_layer_args$key_glyph <- "path"
+      density_layer_args$key_glyph <- ggplot2::draw_key_path
     }
 
     hist_plot <- df_long |>
