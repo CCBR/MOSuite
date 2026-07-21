@@ -2,8 +2,6 @@
 
 ``` r
 library(MOSuite)
-#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
-#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 ```
 
 ## Default plots from each step
@@ -270,7 +268,7 @@ dat_volcano_enhanced <- moo@analyses$diff |>
 #> generated.
 #> Genes in initial dataset: 7943
 #> 
-#> Max y: 4.34744066227962
+#> Max y: 4.34744066227959
 ```
 
 ![](visualization_files/figure-html/volcano_enhanced-1.png)
