@@ -198,14 +198,46 @@ test_that("batch_correct_counts handles histogram label combinations", {
   )
 
   combinations <- list(
-    list(label_colname = NULL, color_histogram_by_group = FALSE, interactive_plots = FALSE),
-    list(label_colname = NULL, color_histogram_by_group = FALSE, interactive_plots = TRUE),
-    list(label_colname = NULL, color_histogram_by_group = TRUE, interactive_plots = FALSE),
-    list(label_colname = NULL, color_histogram_by_group = TRUE, interactive_plots = TRUE),
-    list(label_colname = "Label", color_histogram_by_group = FALSE, interactive_plots = FALSE),
-    list(label_colname = "Label", color_histogram_by_group = FALSE, interactive_plots = TRUE),
-    list(label_colname = "Label", color_histogram_by_group = TRUE, interactive_plots = FALSE),
-    list(label_colname = "Label", color_histogram_by_group = TRUE, interactive_plots = TRUE)
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = FALSE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = FALSE,
+      interactive_plots = TRUE
+    ),
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = TRUE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = TRUE,
+      interactive_plots = TRUE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = FALSE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = FALSE,
+      interactive_plots = TRUE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = TRUE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = TRUE,
+      interactive_plots = TRUE
+    )
   )
 
   for (combination in combinations) {
@@ -233,7 +265,9 @@ test_that("batch_correct_counts handles histogram label combinations", {
     } else {
       combination$label_colname
     }
-    expected_histogram_colors <- if (isTRUE(combination$color_histogram_by_group)) {
+    expected_histogram_colors <- if (
+      isTRUE(combination$color_histogram_by_group)
+    ) {
       group_colors
     } else {
       moo@analyses[["colors"]][[expected_label_colname]]
@@ -241,8 +275,14 @@ test_that("batch_correct_counts handles histogram label combinations", {
 
     expect_equal(pca_args$label_colname, combination$label_colname)
     expect_equal(histogram_args$label_colname, expected_label_colname)
-    expect_equal(histogram_args$color_by_group, combination$color_histogram_by_group)
-    expect_equal(histogram_args$interactive_plots, combination$interactive_plots)
+    expect_equal(
+      histogram_args$color_by_group,
+      combination$color_histogram_by_group
+    )
+    expect_equal(
+      histogram_args$interactive_plots,
+      combination$interactive_plots
+    )
     expect_equal(histogram_args$color_values, expected_histogram_colors)
   }
 })
