@@ -7,7 +7,7 @@
   "samples_to_include": null,
   "sample_id_colname": null,
   "group_colname": "Group",
-  "label_colname": null,
+  "label_colname": "Label",
   "input_in_log_counts": false,
   "voom_normalization_method": "quantile",
   "samples_to_rename": "",

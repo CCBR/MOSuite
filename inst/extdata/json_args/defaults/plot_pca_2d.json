@@ -13,7 +13,6 @@
   "principal_components": [1, 2],
   "legend_position": "top",
   "point_size": 3,
-  "add_label": true,
   "legend_font_size": null,
   "label_font_size": 3,
   "label_offset_x_": 2,

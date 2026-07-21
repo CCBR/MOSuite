@@ -157,7 +157,6 @@ plot_pca_2d <- S7::new_generic(
     principal_components = c(1, 2),
     legend_position = "top",
     point_size = 3,
-    add_label = TRUE,
     legend_font_size = NULL,
     label_font_size = 3,
     label_offset_x_ = 2,
@@ -200,7 +199,6 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
   principal_components = c(1, 2),
   legend_position = "top",
   point_size = 3,
-  add_label = TRUE,
   legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -224,7 +222,6 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
     principal_components = principal_components,
     legend_position = legend_position,
     point_size = point_size,
-    add_label = add_label,
     legend_font_size = legend_font_size,
     label_font_size = label_font_size,
     label_offset_x_ = label_offset_x_,
@@ -255,11 +252,11 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 #' @param group_colname The column from the sample metadata containing the sample group information. This is usually a
 #'   column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
 #'   Before, After, etc.).
-#' @param label_colname The column from the sample metadata containing the sample labels as you wish them to appear in
-#'   the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
-#'   labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
-#'   column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
-#'   `NULL` -- `sample_id_colname` will be used.)
+#' @param label_colname The column from the sample metadata containing the sample labels as you wish them to appear on
+#'   the PCA plot. If `NULL`, no labels are added to PCA points. This can be the same Sample Names Column. However, you
+#'   may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In
+#'   that case, select the column with your preferred Labels here. The selected column should contain unique names for
+#'   each sample.
 #' @param samples_to_rename If you do not have a Plot Labels Column in your sample metadata table, you can use this
 #'   parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for
 #'   renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to
@@ -270,7 +267,6 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 #' @param principal_components vector with numbered principal components to plot
 #' @param legend_position passed to in `legend.position` `ggplot2::theme()`
 #' @param point_size size for `ggplot2::geom_point()`
-#' @param add_label whether to add text labels for the points
 #' @param legend_font_size font size for the PCA legend text. If `NULL`, the size is scaled automatically based on the
 #'   number and length of legend labels.
 #' @param count_type the type of counts to use when `moo_counts` is a `multiOmicDataSet`; ignored for data frame input.
@@ -315,7 +311,6 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   principal_components = c(1, 2),
   legend_position = "top",
   point_size = 3,
-  add_label = TRUE,
   legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -410,7 +405,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
     legend_text_size = legend_font_size
   )
 
-  if (add_label == TRUE) {
+  if (!is.null(label_colname)) {
     abort_packages_not_installed("ggrepel")
     pca_plot <- pca_plot +
       ggrepel::geom_text_repel(

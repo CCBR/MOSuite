@@ -5,7 +5,7 @@
   "feature_id_colname": null,
   "sample_id_colname": null,
   "group_colname": "Group",
-  "label_colname": null,
+  "label_colname": "Label",
   "samples_to_include": null,
   "minimum_count_value_to_be_considered_nonzero": 8,
   "minimum_number_of_samples_with_nonzero_counts_in_total": 7,

@@ -309,7 +309,7 @@ test_that("filter_counts forwards plotting parameters", {
   expect_equal(pca_args$principal_components, c(2, 3))
   expect_equal(pca_args$legend_position, "bottom")
   expect_equal(pca_args$point_size, 7)
-  expect_false(pca_args$add_label)
+  expect_null(pca_args$label_colname)
   expect_equal(pca_args$label_font_size, 6)
   expect_equal(pca_args$label_offset_x_, 4)
   expect_equal(pca_args$label_offset_y_, 5)
@@ -326,6 +326,20 @@ test_that("filter_counts forwards plotting parameters", {
     histogram_args$color_values,
     c(A = "red", B = "blue", C = "green")
   )
+
+  pca_args <- NULL
+  filter_counts(
+    moo,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    label_colname = "Label",
+    count_type = "raw",
+    add_label_to_pca = TRUE,
+    plot_corr_matrix_heatmap = FALSE,
+    print_plots = TRUE,
+    save_plots = FALSE
+  )
+  expect_equal(pca_args$label_colname, "Label")
 })
 
 test_that("filter_counts forwards the default MOSuite plot colors", {

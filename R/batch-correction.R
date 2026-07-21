@@ -54,7 +54,7 @@ batch_correct_counts <- function(
   samples_to_include = NULL,
   covariates_colnames = "Group",
   batch_colname = "Batch",
-  label_colname = NULL,
+  label_colname = "Label",
   samples_to_rename = c(""),
   add_label_to_pca = TRUE,
   principal_component_on_x_axis = 1,
@@ -134,9 +134,7 @@ batch_correct_counts <- function(
   if (is.null(samples_to_include)) {
     samples_to_include <- sample_metadata |> dplyr::pull(sample_id_colname)
   }
-  if (is.null(label_colname)) {
-    label_colname <- sample_id_colname
-  }
+  pca_label_colname <- if (isTRUE(add_label_to_pca)) label_colname else NULL
 
   if (batch_colname %in% covariates_colnames) {
     stop(glue::glue(
@@ -192,7 +190,7 @@ batch_correct_counts <- function(
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,
       group_colname = batch_colname,
-      label_colname = label_colname,
+      label_colname = pca_label_colname,
       samples_to_rename = samples_to_rename,
       color_values = colors_for_plots,
       principal_components = c(
@@ -201,7 +199,6 @@ batch_correct_counts <- function(
       ),
       legend_position = legend_position_for_pca,
       point_size = point_size_for_pca,
-      add_label = add_label_to_pca,
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_,

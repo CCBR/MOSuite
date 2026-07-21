@@ -195,7 +195,7 @@ test_that("normalize_counts forwards plotting parameters", {
   expect_equal(pca_args$principal_components, c(2, 3))
   expect_equal(pca_args$legend_position, "bottom")
   expect_equal(pca_args$point_size, 7)
-  expect_false(pca_args$add_label)
+  expect_null(pca_args$label_colname)
   expect_equal(pca_args$label_font_size, 6)
   expect_equal(pca_args$label_offset_x_, 4)
   expect_equal(pca_args$label_offset_y_, 5)
@@ -209,6 +209,18 @@ test_that("normalize_counts forwards plotting parameters", {
   expect_equal(histogram_args$legend_position, "right")
   expect_equal(histogram_args$number_of_legend_columns, 2)
   expect_equal(histogram_args$color_values, moo@analyses[["colors"]][["Label"]])
+
+  pca_args <- NULL
+  normalize_counts(
+    moo,
+    group_colname = "Group",
+    label_colname = "Label",
+    add_label_to_pca = TRUE,
+    plot_corr_matrix_heatmap = FALSE,
+    print_plots = TRUE,
+    save_plots = FALSE
+  )
+  expect_equal(pca_args$label_colname, "Label")
 })
 
 test_that("normalize_counts forwards the default MOSuite plot colors", {

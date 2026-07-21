@@ -49,7 +49,8 @@ test_that("batch_correction warnings & errors", {
     moo |>
       batch_correct_counts(
         covariates_colnames = "condition",
-        batch_colname = "batch"
+        batch_colname = "batch",
+        label_colname = "sample_id"
       ),
     "Batch column 'batch' contains only 1 unique value"
   )
@@ -130,7 +131,7 @@ test_that("batch_correct_counts forwards plot settings to PCA and histogram", {
   expect_equal(pca_args$principal_components, c(2, 3))
   expect_equal(pca_args$legend_position, "bottom")
   expect_equal(pca_args$point_size, 7)
-  expect_false(pca_args$add_label)
+  expect_null(pca_args$label_colname)
   expect_equal(pca_args$label_font_size, 6)
   expect_equal(pca_args$label_offset_x_, 4)
   expect_equal(pca_args$label_offset_y_, 5)
@@ -144,6 +145,23 @@ test_that("batch_correct_counts forwards plot settings to PCA and histogram", {
   expect_equal(histogram_args$legend_position, "right")
   expect_equal(histogram_args$number_of_legend_columns, 2)
   expect_equal(histogram_args$color_values, moo@analyses[["colors"]][["Label"]])
+
+  pca_args <- NULL
+  batch_correct_counts(
+    moo,
+    count_type = "norm",
+    sub_count_type = "voom",
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    covariates_colnames = "Group",
+    batch_colname = "Batch",
+    label_colname = "Label",
+    add_label_to_pca = TRUE,
+    plot_corr_matrix_heatmap = FALSE,
+    print_plots = TRUE,
+    save_plots = FALSE
+  )
+  expect_equal(pca_args$label_colname, "Label")
 })
 
 test_that("batch_correct_counts forwards the default MOSuite plot colors", {

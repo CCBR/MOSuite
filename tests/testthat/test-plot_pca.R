@@ -179,7 +179,6 @@ test_that("plot_pca layers are expected", {
     ),
     legend_position = "top",
     point_size = 1,
-    add_label = TRUE,
     label_font_size = 3,
     label_offset_y_ = 2,
     label_offset_x_ = 2
@@ -230,6 +229,14 @@ get_colour_guide_ncol <- function(plot) {
   plot$guides$guides$colour$params$ncol
 }
 
+has_text_repel_layer <- function(plot) {
+  any(vapply(
+    plot$layers,
+    function(layer) inherits(layer$geom, "GeomTextRepel"),
+    logical(1)
+  ))
+}
+
 test_that("2D PCA wraps long top and bottom sample-name legends", {
   sample_columns <- setdiff(colnames(nidap_filtered_counts), "Gene")
   long_sample_names <- stats::setNames(
@@ -255,9 +262,8 @@ test_that("2D PCA wraps long top and bottom sample-name legends", {
       sample_id_colname = "Sample",
       feature_id_colname = "Gene",
       group_colname = "Sample",
-      label_colname = "Label",
+      label_colname = NULL,
       legend_position = legend_position,
-      add_label = FALSE,
       print_plots = FALSE,
       save_plots = FALSE
     )
@@ -287,7 +293,7 @@ test_that("2D and 3D PCA resolve unnamed colors by first observed group order", 
     sample_metadata = nidap_sample_metadata,
     feature_id_colname = "Gene",
     color_values = color_values,
-    add_label = FALSE,
+    label_colname = NULL,
     print_plots = FALSE,
     save_plots = FALSE
   )
@@ -348,7 +354,7 @@ test_that("2D and 3D PCA resolve unnamed colors by factor level order", {
     sample_metadata = sample_metadata,
     feature_id_colname = "Gene",
     color_values = color_values,
-    add_label = FALSE,
+    label_colname = NULL,
     print_plots = FALSE,
     save_plots = FALSE
   )
@@ -391,7 +397,7 @@ test_that("2D PCA preserves named color mappings", {
     sample_metadata = nidap_sample_metadata,
     feature_id_colname = "Gene",
     color_values = color_values,
-    add_label = FALSE,
+    label_colname = NULL,
     print_plots = FALSE,
     save_plots = FALSE
   )
@@ -537,7 +543,7 @@ test_that("plot_pca_2d works with and without labels", {
     moo,
     count_type = "filt",
     principal_components = c(1, 2),
-    add_label = TRUE,
+    label_colname = "Label",
     save_plots = FALSE,
     print_plots = FALSE
   )
@@ -547,11 +553,11 @@ test_that("plot_pca_2d works with and without labels", {
     moo,
     count_type = "filt",
     principal_components = c(1, 2),
-    add_label = FALSE,
+    label_colname = NULL,
     save_plots = FALSE,
     print_plots = FALSE
   )
 
-  # With labels should have more layers (geom_text_repel)
-  expect_gt(length(p_with_labels$layers), length(p_without_labels$layers))
+  expect_true(has_text_repel_layer(p_with_labels))
+  expect_false(has_text_repel_layer(p_without_labels))
 })

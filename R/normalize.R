@@ -34,7 +34,7 @@ normalize_counts <- function(
   samples_to_include = NULL,
   sample_id_colname = NULL,
   group_colname = "Group",
-  label_colname = NULL,
+  label_colname = "Label",
   input_in_log_counts = FALSE,
   voom_normalization_method = "quantile",
   samples_to_rename = c(""),
@@ -85,9 +85,7 @@ normalize_counts <- function(
   if (is.null(samples_to_include)) {
     samples_to_include <- sample_metadata |> dplyr::pull(sample_id_colname)
   }
-  if (is.null(label_colname)) {
-    label_colname <- sample_id_colname
-  }
+  pca_label_colname <- if (isTRUE(add_label_to_pca)) label_colname else NULL
   message(glue::glue("* normalizing {count_type} counts"))
   df.filt <- counts_dat |>
     dplyr::select(tidyselect::all_of(samples_to_include))
@@ -130,7 +128,7 @@ normalize_counts <- function(
       sample_id_colname = sample_id_colname,
       samples_to_rename = samples_to_rename,
       group_colname = group_colname,
-      label_colname = label_colname,
+      label_colname = pca_label_colname,
       color_values = colors_for_plots,
       principal_components = c(
         principal_component_on_x_axis,
@@ -138,7 +136,6 @@ normalize_counts <- function(
       ),
       legend_position = legend_position_for_pca,
       point_size = point_size_for_pca,
-      add_label = add_label_to_pca,
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_,

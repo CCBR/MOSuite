@@ -12,7 +12,7 @@ normalize_counts(
   samples_to_include = NULL,
   sample_id_colname = NULL,
   group_colname = "Group",
-  label_colname = NULL,
+  label_colname = "Label",
   input_in_log_counts = FALSE,
   voom_normalization_method = "quantile",
   samples_to_rename = c(""),
@@ -65,10 +65,10 @@ column showing to which experimental treatments each sample belongs (e.g. WildTy
 Before, After, etc.).}
 
 \item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in
-the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
-labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
-column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
-\code{NULL} -- \code{sample_id_colname} will be used.)}
+heatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to
+display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with
+your preferred Labels here. The selected column should contain unique names for each sample. Use \code{add_label_to_pca}
+to control whether these labels are displayed on the PCA plot.}
 
 \item{input_in_log_counts}{set this to \code{TRUE} if counts are already log2-transformed}
 
@@ -79,7 +79,8 @@ parameter to rename samples manually for display on the PCA plot. Use "Add item"
 renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to
 which new name: old_name: new_name}
 
-\item{add_label_to_pca}{label points on the PCA plot}
+\item{add_label_to_pca}{If \code{TRUE}, display labels from \code{label_colname} on PCA points. If \code{FALSE}, the PCA plot uses
+unlabeled points while heatmap labels still use \code{label_colname}.}
 
 \item{principal_component_on_x_axis}{The principal component to plot on the x-axis for the PCA plot. Choices include
 1, 2, 3, ... (default: 1)}
