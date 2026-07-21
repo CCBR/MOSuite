@@ -178,7 +178,7 @@ test_that("plot_pca layers are expected", {
       "#878500"
     ),
     legend_position = "top",
-    point_size = 1,
+    point_size = 5,
     label_font_size = 3,
     label_offset_y_ = 2,
     label_offset_x_ = 2
