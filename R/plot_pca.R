@@ -122,8 +122,17 @@ S7::method(plot_pca, S7::class_data.frame) <- function(
   )
 }
 
-build_pca_hover_text <- function(pca_data, sample_id_colname, group_colname, label_colname = NULL) {
-  label_hover_colname <- if (is.null(label_colname)) sample_id_colname else label_colname
+build_pca_hover_text <- function(
+  pca_data,
+  sample_id_colname,
+  group_colname,
+  label_colname = NULL
+) {
+  label_hover_colname <- if (is.null(label_colname)) {
+    sample_id_colname
+  } else {
+    label_colname
+  }
 
   paste0(
     label_hover_colname,

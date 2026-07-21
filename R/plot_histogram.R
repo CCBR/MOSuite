@@ -85,7 +85,11 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
   ))
 }
 
-build_histogram_hover_text <- function(histogram_data, sample_id_colname, group_colname = NULL) {
+build_histogram_hover_text <- function(
+  histogram_data,
+  sample_id_colname,
+  group_colname = NULL
+) {
   sample_text <- paste0(
     sample_id_colname,
     ": ",
@@ -348,7 +352,12 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
       legend_position = legend_position,
       ncol = number_of_legend_columns,
       legend_text_size = legend_font_size,
-      guide_override_aes = list(linetype = 1, linewidth = 2, shape = NA, fill = NA)
+      guide_override_aes = list(
+        linetype = 1,
+        linewidth = 2,
+        shape = NA,
+        fill = NA
+      )
     )
   }
   return(hist_plot)

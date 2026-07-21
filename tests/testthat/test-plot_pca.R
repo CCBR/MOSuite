@@ -606,11 +606,19 @@ test_that("plot_pca_2d interactive hover text includes label column when provide
   hover_text_with_labels <- get_plotly_text(p_with_labels)
   hover_text_without_labels <- get_plotly_text(p_without_labels)
   expect_true(any(grepl("Group: A", hover_text_with_labels, fixed = TRUE)))
-  expect_true(any(grepl("PlotLabel: plot-label-A1", hover_text_with_labels, fixed = TRUE)))
+  expect_true(any(grepl(
+    "PlotLabel: plot-label-A1",
+    hover_text_with_labels,
+    fixed = TRUE
+  )))
   expect_false(any(grepl("Sample: A1", hover_text_with_labels, fixed = TRUE)))
   expect_true(any(grepl("Sample: A1", hover_text_without_labels, fixed = TRUE)))
   expect_true(any(grepl("Group: A", hover_text_without_labels, fixed = TRUE)))
-  expect_false(any(grepl("PlotLabel:", hover_text_without_labels, fixed = TRUE)))
+  expect_false(any(grepl(
+    "PlotLabel:",
+    hover_text_without_labels,
+    fixed = TRUE
+  )))
 })
 
 test_that("plot_pca_3d hover text includes label column when provided", {
@@ -647,9 +655,17 @@ test_that("plot_pca_3d hover text includes label column when provided", {
   hover_text_with_labels <- get_plotly_text(fig_with_labels)
   hover_text_without_labels <- get_plotly_text(fig_without_labels)
   expect_true(any(grepl("Group: A", hover_text_with_labels, fixed = TRUE)))
-  expect_true(any(grepl("PlotLabel: plot-label-A1", hover_text_with_labels, fixed = TRUE)))
+  expect_true(any(grepl(
+    "PlotLabel: plot-label-A1",
+    hover_text_with_labels,
+    fixed = TRUE
+  )))
   expect_false(any(grepl("Sample: A1", hover_text_with_labels, fixed = TRUE)))
   expect_true(any(grepl("Sample: A1", hover_text_without_labels, fixed = TRUE)))
   expect_true(any(grepl("Group: A", hover_text_without_labels, fixed = TRUE)))
-  expect_false(any(grepl("PlotLabel:", hover_text_without_labels, fixed = TRUE)))
+  expect_false(any(grepl(
+    "PlotLabel:",
+    hover_text_without_labels,
+    fixed = TRUE
+  )))
 })
