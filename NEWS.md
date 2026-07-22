@@ -1,6 +1,6 @@
 ## MOSuite development version
 
-- Fix expression heatmap clustering to correctly use the selected gene and sample distance metrics and clustering methods.
+- Fix expression heatmap clustering to correctly use the selected gene and sample distance metrics and clustering methods. (#231, @phoman14)
 - Align plot color defaults with the MOSuite Code Ocean capsule defaults while preserving fallback random colors when a requested palette is too short.
 - Improve top and bottom legend wrapping and automatic legend text sizing for PCA and histogram plots with many or long labels.
 - Align PCA and histogram plotting defaults used by `filter_counts()`, `normalize_counts()`, and `batch_correct_counts()` with the affected Code Ocean capsules: MOSuite-filter-counts, MOSuite-normalize-counts, MOSuite-plot-pca-2D, and MOSuite-plot-pca-3D.
