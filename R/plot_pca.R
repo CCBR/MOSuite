@@ -140,20 +140,7 @@ plot_pca_2d <- S7::new_generic(
     group_colname = "Group",
     label_colname = "Label",
     samples_to_rename = NULL,
-    color_values = c(
-      "#5954d6",
-      "#e1562c",
-      "#b80058",
-      "#00c6f8",
-      "#d163e6",
-      "#00a76c",
-      "#ff9287",
-      "#008cf9",
-      "#006e00",
-      "#796880",
-      "#FFA500",
-      "#878500"
-    ),
+    color_values = mosuite_palette,
     principal_components = c(1, 2),
     legend_position = "top",
     point_size = 3,
@@ -183,20 +170,7 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
   group_colname = "Group",
   label_colname = "Label",
   samples_to_rename = NULL,
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = NULL,
   principal_components = c(1, 2),
   legend_position = "top",
   point_size = 3,
@@ -212,6 +186,7 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
   save_plots = options::opt("save_plots")
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
   return(plot_pca_2d(
     counts_dat,
     sample_metadata = moo_counts@sample_meta,
@@ -298,20 +273,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   group_colname = "Group",
   label_colname = "Label",
   samples_to_rename = NULL,
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = mosuite_palette,
   principal_components = c(1, 2),
   legend_position = "top",
   point_size = 3,
@@ -472,20 +434,7 @@ plot_pca_3d <- S7::new_generic(
     principal_components = c(1, 2, 3),
     point_size = 8,
     label_font_size = 24,
-    color_values = c(
-      "#5954d6",
-      "#e1562c",
-      "#b80058",
-      "#00c6f8",
-      "#d163e6",
-      "#00a76c",
-      "#ff9287",
-      "#008cf9",
-      "#006e00",
-      "#796880",
-      "#FFA500",
-      "#878500"
-    ),
+    color_values = mosuite_palette,
     plot_title = "PCA 3D",
     plot_filename = "pca_3D.html",
     print_plots = options::opt("print_plots"),
@@ -510,20 +459,7 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = NULL,
   plot_title = "PCA 3D",
   plot_filename = "pca_3D.html",
   print_plots = options::opt("print_plots"),
@@ -531,6 +467,7 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
   plots_subdir = "pca"
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
   return(
     plot_pca_3d(
       counts_dat,
@@ -597,20 +534,7 @@ S7::method(plot_pca_3d, S7::class_data.frame) <- function(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = mosuite_palette,
   plot_title = "PCA 3D",
   plot_filename = "pca_3D.html",
   print_plots = options::opt("print_plots"),

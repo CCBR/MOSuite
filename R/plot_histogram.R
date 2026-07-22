@@ -54,6 +54,7 @@ plot_histogram <- S7::new_generic(
 #'   the counts slot (`moo@counts`).
 #' @param sub_count_type Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub
 #'   count type within the list
+#' @inheritParams plot_histogram.data.frame
 #' @examples
 #' # plot histogram for a counts slot in a multiOmicDataset Object
 #' moo <- multiOmicDataSet(
@@ -75,12 +76,17 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
   moo_counts,
   count_type,
   sub_count_type = NULL,
+  group_colname = "Group",
+  color_values = NULL,
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
   return(plot_histogram(
     counts_dat,
     sample_metadata = moo_counts@sample_meta,
+    group_colname = group_colname,
+    color_values = color_values,
     ...
   ))
 }
@@ -156,20 +162,7 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
   feature_id_colname = NULL,
   group_colname = "Group",
   label_colname = "Label",
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = mosuite_palette,
   color_by_group = FALSE,
   set_min_max_for_x_axis = FALSE,
   minimum_for_x_axis = -1,

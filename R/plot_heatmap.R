@@ -42,10 +42,7 @@
 #'   feature_id_colname = NULL,
 #'   group_colname = "Group",
 #'   label_colname = "Label",
-#'   color_values = c(
-#'     "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-#'     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
-#'   ))
+#'   color_values = mosuite_palette)
 #' ```
 #'
 #' @seealso
@@ -64,6 +61,7 @@ plot_corr_heatmap <- S7::new_generic("plot_corr_heatmap", "moo_counts")
 #' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
 #' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list.
 #'   Must be a name in `names(moo@counts[[count_type]])`.
+#' @inheritParams plot_corr_heatmap-data.frame
 #' @param ... additional arguments forwarded to [plot_corr_heatmap()] for `data.frame`
 #'
 #' @rdname plot_corr_heatmap-multiOmicDataSet
@@ -76,12 +74,17 @@ S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
   moo_counts,
   count_type,
   sub_count_type = NULL,
+  group_colname = "Group",
+  color_values = NULL,
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  color_values <- color_values %||% moo_counts@analyses$colors[group_colname]
   return(plot_corr_heatmap(
     counts_dat,
     sample_metadata = moo_counts@sample_meta,
+    group_colname = group_colname,
+    color_values = color_values,
     ...
   ))
 }
@@ -122,20 +125,7 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
   feature_id_colname = NULL,
   group_colname = "Group",
   label_colname = "Label",
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  )
+  color_values = mosuite_palette
 ) {
   abort_packages_not_installed("amap", "ComplexHeatmap", "dendsort")
   counts_dat <- moo_counts
@@ -156,8 +146,15 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
   # cannot set rownames on a tibble
   sample_metadata <- sample_metadata |> as.data.frame()
   rownames(sample_metadata) <- sample_metadata[[label_colname]]
+  # normalize color_values to a named list so each column can have its own colors
+  if (!is.list(color_values)) {
+    color_values <- stats::setNames(
+      rep(list(color_values), length(group_colname)),
+      group_colname
+    )
+  }
   cols <- lapply(group_colname, function(x) {
-    return(resolve_plot_colors(sample_metadata, x, color_values))
+    return(resolve_plot_colors(sample_metadata, x, color_values[[x]]))
   })
   names(cols) <- (group_colname)
 
@@ -357,20 +354,7 @@ plot_expr_heatmap <- S7::new_generic(
     group_colname = "Group",
     label_colname = NULL,
     samples_to_include = NULL,
-    color_values = c(
-      "#5954d6",
-      "#e1562c",
-      "#b80058",
-      "#00c6f8",
-      "#d163e6",
-      "#00a76c",
-      "#ff9287",
-      "#008cf9",
-      "#006e00",
-      "#796880",
-      "#FFA500",
-      "#878500"
-    ),
+    color_values = mosuite_palette,
     include_all_genes = FALSE,
     filter_top_genes_by_variance = TRUE,
     top_genes_by_variance_to_include = 500,
@@ -395,20 +379,7 @@ plot_expr_heatmap <- S7::new_generic(
     group_columns = c("Group", "Replicate", "Batch"),
     assign_group_colors = FALSE,
     assign_color_to_sample_groups = c(),
-    group_colors = c(
-      "#5954d6",
-      "#e1562c",
-      "#b80058",
-      "#00c6f8",
-      "#d163e6",
-      "#00a76c",
-      "#ff9287",
-      "#008cf9",
-      "#006e00",
-      "#796880",
-      "#FFA500",
-      "#878500"
-    ),
+    group_colors = mosuite_palette,
     heatmap_color_scheme = "Default",
     autoscale_heatmap_color = TRUE,
     set_min_heatmap_color = -2,
@@ -439,20 +410,7 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = NULL,
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -477,20 +435,7 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
   group_columns = c("Group", "Replicate", "Batch"),
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
-  group_colors = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  group_colors = mosuite_palette,
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
   set_min_heatmap_color = -2,
@@ -506,6 +451,7 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
   plots_subdir = "heatmap"
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
   heatmap_plot <- plot_expr_heatmap(
     counts_dat,
     count_type = count_type,
@@ -570,20 +516,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = mosuite_palette,
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -608,20 +541,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   group_columns = c("Group", "Replicate", "Batch"),
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
-  group_colors = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  group_colors = mosuite_palette,
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
   set_min_heatmap_color = -2,

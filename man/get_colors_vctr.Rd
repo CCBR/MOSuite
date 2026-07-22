@@ -4,7 +4,7 @@
 \alias{get_colors_vctr}
 \title{Get vector of colors for observations in one column of a data frame}
 \usage{
-get_colors_vctr(dat, colname, palette_fun = get_mosuite_colors, ...)
+get_colors_vctr(dat, colname, palette_fun = select_mosuite_colors, ...)
 }
 \arguments{
 \item{dat}{data frame}
