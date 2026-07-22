@@ -18,7 +18,6 @@ moo@sample_meta <- moo@sample_meta |>
   )
 
 test_that("run_deseq2 works", {
-
   expect_error(
     run_deseq2(moo, design = ~condition),
     "moo must contain filtered counts"
