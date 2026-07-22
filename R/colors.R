@@ -192,7 +192,9 @@ resolve_plot_colors <- function(
   if (length(color_values) < length(obs)) {
     n_missing <- length(obs) - length(color_values)
     message(glue::glue(
-      "color_values contains {length(color_values)} colors for {length(obs)} values in column {colname}. Generating {n_missing} additional colors."
+      "color_values contains {length(color_values)} colors for ",
+      "{length(obs)} values in column {colname}. Generating ",
+      "{n_missing} additional colors."
     ))
     generated_colors <- get_colors_vctr(
       dat,
