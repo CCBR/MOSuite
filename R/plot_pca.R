@@ -745,6 +745,13 @@ calc_pca <- function(
   tedf_filt <- tedf[, colSums(is.na(tedf)) != nrow(tedf)]
   # remove samples with zero variance
   tedf_var <- tedf_filt[, apply(tedf_filt, 2, var) != 0]
+  if (ncol(tedf_var) == 0) {
+    stop(
+      "No features with non-zero variance remain after filtering. ",
+      "PCA cannot be computed on an empty or constant matrix. ",
+      "Check that filter thresholds are appropriate for the number of samples."
+    )
+  }
   # calculate PCA
   pca_fit <- stats::prcomp(tedf_var, scale = TRUE)
   pca_df <- pca_fit |>

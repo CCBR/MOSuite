@@ -31,13 +31,13 @@ print_or_save_plot <- function(
   draw_heatmap_with_caption <- function(hm) {
     ComplexHeatmap::draw(hm)
     if (!is.null(caption)) {
-      grid::grid.text(
+      return(grid::grid.text(
         caption,
         x = grid::unit(0.5, "npc"),
         y = grid::unit(2, "mm"),
         just = "bottom",
         gp = grid::gpar(fontsize = 9, col = "grey40")
-      )
+      ))
     }
   }
   if (!is.null(caption) && inherits(plot_obj, "ggplot")) {
