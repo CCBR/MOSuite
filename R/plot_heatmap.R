@@ -61,7 +61,12 @@ plot_corr_heatmap <- S7::new_generic("plot_corr_heatmap", "moo_counts")
 #' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
 #' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list.
 #'   Must be a name in `names(moo@counts[[count_type]])`.
-#' @inheritParams plot_corr_heatmap-data.frame
+#' @param group_colname The column from the sample metadata containing the sample group information. This is usually a
+#'   column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
+#'   Before, After, etc.).
+#' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+#'   level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
+#'   the metadata column.
 #' @param ... additional arguments forwarded to [plot_corr_heatmap()] for `data.frame`
 #'
 #' @rdname plot_corr_heatmap-multiOmicDataSet
@@ -354,7 +359,6 @@ plot_expr_heatmap <- S7::new_generic(
     group_colname = "Group",
     label_colname = NULL,
     samples_to_include = NULL,
-    color_values = mosuite_palette,
     include_all_genes = FALSE,
     filter_top_genes_by_variance = TRUE,
     top_genes_by_variance_to_include = 500,
@@ -379,7 +383,6 @@ plot_expr_heatmap <- S7::new_generic(
     group_columns = c("Group", "Replicate", "Batch"),
     assign_group_colors = FALSE,
     assign_color_to_sample_groups = c(),
-    group_colors = mosuite_palette,
     heatmap_color_scheme = "Default",
     autoscale_heatmap_color = TRUE,
     set_min_heatmap_color = -2,
@@ -392,7 +395,8 @@ plot_expr_heatmap <- S7::new_generic(
     plot_filename = "expr_heatmap.png",
     print_plots = options::opt("print_plots"),
     save_plots = options::opt("save_plots"),
-    plots_subdir = "heatmap"
+    plots_subdir = "heatmap",
+    ...
   ) {
     return(S7::S7_dispatch())
   }
@@ -435,7 +439,6 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
   group_columns = c("Group", "Replicate", "Batch"),
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
-  group_colors = mosuite_palette,
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
   set_min_heatmap_color = -2,
@@ -448,7 +451,8 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "heatmap"
+  plots_subdir = "heatmap",
+  ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
   color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
@@ -487,7 +491,7 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
     group_columns,
     assign_group_colors,
     assign_color_to_sample_groups,
-    group_colors,
+    color_values,
     heatmap_color_scheme,
     autoscale_heatmap_color,
     set_min_heatmap_color,
@@ -541,7 +545,6 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   group_columns = c("Group", "Replicate", "Batch"),
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
-  group_colors = mosuite_palette,
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
   set_min_heatmap_color = -2,
@@ -554,7 +557,8 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "heatmap"
+  plots_subdir = "heatmap",
+  ...
 ) {
   ## This function uses pheatmap to draw a heatmap, scaling first by rows
   ## (with samples in columns and genes in rows)
@@ -937,16 +941,16 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   annotation_col <- as.data.frame(unclass(annotation_col))
   annotation_col[] <- lapply(annotation_col, factor)
   x <- length(unlist(lapply(annotation_col, levels)))
-  if (x > length(group_colors)) {
+  if (x > length(color_values)) {
     generated_group_colors <- get_colors_vctr(
       data.frame(group_color_index = seq_len(x)),
       "group_color_index"
     )
     more_cols <- unname(generated_group_colors)[seq.int(
-      length(group_colors) + 1,
+      length(color_values) + 1,
       x
     )]
-    group_colors <- c(group_colors, more_cols)
+    color_values <- c(color_values, more_cols)
   }
   rownames(annotation_col) <- annot[[label_colname]]
   annot_col <- list()
@@ -955,12 +959,12 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
     group_levels <- stats::na.omit(unique(annot[[cnam]]))
 
     if (
-      !is.null(names(group_colors)) &&
-        all(as.character(group_levels) %in% names(group_colors))
+      !is.null(names(color_values)) &&
+        all(as.character(group_levels) %in% names(color_values))
     ) {
-      col <- resolve_plot_colors(annot, cnam, group_colors)
+      col <- resolve_plot_colors(annot, cnam, color_values)
     } else {
-      color_slice <- group_colors[
+      color_slice <- color_values[
         next_color:(next_color + length(group_levels) - 1)
       ]
       col <- resolve_plot_colors(annot, cnam, color_slice)

@@ -140,7 +140,6 @@ plot_pca_2d <- S7::new_generic(
     group_colname = "Group",
     label_colname = "Label",
     samples_to_rename = NULL,
-    color_values = mosuite_palette,
     principal_components = c(1, 2),
     legend_position = "top",
     point_size = 3,
@@ -153,7 +152,8 @@ plot_pca_2d <- S7::new_generic(
     plots_subdir = "pca",
     plot_filename = "pca_2D.png",
     print_plots = options::opt("print_plots"),
-    save_plots = options::opt("save_plots")
+    save_plots = options::opt("save_plots"),
+    ...
   ) {
     return(S7::S7_dispatch())
   }
@@ -183,7 +183,8 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
   print_plots = options::opt("print_plots"),
-  save_plots = options::opt("save_plots")
+  save_plots = options::opt("save_plots"),
+  ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
   color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
@@ -286,7 +287,8 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
   print_plots = options::opt("print_plots"),
-  save_plots = options::opt("save_plots")
+  save_plots = options::opt("save_plots"),
+  ...
 ) {
   PC <- std.dev <- percent <- cumulative <- NULL
   if (length(principal_components) != 2) {
@@ -434,12 +436,12 @@ plot_pca_3d <- S7::new_generic(
     principal_components = c(1, 2, 3),
     point_size = 8,
     label_font_size = 24,
-    color_values = mosuite_palette,
     plot_title = "PCA 3D",
     plot_filename = "pca_3D.html",
     print_plots = options::opt("print_plots"),
     save_plots = options::opt("save_plots"),
-    plots_subdir = "pca"
+    plots_subdir = "pca",
+    ...
   ) {
     return(S7::S7_dispatch())
   }
@@ -464,7 +466,8 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
   plot_filename = "pca_3D.html",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "pca"
+  plots_subdir = "pca",
+  ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
   color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
@@ -539,7 +542,8 @@ S7::method(plot_pca_3d, S7::class_data.frame) <- function(
   plot_filename = "pca_3D.html",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "pca"
+  plots_subdir = "pca",
+  ...
 ) {
   PC <- std.dev <- percent <- cumulative <- NULL
   if (length(principal_components) != 3) {

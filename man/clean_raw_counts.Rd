@@ -11,8 +11,7 @@ clean_raw_counts(
   feature_id_colname = NULL,
   samples_to_rename = "",
   group_colname = "",
-  colors_for_plots = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  colors_for_plots = NULL,
   cleanup_column_names = TRUE,
   split_gene_name = TRUE,
   aggregate_rows_with_duplicate_gene_names = TRUE,
@@ -44,7 +43,9 @@ which new name: old_name: new_name}
 \item{group_colname}{sample metadata column used to color the read-depth plot. Leave blank to use the current
 single-color bar fill.}
 
-\item{colors_for_plots}{colors used when \code{group_colname} is supplied. Named vectors are matched to group values;
+\item{colors_for_plots}{optional colors used when \code{group_colname} is supplied. If \code{NULL}, colors are taken from
+\code{moo@analyses$colors[[group_colname]]}.
+Named vectors are matched to group values;
 unnamed vectors follow group order and are extended with MOSuite colors when too few colors are supplied.}
 
 \item{cleanup_column_names}{Invalid raw counts column names can cause errors

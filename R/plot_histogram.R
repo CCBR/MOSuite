@@ -54,7 +54,12 @@ plot_histogram <- S7::new_generic(
 #'   the counts slot (`moo@counts`).
 #' @param sub_count_type Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub
 #'   count type within the list
-#' @inheritParams plot_histogram.data.frame
+#' @param group_colname The column from the sample metadata containing the sample group information. This is usually a
+#'   column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
+#'   Before, After, etc.).
+#' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+#'   level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+#'   the metadata column.
 #' @examples
 #' # plot histogram for a counts slot in a multiOmicDataset Object
 #' moo <- multiOmicDataSet(

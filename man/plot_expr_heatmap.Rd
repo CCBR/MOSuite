@@ -16,8 +16,6 @@ plot_expr_heatmap(
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -42,8 +40,6 @@ plot_expr_heatmap(
   group_columns = c("Group", "Replicate", "Batch"),
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
-  group_colors = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
   set_min_heatmap_color = -2,
@@ -56,7 +52,8 @@ plot_expr_heatmap(
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "heatmap"
+  plots_subdir = "heatmap",
+  ...
 )
 
 ## S7 method for class <MOSuite::multiOmicDataSet>
@@ -70,8 +67,7 @@ plot_expr_heatmap(
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = NULL,
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -96,8 +92,6 @@ plot_expr_heatmap(
   group_columns = c("Group", "Replicate", "Batch"),
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
-  group_colors = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
   set_min_heatmap_color = -2,
@@ -110,7 +104,8 @@ plot_expr_heatmap(
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "heatmap"
+  plots_subdir = "heatmap",
+  ...
 )
 
 ## S7 method for class <data.frame>
@@ -124,8 +119,7 @@ plot_expr_heatmap(
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = mosuite_palette,
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -150,8 +144,6 @@ plot_expr_heatmap(
   group_columns = c("Group", "Replicate", "Batch"),
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
-  group_colors = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
   set_min_heatmap_color = -2,
@@ -164,7 +156,8 @@ plot_expr_heatmap(
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "heatmap"
+  plots_subdir = "heatmap",
+  ...
 )
 }
 \arguments{
@@ -200,10 +193,6 @@ column with your preferred Labels here. The selected column should contain uniqu
 \item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or
 you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
 analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
-
-\item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
-level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
-the metadata column.}
 
 \item{include_all_genes}{Set to TRUE if all genes are to be included. Set to FALSE if you want to filter genes by
 variance and/or provide a list of specific genes that will appear in the heatmap.}
@@ -265,8 +254,6 @@ sample names.}
 \item{assign_color_to_sample_groups}{Enter each sample to color in the format: group_name: color This parameter is
 ignored if "Assign Colors" is set to FALSE.}
 
-\item{group_colors}{Set group annotation colors.}
-
 \item{heatmap_color_scheme}{color scheme (TODO document options)}
 
 \item{autoscale_heatmap_color}{Set to TRUE to autoscale the heatmap colors between the maximum and minimum heatmap
@@ -298,6 +285,12 @@ you want to see these numbers on the plot.}
 \item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 
 \item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
+
+\item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
+the metadata column.}
+
+\item{group_colors}{Set group annotation colors.}
 }
 \value{
 heatmap from \code{ComplexHeatmap::Heatmap()}

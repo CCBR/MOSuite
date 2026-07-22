@@ -75,9 +75,9 @@
 #' @param legend_font_size_for_histogram legend font size for the histogram plot.
 #'   If `NULL`, the size is scaled automatically.
 #' @param number_of_histogram_legend_columns number of columns for the histogram legend
-#' @param colors_for_plots Colors for the PCA and histogram will be picked, in order, from this list.
-#'   Colors must either be names in `grDevices::colors()` or valid hex codes. Defaults to the MOSuite palette returned
-#'   by `select_mosuite_colors()`. Unnamed colors are assigned by factor level order
+#' @param colors_for_plots Optional colors for PCA/histogram/heatmap plots. If `NULL`, colors are taken from
+#'   `moo@analyses$colors[[group_colname]]`.
+#'   Colors must either be names in `grDevices::colors()` or valid hex codes. Unnamed colors are assigned by factor level order
 #'   when the grouping column is a factor;
 #'   otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
 #'   than colors provided,
@@ -136,7 +136,7 @@ filter_counts <- function(
   legend_position_for_histogram = "top",
   legend_font_size_for_histogram = NULL,
   number_of_histogram_legend_columns = 6,
-  colors_for_plots = mosuite_palette,
+  colors_for_plots = NULL,
   plot_corr_matrix_heatmap = TRUE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
