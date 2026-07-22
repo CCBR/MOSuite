@@ -114,7 +114,7 @@
     {
       "key": "colors_for_plots",
       "displayName": "Colors for plots",
-      "description": "Colors for the PCA and histogram will be picked, in order, from this list.\nColors must either be names in `grDevices::colors()` or valid hex codes. Defaults to the MOSuite palette returned\nby `select_mosuite_colors()`. Unnamed colors are assigned by factor level order when the grouping column is a factor;\notherwise, they follow the order in which groups first appear in the metadata column. If more groups are present\nthan colors provided,\nsupplied colors are used first and additional colors are generated from the selected palette for the remaining\ngroups; random colors are used only if that palette returns fewer colors than the number of groups.\n",
+      "description": "Optional colors for PCA/histogram/heatmap plots. If `NULL`, colors are taken from\n`moo@analyses$colors[[group_colname]]`.\nColors must either be names in `grDevices::colors()` or valid hex codes. Unnamed colors are assigned by factor level order\nwhen the grouping column is a factor;\notherwise, they follow the order in which groups first appear in the metadata column. If more groups are present\nthan colors provided,\nsupplied colors are used first and additional colors are generated from the selected palette for the remaining\ngroups; random colors are used only if that palette returns fewer colors than the number of groups.\n",
       "paramType": "MULTISELECT",
       "paramGroup": "Visualization",
       "paramValues": [
@@ -131,7 +131,6 @@
         "#FFA500",
         "#878500"
       ],
-      "defaultValue": ["#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c", "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"],
       "condition": null,
       "content": null,
       "objectPropertyReference": null
