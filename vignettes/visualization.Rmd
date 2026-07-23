@@ -159,7 +159,7 @@ for a full list of plotting functions.
 
 Plot the read depth of the clean counts:
 
-```{r plot_pca_2D}
+```{r plot_read_depth}
 plot_read_depth(
   moo,
   count_type = "clean",
@@ -189,7 +189,7 @@ plot_pca_2d(
 Plotting functions that use ggplot2 return ggplot objects.
 You can customizing them by adding more ggplot layers, just like any other ggplot.
 
-```{r plot_pca_2D}
+```{r ggplot2_pca_2D}
 plot_pca_2d(
   moo,
   count_type = "batch",
