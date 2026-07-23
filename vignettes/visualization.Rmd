@@ -98,7 +98,7 @@ moo <- moo |> filter_diff()
 ```{r pca_3D}
 plot_pca_3d(
   moo,
-  count_type = 'batch',
+  count_type = "batch",
   principal_components = c(1, 2, 3),
   group_colname = "Group",
   label_colname = "Label"
@@ -162,13 +162,13 @@ Plot the read depth of the clean counts:
 ```{r plot_pca_2D}
 plot_read_depth(
   moo,
-  count_type = 'clean',
-  group_colname = 'Group'
+  count_type = "clean",
+  group_colname = "Group"
 )
 plot_read_depth(
   moo,
-  count_type = 'clean',
-  group_colname = 'Batch'
+  count_type = "clean",
+  group_colname = "Batch"
 )
 ```
 
@@ -177,7 +177,7 @@ Plot a 2D PCA for the batch-corrected counts:
 ```{r plot_pca_2D}
 plot_pca_2d(
   moo,
-  count_type = 'batch',
+  count_type = "batch",
   principal_components = c(1, 2),
   group_colname = "Batch",
   label_colname = "Label"
@@ -192,14 +192,14 @@ You can customizing them by adding more ggplot layers, just like any other ggplo
 ```{r plot_pca_2D}
 plot_pca_2d(
   moo,
-  count_type = 'batch',
+  count_type = "batch",
   principal_components = c(1, 2),
   group_colname = "Batch",
   label_colname = "Label"
 ) +
   ggplot2::labs(
-    title = 'Principle components of batch-corrected counts',
-    caption = 'Normalized counts were batch-corrected using svg::ComBat()'
+    title = "Principle components of batch-corrected counts",
+    caption = "Normalized counts were batch-corrected using svg::ComBat()"
   )
 ```
 
@@ -225,15 +225,15 @@ with the `color_values` argument:
 plot_read_depth(
   moo,
   count_type = "clean",
-  group_colname = 'Group'
+  group_colname = "Group"
 )
 
 # color palette overridden by color_values
 plot_read_depth(
   moo,
   count_type = "clean",
-  group_colname = 'Group',
-  color_values = c(A = 'red', B = 'green', C = 'blue')
+  group_colname = "Group",
+  color_values = c(A = "red", B = "green", C = "blue")
 )
 ```
 
@@ -241,28 +241,28 @@ You can change the default colors in the multiOmicDataSet so that all plotting
 functions will use your chosen color palette.
 
 ```{r custom_palette}
-moo@analyses$colors[['Batch']] <- c("1" = "#0E7175", "2" = "#C35BCA")
-moo@analyses$colors[['Replicate']] <- c(
+moo@analyses$colors[["Batch"]] <- c("1" = "#0E7175", "2" = "#C35BCA")
+moo@analyses$colors[["Replicate"]] <- c(
   "1" = "#89973D",
   "2" = "#E8B92F",
   "3" = "#A45E41"
 )
-moo@analyses$colors[['Group']] <- c(A = "#E69F00", B = "#56B4E9", C = "#009E73")
+moo@analyses$colors[["Group"]] <- c(A = "#E69F00", B = "#56B4E9", C = "#009E73")
 
 plot_read_depth(
   moo,
   count_type = "clean",
-  group_colname = 'Group'
+  group_colname = "Group"
 )
 plot_pca_2d(
   moo,
   count_type = "batch",
-  group_colname = 'Batch'
+  group_colname = "Batch"
 )
 plot_expr_heatmap(
   moo,
-  count_type = 'norm',
-  sub_count_type = 'voom',
-  group_colname = 'Group'
+  count_type = "norm",
+  sub_count_type = "voom",
+  group_colname = "Group"
 )
 ```
