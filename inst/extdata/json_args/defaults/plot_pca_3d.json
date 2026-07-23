@@ -12,6 +12,7 @@
   "principal_components": [1, 2, 3],
   "point_size": 8,
   "label_font_size": 24,
+  "color_values": null,
   "plot_title": "PCA 3D",
   "plot_filename": "pca_3D.html",
   "print_plots": true,
