@@ -196,7 +196,6 @@ filter_counts <- function(
     return(moo)
   }
 
-  message(glue::glue("colors_for_plots {class(colors_for_plots)}"))
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
     # use consistent colors
     if (is.null(colors_for_plots)) {
@@ -207,8 +206,6 @@ filter_counts <- function(
     } else {
       colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
     }
-
-    message(glue::glue("colors_for_plots {class(colors_for_plots)}"))
 
     log_counts <- df_filt |>
       dplyr::mutate(dplyr::across(
