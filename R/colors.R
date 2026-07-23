@@ -282,7 +282,7 @@ display_palette <- function(palette = mosuite_palette) {
   grid::grid.newpage()
   grid::grid.draw(grid::rasterGrob(img, width = grid::unit(1, "npc")))
 
-  invisible(p)
+  return(invisible(p))
 }
 
 #' Set color palette for a single group/column
