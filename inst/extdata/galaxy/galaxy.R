@@ -135,9 +135,7 @@ update_function_template <- function(
       arg_name <- template[[arg_type]][[i]]$key
       if (arg_name %in% names(func_meta$args)) {
         arg_meta <- template[[arg_type]][[i]]
-        arg_meta$description <- safe_rd_to_md(
-          func_meta$args[[arg_name]]$description
-        )
+        arg_meta$description <- safe_rd_to_md(func_meta$args[[arg_name]]$description)
         arg_meta$defaultValue <- func_meta$args[[arg_name]]$defaultValue
         args_in_template <- c(args_in_template, arg_name)
         new_template[[arg_type]][[

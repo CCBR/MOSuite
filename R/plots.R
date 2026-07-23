@@ -31,13 +31,13 @@ print_or_save_plot <- function(
   draw_heatmap_with_caption <- function(hm) {
     ComplexHeatmap::draw(hm)
     if (!is.null(caption)) {
-      return(grid::grid.text(
+      grid::grid.text(
         caption,
         x = grid::unit(0.5, "npc"),
         y = grid::unit(2, "mm"),
         just = "bottom",
         gp = grid::gpar(fontsize = 9, col = "grey40")
-      ))
+      )
     }
   }
   if (!is.null(caption) && inherits(plot_obj, "ggplot")) {
@@ -76,6 +76,47 @@ print_or_save_plot <- function(
     }
   }
   return(invisible(filename))
+}
+
+format_hover_text <- function(
+  plot_data,
+  primary_colname,
+  secondary_colname = NULL,
+  missing_col_context = "plot",
+  require_secondary = TRUE
+) {
+  required_cols <- primary_colname
+  if (isTRUE(require_secondary) && !is.null(secondary_colname)) {
+    required_cols <- c(required_cols, secondary_colname)
+  }
+
+  missing_cols <- setdiff(required_cols, colnames(plot_data))
+  if (length(missing_cols) > 0) {
+    stop(glue::glue(
+      "Missing required {missing_col_context} metadata column(s): {glue::glue_collapse(missing_cols, sep = ",
+      ")}"
+    ))
+  }
+
+  primary_text <- paste0(
+    primary_colname,
+    ": ",
+    plot_data[[primary_colname]]
+  )
+
+  if (
+    is.null(secondary_colname) || !secondary_colname %in% colnames(plot_data)
+  ) {
+    return(primary_text)
+  }
+
+  paste0(
+    primary_text,
+    "<br>",
+    secondary_colname,
+    ": ",
+    plot_data[[secondary_colname]]
+  )
 }
 
 #' Compute a wrapped colour legend column count
@@ -184,7 +225,8 @@ add_colour_legend_layout <- function(
   legend_position = "top",
   ncol = NULL,
   legend_text_size = 10,
-  max_label_characters_per_row = 45
+  max_label_characters_per_row = 45,
+  guide_override_aes = NULL
 ) {
   legend_columns <- get_legend_column_count(
     labels = labels,
@@ -198,9 +240,14 @@ add_colour_legend_layout <- function(
     return(plot)
   }
 
+  guide_args <- list(ncol = legend_columns, byrow = TRUE)
+  if (!is.null(guide_override_aes)) {
+    guide_args$override.aes <- guide_override_aes
+  }
+
   plot +
     ggplot2::guides(
-      colour = ggplot2::guide_legend(ncol = legend_columns, byrow = TRUE)
+      colour = do.call(ggplot2::guide_legend, guide_args)
     ) +
     ggplot2::theme(
       legend.box = "vertical"

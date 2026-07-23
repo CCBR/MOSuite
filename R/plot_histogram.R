@@ -97,6 +97,20 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
   ))
 }
 
+build_histogram_hover_text <- function(
+  histogram_data,
+  sample_id_colname,
+  group_colname = NULL
+) {
+  format_hover_text(
+    histogram_data,
+    primary_colname = sample_id_colname,
+    secondary_colname = group_colname,
+    missing_col_context = "histogram",
+    require_secondary = FALSE
+  )
+}
+
 #' Plot histogram for counts dataframe
 #'
 #' @rdname plot_histogram.data.frame
@@ -216,16 +230,42 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
         !!rlang::sym(group_colname) := as.character(!!rlang::sym(group_colname))
       )
 
+    if (isTRUE(interactive_plots)) {
+      df_long$histogram_hover_text <- build_histogram_hover_text(
+        df_long,
+        sample_id_colname,
+        group_colname
+      )
+    }
+    histogram_mapping <- ggplot2::aes(
+      x = count,
+      group = !!rlang::sym(sample_id_colname)
+    )
+    if (isTRUE(interactive_plots)) {
+      histogram_mapping <- ggplot2::aes(
+        x = count,
+        group = !!rlang::sym(sample_id_colname),
+        text = histogram_hover_text
+      )
+    }
+    # The problem here is that static histograms should keep density curves in
+    # the plot while showing line-style legend keys instead of box-like keys.
+    # We build geom_density() args as a list so static output can add
+    # key_glyph, but the interactive ggplotly() path can skip that tweak.
+    # Passing the legend-key change into ggplotly() made interactive density
+    # traces misbehave, so we apply it only for non-interactive plots.
+    density_layer_args <- list(
+      mapping = ggplot2::aes(colour = !!rlang::sym(group_colname)),
+      linewidth = 1
+    )
+    if (!isTRUE(interactive_plots)) {
+      density_layer_args$key_glyph <- ggplot2::draw_key_path
+    }
+
     # plot Density
     hist_plot <- df_long |>
-      ggplot2::ggplot(ggplot2::aes(
-        x = count,
-        group = !!rlang::sym(sample_id_colname)
-      )) +
-      ggplot2::geom_density(
-        ggplot2::aes(colour = !!rlang::sym(group_colname)),
-        linewidth = 1
-      )
+      ggplot2::ggplot(histogram_mapping) +
+      do.call(ggplot2::geom_density, density_layer_args)
   } else {
     color_values <- resolve_plot_colors(
       df_long,
@@ -239,15 +279,39 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
         )
       )
 
-    hist_plot <- df_long |>
-      ggplot2::ggplot(ggplot2::aes(
-        x = count,
-        group = !!rlang::sym(sample_id_colname)
-      )) +
-      ggplot2::geom_density(
-        ggplot2::aes(colour = !!rlang::sym(sample_id_colname)),
-        linewidth = 1
+    if (isTRUE(interactive_plots)) {
+      df_long$histogram_hover_text <- build_histogram_hover_text(
+        df_long,
+        sample_id_colname,
+        group_colname
       )
+    }
+    histogram_mapping <- ggplot2::aes(
+      x = count,
+      group = !!rlang::sym(sample_id_colname)
+    )
+    if (isTRUE(interactive_plots)) {
+      histogram_mapping <- ggplot2::aes(
+        x = count,
+        group = !!rlang::sym(sample_id_colname),
+        text = histogram_hover_text
+      )
+    }
+    # Use the same strategy for sample-colored histograms: solve the static
+    # legend-key problem without changing the interactive density conversion.
+    # Static output gets line-style legend keys, while interactive output
+    # avoids the key_glyph change that breaks ggplotly().
+    density_layer_args <- list(
+      mapping = ggplot2::aes(colour = !!rlang::sym(sample_id_colname)),
+      linewidth = 1
+    )
+    if (!isTRUE(interactive_plots)) {
+      density_layer_args$key_glyph <- ggplot2::draw_key_path
+    }
+
+    hist_plot <- df_long |>
+      ggplot2::ggplot(histogram_mapping) +
+      do.call(ggplot2::geom_density, density_layer_args)
   }
 
   legend_font_size <- get_legend_text_size(
@@ -261,6 +325,7 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
     ggplot2::theme_bw() +
     ggplot2::theme(
       legend.position = legend_position,
+      legend.key = ggplot2::element_blank(),
       legend.text = ggplot2::element_text(size = legend_font_size),
       legend.title = ggplot2::element_blank(),
       panel.background = ggplot2::element_blank(),
@@ -279,17 +344,23 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
     # scale_linetype_manual(values=rep(c('solid', 'dashed','dotted','twodash'),n)) +
     ggplot2::scale_colour_manual(values = color_values)
 
-  hist_plot <- add_colour_legend_layout(
-    hist_plot,
-    labels = names(color_values),
-    legend_position = legend_position,
-    ncol = number_of_legend_columns,
-    legend_text_size = legend_font_size
-  )
-
   if (isTRUE(interactive_plots)) {
-    hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) |>
-      plotly::ggplotly(tooltip = c(sample_id_colname))
+    hist_plot <- hist_plot |>
+      plotly::ggplotly(tooltip = "text")
+  } else {
+    hist_plot <- add_colour_legend_layout(
+      hist_plot,
+      labels = names(color_values),
+      legend_position = legend_position,
+      ncol = number_of_legend_columns,
+      legend_text_size = legend_font_size,
+      guide_override_aes = list(
+        linetype = 1,
+        linewidth = 2,
+        shape = NA,
+        fill = NA
+      )
+    )
   }
   return(hist_plot)
 }

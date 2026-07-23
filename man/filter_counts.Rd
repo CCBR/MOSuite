@@ -10,7 +10,7 @@ filter_counts(
   feature_id_colname = NULL,
   sample_id_colname = NULL,
   group_colname = "Group",
-  label_colname = NULL,
+  label_colname = "Label",
   samples_to_include = NULL,
   minimum_count_value_to_be_considered_nonzero = 8,
   minimum_number_of_samples_with_nonzero_counts_in_total = 7,
@@ -20,7 +20,7 @@ filter_counts(
   principal_component_on_x_axis = 1,
   principal_component_on_y_axis = 2,
   legend_position_for_pca = "top",
-  point_size_for_pca = 3,
+  point_size_for_pca = 5,
   add_label_to_pca = TRUE,
   label_font_size = 3,
   label_offset_y_ = 2,
@@ -60,10 +60,10 @@ column showing to which experimental treatments each sample belongs (e.g. WildTy
 Before, After, etc.).}
 
 \item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in
-the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
-labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
-column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
-\code{NULL} -- \code{sample_id_colname} will be used.)}
+heatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to
+display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column
+with your preferred Labels here. The selected column should contain unique names for each sample.
+Use \code{add_label_to_pca} to control whether these labels are displayed on the PCA plot.}
 
 \item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or
 you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
@@ -95,7 +95,8 @@ samples with nonzero CPM counts in at least one group}
 
 \item{point_size_for_pca}{geom point size for the PCA plot}
 
-\item{add_label_to_pca}{label points on the PCA plot}
+\item{add_label_to_pca}{If \code{TRUE}, display labels from \code{label_colname} on PCA points. If \code{FALSE}, the PCA plot uses
+unlabeled points while heatmap labels still use \code{label_colname}.}
 
 \item{label_font_size}{label font size for the PCA plot}
 
@@ -127,8 +128,8 @@ If \code{NULL}, the size is scaled automatically.}
 
 \item{colors_for_plots}{Optional colors for PCA/histogram/heatmap plots. If \code{NULL}, colors are taken from
 \code{moo@analyses$colors[[group_colname]]}.
-Colors must either be names in \code{grDevices::colors()} or valid hex codes. Unnamed colors are assigned by factor level order
-when the grouping column is a factor;
+Colors must either be names in \code{grDevices::colors()} or valid hex codes. Unnamed colors are assigned by factor
+level order when the grouping column is a factor;
 otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
 than colors provided,
 supplied colors are used first and additional colors are generated from the selected palette for the remaining

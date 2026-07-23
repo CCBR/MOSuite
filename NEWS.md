@@ -1,7 +1,8 @@
 ## MOSuite development version
 
 - Fix expression heatmap clustering to correctly use the selected gene and sample distance metrics and clustering methods. (#231, @phoman14)
-- Improvements to plots colors: (#223, @phoman14)
+- Update PCA label, point-size, and histogram behavior. (#230, @phoman14)
+- Improvements to plot colors: (#223, @phoman14)
   - Align plot color defaults with the MOSuite Code Ocean capsule defaults while preserving fallback random colors when a requested palette is too short.
   - Improve top and bottom legend wrapping and automatic legend text sizing for PCA and histogram plots with many or long labels.
   - Add optional group coloring to `plot_read_depth()` and the `clean_raw_counts()` read-depth output while preserving the single-color default when no group is selected.
