@@ -691,7 +691,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
         return(stats::as.dist(1 - corr))
       }
 
-      stats::dist(x, method = metric)
+      return(stats::dist(x, method = metric))
     }
 
     sort_hclust <- function(hc, reverse = FALSE, rotation_order = NULL) {
@@ -702,7 +702,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
       if (!is.null(rotation_order) && length(rotation_order) > 0) {
         dend <- dendextend::rotate(dend, rotation_order)
       }
-      stats::as.hclust(dend)
+      return(stats::as.hclust(dend))
     }
 
     if (clus2) {
