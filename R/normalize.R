@@ -54,20 +54,7 @@ normalize_counts <- function(
   legend_position_for_histogram = "top",
   number_of_histogram_legend_columns = 6,
   plot_corr_matrix_heatmap = TRUE,
-  colors_for_plots = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  colors_for_plots = NULL,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   interactive_plots = FALSE,
@@ -185,7 +172,6 @@ normalize_counts <- function(
         caption = "normalized counts"
       )
     }
-
     plot_ext <- "png"
     if (isTRUE(interactive_plots)) {
       pca_plot <- pca_plot |> plotly::ggplotly(tooltip = "text")

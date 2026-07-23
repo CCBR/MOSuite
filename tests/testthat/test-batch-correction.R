@@ -75,11 +75,11 @@ test_that("batch_correct_counts forwards plot settings to PCA and histogram", {
   local_mocked_bindings(
     plot_pca = function(...) {
       pca_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     plot_histogram = function(...) {
       histogram_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     print_or_save_plot = function(...) invisible(NULL),
     .package = "MOSuite"
@@ -290,19 +290,9 @@ test_that("batch_correct_counts handles histogram label combinations", {
 test_that("batch_correct_counts forwards the default MOSuite plot colors", {
   pca_args <- NULL
   histogram_args <- NULL
-  default_colors <- c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
+  expected_colors <- c(
+    "1" = "#5954d6",
+    "2" = "#e1562c"
   )
 
   local_mocked_bindings(
@@ -312,11 +302,11 @@ test_that("batch_correct_counts forwards the default MOSuite plot colors", {
   local_mocked_bindings(
     plot_pca = function(...) {
       pca_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     plot_histogram = function(...) {
       histogram_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     print_or_save_plot = function(...) invisible(NULL),
     .package = "MOSuite"
@@ -347,6 +337,6 @@ test_that("batch_correct_counts forwards the default MOSuite plot colors", {
     save_plots = FALSE
   )
 
-  expect_equal(pca_args$color_values, default_colors)
-  expect_equal(histogram_args$color_values, default_colors)
+  expect_equal(pca_args$color_values, expected_colors)
+  expect_equal(histogram_args$color_values, expected_colors)
 })

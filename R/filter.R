@@ -73,11 +73,13 @@
 #' @param maximum_for_x_axis_for_histogram x-axis maximum for histogram plot
 #' @param legend_position_for_histogram legend position for the histogram plot. consider setting to 'none' for a large
 #'   number of samples.
-#' @param legend_font_size_for_histogram legend font size for the histogram plot. If `NULL`, the size is scaled automatically.
+#' @param legend_font_size_for_histogram legend font size for the histogram plot.
+#'   If `NULL`, the size is scaled automatically.
 #' @param number_of_histogram_legend_columns number of columns for the histogram legend
-#' @param colors_for_plots Colors for the PCA and histogram will be picked, in order, from this list.
-#'   Colors must either be names in `grDevices::colors()` or valid hex codes. Defaults to the MOSuite palette returned
-#'   by `get_mosuite_colors()`. Unnamed colors are assigned by factor level order when the grouping column is a factor;
+#' @param colors_for_plots Optional colors for PCA/histogram/heatmap plots. If `NULL`, colors are taken from
+#'   `moo@analyses$colors[[group_colname]]`.
+#'   Colors must either be names in `grDevices::colors()` or valid hex codes. Unnamed colors are assigned by factor level order
+#'   when the grouping column is a factor;
 #'   otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
 #'   than colors provided,
 #'   supplied colors are used first and additional colors are generated from the selected palette for the remaining
@@ -135,20 +137,7 @@ filter_counts <- function(
   legend_position_for_histogram = "top",
   legend_font_size_for_histogram = NULL,
   number_of_histogram_legend_columns = 6,
-  colors_for_plots = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  colors_for_plots = NULL,
   plot_corr_matrix_heatmap = TRUE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -196,19 +185,28 @@ filter_counts <- function(
     minimum_number_of_samples_with_nonzero_counts_in_total = minimum_number_of_samples_with_nonzero_counts_in_total,
     minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group
   )
-  message(glue::glue("colors_for_plots {class(colors_for_plots)}"))
+  if (nrow(df_filt) == 0) {
+    warning(
+      "No features remain after filtering. ",
+      "Consider relaxing the filtering thresholds ",
+      "(e.g. minimum_count_value_to_be_considered_nonzero, ",
+      "minimum_number_of_samples_with_nonzero_counts_in_total, or ",
+      "minimum_number_of_samples_with_nonzero_counts_in_a_group). ",
+      "Skipping QC plots."
+    )
+    moo@counts[["filt"]] <- df[0, ]
+    return(moo)
+  }
+
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
     # use consistent colors
-    if (is.null(colors_for_plots)) {
-      colors_for_plots <- moo@analyses[["colors"]][[group_colname]]
-    }
+    colors_for_plots <- colors_for_plots %||%
+      moo@analyses[["colors"]][[group_colname]]
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots
     } else {
       colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
     }
-
-    message(glue::glue("colors_for_plots {class(colors_for_plots)}"))
 
     log_counts <- df_filt |>
       dplyr::mutate(dplyr::across(

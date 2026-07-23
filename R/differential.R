@@ -485,7 +485,7 @@ get_gene_lists <- function(
 ) {
   upreg_genes <- list()
   downreg_genes <- list()
-  for (i in seq_len(length(contrasts))) {
+  for (i in seq_along(contrasts)) {
     if (pval == "pval") {
       upreg_genes[[i]] <- finalres |>
         dplyr::filter(

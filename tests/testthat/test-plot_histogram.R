@@ -84,6 +84,7 @@ get_histogram_colour_guide_ncol <- function(plot) {
   plot$guides$guides$colour$params$ncol
 }
 
+
 get_plotly_text <- function(plot) {
   traces <- plotly::plotly_build(plot)$x$data
   unlist(
@@ -198,6 +199,7 @@ test_that("plot_histogram legend columns target the colour guide", {
 
   expect_equal(get_histogram_colour_guide_ncol(plot), 2)
 })
+
 
 test_that("plot_histogram uses line glyphs for density legend keys", {
   plot <- plot_histogram(

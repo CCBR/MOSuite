@@ -229,6 +229,7 @@ get_colour_guide_ncol <- function(plot) {
   plot$guides$guides$colour$params$ncol
 }
 
+
 has_text_repel_layer <- function(plot) {
   any(vapply(
     plot$layers,

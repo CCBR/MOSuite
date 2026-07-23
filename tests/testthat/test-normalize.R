@@ -145,11 +145,11 @@ test_that("normalize_counts forwards plotting parameters", {
   local_mocked_bindings(
     plot_pca = function(...) {
       pca_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     plot_histogram = function(...) {
       histogram_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     print_or_save_plot = function(...) invisible(NULL),
     .package = "MOSuite"
@@ -341,28 +341,19 @@ test_that("normalize_counts forwards the default MOSuite plot colors", {
   pca_args <- NULL
   histogram_args <- NULL
   default_colors <- c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
+    "A" = "#5954d6",
+    "B" = "#e1562c",
+    "C" = "#b80058"
   )
 
   local_mocked_bindings(
     plot_pca = function(...) {
       pca_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     plot_histogram = function(...) {
       histogram_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     print_or_save_plot = function(...) invisible(NULL),
     .package = "MOSuite"
