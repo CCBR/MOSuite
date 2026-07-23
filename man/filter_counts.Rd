@@ -33,8 +33,7 @@ filter_counts(
   legend_position_for_histogram = "top",
   legend_font_size_for_histogram = NULL,
   number_of_histogram_legend_columns = 6,
-  colors_for_plots = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  colors_for_plots = NULL,
   plot_corr_matrix_heatmap = TRUE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -62,9 +61,9 @@ Before, After, etc.).}
 
 \item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in
 heatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to
-display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with
-your preferred Labels here. The selected column should contain unique names for each sample. Use \code{add_label_to_pca}
-to control whether these labels are displayed on the PCA plot.}
+display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column
+with your preferred Labels here. The selected column should contain unique names for each sample.
+Use \code{add_label_to_pca} to control whether these labels are displayed on the PCA plot.}
 
 \item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or
 you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
@@ -122,13 +121,15 @@ the column you select in the "Group Column Used to Color Histogram" parameter (b
 \item{legend_position_for_histogram}{legend position for the histogram plot. consider setting to 'none' for a large
 number of samples.}
 
-\item{legend_font_size_for_histogram}{legend font size for the histogram plot. If \code{NULL}, the size is scaled automatically.}
+\item{legend_font_size_for_histogram}{legend font size for the histogram plot.
+If \code{NULL}, the size is scaled automatically.}
 
 \item{number_of_histogram_legend_columns}{number of columns for the histogram legend}
 
-\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list.
-Colors must either be names in \code{grDevices::colors()} or valid hex codes. Defaults to the MOSuite palette returned
-by \code{get_mosuite_colors()}. Unnamed colors are assigned by factor level order when the grouping column is a factor;
+\item{colors_for_plots}{Optional colors for PCA/histogram/heatmap plots. If \code{NULL}, colors are taken from
+\code{moo@analyses$colors[[group_colname]]}.
+Colors must either be names in \code{grDevices::colors()} or valid hex codes. Unnamed colors are assigned by factor
+level order when the grouping column is a factor;
 otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
 than colors provided,
 supplied colors are used first and additional colors are generated from the selected palette for the remaining
