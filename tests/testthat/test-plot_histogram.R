@@ -81,16 +81,16 @@ sample_meta <- structure(
 )
 
 get_histogram_colour_guide_ncol <- function(plot) {
-  plot$guides$guides$colour$params$ncol
+  return(plot$guides$guides$colour$params$ncol)
 }
 
 
 get_plotly_text <- function(plot) {
   traces <- plotly::plotly_build(plot)$x$data
-  unlist(
+  return(unlist(
     lapply(traces, function(trace) trace$text),
     use.names = FALSE
-  )
+  ))
 }
 
 test_that("plot_histogram interactive hover text includes sample and group", {
