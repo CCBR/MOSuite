@@ -45,12 +45,12 @@ normalize_counts <- function(
   label_offset_x_ = 2,
   label_offset_y_ = 2,
   label_font_size = 3,
-  point_size_for_pca = 8,
+  point_size_for_pca = 3,
   color_histogram_by_group = TRUE,
   set_min_max_for_x_axis_for_histogram = FALSE,
   minimum_for_x_axis_for_histogram = -1,
   maximum_for_x_axis_for_histogram = 1,
-  legend_font_size_for_histogram = 10,
+  legend_font_size_for_histogram = NULL,
   legend_position_for_histogram = "top",
   number_of_histogram_legend_columns = 6,
   plot_corr_matrix_heatmap = TRUE,
@@ -143,6 +143,9 @@ normalize_counts <- function(
       color_values = colors_for_histogram,
       color_by_group = color_histogram_by_group,
       x_axis_label = "Normalized Counts",
+      set_min_max_for_x_axis = set_min_max_for_x_axis_for_histogram,
+      minimum_for_x_axis = minimum_for_x_axis_for_histogram,
+      maximum_for_x_axis = maximum_for_x_axis_for_histogram,
       legend_position = legend_position_for_histogram,
       legend_font_size = legend_font_size_for_histogram,
       number_of_legend_columns = number_of_histogram_legend_columns
@@ -171,7 +174,10 @@ normalize_counts <- function(
       pca_plot,
       filename = file.path(plots_subdir, "pca.png"),
       print_plots = print_plots,
-      save_plots = save_plots
+      save_plots = save_plots,
+      width = 7,
+      height = 7,
+      units = "in"
     )
     print_or_save_plot(
       hist_plot,

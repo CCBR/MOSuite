@@ -4,20 +4,22 @@
 \alias{get_colors_vctr}
 \title{Get vector of colors for observations in one column of a data frame}
 \usage{
-get_colors_vctr(dat, colname, palette_fun = grDevices::palette.colors, ...)
+get_colors_vctr(dat, colname, palette_fun = select_mosuite_colors, ...)
 }
 \arguments{
 \item{dat}{data frame}
 
 \item{colname}{column name in \code{dat}}
 
-\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default:
-\code{grDevices::palette.colors()}}
+\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Defaults to
+MOSuite's default plot palette. To use the previous R default palette behavior, pass
+\code{grDevices::palette.colors}.}
 
 \item{...}{additional arguments forwarded to \code{palette_fun}}
 }
 \value{
-named vector of colors for each unique observation in \code{dat$colname}
+named vector of colors for each unique observation in \code{dat$colname}. Factor columns use factor level order;
+other columns use first-observed order.
 }
 \description{
 Get vector of colors for observations in one column of a data frame

@@ -54,6 +54,13 @@ plot_histogram <- S7::new_generic(
 #'   the counts slot (`moo@counts`).
 #' @param sub_count_type Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub
 #'   count type within the list
+#' @param group_colname The column from the sample metadata containing the sample group information. This is usually a
+#'   column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
+#'   Before, After, etc.).
+#' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+#'   level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+#'   the metadata column. Defaults to `NULL`; when `NULL`, `mosuite_palette` is used for `data.frame` dispatch and
+#'   stored colors are used for `multiOmicDataSet` dispatch.
 #' @examples
 #' # plot histogram for a counts slot in a multiOmicDataset Object
 #' moo <- multiOmicDataSet(
@@ -75,12 +82,17 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
   moo_counts,
   count_type,
   sub_count_type = NULL,
+  group_colname = "Group",
+  color_values = NULL,
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
   return(plot_histogram(
     counts_dat,
     sample_metadata = moo_counts@sample_meta,
+    group_colname = group_colname,
+    color_values = color_values,
     ...
   ))
 }
@@ -107,7 +119,9 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 #'   labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
 #'   column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
 #'   `NULL` -- `sample_id_colname` will be used.)
-#' @param color_values vector of colors as hex values or names recognized by R
+#' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+#'   level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+#'   the metadata column. Defaults to `NULL`; when `NULL`, `mosuite_palette` is used.
 #' @param color_by_group Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by the
 #'   column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.
 #' @param set_min_max_for_x_axis whether to override the default for `ggplot2::xlim()` (default: `FALSE`)
@@ -116,7 +130,8 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 #' @param x_axis_label text label for the x axis `ggplot2::xlab()`
 #' @param y_axis_label text label for the y axis `ggplot2::ylab()`
 #' @param legend_position passed to in `legend.position` `ggplot2::theme()`
-#' @param legend_font_size passed to `ggplot2::element_text()` via `ggplot2::theme()`
+#' @param legend_font_size passed to `ggplot2::element_text()` via `ggplot2::theme()`. If `NULL`, the size is scaled
+#'   automatically based on the number and length of legend labels.
 #' @param number_of_legend_columns passed to `ncol` in `ggplot2::guide_legend()`
 #' @param interactive_plots set to TRUE to make the plot interactive with `plotly`, allowing you to hover your mouse
 #'   over a point or line to view sample information. The similarity heat map will not display if this toggle is set to
@@ -153,20 +168,7 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
   feature_id_colname = NULL,
   group_colname = "Group",
   label_colname = "Label",
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = NULL,
   color_by_group = FALSE,
   set_min_max_for_x_axis = FALSE,
   minimum_for_x_axis = -1,
@@ -174,12 +176,13 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
   x_axis_label = "Counts",
   y_axis_label = "Density",
   legend_position = "top",
-  legend_font_size = 10,
+  legend_font_size = NULL,
   number_of_legend_columns = 6,
   interactive_plots = FALSE,
   ...
 ) {
   count <- NULL
+  color_values <- color_values %||% mosuite_palette
   counts_dat <- moo_counts
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
@@ -206,14 +209,12 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
 
   if (color_by_group == TRUE) {
     df_long <- df_long |>
+      dplyr::filter(!is.na(!!rlang::sym(group_colname)))
+    color_values <- resolve_plot_colors(df_long, group_colname, color_values)
+    df_long <- df_long |>
       dplyr::mutate(
-        !!rlang::sym(group_colname) := as.factor(!!rlang::sym(group_colname))
-      ) |>
-      dplyr::filter(!is.na(group_colname))
-    n <- df_long |>
-      dplyr::pull(group_colname) |>
-      levels() |>
-      length()
+        !!rlang::sym(group_colname) := as.character(!!rlang::sym(group_colname))
+      )
 
     # plot Density
     hist_plot <- df_long |>
@@ -226,10 +227,17 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
         linewidth = 1
       )
   } else {
-    n <- df_long |>
-      dplyr::pull(sample_id_colname) |>
-      unique() |>
-      length()
+    color_values <- resolve_plot_colors(
+      df_long,
+      sample_id_colname,
+      color_values
+    )
+    df_long <- df_long |>
+      dplyr::mutate(
+        !!rlang::sym(sample_id_colname) := as.character(
+          !!rlang::sym(sample_id_colname)
+        )
+      )
 
     hist_plot <- df_long |>
       ggplot2::ggplot(ggplot2::aes(
@@ -241,6 +249,11 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
         linewidth = 1
       )
   }
+
+  legend_font_size <- get_legend_text_size(
+    names(color_values),
+    legend_font_size
+  )
 
   hist_plot <- hist_plot +
     ggplot2::xlab(x_axis_label) +
@@ -264,10 +277,15 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
     ggplot2::ggtitle("Frequency Histogram") +
     ggplot2::xlim(xmin, xmax) +
     # scale_linetype_manual(values=rep(c('solid', 'dashed','dotted','twodash'),n)) +
-    ggplot2::scale_colour_manual(values = color_values[1:n]) +
-    ggplot2::guides(
-      linetype = ggplot2::guide_legend(ncol = number_of_legend_columns)
-    )
+    ggplot2::scale_colour_manual(values = color_values)
+
+  hist_plot <- add_colour_legend_layout(
+    hist_plot,
+    labels = names(color_values),
+    legend_position = legend_position,
+    ncol = number_of_legend_columns,
+    legend_text_size = legend_font_size
+  )
 
   if (isTRUE(interactive_plots)) {
     hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) |>

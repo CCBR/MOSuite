@@ -16,12 +16,12 @@ plot_pca_2d(
   group_colname = "Group",
   label_colname = "Label",
   samples_to_rename = NULL,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = NULL,
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 1,
+  point_size = 3,
   add_label = TRUE,
+  legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
@@ -29,7 +29,8 @@ plot_pca_2d(
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
   print_plots = options::opt("print_plots"),
-  save_plots = options::opt("save_plots")
+  save_plots = options::opt("save_plots"),
+  ...
 )
 
 ## S7 method for class <MOSuite::multiOmicDataSet>
@@ -43,12 +44,12 @@ plot_pca_2d(
   group_colname = "Group",
   label_colname = "Label",
   samples_to_rename = NULL,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = NULL,
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 1,
+  point_size = 3,
   add_label = TRUE,
+  legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
@@ -56,7 +57,8 @@ plot_pca_2d(
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
   print_plots = options::opt("print_plots"),
-  save_plots = options::opt("save_plots")
+  save_plots = options::opt("save_plots"),
+  ...
 )
 
 ## S7 method for class <data.frame>
@@ -70,12 +72,12 @@ plot_pca_2d(
   group_colname = "Group",
   label_colname = "Label",
   samples_to_rename = NULL,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = NULL,
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 1,
+  point_size = 3,
   add_label = TRUE,
+  legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
@@ -83,17 +85,17 @@ plot_pca_2d(
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
   print_plots = options::opt("print_plots"),
-  save_plots = options::opt("save_plots")
+  save_plots = options::opt("save_plots"),
+  ...
 )
 }
 \arguments{
 \item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts
 slot}
 
-\item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
+\item{count_type}{the type of counts to use when \code{moo_counts} is a \code{multiOmicDataSet}; ignored for data frame input.}
 
-\item{sub_count_type}{used if \code{count_type} is a list in the counts slot: specify the sub count type within the list.
-Must be a name in \code{names(moo@counts[[count_type]])}.}
+\item{sub_count_type}{used when \code{count_type} refers to a list of count matrices; ignored for data frame input.}
 
 \item{sample_metadata}{sample metadata as a data frame or tibble.}
 
@@ -121,7 +123,10 @@ parameter to rename samples manually for display on the PCA plot. Use "Add item"
 renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to
 which new name: old_name: new_name}
 
-\item{color_values}{vector of colors as hex values or names recognized by R}
+\item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+the metadata column. Defaults to \code{NULL}; when \code{NULL}, \code{mosuite_palette} is used for \code{data.frame} dispatch and
+stored colors are used for \code{multiOmicDataSet} dispatch.}
 
 \item{principal_components}{vector with numbered principal components to plot}
 
@@ -131,23 +136,26 @@ which new name: old_name: new_name}
 
 \item{add_label}{whether to add text labels for the points}
 
-\item{label_font_size}{label font size for the PCA plot}
+\item{legend_font_size}{font size for the PCA legend text. If \code{NULL}, the size is scaled automatically based on the
+number and length of legend labels.}
 
-\item{label_offset_x_}{label offset x for the PCA plot}
+\item{label_font_size}{font size for text labels on the PCA plot.}
 
-\item{label_offset_y_}{label offset y for the PCA plot}
+\item{label_offset_x_}{horizontal offset for text labels on the PCA plot.}
 
-\item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover
-your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
-is set to \code{TRUE}. Default is \code{FALSE}.}
+\item{label_offset_y_}{vertical offset for text labels on the PCA plot.}
 
-\item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
+\item{interactive_plots}{set to TRUE to make the PCA plot interactive with \code{plotly}.}
 
-\item{plot_filename}{plot output filename - only used if save_plots is TRUE}
+\item{plots_subdir}{subdirectory in \verb{figures/} where PCA plots are saved.}
+
+\item{plot_filename}{output filename for the PCA plot image.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
 \item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+
+\item{...}{arguments forwarded to method}
 }
 \value{
 ggplot object

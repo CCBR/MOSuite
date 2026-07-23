@@ -1,5 +1,9 @@
 ## MOSuite development version
 
+- Improvements to plots: (#223, @phoman14)
+  - Align plot color defaults with the MOSuite Code Ocean capsule defaults while preserving fallback random colors when a requested palette is too short.
+  - Improve top and bottom legend wrapping and automatic legend text sizing for PCA and histogram plots with many or long labels.
+  - Add optional group coloring to `plot_read_depth()` and the `clean_raw_counts()` read-depth output while preserving the single-color default when no group is selected.
 - New report template & helper function: `render_report()`. (#120, @kelly-sovacool)
 - Fix ggplot2 size deprecation warning in `plot_volcano_summary()`. (#228, @kelly-sovacool)
 

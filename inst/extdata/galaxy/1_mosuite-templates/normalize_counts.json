@@ -251,11 +251,11 @@
         {
             "key": "color_histogram_by_group",
             "displayName": "Color Histogram by Group",
-            "description": "Toggle to FALSE to label histogram by Sample Names. Toggle to TRUE to label histogram by the column you select in the \"Group Column Used to Color Histogram\" parameter (below). Default is FALSE.",
+            "description": "Toggle to FALSE to label histogram by Sample Names. Toggle to TRUE to label histogram by the column you select in the \"Group Column Used to Color Histogram\" parameter (below). Default is TRUE.",
             "paramType": "BOOLEAN",
             "paramGroup": "Histogram",
             "paramValues": null,
-            "defaultValue": "FALSE",
+            "defaultValue": "TRUE",
             "condition": null,
             "content": null,
             "objectPropertyReference": null

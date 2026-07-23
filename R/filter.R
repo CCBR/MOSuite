@@ -66,16 +66,23 @@
 #'   renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to
 #'   which new name: old_name: new_name
 #' @param color_histogram_by_group Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by
-#'   the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.
+#'   the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is TRUE.
 #' @param set_min_max_for_x_axis_for_histogram whether to set min/max value for histogram x-axis
 #' @param minimum_for_x_axis_for_histogram x-axis minimum for histogram plot
 #' @param maximum_for_x_axis_for_histogram x-axis maximum for histogram plot
 #' @param legend_position_for_histogram legend position for the histogram plot. consider setting to 'none' for a large
 #'   number of samples.
-#' @param legend_font_size_for_histogram legend font size for the histogram plot
+#' @param legend_font_size_for_histogram legend font size for the histogram plot.
+#'   If `NULL`, the size is scaled automatically.
 #' @param number_of_histogram_legend_columns number of columns for the histogram legend
-#' @param colors_for_plots Colors for the PCA and histogram will be picked, in order, from this list.
-#'   Colors must either be names in `grDevices::colors()` or valid hex codes.
+#' @param colors_for_plots Optional colors for PCA/histogram/heatmap plots. If `NULL`, colors are taken from
+#'   `moo@analyses$colors[[group_colname]]`.
+#'   Colors must either be names in `grDevices::colors()` or valid hex codes. Unnamed colors are assigned by factor level order
+#'   when the grouping column is a factor;
+#'   otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
+#'   than colors provided,
+#'   supplied colors are used first and additional colors are generated from the selected palette for the remaining
+#'   groups; random colors are used only if that palette returns fewer colors than the number of groups.
 #' @param plot_corr_matrix_heatmap Datasets with a large number of samples may be too large to create a correlation
 #'   matrix heatmap. If this function takes longer than 5 minutes to run, Set to `FALSE` and the correlation matrix will
 #'   not be be created. Default is `TRUE`.
@@ -116,18 +123,18 @@ filter_counts <- function(
   principal_component_on_x_axis = 1,
   principal_component_on_y_axis = 2,
   legend_position_for_pca = "top",
-  point_size_for_pca = 1,
+  point_size_for_pca = 3,
   add_label_to_pca = TRUE,
   label_font_size = 3,
   label_offset_y_ = 2,
   label_offset_x_ = 2,
   samples_to_rename = c(""),
-  color_histogram_by_group = FALSE,
+  color_histogram_by_group = TRUE,
   set_min_max_for_x_axis_for_histogram = FALSE,
   minimum_for_x_axis_for_histogram = -1,
   maximum_for_x_axis_for_histogram = 1,
   legend_position_for_histogram = "top",
-  legend_font_size_for_histogram = 10,
+  legend_font_size_for_histogram = NULL,
   number_of_histogram_legend_columns = 6,
   colors_for_plots = NULL,
   plot_corr_matrix_heatmap = TRUE,
@@ -189,21 +196,16 @@ filter_counts <- function(
     return(moo)
   }
 
-  message(glue::glue("colors_for_plots {class(colors_for_plots)}"))
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
     # use consistent colors
     if (is.null(colors_for_plots)) {
       colors_for_plots <- moo@analyses[["colors"]][[group_colname]]
-    } else {
-      colors_for_plots <- as.vector(colors_for_plots)
     }
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots
     } else {
       colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
     }
-
-    message(glue::glue("colors_for_plots {class(colors_for_plots)}"))
 
     log_counts <- df_filt |>
       dplyr::mutate(dplyr::across(
@@ -277,12 +279,24 @@ filter_counts <- function(
         plotly::ggplotly(tooltip = c("sample"))
       plot_ext <- "html"
     }
-    print_or_save_plot(
-      pca_plot,
-      filename = file.path(plots_subdir, glue::glue("pca.{plot_ext}")),
-      print_plots = print_plots,
-      save_plots = save_plots
-    )
+    if (identical(plot_ext, "png")) {
+      print_or_save_plot(
+        pca_plot,
+        filename = file.path(plots_subdir, glue::glue("pca.{plot_ext}")),
+        print_plots = print_plots,
+        save_plots = save_plots,
+        width = 7,
+        height = 7,
+        units = "in"
+      )
+    } else {
+      print_or_save_plot(
+        pca_plot,
+        filename = file.path(plots_subdir, glue::glue("pca.{plot_ext}")),
+        print_plots = print_plots,
+        save_plots = save_plots
+      )
+    }
     print_or_save_plot(
       hist_plot,
       filename = file.path(plots_subdir, glue::glue("histogram.{plot_ext}")),

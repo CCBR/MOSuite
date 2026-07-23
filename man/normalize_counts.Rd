@@ -23,12 +23,12 @@ normalize_counts(
   label_offset_x_ = 2,
   label_offset_y_ = 2,
   label_font_size = 3,
-  point_size_for_pca = 8,
+  point_size_for_pca = 3,
   color_histogram_by_group = TRUE,
   set_min_max_for_x_axis_for_histogram = FALSE,
   minimum_for_x_axis_for_histogram = -1,
   maximum_for_x_axis_for_histogram = 1,
-  legend_font_size_for_histogram = 10,
+  legend_font_size_for_histogram = NULL,
   legend_position_for_histogram = "top",
   number_of_histogram_legend_columns = 6,
   plot_corr_matrix_heatmap = TRUE,
@@ -97,7 +97,7 @@ which new name: old_name: new_name}
 \item{point_size_for_pca}{geom point size for the PCA plot}
 
 \item{color_histogram_by_group}{Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by
-the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.}
+the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is TRUE.}
 
 \item{set_min_max_for_x_axis_for_histogram}{whether to set min/max value for histogram x-axis}
 
@@ -105,7 +105,8 @@ the column you select in the "Group Column Used to Color Histogram" parameter (b
 
 \item{maximum_for_x_axis_for_histogram}{x-axis maximum for histogram plot}
 
-\item{legend_font_size_for_histogram}{legend font size for the histogram plot}
+\item{legend_font_size_for_histogram}{legend font size for the histogram plot.
+If \code{NULL}, the size is scaled automatically.}
 
 \item{legend_position_for_histogram}{legend position for the histogram plot. consider setting to 'none' for a large
 number of samples.}
@@ -116,8 +117,14 @@ number of samples.}
 matrix heatmap. If this function takes longer than 5 minutes to run, Set to \code{FALSE} and the correlation matrix will
 not be be created. Default is \code{TRUE}.}
 
-\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list.
-Colors must either be names in \code{grDevices::colors()} or valid hex codes.}
+\item{colors_for_plots}{Optional colors for PCA/histogram/heatmap plots. If \code{NULL}, colors are taken from
+\code{moo@analyses$colors[[group_colname]]}.
+Colors must either be names in \code{grDevices::colors()} or valid hex codes. Unnamed colors are assigned by factor level order
+when the grouping column is a factor;
+otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
+than colors provided,
+supplied colors are used first and additional colors are generated from the selected palette for the remaining
+groups; random colors are used only if that palette returns fewer colors than the number of groups.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
