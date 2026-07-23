@@ -1,4 +1,5 @@
 .DS_Store
+/Plans/
 *_files/
 **/figures/
 /.github/plans/
