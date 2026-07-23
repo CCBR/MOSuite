@@ -9,6 +9,7 @@
   "group_colname": "Group",
   "label_colname": "Label",
   "samples_to_rename": null,
+  "color_values": null,
   "principal_components": [1, 2],
   "legend_position": "top",
   "point_size": 3,

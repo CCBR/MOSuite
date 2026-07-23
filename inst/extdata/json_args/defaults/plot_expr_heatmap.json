@@ -9,6 +9,7 @@
   "group_colname": "Group",
   "label_colname": null,
   "samples_to_include": null,
+  "color_values": null,
   "include_all_genes": false,
   "filter_top_genes_by_variance": true,
   "top_genes_by_variance_to_include": 500,
