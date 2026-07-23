@@ -20,8 +20,7 @@ plot_pca_2d(
     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 3,
-  add_label = TRUE,
+  point_size = 5,
   legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -48,8 +47,7 @@ plot_pca_2d(
     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 3,
-  add_label = TRUE,
+  point_size = 5,
   legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -76,8 +74,7 @@ plot_pca_2d(
     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 3,
-  add_label = TRUE,
+  point_size = 5,
   legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -112,11 +109,11 @@ used.)}
 column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
 Before, After, etc.).}
 
-\item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in
-the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
-labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
-column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
-\code{NULL} -- \code{sample_id_colname} will be used.)}
+\item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear on
+the PCA plot. If \code{NULL}, no labels are added to PCA points. This can be the same Sample Names Column. However, you
+may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In
+that case, select the column with your preferred Labels here. The selected column should contain unique names for
+each sample.}
 
 \item{samples_to_rename}{If you do not have a Plot Labels Column in your sample metadata table, you can use this
 parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for
@@ -132,8 +129,6 @@ the metadata column.}
 \item{legend_position}{passed to in \code{legend.position} \code{ggplot2::theme()}}
 
 \item{point_size}{size for \code{ggplot2::geom_point()}}
-
-\item{add_label}{whether to add text labels for the points}
 
 \item{legend_font_size}{font size for the PCA legend text. If \code{NULL}, the size is scaled automatically based on the
 number and length of legend labels.}

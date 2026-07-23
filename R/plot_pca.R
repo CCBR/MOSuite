@@ -122,6 +122,27 @@ S7::method(plot_pca, S7::class_data.frame) <- function(
   )
 }
 
+build_pca_hover_text <- function(
+  pca_data,
+  sample_id_colname,
+  group_colname,
+  label_colname = NULL
+) {
+  label_hover_colname <- if (is.null(label_colname)) {
+    sample_id_colname
+  } else {
+    label_colname
+  }
+
+  return(format_hover_text(
+    pca_data,
+    primary_colname = label_hover_colname,
+    secondary_colname = group_colname,
+    missing_col_context = "PCA",
+    require_secondary = TRUE
+  ))
+}
+
 #' Perform and plot a 2D Principal Components Analysis
 #'
 #' @rdname plot_pca_2d
@@ -156,8 +177,7 @@ plot_pca_2d <- S7::new_generic(
     ),
     principal_components = c(1, 2),
     legend_position = "top",
-    point_size = 3,
-    add_label = TRUE,
+    point_size = 5,
     legend_font_size = NULL,
     label_font_size = 3,
     label_offset_x_ = 2,
@@ -199,8 +219,7 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
   ),
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 3,
-  add_label = TRUE,
+  point_size = 5,
   legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -224,7 +243,6 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
     principal_components = principal_components,
     legend_position = legend_position,
     point_size = point_size,
-    add_label = add_label,
     legend_font_size = legend_font_size,
     label_font_size = label_font_size,
     label_offset_x_ = label_offset_x_,
@@ -255,11 +273,11 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 #' @param group_colname The column from the sample metadata containing the sample group information. This is usually a
 #'   column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
 #'   Before, After, etc.).
-#' @param label_colname The column from the sample metadata containing the sample labels as you wish them to appear in
-#'   the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
-#'   labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
-#'   column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
-#'   `NULL` -- `sample_id_colname` will be used.)
+#' @param label_colname The column from the sample metadata containing the sample labels as you wish them to appear on
+#'   the PCA plot. If `NULL`, no labels are added to PCA points. This can be the same Sample Names Column. However, you
+#'   may desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In
+#'   that case, select the column with your preferred Labels here. The selected column should contain unique names for
+#'   each sample.
 #' @param samples_to_rename If you do not have a Plot Labels Column in your sample metadata table, you can use this
 #'   parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for
 #'   renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to
@@ -270,7 +288,6 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 #' @param principal_components vector with numbered principal components to plot
 #' @param legend_position passed to in `legend.position` `ggplot2::theme()`
 #' @param point_size size for `ggplot2::geom_point()`
-#' @param add_label whether to add text labels for the points
 #' @param legend_font_size font size for the PCA legend text. If `NULL`, the size is scaled automatically based on the
 #'   number and length of legend labels.
 #' @param count_type the type of counts to use when `moo_counts` is a `multiOmicDataSet`; ignored for data frame input.
@@ -314,8 +331,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   ),
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 3,
-  add_label = TRUE,
+  point_size = 5,
   legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -360,6 +376,12 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
       names_prefix = "PC",
       values_from = "value"
     )
+  pca_wide$pca_hover_text <- build_pca_hover_text(
+    pca_wide,
+    sample_id_colname,
+    group_colname,
+    label_colname
+  )
   prin_comp_x <- principal_components[1]
   prin_comp_y <- principal_components[2]
   color_values <- resolve_plot_colors(pca_wide, group_colname, color_values)
@@ -375,7 +397,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
     ggplot2::ggplot(ggplot2::aes(
       x = !!rlang::sym(glue::glue("PC{prin_comp_x}")),
       y = !!rlang::sym(glue::glue("PC{prin_comp_y}")),
-      text = !!rlang::sym(sample_id_colname)
+      text = pca_hover_text
     )) +
     ggplot2::geom_point(
       ggplot2::aes(color = !!rlang::sym(group_colname)),
@@ -410,7 +432,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
     legend_text_size = legend_font_size
   )
 
-  if (add_label == TRUE) {
+  if (!is.null(label_colname)) {
     abort_packages_not_installed("ggrepel")
     pca_plot <- pca_plot +
       ggrepel::geom_text_repel(
@@ -426,7 +448,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   }
   if (isTRUE(interactive_plots)) {
     pca_plot <- (pca_plot) |>
-      plotly::ggplotly(tooltip = c(sample_id_colname, group_colname))
+      plotly::ggplotly(tooltip = "text")
   }
 
   if (inherits(pca_plot, "ggplot")) {
@@ -652,6 +674,12 @@ S7::method(plot_pca_3d, S7::class_data.frame) <- function(
       names_prefix = "PC",
       values_from = "value"
     )
+  pca_wide$pca_hover_text <- build_pca_hover_text(
+    pca_wide,
+    sample_id_colname,
+    group_colname,
+    label_colname
+  )
   prin_comp_x <- principal_components[1]
   prin_comp_y <- principal_components[2]
   prin_comp_z <- principal_components[3]
@@ -668,7 +696,7 @@ S7::method(plot_pca_3d, S7::class_data.frame) <- function(
     mode = "markers",
     marker = list(size = point_size),
     hoverinfo = "text",
-    text = stats::as.formula(paste("~", sample_id_colname)),
+    text = ~pca_hover_text,
     size = label_font_size
   )
 

@@ -33,10 +33,10 @@
 #'   column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
 #'   Before, After, etc.).
 #' @param label_colname The column from the sample metadata containing the sample labels as you wish them to appear in
-#'   the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
-#'   labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
-#'   column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
-#'   `NULL` -- `sample_id_colname` will be used.)
+#'   heatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to
+#'   display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with
+#'   your preferred Labels here. The selected column should contain unique names for each sample. Use `add_label_to_pca`
+#'   to control whether these labels are displayed on the PCA plot.
 #' @param samples_to_include Which samples would you like to include? Usually, you will choose all sample columns, or
 #'   you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
 #'   analysis downstream of this step. (Default: `NULL` - all sample IDs in `moo@sample_meta` will be used.)
@@ -45,19 +45,23 @@
 #'   been transformed (eg log2, CPM, FPKM or some form of Normalization) set to FALSE. If FALSE no further
 #'   transformation will be applied and features will be filtered as is. For RNAseq data RAW counts should be
 #'   transformed to CPM in order to properly filter.
-#' @param minimum_count_value_to_be_considered_nonzero Minimum count value to be considered non-zero for a sample
-#' @param minimum_number_of_samples_with_nonzero_counts_in_total Minimum number of samples (total) with non-zero counts
+#' @param minimum_count_value_to_be_considered_nonzero Minimum value in the selected filtering table required for a
+#'   sample to be considered nonzero. If `use_cpm_counts_to_filter` is `TRUE`, this threshold is applied to CPM values.
+#'   If `use_cpm_counts_to_filter` is `FALSE`, this threshold is applied directly to the selected `count_type` table.
+#' @param minimum_number_of_samples_with_nonzero_counts_in_total Minimum number of samples in total that must meet the
+#'   `minimum_count_value_to_be_considered_nonzero` threshold for a feature to be kept.
 #' @param use_group_based_filtering If TRUE, only keeps features (e.g. genes) that have at least a certain number of
-#'   samples with nonzero CPM counts in at least one group
+#'   samples passing the threshold in at least one group
 #' @param minimum_number_of_samples_with_nonzero_counts_in_a_group Only keeps genes that have at least this number of
-#'   samples with nonzero CPM counts in at least one group
+#'   samples meeting the threshold in at least one group
 #' @param principal_component_on_x_axis The principal component to plot on the x-axis for the PCA plot. Choices include
 #'   1, 2, 3, ... (default: 1)
 #' @param principal_component_on_y_axis The principal component to plot on the y-axis for the PCA plot. Choices include
 #'   1, 2, 3, ... (default: 2)
 #' @param legend_position_for_pca legend position for the PCA plot
 #' @param point_size_for_pca geom point size for the PCA plot
-#' @param add_label_to_pca label points on the PCA plot
+#' @param add_label_to_pca If `TRUE`, display labels from `label_colname` on PCA points. If `FALSE`, the PCA plot uses
+#'   unlabeled points while heatmap labels still use `label_colname`.
 #' @param label_font_size label font size for the PCA plot
 #' @param label_offset_y_ label offset y for the PCA plot
 #' @param label_offset_x_ label offset x for the PCA plot
@@ -111,7 +115,7 @@ filter_counts <- function(
   feature_id_colname = NULL,
   sample_id_colname = NULL,
   group_colname = "Group",
-  label_colname = NULL,
+  label_colname = "Label",
   samples_to_include = NULL,
   minimum_count_value_to_be_considered_nonzero = 8,
   minimum_number_of_samples_with_nonzero_counts_in_total = 7,
@@ -121,7 +125,7 @@ filter_counts <- function(
   principal_component_on_x_axis = 1,
   principal_component_on_y_axis = 2,
   legend_position_for_pca = "top",
-  point_size_for_pca = 3,
+  point_size_for_pca = 5,
   add_label_to_pca = TRUE,
   label_font_size = 3,
   label_offset_y_ = 2,
@@ -169,6 +173,7 @@ filter_counts <- function(
   if (is.null(samples_to_include)) {
     samples_to_include <- sample_metadata |> dplyr::pull(sample_id_colname)
   }
+  pca_label_colname <- if (isTRUE(add_label_to_pca)) label_colname else NULL
   if (is.null(label_colname)) {
     label_colname <- sample_id_colname
   }
@@ -220,7 +225,7 @@ filter_counts <- function(
       feature_id_colname = feature_id_colname,
       samples_to_rename = samples_to_rename,
       group_colname = group_colname,
-      label_colname = label_colname,
+      label_colname = pca_label_colname,
       color_values = colors_for_plots,
       principal_components = c(
         principal_component_on_x_axis,
@@ -228,7 +233,6 @@ filter_counts <- function(
       ),
       legend_position = legend_position_for_pca,
       point_size = point_size_for_pca,
-      add_label = add_label_to_pca,
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_,
@@ -237,8 +241,18 @@ filter_counts <- function(
     ) +
       ggplot2::labs(caption = "filtered counts")
 
+    # Histogram data and axis setup
+    histogram_x_axis_label <- if (isTRUE(use_cpm_counts_to_filter)) {
+      "CPM"
+    } else {
+      "Count"
+    }
+    log2_axis_pseudocount <- 0.5
+    histogram_threshold_x <- minimum_count_value_to_be_considered_nonzero + log2_axis_pseudocount
+
+    # Base histogram plot
     hist_plot <- plot_histogram(
-      log_counts,
+      df_filt,
       sample_metadata,
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,
@@ -249,11 +263,38 @@ filter_counts <- function(
       set_min_max_for_x_axis = set_min_max_for_x_axis_for_histogram,
       minimum_for_x_axis = minimum_for_x_axis_for_histogram,
       maximum_for_x_axis = maximum_for_x_axis_for_histogram,
+      x_axis_label = histogram_x_axis_label,
       legend_position = legend_position_for_histogram,
       legend_font_size = legend_font_size_for_histogram,
-      number_of_legend_columns = number_of_histogram_legend_columns
+      number_of_legend_columns = number_of_histogram_legend_columns,
+      interactive_plots = interactive_plots,
+      return_ggplot = TRUE,
+      use_log2_x_axis = TRUE
     ) +
       ggplot2::labs(caption = "filtered counts")
+
+    # Filtering threshold marker
+    hist_plot <- hist_plot +
+      ggplot2::geom_vline(
+        xintercept = histogram_threshold_x,
+        linetype = 2,
+        linewidth = 1
+      ) +
+      ggplot2::annotate(
+        "text",
+        x = histogram_threshold_x,
+        y = Inf,
+        label = if (isTRUE(use_cpm_counts_to_filter)) {
+          glue::glue("CPM: {minimum_count_value_to_be_considered_nonzero}")
+        } else {
+          glue::glue("Count: {minimum_count_value_to_be_considered_nonzero}")
+        },
+        hjust = -0.05,
+        vjust = 1.5,
+        size = 3
+      )
+
+    # Correlation heatmap plot
     if (isTRUE(plot_corr_matrix_heatmap)) {
       corHM <- plot_corr_heatmap(
         df_filt[, samples_to_include],
@@ -273,13 +314,15 @@ filter_counts <- function(
       )
     }
 
+    # Interactive plot conversion
     plot_ext <- "png"
     if (isTRUE(interactive_plots)) {
-      pca_plot <- pca_plot |> plotly::ggplotly(tooltip = c("sample", "group"))
-      hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) |>
-        plotly::ggplotly(tooltip = c("sample"))
+      pca_plot <- pca_plot |> plotly::ggplotly(tooltip = "text")
+      hist_plot <- hist_plot |> plotly::ggplotly(tooltip = "text")
       plot_ext <- "html"
     }
+
+    # Save or print PCA and histogram plots
     if (identical(plot_ext, "png")) {
       print_or_save_plot(
         pca_plot,
@@ -375,7 +418,7 @@ remove_low_count_genes <- function(
       tibble::rownames_to_column(feature_id_colname)
   } else {
     trans_df$isexpr1 <- (rowSums(
-      as.matrix(trans_df[, -1]) > minimum_count_value_to_be_considered_nonzero
+      as.matrix(trans_df[, -1]) >= minimum_count_value_to_be_considered_nonzero
     ) >=
       minimum_number_of_samples_with_nonzero_counts_in_total)
     df_filt <- trans_df |>

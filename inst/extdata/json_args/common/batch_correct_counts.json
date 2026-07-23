@@ -9,6 +9,7 @@
   "covariates_colnames": "Group",
   "batch_colname": "Batch",
   "label_colname": "Label",
+  "add_label_to_pca": true,
   "colors_for_plots": null,
   "print_plots": true,
   "save_plots": true,
