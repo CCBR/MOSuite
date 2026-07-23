@@ -15,9 +15,27 @@ batch_correct_counts(
   covariates_colnames = "Group",
   batch_colname = "Batch",
   label_colname = NULL,
+  samples_to_rename = c(""),
+  add_label_to_pca = TRUE,
+  principal_component_on_x_axis = 1,
+  principal_component_on_y_axis = 2,
+  legend_position_for_pca = "top",
+  label_offset_x_ = 2,
+  label_offset_y_ = 2,
+  label_font_size = 3,
+  point_size_for_pca = 3,
+  color_histogram_by_group = TRUE,
+  set_min_max_for_x_axis_for_histogram = FALSE,
+  minimum_for_x_axis_for_histogram = -1,
+  maximum_for_x_axis_for_histogram = 1,
+  legend_font_size_for_histogram = NULL,
+  legend_position_for_histogram = "top",
+  number_of_histogram_legend_columns = 6,
+  plot_corr_matrix_heatmap = TRUE,
   colors_for_plots = NULL,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
+  interactive_plots = FALSE,
   plots_subdir = "batch"
 )
 ```
@@ -90,12 +108,101 @@ batch_correct_counts(
   preferred Labels here. The selected column should contain unique names
   for each sample. (Default: `NULL` – `sample_id_colname` will be used.)
 
+- samples_to_rename:
+
+  If you do not have a Plot Labels Column in your sample metadata table,
+  you can use this parameter to rename samples manually for display on
+  the PCA plot. Use "Add item" to add each additional sample for
+  renaming. Use the following format to describe which old name (in your
+  sample metadata table) you want to rename to which new name: old_name:
+  new_name
+
+- add_label_to_pca:
+
+  label points on the PCA plot
+
+- principal_component_on_x_axis:
+
+  The principal component to plot on the x-axis for the PCA plot.
+  Choices include 1, 2, 3, ... (default: 1)
+
+- principal_component_on_y_axis:
+
+  The principal component to plot on the y-axis for the PCA plot.
+  Choices include 1, 2, 3, ... (default: 2)
+
+- legend_position_for_pca:
+
+  legend position for the PCA plot
+
+- label_offset_x\_:
+
+  label offset x for the PCA plot
+
+- label_offset_y\_:
+
+  label offset y for the PCA plot
+
+- label_font_size:
+
+  label font size for the PCA plot
+
+- point_size_for_pca:
+
+  geom point size for the PCA plot
+
+- color_histogram_by_group:
+
+  Set to FALSE to label histogram by Sample Names, or set to TRUE to
+  label histogram by the column you select in the "Group Column Used to
+  Color Histogram" parameter (below). Default is TRUE.
+
+- set_min_max_for_x_axis_for_histogram:
+
+  whether to set min/max value for histogram x-axis
+
+- minimum_for_x_axis_for_histogram:
+
+  x-axis minimum for histogram plot
+
+- maximum_for_x_axis_for_histogram:
+
+  x-axis maximum for histogram plot
+
+- legend_font_size_for_histogram:
+
+  legend font size for the histogram plot. If `NULL`, the size is scaled
+  automatically.
+
+- legend_position_for_histogram:
+
+  legend position for the histogram plot. consider setting to 'none' for
+  a large number of samples.
+
+- number_of_histogram_legend_columns:
+
+  number of columns for the histogram legend
+
+- plot_corr_matrix_heatmap:
+
+  Datasets with a large number of samples may be too large to create a
+  correlation matrix heatmap. If this function takes longer than 5
+  minutes to run, Set to `FALSE` and the correlation matrix will not be
+  be created. Default is `TRUE`.
+
 - colors_for_plots:
 
-  Colors for the PCA and histogram will be picked, in order, from this
-  list. Colors must either be names in
+  Optional colors for PCA/histogram/heatmap plots. If `NULL`, colors are
+  taken from `moo@analyses$colors[[group_colname]]`. Colors must either
+  be names in
   [`grDevices::colors()`](https://rdrr.io/r/grDevices/colors.html) or
-  valid hex codes.
+  valid hex codes. Unnamed colors are assigned by factor level order
+  when the grouping column is a factor; otherwise, they follow the order
+  in which groups first appear in the metadata column. If more groups
+  are present than colors provided, supplied colors are used first and
+  additional colors are generated from the selected palette for the
+  remaining groups; random colors are used only if that palette returns
+  fewer colors than the number of groups.
 
 - print_plots:
 
@@ -108,6 +215,13 @@ batch_correct_counts(
   Whether to save plots to files during analysis (Defaults to `TRUE`,
   overwritable using option 'moo_save_plots' or environment variable
   'MOO_SAVE_PLOTS')
+
+- interactive_plots:
+
+  set to TRUE to make PCA and Histogram plots interactive with `plotly`,
+  allowing you to hover your mouse over a point or line to view sample
+  information. The similarity heat map will not display if this toggle
+  is set to `TRUE`. Default is `FALSE`.
 
 - plots_subdir:
 
@@ -163,7 +277,6 @@ moo <- multiOmicDataSet(
 #> Fitting L/S model and finding priors
 #> Finding parametric adjustments
 #> Adjusting the Data
-#> Saving 6.67 x 6.67 in image
 #> Saving 6.67 x 6.67 in image
 #> The total number of features in output: 7943
 #> Number of samples after batch correction: 10

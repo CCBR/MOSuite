@@ -5,7 +5,7 @@ Create named list of default colors for plotting
 ## Usage
 
 ``` r
-get_colors_lst(sample_metadata, palette_fun = grDevices::palette.colors, ...)
+get_colors_lst(sample_metadata, palette_fun = select_mosuite_colors, ...)
 ```
 
 ## Arguments
@@ -19,8 +19,9 @@ get_colors_lst(sample_metadata, palette_fun = grDevices::palette.colors, ...)
 - palette_fun:
 
   Function for selecting colors. Assumed to contain `n` for the number
-  of colors. Default:
-  [`grDevices::palette.colors()`](https://rdrr.io/r/grDevices/palette.html)
+  of colors. Defaults to MOSuite's default plot palette. To use the
+  previous R default palette behavior, pass
+  [`grDevices::palette.colors`](https://rdrr.io/r/grDevices/palette.html).
 
 - ...:
 
@@ -37,27 +38,27 @@ a named vector of colors
 get_colors_lst(nidap_sample_metadata)
 #> $Sample
 #>        A1        A2        A3        B1        B2        B3        C1        C2 
-#> "#000000" "#E69F00" "#56B4E9" "#009E73" "#F0E442" "#0072B2" "#D55E00" "#CC79A7" 
+#> "#5954d6" "#e1562c" "#b80058" "#00c6f8" "#d163e6" "#00a76c" "#ff9287" "#008cf9" 
 #>        C3 
-#> "#999999" 
+#> "#006e00" 
 #> 
 #> $Group
 #>         A         B         C 
-#> "#000000" "#E69F00" "#56B4E9" 
+#> "#5954d6" "#e1562c" "#b80058" 
 #> 
 #> $Replicate
 #>         1         2         3 
-#> "#000000" "#E69F00" "#56B4E9" 
+#> "#5954d6" "#e1562c" "#b80058" 
 #> 
 #> $Batch
 #>         1         2 
-#> "#000000" "#E69F00" 
+#> "#5954d6" "#e1562c" 
 #> 
 #> $Label
 #>        A1        A2        A3        B1        B2        B3        C1        C2 
-#> "#000000" "#E69F00" "#56B4E9" "#009E73" "#F0E442" "#0072B2" "#D55E00" "#CC79A7" 
+#> "#5954d6" "#e1562c" "#b80058" "#00c6f8" "#d163e6" "#00a76c" "#ff9287" "#008cf9" 
 #>        C3 
-#> "#999999" 
+#> "#006e00" 
 #> 
 if (FALSE) { # \dontrun{
 get_colors_lst(nidap_sample_metadata, palette_fun = RColorBrewer::brewer.pal, name = "Set3")

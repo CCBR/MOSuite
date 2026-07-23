@@ -5,7 +5,7 @@ Get vector of colors for observations in one column of a data frame
 ## Usage
 
 ``` r
-get_colors_vctr(dat, colname, palette_fun = grDevices::palette.colors, ...)
+get_colors_vctr(dat, colname, palette_fun = select_mosuite_colors, ...)
 ```
 
 ## Arguments
@@ -21,8 +21,9 @@ get_colors_vctr(dat, colname, palette_fun = grDevices::palette.colors, ...)
 - palette_fun:
 
   Function for selecting colors. Assumed to contain `n` for the number
-  of colors. Default:
-  [`grDevices::palette.colors()`](https://rdrr.io/r/grDevices/palette.html)
+  of colors. Defaults to MOSuite's default plot palette. To use the
+  previous R default palette behavior, pass
+  [`grDevices::palette.colors`](https://rdrr.io/r/grDevices/palette.html).
 
 - ...:
 
@@ -30,4 +31,6 @@ get_colors_vctr(dat, colname, palette_fun = grDevices::palette.colors, ...)
 
 ## Value
 
-named vector of colors for each unique observation in `dat$colname`
+named vector of colors for each unique observation in `dat$colname`.
+Factor columns use factor level order; other columns use first-observed
+order.

@@ -4,7 +4,7 @@
 library(MOSuite)
 ```
 
-## Default plots from each step
+## Default plots from main functions
 
 Default plots can be printed to the screen and/or saved to the disk.
 
@@ -52,15 +52,9 @@ moo <- moo |>
   filter_counts(group_colname = "Group")
 #> * filtering clean counts
 #> Number of features after filtering: 7943
-#> colors_for_plots NULL
-#> colors_for_plots character
 ```
 
-![](visualization_files/figure-html/nidap_filter-1.png)![](visualization_files/figure-html/nidap_filter-2.png)
-
-    #> Saving 5 x 4 in image
-
-![](visualization_files/figure-html/nidap_filter-3.png)
+![](visualization_files/figure-html/nidap_filter-1.png)![](visualization_files/figure-html/nidap_filter-2.png)![](visualization_files/figure-html/nidap_filter-3.png)
 
     #> Saving 5 x 4 in image
 
@@ -73,11 +67,7 @@ moo <- moo |>
 #> Total number of features included: 7943
 ```
 
-![](visualization_files/figure-html/nidap_norm-1.png)![](visualization_files/figure-html/nidap_norm-2.png)
-
-    #> Saving 5 x 4 in image
-
-![](visualization_files/figure-html/nidap_norm-3.png)
+![](visualization_files/figure-html/nidap_norm-1.png)![](visualization_files/figure-html/nidap_norm-2.png)![](visualization_files/figure-html/nidap_norm-3.png)
 
     #> Saving 5 x 4 in image
     #> Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
@@ -100,16 +90,9 @@ moo <- moo |>
 #> Adjusting the Data
 ```
 
-![](visualization_files/figure-html/nidap_batch-1.png)
+![](visualization_files/figure-html/nidap_batch-1.png)![](visualization_files/figure-html/nidap_batch-2.png)![](visualization_files/figure-html/nidap_batch-3.png)
 
     #> Saving 5 x 4 in image
-
-![](visualization_files/figure-html/nidap_batch-2.png)
-
-    #> Saving 5 x 4 in image
-
-![](visualization_files/figure-html/nidap_batch-3.png)
-
     #> The total number of features in output: 7943
     #> Number of samples after batch correction: 10
 
@@ -152,24 +135,17 @@ moo <- moo |> filter_diff()
 
     #> Saving 5 x 4 in image
 
-## Customize plots
-
-TODO
-
-- show how to use individual plotting functions
-- how to customize & override default color palettes
-- how to customize ggplot objects
+## Specialized plots
 
 ### 3D PCA
 
 ``` r
-plot_pca(
-  moo@counts$batch,
-  moo@sample_meta,
+plot_pca_3d(
+  moo,
+  count_type = "batch",
   principal_components = c(1, 2, 3),
   group_colname = "Group",
-  label_colname = "Label",
-  color_values = moo@analyses[["colors"]][["Group"]]
+  label_colname = "Label"
 )
 ```
 
@@ -179,7 +155,8 @@ plot_pca(
 heatmap_plot <- plot_expr_heatmap(
   moo,
   count_type = "norm",
-  sub_count_type = "voom"
+  sub_count_type = "voom",
+  group_colname = "Group"
 )
 #> The total number of genes in heatmap: 500
 ```
@@ -268,7 +245,7 @@ dat_volcano_enhanced <- moo@analyses$diff |>
 #> generated.
 #> Genes in initial dataset: 7943
 #> 
-#> Max y: 4.34744066227959
+#> Max y: 4.34744066227962
 ```
 
 ![](visualization_files/figure-html/volcano_enhanced-1.png)
@@ -293,3 +270,186 @@ head(venn_dat)
 #> 5 Runx3 (B-A ∩ B-C ∩ C-A)  1   80
 #> 6 Dusp6 (B-A ∩ B-C ∩ C-A)  1   80
 ```
+
+## Customizing plots
+
+### Plots from main functions
+
+The plotting functions called by the main analysis functions can be
+called directly so you can customize plots to fit your needs.
+
+See the [visualization
+reference](https://ccbr.github.io/MOSuite/reference/index.html#visualization)
+for a full list of plotting functions.
+
+#### Examples
+
+Plot the read depth of the clean counts:
+
+``` r
+plot_read_depth(
+  moo,
+  count_type = "clean",
+  group_colname = "Group"
+)
+```
+
+![](visualization_files/figure-html/plot_read_depth-1.png)
+
+``` r
+plot_read_depth(
+  moo,
+  count_type = "clean",
+  group_colname = "Batch"
+)
+```
+
+![](visualization_files/figure-html/plot_read_depth-2.png)
+
+Plot a 2D PCA for the batch-corrected counts:
+
+``` r
+plot_pca_2d(
+  moo,
+  count_type = "batch",
+  principal_components = c(1, 2),
+  group_colname = "Batch",
+  label_colname = "Label"
+)
+```
+
+![](visualization_files/figure-html/plot_pca_2D-1.png)![](visualization_files/figure-html/plot_pca_2D-2.png)
+
+### Customizing ggplot objects
+
+Plotting functions that use ggplot2 return ggplot objects. You can
+customizing them by adding more ggplot layers, just like any other
+ggplot.
+
+``` r
+plot_pca_2d(
+  moo,
+  count_type = "batch",
+  principal_components = c(1, 2),
+  group_colname = "Batch",
+  label_colname = "Label"
+) +
+  ggplot2::labs(
+    title = "Principle components of batch-corrected counts",
+    caption = "Normalized counts were batch-corrected using svg::ComBat()"
+  )
+```
+
+![](visualization_files/figure-html/ggplot2_pca_2D-1.png)![](visualization_files/figure-html/ggplot2_pca_2D-2.png)
+
+### Custom colors
+
+MOSuite comes bundled with a default palette:
+
+``` r
+display_palette()
+```
+
+![](visualization_files/figure-html/display_palette-1.png)
+
+When creating a multiOmicDataSet object such as with
+[`create_multiOmicDataSet_from_dataframes()`](https://ccbr.github.io/MOSuite/dev/reference/create_multiOmicDataSet_from_dataframes.md),
+default colors are automatically picked from `mosuite_palette` and set
+in the analyses slot. You can see the defaults like so:
+
+``` r
+moo@analyses$colors
+#> $Sample
+#>        A1        A2        A3        B1        B2        B3        C1        C2 
+#> "#5954d6" "#e1562c" "#b80058" "#00c6f8" "#d163e6" "#00a76c" "#ff9287" "#008cf9" 
+#>        C3 
+#> "#006e00" 
+#> 
+#> $Group
+#>         A         B         C 
+#> "#5954d6" "#e1562c" "#b80058" 
+#> 
+#> $Replicate
+#>         1         2         3 
+#> "#5954d6" "#e1562c" "#b80058" 
+#> 
+#> $Batch
+#>         1         2 
+#> "#5954d6" "#e1562c" 
+#> 
+#> $Label
+#>        A1        A2        A3        B1        B2        B3        C1        C2 
+#> "#5954d6" "#e1562c" "#b80058" "#00c6f8" "#d163e6" "#00a76c" "#ff9287" "#008cf9" 
+#>        C3 
+#> "#006e00"
+```
+
+The plotting functions access these colors by default, unless overridden
+with the `color_values` argument:
+
+``` r
+# color palette accessed from moo@analyses$colors[['Group']]
+plot_read_depth(
+  moo,
+  count_type = "clean",
+  group_colname = "Group"
+)
+```
+
+![](visualization_files/figure-html/plot_read_depth_custom_colors-1.png)
+
+``` r
+
+# color palette overridden by color_values
+plot_read_depth(
+  moo,
+  count_type = "clean",
+  group_colname = "Group",
+  color_values = c(A = "red", B = "green", C = "blue")
+)
+```
+
+![](visualization_files/figure-html/plot_read_depth_custom_colors-2.png)
+
+You can change the default colors in the multiOmicDataSet so that all
+plotting functions will use your chosen color palette.
+
+``` r
+moo@analyses$colors[["Batch"]] <- c("1" = "#0E7175", "2" = "#C35BCA")
+moo@analyses$colors[["Replicate"]] <- c(
+  "1" = "#89973D",
+  "2" = "#E8B92F",
+  "3" = "#A45E41"
+)
+moo@analyses$colors[["Group"]] <- c(A = "#E69F00", B = "#56B4E9", C = "#009E73")
+
+plot_read_depth(
+  moo,
+  count_type = "clean",
+  group_colname = "Group"
+)
+```
+
+![](visualization_files/figure-html/custom_palette-1.png)
+
+``` r
+plot_pca_2d(
+  moo,
+  count_type = "batch",
+  group_colname = "Batch"
+)
+```
+
+![](visualization_files/figure-html/custom_palette-2.png)![](visualization_files/figure-html/custom_palette-3.png)
+
+``` r
+plot_expr_heatmap(
+  moo,
+  count_type = "norm",
+  sub_count_type = "voom",
+  group_colname = "Group"
+)
+#> The total number of genes in heatmap: 500
+```
+
+![](visualization_files/figure-html/custom_palette-4.png)![](visualization_files/figure-html/custom_palette-5.png)

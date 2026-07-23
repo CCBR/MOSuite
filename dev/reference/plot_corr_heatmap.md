@@ -41,10 +41,7 @@ heatmap from
       feature_id_colname = NULL,
       group_colname = "Group",
       label_colname = "Label",
-      color_values = c(
-        "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-        "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
-      ))
+      color_values = mosuite_palette)
 
 ## See also
 

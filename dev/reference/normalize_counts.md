@@ -24,12 +24,12 @@ normalize_counts(
   label_offset_x_ = 2,
   label_offset_y_ = 2,
   label_font_size = 3,
-  point_size_for_pca = 8,
+  point_size_for_pca = 3,
   color_histogram_by_group = TRUE,
   set_min_max_for_x_axis_for_histogram = FALSE,
   minimum_for_x_axis_for_histogram = -1,
   maximum_for_x_axis_for_histogram = 1,
-  legend_font_size_for_histogram = 10,
+  legend_font_size_for_histogram = NULL,
   legend_position_for_histogram = "top",
   number_of_histogram_legend_columns = 6,
   plot_corr_matrix_heatmap = TRUE,
@@ -154,7 +154,7 @@ normalize_counts(
 
   Set to FALSE to label histogram by Sample Names, or set to TRUE to
   label histogram by the column you select in the "Group Column Used to
-  Color Histogram" parameter (below). Default is FALSE.
+  Color Histogram" parameter (below). Default is TRUE.
 
 - set_min_max_for_x_axis_for_histogram:
 
@@ -170,7 +170,8 @@ normalize_counts(
 
 - legend_font_size_for_histogram:
 
-  legend font size for the histogram plot
+  legend font size for the histogram plot. If `NULL`, the size is scaled
+  automatically.
 
 - legend_position_for_histogram:
 
@@ -190,10 +191,17 @@ normalize_counts(
 
 - colors_for_plots:
 
-  Colors for the PCA and histogram will be picked, in order, from this
-  list. Colors must either be names in
+  Optional colors for PCA/histogram/heatmap plots. If `NULL`, colors are
+  taken from `moo@analyses$colors[[group_colname]]`. Colors must either
+  be names in
   [`grDevices::colors()`](https://rdrr.io/r/grDevices/colors.html) or
-  valid hex codes.
+  valid hex codes. Unnamed colors are assigned by factor level order
+  when the grouping column is a factor; otherwise, they follow the order
+  in which groups first appear in the metadata column. If more groups
+  are present than colors provided, supplied colors are used first and
+  additional colors are generated from the selected palette for the
+  remaining groups; random colors are used only if that palette returns
+  fewer colors than the number of groups.
 
 - print_plots:
 
@@ -257,7 +265,6 @@ moo <- multiOmicDataSet(
   )
 #> * normalizing filt counts
 #> Total number of features included: 7943
-#> Saving 6.67 x 6.67 in image
 #> Saving 6.67 x 6.67 in image
 #> Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
 head(moo@counts[["norm"]][["voom"]])

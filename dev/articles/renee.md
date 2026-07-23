@@ -118,17 +118,11 @@ moo <- moo |>
 #> 
 #> Number of features after filtering: 291
 #> 
-#> colors_for_plots NULL
-#> 
-#> colors_for_plots character
-#> 
-#> Saving 7.29 x 4.51 in image
 #> Saving 7.29 x 4.51 in image
 #> * normalizing filt counts
 #> 
 #> Total number of features included: 291
 #> 
-#> Saving 7.29 x 4.51 in image
 #> Saving 7.29 x 4.51 in image
 #> Sample columns: KO_S3, Sample columns: KO_S4, Sample columns: WT_S1, Sample columns: WT_S2
 #> 
@@ -201,9 +195,9 @@ str(moo)
 #>  ..  .. ..$ WT_S2  : num [1:291] 10 12.24 8.82 8.82 8.82 ...
 #>  @ analyses   :List of 3
 #>  .. $ colors   :List of 2
-#>  ..  ..$ sample_id: Named chr [1:4] "#000000" "#E69F00" "#56B4E9" "#009E73"
+#>  ..  ..$ sample_id: Named chr [1:4] "#5954d6" "#e1562c" "#b80058" "#00c6f8"
 #>  ..  .. ..- attr(*, "names")= chr [1:4] "KO_S3" "KO_S4" "WT_S1" "WT_S2"
-#>  ..  ..$ condition: Named chr [1:2] "#000000" "#E69F00"
+#>  ..  ..$ condition: Named chr [1:2] "#5954d6" "#e1562c"
 #>  ..  .. ..- attr(*, "names")= chr [1:2] "knockout" "wildtype"
 #>  .. $ diff     :List of 1
 #>  ..  ..$ knockout-wildtype:'data.frame': 291 obs. of  6 variables:

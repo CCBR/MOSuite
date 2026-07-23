@@ -46,7 +46,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_colors_vctr</span><span class="op">(</span><span class="va">dat</span>, <span class="va">colname</span>, palette_fun <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/grDevices/palette.html" class="external-link">palette.colors</a></span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_colors_vctr</span><span class="op">(</span><span class="va">dat</span>, <span class="va">colname</span>, palette_fun <span class="op">=</span> <span class="va">select_mosuite_colors</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -62,8 +62,9 @@
 
 
 <dt id="arg-palette-fun">palette_fun<a class="anchor" aria-label="anchor" href="#arg-palette-fun"></a></dt>
-<dd><p>Function for selecting colors. Assumed to contain <code>n</code> for the number of colors. Default:
-<code><a href="https://rdrr.io/r/grDevices/palette.html" class="external-link">grDevices::palette.colors()</a></code></p></dd>
+<dd><p>Function for selecting colors. Assumed to contain <code>n</code> for the number of colors. Defaults to
+MOSuite's default plot palette. To use the previous R default palette behavior, pass
+<code><a href="https://rdrr.io/r/grDevices/palette.html" class="external-link">grDevices::palette.colors</a></code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -72,7 +73,8 @@
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>named vector of colors for each unique observation in <code>dat$colname</code></p>
+    <p>named vector of colors for each unique observation in <code>dat$colname</code>. Factor columns use factor level order;
+other columns use first-observed order.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

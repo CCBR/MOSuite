@@ -81,7 +81,9 @@ column with your preferred Labels here. The selected column should contain uniqu
 
 
 <dt id="arg-color-values">color_values<a class="anchor" aria-label="anchor" href="#arg-color-values"></a></dt>
-<dd><p>vector of colors as hex values or names recognized by R</p></dd>
+<dd><p>vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+the metadata column. Defaults to <code>NULL</code>; when <code>NULL</code>, <code>mosuite_palette</code> is used.</p></dd>
 
 
 <dt id="arg-color-by-group">color_by_group<a class="anchor" aria-label="anchor" href="#arg-color-by-group"></a></dt>
@@ -114,7 +116,8 @@ column you select in the "Group Column Used to Color Histogram" parameter (below
 
 
 <dt id="arg-legend-font-size">legend_font_size<a class="anchor" aria-label="anchor" href="#arg-legend-font-size"></a></dt>
-<dd><p>passed to <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">ggplot2::element_text()</a></code> via <code><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">ggplot2::theme()</a></code></p></dd>
+<dd><p>passed to <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">ggplot2::element_text()</a></code> via <code><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">ggplot2::theme()</a></code>. If <code>NULL</code>, the size is scaled
+automatically based on the number and length of legend labels.</p></dd>
 
 
 <dt id="arg-number-of-legend-columns">number_of_legend_columns<a class="anchor" aria-label="anchor" href="#arg-number-of-legend-columns"></a></dt>

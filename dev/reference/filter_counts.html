@@ -65,18 +65,18 @@ features that have very low raw counts across most or all of your samples.</p>
 <span>  principal_component_on_x_axis <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  principal_component_on_y_axis <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  legend_position_for_pca <span class="op">=</span> <span class="st">"top"</span>,</span>
-<span>  point_size_for_pca <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  point_size_for_pca <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  add_label_to_pca <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  label_font_size <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  label_offset_y_ <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  label_offset_x_ <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  samples_to_rename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span>,</span>
-<span>  color_histogram_by_group <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  color_histogram_by_group <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  set_min_max_for_x_axis_for_histogram <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  minimum_for_x_axis_for_histogram <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
 <span>  maximum_for_x_axis_for_histogram <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  legend_position_for_histogram <span class="op">=</span> <span class="st">"top"</span>,</span>
-<span>  legend_font_size_for_histogram <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  legend_font_size_for_histogram <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  number_of_histogram_legend_columns <span class="op">=</span> <span class="fl">6</span>,</span>
 <span>  colors_for_plots <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  plot_corr_matrix_heatmap <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -201,7 +201,7 @@ which new name: old_name: new_name</p></dd>
 
 <dt id="arg-color-histogram-by-group">color_histogram_by_group<a class="anchor" aria-label="anchor" href="#arg-color-histogram-by-group"></a></dt>
 <dd><p>Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by
-the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.</p></dd>
+the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is TRUE.</p></dd>
 
 
 <dt id="arg-set-min-max-for-x-axis-for-histogram">set_min_max_for_x_axis_for_histogram<a class="anchor" aria-label="anchor" href="#arg-set-min-max-for-x-axis-for-histogram"></a></dt>
@@ -222,7 +222,8 @@ number of samples.</p></dd>
 
 
 <dt id="arg-legend-font-size-for-histogram">legend_font_size_for_histogram<a class="anchor" aria-label="anchor" href="#arg-legend-font-size-for-histogram"></a></dt>
-<dd><p>legend font size for the histogram plot</p></dd>
+<dd><p>legend font size for the histogram plot.
+If <code>NULL</code>, the size is scaled automatically.</p></dd>
 
 
 <dt id="arg-number-of-histogram-legend-columns">number_of_histogram_legend_columns<a class="anchor" aria-label="anchor" href="#arg-number-of-histogram-legend-columns"></a></dt>
@@ -230,8 +231,14 @@ number of samples.</p></dd>
 
 
 <dt id="arg-colors-for-plots">colors_for_plots<a class="anchor" aria-label="anchor" href="#arg-colors-for-plots"></a></dt>
-<dd><p>Colors for the PCA and histogram will be picked, in order, from this list.
-Colors must either be names in <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code> or valid hex codes.</p></dd>
+<dd><p>Optional colors for PCA/histogram/heatmap plots. If <code>NULL</code>, colors are taken from
+<code>moo@analyses$colors[[group_colname]]</code>.
+Colors must either be names in <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code> or valid hex codes. Unnamed colors are assigned by factor level order
+when the grouping column is a factor;
+otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
+than colors provided,
+supplied colors are used first and additional colors are generated from the selected palette for the remaining
+groups; random colors are used only if that palette returns fewer colors than the number of groups.</p></dd>
 
 
 <dt id="arg-plot-corr-matrix-heatmap">plot_corr_matrix_heatmap<a class="anchor" aria-label="anchor" href="#arg-plot-corr-matrix-heatmap"></a></dt>
@@ -307,9 +314,6 @@ another based on unsupervised clustering.</p>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> * filtering raw counts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of features after filtering: 7943</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> colors_for_plots NULL</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> colors_for_plots character</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving 6.67 x 6.67 in image</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Saving 6.67 x 6.67 in image</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">$</span><span class="va">filt</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Gene   A1   A2   A3   B1   B2   B3   C1   C2   C3</span>

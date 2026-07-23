@@ -62,13 +62,13 @@
 <span>  principal_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  point_size <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>  label_font_size <span class="op">=</span> <span class="fl">24</span>,</span>
-<span>  color_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5954d6"</span>, <span class="st">"#e1562c"</span>, <span class="st">"#b80058"</span>, <span class="st">"#00c6f8"</span>, <span class="st">"#d163e6"</span>, <span class="st">"#00a76c"</span>,</span>
-<span>    <span class="st">"#ff9287"</span>, <span class="st">"#008cf9"</span>, <span class="st">"#006e00"</span>, <span class="st">"#796880"</span>, <span class="st">"#FFA500"</span>, <span class="st">"#878500"</span><span class="op">)</span>,</span>
+<span>  color_values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  plot_title <span class="op">=</span> <span class="st">"PCA 3D"</span>,</span>
 <span>  plot_filename <span class="op">=</span> <span class="st">"pca_3D.html"</span>,</span>
 <span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span>,</span>
 <span>  save_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"save_plots"</span><span class="op">)</span>,</span>
-<span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span></span>
+<span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## S7 method for class &lt;MOSuite::multiOmicDataSet&gt;</span></span>
@@ -85,13 +85,13 @@
 <span>  principal_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  point_size <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>  label_font_size <span class="op">=</span> <span class="fl">24</span>,</span>
-<span>  color_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5954d6"</span>, <span class="st">"#e1562c"</span>, <span class="st">"#b80058"</span>, <span class="st">"#00c6f8"</span>, <span class="st">"#d163e6"</span>, <span class="st">"#00a76c"</span>,</span>
-<span>    <span class="st">"#ff9287"</span>, <span class="st">"#008cf9"</span>, <span class="st">"#006e00"</span>, <span class="st">"#796880"</span>, <span class="st">"#FFA500"</span>, <span class="st">"#878500"</span><span class="op">)</span>,</span>
+<span>  color_values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  plot_title <span class="op">=</span> <span class="st">"PCA 3D"</span>,</span>
 <span>  plot_filename <span class="op">=</span> <span class="st">"pca_3D.html"</span>,</span>
 <span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span>,</span>
 <span>  save_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"save_plots"</span><span class="op">)</span>,</span>
-<span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span></span>
+<span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## S7 method for class &lt;data.frame&gt;</span></span>
@@ -108,13 +108,13 @@
 <span>  principal_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  point_size <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>  label_font_size <span class="op">=</span> <span class="fl">24</span>,</span>
-<span>  color_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5954d6"</span>, <span class="st">"#e1562c"</span>, <span class="st">"#b80058"</span>, <span class="st">"#00c6f8"</span>, <span class="st">"#d163e6"</span>, <span class="st">"#00a76c"</span>,</span>
-<span>    <span class="st">"#ff9287"</span>, <span class="st">"#008cf9"</span>, <span class="st">"#006e00"</span>, <span class="st">"#796880"</span>, <span class="st">"#FFA500"</span>, <span class="st">"#878500"</span><span class="op">)</span>,</span>
+<span>  color_values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  plot_title <span class="op">=</span> <span class="st">"PCA 3D"</span>,</span>
 <span>  plot_filename <span class="op">=</span> <span class="st">"pca_3D.html"</span>,</span>
 <span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span>,</span>
 <span>  save_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"save_plots"</span><span class="op">)</span>,</span>
-<span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span></span>
+<span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -171,7 +171,10 @@
 
 
 <dt id="arg-color-values">color_values<a class="anchor" aria-label="anchor" href="#arg-color-values"></a></dt>
-<dd><p>vector of colors as hex values or names recognized by R.</p></dd>
+<dd><p>vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+the metadata column. Defaults to <code>NULL</code>; when <code>NULL</code>, <code>mosuite_palette</code> is used for <code>data.frame</code> dispatch and
+stored colors are used for <code>multiOmicDataSet</code> dispatch.</p></dd>
 
 
 <dt id="arg-plot-title">plot_title<a class="anchor" aria-label="anchor" href="#arg-plot-title"></a></dt>
@@ -192,6 +195,10 @@
 
 <dt id="arg-plots-subdir">plots_subdir<a class="anchor" aria-label="anchor" href="#arg-plots-subdir"></a></dt>
 <dd><p>output subdirectory for saved plots.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>additional arguments passed to methods</p></dd>
 
 </dl></div>
     <div class="section level2">

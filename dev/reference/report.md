@@ -4,7 +4,7 @@
 
 Published
 
-July 21, 2026
+July 23, 2026
 
 ``` r
 library(MOSuite)
@@ -207,15 +207,9 @@ moo <- moo |>
 
     Number of features after filtering: 7943
 
-    colors_for_plots NULL
-
-    colors_for_plots character
-
 ![](report_files/figure-html/analyze-2.png)
 
 ![](report_files/figure-html/analyze-3.png)
-
-    Saving 7 x 5 in image
 
 ![](report_files/figure-html/analyze-4.png)
 
@@ -227,8 +221,6 @@ moo <- moo |>
 ![](report_files/figure-html/analyze-5.png)
 
 ![](report_files/figure-html/analyze-6.png)
-
-    Saving 7 x 5 in image
 
 ![](report_files/figure-html/analyze-7.png)
 
@@ -251,19 +243,21 @@ moo <- moo |>
 
 ![](report_files/figure-html/analyze-8.png)
 
-    Saving 7 x 5 in image
-
 ![](report_files/figure-html/analyze-9.png)
-
-    Saving 7 x 5 in image
 
 ![](report_files/figure-html/analyze-10.png)
 
+    Saving 7 x 5 in image
     The total number of features in output: 7943
+
     Number of samples after batch correction: 10
+
     * differential counts
+
     Setting first column of `counts` as gene annotation.
+
     Total number of genes included: 7943
+
     `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
 
 ![](report_files/figure-html/analyze-11.png)
@@ -431,7 +425,7 @@ dat_volcano_enhanced <- moo@analyses$diff |>
 
     Genes in initial dataset: 7943
 
-    Max y: 4.34744066227959
+    Max y: 4.34744066227962
 
 ![](report_files/figure-html/volcano_enhanced-1.png)
 

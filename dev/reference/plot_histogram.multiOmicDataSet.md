@@ -14,6 +14,22 @@ Plot histogram for multiOmicDataSet
   Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a
   list, specify the sub count type within the list
 
+- group_colname:
+
+  The column from the sample metadata containing the sample group
+  information. This is usually a column showing to which experimental
+  treatments each sample belongs (e.g. WildType, Knockout, Tumor,
+  Normal, Before, After, etc.).
+
+- color_values:
+
+  vector of colors as hex values or names recognized by R. Unnamed
+  colors are assigned by factor level order when the grouping column is
+  a factor; otherwise, they follow the order in which groups first
+  appear in the metadata column. Defaults to `NULL`; when `NULL`,
+  `mosuite_palette` is used for `data.frame` dispatch and stored colors
+  are used for `multiOmicDataSet` dispatch.
+
 ## See also
 
 [`plot_histogram()`](https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.md)
@@ -34,6 +50,7 @@ moo <- multiOmicDataSet(
   counts_lst = list("raw" = nidap_raw_counts)
 )
 p <- plot_histogram(moo, count_type = "raw")
+#> color_values contains 3 colors for 9 values in column Sample. Generating 6 additional colors.
 
 # customize the plot
 plot_histogram(moo,

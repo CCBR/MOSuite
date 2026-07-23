@@ -6,7 +6,7 @@ dataset
 ## Usage
 
 ``` r
-set_color_pal(moo, colname, palette_fun = grDevices::palette.colors, ...)
+set_color_pal(moo, colname, palette_fun = select_mosuite_colors, ...)
 ```
 
 ## Arguments
@@ -23,8 +23,9 @@ set_color_pal(moo, colname, palette_fun = grDevices::palette.colors, ...)
 - palette_fun:
 
   Function for selecting colors. Assumed to contain `n` for the number
-  of colors. Default:
-  [`grDevices::palette.colors()`](https://rdrr.io/r/grDevices/palette.html)
+  of colors. Defaults to MOSuite's default plot palette. To use the
+  previous R default palette behavior, pass
+  [`grDevices::palette.colors`](https://rdrr.io/r/grDevices/palette.html).
 
 - ...:
 
@@ -59,7 +60,7 @@ moo <- create_multiOmicDataSet_from_dataframes(
 )
 moo@analyses$colors$Group
 #>         A         B         C 
-#> "#000000" "#E69F00" "#56B4E9" 
+#> "#5954d6" "#e1562c" "#b80058" 
 moo <- moo |> set_color_pal("Group", palette_fun = RColorBrewer::brewer.pal, name = "Set2")
 moo@analyses$colors$Group
 #>         A         B         C 

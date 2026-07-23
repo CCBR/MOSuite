@@ -15,6 +15,24 @@ Plot read depth for multiOmicDataSet
   count type within the list. Must be a name in
   `names(moo@counts[[count_type]])`.
 
+- sample_id_colname:
+
+  column in sample metadata containing sample IDs.
+
+- group_colname:
+
+  sample metadata column used to color bars. Leave blank to use the
+  current single-color bar fill.
+
+- color_values:
+
+  colors used when `group_colname` is supplied. Named vectors are
+  matched to group values; unnamed vectors follow group order and are
+  extended with MOSuite colors when too few colors are supplied.
+  Defaults to `NULL`; when `NULL`, `mosuite_palette` is used for
+  `data.frame` dispatch and stored colors are used for
+  `multiOmicDataSet` dispatch.
+
 ## Value
 
 ggplot barplot

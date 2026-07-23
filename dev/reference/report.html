@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-07-21">
+<meta name="dcterms.date" content="2026-07-23">
 
 <title>MOSuite analysis report</title>
 <style>
@@ -72,10 +72,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="report_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="report_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="report_files/libs/bootstrap/bootstrap-9b7a7401f4b25f16fab518238f30cb8c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="report_files/libs/bootstrap/bootstrap-9e76aa33f8dd3f1b11c4447c9675190a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="report_files/libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
 <script src="report_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-<script src="report_files/libs/plotly-binding-4.12.0/plotly.js"></script>
+<script src="report_files/libs/plotly-binding-4.12.1/plotly.js"></script>
 <script src="report_files/libs/typedarray-0.1/typedarray.min.js"></script>
 <script src="report_files/libs/jquery-3.5.1/jquery.min.js"></script>
 <link href="report_files/libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
@@ -105,7 +105,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 21, 2026</p>
+      <p class="date">July 23, 2026</p>
     </div>
   </div>
   
@@ -547,11 +547,7 @@ no duplicated IDs in GeneName
 
 * filtering clean counts
 
-Number of features after filtering: 7943
-
-colors_for_plots NULL
-
-colors_for_plots character</code></pre>
+Number of features after filtering: 7943</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -566,9 +562,6 @@ colors_for_plots character</code></pre>
 <p><img src="report_files/figure-html/analyze-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Saving 7 x 5 in image</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -596,9 +589,6 @@ Total number of features included: 7943</code></pre>
 <p><img src="report_files/figure-html/analyze-6.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Saving 7 x 5 in image</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -632,18 +622,12 @@ Adjusting the Data</code></pre>
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Saving 7 x 5 in image</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="report_files/figure-html/analyze-9.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Saving 7 x 5 in image</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -653,11 +637,17 @@ Adjusting the Data</code></pre>
 </div>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>The total number of features in output: 7943
+<pre><code>Saving 7 x 5 in image
+The total number of features in output: 7943
+
 Number of samples after batch correction: 10
+
 * differential counts
+
 Setting first column of `counts` as gene annotation.
+
 Total number of genes included: 7943
+
 `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</code></pre>
 </div>
 <div class="cell-output-display">
@@ -686,10 +676,10 @@ Total number of genes selected with adjpval &lt; 0.05 and | logFC | ≥ 1 is sum
 <div class="cell-output cell-output-stderr">
 <pre><code>Saving 7 x 5 in image</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>moo<span class="sc">@</span>analyses<span class="sc">$</span>diff <span class="sc">|&gt;</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">join_dfs_wide</span>() <span class="sc">|&gt;</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>moo<span class="sc">@</span>analyses<span class="sc">$</span>diff <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">join_dfs_wide</span>() <span class="sc">|&gt;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Joining with `by = join_by(GeneName)`
 Joining with `by = join_by(GeneName)`</code></pre>
@@ -846,7 +836,7 @@ Joining with `by = join_by(GeneName)`</code></pre>
 </tbody>
 </table>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>moo<span class="sc">@</span>analyses<span class="sc">$</span>diff_filt <span class="sc">|&gt;</span> <span class="fu">head</span>() <span class="sc">|&gt;</span> <span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>moo<span class="sc">@</span>analyses<span class="sc">$</span>diff_filt <span class="sc">|&gt;</span> <span class="fu">head</span>() <span class="sc">|&gt;</span> <span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -1006,28 +996,28 @@ Joining with `by = join_by(GeneName)`</code></pre>
 <section id="d-pca" class="level3">
 <h3 class="anchored" data-anchor-id="d-pca">3D PCA</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pca</span>(</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  moo<span class="sc">@</span>counts<span class="sc">$</span>batch,</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  moo<span class="sc">@</span>sample_meta,</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">principal_components =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">group_colname =</span> group_colname,</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">label_colname =</span> label_colname,</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">color_values =</span> moo<span class="sc">@</span>analyses[[<span class="st">"colors"</span>]][[group_colname]]</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pca</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  moo<span class="sc">@</span>counts<span class="sc">$</span>batch,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  moo<span class="sc">@</span>sample_meta,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">principal_components =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">group_colname =</span> group_colname,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">label_colname =</span> label_colname,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">color_values =</span> moo<span class="sc">@</span>analyses[[<span class="st">"colors"</span>]][[group_colname]]</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item" id="htmlwidget-f36a20e6b50fd7965955" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-f36a20e6b50fd7965955">{"x":{"visdat":{"2c0b50909e62":["function () ","plotlyVisDat"]},"cur_data":"2c0b50909e62","attrs":{"2c0b50909e62":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"size":8},"hoverinfo":"text","text":{},"color":{},"size":24,"colors":["#000000","#E69F00","#56B4E9"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"PC1"},"yaxis":{"title":"PC2"},"zaxis":{"title":"PC3"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-37.029887404207201,-46.202726529239861,-47.38832948806099],"y":[33.200566070307481,40.838627625724087,28.814546147005061],"z":[4.7406847243840753,-10.906448043253107,-13.204218047115665],"mode":"markers","marker":{"color":"rgba(0,0,0,1)","size":8,"sizemode":"area","line":{"color":"rgba(0,0,0,1)"}},"hoverinfo":["text","text","text"],"text":["A1","A2","A3"],"type":"scatter3d","name":"A","textfont":{"color":"rgba(0,0,0,1)","size":55},"error_y":{"color":"rgba(0,0,0,1)","width":55},"error_x":{"color":"rgba(0,0,0,1)","width":55},"line":{"color":"rgba(0,0,0,1)","width":55},"frame":null},{"x":[-28.694926741752855,-13.178325203869919,-15.174264901109929],"y":[-29.61351670342993,-34.916643374714155,-65.245132469700437],"z":[25.172778558047206,13.33410158127648,7.1777565898973972],"mode":"markers","marker":{"color":"rgba(230,159,0,1)","size":8,"sizemode":"area","line":{"color":"rgba(230,159,0,1)"}},"hoverinfo":["text","text","text"],"text":["B1","B2","B3"],"type":"scatter3d","name":"B","textfont":{"color":"rgba(230,159,0,1)","size":55},"error_y":{"color":"rgba(230,159,0,1)","width":55},"error_x":{"color":"rgba(230,159,0,1)","width":55},"line":{"color":"rgba(230,159,0,1)","width":55},"frame":null},{"x":[54.383108042646434,77.413153148631366,55.872199076963142],"y":[-0.31296701193077309,31.436049026500836,-4.2015293097620674],"z":[-44.49320374920331,67.633314692756514,-49.454766306789836],"mode":"markers","marker":{"color":"rgba(86,180,233,1)","size":8,"sizemode":"area","line":{"color":"rgba(86,180,233,1)"}},"hoverinfo":["text","text","text"],"text":["C1","C2","C3"],"type":"scatter3d","name":"C","textfont":{"color":"rgba(86,180,233,1)","size":55},"error_y":{"color":"rgba(86,180,233,1)","width":55},"error_x":{"color":"rgba(86,180,233,1)","width":55},"line":{"color":"rgba(86,180,233,1)","width":55},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-bb0c864e4260a9d7c98c" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-bb0c864e4260a9d7c98c">{"x":{"visdat":{"20c0461bc07e":["function () ","plotlyVisDat"]},"cur_data":"20c0461bc07e","attrs":{"20c0461bc07e":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"size":8},"hoverinfo":"text","text":{},"color":{},"size":24,"colors":["#5954d6","#e1562c","#b80058"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"PC1"},"yaxis":{"title":"PC2"},"zaxis":{"title":"PC3"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-37.02988740420713,-46.202726529239996,-47.388329488061188],"y":[33.20056607030736,40.838627625724037,28.814546147005224],"z":[4.7406847243841019,-10.906448043253027,-13.204218047115619],"mode":"markers","marker":{"color":"rgba(89,84,214,1)","size":8,"sizemode":"area","line":{"color":"rgba(89,84,214,1)"}},"hoverinfo":["text","text","text"],"text":["A1","A2","A3"],"type":"scatter3d","name":"A","textfont":{"color":"rgba(89,84,214,1)","size":55},"error_y":{"color":"rgba(89,84,214,1)","width":55},"error_x":{"color":"rgba(89,84,214,1)","width":55},"line":{"color":"rgba(89,84,214,1)","width":55},"frame":null},{"x":[-28.694926741752916,-13.178325203869875,-15.174264901109913],"y":[-29.61351670343015,-34.916643374714177,-65.245132469700494],"z":[25.172778558047199,13.334101581276443,7.1777565898972835],"mode":"markers","marker":{"color":"rgba(225,86,44,1)","size":8,"sizemode":"area","line":{"color":"rgba(225,86,44,1)"}},"hoverinfo":["text","text","text"],"text":["B1","B2","B3"],"type":"scatter3d","name":"B","textfont":{"color":"rgba(225,86,44,1)","size":55},"error_y":{"color":"rgba(225,86,44,1)","width":55},"error_x":{"color":"rgba(225,86,44,1)","width":55},"line":{"color":"rgba(225,86,44,1)","width":55},"frame":null},{"x":[54.383108042646533,77.413153148631352,55.872199076963149],"y":[-0.31296701193061999,31.436049026500761,-4.2015293097619741],"z":[-44.493203749203325,67.633314692756926,-49.454766306789963],"mode":"markers","marker":{"color":"rgba(184,0,88,1)","size":8,"sizemode":"area","line":{"color":"rgba(184,0,88,1)"}},"hoverinfo":["text","text","text"],"text":["C1","C2","C3"],"type":"scatter3d","name":"C","textfont":{"color":"rgba(184,0,88,1)","size":55},"error_y":{"color":"rgba(184,0,88,1)","width":55},"error_x":{"color":"rgba(184,0,88,1)","width":55},"line":{"color":"rgba(184,0,88,1)","width":55},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
 <section id="expression-heatmap" class="level3">
 <h3 class="anchored" data-anchor-id="expression-heatmap">Expression Heatmap</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>heatmap_plot <span class="ot">&lt;-</span> <span class="fu">plot_expr_heatmap</span>(</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  moo,</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">count_type =</span> <span class="st">"norm"</span>,</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sub_count_type =</span> <span class="st">"voom"</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>heatmap_plot <span class="ot">&lt;-</span> <span class="fu">plot_expr_heatmap</span>(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  moo,</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">count_type =</span> <span class="st">"norm"</span>,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sub_count_type =</span> <span class="st">"voom"</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>The total number of genes in heatmap: 500</code></pre>
 </div>
@@ -1038,7 +1028,7 @@ Joining with `by = join_by(GeneName)`</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(heatmap_plot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(heatmap_plot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1053,9 +1043,9 @@ Joining with `by = join_by(GeneName)`</code></pre>
 <section id="summary" class="level4">
 <h4 class="anchored" data-anchor-id="summary">Summary</h4>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>dat_volcano_summary <span class="ot">&lt;-</span> moo<span class="sc">@</span>analyses<span class="sc">$</span>diff <span class="sc">|&gt;</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">join_dfs_wide</span>() <span class="sc">|&gt;</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_volcano_summary</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>dat_volcano_summary <span class="ot">&lt;-</span> moo<span class="sc">@</span>analyses<span class="sc">$</span>diff <span class="sc">|&gt;</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">join_dfs_wide</span>() <span class="sc">|&gt;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_volcano_summary</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Joining with `by = join_by(GeneName)`
 Joining with `by = join_by(GeneName)`
@@ -1098,7 +1088,7 @@ Ignoring unknown parameters: `segment.linewidth`</code></pre>
 <div class="cell-output cell-output-stderr">
 <pre><code>Saving 7 x 5 in image</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat_volcano_summary)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat_volcano_summary)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      GeneName Contrast         FC     logFC     tstat         pval
 B-A.1     Dntt      B-A -42.727551 -5.417095 -15.54572 3.460410e-09
@@ -1120,9 +1110,9 @@ B-A.6 2.996937e-04</code></pre>
 <section id="enhanced" class="level4">
 <h4 class="anchored" data-anchor-id="enhanced">Enhanced</h4>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>dat_volcano_enhanced <span class="ot">&lt;-</span> moo<span class="sc">@</span>analyses<span class="sc">$</span>diff <span class="sc">|&gt;</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">join_dfs_wide</span>() <span class="sc">|&gt;</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_volcano_enhanced</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>dat_volcano_enhanced <span class="ot">&lt;-</span> moo<span class="sc">@</span>analyses<span class="sc">$</span>diff <span class="sc">|&gt;</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">join_dfs_wide</span>() <span class="sc">|&gt;</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_volcano_enhanced</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Joining with `by = join_by(GeneName)`
 Joining with `by = join_by(GeneName)`
@@ -1144,7 +1134,7 @@ Max y: 4.56088783571366</code></pre>
 <div class="cell-output cell-output-stderr">
 <pre><code>Genes in initial dataset: 7943
 
-Max y: 4.34744066227959</code></pre>
+Max y: 4.34744066227962</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -1159,7 +1149,7 @@ Max y: 4.34744066227959</code></pre>
 <section id="venn-diagram" class="level3">
 <h3 class="anchored" data-anchor-id="venn-diagram">Venn Diagram</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>venn_dat <span class="ot">&lt;-</span> dat_volcano_summary <span class="sc">|&gt;</span> <span class="fu">plot_venn_diagram</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>venn_dat <span class="ot">&lt;-</span> dat_volcano_summary <span class="sc">|&gt;</span> <span class="fu">plot_venn_diagram</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>All intersections: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516),c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")</code></pre>
 </div>
@@ -1173,7 +1163,7 @@ Max y: 4.34744066227959</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(venn_dat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(venn_dat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Gene      Intersection Id Size
 1  Dntt (B-A ∩ B-C ∩ C-A)  1   80

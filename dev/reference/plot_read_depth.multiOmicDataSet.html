@@ -57,6 +57,21 @@
 <dd><p>used if <code>count_type</code> is a list in the counts slot: specify the sub count type within the list.
 Must be a name in <code>names(moo@counts[[count_type]])</code>.</p></dd>
 
+
+<dt id="arg-sample-id-colname">sample_id_colname<a class="anchor" aria-label="anchor" href="#arg-sample-id-colname"></a></dt>
+<dd><p>column in sample metadata containing sample IDs.</p></dd>
+
+
+<dt id="arg-group-colname">group_colname<a class="anchor" aria-label="anchor" href="#arg-group-colname"></a></dt>
+<dd><p>sample metadata column used to color bars. Leave blank to use the current single-color bar fill.</p></dd>
+
+
+<dt id="arg-color-values">color_values<a class="anchor" aria-label="anchor" href="#arg-color-values"></a></dt>
+<dd><p>colors used when <code>group_colname</code> is supplied. Named vectors are matched to group values;
+unnamed vectors follow group order and are extended with MOSuite colors when too few colors are supplied.
+Defaults to <code>NULL</code>; when <code>NULL</code>, <code>mosuite_palette</code> is used for <code>data.frame</code> dispatch and stored colors
+are used for <code>multiOmicDataSet</code> dispatch.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>

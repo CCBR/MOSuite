@@ -147,17 +147,20 @@ for recommended usage
   : Volcano Plot - Summary
 - [`print_or_save_plot()`](https://ccbr.github.io/MOSuite/dev/reference/print_or_save_plot.md)
   : Print and/or save a ggplot
-- [`render_report()`](https://ccbr.github.io/MOSuite/dev/reference/render_report.md)
-  : Render the template report
-
-### Color selectors
-
 - [`get_colors_lst()`](https://ccbr.github.io/MOSuite/dev/reference/get_colors_lst.md)
   : Create named list of default colors for plotting
 - [`get_colors_vctr()`](https://ccbr.github.io/MOSuite/dev/reference/get_colors_vctr.md)
   : Get vector of colors for observations in one column of a data frame
+- [`select_mosuite_colors()`](https://ccbr.github.io/MOSuite/dev/reference/select_mosuite_colors.md)
+  : Select colors from MOSuite's default palette
 - [`set_color_pal()`](https://ccbr.github.io/MOSuite/dev/reference/set_color_pal.md)
   : Set color palette for a single group/column
+- [`display_palette()`](https://ccbr.github.io/MOSuite/dev/reference/display_palette.md)
+  : Display the mosuite color palette
+- [`mosuite_palette`](https://ccbr.github.io/MOSuite/dev/reference/mosuite_palette.md)
+  : Default MOSuite color palette
+- [`render_report()`](https://ccbr.github.io/MOSuite/dev/reference/render_report.md)
+  : Render the template report
 
 ## Misc. helpers & utilities
 
@@ -175,6 +178,9 @@ for recommended usage
 
 - [`gene_counts`](https://ccbr.github.io/MOSuite/dev/reference/gene_counts.md)
   : RSEM expected gene counts
+
+- [`mosuite_palette`](https://ccbr.github.io/MOSuite/dev/reference/mosuite_palette.md)
+  : Default MOSuite color palette
 
 - [`nidap_batch_corrected_counts`](https://ccbr.github.io/MOSuite/dev/reference/nidap_batch_corrected_counts.md)
   : Batch-corrected counts for the NIDAP test dataset.

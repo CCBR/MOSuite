@@ -85,7 +85,9 @@ column with your preferred Labels here. The selected column should contain uniqu
 
 
 <dt id="arg-color-values">color_values<a class="anchor" aria-label="anchor" href="#arg-color-values"></a></dt>
-<dd><p>vector of colors as hex values or names recognized by R</p></dd>
+<dd><p>vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
+the metadata column. Defaults to <code>NULL</code>; when <code>NULL</code>, <code>mosuite_palette</code> is used.</p></dd>
 
 </dl></div>
     <div class="section level2">
