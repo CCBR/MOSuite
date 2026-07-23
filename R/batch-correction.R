@@ -222,6 +222,7 @@ batch_correct_counts <- function(
       set_min_max_for_x_axis = set_min_max_for_x_axis_for_histogram,
       minimum_for_x_axis = minimum_for_x_axis_for_histogram,
       maximum_for_x_axis = maximum_for_x_axis_for_histogram,
+      x_axis_label = "Batch Corrected Counts",
       legend_position = legend_position_for_histogram,
       legend_font_size = legend_font_size_for_histogram,
       number_of_legend_columns = number_of_histogram_legend_columns,

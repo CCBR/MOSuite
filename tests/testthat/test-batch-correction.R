@@ -75,11 +75,11 @@ test_that("batch_correct_counts forwards plot settings to PCA and histogram", {
   local_mocked_bindings(
     plot_pca = function(...) {
       pca_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     plot_histogram = function(...) {
       histogram_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     print_or_save_plot = function(...) invisible(NULL),
     .package = "MOSuite"
@@ -141,6 +141,7 @@ test_that("batch_correct_counts forwards plot settings to PCA and histogram", {
   expect_true(histogram_args$set_min_max_for_x_axis)
   expect_equal(histogram_args$minimum_for_x_axis, -2)
   expect_equal(histogram_args$maximum_for_x_axis, 2)
+  expect_equal(histogram_args$x_axis_label, "Batch Corrected Counts")
   expect_equal(histogram_args$legend_font_size, 11)
   expect_equal(histogram_args$legend_position, "right")
   expect_equal(histogram_args$number_of_legend_columns, 2)
@@ -176,11 +177,11 @@ test_that("batch_correct_counts handles histogram label combinations", {
   local_mocked_bindings(
     plot_pca = function(...) {
       pca_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     plot_histogram = function(...) {
       histogram_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     print_or_save_plot = function(...) invisible(NULL),
     .package = "MOSuite"
@@ -312,11 +313,11 @@ test_that("batch_correct_counts forwards the default MOSuite plot colors", {
   local_mocked_bindings(
     plot_pca = function(...) {
       pca_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     plot_histogram = function(...) {
       histogram_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     print_or_save_plot = function(...) invisible(NULL),
     .package = "MOSuite"

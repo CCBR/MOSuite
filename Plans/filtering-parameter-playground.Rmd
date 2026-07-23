@@ -1,0 +1,216 @@
+---
+title: "Filtering Parameter Playground"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, message=FALSE, warning=FALSE}
+find_package_root <- function(start = getwd()) {
+  path <- normalizePath(start, mustWork = TRUE)
+  while (TRUE) {
+    if (file.exists(file.path(path, "DESCRIPTION")) && dir.exists(file.path(path, "R"))) {
+      return(path)
+    }
+    parent <- dirname(path)
+    if (identical(parent, path)) {
+      stop("Could not find package root containing DESCRIPTION and R/.")
+    }
+    path <- parent
+  }
+
+  return(path)
+}
+
+package_root <- find_package_root()
+knitr::opts_knit$set(root.dir = package_root)
+devtools::load_all(package_root, quiet = TRUE)
+```
+
+This playground uses the package test MOO object and runs the public
+`filter_counts()` wrapper. The examples below keep the CPM filtering settings the
+same and vary only the total sample minimum from 8 to 9.
+
+## Load Test Data
+
+```{r load-test-data}
+moo <- readr::read_rds("tests/testthat/data/moo.rds")
+
+count_type <- "clean"
+feature_id_colname <- "GeneName"
+sample_id_colname <- "Sample"
+group_colname <- "Group"
+label_colname <- "Label"
+
+sample_metadata <- as.data.frame(moo@sample_meta)
+counts_before <- as.data.frame(moo@counts[[count_type]])
+sample_columns <- setdiff(colnames(counts_before), feature_id_colname)
+
+knitr::kable(data.frame(
+  count_type = count_type,
+  features_before_filtering = nrow(counts_before),
+  samples = length(sample_columns),
+  feature_id_colname = feature_id_colname,
+  sample_id_colname = sample_id_colname,
+  group_colname = group_colname,
+  check.names = FALSE
+))
+```
+
+## Filtering Parameters
+
+```{r filtering-parameters}
+minimum_count_value_to_be_considered_nonzero <- 4
+minimum_number_of_samples_with_nonzero_counts_in_a_group <- 2
+use_cpm_counts_to_filter <- TRUE
+use_group_based_filtering <- FALSE
+```
+
+## CPM Passing-Sample Summary
+
+This table counts how many samples pass the CPM threshold for each feature. A
+feature kept with a total minimum of 8 can still have low values in up to two
+samples.
+
+```{r cpm-passing-summary}
+cpm_counts <- counts_before
+cpm_counts[, sample_columns] <- edgeR::cpm(as.matrix(counts_before[, sample_columns]))
+
+passing_sample_counts <- rowSums(
+  as.matrix(cpm_counts[, sample_columns]) >= minimum_count_value_to_be_considered_nonzero
+)
+
+knitr::kable(data.frame(
+  passing_samples = sort(unique(passing_sample_counts)),
+  features = as.integer(tabulate(
+    match(passing_sample_counts, sort(unique(passing_sample_counts))),
+    nbins = length(unique(passing_sample_counts))
+  )),
+  kept_when_total_minimum_is_8 = sort(unique(passing_sample_counts)) >= 8,
+  kept_when_total_minimum_is_9 = sort(unique(passing_sample_counts)) >= 9,
+  check.names = FALSE
+))
+```
+
+## Run `filter_counts()`: Total Minimum 8
+
+```{r run-filter-counts-threshold-5-total-5, message=TRUE}
+filtered_moo_total_8 <- filter_counts(
+  moo,
+  count_type = count_type,
+  feature_id_colname = feature_id_colname,
+  sample_id_colname = sample_id_colname,
+  group_colname = group_colname,
+  label_colname = label_colname,
+  minimum_count_value_to_be_considered_nonzero = 4,
+  minimum_number_of_samples_with_nonzero_counts_in_total = 8,
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = 2,
+  use_cpm_counts_to_filter = use_cpm_counts_to_filter,
+  use_group_based_filtering = use_group_based_filtering,
+  print_plots = TRUE,
+  save_plots = FALSE
+)
+```
+
+```{r run-filter-counts-total-8, message=TRUE}
+filtered_moo_total_8 <- filter_counts(
+  moo,
+  count_type = count_type,
+  feature_id_colname = feature_id_colname,
+  sample_id_colname = sample_id_colname,
+  group_colname = group_colname,
+  label_colname = label_colname,
+  minimum_count_value_to_be_considered_nonzero = 5,
+  minimum_number_of_samples_with_nonzero_counts_in_total = 5,
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = 2,
+  use_cpm_counts_to_filter = use_cpm_counts_to_filter,
+  use_group_based_filtering = use_group_based_filtering,
+  print_plots = TRUE,
+  save_plots = FALSE
+)
+```
+
+
+## Run `filter_counts()`: Total Minimum 9
+
+```{r run-filter-counts-total-9, message=TRUE}
+filtered_moo_total_9 <- filter_counts(
+  moo,
+  count_type = count_type,
+  feature_id_colname = feature_id_colname,
+  sample_id_colname = sample_id_colname,
+  group_colname = group_colname,
+  label_colname = label_colname,
+  minimum_count_value_to_be_considered_nonzero = 4,
+  minimum_number_of_samples_with_nonzero_counts_in_total = 9,
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = 2,
+  use_cpm_counts_to_filter = use_cpm_counts_to_filter,
+  use_group_based_filtering = use_group_based_filtering,
+  print_plots = TRUE,
+  save_plots = FALSE
+)
+```
+
+
+```{r run-interactive, message=TRUE}
+filtered_moo_total_9 <- filter_counts(
+  moo,
+  count_type = count_type,
+  feature_id_colname = feature_id_colname,
+  sample_id_colname = sample_id_colname,
+  group_colname = group_colname,
+  label_colname = label_colname,
+  minimum_count_value_to_be_considered_nonzero = 4,
+  minimum_number_of_samples_with_nonzero_counts_in_total = 9,
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = 2,
+  use_cpm_counts_to_filter = use_cpm_counts_to_filter,
+  use_group_based_filtering = use_group_based_filtering,
+  interactive_plots = T,
+  print_plots = TRUE,
+  save_plots = FALSE
+)
+```
+
+## 8 vs 9 Summary
+
+```{r compare-total-8-total-9}
+counts_total_8 <- as.data.frame(filtered_moo_total_8@counts[["filt"]])
+counts_total_9 <- as.data.frame(filtered_moo_total_9@counts[["filt"]])
+
+features_total_8 <- counts_total_8[[feature_id_colname]]
+features_total_9 <- counts_total_9[[feature_id_colname]]
+features_kept_only_by_8 <- setdiff(features_total_8, features_total_9)
+
+knitr::kable(data.frame(
+  setting = c("total minimum 8", "total minimum 9", "kept by 8 only"),
+  features = c(
+    length(features_total_8),
+    length(features_total_9),
+    length(features_kept_only_by_8)
+  ),
+  check.names = FALSE
+))
+```
+
+```{r low-values-kept-only-by-8}
+counts_kept_only_by_8 <- counts_total_8 |>
+  dplyr::filter(.data[[feature_id_colname]] %in% features_kept_only_by_8)
+
+if (nrow(counts_kept_only_by_8) > 0) {
+  low_value_counts <- rowSums(
+    as.matrix(counts_kept_only_by_8[, sample_columns]) < minimum_count_value_to_be_considered_nonzero
+  )
+
+  knitr::kable(data.frame(
+    low_values_per_feature = sort(unique(low_value_counts)),
+    features_kept_only_by_8 = as.integer(tabulate(
+      match(low_value_counts, sort(unique(low_value_counts))),
+      nbins = length(unique(low_value_counts))
+    )),
+    check.names = FALSE
+  ))
+} else {
+  knitr::kable(data.frame(message = "No features were kept by 8 and removed by 9."))
+}
+```
