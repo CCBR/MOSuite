@@ -60,6 +60,8 @@ plot_read_depth <- S7::new_generic(
 #' @param group_colname sample metadata column used to color bars. Leave blank to use the current single-color bar fill.
 #' @param color_values colors used when `group_colname` is supplied. Named vectors are matched to group values;
 #'   unnamed vectors follow group order and are extended with MOSuite colors when too few colors are supplied.
+#'   Defaults to `NULL`; when `NULL`, `mosuite_palette` is used for `data.frame` dispatch and stored colors
+#'   are used for `multiOmicDataSet` dispatch.
 #'
 #' @return ggplot barplot
 #'
@@ -114,6 +116,7 @@ S7::method(plot_read_depth, multiOmicDataSet) <- function(
 #' @param group_colname sample metadata column used to color bars. Leave blank to use the current single-color bar fill.
 #' @param color_values colors used when `group_colname` is supplied. Named vectors are matched to group values;
 #'   unnamed vectors follow group order and are extended with MOSuite colors when too few colors are supplied.
+#'   Defaults to `NULL`; when `NULL`, `mosuite_palette` is used.
 #' @param ... additional arguments (ignored; accepted for compatibility with the moo dispatch)
 #'
 #' @return ggplot barplot
@@ -129,10 +132,11 @@ S7::method(plot_read_depth, S7::class_data.frame) <- function(
   sample_metadata = NULL,
   sample_id_colname = NULL,
   group_colname = "",
-  color_values = mosuite_palette,
+  color_values = NULL,
   ...
 ) {
   sample_names <- column_sums <- NULL
+  color_values <- color_values %||% mosuite_palette
   counts_dat <- moo_counts
   sum_df <- counts_dat |>
     dplyr::summarize(dplyr::across(tidyselect::where(is.numeric), sum)) |>

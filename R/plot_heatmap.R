@@ -66,7 +66,8 @@ plot_corr_heatmap <- S7::new_generic("plot_corr_heatmap", "moo_counts")
 #'   Before, After, etc.).
 #' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
 #'   level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
-#'   the metadata column.
+#'   the metadata column. Defaults to `NULL`; when `NULL`, `mosuite_palette` is used for `data.frame` dispatch and
+#'   stored colors are used for `multiOmicDataSet` dispatch.
 #' @param ... additional arguments forwarded to [plot_corr_heatmap()] for `data.frame`
 #'
 #' @rdname plot_corr_heatmap-multiOmicDataSet
@@ -115,7 +116,7 @@ S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
 #'   `NULL` -- `sample_id_colname` will be used.)
 #' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
 #'   level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
-#'   the metadata column.
+#'   the metadata column. Defaults to `NULL`; when `NULL`, `mosuite_palette` is used.
 #'
 #' @rdname plot_corr_heatmap-data.frame
 #' @aliases plot_corr_heatmap.data.frame
@@ -130,9 +131,10 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
   feature_id_colname = NULL,
   group_colname = "Group",
   label_colname = "Label",
-  color_values = mosuite_palette
+  color_values = NULL
 ) {
   abort_packages_not_installed("amap", "ComplexHeatmap", "dendsort")
+  color_values <- color_values %||% mosuite_palette
   counts_dat <- moo_counts
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
@@ -249,7 +251,8 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
 #'   `NULL` -- `sample_id_colname` will be used.)
 #' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
 #'   level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
-#'   the metadata column.
+#'   the metadata column. Defaults to `NULL`; when `NULL`, `mosuite_palette` is used for `data.frame` dispatch and
+#'   stored colors are used for `multiOmicDataSet` dispatch.
 #' @param samples_to_include Which samples would you like to include? Usually, you will choose all sample columns, or
 #'   you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
 #'   analysis downstream of this step. (Default: `NULL` - all sample IDs in `moo@sample_meta` will be used.)
@@ -289,7 +292,6 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
 #' @param assign_group_colors If TRUE, set the groups assigned colors (below)
 #' @param assign_color_to_sample_groups Enter each sample to color in the format: group_name: color This parameter is
 #'   ignored if "Assign Colors" is set to FALSE.
-#' @param group_colors Set group annotation colors.
 #' @param heatmap_color_scheme color scheme (TODO document options)
 #' @param autoscale_heatmap_color Set to TRUE to autoscale the heatmap colors between the maximum and minimum heatmap
 #'   color parameters. If FALSE, set the heatmap colors between "Set max heatmap color" and "Set min heatmap color"
@@ -306,6 +308,7 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
 #' @param display_numbers Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if
 #'   you want to see these numbers on the plot.
 #' @param plot_filename plot output filename - only used if save_plots is TRUE
+#' @param ... additional arguments passed to methods
 #'
 #' @export
 #' @returns heatmap from `ComplexHeatmap::Heatmap()`
@@ -359,6 +362,7 @@ plot_expr_heatmap <- S7::new_generic(
     group_colname = "Group",
     label_colname = NULL,
     samples_to_include = NULL,
+    color_values = NULL,
     include_all_genes = FALSE,
     filter_top_genes_by_variance = TRUE,
     top_genes_by_variance_to_include = 500,
@@ -455,7 +459,7 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
-  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
+  color_values <- color_values %||% moo_counts@analyses$colors[group_columns]
   heatmap_plot <- plot_expr_heatmap(
     counts_dat,
     count_type = count_type,
@@ -519,7 +523,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
-  color_values = mosuite_palette,
+  color_values = NULL,
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -561,6 +565,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
 ) {
   ## This function uses pheatmap to draw a heatmap, scaling first by rows
   ## (with samples in columns and genes in rows)
+  color_values <- color_values %||% mosuite_palette
   Gene <- NULL
   # TODO support tibbles; currently these must be dataframes
   counts_dat <- as.data.frame(moo_counts)
@@ -940,7 +945,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   annotation_col <- as.data.frame(unclass(annotation_col))
   annotation_col[] <- lapply(annotation_col, factor)
   x <- length(unlist(lapply(annotation_col, levels)))
-  if (x > length(color_values)) {
+  if (!is.list(color_values) && x > length(color_values)) {
     generated_group_colors <- get_colors_vctr(
       data.frame(group_color_index = seq_len(x)),
       "group_color_index"
@@ -957,7 +962,9 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   for (cnam in group_columns) {
     group_levels <- stats::na.omit(unique(annot[[cnam]]))
 
-    if (
+    if (is.list(color_values) && cnam %in% names(color_values)) {
+      col <- resolve_plot_colors(annot, cnam, color_values[[cnam]])
+    } else if (
       !is.null(names(color_values)) &&
         all(as.character(group_levels) %in% names(color_values))
     ) {
