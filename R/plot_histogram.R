@@ -243,7 +243,12 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
   }
   # Guard the log2 axis against non-finite or nonpositive limits after the offset.
   if (isTRUE(use_log2_x_axis)) {
-    xmin <- max(xmin, log2_axis_pseudocount)
+    if (set_min_max_for_x_axis == TRUE) {
+      xmin <- max(xmin, log2_axis_pseudocount)
+    } else {
+      # Automatic log2 histograms should display a raw minimum of 0.
+      xmin <- log2_axis_pseudocount
+    }
     if (!is.finite(xmax) || xmax <= xmin) {
       xmax <- max(xmin, log2_axis_pseudocount)
     }

@@ -191,6 +191,7 @@ filter_counts <- function(
   df_filt <- remove_low_count_genes(
     counts_dat = df,
     sample_metadata = sample_metadata,
+    sample_id_colname = sample_id_colname,
     feature_id_colname = feature_id_colname,
     group_colname = group_colname,
     use_cpm_counts_to_filter = use_cpm_counts_to_filter,
@@ -371,6 +372,7 @@ filter_counts <- function(
 remove_low_count_genes <- function(
   counts_dat,
   sample_metadata,
+  sample_id_colname = NULL,
   feature_id_colname,
   group_colname,
   use_cpm_counts_to_filter = TRUE,
@@ -379,52 +381,68 @@ remove_low_count_genes <- function(
   minimum_number_of_samples_with_nonzero_counts_in_total = 7,
   minimum_number_of_samples_with_nonzero_counts_in_a_group = 3
 ) {
-  # TODO refactor with tidyverse
-  value <- isexpr1 <- NULL
   df <- counts_dat
 
   df <- df[stats::complete.cases(df), ]
+  if (is.null(sample_id_colname)) {
+    sample_id_colname <- colnames(sample_metadata)[1]
+  }
+  sample_colnames <- setdiff(colnames(df), feature_id_colname)
 
   # USE CPM Transformation
   trans_df <- df
   if (use_cpm_counts_to_filter == TRUE) {
-    trans_df[, -1] <- edgeR::cpm(as.matrix(df[, -1]))
+    trans_df[, sample_colnames] <- edgeR::cpm(as.matrix(df[, sample_colnames]))
   }
+  passing_counts <- as.matrix(trans_df[, sample_colnames, drop = FALSE]) >=
+    minimum_count_value_to_be_considered_nonzero
 
   if (use_group_based_filtering == TRUE) {
-    rownames(trans_df) <- trans_df[, feature_id_colname]
-    trans_df[, feature_id_colname] <- NULL
-
-    counts <- trans_df >= minimum_count_value_to_be_considered_nonzero # boolean matrix
-
-    tcounts <- as.data.frame(t(counts))
-    colnum <- dim(counts)[1] # number of genes
-    tcounts <- merge(sample_metadata[group_colname], tcounts, by = "row.names")
-    tcounts$Row.names <- NULL
-    melted <- reshape2::melt(tcounts, id.vars = group_colname)
-    tcounts.tot <- dplyr::summarise(
-      dplyr::group_by_at(melted, c(group_colname, "variable")),
-      sum = sum(value)
+    if (!(sample_id_colname %in% colnames(sample_metadata))) {
+      stop(glue::glue(
+        "sample_id_colname {sample_id_colname} not in sample_metadata"
+      ))
+    }
+    if (!(group_colname %in% colnames(sample_metadata))) {
+      stop(glue::glue("group_colname {group_colname} not in sample_metadata"))
+    }
+    sample_match <- match(
+      sample_colnames,
+      as.character(sample_metadata[[sample_id_colname]])
     )
-    tcounts.group <- tcounts.tot |>
-      tidyr::pivot_wider(names_from = "variable", values_from = "sum") |>
-      as.data.frame()
-    tcounts.keep <- colSums(
-      tcounts.group[(1:colnum + 1)] >=
+    if (anyNA(sample_match)) {
+      missing_samples <- sample_colnames[is.na(sample_match)]
+      stop(glue::glue(
+        "sample_metadata is missing sample IDs: ",
+        "{glue::glue_collapse(missing_samples, sep = ', ')}"
+      ))
+    }
+    sample_groups <- as.character(sample_metadata[[group_colname]][sample_match])
+    groups <- unique(stats::na.omit(sample_groups))
+    if (length(groups) == 0) {
+      stop(glue::glue(
+        "group_colname {group_colname} has no non-missing values for selected samples"
+      ))
+    }
+    passing_samples_by_group <- vapply(
+      groups,
+      function(group) {
+        group_sample_colnames <- sample_colnames[sample_groups == group]
+        return(rowSums(passing_counts[, group_sample_colnames, drop = FALSE]))
+      },
+      numeric(nrow(passing_counts))
+    )
+    keep_rows <- rowSums(
+      passing_samples_by_group >=
         minimum_number_of_samples_with_nonzero_counts_in_a_group
-    ) >=
-      1
-    df_filt <- trans_df[tcounts.keep, ] |>
-      tibble::rownames_to_column(feature_id_colname)
+    ) >= 1
+    df_filt <- trans_df[keep_rows, , drop = FALSE]
   } else {
-    trans_df$isexpr1 <- (rowSums(
-      as.matrix(trans_df[, -1]) >= minimum_count_value_to_be_considered_nonzero
-    ) >=
+    keep_rows <- (rowSums(passing_counts) >=
       minimum_number_of_samples_with_nonzero_counts_in_total)
-    df_filt <- trans_df |>
-      dplyr::filter(isexpr1) |>
-      dplyr::select(-isexpr1)
+    df_filt <- trans_df[keep_rows, , drop = FALSE]
   }
+  rownames(df_filt) <- NULL
 
   message(paste0("Number of features after filtering: ", nrow(df_filt)))
   return(df_filt)

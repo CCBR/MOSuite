@@ -784,6 +784,33 @@ test_that("plot_histogram automatically sets log2 axis breaks when requested", {
   expect_equal(x_scale$labels(c(0.5, 4.5, 16.5)), c("0", "4", "16"))
 })
 
+test_that("plot_histogram automatic log2 axis starts at zero", {
+  counts_dat <- data.frame(
+    Gene = "gene_a",
+    S1 = 4,
+    S2 = 16,
+    check.names = FALSE
+  )
+  sample_metadata <- data.frame(
+    Sample = c("S1", "S2"),
+    Group = c("A", "A"),
+    check.names = FALSE
+  )
+
+  plot <- plot_histogram(
+    counts_dat,
+    sample_metadata = sample_metadata,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    color_by_group = FALSE,
+    use_log2_x_axis = TRUE
+  )
+  x_scale <- plot$scales$get_scales("x")
+
+  expect_equal(2^x_scale$limits[1], 0.5)
+  expect_equal(x_scale$labels(2^x_scale$limits[1]), "0")
+})
+
 test_that("plot_histogram works with tibbles", {
   p <- plot_histogram(
     nidap_filtered_counts,

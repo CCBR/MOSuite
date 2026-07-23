@@ -30,7 +30,7 @@ devtools::load_all(package_root, quiet = TRUE)
 
 This playground uses the package test MOO object and runs the public
 `filter_counts()` wrapper. The examples below keep the CPM filtering settings the
-same and vary only the total sample minimum from 8 to 9.
+same while comparing total-sample filtering and group-based filtering.
 
 ## Load Test Data
 
@@ -63,6 +63,7 @@ knitr::kable(data.frame(
 ```{r filtering-parameters}
 minimum_count_value_to_be_considered_nonzero <- 4
 minimum_number_of_samples_with_nonzero_counts_in_a_group <- 2
+minimum_number_of_samples_with_nonzero_counts_in_total <- 8
 use_cpm_counts_to_filter <- TRUE
 use_group_based_filtering <- FALSE
 ```
@@ -77,9 +78,9 @@ samples.
 cpm_counts <- counts_before
 cpm_counts[, sample_columns] <- edgeR::cpm(as.matrix(counts_before[, sample_columns]))
 
-passing_sample_counts <- rowSums(
-  as.matrix(cpm_counts[, sample_columns]) >= minimum_count_value_to_be_considered_nonzero
-)
+passing_matrix <- as.matrix(cpm_counts[, sample_columns]) >=
+  minimum_count_value_to_be_considered_nonzero
+passing_sample_counts <- rowSums(passing_matrix)
 
 knitr::kable(data.frame(
   passing_samples = sort(unique(passing_sample_counts)),
@@ -93,6 +94,67 @@ knitr::kable(data.frame(
 ))
 ```
 
+## CPM Passing Samples By Group
+
+Group-based filtering uses the same CPM threshold as total-sample filtering, but
+the sample minimum is counted within each group. A feature is kept when at least
+one group reaches the group minimum.
+
+```{r cpm-passing-by-group-summary}
+sample_groups <- sample_metadata[[group_colname]][
+  match(sample_columns, sample_metadata[[sample_id_colname]])
+]
+group_names <- unique(stats::na.omit(sample_groups))
+
+passing_by_group <- vapply(
+  group_names,
+  function(group_name) {
+    group_sample_columns <- sample_columns[sample_groups == group_name]
+    return(rowSums(passing_matrix[, group_sample_columns, drop = FALSE]))
+  },
+  numeric(nrow(passing_matrix))
+)
+
+group_keep <- rowSums(
+  passing_by_group >= minimum_number_of_samples_with_nonzero_counts_in_a_group
+) >= 1
+total_keep <- passing_sample_counts >= minimum_number_of_samples_with_nonzero_counts_in_total
+
+knitr::kable(data.frame(
+  setting = c(
+    "total-sample rule",
+    "group-based rule",
+    "kept by group only",
+    "kept by total only"
+  ),
+  features = c(
+    sum(total_keep),
+    sum(group_keep),
+    sum(group_keep & !total_keep),
+    sum(total_keep & !group_keep)
+  ),
+  check.names = FALSE
+))
+```
+
+```{r example-group-only-features}
+group_only_features <- counts_before[[feature_id_colname]][group_keep & !total_keep]
+
+if (length(group_only_features) > 0) {
+  group_only_summary <- data.frame(
+    feature = group_only_features,
+    total_passing_samples = passing_sample_counts[group_keep & !total_keep],
+    passing_by_group[group_keep & !total_keep, , drop = FALSE],
+    check.names = FALSE
+  ) |>
+    dplyr::slice_head(n = 10)
+
+  knitr::kable(group_only_summary)
+} else {
+  knitr::kable(data.frame(message = "No features were kept only by group-based filtering."))
+}
+```
+
 ## Run `filter_counts()`: Total Minimum 8
 
 ```{r run-filter-counts-threshold-5-total-5, message=TRUE}
@@ -103,17 +165,15 @@ filtered_moo_total_8 <- filter_counts(
   sample_id_colname = sample_id_colname,
   group_colname = group_colname,
   label_colname = label_colname,
-  minimum_count_value_to_be_considered_nonzero = 4,
+  minimum_count_value_to_be_considered_nonzero = minimum_count_value_to_be_considered_nonzero,
   minimum_number_of_samples_with_nonzero_counts_in_total = 8,
-  minimum_number_of_samples_with_nonzero_counts_in_a_group = 2,
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group,
   use_cpm_counts_to_filter = use_cpm_counts_to_filter,
   use_group_based_filtering = use_group_based_filtering,
   print_plots = TRUE,
   save_plots = FALSE
 )
-```
 
-```{r run-filter-counts-total-8, message=TRUE}
 filtered_moo_total_8 <- filter_counts(
   moo,
   count_type = count_type,
@@ -121,11 +181,70 @@ filtered_moo_total_8 <- filter_counts(
   sample_id_colname = sample_id_colname,
   group_colname = group_colname,
   label_colname = label_colname,
-  minimum_count_value_to_be_considered_nonzero = 5,
-  minimum_number_of_samples_with_nonzero_counts_in_total = 5,
-  minimum_number_of_samples_with_nonzero_counts_in_a_group = 2,
+  minimum_count_value_to_be_considered_nonzero = minimum_count_value_to_be_considered_nonzero,
+  minimum_number_of_samples_with_nonzero_counts_in_total = 9,
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group,
   use_cpm_counts_to_filter = use_cpm_counts_to_filter,
   use_group_based_filtering = use_group_based_filtering,
+  print_plots = TRUE,
+  save_plots = FALSE
+)
+
+
+
+```
+
+## Run `filter_counts()`: Group-Based Minimum 2
+
+```{r run-filter-counts-group-minimum-2, message=TRUE}
+filtered_moo_group_2 <- filter_counts(
+  moo,
+  count_type = count_type,
+  feature_id_colname = feature_id_colname,
+  sample_id_colname = sample_id_colname,
+  group_colname = group_colname,
+  label_colname = label_colname,
+  minimum_count_value_to_be_considered_nonzero = minimum_count_value_to_be_considered_nonzero,
+  minimum_number_of_samples_with_nonzero_counts_in_total = minimum_number_of_samples_with_nonzero_counts_in_total,
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = 2,
+  use_cpm_counts_to_filter = use_cpm_counts_to_filter,
+  use_group_based_filtering = TRUE,
+  print_plots = TRUE,
+  save_plots = FALSE
+)
+
+
+filtered_moo_group_2 <- filter_counts(
+  moo,
+  count_type = count_type,
+  feature_id_colname = feature_id_colname,
+  sample_id_colname = sample_id_colname,
+  group_colname = group_colname,
+  label_colname = label_colname,
+  minimum_count_value_to_be_considered_nonzero = minimum_count_value_to_be_considered_nonzero,
+  minimum_number_of_samples_with_nonzero_counts_in_total = minimum_number_of_samples_with_nonzero_counts_in_total,
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = 3,
+  use_cpm_counts_to_filter = use_cpm_counts_to_filter,
+  use_group_based_filtering = TRUE,
+  print_plots = TRUE,
+  save_plots = FALSE
+)
+```
+
+```{r run-filter-counts-group-minimum-2-interactive, message=TRUE}
+filtered_moo_group_2_interactive <- filter_counts(
+  moo,
+  count_type = count_type,
+  feature_id_colname = feature_id_colname,
+  sample_id_colname = sample_id_colname,
+  group_colname = group_colname,
+  label_colname = label_colname,
+  minimum_count_value_to_be_considered_nonzero = minimum_count_value_to_be_considered_nonzero,
+  minimum_number_of_samples_with_nonzero_counts_in_total = minimum_number_of_samples_with_nonzero_counts_in_total,
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group,
+  use_cpm_counts_to_filter = use_cpm_counts_to_filter,
+  use_group_based_filtering = TRUE,
+  interactive_plots = TRUE,
   print_plots = TRUE,
   save_plots = FALSE
 )
@@ -142,9 +261,9 @@ filtered_moo_total_9 <- filter_counts(
   sample_id_colname = sample_id_colname,
   group_colname = group_colname,
   label_colname = label_colname,
-  minimum_count_value_to_be_considered_nonzero = 4,
+  minimum_count_value_to_be_considered_nonzero = minimum_count_value_to_be_considered_nonzero,
   minimum_number_of_samples_with_nonzero_counts_in_total = 9,
-  minimum_number_of_samples_with_nonzero_counts_in_a_group = 2,
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group,
   use_cpm_counts_to_filter = use_cpm_counts_to_filter,
   use_group_based_filtering = use_group_based_filtering,
   print_plots = TRUE,
@@ -161,9 +280,9 @@ filtered_moo_total_9 <- filter_counts(
   sample_id_colname = sample_id_colname,
   group_colname = group_colname,
   label_colname = label_colname,
-  minimum_count_value_to_be_considered_nonzero = 4,
+  minimum_count_value_to_be_considered_nonzero = minimum_count_value_to_be_considered_nonzero,
   minimum_number_of_samples_with_nonzero_counts_in_total = 9,
-  minimum_number_of_samples_with_nonzero_counts_in_a_group = 2,
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group,
   use_cpm_counts_to_filter = use_cpm_counts_to_filter,
   use_group_based_filtering = use_group_based_filtering,
   interactive_plots = T,
@@ -191,6 +310,48 @@ knitr::kable(data.frame(
   ),
   check.names = FALSE
 ))
+```
+
+## Total vs Group-Based Summary
+
+```{r compare-total-and-group}
+counts_group_2 <- as.data.frame(filtered_moo_group_2@counts[["filt"]])
+features_group_2 <- counts_group_2[[feature_id_colname]]
+features_kept_only_by_group <- setdiff(features_group_2, features_total_8)
+features_kept_only_by_total <- setdiff(features_total_8, features_group_2)
+
+knitr::kable(data.frame(
+  setting = c(
+    "total minimum 8",
+    "group minimum 2",
+    "kept by group only",
+    "kept by total only"
+  ),
+  features = c(
+    length(features_total_8),
+    length(features_group_2),
+    length(features_kept_only_by_group),
+    length(features_kept_only_by_total)
+  ),
+  check.names = FALSE
+))
+```
+
+```{r group-only-feature-details}
+if (length(features_kept_only_by_group) > 0) {
+  feature_index <- match(features_kept_only_by_group, counts_before[[feature_id_colname]])
+  detail_table <- data.frame(
+    feature = features_kept_only_by_group,
+    total_passing_samples = passing_sample_counts[feature_index],
+    passing_by_group[feature_index, , drop = FALSE],
+    check.names = FALSE
+  ) |>
+    dplyr::slice_head(n = 20)
+
+  knitr::kable(detail_table)
+} else {
+  knitr::kable(data.frame(message = "No features were kept by group-based filtering only."))
+}
 ```
 
 ```{r low-values-kept-only-by-8}

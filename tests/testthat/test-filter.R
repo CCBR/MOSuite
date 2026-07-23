@@ -312,6 +312,57 @@ test_that("remove_low_count_genes distinguishes total sample minimum 8 from 9", 
   expect_equal(total_9$Gene, "passes_nine")
 })
 
+test_that("remove_low_count_genes applies sample minimum within groups", {
+  df <- data.frame(
+    Gene = c(
+      "group_exact_keep",
+      "split_across_groups",
+      "one_group_keep",
+      "single_sample_total_only"
+    ),
+    S1 = c(4, 4, 0, 5),
+    S2 = c(4, 0, 0, 0),
+    S3 = c(0, 4, 5, 0),
+    S4 = c(0, 0, 4, 0),
+    check.names = FALSE
+  )
+  sample_meta <- data.frame(
+    Sample = c("S1", "S2", "S3", "S4"),
+    Group = c("A", "A", "B", "B"),
+    row.names = paste0("metadata_row_", 1:4),
+    check.names = FALSE
+  )
+
+  group_result <- remove_low_count_genes(
+    counts_dat = df,
+    sample_metadata = sample_meta,
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    use_cpm_counts_to_filter = FALSE,
+    use_group_based_filtering = TRUE,
+    minimum_count_value_to_be_considered_nonzero = 4,
+    minimum_number_of_samples_with_nonzero_counts_in_total = 1,
+    minimum_number_of_samples_with_nonzero_counts_in_a_group = 2
+  )
+  non_group_result <- remove_low_count_genes(
+    counts_dat = df,
+    sample_metadata = sample_meta,
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    use_cpm_counts_to_filter = FALSE,
+    use_group_based_filtering = FALSE,
+    minimum_count_value_to_be_considered_nonzero = 4,
+    minimum_number_of_samples_with_nonzero_counts_in_total = 2,
+    minimum_number_of_samples_with_nonzero_counts_in_a_group = 2
+  )
+
+  expect_equal(group_result$Gene, c("group_exact_keep", "one_group_keep"))
+  expect_equal(
+    non_group_result$Gene,
+    c("group_exact_keep", "split_across_groups", "one_group_keep")
+  )
+})
+
 test_that("remove_low_count_genes works with group-based filtering (no grouped tibble crash)", {
   df <- data.frame(
     Gene = c(
