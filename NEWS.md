@@ -1,12 +1,14 @@
 ## MOSuite development version
 
 - Fix expression heatmap clustering to correctly use the selected gene and sample distance metrics and clustering methods. (#231, @phoman14)
-- Align plot color defaults with the MOSuite Code Ocean capsule defaults while preserving fallback random colors when a requested palette is too short.
-- Improve top and bottom legend wrapping and automatic legend text sizing for PCA and histogram plots with many or long labels.
-- Align PCA and histogram plotting defaults used by `filter_counts()`, `normalize_counts()`, and `batch_correct_counts()` with the affected Code Ocean capsules: MOSuite-filter-counts, MOSuite-normalize-counts, MOSuite-plot-pca-2D, and MOSuite-plot-pca-3D.
-- Add optional group coloring to `plot_read_depth()` and the `clean_raw_counts()` read-depth output while preserving the single-color default when no group is selected.
+- Improvements to plots colors: (#223, @phoman14)
+  - Align plot color defaults with the MOSuite Code Ocean capsule defaults while preserving fallback random colors when a requested palette is too short.
+  - Improve top and bottom legend wrapping and automatic legend text sizing for PCA and histogram plots with many or long labels.
+  - Add optional group coloring to `plot_read_depth()` and the `clean_raw_counts()` read-depth output while preserving the single-color default when no group is selected.
+- New report template & helper function: `render_report()`. (#120, @kelly-sovacool)
+- Fix ggplot2 size deprecation warning in `plot_volcano_summary()`. (#228, @kelly-sovacool)
 
-## 0.3.2
+## MOSuite 0.3.2
 
 - Support ggplot2 v4.0.0 for correlation heatmap plots in `filter_counts()`, `normalize_counts()`, and `batch_correct_counts()`. (#205, @copilot, @kelly-sovacool)
 

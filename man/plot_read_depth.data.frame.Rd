@@ -12,7 +12,8 @@
 \item{group_colname}{sample metadata column used to color bars. Leave blank to use the current single-color bar fill.}
 
 \item{color_values}{colors used when \code{group_colname} is supplied. Named vectors are matched to group values;
-unnamed vectors follow group order and are extended with MOSuite colors when too few colors are supplied.}
+unnamed vectors follow group order and are extended with MOSuite colors when too few colors are supplied.
+Defaults to \code{NULL}; when \code{NULL}, \code{mosuite_palette} is used.}
 
 \item{...}{additional arguments (ignored; accepted for compatibility with the moo dispatch)}
 }

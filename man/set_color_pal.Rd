@@ -4,7 +4,7 @@
 \alias{set_color_pal}
 \title{Set color palette for a single group/column}
 \usage{
-set_color_pal(moo, colname, palette_fun = get_mosuite_colors, ...)
+set_color_pal(moo, colname, palette_fun = select_mosuite_colors, ...)
 }
 \arguments{
 \item{moo}{\code{multiOmicDataSet} object (see \code{create_multiOmicDataSet_from_dataframes()})}

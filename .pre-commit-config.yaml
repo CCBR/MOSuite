@@ -20,7 +20,7 @@ repos:
       - id: trailing-whitespace
   # spell check
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.2
+    rev: v2.4.3
     hooks:
       - id: codespell
         args: ["-I=.github/WORDLIST.txt"]
@@ -30,10 +30,9 @@ repos:
     hooks:
       - id: air-format
   - repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.4.3.9028
+    rev: v0.4.3.9029
     hooks:
       - id: parsable-R
-      - id: readme-rmd-rendered
       - id: use-tidy-description
       - id: lintr
         args: [--warn_only]

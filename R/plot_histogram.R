@@ -54,6 +54,13 @@ plot_histogram <- S7::new_generic(
 #'   the counts slot (`moo@counts`).
 #' @param sub_count_type Used if `moo_counts` is a `multiOmicDataSet` AND if `count_type` is a list, specify the sub
 #'   count type within the list
+#' @param group_colname The column from the sample metadata containing the sample group information. This is usually a
+#'   column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
+#'   Before, After, etc.).
+#' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+#'   level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+#'   the metadata column. Defaults to `NULL`; when `NULL`, `mosuite_palette` is used for `data.frame` dispatch and
+#'   stored colors are used for `multiOmicDataSet` dispatch.
 #' @examples
 #' # plot histogram for a counts slot in a multiOmicDataset Object
 #' moo <- multiOmicDataSet(
@@ -75,12 +82,17 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
   moo_counts,
   count_type,
   sub_count_type = NULL,
+  group_colname = "Group",
+  color_values = NULL,
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
   return(plot_histogram(
     counts_dat,
     sample_metadata = moo_counts@sample_meta,
+    group_colname = group_colname,
+    color_values = color_values,
     ...
   ))
 }
@@ -109,7 +121,7 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
 #'   `NULL` -- `sample_id_colname` will be used.)
 #' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
 #'   level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
-#'   the metadata column.
+#'   the metadata column. Defaults to `NULL`; when `NULL`, `mosuite_palette` is used.
 #' @param color_by_group Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by the
 #'   column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.
 #' @param set_min_max_for_x_axis whether to override the default for `ggplot2::xlim()` (default: `FALSE`)
@@ -156,20 +168,7 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
   feature_id_colname = NULL,
   group_colname = "Group",
   label_colname = "Label",
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = NULL,
   color_by_group = FALSE,
   set_min_max_for_x_axis = FALSE,
   minimum_for_x_axis = -1,
@@ -183,6 +182,7 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
   ...
 ) {
   count <- NULL
+  color_values <- color_values %||% mosuite_palette
   counts_dat <- moo_counts
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]

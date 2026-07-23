@@ -232,6 +232,16 @@ references:
   year: '2026'
   doi: 10.32614/CRAN.package.glue
 - type: software
+  title: grid
+  abstract: 'R: A Language and Environment for Statistical Computing'
+  notes: Imports
+  authors:
+  - name: R Core Team
+  institution:
+    name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2026'
+- type: software
   title: htmlwidgets
   abstract: 'htmlwidgets: HTML Widgets for R'
   notes: Imports
@@ -391,6 +401,19 @@ references:
     email: pedro@plot.ly
   year: '2026'
   doi: 10.32614/CRAN.package.plotly
+- type: software
+  title: png
+  abstract: 'png: Read and write PNG images'
+  notes: Imports
+  url: https://www.rforge.net/png/
+  repository: https://CRAN.R-project.org/package=png
+  authors:
+  - family-names: Urbanek
+    given-names: Simon
+    email: Simon.Urbanek@r-project.org
+    orcid: https://orcid.org/0000-0003-2297-1732
+  year: '2026'
+  doi: 10.32614/CRAN.package.png
 - type: software
   title: purrr
   abstract: 'purrr: Functional Programming Tools'
@@ -765,6 +788,23 @@ references:
     given-names: Jim
   year: '2026'
   doi: 10.32614/CRAN.package.plotrix
+- type: software
+  title: quarto
+  abstract: 'quarto: R Interface to ''Quarto'' Markdown Publishing System'
+  notes: Suggests
+  url: https://quarto-dev.github.io/quarto-r/
+  repository: https://CRAN.R-project.org/package=quarto
+  authors:
+  - family-names: Allaire
+    given-names: JJ
+    email: jj@posit.co
+    orcid: https://orcid.org/0000-0003-0174-9868
+  - family-names: Dervieux
+    given-names: Christophe
+    email: cderv@posit.co
+    orcid: https://orcid.org/0000-0003-4474-2498
+  year: '2026'
+  doi: 10.32614/CRAN.package.quarto
 - type: software
   title: RColorBrewer
   abstract: 'RColorBrewer: ColorBrewer Palettes'

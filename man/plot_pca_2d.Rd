@@ -16,8 +16,7 @@ plot_pca_2d(
   group_colname = "Group",
   label_colname = "Label",
   samples_to_rename = NULL,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = NULL,
   principal_components = c(1, 2),
   legend_position = "top",
   point_size = 3,
@@ -30,7 +29,8 @@ plot_pca_2d(
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
   print_plots = options::opt("print_plots"),
-  save_plots = options::opt("save_plots")
+  save_plots = options::opt("save_plots"),
+  ...
 )
 
 ## S7 method for class <MOSuite::multiOmicDataSet>
@@ -44,8 +44,7 @@ plot_pca_2d(
   group_colname = "Group",
   label_colname = "Label",
   samples_to_rename = NULL,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = NULL,
   principal_components = c(1, 2),
   legend_position = "top",
   point_size = 3,
@@ -58,7 +57,8 @@ plot_pca_2d(
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
   print_plots = options::opt("print_plots"),
-  save_plots = options::opt("save_plots")
+  save_plots = options::opt("save_plots"),
+  ...
 )
 
 ## S7 method for class <data.frame>
@@ -72,8 +72,7 @@ plot_pca_2d(
   group_colname = "Group",
   label_colname = "Label",
   samples_to_rename = NULL,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = NULL,
   principal_components = c(1, 2),
   legend_position = "top",
   point_size = 3,
@@ -86,7 +85,8 @@ plot_pca_2d(
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
   print_plots = options::opt("print_plots"),
-  save_plots = options::opt("save_plots")
+  save_plots = options::opt("save_plots"),
+  ...
 )
 }
 \arguments{
@@ -125,7 +125,8 @@ which new name: old_name: new_name}
 
 \item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
 level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
-the metadata column.}
+the metadata column. Defaults to \code{NULL}; when \code{NULL}, \code{mosuite_palette} is used for \code{data.frame} dispatch and
+stored colors are used for \code{multiOmicDataSet} dispatch.}
 
 \item{principal_components}{vector with numbered principal components to plot}
 
@@ -153,6 +154,8 @@ number and length of legend labels.}
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 
 \item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+
+\item{...}{arguments forwarded to method}
 }
 \value{
 ggplot object
