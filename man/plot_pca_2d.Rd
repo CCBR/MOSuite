@@ -16,6 +16,7 @@ plot_pca_2d(
   group_colname = "Group",
   label_colname = "Label",
   samples_to_rename = NULL,
+  color_values = NULL,
   principal_components = c(1, 2),
   legend_position = "top",
   point_size = 3,
@@ -71,7 +72,7 @@ plot_pca_2d(
   group_colname = "Group",
   label_colname = "Label",
   samples_to_rename = NULL,
-  color_values = mosuite_palette,
+  color_values = NULL,
   principal_components = c(1, 2),
   legend_position = "top",
   point_size = 3,
@@ -122,6 +123,11 @@ parameter to rename samples manually for display on the PCA plot. Use "Add item"
 renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to
 which new name: old_name: new_name}
 
+\item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+the metadata column. Defaults to \code{NULL}; when \code{NULL}, \code{mosuite_palette} is used for \code{data.frame} dispatch and
+stored colors are used for \code{multiOmicDataSet} dispatch.}
+
 \item{principal_components}{vector with numbered principal components to plot}
 
 \item{legend_position}{passed to in \code{legend.position} \code{ggplot2::theme()}}
@@ -150,10 +156,6 @@ number and length of legend labels.}
 \item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
 
 \item{...}{arguments forwarded to method}
-
-\item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
-level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
-the metadata column.}
 }
 \value{
 ggplot object

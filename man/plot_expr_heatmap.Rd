@@ -16,6 +16,7 @@ plot_expr_heatmap(
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
+  color_values = NULL,
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -119,7 +120,7 @@ plot_expr_heatmap(
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
-  color_values = mosuite_palette,
+  color_values = NULL,
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -193,6 +194,11 @@ column with your preferred Labels here. The selected column should contain uniqu
 \item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or
 you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
 analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
+
+\item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
+the metadata column. Defaults to \code{NULL}; when \code{NULL}, \code{mosuite_palette} is used for \code{data.frame} dispatch and
+stored colors are used for \code{multiOmicDataSet} dispatch.}
 
 \item{include_all_genes}{Set to TRUE if all genes are to be included. Set to FALSE if you want to filter genes by
 variance and/or provide a list of specific genes that will appear in the heatmap.}
@@ -286,11 +292,7 @@ you want to see these numbers on the plot.}
 
 \item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 
-\item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
-level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
-the metadata column.}
-
-\item{group_colors}{Set group annotation colors.}
+\item{...}{additional arguments passed to methods}
 }
 \value{
 heatmap from \code{ComplexHeatmap::Heatmap()}

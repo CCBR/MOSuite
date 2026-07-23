@@ -18,7 +18,8 @@ Before, After, etc.).}
 
 \item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
 level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
-the metadata column.}
+the metadata column. Defaults to \code{NULL}; when \code{NULL}, \code{mosuite_palette} is used for \code{data.frame} dispatch and
+stored colors are used for \code{multiOmicDataSet} dispatch.}
 
 \item{...}{additional arguments forwarded to \code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}} for \code{data.frame}}
 }

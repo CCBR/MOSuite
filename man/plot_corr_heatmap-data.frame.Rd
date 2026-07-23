@@ -30,7 +30,7 @@ column with your preferred Labels here. The selected column should contain uniqu
 
 \item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
 level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
-the metadata column.}
+the metadata column. Defaults to \code{NULL}; when \code{NULL}, \code{mosuite_palette} is used.}
 }
 \description{
 Plot correlation heatmap for counts dataframe

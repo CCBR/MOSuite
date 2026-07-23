@@ -19,6 +19,7 @@ plot_pca_3d(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
+  color_values = NULL,
   plot_title = "PCA 3D",
   plot_filename = "pca_3D.html",
   print_plots = options::opt("print_plots"),
@@ -64,7 +65,7 @@ plot_pca_3d(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
-  color_values = mosuite_palette,
+  color_values = NULL,
   plot_title = "PCA 3D",
   plot_filename = "pca_3D.html",
   print_plots = options::opt("print_plots"),
@@ -98,6 +99,11 @@ plot_pca_3d(
 
 \item{label_font_size}{font size used for labels in the interactive figure.}
 
+\item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+the metadata column. Defaults to \code{NULL}; when \code{NULL}, \code{mosuite_palette} is used for \code{data.frame} dispatch and
+stored colors are used for \code{multiOmicDataSet} dispatch.}
+
 \item{plot_title}{title for the plot}
 
 \item{plot_filename}{output filename when saving plots.}
@@ -108,9 +114,7 @@ plot_pca_3d(
 
 \item{plots_subdir}{output subdirectory for saved plots.}
 
-\item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
-level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
-the metadata column.}
+\item{...}{additional arguments passed to methods}
 }
 \value{
 \code{plotly::plot_ly} figure
