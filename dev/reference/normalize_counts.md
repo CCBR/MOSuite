@@ -13,7 +13,7 @@ normalize_counts(
   samples_to_include = NULL,
   sample_id_colname = NULL,
   group_colname = "Group",
-  label_colname = NULL,
+  label_colname = "Label",
   input_in_log_counts = FALSE,
   voom_normalization_method = "quantile",
   samples_to_rename = c(""),
@@ -24,7 +24,7 @@ normalize_counts(
   label_offset_x_ = 2,
   label_offset_y_ = 2,
   label_font_size = 3,
-  point_size_for_pca = 3,
+  point_size_for_pca = 5,
   color_histogram_by_group = TRUE,
   set_min_max_for_x_axis_for_histogram = FALSE,
   minimum_for_x_axis_for_histogram = -1,
@@ -91,12 +91,13 @@ normalize_counts(
 - label_colname:
 
   The column from the sample metadata containing the sample labels as
-  you wish them to appear in the plots produced by this template. This
-  can be the same Sample Names Column. However, you may desire different
-  labels to display on your figure (e.g. shorter labels are sometimes
-  preferred on plots). In that case, select the column with your
-  preferred Labels here. The selected column should contain unique names
-  for each sample. (Default: `NULL` – `sample_id_colname` will be used.)
+  you wish them to appear in heatmap and PCA figures. This can be the
+  same Sample Names Column. However, you may desire different labels to
+  display on your figures (e.g. shorter labels are sometimes preferred
+  on plots). In that case, select the column with your preferred Labels
+  here. The selected column should contain unique names for each sample.
+  Use `add_label_to_pca` to control whether these labels are displayed
+  on the PCA plot.
 
 - input_in_log_counts:
 
@@ -118,7 +119,9 @@ normalize_counts(
 
 - add_label_to_pca:
 
-  label points on the PCA plot
+  If `TRUE`, display labels from `label_colname` on PCA points. If
+  `FALSE`, the PCA plot uses unlabeled points while heatmap labels still
+  use `label_colname`.
 
 - principal_component_on_x_axis:
 

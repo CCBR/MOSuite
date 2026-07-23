@@ -20,8 +20,7 @@ plot_pca_2d(
   color_values = NULL,
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 3,
-  add_label = TRUE,
+  point_size = 5,
   legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -48,8 +47,7 @@ plot_pca_2d(
   color_values = NULL,
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 3,
-  add_label = TRUE,
+  point_size = 5,
   legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -76,8 +74,7 @@ plot_pca_2d(
   color_values = NULL,
   principal_components = c(1, 2),
   legend_position = "top",
-  point_size = 3,
-  add_label = TRUE,
+  point_size = 5,
   legend_font_size = NULL,
   label_font_size = 3,
   label_offset_x_ = 2,
@@ -137,12 +134,12 @@ plot_pca_2d(
 - label_colname:
 
   The column from the sample metadata containing the sample labels as
-  you wish them to appear in the plots produced by this template. This
-  can be the same Sample Names Column. However, you may desire different
-  labels to display on your figure (e.g. shorter labels are sometimes
-  preferred on plots). In that case, select the column with your
-  preferred Labels here. The selected column should contain unique names
-  for each sample. (Default: `NULL` – `sample_id_colname` will be used.)
+  you wish them to appear on the PCA plot. If `NULL`, no labels are
+  added to PCA points. This can be the same Sample Names Column.
+  However, you may desire different labels to display on your figure
+  (e.g. shorter labels are sometimes preferred on plots). In that case,
+  select the column with your preferred Labels here. The selected column
+  should contain unique names for each sample.
 
 - samples_to_rename:
 
@@ -175,10 +172,6 @@ plot_pca_2d(
 
   size for
   [`ggplot2::geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html)
-
-- add_label:
-
-  whether to add text labels for the points
 
 - legend_font_size:
 

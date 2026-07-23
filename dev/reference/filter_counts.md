@@ -13,7 +13,7 @@ filter_counts(
   feature_id_colname = NULL,
   sample_id_colname = NULL,
   group_colname = "Group",
-  label_colname = NULL,
+  label_colname = "Label",
   samples_to_include = NULL,
   minimum_count_value_to_be_considered_nonzero = 8,
   minimum_number_of_samples_with_nonzero_counts_in_total = 7,
@@ -23,7 +23,7 @@ filter_counts(
   principal_component_on_x_axis = 1,
   principal_component_on_y_axis = 2,
   legend_position_for_pca = "top",
-  point_size_for_pca = 3,
+  point_size_for_pca = 5,
   add_label_to_pca = TRUE,
   label_font_size = 3,
   label_offset_y_ = 2,
@@ -82,12 +82,13 @@ filter_counts(
 - label_colname:
 
   The column from the sample metadata containing the sample labels as
-  you wish them to appear in the plots produced by this template. This
-  can be the same Sample Names Column. However, you may desire different
-  labels to display on your figure (e.g. shorter labels are sometimes
-  preferred on plots). In that case, select the column with your
-  preferred Labels here. The selected column should contain unique names
-  for each sample. (Default: `NULL` – `sample_id_colname` will be used.)
+  you wish them to appear in heatmap and PCA figures. This can be the
+  same Sample Names Column. However, you may desire different labels to
+  display on your figures (e.g. shorter labels are sometimes preferred
+  on plots). In that case, select the column with your preferred Labels
+  here. The selected column should contain unique names for each sample.
+  Use `add_label_to_pca` to control whether these labels are displayed
+  on the PCA plot.
 
 - samples_to_include:
 
@@ -145,7 +146,9 @@ filter_counts(
 
 - add_label_to_pca:
 
-  label points on the PCA plot
+  If `TRUE`, display labels from `label_colname` on PCA points. If
+  `FALSE`, the PCA plot uses unlabeled points while heatmap labels still
+  use `label_colname`.
 
 - label_font_size:
 
