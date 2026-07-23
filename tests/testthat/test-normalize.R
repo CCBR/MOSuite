@@ -195,7 +195,7 @@ test_that("normalize_counts forwards plotting parameters", {
   expect_equal(pca_args$principal_components, c(2, 3))
   expect_equal(pca_args$legend_position, "bottom")
   expect_equal(pca_args$point_size, 7)
-  expect_false(pca_args$add_label)
+  expect_null(pca_args$label_colname)
   expect_equal(pca_args$label_font_size, 6)
   expect_equal(pca_args$label_offset_x_, 4)
   expect_equal(pca_args$label_offset_y_, 5)
@@ -209,6 +209,132 @@ test_that("normalize_counts forwards plotting parameters", {
   expect_equal(histogram_args$legend_position, "right")
   expect_equal(histogram_args$number_of_legend_columns, 2)
   expect_equal(histogram_args$color_values, moo@analyses[["colors"]][["Label"]])
+
+  pca_args <- NULL
+  normalize_counts(
+    moo,
+    group_colname = "Group",
+    label_colname = "Label",
+    add_label_to_pca = TRUE,
+    plot_corr_matrix_heatmap = FALSE,
+    print_plots = TRUE,
+    save_plots = FALSE
+  )
+  expect_equal(pca_args$label_colname, "Label")
+})
+
+test_that("normalize_counts handles histogram label combinations", {
+  pca_args <- NULL
+  histogram_args <- NULL
+  group_colors <- c(A = "red", B = "blue", C = "green")
+
+  local_mocked_bindings(
+    plot_pca = function(...) {
+      pca_args <<- list(...)
+      return(ggplot2::ggplot())
+    },
+    plot_histogram = function(...) {
+      histogram_args <<- list(...)
+      return(ggplot2::ggplot())
+    },
+    print_or_save_plot = function(...) invisible(NULL),
+    .package = "MOSuite"
+  )
+
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts)
+    )
+  )
+
+  combinations <- list(
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = FALSE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = FALSE,
+      interactive_plots = TRUE
+    ),
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = TRUE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = TRUE,
+      interactive_plots = TRUE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = FALSE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = FALSE,
+      interactive_plots = TRUE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = TRUE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = TRUE,
+      interactive_plots = TRUE
+    )
+  )
+
+  for (combination in combinations) {
+    pca_args <- NULL
+    histogram_args <- NULL
+    normalize_counts(
+      moo,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      label_colname = combination$label_colname,
+      color_histogram_by_group = combination$color_histogram_by_group,
+      interactive_plots = combination$interactive_plots,
+      colors_for_plots = group_colors,
+      plot_corr_matrix_heatmap = FALSE,
+      print_plots = TRUE,
+      save_plots = FALSE
+    )
+
+    expected_label_colname <- if (is.null(combination$label_colname)) {
+      "Sample"
+    } else {
+      combination$label_colname
+    }
+    expected_histogram_colors <- if (
+      isTRUE(combination$color_histogram_by_group)
+    ) {
+      group_colors
+    } else {
+      moo@analyses[["colors"]][[expected_label_colname]]
+    }
+
+    expect_equal(pca_args$label_colname, combination$label_colname)
+    expect_equal(histogram_args$label_colname, expected_label_colname)
+    expect_equal(
+      histogram_args$color_by_group,
+      combination$color_histogram_by_group
+    )
+    expect_equal(
+      histogram_args$interactive_plots,
+      combination$interactive_plots
+    )
+    expect_equal(histogram_args$color_values, expected_histogram_colors)
+  }
 })
 
 test_that("normalize_counts forwards the default MOSuite plot colors", {

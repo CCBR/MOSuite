@@ -155,6 +155,7 @@ get_colors_vctr <- function(
   return(colors_vctr)
 }
 
+
 #' Resolve plotting colors for one column
 #'
 #' Uses `color_values` when supplied; otherwise generates colors with

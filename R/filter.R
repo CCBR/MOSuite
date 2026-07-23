@@ -33,10 +33,10 @@
 #'   column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
 #'   Before, After, etc.).
 #' @param label_colname The column from the sample metadata containing the sample labels as you wish them to appear in
-#'   the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
-#'   labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
-#'   column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
-#'   `NULL` -- `sample_id_colname` will be used.)
+#'   heatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to
+#'   display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column
+#'   with your preferred Labels here. The selected column should contain unique names for each sample.
+#'   Use `add_label_to_pca` to control whether these labels are displayed on the PCA plot.
 #' @param samples_to_include Which samples would you like to include? Usually, you will choose all sample columns, or
 #'   you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
 #'   analysis downstream of this step. (Default: `NULL` - all sample IDs in `moo@sample_meta` will be used.)
@@ -57,7 +57,8 @@
 #'   1, 2, 3, ... (default: 2)
 #' @param legend_position_for_pca legend position for the PCA plot
 #' @param point_size_for_pca geom point size for the PCA plot
-#' @param add_label_to_pca label points on the PCA plot
+#' @param add_label_to_pca If `TRUE`, display labels from `label_colname` on PCA points. If `FALSE`, the PCA plot uses
+#'   unlabeled points while heatmap labels still use `label_colname`.
 #' @param label_font_size label font size for the PCA plot
 #' @param label_offset_y_ label offset y for the PCA plot
 #' @param label_offset_x_ label offset x for the PCA plot
@@ -77,8 +78,8 @@
 #' @param number_of_histogram_legend_columns number of columns for the histogram legend
 #' @param colors_for_plots Optional colors for PCA/histogram/heatmap plots. If `NULL`, colors are taken from
 #'   `moo@analyses$colors[[group_colname]]`.
-#'   Colors must either be names in `grDevices::colors()` or valid hex codes. Unnamed colors are assigned by factor level order
-#'   when the grouping column is a factor;
+#'   Colors must either be names in `grDevices::colors()` or valid hex codes. Unnamed colors are assigned by factor
+#'   level order when the grouping column is a factor;
 #'   otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
 #'   than colors provided,
 #'   supplied colors are used first and additional colors are generated from the selected palette for the remaining
@@ -113,7 +114,7 @@ filter_counts <- function(
   feature_id_colname = NULL,
   sample_id_colname = NULL,
   group_colname = "Group",
-  label_colname = NULL,
+  label_colname = "Label",
   samples_to_include = NULL,
   minimum_count_value_to_be_considered_nonzero = 8,
   minimum_number_of_samples_with_nonzero_counts_in_total = 7,
@@ -123,7 +124,7 @@ filter_counts <- function(
   principal_component_on_x_axis = 1,
   principal_component_on_y_axis = 2,
   legend_position_for_pca = "top",
-  point_size_for_pca = 3,
+  point_size_for_pca = 5,
   add_label_to_pca = TRUE,
   label_font_size = 3,
   label_offset_y_ = 2,
@@ -158,6 +159,7 @@ filter_counts <- function(
   if (is.null(samples_to_include)) {
     samples_to_include <- sample_metadata |> dplyr::pull(sample_id_colname)
   }
+  pca_label_colname <- if (isTRUE(add_label_to_pca)) label_colname else NULL
   if (is.null(label_colname)) {
     label_colname <- sample_id_colname
   }
@@ -198,9 +200,8 @@ filter_counts <- function(
 
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
     # use consistent colors
-    if (is.null(colors_for_plots)) {
-      colors_for_plots <- moo@analyses[["colors"]][[group_colname]]
-    }
+    colors_for_plots <- colors_for_plots %||%
+      moo@analyses[["colors"]][[group_colname]]
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots
     } else {
@@ -219,7 +220,7 @@ filter_counts <- function(
       feature_id_colname = feature_id_colname,
       samples_to_rename = samples_to_rename,
       group_colname = group_colname,
-      label_colname = label_colname,
+      label_colname = pca_label_colname,
       color_values = colors_for_plots,
       principal_components = c(
         principal_component_on_x_axis,
@@ -227,7 +228,6 @@ filter_counts <- function(
       ),
       legend_position = legend_position_for_pca,
       point_size = point_size_for_pca,
-      add_label = add_label_to_pca,
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_,
@@ -250,9 +250,12 @@ filter_counts <- function(
       maximum_for_x_axis = maximum_for_x_axis_for_histogram,
       legend_position = legend_position_for_histogram,
       legend_font_size = legend_font_size_for_histogram,
-      number_of_legend_columns = number_of_histogram_legend_columns
-    ) +
-      ggplot2::labs(caption = "filtered counts")
+      number_of_legend_columns = number_of_histogram_legend_columns,
+      interactive_plots = interactive_plots
+    )
+    if (!isTRUE(interactive_plots)) {
+      hist_plot <- hist_plot + ggplot2::labs(caption = "filtered counts")
+    }
     if (isTRUE(plot_corr_matrix_heatmap)) {
       corHM <- plot_corr_heatmap(
         df_filt[, samples_to_include],
@@ -274,9 +277,7 @@ filter_counts <- function(
 
     plot_ext <- "png"
     if (isTRUE(interactive_plots)) {
-      pca_plot <- pca_plot |> plotly::ggplotly(tooltip = c("sample", "group"))
-      hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) |>
-        plotly::ggplotly(tooltip = c("sample"))
+      pca_plot <- pca_plot |> plotly::ggplotly(tooltip = "text")
       plot_ext <- "html"
     }
     if (identical(plot_ext, "png")) {
