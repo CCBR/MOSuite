@@ -178,6 +178,59 @@ test_that("resolve_plot_colors treats non-matching names as palette labels", {
   )
 })
 
+test_that("select_mosuite_colors returns n colors from mosuite_palette", {
+  result <- select_mosuite_colors(3)
+  expect_length(result, 3)
+  expect_true(all(grepl("^#", result)))
+})
+
+test_that("select_mosuite_colors clamps to palette length when n exceeds it", {
+  pal_len <- length(mosuite_palette)
+  result <- select_mosuite_colors(pal_len + 10)
+  expect_length(result, pal_len)
+})
+
+test_that("get_observed_values drops NAs and returns unique values in first-seen order", {
+  dat <- data.frame(group = c("B", NA, "A", "B", NA))
+  result <- MOSuite:::get_observed_values(dat, "group")
+  expect_equal(result, c("B", "A"))
+})
+
+test_that("get_observed_values respects factor level order and excludes unseen levels", {
+  dat <- data.frame(
+    group = factor(c("B", "A", NA), levels = c("C", "A", "B", "D"))
+  )
+  result <- MOSuite:::get_observed_values(dat, "group")
+  # "C" and "D" are levels but never observed; should be excluded
+  expect_equal(result, c("A", "B"))
+})
+
+test_that("get_colors_vctr handles a column with NA values", {
+  dat <- data.frame(group = c("A", NA, "B", "A"))
+  result <- get_colors_vctr(dat, "group")
+  expect_length(result, 2)
+  expect_named(result, c("A", "B"))
+})
+
+test_that("resolve_plot_colors returns color_values unchanged when column has no observations", {
+  dat <- data.frame(group = character(0))
+  colors <- c(A = "red")
+  result <- MOSuite:::resolve_plot_colors(dat, "group", color_values = colors)
+  expect_equal(result, colors)
+})
+
+test_that("resolve_plot_colors returns color_values unchanged when column is all NA", {
+  dat <- data.frame(group = c(NA_character_, NA_character_))
+  colors <- c(A = "red")
+  result <- MOSuite:::resolve_plot_colors(dat, "group", color_values = colors)
+  expect_equal(result, colors)
+})
+
+test_that("display_palette returns a ggplot invisibly", {
+  result <- display_palette(c("#FF0000", "#00FF00", "#0000FF"))
+  expect_s3_class(result, "gg")
+})
+
 test_that("set_color_pal overrides the color palette", {
   moo <- create_multiOmicDataSet_from_dataframes(
     sample_metadata = as.data.frame(nidap_sample_metadata),
