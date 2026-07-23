@@ -1,3 +1,5 @@
+utils::globalVariables("mosuite_palette")
+
 #' Get random colors.
 #'
 #' Note: this function is not guaranteed to create a color blind friendly palette.
@@ -209,6 +211,77 @@ resolve_plot_colors <- function(
   }
 
   return(stats::setNames(unname(color_values)[seq_along(obs)], obs))
+}
+
+#' Display the mosuite color palette
+#'
+#' Plots each color in `mosuite_palette` as a labeled tile with its hex code
+#' displayed below. The plot is rendered at a width proportional to the number
+#' of colors so labels remain horizontal and legible.
+#'
+#' @param palette Character vector of hex color codes. Defaults to
+#'   `mosuite_palette`.
+#'
+#' @returns Invisibly returns the underlying [ggplot2::ggplot] object.
+#' @export
+#'
+#' @examples
+#' display_palette()
+#' display_palette(c("#FF0000", "#00FF00", "#0000FF"))
+display_palette <- function(palette = mosuite_palette) {
+  n <- length(palette)
+
+  df <- data.frame(
+    hex = palette,
+    idx = factor(seq_len(n))
+  )
+
+  p <- ggplot2::ggplot(df) +
+    ggplot2::geom_rect(
+      ggplot2::aes(fill = .data$hex),
+      xmin = 0,
+      xmax = 1,
+      ymin = 0.25,
+      ymax = 1
+    ) +
+    ggplot2::geom_text(
+      ggplot2::aes(label = .data$hex),
+      x = 0.5,
+      y = 0.12,
+      size = 2.8,
+      family = "mono",
+      vjust = 1
+    ) +
+    ggplot2::scale_fill_identity() +
+    ggplot2::facet_wrap(~idx, nrow = 1) +
+    ggplot2::theme_void() +
+    ggplot2::theme(
+      strip.text = ggplot2::element_text(
+        size = 9,
+        margin = ggplot2::margin(b = 3)
+      ),
+      panel.spacing = ggplot2::unit(3, "pt"),
+      plot.title = ggplot2::element_text(
+        size = 12,
+        margin = ggplot2::margin(b = 8)
+      ),
+      plot.margin = ggplot2::margin(10, 10, 10, 10)
+    ) +
+    ggplot2::labs(title = "mosuite_palette")
+
+  # Render at a width that gives each tile enough room for its horizontal label
+  panel_w_in <- 0.85
+  total_w <- n * panel_w_in + 0.4
+  total_h <- 2.5
+
+  tmp <- tempfile(fileext = ".png")
+  ggplot2::ggsave(tmp, plot = p, width = total_w, height = total_h, dpi = 150)
+
+  img <- png::readPNG(tmp)
+  grid::grid.newpage()
+  grid::grid.draw(grid::rasterGrob(img, width = grid::unit(1, "npc")))
+
+  invisible(p)
 }
 
 #' Set color palette for a single group/column

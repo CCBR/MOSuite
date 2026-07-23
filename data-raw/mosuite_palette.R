@@ -14,3 +14,13 @@ mosuite_palette <- c(
 )
 
 usethis::use_data(mosuite_palette, overwrite = TRUE)
+
+ggplot2::ggsave(
+  filename = "mosuite_palette.png",
+  plot = display_palette(mosuite_palette),
+  path = "man/figures",
+  width = 7,
+  height = 2,
+  units = "in",
+  dpi = 300
+)
