@@ -6,6 +6,7 @@
 \alias{:=}
 \alias{!!}
 \alias{.data}
+\alias{\%||\%}
 \title{walrus operator}
 \keyword{internal}
 \description{
@@ -13,6 +14,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{rlang}{\code{\link[rlang::=]{:=()}}, \code{\link[rlang:!!]{!!()}}, \code{\link[rlang:.data]{.data}}}
+  \item{rlang}{\code{\link[rlang::=]{:=()}}, \code{\link[rlang:!!]{!!()}}, \code{\link[rlang:.data]{.data}}, \code{\link[rlang:\%||\%]{\%||\%}}}
 }}
 

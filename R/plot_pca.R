@@ -140,20 +140,7 @@ plot_pca_2d <- S7::new_generic(
     group_colname = "Group",
     label_colname = "Label",
     samples_to_rename = NULL,
-    color_values = c(
-      "#5954d6",
-      "#e1562c",
-      "#b80058",
-      "#00c6f8",
-      "#d163e6",
-      "#00a76c",
-      "#ff9287",
-      "#008cf9",
-      "#006e00",
-      "#796880",
-      "#FFA500",
-      "#878500"
-    ),
+    color_values = NULL,
     principal_components = c(1, 2),
     legend_position = "top",
     point_size = 3,
@@ -166,7 +153,8 @@ plot_pca_2d <- S7::new_generic(
     plots_subdir = "pca",
     plot_filename = "pca_2D.png",
     print_plots = options::opt("print_plots"),
-    save_plots = options::opt("save_plots")
+    save_plots = options::opt("save_plots"),
+    ...
   ) {
     return(S7::S7_dispatch())
   }
@@ -183,20 +171,7 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
   group_colname = "Group",
   label_colname = "Label",
   samples_to_rename = NULL,
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = NULL,
   principal_components = c(1, 2),
   legend_position = "top",
   point_size = 3,
@@ -209,9 +184,11 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
   print_plots = options::opt("print_plots"),
-  save_plots = options::opt("save_plots")
+  save_plots = options::opt("save_plots"),
+  ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
   return(plot_pca_2d(
     counts_dat,
     sample_metadata = moo_counts@sample_meta,
@@ -266,7 +243,8 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 #'   which new name: old_name: new_name
 #' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
 #'   level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
-#'   the metadata column.
+#'   the metadata column. Defaults to `NULL`; when `NULL`, `mosuite_palette` is used for `data.frame` dispatch and
+#'   stored colors are used for `multiOmicDataSet` dispatch.
 #' @param principal_components vector with numbered principal components to plot
 #' @param legend_position passed to in `legend.position` `ggplot2::theme()`
 #' @param point_size size for `ggplot2::geom_point()`
@@ -298,20 +276,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   group_colname = "Group",
   label_colname = "Label",
   samples_to_rename = NULL,
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = NULL,
   principal_components = c(1, 2),
   legend_position = "top",
   point_size = 3,
@@ -324,9 +289,11 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
   print_plots = options::opt("print_plots"),
-  save_plots = options::opt("save_plots")
+  save_plots = options::opt("save_plots"),
+  ...
 ) {
   PC <- std.dev <- percent <- cumulative <- NULL
+  color_values <- color_values %||% mosuite_palette
   if (length(principal_components) != 2) {
     stop(
       glue::glue(
@@ -455,6 +422,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
 #'
 #' @rdname plot_pca_3d
 #' @aliases plot_pca_3d
+#' @param ... additional arguments passed to methods
 #' @export
 plot_pca_3d <- S7::new_generic(
   "plot_pca_3d",
@@ -472,25 +440,13 @@ plot_pca_3d <- S7::new_generic(
     principal_components = c(1, 2, 3),
     point_size = 8,
     label_font_size = 24,
-    color_values = c(
-      "#5954d6",
-      "#e1562c",
-      "#b80058",
-      "#00c6f8",
-      "#d163e6",
-      "#00a76c",
-      "#ff9287",
-      "#008cf9",
-      "#006e00",
-      "#796880",
-      "#FFA500",
-      "#878500"
-    ),
+    color_values = NULL,
     plot_title = "PCA 3D",
     plot_filename = "pca_3D.html",
     print_plots = options::opt("print_plots"),
     save_plots = options::opt("save_plots"),
-    plots_subdir = "pca"
+    plots_subdir = "pca",
+    ...
   ) {
     return(S7::S7_dispatch())
   }
@@ -510,27 +466,16 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = NULL,
   plot_title = "PCA 3D",
   plot_filename = "pca_3D.html",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "pca"
+  plots_subdir = "pca",
+  ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
   return(
     plot_pca_3d(
       counts_dat,
@@ -569,7 +514,8 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
 #' @param label_font_size font size used for labels in the interactive figure.
 #' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
 #'   level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
-#'   the metadata column.
+#'   the metadata column. Defaults to `NULL`; when `NULL`, `mosuite_palette` is used for `data.frame` dispatch and
+#'   stored colors are used for `multiOmicDataSet` dispatch.
 #' @param plot_filename output filename when saving plots.
 #' @param print_plots whether to print plot to the active graphics device.
 #' @param save_plots whether to save plot to disk.
@@ -597,27 +543,16 @@ S7::method(plot_pca_3d, S7::class_data.frame) <- function(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = NULL,
   plot_title = "PCA 3D",
   plot_filename = "pca_3D.html",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "pca"
+  plots_subdir = "pca",
+  ...
 ) {
   PC <- std.dev <- percent <- cumulative <- NULL
+  color_values <- color_values %||% mosuite_palette
   if (length(principal_components) != 3) {
     stop(
       glue::glue(

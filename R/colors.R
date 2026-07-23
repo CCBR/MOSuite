@@ -1,3 +1,5 @@
+utils::globalVariables("mosuite_palette")
+
 #' Get random colors.
 #'
 #' Note: this function is not guaranteed to create a color blind friendly palette.
@@ -32,24 +34,29 @@ get_random_colors <- function(num_colors, n = 2e3) {
   return(unname(colorspace::hex(colorspace::LAB(km$centers))))
 }
 
-get_mosuite_colors <- function(n, ...) {
-  colors <- c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  )
-  return(colors[seq_len(min(n, length(colors)))])
+#' Select colors from MOSuite's default palette
+#'
+#' @param n number of colors to select.
+#' @param ... additional arguments (ignored).
+#'
+#' @returns vector of colors in hex format.
+#' @export
+#'
+#' @examples
+#' select_mosuite_colors(5)
+select_mosuite_colors <- function(n, ...) {
+  return(mosuite_palette[seq_len(min(n, length(mosuite_palette)))])
 }
 
+#' Get observed values from a column
+#'
+#' Returns non-missing values from `dat[[colname]]`. For factor columns, values are
+#' returned in factor-level order; otherwise, values keep first-observed order.
+#'
+#' @param dat data frame
+#' @param colname column name in `dat`
+#' @returns character vector of observed values
+#' @keywords internal
 get_observed_values <- function(dat, colname) {
   values <- dplyr::pull(dat, colname)
   observed_values <- stats::na.omit(as.character(values))
@@ -81,7 +88,7 @@ get_observed_values <- function(dat, colname) {
 #' }
 get_colors_lst <- function(
   sample_metadata,
-  palette_fun = get_mosuite_colors,
+  palette_fun = select_mosuite_colors,
   ...
 ) {
   dat_colnames <- colnames(sample_metadata)
@@ -108,7 +115,7 @@ get_colors_lst <- function(
 get_colors_vctr <- function(
   dat,
   colname,
-  palette_fun = get_mosuite_colors,
+  palette_fun = select_mosuite_colors,
   ...
 ) {
   obs <- get_observed_values(dat, colname)
@@ -148,11 +155,24 @@ get_colors_vctr <- function(
   return(colors_vctr)
 }
 
+#' Resolve plotting colors for one column
+#'
+#' Uses `color_values` when supplied; otherwise generates colors with
+#' `get_colors_vctr()`. If too few colors are provided, missing colors are generated
+#' and appended.
+#'
+#' @param dat data frame
+#' @param colname column name in `dat`
+#' @param color_values optional vector of colors
+#' @param palette_fun function used to generate colors
+#' @param ... additional arguments forwarded to `palette_fun`
+#' @returns named vector of colors matching observed values in `colname`
+#' @keywords internal
 resolve_plot_colors <- function(
   dat,
   colname,
   color_values = NULL,
-  palette_fun = get_mosuite_colors,
+  palette_fun = select_mosuite_colors,
   ...
 ) {
   obs <- get_observed_values(dat, colname)
@@ -174,7 +194,9 @@ resolve_plot_colors <- function(
   if (length(color_values) < length(obs)) {
     n_missing <- length(obs) - length(color_values)
     message(glue::glue(
-      "color_values contains {length(color_values)} colors for {length(obs)} values in column {colname}. Generating {n_missing} additional colors."
+      "color_values contains {length(color_values)} colors for ",
+      "{length(obs)} values in column {colname}. Generating ",
+      "{n_missing} additional colors."
     ))
     generated_colors <- get_colors_vctr(
       dat,
@@ -189,6 +211,77 @@ resolve_plot_colors <- function(
   }
 
   return(stats::setNames(unname(color_values)[seq_along(obs)], obs))
+}
+
+#' Display the mosuite color palette
+#'
+#' Plots each color in `mosuite_palette` as a labeled tile with its hex code
+#' displayed below. The plot is rendered at a width proportional to the number
+#' of colors so labels remain horizontal and legible.
+#'
+#' @param palette Character vector of hex color codes. Defaults to
+#'   `mosuite_palette`.
+#'
+#' @returns Invisibly returns the underlying [ggplot2::ggplot] object.
+#' @export
+#'
+#' @examples
+#' display_palette()
+#' display_palette(c("#FF0000", "#00FF00", "#0000FF"))
+display_palette <- function(palette = mosuite_palette) {
+  n <- length(palette)
+
+  df <- data.frame(
+    hex = palette,
+    idx = factor(seq_len(n))
+  )
+
+  p <- ggplot2::ggplot(df) +
+    ggplot2::geom_rect(
+      ggplot2::aes(fill = .data$hex),
+      xmin = 0,
+      xmax = 1,
+      ymin = 0.25,
+      ymax = 1
+    ) +
+    ggplot2::geom_text(
+      ggplot2::aes(label = .data$hex),
+      x = 0.5,
+      y = 0.12,
+      size = 2.8,
+      family = "mono",
+      vjust = 1
+    ) +
+    ggplot2::scale_fill_identity() +
+    ggplot2::facet_wrap(~idx, nrow = 1) +
+    ggplot2::theme_void() +
+    ggplot2::theme(
+      strip.text = ggplot2::element_text(
+        size = 9,
+        margin = ggplot2::margin(b = 3)
+      ),
+      panel.spacing = ggplot2::unit(3, "pt"),
+      plot.title = ggplot2::element_text(
+        size = 12,
+        margin = ggplot2::margin(b = 8)
+      ),
+      plot.margin = ggplot2::margin(10, 10, 10, 10)
+    ) +
+    ggplot2::labs(title = "mosuite_palette")
+
+  # Render at a width that gives each tile enough room for its horizontal label
+  panel_w_in <- 0.85
+  total_w <- n * panel_w_in + 0.4
+  total_h <- 2.5
+
+  tmp <- tempfile(fileext = ".png")
+  ggplot2::ggsave(tmp, plot = p, width = total_w, height = total_h, dpi = 150)
+
+  img <- png::readPNG(tmp)
+  grid::grid.newpage()
+  grid::grid.draw(grid::rasterGrob(img, width = grid::unit(1, "npc")))
+
+  invisible(p)
 }
 
 #' Set color palette for a single group/column
@@ -216,7 +309,7 @@ resolve_plot_colors <- function(
 set_color_pal <- S7::new_generic(
   "set_color_pal",
   "moo",
-  function(moo, colname, palette_fun = get_mosuite_colors, ...) {
+  function(moo, colname, palette_fun = select_mosuite_colors, ...) {
     return(S7::S7_dispatch())
   }
 )
@@ -224,7 +317,7 @@ set_color_pal <- S7::new_generic(
 S7::method(set_color_pal, multiOmicDataSet) <- function(
   moo,
   colname,
-  palette_fun = get_mosuite_colors,
+  palette_fun = select_mosuite_colors,
   ...
 ) {
   moo@analyses[["colors"]][[colname]] <- get_colors_vctr(

@@ -296,6 +296,48 @@ test_that("plot_expr_heatmap works", {
   expect_equal(p_moo@matrix, p_dat@matrix)
 })
 
+test_that("plot_expr_heatmap uses stored colors for all group_columns from moo@analyses$colors", {
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "norm" = list("voom" = as.data.frame(nidap_norm_counts))
+    )
+  )
+  custom_colors <- list(
+    Group = c(A = "#AA0000", B = "#00AA00", C = "#0000AA"),
+    Replicate = c("1" = "#111111", "2" = "#222222", "3" = "#333333"),
+    Batch = c("1" = "#AAAAAA", "2" = "#BBBBBB")
+  )
+  moo@analyses$colors <- custom_colors
+
+  expect_message(
+    p <- plot_expr_heatmap(
+      moo,
+      count_type = "norm",
+      sub_count_type = "voom",
+      feature_id_colname = "Gene",
+      group_columns = c("Group", "Replicate", "Batch")
+    ),
+    "total number of genes in heatmap",
+    fixed = FALSE
+  )
+
+  expect_equal(
+    p@top_annotation@anno_list$Group@color_mapping@colors,
+    c(A = "#AA0000FF", B = "#00AA00FF", C = "#0000AAFF")
+  )
+  expect_equal(
+    p@top_annotation@anno_list$Replicate@color_mapping@colors,
+    c("1" = "#111111FF", "2" = "#222222FF", "3" = "#333333FF")
+  )
+  expect_equal(
+    p@top_annotation@anno_list$Batch@color_mapping@colors,
+    c("1" = "#AAAAAAFF", "2" = "#BBBBBBFF")
+  )
+})
+
 test_that("plot_expr_heatmap resolves annotation colors by first observed group order", {
   counts_dat <- nidap_norm_counts[, c(
     "Gene",

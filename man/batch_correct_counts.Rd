@@ -31,8 +31,7 @@ batch_correct_counts(
   legend_position_for_histogram = "top",
   number_of_histogram_legend_columns = 6,
   plot_corr_matrix_heatmap = TRUE,
-  colors_for_plots = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  colors_for_plots = NULL,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   interactive_plots = FALSE,
@@ -110,7 +109,8 @@ the column you select in the "Group Column Used to Color Histogram" parameter (b
 
 \item{maximum_for_x_axis_for_histogram}{x-axis maximum for histogram plot}
 
-\item{legend_font_size_for_histogram}{legend font size for the histogram plot. If \code{NULL}, the size is scaled automatically.}
+\item{legend_font_size_for_histogram}{legend font size for the histogram plot.
+If \code{NULL}, the size is scaled automatically.}
 
 \item{legend_position_for_histogram}{legend position for the histogram plot. consider setting to 'none' for a large
 number of samples.}
@@ -121,9 +121,10 @@ number of samples.}
 matrix heatmap. If this function takes longer than 5 minutes to run, Set to \code{FALSE} and the correlation matrix will
 not be be created. Default is \code{TRUE}.}
 
-\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list.
-Colors must either be names in \code{grDevices::colors()} or valid hex codes. Defaults to the MOSuite palette returned
-by \code{get_mosuite_colors()}. Unnamed colors are assigned by factor level order when the grouping column is a factor;
+\item{colors_for_plots}{Optional colors for PCA/histogram/heatmap plots. If \code{NULL}, colors are taken from
+\code{moo@analyses$colors[[group_colname]]}.
+Colors must either be names in \code{grDevices::colors()} or valid hex codes. Unnamed colors are assigned by factor level order
+when the grouping column is a factor;
 otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
 than colors provided,
 supplied colors are used first and additional colors are generated from the selected palette for the remaining
