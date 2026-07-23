@@ -251,3 +251,251 @@ test_that("remove_low_count_genes works with group-based filtering (no grouped t
   expect_true("Gene" %in% colnames(result))
   expect_true(nrow(result) > 0)
 })
+
+test_that("filter_counts forwards plotting parameters", {
+  pca_args <- NULL
+  histogram_args <- NULL
+
+  local_mocked_bindings(
+    plot_pca = function(...) {
+      pca_args <<- list(...)
+      return(ggplot2::ggplot())
+    },
+    plot_histogram = function(...) {
+      histogram_args <<- list(...)
+      return(ggplot2::ggplot())
+    },
+    print_or_save_plot = function(...) invisible(NULL),
+    .package = "MOSuite"
+  )
+
+  moo <- create_multiOmicDataSet_from_dataframes(
+    as.data.frame(nidap_sample_metadata),
+    as.data.frame(nidap_clean_raw_counts),
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene"
+  ) |>
+    calc_cpm(feature_id_colname = "Gene")
+
+  filter_counts(
+    moo,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    label_colname = "Label",
+    count_type = "raw",
+    samples_to_rename = c("A1:Alpha 1"),
+    add_label_to_pca = FALSE,
+    principal_component_on_x_axis = 2,
+    principal_component_on_y_axis = 3,
+    legend_position_for_pca = "bottom",
+    label_offset_x_ = 4,
+    label_offset_y_ = 5,
+    label_font_size = 6,
+    point_size_for_pca = 7,
+    color_histogram_by_group = TRUE,
+    set_min_max_for_x_axis_for_histogram = TRUE,
+    minimum_for_x_axis_for_histogram = -2,
+    maximum_for_x_axis_for_histogram = 2,
+    legend_font_size_for_histogram = 11,
+    legend_position_for_histogram = "right",
+    number_of_histogram_legend_columns = 2,
+    colors_for_plots = c(A = "red", B = "blue", C = "green"),
+    plot_corr_matrix_heatmap = FALSE,
+    print_plots = TRUE,
+    save_plots = FALSE
+  )
+
+  expect_equal(pca_args$samples_to_rename, c("A1:Alpha 1"))
+  expect_equal(pca_args$principal_components, c(2, 3))
+  expect_equal(pca_args$legend_position, "bottom")
+  expect_equal(pca_args$point_size, 7)
+  expect_null(pca_args$label_colname)
+  expect_equal(pca_args$label_font_size, 6)
+  expect_equal(pca_args$label_offset_x_, 4)
+  expect_equal(pca_args$label_offset_y_, 5)
+  expect_equal(pca_args$color_values, c(A = "red", B = "blue", C = "green"))
+
+  expect_true(histogram_args$color_by_group)
+  expect_true(histogram_args$set_min_max_for_x_axis)
+  expect_equal(histogram_args$minimum_for_x_axis, -2)
+  expect_equal(histogram_args$maximum_for_x_axis, 2)
+  expect_equal(histogram_args$legend_font_size, 11)
+  expect_equal(histogram_args$legend_position, "right")
+  expect_equal(histogram_args$number_of_legend_columns, 2)
+  expect_equal(
+    histogram_args$color_values,
+    c(A = "red", B = "blue", C = "green")
+  )
+
+  pca_args <- NULL
+  filter_counts(
+    moo,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    label_colname = "Label",
+    count_type = "raw",
+    add_label_to_pca = TRUE,
+    plot_corr_matrix_heatmap = FALSE,
+    print_plots = TRUE,
+    save_plots = FALSE
+  )
+  expect_equal(pca_args$label_colname, "Label")
+})
+
+test_that("filter_counts handles histogram label combinations", {
+  pca_args <- NULL
+  histogram_args <- NULL
+  group_colors <- c(A = "red", B = "blue", C = "green")
+
+  local_mocked_bindings(
+    plot_pca = function(...) {
+      pca_args <<- list(...)
+      ggplot2::ggplot()
+    },
+    plot_histogram = function(...) {
+      histogram_args <<- list(...)
+      ggplot2::ggplot()
+    },
+    print_or_save_plot = function(...) invisible(NULL),
+    .package = "MOSuite"
+  )
+
+  moo <- create_multiOmicDataSet_from_dataframes(
+    as.data.frame(nidap_sample_metadata),
+    as.data.frame(nidap_clean_raw_counts),
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene"
+  ) |>
+    calc_cpm(feature_id_colname = "Gene")
+
+  combinations <- list(
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = FALSE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = FALSE,
+      interactive_plots = TRUE
+    ),
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = TRUE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = TRUE,
+      interactive_plots = TRUE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = FALSE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = FALSE,
+      interactive_plots = TRUE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = TRUE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = TRUE,
+      interactive_plots = TRUE
+    )
+  )
+
+  for (combination in combinations) {
+    pca_args <- NULL
+    histogram_args <- NULL
+    filter_counts(
+      moo,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      label_colname = combination$label_colname,
+      count_type = "raw",
+      color_histogram_by_group = combination$color_histogram_by_group,
+      interactive_plots = combination$interactive_plots,
+      colors_for_plots = group_colors,
+      plot_corr_matrix_heatmap = FALSE,
+      print_plots = TRUE,
+      save_plots = FALSE
+    )
+
+    expected_label_colname <- if (is.null(combination$label_colname)) {
+      "Sample"
+    } else {
+      combination$label_colname
+    }
+    expected_histogram_colors <- if (
+      isTRUE(combination$color_histogram_by_group)
+    ) {
+      group_colors
+    } else {
+      moo@analyses[["colors"]][[expected_label_colname]]
+    }
+
+    expect_equal(pca_args$label_colname, combination$label_colname)
+    expect_equal(histogram_args$label_colname, expected_label_colname)
+    expect_equal(
+      histogram_args$color_by_group,
+      combination$color_histogram_by_group
+    )
+    expect_equal(
+      histogram_args$interactive_plots,
+      combination$interactive_plots
+    )
+    expect_equal(histogram_args$color_values, expected_histogram_colors)
+  }
+})
+
+test_that("filter_counts forwards the default MOSuite plot colors", {
+  pca_args <- NULL
+  histogram_args <- NULL
+  default_colors <- c(
+    "A" = "#5954d6",
+    "B" = "#e1562c",
+    "C" = "#b80058"
+  )
+
+  local_mocked_bindings(
+    plot_pca = function(...) {
+      pca_args <<- list(...)
+      return(ggplot2::ggplot())
+    },
+    plot_histogram = function(...) {
+      histogram_args <<- list(...)
+      return(ggplot2::ggplot())
+    },
+    print_or_save_plot = function(...) invisible(NULL),
+    .package = "MOSuite"
+  )
+
+  moo <- create_multiOmicDataSet_from_dataframes(
+    as.data.frame(nidap_sample_metadata),
+    as.data.frame(nidap_clean_raw_counts),
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene"
+  ) |>
+    calc_cpm(feature_id_colname = "Gene")
+
+  filter_counts(
+    moo,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    label_colname = "Label",
+    count_type = "raw",
+    plot_corr_matrix_heatmap = FALSE,
+    print_plots = TRUE,
+    save_plots = FALSE
+  )
+
+  expect_equal(pca_args$color_values, default_colors)
+  expect_equal(histogram_args$color_values, default_colors)
+})

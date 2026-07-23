@@ -5,6 +5,8 @@
   "sample_id_colname": null,
   "feature_id_colname": null,
   "samples_to_rename": "",
+  "group_colname": "",
+  "colors_for_plots": null,
   "cleanup_column_names": true,
   "split_gene_name": true,
   "aggregate_rows_with_duplicate_gene_names": true,

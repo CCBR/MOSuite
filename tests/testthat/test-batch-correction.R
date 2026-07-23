@@ -49,7 +49,8 @@ test_that("batch_correction warnings & errors", {
     moo |>
       batch_correct_counts(
         covariates_colnames = "condition",
-        batch_colname = "batch"
+        batch_colname = "batch",
+        label_colname = "sample_id"
       ),
     "Batch column 'batch' contains only 1 unique value"
   )
@@ -61,4 +62,281 @@ test_that("batch_correction warnings & errors", {
       ),
     "Batch column 'batch' cannot be included in covariates."
   )
+})
+
+test_that("batch_correct_counts forwards plot settings to PCA and histogram", {
+  pca_args <- NULL
+  histogram_args <- NULL
+
+  local_mocked_bindings(
+    ComBat = function(dat, ...) dat,
+    .package = "sva"
+  )
+  local_mocked_bindings(
+    plot_pca = function(...) {
+      pca_args <<- list(...)
+      return(ggplot2::ggplot())
+    },
+    plot_histogram = function(...) {
+      histogram_args <<- list(...)
+      return(ggplot2::ggplot())
+    },
+    print_or_save_plot = function(...) invisible(NULL),
+    .package = "MOSuite"
+  )
+
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts),
+      "norm" = list("voom" = as.data.frame(nidap_norm_counts))
+    )
+  )
+
+  batch_correct_counts(
+    moo,
+    count_type = "norm",
+    sub_count_type = "voom",
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    covariates_colnames = "Group",
+    batch_colname = "Batch",
+    label_colname = "Label",
+    samples_to_rename = c("A1:Alpha 1"),
+    add_label_to_pca = FALSE,
+    principal_component_on_x_axis = 2,
+    principal_component_on_y_axis = 3,
+    legend_position_for_pca = "bottom",
+    label_offset_x_ = 4,
+    label_offset_y_ = 5,
+    label_font_size = 6,
+    point_size_for_pca = 7,
+    color_histogram_by_group = FALSE,
+    set_min_max_for_x_axis_for_histogram = TRUE,
+    minimum_for_x_axis_for_histogram = -2,
+    maximum_for_x_axis_for_histogram = 2,
+    legend_font_size_for_histogram = 11,
+    legend_position_for_histogram = "right",
+    number_of_histogram_legend_columns = 2,
+    colors_for_plots = c(A = "red", B = "blue", C = "green"),
+    plot_corr_matrix_heatmap = FALSE,
+    print_plots = TRUE,
+    save_plots = FALSE
+  )
+
+  expect_equal(pca_args$samples_to_rename, c("A1:Alpha 1"))
+  expect_equal(pca_args$principal_components, c(2, 3))
+  expect_equal(pca_args$legend_position, "bottom")
+  expect_equal(pca_args$point_size, 7)
+  expect_null(pca_args$label_colname)
+  expect_equal(pca_args$label_font_size, 6)
+  expect_equal(pca_args$label_offset_x_, 4)
+  expect_equal(pca_args$label_offset_y_, 5)
+  expect_equal(pca_args$color_values, c(A = "red", B = "blue", C = "green"))
+
+  expect_false(histogram_args$color_by_group)
+  expect_true(histogram_args$set_min_max_for_x_axis)
+  expect_equal(histogram_args$minimum_for_x_axis, -2)
+  expect_equal(histogram_args$maximum_for_x_axis, 2)
+  expect_equal(histogram_args$legend_font_size, 11)
+  expect_equal(histogram_args$legend_position, "right")
+  expect_equal(histogram_args$number_of_legend_columns, 2)
+  expect_equal(histogram_args$color_values, moo@analyses[["colors"]][["Label"]])
+
+  pca_args <- NULL
+  batch_correct_counts(
+    moo,
+    count_type = "norm",
+    sub_count_type = "voom",
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    covariates_colnames = "Group",
+    batch_colname = "Batch",
+    label_colname = "Label",
+    add_label_to_pca = TRUE,
+    plot_corr_matrix_heatmap = FALSE,
+    print_plots = TRUE,
+    save_plots = FALSE
+  )
+  expect_equal(pca_args$label_colname, "Label")
+})
+
+test_that("batch_correct_counts handles histogram label combinations", {
+  pca_args <- NULL
+  histogram_args <- NULL
+  group_colors <- c(A = "red", B = "blue", C = "green")
+
+  local_mocked_bindings(
+    ComBat = function(dat, ...) dat,
+    .package = "sva"
+  )
+  local_mocked_bindings(
+    plot_pca = function(...) {
+      pca_args <<- list(...)
+      ggplot2::ggplot()
+    },
+    plot_histogram = function(...) {
+      histogram_args <<- list(...)
+      ggplot2::ggplot()
+    },
+    print_or_save_plot = function(...) invisible(NULL),
+    .package = "MOSuite"
+  )
+
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts),
+      "norm" = list("voom" = as.data.frame(nidap_norm_counts))
+    )
+  )
+
+  combinations <- list(
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = FALSE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = FALSE,
+      interactive_plots = TRUE
+    ),
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = TRUE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = NULL,
+      color_histogram_by_group = TRUE,
+      interactive_plots = TRUE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = FALSE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = FALSE,
+      interactive_plots = TRUE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = TRUE,
+      interactive_plots = FALSE
+    ),
+    list(
+      label_colname = "Label",
+      color_histogram_by_group = TRUE,
+      interactive_plots = TRUE
+    )
+  )
+
+  for (combination in combinations) {
+    pca_args <- NULL
+    histogram_args <- NULL
+    batch_correct_counts(
+      moo,
+      count_type = "norm",
+      sub_count_type = "voom",
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      covariates_colnames = "Group",
+      batch_colname = "Batch",
+      label_colname = combination$label_colname,
+      color_histogram_by_group = combination$color_histogram_by_group,
+      interactive_plots = combination$interactive_plots,
+      colors_for_plots = group_colors,
+      plot_corr_matrix_heatmap = FALSE,
+      print_plots = TRUE,
+      save_plots = FALSE
+    )
+
+    expected_label_colname <- if (is.null(combination$label_colname)) {
+      "Sample"
+    } else {
+      combination$label_colname
+    }
+    expected_histogram_colors <- if (
+      isTRUE(combination$color_histogram_by_group)
+    ) {
+      group_colors
+    } else {
+      moo@analyses[["colors"]][[expected_label_colname]]
+    }
+
+    expect_equal(pca_args$label_colname, combination$label_colname)
+    expect_equal(histogram_args$label_colname, expected_label_colname)
+    expect_equal(
+      histogram_args$color_by_group,
+      combination$color_histogram_by_group
+    )
+    expect_equal(
+      histogram_args$interactive_plots,
+      combination$interactive_plots
+    )
+    expect_equal(histogram_args$color_values, expected_histogram_colors)
+  }
+})
+
+test_that("batch_correct_counts forwards the default MOSuite plot colors", {
+  pca_args <- NULL
+  histogram_args <- NULL
+  expected_colors <- c(
+    "1" = "#5954d6",
+    "2" = "#e1562c"
+  )
+
+  local_mocked_bindings(
+    ComBat = function(dat, ...) dat,
+    .package = "sva"
+  )
+  local_mocked_bindings(
+    plot_pca = function(...) {
+      pca_args <<- list(...)
+      return(ggplot2::ggplot())
+    },
+    plot_histogram = function(...) {
+      histogram_args <<- list(...)
+      return(ggplot2::ggplot())
+    },
+    print_or_save_plot = function(...) invisible(NULL),
+    .package = "MOSuite"
+  )
+
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts),
+      "norm" = list("voom" = as.data.frame(nidap_norm_counts))
+    )
+  )
+
+  batch_correct_counts(
+    moo,
+    count_type = "norm",
+    sub_count_type = "voom",
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    covariates_colnames = "Group",
+    batch_colname = "Batch",
+    label_colname = "Label",
+    plot_corr_matrix_heatmap = FALSE,
+    print_plots = TRUE,
+    save_plots = FALSE
+  )
+
+  expect_equal(pca_args$color_values, expected_colors)
+  expect_equal(histogram_args$color_values, expected_colors)
 })

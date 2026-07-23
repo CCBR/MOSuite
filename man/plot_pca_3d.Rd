@@ -19,13 +19,13 @@ plot_pca_3d(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = NULL,
   plot_title = "PCA 3D",
   plot_filename = "pca_3D.html",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "pca"
+  plots_subdir = "pca",
+  ...
 )
 
 ## S7 method for class <MOSuite::multiOmicDataSet>
@@ -42,13 +42,13 @@ plot_pca_3d(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = NULL,
   plot_title = "PCA 3D",
   plot_filename = "pca_3D.html",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "pca"
+  plots_subdir = "pca",
+  ...
 )
 
 ## S7 method for class <data.frame>
@@ -65,13 +65,13 @@ plot_pca_3d(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = NULL,
   plot_title = "PCA 3D",
   plot_filename = "pca_3D.html",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "pca"
+  plots_subdir = "pca",
+  ...
 )
 }
 \arguments{
@@ -99,7 +99,10 @@ plot_pca_3d(
 
 \item{label_font_size}{font size used for labels in the interactive figure.}
 
-\item{color_values}{vector of colors as hex values or names recognized by R.}
+\item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+the metadata column. Defaults to \code{NULL}; when \code{NULL}, \code{mosuite_palette} is used for \code{data.frame} dispatch and
+stored colors are used for \code{multiOmicDataSet} dispatch.}
 
 \item{plot_title}{title for the plot}
 
@@ -110,6 +113,8 @@ plot_pca_3d(
 \item{save_plots}{whether to save plot to disk.}
 
 \item{plots_subdir}{output subdirectory for saved plots.}
+
+\item{...}{additional arguments passed to methods}
 }
 \value{
 \code{plotly::plot_ly} figure

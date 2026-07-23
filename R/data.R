@@ -64,3 +64,17 @@
 #' The result of running `plot_venn_diagram()` on `nidap_volcano_summary_dat`
 #' @keywords data
 "nidap_venn_diagram_dat"
+
+#' Default MOSuite color palette
+#'
+#' A character vector of 12 hex color codes used as the default palette throughout MOSuite plots.
+#' Colors are assigned to groups in the order they appear (or by factor level order).
+#' Use [set_color_pal()] to override the palette for a specific metadata column.
+#'
+#' @format A character vector of length 12.
+#' @seealso [select_mosuite_colors()], [set_color_pal()]
+#' @keywords data
+#' @examples
+#' mosuite_palette
+#' scales::show_col(mosuite_palette)
+"mosuite_palette"

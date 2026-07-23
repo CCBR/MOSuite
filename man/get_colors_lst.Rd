@@ -4,14 +4,15 @@
 \alias{get_colors_lst}
 \title{Create named list of default colors for plotting}
 \usage{
-get_colors_lst(sample_metadata, palette_fun = grDevices::palette.colors, ...)
+get_colors_lst(sample_metadata, palette_fun = select_mosuite_colors, ...)
 }
 \arguments{
 \item{sample_metadata}{sample metadata as a data frame or tibble. The first column is assumed to contain the sample
 IDs which must correspond to column names in the raw counts.}
 
-\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default:
-\code{grDevices::palette.colors()}}
+\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Defaults to
+MOSuite's default plot palette. To use the previous R default palette behavior, pass
+\code{grDevices::palette.colors}.}
 
 \item{...}{additional arguments forwarded to \code{palette_fun}}
 }

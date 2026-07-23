@@ -31,13 +31,13 @@ print_or_save_plot <- function(
   draw_heatmap_with_caption <- function(hm) {
     ComplexHeatmap::draw(hm)
     if (!is.null(caption)) {
-      return(grid::grid.text(
+      grid::grid.text(
         caption,
         x = grid::unit(0.5, "npc"),
         y = grid::unit(2, "mm"),
         just = "bottom",
         gp = grid::gpar(fontsize = 9, col = "grey40")
-      ))
+      )
     }
   }
   if (!is.null(caption) && inherits(plot_obj, "ggplot")) {
@@ -76,4 +76,180 @@ print_or_save_plot <- function(
     }
   }
   return(invisible(filename))
+}
+
+format_hover_text <- function(
+  plot_data,
+  primary_colname,
+  secondary_colname = NULL,
+  missing_col_context = "plot",
+  require_secondary = TRUE
+) {
+  required_cols <- primary_colname
+  if (isTRUE(require_secondary) && !is.null(secondary_colname)) {
+    required_cols <- c(required_cols, secondary_colname)
+  }
+
+  missing_cols <- setdiff(required_cols, colnames(plot_data))
+  if (length(missing_cols) > 0) {
+    stop(glue::glue(
+      "Missing required {missing_col_context} metadata column(s): {glue::glue_collapse(missing_cols, sep = ",
+      ")}"
+    ))
+  }
+
+  primary_text <- paste0(
+    primary_colname,
+    ": ",
+    plot_data[[primary_colname]]
+  )
+
+  if (
+    is.null(secondary_colname) || !secondary_colname %in% colnames(plot_data)
+  ) {
+    return(primary_text)
+  }
+
+  paste0(
+    primary_text,
+    "<br>",
+    secondary_colname,
+    ": ",
+    plot_data[[secondary_colname]]
+  )
+}
+
+#' Compute a wrapped colour legend column count
+#'
+#' Computes a conservative number of legend columns for horizontal ggplot colour
+#' legends. Top and bottom legends are wrapped based on the number of labels and
+#' the longest label length. Other legend positions return `NULL` so their
+#' existing ggplot layout is preserved.
+#'
+#' @param labels Character vector of legend labels.
+#' @param legend_position Legend position passed to `ggplot2::theme()`.
+#' @param ncol Optional maximum number of legend columns.
+#' @param legend_text_size Legend text size used to scale the horizontal space
+#'   estimate. Larger legend text uses fewer columns.
+#' @param max_label_characters_per_row Approximate total label characters to fit
+#'   on one horizontal legend row.
+#'
+#' @return Integer column count for top/bottom legends, or `NULL` when no
+#'   wrapping should be applied.
+#' @keywords internal
+#' @noRd
+get_legend_column_count <- function(
+  labels,
+  legend_position = "top",
+  ncol = NULL,
+  legend_text_size = 10,
+  max_label_characters_per_row = 45
+) {
+  if (!legend_position %in% c("top", "bottom")) {
+    return(NULL)
+  }
+
+  labels <- stats::na.omit(as.character(labels))
+  if (length(labels) == 0) {
+    return(NULL)
+  }
+
+  max_label_length <- max(nchar(labels), 1)
+  text_size_multiplier <- legend_text_size / 10
+  columns_by_label_length <- max(
+    1,
+    floor(
+      max_label_characters_per_row / (max_label_length * text_size_multiplier)
+    )
+  )
+  legend_columns <- min(length(labels), columns_by_label_length)
+  if (!is.null(ncol)) {
+    legend_columns <- min(ncol, legend_columns)
+  }
+  legend_columns
+}
+
+#' Compute colour legend text size
+#'
+#' Computes legend text size from legend labels. Short legends keep the larger
+#' default text used by simple group legends, while longer or denser legends are
+#' scaled down.
+#'
+#' @param labels Character vector of legend labels.
+#' @param legend_text_size Optional explicit legend text size. When supplied,
+#'   this value is returned unchanged.
+#' @param min_legend_text_size Smallest automatically selected legend text size.
+#' @param max_legend_text_size Largest automatically selected legend text size.
+#'
+#' @return Numeric legend text size.
+#' @keywords internal
+#' @noRd
+get_legend_text_size <- function(
+  labels,
+  legend_text_size = NULL,
+  min_legend_text_size = 8,
+  max_legend_text_size = 18
+) {
+  if (!is.null(legend_text_size)) {
+    return(legend_text_size)
+  }
+
+  labels <- stats::na.omit(as.character(labels))
+  if (length(labels) == 0) {
+    return(max_legend_text_size)
+  }
+
+  label_pressure <- max(
+    max(nchar(labels), 1) / 5,
+    length(labels) / 4,
+    1
+  )
+
+  max(min_legend_text_size, floor(max_legend_text_size / sqrt(label_pressure)))
+}
+
+#' Add wrapped colour legend layout to a ggplot
+#'
+#' Applies a colour guide with a wrapped column count for top and bottom legends.
+#' Left, right, and hidden legends are returned unchanged.
+#'
+#' @param plot A `ggplot2` plot object.
+#' @inheritParams get_legend_column_count
+#'
+#' @return A `ggplot2` plot object with colour legend layout applied when needed.
+#' @keywords internal
+#' @noRd
+add_colour_legend_layout <- function(
+  plot,
+  labels,
+  legend_position = "top",
+  ncol = NULL,
+  legend_text_size = 10,
+  max_label_characters_per_row = 45,
+  guide_override_aes = NULL
+) {
+  legend_columns <- get_legend_column_count(
+    labels = labels,
+    legend_position = legend_position,
+    ncol = ncol,
+    legend_text_size = legend_text_size,
+    max_label_characters_per_row = max_label_characters_per_row
+  )
+
+  if (is.null(legend_columns)) {
+    return(plot)
+  }
+
+  guide_args <- list(ncol = legend_columns, byrow = TRUE)
+  if (!is.null(guide_override_aes)) {
+    guide_args$override.aes <- guide_override_aes
+  }
+
+  plot +
+    ggplot2::guides(
+      colour = do.call(ggplot2::guide_legend, guide_args)
+    ) +
+    ggplot2::theme(
+      legend.box = "vertical"
+    )
 }
