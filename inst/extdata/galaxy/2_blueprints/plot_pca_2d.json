@@ -34,7 +34,7 @@
     {
       "key": "label_colname",
       "displayName": "Plot Labels Column",
-      "description": "The column from the sample metadata containing the sample labels as you wish them to appear in\nthe plots produced by this template. This can be the same Sample Names Column. However, you may desire different\nlabels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the\ncolumn with your preferred Labels here. The selected column should contain unique names for each sample. (Default:\n`NULL` -- `sample_id_colname` will be used.)\n",
+      "description": "The column from the sample metadata containing the sample labels as you wish them to appear on\nthe PCA plot. If `NULL`, no labels are added to PCA points. This can be the same Sample Names Column. However, you\nmay desire different labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In\nthat case, select the column with your preferred Labels here. The selected column should contain unique names for\neach sample.\n",
       "paramGroup": "Basic",
       "sourceDataset": "Sample_Metadata_Table",
       "defaultValue": "Label",
@@ -104,7 +104,7 @@
       "paramType": "NUMBER",
       "paramGroup": "Visualization",
       "paramValues": null,
-      "defaultValue": 3,
+      "defaultValue": 5,
       "condition": null,
       "content": null,
       "objectPropertyReference": null
@@ -112,7 +112,7 @@
     {
       "key": "add_label",
       "displayName": "Add Labels",
-      "description": "whether to add text labels for the points\n",
+      "description": "Whether to add text labels for the points on the plot.",
       "paramType": "BOOLEAN",
       "paramGroup": "Visualization",
       "paramValues": null,
@@ -154,7 +154,7 @@
     {
       "key": "color_values",
       "displayName": "Color Values",
-      "description": "vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor\nlevel order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in\nthe metadata column.\n",
+      "description": "vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor\nlevel order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in\nthe metadata column. Defaults to `NULL`; when `NULL`, `mosuite_palette` is used for `data.frame` dispatch and\nstored colors are used for `multiOmicDataSet` dispatch.\n",
       "paramType": "MULTISELECT",
       "paramGroup": "Visualization",
       "paramValues": [
@@ -233,7 +233,6 @@
         "gray80",
         "lightgrey"
       ],
-      "defaultValue": ["#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c", "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"],
       "condition": null,
       "content": null,
       "objectPropertyReference": null
