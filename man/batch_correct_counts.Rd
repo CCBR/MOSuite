@@ -124,8 +124,8 @@ not be be created. Default is \code{TRUE}.}
 
 \item{colors_for_plots}{Optional colors for PCA/histogram/heatmap plots. If \code{NULL}, colors are taken from
 \code{moo@analyses$colors[[group_colname]]}.
-Colors must either be names in \code{grDevices::colors()} or valid hex codes. Unnamed colors are assigned by factor
-level order when the grouping column is a factor;
+Colors must either be names in \code{grDevices::colors()} or valid hex codes.
+Unnamed colors are assigned by factor level order when the grouping column is a factor;
 otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
 than colors provided,
 supplied colors are used first and additional colors are generated from the selected palette for the remaining
