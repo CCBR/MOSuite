@@ -67,6 +67,63 @@ test_that("clean_raw_counts works for RENEE data", {
   )
 })
 
+test_that("clean_raw_counts plots CPM histogram after cleaning without all-zero genes", {
+  captured_histogram_counts <- NULL
+  histogram_args <- NULL
+  saved_filenames <- character()
+  group_colors <- c(A = "red", B = "blue")
+
+  local_mocked_bindings(
+    plot_histogram = function(moo_counts, ...) {
+      captured_histogram_counts <<- moo_counts
+      histogram_args <<- list(...)
+      ggplot2::ggplot()
+    },
+    print_or_save_plot = function(plot, filename, ...) {
+      saved_filenames <<- c(saved_filenames, basename(filename))
+      invisible(NULL)
+    },
+    .package = "MOSuite"
+  )
+
+  counts_dat <- data.frame(
+    GeneName = c("all_zero", "keep_one", "keep_one"),
+    S1 = c(0, 10, 5),
+    S2 = c(0, 0, 5),
+    check.names = FALSE
+  )
+  sample_metadata <- data.frame(
+    Sample = c("S1", "S2"),
+    Group = c("A", "B"),
+    check.names = FALSE
+  )
+
+  create_multiOmicDataSet_from_dataframes(
+    sample_metadata = sample_metadata,
+    counts_dat = counts_dat,
+    sample_id_colname = "Sample",
+    feature_id_colname = "GeneName"
+  ) |>
+    clean_raw_counts(
+      sample_id_colname = "Sample",
+      feature_id_colname = "GeneName",
+      group_colname = "Group",
+      colors_for_plots = group_colors,
+      split_gene_name = FALSE,
+      print_plots = TRUE,
+      save_plots = FALSE
+    )
+
+  expect_true("read_depth.png" %in% saved_filenames)
+  expect_true("cpm_histogram.png" %in% saved_filenames)
+  expect_equal(captured_histogram_counts$GeneName, "keep_one")
+  expect_equal(captured_histogram_counts$S1, 1e6)
+  expect_equal(captured_histogram_counts$S2, 1e6)
+  expect_equal(histogram_args$group_colname, "Group")
+  expect_equal(histogram_args$color_values, group_colors)
+  expect_true(histogram_args$color_by_group)
+})
+
 test_that("aggregate_duplicate_gene_names returns collapsed dfout", {
   counts_dat <- data.frame(
     gene_id = c("A", "A", "B"),
