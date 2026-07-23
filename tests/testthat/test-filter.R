@@ -259,11 +259,11 @@ test_that("filter_counts forwards plotting parameters", {
   local_mocked_bindings(
     plot_pca = function(...) {
       pca_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     plot_histogram = function(...) {
       histogram_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     print_or_save_plot = function(...) invisible(NULL),
     .package = "MOSuite"
@@ -340,11 +340,11 @@ test_that("filter_counts forwards the default MOSuite plot colors", {
   local_mocked_bindings(
     plot_pca = function(...) {
       pca_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     plot_histogram = function(...) {
       histogram_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     print_or_save_plot = function(...) invisible(NULL),
     .package = "MOSuite"
