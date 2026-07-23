@@ -148,8 +148,9 @@ number and length of legend labels.}
 
 \item{label_offset_y_}{vertical offset for text labels on the PCA plot.}
 
-\item{log_transform}{If \code{TRUE}, apply \code{log(x + log_transform_pseudocount, base = log_transform_base)} to sample count columns before PCA.
-Use this when plotting count or CPM-like data that should be compressed before ordination.}
+\item{log_transform}{If \code{TRUE}, apply \code{log(x + log_transform_pseudocount, base = log_transform_base)} to sample
+count columns before PCA. Use this for count-like data such as raw, clean, filt, or CPM-like counts; leave it
+\code{FALSE} for already normalized/log-scale or batch-corrected values to avoid double transformation.}
 
 \item{log_transform_pseudocount}{Pseudocount added before log-transforming counts when \code{log_transform} is
 \code{TRUE}.}

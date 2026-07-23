@@ -720,3 +720,121 @@ test_that("filter_counts adds a dotted threshold line and label to the histogram
   expect_equal(histogram_data[[2]]$x, 4 + 0.5)
   expect_equal(histogram_data[[2]]$label, "CPM: 4")
 })
+
+test_that("filter_counts PCA matches standalone plot_pca on filtered output", {
+  pca_capture <- capture_saved_pca_plot()
+  local_mocked_bindings(
+    print_or_save_plot = pca_capture$print_or_save_plot,
+    .package = "MOSuite"
+  )
+
+  moo <- create_multiOmicDataSet_from_dataframes(
+    as.data.frame(nidap_sample_metadata),
+    as.data.frame(nidap_clean_raw_counts),
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene"
+  ) |>
+    filter_counts(
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      label_colname = NULL,
+      count_type = "raw",
+      use_cpm_counts_to_filter = FALSE,
+      minimum_count_value_to_be_considered_nonzero = 8,
+      minimum_number_of_samples_with_nonzero_counts_in_total = 7,
+      plot_corr_matrix_heatmap = FALSE,
+      print_plots = TRUE,
+      save_plots = FALSE
+    )
+
+  expected_pca <- plot_pca(
+    moo@counts$filt,
+    sample_metadata = moo@sample_meta,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    label_colname = NULL,
+    samples_to_rename = c(""),
+    principal_components = c(1, 2),
+    legend_position = "top",
+    point_size = 5,
+    label_font_size = 3,
+    label_offset_y_ = 2,
+    label_offset_x_ = 2,
+    log_transform = TRUE,
+    log_transform_pseudocount = 0.5,
+    log_transform_base = "ln",
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+
+  expect_s3_class(pca_capture$get(), "ggplot")
+  expect_pca_coordinates_equal(pca_capture$get(), expected_pca)
+})
+
+test_that("filter_counts histogram matches standalone plot_histogram on filtered output", {
+  histogram_capture <- capture_saved_histogram_plot()
+  local_mocked_bindings(
+    print_or_save_plot = histogram_capture$print_or_save_plot,
+    .package = "MOSuite"
+  )
+
+  moo <- create_multiOmicDataSet_from_dataframes(
+    as.data.frame(nidap_sample_metadata),
+    as.data.frame(nidap_clean_raw_counts),
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene"
+  ) |>
+    filter_counts(
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      label_colname = NULL,
+      count_type = "raw",
+      use_cpm_counts_to_filter = FALSE,
+      minimum_count_value_to_be_considered_nonzero = 8,
+      minimum_number_of_samples_with_nonzero_counts_in_total = 7,
+      plot_corr_matrix_heatmap = FALSE,
+      print_plots = TRUE,
+      save_plots = FALSE,
+      interactive_plots = FALSE
+    )
+
+  histogram_threshold_x <- 8 + 0.5
+  expected_histogram <- plot_histogram(
+    moo@counts$filt,
+    sample_metadata = moo@sample_meta,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    label_colname = NULL,
+    color_by_group = TRUE,
+    set_min_max_for_x_axis = FALSE,
+    minimum_for_x_axis = -1,
+    maximum_for_x_axis = 1,
+    x_axis_label = "Count",
+    legend_position = "top",
+    legend_font_size = NULL,
+    number_of_legend_columns = 6,
+    interactive_plots = FALSE,
+    return_ggplot = TRUE,
+    use_log2_x_axis = TRUE
+  ) +
+    ggplot2::labs(caption = "filtered counts") +
+    ggplot2::geom_vline(
+      xintercept = histogram_threshold_x,
+      linetype = 2,
+      linewidth = 1
+    ) +
+    ggplot2::annotate(
+      "text",
+      x = histogram_threshold_x,
+      y = Inf,
+      label = "Count: 8",
+      hjust = -0.05,
+      vjust = 1.5,
+      size = 3
+    )
+
+  expect_s3_class(histogram_capture$get(), "ggplot")
+  expect_histogram_layers_equal(histogram_capture$get(), expected_histogram)
+})

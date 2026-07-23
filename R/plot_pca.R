@@ -29,6 +29,12 @@
 #'
 #' @details
 #'
+#'  PCA is sensitive to feature scale. For raw, cleaned, filtered, or CPM-like count data, setting
+#'  `log_transform = TRUE` compresses high-count features before PCA so ordination is less dominated by abundance
+#'  differences. Do not enable this for already normalized/log-scale data, such as voom/logCPM `norm` counts or
+#'  batch-corrected normalized counts, because that would apply a second log transform. The default PCA transform uses
+#'  the original MOSuite PCA scaling, `log(x + 0.5)`.
+#'
 #'  See the low-level function docs for additional arguments
 #'  depending on whether you're plotting 2 or 3 PCs:
 #'
@@ -304,8 +310,9 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 #' @param label_font_size font size for text labels on the PCA plot.
 #' @param label_offset_x_ horizontal offset for text labels on the PCA plot.
 #' @param label_offset_y_ vertical offset for text labels on the PCA plot.
-#' @param log_transform If `TRUE`, apply `log(x + log_transform_pseudocount, base = log_transform_base)` to sample count columns before PCA.
-#'   Use this when plotting count or CPM-like data that should be compressed before ordination.
+#' @param log_transform If `TRUE`, apply `log(x + log_transform_pseudocount, base = log_transform_base)` to sample
+#'   count columns before PCA. Use this for count-like data such as raw, clean, filt, or CPM-like counts; leave it
+#'   `FALSE` for already normalized/log-scale or batch-corrected values to avoid double transformation.
 #' @param log_transform_pseudocount Pseudocount added before log-transforming counts when `log_transform` is
 #'   `TRUE`.
 #' @param log_transform_base Logarithm base to use when `log_transform` is `TRUE`. Use a numeric value, or `"e"`,
@@ -634,7 +641,9 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
 #'
 #' @param principal_components vector with numbered principal components to plot
 #' @param point_size size for `ggplot2::geom_point()`
-#' @param log_transform If `TRUE`, apply `log(x + log_transform_pseudocount, base = log_transform_base)` to sample count columns before PCA.
+#' @param log_transform If `TRUE`, apply `log(x + log_transform_pseudocount, base = log_transform_base)` to sample
+#'   count columns before PCA. Use this for count-like data such as raw, clean, filt, or CPM-like counts; leave it
+#'   `FALSE` for already normalized/log-scale or batch-corrected values to avoid double transformation.
 #' @param log_transform_pseudocount Pseudocount added before log-transforming counts when `log_transform` is
 #'   `TRUE`.
 #' @param log_transform_base Logarithm base to use when `log_transform` is `TRUE`. Use a numeric value, or `"e"`,

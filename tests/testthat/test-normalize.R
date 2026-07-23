@@ -390,3 +390,102 @@ test_that("normalize_counts forwards the default MOSuite plot colors", {
   expect_equal(pca_args$color_values, default_colors)
   expect_equal(histogram_args$color_values, default_colors)
 })
+
+test_that("normalize_counts PCA matches standalone plot_pca on normalized output", {
+  pca_capture <- capture_saved_pca_plot()
+  local_mocked_bindings(
+    print_or_save_plot = pca_capture$print_or_save_plot,
+    .package = "MOSuite"
+  )
+
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts)
+    )
+  ) |>
+    normalize_counts(
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      group_colname = "Group",
+      label_colname = NULL,
+      plot_corr_matrix_heatmap = FALSE,
+      print_plots = TRUE,
+      save_plots = FALSE
+    )
+
+  expected_pca <- plot_pca(
+    moo@counts$norm$voom,
+    sample_metadata = moo@sample_meta,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    label_colname = NULL,
+    samples_to_rename = c(""),
+    principal_components = c(1, 2),
+    legend_position = "top",
+    point_size = 5,
+    label_font_size = 3,
+    label_offset_y_ = 2,
+    label_offset_x_ = 2,
+    log_transform = FALSE,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+
+  expect_s3_class(pca_capture$get(), "ggplot")
+  expect_pca_coordinates_equal(pca_capture$get(), expected_pca)
+})
+
+test_that("normalize_counts histogram matches standalone plot_histogram on normalized output", {
+  histogram_capture <- capture_saved_histogram_plot()
+  local_mocked_bindings(
+    print_or_save_plot = histogram_capture$print_or_save_plot,
+    .package = "MOSuite"
+  )
+
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts)
+    )
+  ) |>
+    normalize_counts(
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      group_colname = "Group",
+      label_colname = NULL,
+      plot_corr_matrix_heatmap = FALSE,
+      print_plots = TRUE,
+      save_plots = FALSE,
+      interactive_plots = FALSE
+    )
+
+  expected_histogram <- plot_histogram(
+    moo@counts$norm$voom,
+    sample_metadata = moo@sample_meta,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    label_colname = NULL,
+    color_by_group = TRUE,
+    x_axis_label = "Normalized Counts",
+    set_min_max_for_x_axis = FALSE,
+    minimum_for_x_axis = -1,
+    maximum_for_x_axis = 1,
+    legend_position = "top",
+    legend_font_size = NULL,
+    number_of_legend_columns = 6,
+    interactive_plots = FALSE
+  ) +
+    ggplot2::labs(caption = "normalized counts")
+
+  expect_s3_class(histogram_capture$get(), "ggplot")
+  expect_histogram_layers_equal(histogram_capture$get(), expected_histogram)
+})

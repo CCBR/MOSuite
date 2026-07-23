@@ -22,6 +22,12 @@ PCA plot (2D or 3D depending on the number of \code{principal_components})
 Perform and plot a Principal Components Analysis
 }
 \details{
+PCA is sensitive to feature scale. For raw, cleaned, filtered, or CPM-like count data, setting
+\code{log_transform = TRUE} compresses high-count features before PCA so ordination is less dominated by abundance
+differences. Do not enable this for already normalized/log-scale data, such as voom/logCPM \code{norm} counts or
+batch-corrected normalized counts, because that would apply a second log transform. The default PCA transform uses
+the original MOSuite PCA scaling, \code{log(x + 0.5)}.
+
 See the low-level function docs for additional arguments
 depending on whether you're plotting 2 or 3 PCs:
 \itemize{

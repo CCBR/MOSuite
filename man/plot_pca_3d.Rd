@@ -108,7 +108,9 @@ plot_pca_3d(
 
 \item{label_font_size}{font size used for labels in the interactive figure.}
 
-\item{log_transform}{If \code{TRUE}, apply \code{log(x + log_transform_pseudocount, base = log_transform_base)} to sample count columns before PCA.}
+\item{log_transform}{If \code{TRUE}, apply \code{log(x + log_transform_pseudocount, base = log_transform_base)} to sample
+count columns before PCA. Use this for count-like data such as raw, clean, filt, or CPM-like counts; leave it
+\code{FALSE} for already normalized/log-scale or batch-corrected values to avoid double transformation.}
 
 \item{log_transform_pseudocount}{Pseudocount added before log-transforming counts when \code{log_transform} is
 \code{TRUE}.}
