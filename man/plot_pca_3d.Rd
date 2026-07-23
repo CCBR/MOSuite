@@ -19,6 +19,9 @@ plot_pca_3d(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   plot_title = "PCA 3D",
@@ -42,6 +45,9 @@ plot_pca_3d(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   plot_title = "PCA 3D",
@@ -65,6 +71,9 @@ plot_pca_3d(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   plot_title = "PCA 3D",
@@ -98,6 +107,14 @@ plot_pca_3d(
 \item{point_size}{size for \code{ggplot2::geom_point()}}
 
 \item{label_font_size}{font size used for labels in the interactive figure.}
+
+\item{log_transform}{If \code{TRUE}, apply \code{log(x + log_transform_pseudocount, base = log_transform_base)} to sample count columns before PCA.}
+
+\item{log_transform_pseudocount}{Pseudocount added before log-transforming counts when \code{log_transform} is
+\code{TRUE}.}
+
+\item{log_transform_base}{Logarithm base to use when \code{log_transform} is \code{TRUE}. Use a numeric value, or \code{"e"},
+\code{"ln"}, or \code{"natural"} for natural log. Default is \code{"ln"} to match the original PCA transform.}
 
 \item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
 level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in

@@ -214,13 +214,8 @@ filter_counts <- function(
 
     message(glue::glue("colors_for_plots {class(colors_for_plots)}"))
 
-    log_counts <- df_filt |>
-      dplyr::mutate(dplyr::across(
-        tidyselect::all_of(samples_to_include),
-        ~ log(.x + 0.5)
-      ))
     pca_plot <- plot_pca(
-      log_counts,
+      df_filt,
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,
@@ -237,6 +232,9 @@ filter_counts <- function(
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_,
+      log_transform = TRUE,
+      log_transform_pseudocount = 0.5,
+      log_transform_base = "ln",
       print_plots = FALSE,
       save_plots = FALSE
     ) +

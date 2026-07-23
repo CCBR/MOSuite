@@ -142,6 +142,7 @@ normalize_counts <- function(
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_,
+      log_transform = FALSE,
       print_plots = FALSE,
       save_plots = FALSE
     ) +

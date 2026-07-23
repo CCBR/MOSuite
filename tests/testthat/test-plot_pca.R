@@ -669,3 +669,100 @@ test_that("plot_pca_3d hover text includes label column when provided", {
     fixed = TRUE
   )))
 })
+
+test_that("plot_pca_2d log_transform defaults to original natural-log transform", {
+  counts_log <- nidap_filtered_counts |>
+    dplyr::mutate(dplyr::across(
+      tidyselect::all_of(nidap_sample_metadata$Sample),
+      ~ log(.x + 0.5)
+    ))
+
+  p_from_option <- plot_pca_2d(
+    nidap_filtered_counts,
+    sample_metadata = nidap_sample_metadata,
+    feature_id_colname = "Gene",
+    label_colname = NULL,
+    log_transform = TRUE,
+    log_transform_pseudocount = 0.5,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+  p_from_manual_transform <- plot_pca_2d(
+    counts_log,
+    sample_metadata = nidap_sample_metadata,
+    feature_id_colname = "Gene",
+    label_colname = NULL,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+
+  option_points <- ggplot2::ggplot_build(p_from_option)$data[[1]][, c("x", "y")]
+  manual_points <- ggplot2::ggplot_build(p_from_manual_transform)$data[[1]][, c("x", "y")]
+  expect_equal(option_points, manual_points, tolerance = 1e-8)
+})
+
+test_that("plot_pca_3d log_transform defaults to original natural-log transform", {
+  counts_log <- nidap_filtered_counts |>
+    dplyr::mutate(dplyr::across(
+      tidyselect::all_of(nidap_sample_metadata$Sample),
+      ~ log(.x + 0.5)
+    ))
+
+  fig_from_option <- plot_pca_3d(
+    nidap_filtered_counts,
+    sample_metadata = nidap_sample_metadata,
+    feature_id_colname = "Gene",
+    log_transform = TRUE,
+    log_transform_pseudocount = 0.5,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+  fig_from_manual_transform <- plot_pca_3d(
+    counts_log,
+    sample_metadata = nidap_sample_metadata,
+    feature_id_colname = "Gene",
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+
+  option_traces <- plotly::plotly_build(fig_from_option)$x$data
+  manual_traces <- plotly::plotly_build(fig_from_manual_transform)$x$data
+  expect_equal(length(option_traces), length(manual_traces))
+  for (trace_index in seq_along(option_traces)) {
+    expect_equal(option_traces[[trace_index]]$x, manual_traces[[trace_index]]$x, tolerance = 1e-8)
+    expect_equal(option_traces[[trace_index]]$y, manual_traces[[trace_index]]$y, tolerance = 1e-8)
+    expect_equal(option_traces[[trace_index]]$z, manual_traces[[trace_index]]$z, tolerance = 1e-8)
+  }
+})
+
+test_that("plot_pca_2d log_transform supports log2 base", {
+  counts_log <- nidap_filtered_counts |>
+    dplyr::mutate(dplyr::across(
+      tidyselect::all_of(nidap_sample_metadata$Sample),
+      ~ log2(.x + 0.5)
+    ))
+
+  p_from_option <- plot_pca_2d(
+    nidap_filtered_counts,
+    sample_metadata = nidap_sample_metadata,
+    feature_id_colname = "Gene",
+    label_colname = NULL,
+    log_transform = TRUE,
+    log_transform_pseudocount = 0.5,
+    log_transform_base = 2,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+  p_from_manual_transform <- plot_pca_2d(
+    counts_log,
+    sample_metadata = nidap_sample_metadata,
+    feature_id_colname = "Gene",
+    label_colname = NULL,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+
+  option_points <- ggplot2::ggplot_build(p_from_option)$data[[1]][, c("x", "y")]
+  manual_points <- ggplot2::ggplot_build(p_from_manual_transform)$data[[1]][, c("x", "y")]
+  expect_equal(option_points, manual_points, tolerance = 1e-8)
+})
