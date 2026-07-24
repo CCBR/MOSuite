@@ -31,6 +31,6 @@ get_colors_vctr(dat, colname, palette_fun = select_mosuite_colors, ...)
 
 ## Value
 
-named vector of colors for each unique observation in `dat$colname`.
+named vector of colors for each unique observation in `dat[[colname]]`.
 Factor columns use factor level order; other columns use first-observed
 order.

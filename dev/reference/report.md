@@ -203,26 +203,29 @@ moo <- moo |>
 
     no duplicated IDs in GeneName
 
+![](report_files/figure-html/analyze-2.png)
+
+    Saving 7 x 5 in image
     * filtering clean counts
 
     Number of features after filtering: 7943
 
-![](report_files/figure-html/analyze-2.png)
-
 ![](report_files/figure-html/analyze-3.png)
 
 ![](report_files/figure-html/analyze-4.png)
+
+![](report_files/figure-html/analyze-5.png)
 
     Saving 7 x 5 in image
     * normalizing filt counts
 
     Total number of features included: 7943
 
-![](report_files/figure-html/analyze-5.png)
-
 ![](report_files/figure-html/analyze-6.png)
 
 ![](report_files/figure-html/analyze-7.png)
+
+![](report_files/figure-html/analyze-8.png)
 
     Saving 7 x 5 in image
     Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
@@ -241,11 +244,11 @@ moo <- moo |>
 
     Adjusting the Data
 
-![](report_files/figure-html/analyze-8.png)
-
 ![](report_files/figure-html/analyze-9.png)
 
 ![](report_files/figure-html/analyze-10.png)
+
+![](report_files/figure-html/analyze-11.png)
 
     Saving 7 x 5 in image
     The total number of features in output: 7943
@@ -260,7 +263,7 @@ moo <- moo |>
 
     `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
 
-![](report_files/figure-html/analyze-11.png)
+![](report_files/figure-html/analyze-12.png)
 
     Saving 7 x 5 in image
     `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
@@ -270,7 +273,7 @@ moo <- moo |>
 
     Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
 
-![](report_files/figure-html/analyze-12.png)
+![](report_files/figure-html/analyze-13.png)
 
     Saving 7 x 5 in image
 

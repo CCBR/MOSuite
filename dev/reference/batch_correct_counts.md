@@ -14,7 +14,7 @@ batch_correct_counts(
   samples_to_include = NULL,
   covariates_colnames = "Group",
   batch_colname = "Batch",
-  label_colname = NULL,
+  label_colname = "Label",
   samples_to_rename = c(""),
   add_label_to_pca = TRUE,
   principal_component_on_x_axis = 1,

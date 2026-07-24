@@ -25,6 +25,9 @@ plot_pca_2d(
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   interactive_plots = FALSE,
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
@@ -52,6 +55,9 @@ plot_pca_2d(
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   interactive_plots = FALSE,
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
@@ -79,6 +85,9 @@ plot_pca_2d(
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   interactive_plots = FALSE,
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
@@ -189,6 +198,26 @@ plot_pca_2d(
 - label_offset_y\_:
 
   vertical offset for text labels on the PCA plot.
+
+- log_transform:
+
+  If `TRUE`, apply
+  `log(x + log_transform_pseudocount, base = log_transform_base)` to
+  sample count columns before PCA. Use this for count-like data such as
+  raw, clean, filt, or CPM-like counts; leave it `FALSE` for already
+  normalized/log-scale or batch-corrected values to avoid double
+  transformation.
+
+- log_transform_pseudocount:
+
+  Pseudocount added before log-transforming counts when `log_transform`
+  is `TRUE`.
+
+- log_transform_base:
+
+  Logarithm base to use when `log_transform` is `TRUE`. Use a numeric
+  value, or `"e"`, `"ln"`, or `"natural"` for natural log. Default is
+  `"ln"` to match the original PCA transform.
 
 - interactive_plots:
 

@@ -100,16 +100,22 @@ filter_counts(
 
 - minimum_count_value_to_be_considered_nonzero:
 
-  Minimum count value to be considered non-zero for a sample
+  Minimum value in the selected filtering table required for a sample to
+  be considered nonzero. If `use_cpm_counts_to_filter` is `TRUE`, this
+  threshold is applied to CPM values. If `use_cpm_counts_to_filter` is
+  `FALSE`, this threshold is applied directly to the selected
+  `count_type` table.
 
 - minimum_number_of_samples_with_nonzero_counts_in_total:
 
-  Minimum number of samples (total) with non-zero counts
+  Minimum number of samples in total that must meet the
+  `minimum_count_value_to_be_considered_nonzero` threshold for a feature
+  to be kept.
 
 - minimum_number_of_samples_with_nonzero_counts_in_a_group:
 
-  Only keeps genes that have at least this number of samples with
-  nonzero CPM counts in at least one group
+  Only keeps genes that have at least this number of samples meeting the
+  threshold in at least one group
 
 - use_cpm_counts_to_filter:
 
@@ -124,7 +130,7 @@ filter_counts(
 - use_group_based_filtering:
 
   If TRUE, only keeps features (e.g. genes) that have at least a certain
-  number of samples with nonzero CPM counts in at least one group
+  number of samples passing the threshold in at least one group
 
 - principal_component_on_x_axis:
 

@@ -109,11 +109,13 @@ disk.</p>
 <span><span class="co">#&gt; Number of rows before Collapse: 43280</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; no duplicated IDs in GeneName</span></span></code></pre>
+<p><img src="visualization_files/figure-html/nidap_data_clean-2.png" class="r-plt" alt="" width="480"></p>
+<pre><code><span><span class="co">#&gt; Saving 5 x 4 in image</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="filter">filter<a class="anchor" aria-label="anchor" href="#filter"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/filter_counts.html">filter_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; * filtering clean counts</span></span>
@@ -124,7 +126,7 @@ disk.</p>
 <div class="section level3">
 <h3 id="normalize">normalize<a class="anchor" aria-label="anchor" href="#normalize"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/normalize_counts.html">normalize_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; * normalizing filt counts</span></span>
@@ -136,7 +138,7 @@ disk.</p>
 <div class="section level3">
 <h3 id="batch-correct">batch correct<a class="anchor" aria-label="anchor" href="#batch-correct"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/batch_correct_counts.html">batch_correct_counts</a></span><span class="op">(</span></span>
 <span>    covariates_colname <span class="op">=</span> <span class="st">"Group"</span>,</span>
@@ -158,7 +160,7 @@ disk.</p>
 <div class="section level3">
 <h3 id="differential-expression">differential expression<a class="anchor" aria-label="anchor" href="#differential-expression"></a>
 </h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/diff_counts.html">diff_counts</a></span><span class="op">(</span></span>
 <span>    count_type <span class="op">=</span> <span class="st">"filt"</span>,</span>
@@ -180,7 +182,7 @@ disk.</p>
 <div class="section level3">
 <h3 id="filter-differential-features">filter differential features<a class="anchor" aria-label="anchor" href="#filter-differential-features"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">moo</span> <span class="op">&lt;-</span> <span class="va">moo</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/filter_diff.html">filter_diff</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
@@ -197,7 +199,7 @@ disk.</p>
 <div class="section level3">
 <h3 id="d-pca">3D PCA<a class="anchor" aria-label="anchor" href="#d-pca"></a>
 </h3>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_pca_3d.html">plot_pca_3d</a></span><span class="op">(</span></span>
 <span>  <span class="va">moo</span>,</span>
 <span>  count_type <span class="op">=</span> <span class="st">"batch"</span>,</span>
@@ -206,12 +208,12 @@ disk.</p>
 <span>  label_colname <span class="op">=</span> <span class="st">"Label"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="plotly html-widget html-fill-item" id="htmlwidget-36aa3d2a04d42bbc2145" style="width:480px;height:384px;"></div>
-<script type="application/json" data-for="htmlwidget-36aa3d2a04d42bbc2145">{"x":{"visdat":{"2e5220f913e8":["function () ","plotlyVisDat"]},"cur_data":"2e5220f913e8","attrs":{"2e5220f913e8":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"size":8},"hoverinfo":"text","text":{},"color":{},"size":24,"colors":["#5954d6","#e1562c","#b80058"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"PC1"},"yaxis":{"title":"PC2"},"zaxis":{"title":"PC3"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-37.02988740420713,-46.202726529239996,-47.388329488061188],"y":[33.20056607030736,40.838627625724037,28.814546147005224],"z":[4.7406847243841019,-10.906448043253027,-13.204218047115619],"mode":"markers","marker":{"color":"rgba(89,84,214,1)","size":8,"sizemode":"area","line":{"color":"rgba(89,84,214,1)"}},"hoverinfo":["text","text","text"],"text":["Label: A1<br>Group: A","Label: A2<br>Group: A","Label: A3<br>Group: A"],"type":"scatter3d","name":"A","textfont":{"color":"rgba(89,84,214,1)","size":55},"error_y":{"color":"rgba(89,84,214,1)","width":55},"error_x":{"color":"rgba(89,84,214,1)","width":55},"line":{"color":"rgba(89,84,214,1)","width":55},"frame":null},{"x":[-28.694926741752916,-13.178325203869875,-15.174264901109913],"y":[-29.61351670343015,-34.916643374714177,-65.245132469700494],"z":[25.172778558047199,13.334101581276443,7.1777565898972835],"mode":"markers","marker":{"color":"rgba(225,86,44,1)","size":8,"sizemode":"area","line":{"color":"rgba(225,86,44,1)"}},"hoverinfo":["text","text","text"],"text":["Label: B1<br>Group: B","Label: B2<br>Group: B","Label: B3<br>Group: B"],"type":"scatter3d","name":"B","textfont":{"color":"rgba(225,86,44,1)","size":55},"error_y":{"color":"rgba(225,86,44,1)","width":55},"error_x":{"color":"rgba(225,86,44,1)","width":55},"line":{"color":"rgba(225,86,44,1)","width":55},"frame":null},{"x":[54.383108042646533,77.413153148631352,55.872199076963149],"y":[-0.31296701193061999,31.436049026500761,-4.2015293097619741],"z":[-44.493203749203325,67.633314692756926,-49.454766306789963],"mode":"markers","marker":{"color":"rgba(184,0,88,1)","size":8,"sizemode":"area","line":{"color":"rgba(184,0,88,1)"}},"hoverinfo":["text","text","text"],"text":["Label: C1<br>Group: C","Label: C2<br>Group: C","Label: C3<br>Group: C"],"type":"scatter3d","name":"C","textfont":{"color":"rgba(184,0,88,1)","size":55},"error_y":{"color":"rgba(184,0,88,1)","width":55},"error_x":{"color":"rgba(184,0,88,1)","width":55},"line":{"color":"rgba(184,0,88,1)","width":55},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-36aa3d2a04d42bbc2145">{"x":{"visdat":{"2e9850eb410e":["function () ","plotlyVisDat"]},"cur_data":"2e9850eb410e","attrs":{"2e9850eb410e":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"size":8},"hoverinfo":"text","text":{},"color":{},"size":24,"colors":["#5954d6","#e1562c","#b80058"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"PC1"},"yaxis":{"title":"PC2"},"zaxis":{"title":"PC3"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-37.02988740420713,-46.202726529239996,-47.388329488061188],"y":[33.20056607030736,40.838627625724037,28.814546147005224],"z":[4.7406847243841019,-10.906448043253027,-13.204218047115619],"mode":"markers","marker":{"color":"rgba(89,84,214,1)","size":8,"sizemode":"area","line":{"color":"rgba(89,84,214,1)"}},"hoverinfo":["text","text","text"],"text":["Label: A1<br>Group: A","Label: A2<br>Group: A","Label: A3<br>Group: A"],"type":"scatter3d","name":"A","textfont":{"color":"rgba(89,84,214,1)","size":55},"error_y":{"color":"rgba(89,84,214,1)","width":55},"error_x":{"color":"rgba(89,84,214,1)","width":55},"line":{"color":"rgba(89,84,214,1)","width":55},"frame":null},{"x":[-28.694926741752916,-13.178325203869875,-15.174264901109913],"y":[-29.61351670343015,-34.916643374714177,-65.245132469700494],"z":[25.172778558047199,13.334101581276443,7.1777565898972835],"mode":"markers","marker":{"color":"rgba(225,86,44,1)","size":8,"sizemode":"area","line":{"color":"rgba(225,86,44,1)"}},"hoverinfo":["text","text","text"],"text":["Label: B1<br>Group: B","Label: B2<br>Group: B","Label: B3<br>Group: B"],"type":"scatter3d","name":"B","textfont":{"color":"rgba(225,86,44,1)","size":55},"error_y":{"color":"rgba(225,86,44,1)","width":55},"error_x":{"color":"rgba(225,86,44,1)","width":55},"line":{"color":"rgba(225,86,44,1)","width":55},"frame":null},{"x":[54.383108042646533,77.413153148631352,55.872199076963149],"y":[-0.31296701193061999,31.436049026500761,-4.2015293097619741],"z":[-44.493203749203325,67.633314692756926,-49.454766306789963],"mode":"markers","marker":{"color":"rgba(184,0,88,1)","size":8,"sizemode":"area","line":{"color":"rgba(184,0,88,1)"}},"hoverinfo":["text","text","text"],"text":["Label: C1<br>Group: C","Label: C2<br>Group: C","Label: C3<br>Group: C"],"type":"scatter3d","name":"C","textfont":{"color":"rgba(184,0,88,1)","size":55},"error_y":{"color":"rgba(184,0,88,1)","width":55},"error_x":{"color":"rgba(184,0,88,1)","width":55},"line":{"color":"rgba(184,0,88,1)","width":55},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="section level3">
 <h3 id="expression-heatmap">Expression Heatmap<a class="anchor" aria-label="anchor" href="#expression-heatmap"></a>
 </h3>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">heatmap_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_expr_heatmap.html">plot_expr_heatmap</a></span><span class="op">(</span></span>
 <span>  <span class="va">moo</span>,</span>
 <span>  count_type <span class="op">=</span> <span class="st">"norm"</span>,</span>
@@ -220,7 +222,7 @@ disk.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; The total number of genes in heatmap: 500</span></span></code></pre></div>
 <p><img src="visualization_files/figure-html/expr_heatmap-1.png" class="r-plt" alt="" width="480"></p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">heatmap_plot</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualization_files/figure-html/expr_heatmap-2.png" class="r-plt" alt="" width="480"></p>
 </div>
@@ -230,7 +232,7 @@ disk.</p>
 <div class="section level4">
 <h4 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h4>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat_volcano_summary</span> <span class="op">&lt;-</span> <span class="va">moo</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/join_dfs_wide.html">join_dfs_wide</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/plot_volcano_summary.html">plot_volcano_summary</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -276,7 +278,7 @@ disk.</p>
 <div class="section level4">
 <h4 id="enhanced">Enhanced<a class="anchor" aria-label="anchor" href="#enhanced"></a>
 </h4>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat_volcano_enhanced</span> <span class="op">&lt;-</span> <span class="va">moo</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/join_dfs_wide.html">join_dfs_wide</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/plot_volcano_enhanced.html">plot_volcano_enhanced</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -307,12 +309,12 @@ disk.</p>
 <div class="section level3">
 <h3 id="venn-diagram">Venn Diagram<a class="anchor" aria-label="anchor" href="#venn-diagram"></a>
 </h3>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">venn_dat</span> <span class="op">&lt;-</span> <span class="va">dat_volcano_summary</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/plot_venn_diagram.html">plot_venn_diagram</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; All intersections: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516),c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")</span></span>
 <span><span class="co">#&gt; Intersections returned: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516)</span></span></code></pre></div>
 <p><img src="visualization_files/figure-html/venn_diagram-1.png" class="r-plt" alt="" width="480"></p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">venn_dat</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    Gene      Intersection Id Size</span></span>
 <span><span class="co">#&gt; 1  Dntt (B-A ∩ B-C ∩ C-A)  1   80</span></span>
@@ -337,14 +339,14 @@ reference</a> for a full list of plotting functions.</p>
 <h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h4>
 <p>Plot the read depth of the clean counts:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_read_depth.html">plot_read_depth</a></span><span class="op">(</span></span>
 <span>  <span class="va">moo</span>,</span>
 <span>  count_type <span class="op">=</span> <span class="st">"clean"</span>,</span>
 <span>  group_colname <span class="op">=</span> <span class="st">"Group"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualization_files/figure-html/plot_read_depth-1.png" class="r-plt" alt="" width="480"></p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_read_depth.html">plot_read_depth</a></span><span class="op">(</span></span>
 <span>  <span class="va">moo</span>,</span>
 <span>  count_type <span class="op">=</span> <span class="st">"clean"</span>,</span>
@@ -352,7 +354,7 @@ reference</a> for a full list of plotting functions.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualization_files/figure-html/plot_read_depth-2.png" class="r-plt" alt="" width="480"></p>
 <p>Plot a 2D PCA for the batch-corrected counts:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_pca_2d.html">plot_pca_2d</a></span><span class="op">(</span></span>
 <span>  <span class="va">moo</span>,</span>
 <span>  count_type <span class="op">=</span> <span class="st">"batch"</span>,</span>
@@ -360,7 +362,7 @@ reference</a> for a full list of plotting functions.</p>
 <span>  group_colname <span class="op">=</span> <span class="st">"Batch"</span>,</span>
 <span>  label_colname <span class="op">=</span> <span class="st">"Label"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="visualization_files/figure-html/plot_pca_2D-1.png" class="r-plt" alt="" width="480"><img src="visualization_files/figure-html/plot_pca_2D-2.png" class="r-plt" alt="" width="480"></p>
+<p><img src="visualization_files/figure-html/plot_pca_2D-1.png" class="r-plt" alt="" width="480"></p>
 </div>
 </div>
 <div class="section level3">
@@ -369,7 +371,7 @@ reference</a> for a full list of plotting functions.</p>
 <p>Plotting functions that use ggplot2 return ggplot objects. You can
 customizing them by adding more ggplot layers, just like any other
 ggplot.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_pca_2d.html">plot_pca_2d</a></span><span class="op">(</span></span>
 <span>  <span class="va">moo</span>,</span>
 <span>  count_type <span class="op">=</span> <span class="st">"batch"</span>,</span>
@@ -381,20 +383,20 @@ ggplot.</p>
 <span>    title <span class="op">=</span> <span class="st">"Principle components of batch-corrected counts"</span>,</span>
 <span>    caption <span class="op">=</span> <span class="st">"Normalized counts were batch-corrected using svg::ComBat()"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="visualization_files/figure-html/ggplot2_pca_2D-1.png" class="r-plt" alt="" width="480"><img src="visualization_files/figure-html/ggplot2_pca_2D-2.png" class="r-plt" alt="" width="480"></p>
+<p><img src="visualization_files/figure-html/ggplot2_pca_2D-1.png" class="r-plt" alt="" width="480"></p>
 </div>
 <div class="section level3">
 <h3 id="custom-colors">Custom colors<a class="anchor" aria-label="anchor" href="#custom-colors"></a>
 </h3>
 <p>MOSuite comes bundled with a default palette:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/display_palette.html">display_palette</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualization_files/figure-html/display_palette-1.png" class="r-plt" alt="" width="480"></p>
 <p>When creating a multiOmicDataSet object such as with
 <code><a href="../reference/create_multiOmicDataSet_from_dataframes.html">create_multiOmicDataSet_from_dataframes()</a></code>, default colors
 are automatically picked from <code>mosuite_palette</code> and set in
 the analyses slot. You can see the defaults like so:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">moo</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">colors</span></span>
 <span><span class="co">#&gt; $Sample</span></span>
 <span><span class="co">#&gt;        A1        A2        A3        B1        B2        B3        C1        C2 </span></span>
@@ -421,7 +423,7 @@ the analyses slot. You can see the defaults like so:</p>
 <span><span class="co">#&gt; "#006e00"</span></span></code></pre></div>
 <p>The plotting functions access these colors by default, unless
 overridden with the <code>color_values</code> argument:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># color palette accessed from moo@analyses$colors[['Group']]</span></span>
 <span><span class="fu"><a href="../reference/plot_read_depth.html">plot_read_depth</a></span><span class="op">(</span></span>
 <span>  <span class="va">moo</span>,</span>
@@ -429,7 +431,7 @@ overridden with the <code>color_values</code> argument:</p>
 <span>  group_colname <span class="op">=</span> <span class="st">"Group"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualization_files/figure-html/plot_read_depth_custom_colors-1.png" class="r-plt" alt="" width="480"></p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># color palette overridden by color_values</span></span>
 <span><span class="fu"><a href="../reference/plot_read_depth.html">plot_read_depth</a></span><span class="op">(</span></span>
@@ -441,7 +443,7 @@ overridden with the <code>color_values</code> argument:</p>
 <p><img src="visualization_files/figure-html/plot_read_depth_custom_colors-2.png" class="r-plt" alt="" width="480"></p>
 <p>You can change the default colors in the multiOmicDataSet so that all
 plotting functions will use your chosen color palette.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">moo</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">colors</span><span class="op">[[</span><span class="st">"Batch"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span> <span class="op">=</span> <span class="st">"#0E7175"</span>, <span class="st">"2"</span> <span class="op">=</span> <span class="st">"#C35BCA"</span><span class="op">)</span></span>
 <span><span class="va">moo</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">colors</span><span class="op">[[</span><span class="st">"Replicate"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"1"</span> <span class="op">=</span> <span class="st">"#89973D"</span>,</span>
@@ -456,14 +458,14 @@ plotting functions will use your chosen color palette.</p>
 <span>  group_colname <span class="op">=</span> <span class="st">"Group"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualization_files/figure-html/custom_palette-1.png" class="r-plt" alt="" width="480"></p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_pca_2d.html">plot_pca_2d</a></span><span class="op">(</span></span>
 <span>  <span class="va">moo</span>,</span>
 <span>  count_type <span class="op">=</span> <span class="st">"batch"</span>,</span>
 <span>  group_colname <span class="op">=</span> <span class="st">"Batch"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="visualization_files/figure-html/custom_palette-2.png" class="r-plt" alt="" width="480"><img src="visualization_files/figure-html/custom_palette-3.png" class="r-plt" alt="" width="480"></p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<p><img src="visualization_files/figure-html/custom_palette-2.png" class="r-plt" alt="" width="480"></p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_expr_heatmap.html">plot_expr_heatmap</a></span><span class="op">(</span></span>
 <span>  <span class="va">moo</span>,</span>
 <span>  count_type <span class="op">=</span> <span class="st">"norm"</span>,</span>
@@ -471,7 +473,7 @@ plotting functions will use your chosen color palette.</p>
 <span>  group_colname <span class="op">=</span> <span class="st">"Group"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; The total number of genes in heatmap: 500</span></span></code></pre></div>
-<p><img src="visualization_files/figure-html/custom_palette-4.png" class="r-plt" alt="" width="480"><img src="visualization_files/figure-html/custom_palette-5.png" class="r-plt" alt="" width="480"></p>
+<p><img src="visualization_files/figure-html/custom_palette-3.png" class="r-plt" alt="" width="480"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

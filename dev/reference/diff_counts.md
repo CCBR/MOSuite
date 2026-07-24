@@ -116,7 +116,7 @@ diff_counts(
 ## Value
 
 `multiOmicDataSet` with `diff` added to the `analyses` slot (i.e.
-`moo@analyses$diff`)
+`moo@analyses[["diff"]]`)
 
 ## See also
 

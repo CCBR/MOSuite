@@ -106,6 +106,17 @@ Plot histogram for counts dataframe
   The similarity heat map will not display if this toggle is set to
   TRUE. Default is FALSE.
 
+- return_ggplot:
+
+  If `TRUE`, return the ggplot object prepared for interactive hover
+  text before converting it to plotly. Used when callers need to add
+  more ggplot layers first. Default is `FALSE`.
+
+- use_log2_x_axis:
+
+  If `TRUE`, add a display-only pseudocount to plotted values and use a
+  log2 x-axis. Default is `FALSE`.
+
 - ...:
 
   additional arguments (ignored; accepted for compatibility with the moo

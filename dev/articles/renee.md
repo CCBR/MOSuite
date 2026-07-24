@@ -114,6 +114,7 @@ moo <- moo |>
 #> 
 #> no duplicated IDs in gene_id
 #> 
+#> Saving 7.29 x 4.51 in image
 #> * filtering clean counts
 #> 
 #> Number of features after filtering: 291

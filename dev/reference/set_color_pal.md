@@ -33,7 +33,7 @@ set_color_pal(moo, colname, palette_fun = select_mosuite_colors, ...)
 
 ## Value
 
-`moo` with colors updated at `moo@analyses$colors$colname`
+`moo` with colors updated at `moo@analyses$colors[[colname]]`
 
 ## See also
 

@@ -62,6 +62,9 @@
 <span>  principal_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  point_size <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>  label_font_size <span class="op">=</span> <span class="fl">24</span>,</span>
+<span>  log_transform <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  log_transform_pseudocount <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  log_transform_base <span class="op">=</span> <span class="st">"ln"</span>,</span>
 <span>  color_values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  plot_title <span class="op">=</span> <span class="st">"PCA 3D"</span>,</span>
 <span>  plot_filename <span class="op">=</span> <span class="st">"pca_3D.html"</span>,</span>
@@ -85,6 +88,9 @@
 <span>  principal_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  point_size <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>  label_font_size <span class="op">=</span> <span class="fl">24</span>,</span>
+<span>  log_transform <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  log_transform_pseudocount <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  log_transform_base <span class="op">=</span> <span class="st">"ln"</span>,</span>
 <span>  color_values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  plot_title <span class="op">=</span> <span class="st">"PCA 3D"</span>,</span>
 <span>  plot_filename <span class="op">=</span> <span class="st">"pca_3D.html"</span>,</span>
@@ -108,6 +114,9 @@
 <span>  principal_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  point_size <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>  label_font_size <span class="op">=</span> <span class="fl">24</span>,</span>
+<span>  log_transform <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  log_transform_pseudocount <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  log_transform_base <span class="op">=</span> <span class="st">"ln"</span>,</span>
 <span>  color_values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  plot_title <span class="op">=</span> <span class="st">"PCA 3D"</span>,</span>
 <span>  plot_filename <span class="op">=</span> <span class="st">"pca_3D.html"</span>,</span>
@@ -168,6 +177,22 @@
 
 <dt id="arg-label-font-size">label_font_size<a class="anchor" aria-label="anchor" href="#arg-label-font-size"></a></dt>
 <dd><p>font size used for labels in the interactive figure.</p></dd>
+
+
+<dt id="arg-log-transform">log_transform<a class="anchor" aria-label="anchor" href="#arg-log-transform"></a></dt>
+<dd><p>If <code>TRUE</code>, apply <code>log(x + log_transform_pseudocount, base = log_transform_base)</code> to sample
+count columns before PCA. Use this for count-like data such as raw, clean, filt, or CPM-like counts; leave it
+<code>FALSE</code> for already normalized/log-scale or batch-corrected values to avoid double transformation.</p></dd>
+
+
+<dt id="arg-log-transform-pseudocount">log_transform_pseudocount<a class="anchor" aria-label="anchor" href="#arg-log-transform-pseudocount"></a></dt>
+<dd><p>Pseudocount added before log-transforming counts when <code>log_transform</code> is
+<code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-log-transform-base">log_transform_base<a class="anchor" aria-label="anchor" href="#arg-log-transform-base"></a></dt>
+<dd><p>Logarithm base to use when <code>log_transform</code> is <code>TRUE</code>. Use a numeric value, or <code>"e"</code>,
+<code>"ln"</code>, or <code>"natural"</code> for natural log. Default is <code>"ln"</code> to match the original PCA transform.</p></dd>
 
 
 <dt id="arg-color-values">color_values<a class="anchor" aria-label="anchor" href="#arg-color-values"></a></dt>

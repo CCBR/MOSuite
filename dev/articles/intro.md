@@ -54,19 +54,22 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> Number of rows before Collapse: 43280
     #> 
     #> no duplicated IDs in GeneName
-    #> 
+
+![](intro_files/figure-html/nidap_data-2.png)
+
+    #> Saving 7.29 x 4.51 in image
     #> * filtering clean counts
     #> 
     #> Number of features after filtering: 7943
 
-![](intro_files/figure-html/nidap_data-2.png)![](intro_files/figure-html/nidap_data-3.png)![](intro_files/figure-html/nidap_data-4.png)
+![](intro_files/figure-html/nidap_data-3.png)![](intro_files/figure-html/nidap_data-4.png)![](intro_files/figure-html/nidap_data-5.png)
 
     #> Saving 7.29 x 4.51 in image
     #> * normalizing filt counts
     #> 
     #> Total number of features included: 7943
 
-![](intro_files/figure-html/nidap_data-5.png)![](intro_files/figure-html/nidap_data-6.png)![](intro_files/figure-html/nidap_data-7.png)
+![](intro_files/figure-html/nidap_data-6.png)![](intro_files/figure-html/nidap_data-7.png)![](intro_files/figure-html/nidap_data-8.png)
 
     #> Saving 7.29 x 4.51 in image
     #> Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
@@ -85,7 +88,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> Adjusting the Data
 
-![](intro_files/figure-html/nidap_data-8.png)![](intro_files/figure-html/nidap_data-9.png)![](intro_files/figure-html/nidap_data-10.png)
+![](intro_files/figure-html/nidap_data-9.png)![](intro_files/figure-html/nidap_data-10.png)![](intro_files/figure-html/nidap_data-11.png)
 
     #> Saving 7.29 x 4.51 in image
     #> The total number of features in output: 7943
@@ -100,7 +103,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
 
-![](intro_files/figure-html/nidap_data-11.png)
+![](intro_files/figure-html/nidap_data-12.png)
 
     #> Saving 7.29 x 4.51 in image
     #> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
@@ -110,7 +113,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
 
-![](intro_files/figure-html/nidap_data-12.png)
+![](intro_files/figure-html/nidap_data-13.png)
 
     #> Saving 7.29 x 4.51 in image
 

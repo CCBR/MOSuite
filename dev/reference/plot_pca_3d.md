@@ -20,6 +20,9 @@ plot_pca_3d(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   color_values = NULL,
   plot_title = "PCA 3D",
   plot_filename = "pca_3D.html",
@@ -43,6 +46,9 @@ plot_pca_3d(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   color_values = NULL,
   plot_title = "PCA 3D",
   plot_filename = "pca_3D.html",
@@ -66,6 +72,9 @@ plot_pca_3d(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   color_values = NULL,
   plot_title = "PCA 3D",
   plot_filename = "pca_3D.html",
@@ -131,6 +140,26 @@ plot_pca_3d(
 - label_font_size:
 
   font size used for labels in the interactive figure.
+
+- log_transform:
+
+  If `TRUE`, apply
+  `log(x + log_transform_pseudocount, base = log_transform_base)` to
+  sample count columns before PCA. Use this for count-like data such as
+  raw, clean, filt, or CPM-like counts; leave it `FALSE` for already
+  normalized/log-scale or batch-corrected values to avoid double
+  transformation.
+
+- log_transform_pseudocount:
+
+  Pseudocount added before log-transforming counts when `log_transform`
+  is `TRUE`.
+
+- log_transform_base:
+
+  Logarithm base to use when `log_transform` is `TRUE`. Use a numeric
+  value, or `"e"`, `"ln"`, or `"natural"` for natural log. Default is
+  `"ln"` to match the original PCA transform.
 
 - color_values:
 

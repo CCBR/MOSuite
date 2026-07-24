@@ -173,6 +173,7 @@ moo <- create_multiOmicDataSet_from_dataframes(
 #> Column used to Aggregate duplicate IDs: GeneName
 #> Number of rows before Collapse: 43280
 #> no duplicated IDs in GeneName
+#> Saving 6.67 x 6.67 in image
 head(moo@counts$clean)
 #>        GeneName A1 A2 A3 B1 B2 B3 C1 C2 C3
 #> 1 RP23-271O17.1  0  0  0  0  0  0  0  0  0

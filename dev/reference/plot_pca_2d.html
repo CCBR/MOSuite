@@ -67,6 +67,9 @@ Perform and plot a 2D Principal Components Analysis"><meta property="og:image" c
 <span>  label_font_size <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  label_offset_x_ <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  label_offset_y_ <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  log_transform <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  log_transform_pseudocount <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  log_transform_base <span class="op">=</span> <span class="st">"ln"</span>,</span>
 <span>  interactive_plots <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span>,</span>
 <span>  plot_filename <span class="op">=</span> <span class="st">"pca_2D.png"</span>,</span>
@@ -94,6 +97,9 @@ Perform and plot a 2D Principal Components Analysis"><meta property="og:image" c
 <span>  label_font_size <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  label_offset_x_ <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  label_offset_y_ <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  log_transform <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  log_transform_pseudocount <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  log_transform_base <span class="op">=</span> <span class="st">"ln"</span>,</span>
 <span>  interactive_plots <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span>,</span>
 <span>  plot_filename <span class="op">=</span> <span class="st">"pca_2D.png"</span>,</span>
@@ -121,6 +127,9 @@ Perform and plot a 2D Principal Components Analysis"><meta property="og:image" c
 <span>  label_font_size <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  label_offset_x_ <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  label_offset_y_ <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  log_transform <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  log_transform_pseudocount <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  log_transform_base <span class="op">=</span> <span class="st">"ln"</span>,</span>
 <span>  interactive_plots <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span>,</span>
 <span>  plot_filename <span class="op">=</span> <span class="st">"pca_2D.png"</span>,</span>
@@ -219,6 +228,22 @@ number and length of legend labels.</p></dd>
 
 <dt id="arg-label-offset-y-">label_offset_y_<a class="anchor" aria-label="anchor" href="#arg-label-offset-y-"></a></dt>
 <dd><p>vertical offset for text labels on the PCA plot.</p></dd>
+
+
+<dt id="arg-log-transform">log_transform<a class="anchor" aria-label="anchor" href="#arg-log-transform"></a></dt>
+<dd><p>If <code>TRUE</code>, apply <code>log(x + log_transform_pseudocount, base = log_transform_base)</code> to sample
+count columns before PCA. Use this for count-like data such as raw, clean, filt, or CPM-like counts; leave it
+<code>FALSE</code> for already normalized/log-scale or batch-corrected values to avoid double transformation.</p></dd>
+
+
+<dt id="arg-log-transform-pseudocount">log_transform_pseudocount<a class="anchor" aria-label="anchor" href="#arg-log-transform-pseudocount"></a></dt>
+<dd><p>Pseudocount added before log-transforming counts when <code>log_transform</code> is
+<code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-log-transform-base">log_transform_base<a class="anchor" aria-label="anchor" href="#arg-log-transform-base"></a></dt>
+<dd><p>Logarithm base to use when <code>log_transform</code> is <code>TRUE</code>. Use a numeric value, or <code>"e"</code>,
+<code>"ln"</code>, or <code>"natural"</code> for natural log. Default is <code>"ln"</code> to match the original PCA transform.</p></dd>
 
 
 <dt id="arg-interactive-plots">interactive_plots<a class="anchor" aria-label="anchor" href="#arg-interactive-plots"></a></dt>

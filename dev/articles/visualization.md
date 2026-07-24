@@ -45,6 +45,10 @@ moo <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> no duplicated IDs in GeneName
 
+![](visualization_files/figure-html/nidap_data_clean-2.png)
+
+    #> Saving 5 x 4 in image
+
 ### filter
 
 ``` r
@@ -318,7 +322,7 @@ plot_pca_2d(
 )
 ```
 
-![](visualization_files/figure-html/plot_pca_2D-1.png)![](visualization_files/figure-html/plot_pca_2D-2.png)
+![](visualization_files/figure-html/plot_pca_2D-1.png)
 
 ### Customizing ggplot objects
 
@@ -340,7 +344,7 @@ plot_pca_2d(
   )
 ```
 
-![](visualization_files/figure-html/ggplot2_pca_2D-1.png)![](visualization_files/figure-html/ggplot2_pca_2D-2.png)
+![](visualization_files/figure-html/ggplot2_pca_2D-1.png)
 
 ### Custom colors
 
@@ -440,7 +444,7 @@ plot_pca_2d(
 )
 ```
 
-![](visualization_files/figure-html/custom_palette-2.png)![](visualization_files/figure-html/custom_palette-3.png)
+![](visualization_files/figure-html/custom_palette-2.png)
 
 ``` r
 plot_expr_heatmap(
@@ -452,4 +456,4 @@ plot_expr_heatmap(
 #> The total number of genes in heatmap: 500
 ```
 
-![](visualization_files/figure-html/custom_palette-4.png)![](visualization_files/figure-html/custom_palette-5.png)
+![](visualization_files/figure-html/custom_palette-3.png)
