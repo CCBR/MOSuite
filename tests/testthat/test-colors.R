@@ -48,24 +48,19 @@ test_that("get_colors_lst works on nidap_sample_metadata", {
     )
   )
 })
-test_that("get_colors_lst handles alternative palette functions", {
+test_that("get_colors_lst handles alternative palette vectors", {
   sample_meta <- system.file(
     "extdata",
     "sample_metadata.tsv.gz",
     package = "MOSuite"
   ) |>
     readr::read_tsv()
-  # With offset logic, small columns are padded so brewer.pal is never called
-  # with n < 3; no warning or message should be emitted.
-  expect_no_warning(
-    expect_no_message(
-      get_colors_lst(
-        sample_meta,
-        palette_fun = RColorBrewer::brewer.pal,
-        name = "Set3"
-      )
-    )
+  result <- get_colors_lst(
+    sample_meta,
+    palette = RColorBrewer::brewer.pal(12, "Set3")
   )
+  expect_type(result, "list")
+  expect_length(result, ncol(sample_meta))
 })
 test_that("get_colors_vctr falls back to random colors when n exceeds palette max", {
   # MOSuite's default palette has 12 colors. When n > 12, the function
@@ -302,8 +297,7 @@ test_that("set_color_pal overrides the color palette", {
   moo2 <- moo |>
     set_color_pal(
       colname = "Group",
-      palette_fun = RColorBrewer::brewer.pal,
-      name = "Set2"
+      palette = RColorBrewer::brewer.pal(3, "Set2")
     )
   expect_equal(
     moo2@analyses$colors,
