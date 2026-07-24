@@ -25,7 +25,7 @@ in \code{dat[[colname]]}.
 \description{
 Assigns one color per unique observed value in \code{dat[[colname]]}, drawn from
 \code{palette} starting at \code{color_offset}. If the palette is too short,
-falls back to \code{\link[=get_random_colors]{get_random_colors()}}. Factor columns use factor-level order;
+falls back to \code{get_random_colors()}. Factor columns use factor-level order;
 other columns use first-observed order.
 }
 \examples{
