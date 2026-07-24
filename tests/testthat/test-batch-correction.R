@@ -338,8 +338,8 @@ test_that("batch_correct_counts forwards the default MOSuite plot colors", {
     save_plots = FALSE
   )
 
-  expect_equal(pca_args$color_values, default_colors)
-  expect_equal(histogram_args$color_values, default_colors)
+  expect_equal(pca_args$color_values, expected_colors)
+  expect_equal(histogram_args$color_values, expected_colors)
 })
 
 test_that("batch_correct_counts PCA matches standalone plot_pca on batch output", {
