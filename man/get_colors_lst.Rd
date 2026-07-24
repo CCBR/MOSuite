@@ -17,7 +17,8 @@ MOSuite's default plot palette. To use the previous R default palette behavior, 
 \item{...}{additional arguments forwarded to \code{palette_fun}}
 }
 \value{
-named list, with each column in \code{sample_metadata} containing entry with a named vector of colors
+named list, with each column in \code{sample_metadata} containing a corresponding entry with a named vector of
+colors
 }
 \description{
 Create named list of default colors for plotting
