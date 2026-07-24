@@ -387,11 +387,6 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
     ggplot2::xlim(xmin, xmax)
   }
 
-  legend_font_size <- get_legend_text_size(
-    names(color_values),
-    legend_font_size
-  )
-
   hist_plot <- hist_plot +
     ggplot2::xlab(x_axis_label) +
     ggplot2::ylab(y_axis_label) +
