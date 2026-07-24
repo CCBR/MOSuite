@@ -9,7 +9,7 @@
 - R code should adhere to the tidyverse style guide. https://style.tidyverse.org/
 - Only include one return statement at the end of a function, if a return statement is used at all. Explicit returns are preferred but not required for R functions.
 
-## AI-generated commit messages (Conventional Commits)
+## Commit messages
 
 - Commit messages must follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) (as enforced in `CONTRIBUTING.md`).
 - Generate messages from staged changes only (`git diff --staged`); do not include unrelated work.
