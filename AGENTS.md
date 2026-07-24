@@ -1,9 +1,19 @@
-# multiOmicsSuite — Project Memory
+# multiOmicsSuite
+
+## Description
+
+multiOmicsSuite (`MOSuite`) is an R package for differential multi-omic analysis.
+It defines an S7 class called `multiOmicDataSet` to store data and analyses from
+multi-omic experiments.
+
+Development of MOSuite follows the R packages 2nd edition (https://r-pkgs.org/),
+with a few minor exceptions noted below.
+Helper functions from `usethis` and `devtools` are used extensively for development tasks.
 
 ## Package conventions
 
 - **Internal functions should have roxygen2 documentation** (with `@keywords internal`). Do not strip roxygen docs from internal functions.
-- R code should pass `lintr` and `air format`.
+- R code should pass `lintr` and `air format` (run `air format .` from the package root).
 - Tests should be written with `testthat`.
 - The package must pass `devtools::check()`.
 - R code should adhere to the tidyverse style guide. https://style.tidyverse.org/
@@ -28,7 +38,7 @@ irrelevant checklist items should be crossed out.
 - If code is AI-generated, the PR should be labeled `generated-by-AI`. There should be a brief, concise statement in the PR description of how AI was used in creating the PR (model used, high-level prompt intent, manual review confirmation).
 - When new features, bug fixes, or other behavioral changes are introduced to the code,
 unit tests must be added or updated to cover the new or changed functionality.
-- If there are any API or other user-facing changes, the documentation must be updated both inline via docstrings and long-form docs in the `vignettes/` directory.
+- If there are any API or other user-facing changes, the documentation must be updated both inline via roxygen comments and long-form docs in the `vignettes/` directory as R Markdown files.
 - The `R-CMD-check` github actions workflow must pass before the PR can be approved.
 
 ### Changelog
