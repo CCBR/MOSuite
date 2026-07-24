@@ -38,8 +38,8 @@ render_report <- function(
     qmd_src <- basename(qmd_template)
   }
   # Resolve to absolute path so quarto subprocess uses the correct directory
-  qmd_src <- fs::path_abs(qmd_src)
-  output_dir <- fs::path_abs(output_dir)
+  qmd_src <- normalizePath(qmd_src, mustWork = FALSE)
+  output_dir <- normalizePath(output_dir, mustWork = FALSE)
   if (!file.exists(qmd_src)) {
     ok <- file.copy(qmd_template, qmd_src, overwrite = FALSE)
     if (!isTRUE(ok)) {
