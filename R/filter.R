@@ -140,20 +140,7 @@ filter_counts <- function(
   legend_position_for_histogram = "top",
   legend_font_size_for_histogram = NULL,
   number_of_histogram_legend_columns = 6,
-  colors_for_plots = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  colors_for_plots = NULL,
   plot_corr_matrix_heatmap = TRUE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -217,22 +204,14 @@ filter_counts <- function(
 
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
     # use consistent colors
-    colors_for_plots <- resolve_plot_colors(
-      sample_metadata,
-      group_colname,
-      colors_for_plots %||% moo@analyses[["colors"]][[group_colname]]
-    )
+    colors_for_plots <- colors_for_plots %||%
+      moo@analyses[["colors"]][[group_colname]]
+
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots
     } else {
-      colors_for_histogram <- resolve_plot_colors(
-        sample_metadata,
-        label_colname,
-        moo@analyses[["colors"]][[label_colname]]
-      )
+      colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
     }
-
-    message(glue::glue("colors_for_plots {class(colors_for_plots)}"))
 
     pca_plot <- plot_pca(
       df_filt,
