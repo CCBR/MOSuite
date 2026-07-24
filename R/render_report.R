@@ -12,10 +12,9 @@
 #'   rendering. If `NULL` (default), the template will be copied to the current
 #'   working directory with the same filename as the template. If a file already
 #'   exists at `qmd_src`, it will not be overwritten.
-#' @param output_dir Directory where the rendered report and supporting files
-#'   will be saved. Defaults to `"."` (current working directory). Resolved to
-#'   an absolute path before passing to `quarto::quarto_render()`.
-#' @param ... Additional arguments passed to `quarto::quarto_render()`, such as a named list of parameters.
+#' @param ... Additional arguments passed to `quarto::quarto_render()`, such as
+#'   `execute_params` (a named list of parameters) or `quarto_args` (a
+#'   character vector of CLI flags, e.g. `c("--output-dir", "/path/to/out")`).
 #'
 #' @export
 #'
@@ -27,10 +26,21 @@
 #'     "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
 #'     package = "MOSuite")
 #' ))
+#'
+#' # Render to a specific output directory
+#' render_report(
+#'   quarto_args = c("--output-dir", "./results"),
+#'   execute_params = list(
+#'     counts_csv = system.file("extdata", "nidap", "Raw_Counts.csv.gz",
+#'                              package = "MOSuite"),
+#'     samplesheet_csv = system.file("extdata", "nidap",
+#'       "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+#'       package = "MOSuite")
+#'   )
+#' )
 render_report <- function(
   qmd_template = system.file("quarto", "report.qmd", package = "MOSuite"),
   qmd_src = NULL,
-  output_dir = ".",
   ...
 ) {
   abort_packages_not_installed(c("quarto", "knitr", "rmarkdown")) # nolint: object_usage_linter
@@ -39,7 +49,6 @@ render_report <- function(
   }
   # Resolve to absolute path so quarto subprocess uses the correct directory
   qmd_src <- normalizePath(qmd_src, mustWork = FALSE)
-  output_dir <- normalizePath(output_dir, mustWork = FALSE)
   if (!file.exists(qmd_src)) {
     ok <- file.copy(qmd_template, qmd_src, overwrite = FALSE)
     if (!isTRUE(ok)) {
@@ -50,7 +59,6 @@ render_report <- function(
   }
   return(quarto::quarto_render(
     input = qmd_src,
-    output_dir = output_dir,
     ...
   ))
 }
