@@ -8,6 +8,7 @@ test_that("render_report runs in a temporary directory", {
 
   expect_no_error(
     render_report(
+      output_dir = tmp,
       execute_params = list(
         counts_csv = system.file(
           "extdata",
