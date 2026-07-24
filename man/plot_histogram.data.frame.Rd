@@ -28,7 +28,7 @@ column with your preferred Labels here. The selected column should contain uniqu
 
 \item{color_values}{vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
 level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
-the metadata column.}
+the metadata column. Defaults to \code{NULL}; when \code{NULL}, \code{mosuite_palette} is used.}
 
 \item{color_by_group}{Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by the
 column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.}

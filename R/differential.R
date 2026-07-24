@@ -15,7 +15,7 @@
 #' @param return_mean_and_sd if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for
 #'   contrast(s)
 #'
-#' @returns `multiOmicDataSet` with `diff` added to the `analyses` slot (i.e. `moo@analyses$diff`)
+#' @returns `multiOmicDataSet` with `diff` added to the `analyses` slot (i.e. `moo@analyses[["diff"]]`)
 #' @export
 #'
 #' @family moo methods
@@ -485,7 +485,7 @@ get_gene_lists <- function(
 ) {
   upreg_genes <- list()
   downreg_genes <- list()
-  for (i in seq_len(length(contrasts))) {
+  for (i in seq_along(contrasts)) {
     if (pval == "pval") {
       upreg_genes[[i]] <- finalres |>
         dplyr::filter(

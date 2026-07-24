@@ -620,18 +620,9 @@ test_that("filter_counts forwards the default MOSuite plot colors", {
   pca_args <- NULL
   histogram_args <- NULL
   default_colors <- c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
+    "A" = "#5954d6",
+    "B" = "#e1562c",
+    "C" = "#b80058"
   )
 
   local_mocked_bindings(

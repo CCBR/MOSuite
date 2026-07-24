@@ -1,7 +1,7 @@
 set.seed(20250225)
 
 corr_heatmap_fixture <- function() {
-  plot_corr_heatmap(
+  return(plot_corr_heatmap(
     nidap_filtered_counts |>
       as.data.frame(),
     sample_metadata = as.data.frame(nidap_sample_metadata),
@@ -23,7 +23,7 @@ corr_heatmap_fixture <- function() {
       "#FFA500",
       "#878500"
     )
-  )
+  ))
 }
 
 test_that("print_or_save_plot saves ComplexHeatmap to disk without error", {
@@ -77,13 +77,14 @@ test_that("print_or_save_plot prints ComplexHeatmap with caption without error",
 test_that("save_or_print_plot works for ComplexHeatmap", {
   p <- corr_heatmap_fixture()
   skip_on_ci()
+  tmp <- withr::local_tempdir()
   expect_snapshot_file(
     print_or_save_plot(
       p,
       filename = "heatmap.png",
       print_plots = FALSE,
       save_plots = TRUE,
-      plots_dir = "."
+      plots_dir = tmp
     ),
     "heatmap.png"
   )
@@ -91,13 +92,19 @@ test_that("save_or_print_plot works for ComplexHeatmap", {
 test_that("save_or_print_plot works for ggplot", {
   p <- plot_read_depth(nidap_clean_raw_counts)
   skip_on_ci()
+  tmp <- withr::local_tempdir()
   expect_snapshot_file(
     print_or_save_plot(
       p,
       filename = "read_depth.png",
       print_plots = FALSE,
       save_plots = TRUE,
-      plots_dir = "."
+      plots_dir = tmp,
+      device = grDevices::png,
+      width = 7,
+      height = 7,
+      units = "in",
+      dpi = 300
     ),
     "read_depth.png"
   )

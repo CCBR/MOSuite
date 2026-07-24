@@ -291,19 +291,9 @@ test_that("batch_correct_counts handles histogram label combinations", {
 test_that("batch_correct_counts forwards the default MOSuite plot colors", {
   pca_args <- NULL
   histogram_args <- NULL
-  default_colors <- c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
+  expected_colors <- c(
+    "1" = "#5954d6",
+    "2" = "#e1562c"
   )
 
   local_mocked_bindings(

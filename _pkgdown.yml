@@ -53,9 +53,9 @@ reference:
 - title: Visualization
   contents:
     - has_keyword("plotters")
-- subtitle: Color selectors
-  contents:
     - contains("color")
+    - contains("palette")
+    - render_report
 - title: Misc. helpers & utilities
   contents:
     - starts_with('calc_')

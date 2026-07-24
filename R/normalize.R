@@ -186,7 +186,6 @@ normalize_counts <- function(
         caption = "normalized counts"
       )
     }
-
     plot_ext <- "png"
     if (isTRUE(interactive_plots)) {
       pca_plot <- pca_plot |> plotly::ggplotly(tooltip = "text")

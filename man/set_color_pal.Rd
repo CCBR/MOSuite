@@ -4,7 +4,7 @@
 \alias{set_color_pal}
 \title{Set color palette for a single group/column}
 \usage{
-set_color_pal(moo, colname, palette_fun = get_mosuite_colors, ...)
+set_color_pal(moo, colname, palette_fun = select_mosuite_colors, ...)
 }
 \arguments{
 \item{moo}{\code{multiOmicDataSet} object (see \code{create_multiOmicDataSet_from_dataframes()})}
@@ -18,7 +18,7 @@ MOSuite's default plot palette. To use the previous R default palette behavior, 
 \item{...}{additional arguments forwarded to \code{palette_fun}}
 }
 \value{
-\code{moo} with colors updated at \code{moo@analyses$colors$colname}
+\code{moo} with colors updated at \code{moo@analyses[["colors"]][[colname]]}
 }
 \description{
 This allows you to set custom palettes individually for groups in the dataset

@@ -4,7 +4,7 @@
 \alias{get_colors_lst}
 \title{Create named list of default colors for plotting}
 \usage{
-get_colors_lst(sample_metadata, palette_fun = get_mosuite_colors, ...)
+get_colors_lst(sample_metadata, palette_fun = select_mosuite_colors, ...)
 }
 \arguments{
 \item{sample_metadata}{sample metadata as a data frame or tibble. The first column is assumed to contain the sample
