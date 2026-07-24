@@ -102,13 +102,13 @@ build_histogram_hover_text <- function(
   sample_id_colname,
   group_colname = NULL
 ) {
-  format_hover_text(
+  return(format_hover_text(
     histogram_data,
     primary_colname = sample_id_colname,
     secondary_colname = group_colname,
     missing_col_context = "histogram",
     require_secondary = FALSE
-  )
+  ))
 }
 
 #' Plot histogram for counts dataframe
@@ -150,6 +150,10 @@ build_histogram_hover_text <- function(
 #' @param interactive_plots set to TRUE to make the plot interactive with `plotly`, allowing you to hover your mouse
 #'   over a point or line to view sample information. The similarity heat map will not display if this toggle is set to
 #'   TRUE. Default is FALSE.
+#' @param return_ggplot If `TRUE`, return the ggplot object prepared for interactive hover text before converting it to
+#'   plotly. Used when callers need to add more ggplot layers first. Default is `FALSE`.
+#' @param use_log2_x_axis If `TRUE`, add a display-only pseudocount to plotted values and use a log2 x-axis. Default is
+#'   `FALSE`.
 #' @param ... additional arguments (ignored; accepted for compatibility with the moo dispatch)
 #' @examples
 #'
@@ -193,9 +197,12 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
   legend_font_size = NULL,
   number_of_legend_columns = 6,
   interactive_plots = FALSE,
+  return_ggplot = FALSE,
+  use_log2_x_axis = FALSE,
   ...
 ) {
   count <- NULL
+  log2_axis_pseudocount <- 0.5
   color_values <- color_values %||% mosuite_palette
   counts_dat <- moo_counts
   if (is.null(sample_id_colname)) {
@@ -213,12 +220,38 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
     ) |>
     dplyr::left_join(sample_metadata, by = sample_id_colname)
 
+  # For log2 histogram axes, add a display-only pseudocount after reshaping.
+  # The original count table is not modified; this only keeps zeros finite for ggplot's log transform.
+  if (isTRUE(use_log2_x_axis)) {
+    df_long <- df_long |>
+      dplyr::mutate(count = count + log2_axis_pseudocount)
+  }
+
+  # Match user-supplied x-axis limits to the plotted scale. On the log2 path,
+  # limits need the same pseudocount offset as the displayed data.
   if (set_min_max_for_x_axis == TRUE) {
-    xmin <- minimum_for_x_axis
-    xmax <- maximum_for_x_axis
+    if (isTRUE(use_log2_x_axis)) {
+      xmin <- minimum_for_x_axis + log2_axis_pseudocount
+      xmax <- maximum_for_x_axis + log2_axis_pseudocount
+    } else {
+      xmin <- minimum_for_x_axis
+      xmax <- maximum_for_x_axis
+    }
   } else {
     xmin <- min(df_long |> dplyr::pull(count))
     xmax <- max(df_long |> dplyr::pull(count))
+  }
+  # Guard the log2 axis against non-finite or nonpositive limits after the offset.
+  if (isTRUE(use_log2_x_axis)) {
+    if (set_min_max_for_x_axis == TRUE) {
+      xmin <- max(xmin, log2_axis_pseudocount)
+    } else {
+      # Automatic log2 histograms should display a raw minimum of 0.
+      xmin <- log2_axis_pseudocount
+    }
+    if (!is.finite(xmax) || xmax <= xmin) {
+      xmax <- max(xmin, log2_axis_pseudocount)
+    }
   }
 
   if (color_by_group == TRUE) {
@@ -229,7 +262,6 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
       dplyr::mutate(
         !!rlang::sym(group_colname) := as.character(!!rlang::sym(group_colname))
       )
-
     if (isTRUE(interactive_plots)) {
       df_long$histogram_hover_text <- build_histogram_hover_text(
         df_long,
@@ -278,7 +310,6 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
           !!rlang::sym(sample_id_colname)
         )
       )
-
     if (isTRUE(interactive_plots)) {
       df_long$histogram_hover_text <- build_histogram_hover_text(
         df_long,
@@ -319,6 +350,43 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
     legend_font_size
   )
 
+  # Keep the plain histogram default unchanged. When requested, use ggplot's log2
+  # scale and label ticks back on the original count scale by subtracting the offset.
+  x_axis_scale <- if (isTRUE(use_log2_x_axis)) {
+    ggplot2::scale_x_continuous(
+      transform = "log2",
+      limits = c(xmin, xmax),
+      breaks = function(limits) {
+        # Breaks are chosen on the original count scale, then shifted by the
+        # display-only pseudocount so they align with the plotted/log2 values.
+        raw_upper_limit <- max(limits - log2_axis_pseudocount, na.rm = TRUE)
+        if (!is.finite(raw_upper_limit) || raw_upper_limit <= 0) {
+          return(log2_axis_pseudocount)
+        }
+        max_power <- floor(log2(raw_upper_limit))
+        if (max_power < 0) {
+          raw_breaks <- c(0, raw_upper_limit)
+        } else {
+          # Use powers of two, thinning to about eight labels for wide ranges,
+          # and always include the highest power so the high end is labeled.
+          step <- max(1, ceiling((max_power + 1) / 8))
+          exponents <- unique(c(seq(0, max_power, by = step), max_power))
+          raw_breaks <- c(0, 2^exponents)
+        }
+        raw_breaks <- raw_breaks[
+          raw_breaks >= 0 & raw_breaks <= raw_upper_limit
+        ]
+        return(unique(raw_breaks + log2_axis_pseudocount))
+      },
+      labels = function(x) {
+        return(scales::label_number(big.mark = "")(x - log2_axis_pseudocount))
+      },
+      name = x_axis_label
+    )
+  } else {
+    ggplot2::xlim(xmin, xmax)
+  }
+
   hist_plot <- hist_plot +
     ggplot2::xlab(x_axis_label) +
     ggplot2::ylab(y_axis_label) +
@@ -340,11 +408,14 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
       axis.ticks = ggplot2::element_line(linewidth = 1)
     ) +
     ggplot2::ggtitle("Frequency Histogram") +
-    ggplot2::xlim(xmin, xmax) +
+    x_axis_scale +
     # scale_linetype_manual(values=rep(c('solid', 'dashed','dotted','twodash'),n)) +
     ggplot2::scale_colour_manual(values = color_values)
 
   if (isTRUE(interactive_plots)) {
+    if (isTRUE(return_ggplot)) {
+      return(hist_plot)
+    }
     hist_plot <- hist_plot |>
       plotly::ggplotly(tooltip = "text")
   } else {

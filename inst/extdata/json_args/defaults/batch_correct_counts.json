@@ -8,7 +8,7 @@
   "samples_to_include": null,
   "covariates_colnames": "Group",
   "batch_colname": "Batch",
-  "label_colname": null,
+  "label_colname": "Label",
   "samples_to_rename": "",
   "add_label_to_pca": true,
   "principal_component_on_x_axis": 1,

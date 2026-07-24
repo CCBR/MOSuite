@@ -59,6 +59,76 @@ calc_cpm_df <- function(dat, feature_id_colname = "gene_id", ...) {
   return(dat_cpm |> dplyr::relocate(tidyselect::all_of(feature_id_colname)))
 }
 
+#' Log-transform count columns in a data frame
+#'
+#' @inheritParams create_multiOmicDataSet_from_dataframes
+#' @param counts_dat data frame of feature counts.
+#' @param sample_colnames optional vector of sample columns to transform. If `NULL`, all columns except
+#'   `feature_id_colname` are transformed.
+#' @param pseudocount value added before log transformation.
+#' @param base logarithm base to use for the transformation. Use a numeric value, or `"e"`, `"ln"`, or `"natural"`
+#'   for natural log. Default is `"ln"`.
+#'
+#' @return count data frame with selected count columns transformed as `log(x + pseudocount, base)`.
+#' @keywords internal
+log_transform_counts <- function(
+  counts_dat,
+  feature_id_colname = NULL,
+  sample_colnames = NULL,
+  pseudocount = 0.5,
+  base = "ln"
+) {
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- colnames(counts_dat)[1]
+  }
+  if (is.null(sample_colnames)) {
+    sample_colnames <- setdiff(colnames(counts_dat), feature_id_colname)
+  }
+  if (!is.numeric(pseudocount) || length(pseudocount) != 1) {
+    stop("pseudocount must be a single numeric value")
+  }
+  if (pseudocount < 0) {
+    stop("pseudocount cannot be negative")
+  }
+  base <- resolve_log_transform_base(base)
+  if (
+    any(
+      as.matrix(counts_dat[, sample_colnames, drop = FALSE]) + pseudocount <= 0,
+      na.rm = TRUE
+    )
+  ) {
+    stop(
+      "log_transform_counts requires all count values plus pseudocount to be greater than 0"
+    )
+  }
+  counts_dat |>
+    dplyr::mutate(dplyr::across(
+      tidyselect::all_of(sample_colnames),
+      ~ log(.x + pseudocount, base = base)
+    ))
+}
+
+resolve_log_transform_base <- function(base) {
+  if (is.character(base) && length(base) == 1) {
+    base <- tolower(base)
+    if (base %in% c("e", "ln", "natural")) {
+      return(exp(1))
+    }
+    stop(
+      "base must be a single numeric value or one of 'e', 'ln', or 'natural'"
+    )
+  }
+  if (!is.numeric(base) || length(base) != 1) {
+    stop(
+      "base must be a single numeric value or one of 'e', 'ln', or 'natural'"
+    )
+  }
+  if (base <= 0 || base == 1) {
+    stop("base must be greater than 0 and cannot equal 1")
+  }
+  return(base)
+}
+
 #' Convert a data frame of gene counts to a matrix
 #'
 #' @inheritParams create_multiOmicDataSet_from_dataframes

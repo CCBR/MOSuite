@@ -34,9 +34,9 @@
 #'   Before, After, etc.).
 #' @param label_colname The column from the sample metadata containing the sample labels as you wish them to appear in
 #'   heatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to
-#'   display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column
-#'   with your preferred Labels here. The selected column should contain unique names for each sample.
-#'   Use `add_label_to_pca` to control whether these labels are displayed on the PCA plot.
+#'   display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with
+#'   your preferred Labels here. The selected column should contain unique names for each sample. Use `add_label_to_pca`
+#'   to control whether these labels are displayed on the PCA plot.
 #' @param samples_to_include Which samples would you like to include? Usually, you will choose all sample columns, or
 #'   you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
 #'   analysis downstream of this step. (Default: `NULL` - all sample IDs in `moo@sample_meta` will be used.)
@@ -45,12 +45,15 @@
 #'   been transformed (eg log2, CPM, FPKM or some form of Normalization) set to FALSE. If FALSE no further
 #'   transformation will be applied and features will be filtered as is. For RNAseq data RAW counts should be
 #'   transformed to CPM in order to properly filter.
-#' @param minimum_count_value_to_be_considered_nonzero Minimum count value to be considered non-zero for a sample
-#' @param minimum_number_of_samples_with_nonzero_counts_in_total Minimum number of samples (total) with non-zero counts
+#' @param minimum_count_value_to_be_considered_nonzero Minimum value in the selected filtering table required for a
+#'   sample to be considered nonzero. If `use_cpm_counts_to_filter` is `TRUE`, this threshold is applied to CPM values.
+#'   If `use_cpm_counts_to_filter` is `FALSE`, this threshold is applied directly to the selected `count_type` table.
+#' @param minimum_number_of_samples_with_nonzero_counts_in_total Minimum number of samples in total that must meet the
+#'   `minimum_count_value_to_be_considered_nonzero` threshold for a feature to be kept.
 #' @param use_group_based_filtering If TRUE, only keeps features (e.g. genes) that have at least a certain number of
-#'   samples with nonzero CPM counts in at least one group
+#'   samples passing the threshold in at least one group
 #' @param minimum_number_of_samples_with_nonzero_counts_in_a_group Only keeps genes that have at least this number of
-#'   samples with nonzero CPM counts in at least one group
+#'   samples meeting the threshold in at least one group
 #' @param principal_component_on_x_axis The principal component to plot on the x-axis for the PCA plot. Choices include
 #'   1, 2, 3, ... (default: 1)
 #' @param principal_component_on_y_axis The principal component to plot on the y-axis for the PCA plot. Choices include
@@ -177,6 +180,7 @@ filter_counts <- function(
   df_filt <- remove_low_count_genes(
     counts_dat = df,
     sample_metadata = sample_metadata,
+    sample_id_colname = sample_id_colname,
     feature_id_colname = feature_id_colname,
     group_colname = group_colname,
     use_cpm_counts_to_filter = use_cpm_counts_to_filter,
@@ -201,20 +205,16 @@ filter_counts <- function(
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
     # use consistent colors
     colors_for_plots <- colors_for_plots %||%
-      moo@analyses[["colors"]][[group_colname]]
+      moo@analyses$colors[[group_colname]]
+
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots
     } else {
-      colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
+      colors_for_histogram <- moo@analyses$colors[[label_colname]]
     }
 
-    log_counts <- df_filt |>
-      dplyr::mutate(dplyr::across(
-        tidyselect::all_of(samples_to_include),
-        ~ log(.x + 0.5)
-      ))
     pca_plot <- plot_pca(
-      log_counts,
+      df_filt,
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,
@@ -231,13 +231,27 @@ filter_counts <- function(
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_,
+      log_transform = TRUE,
+      log_transform_pseudocount = 0.5,
+      log_transform_base = "ln",
       print_plots = FALSE,
       save_plots = FALSE
     ) +
       ggplot2::labs(caption = "filtered counts")
 
+    # Histogram data and axis setup
+    histogram_x_axis_label <- if (isTRUE(use_cpm_counts_to_filter)) {
+      "CPM"
+    } else {
+      "Count"
+    }
+    log2_axis_pseudocount <- 0.5
+    histogram_threshold_x <- minimum_count_value_to_be_considered_nonzero +
+      log2_axis_pseudocount
+
+    # Base histogram plot
     hist_plot <- plot_histogram(
-      log_counts,
+      df_filt,
       sample_metadata,
       sample_id_colname = sample_id_colname,
       feature_id_colname = feature_id_colname,
@@ -248,14 +262,38 @@ filter_counts <- function(
       set_min_max_for_x_axis = set_min_max_for_x_axis_for_histogram,
       minimum_for_x_axis = minimum_for_x_axis_for_histogram,
       maximum_for_x_axis = maximum_for_x_axis_for_histogram,
+      x_axis_label = histogram_x_axis_label,
       legend_position = legend_position_for_histogram,
       legend_font_size = legend_font_size_for_histogram,
       number_of_legend_columns = number_of_histogram_legend_columns,
-      interactive_plots = interactive_plots
-    )
-    if (!isTRUE(interactive_plots)) {
-      hist_plot <- hist_plot + ggplot2::labs(caption = "filtered counts")
-    }
+      interactive_plots = interactive_plots,
+      return_ggplot = TRUE,
+      use_log2_x_axis = TRUE
+    ) +
+      ggplot2::labs(caption = "filtered counts")
+
+    # Filtering threshold marker
+    hist_plot <- hist_plot +
+      ggplot2::geom_vline(
+        xintercept = histogram_threshold_x,
+        linetype = 2,
+        linewidth = 1
+      ) +
+      ggplot2::annotate(
+        "text",
+        x = histogram_threshold_x,
+        y = Inf,
+        label = if (isTRUE(use_cpm_counts_to_filter)) {
+          glue::glue("CPM: {minimum_count_value_to_be_considered_nonzero}")
+        } else {
+          glue::glue("Count: {minimum_count_value_to_be_considered_nonzero}")
+        },
+        hjust = -0.05,
+        vjust = 1.5,
+        size = 3
+      )
+
+    # Correlation heatmap plot
     if (isTRUE(plot_corr_matrix_heatmap)) {
       corHM <- plot_corr_heatmap(
         df_filt[, samples_to_include],
@@ -275,11 +313,15 @@ filter_counts <- function(
       )
     }
 
+    # Interactive plot conversion
     plot_ext <- "png"
     if (isTRUE(interactive_plots)) {
       pca_plot <- pca_plot |> plotly::ggplotly(tooltip = "text")
+      hist_plot <- hist_plot |> plotly::ggplotly(tooltip = "text")
       plot_ext <- "html"
     }
+
+    # Save or print PCA and histogram plots
     if (identical(plot_ext, "png")) {
       print_or_save_plot(
         pca_plot,
@@ -328,6 +370,7 @@ filter_counts <- function(
 remove_low_count_genes <- function(
   counts_dat,
   sample_metadata,
+  sample_id_colname = NULL,
   feature_id_colname,
   group_colname,
   use_cpm_counts_to_filter = TRUE,
@@ -336,52 +379,78 @@ remove_low_count_genes <- function(
   minimum_number_of_samples_with_nonzero_counts_in_total = 7,
   minimum_number_of_samples_with_nonzero_counts_in_a_group = 3
 ) {
-  # TODO refactor with tidyverse
-  value <- isexpr1 <- NULL
   df <- counts_dat
 
   df <- df[stats::complete.cases(df), ]
+  if (is.null(sample_id_colname)) {
+    sample_id_colname <- colnames(sample_metadata)[1]
+  }
+  sample_colnames <- setdiff(colnames(df), feature_id_colname)
+  sample_colnames <- sample_colnames[vapply(
+    df[sample_colnames],
+    is.numeric,
+    logical(1)
+  )]
 
   # USE CPM Transformation
   trans_df <- df
   if (use_cpm_counts_to_filter == TRUE) {
-    trans_df[, -1] <- edgeR::cpm(as.matrix(df[, -1]))
+    trans_df[, sample_colnames] <- edgeR::cpm(as.matrix(df[, sample_colnames]))
   }
+  passing_counts <- as.matrix(trans_df[, sample_colnames, drop = FALSE]) >=
+    minimum_count_value_to_be_considered_nonzero
 
   if (use_group_based_filtering == TRUE) {
-    rownames(trans_df) <- trans_df[, feature_id_colname]
-    trans_df[, feature_id_colname] <- NULL
-
-    counts <- trans_df >= minimum_count_value_to_be_considered_nonzero # boolean matrix
-
-    tcounts <- as.data.frame(t(counts))
-    colnum <- dim(counts)[1] # number of genes
-    tcounts <- merge(sample_metadata[group_colname], tcounts, by = "row.names")
-    tcounts$Row.names <- NULL
-    melted <- reshape2::melt(tcounts, id.vars = group_colname)
-    tcounts.tot <- dplyr::summarise(
-      dplyr::group_by_at(melted, c(group_colname, "variable")),
-      sum = sum(value)
+    if (!(sample_id_colname %in% colnames(sample_metadata))) {
+      stop(glue::glue(
+        "sample_id_colname {sample_id_colname} not in sample_metadata"
+      ))
+    }
+    if (!(group_colname %in% colnames(sample_metadata))) {
+      stop(glue::glue("group_colname {group_colname} not in sample_metadata"))
+    }
+    sample_match <- match(
+      sample_colnames,
+      as.character(sample_metadata[[sample_id_colname]])
     )
-    tcounts.group <- tcounts.tot |>
-      tidyr::pivot_wider(names_from = "variable", values_from = "sum") |>
-      as.data.frame()
-    tcounts.keep <- colSums(
-      tcounts.group[(1:colnum + 1)] >=
+    if (anyNA(sample_match)) {
+      missing_samples <- sample_colnames[is.na(sample_match)]
+      stop(glue::glue(
+        "sample_metadata is missing sample IDs: ",
+        "{glue::glue_collapse(missing_samples, sep = ', ')}"
+      ))
+    }
+    sample_groups <- as.character(sample_metadata[[group_colname]][
+      sample_match
+    ])
+    groups <- unique(stats::na.omit(sample_groups))
+    if (length(groups) == 0) {
+      stop(glue::glue(
+        "group_colname {group_colname} has no non-missing values for selected samples"
+      ))
+    }
+    passing_samples_by_group <- vapply(
+      groups,
+      function(group) {
+        group_sample_colnames <- sample_colnames[
+          !is.na(sample_groups) & sample_groups == group
+        ]
+        rowSums(passing_counts[, group_sample_colnames, drop = FALSE])
+      },
+      numeric(nrow(passing_counts))
+    )
+    keep_rows <- rowSums(
+      passing_samples_by_group >=
         minimum_number_of_samples_with_nonzero_counts_in_a_group
     ) >=
       1
-    df_filt <- trans_df[tcounts.keep, ] |>
-      tibble::rownames_to_column(feature_id_colname)
+    df_filt <- trans_df[keep_rows, , drop = FALSE]
   } else {
-    trans_df$isexpr1 <- (rowSums(
-      as.matrix(trans_df[, -1]) > minimum_count_value_to_be_considered_nonzero
-    ) >=
+    keep_rows <- (rowSums(passing_counts) >=
       minimum_number_of_samples_with_nonzero_counts_in_total)
-    df_filt <- trans_df |>
-      dplyr::filter(isexpr1) |>
-      dplyr::select(-isexpr1)
+    df_filt <- trans_df[keep_rows, , drop = FALSE]
   }
+  rownames(df_filt) <- NULL
 
   message(paste0("Number of features after filtering: ", nrow(df_filt)))
   return(df_filt)

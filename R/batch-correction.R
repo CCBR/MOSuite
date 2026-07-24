@@ -54,7 +54,7 @@ batch_correct_counts <- function(
   samples_to_include = NULL,
   covariates_colnames = "Group",
   batch_colname = "Batch",
-  label_colname = NULL,
+  label_colname = "Label",
   samples_to_rename = c(""),
   add_label_to_pca = TRUE,
   principal_component_on_x_axis = 1,
@@ -166,13 +166,13 @@ batch_correct_counts <- function(
   }
 
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
-    if (is.null(colors_for_plots)) {
-      colors_for_plots <- moo@analyses[["colors"]][[batch_colname]]
-    }
+    colors_for_plots <- colors_for_plots %||%
+      moo@analyses$colors[[batch_colname]]
+
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots
     } else {
-      colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
+      colors_for_histogram <- moo@analyses$colors[[label_colname]]
     }
     pca_plot <- plot_pca(
       combat_edata,
@@ -192,6 +192,7 @@ batch_correct_counts <- function(
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_,
+      log_transform = FALSE,
       print_plots = FALSE,
       save_plots = FALSE
     ) +
@@ -209,6 +210,7 @@ batch_correct_counts <- function(
       set_min_max_for_x_axis = set_min_max_for_x_axis_for_histogram,
       minimum_for_x_axis = minimum_for_x_axis_for_histogram,
       maximum_for_x_axis = maximum_for_x_axis_for_histogram,
+      x_axis_label = "Batch Corrected Counts",
       legend_position = legend_position_for_histogram,
       legend_font_size = legend_font_size_for_histogram,
       number_of_legend_columns = number_of_histogram_legend_columns,
@@ -239,8 +241,6 @@ batch_correct_counts <- function(
     plot_ext <- "png"
     if (isTRUE(interactive_plots)) {
       pca_plot <- pca_plot |> plotly::ggplotly(tooltip = "text")
-      hist_plot <- (hist_plot + ggplot2::theme(legend.position = "none")) |>
-        plotly::ggplotly(tooltip = c("sample"))
       plot_ext <- "html"
     }
     if (identical(plot_ext, "png")) {

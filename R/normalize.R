@@ -104,13 +104,13 @@ normalize_counts <- function(
   message(paste0("Total number of features included: ", nrow(df.voom)))
   ### PH: END Limma Normalization
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
-    if (is.null(colors_for_plots)) {
-      colors_for_plots <- moo@analyses[["colors"]][[group_colname]]
-    }
+    colors_for_plots <- colors_for_plots %||%
+      moo@analyses$colors[[group_colname]]
+
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots
     } else {
-      colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
+      colors_for_histogram <- moo@analyses$colors[[label_colname]]
     }
     pca_plot <- plot_pca(
       df.voom,
@@ -129,6 +129,7 @@ normalize_counts <- function(
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_,
+      log_transform = FALSE,
       print_plots = FALSE,
       save_plots = FALSE
     ) +

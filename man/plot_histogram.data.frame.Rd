@@ -54,6 +54,12 @@ automatically based on the number and length of legend labels.}
 over a point or line to view sample information. The similarity heat map will not display if this toggle is set to
 TRUE. Default is FALSE.}
 
+\item{return_ggplot}{If \code{TRUE}, return the ggplot object prepared for interactive hover text before converting it to
+plotly. Used when callers need to add more ggplot layers first. Default is \code{FALSE}.}
+
+\item{use_log2_x_axis}{If \code{TRUE}, add a display-only pseudocount to plotted values and use a log2 x-axis. Default is
+\code{FALSE}.}
+
 \item{...}{additional arguments (ignored; accepted for compatibility with the moo dispatch)}
 }
 \description{

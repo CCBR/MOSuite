@@ -141,6 +141,7 @@ test_that("batch_correct_counts forwards plot settings to PCA and histogram", {
   expect_true(histogram_args$set_min_max_for_x_axis)
   expect_equal(histogram_args$minimum_for_x_axis, -2)
   expect_equal(histogram_args$maximum_for_x_axis, 2)
+  expect_equal(histogram_args$x_axis_label, "Batch Corrected Counts")
   expect_equal(histogram_args$legend_font_size, 11)
   expect_equal(histogram_args$legend_position, "right")
   expect_equal(histogram_args$number_of_legend_columns, 2)
@@ -176,11 +177,11 @@ test_that("batch_correct_counts handles histogram label combinations", {
   local_mocked_bindings(
     plot_pca = function(...) {
       pca_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     plot_histogram = function(...) {
       histogram_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     print_or_save_plot = function(...) invisible(NULL),
     .package = "MOSuite"
@@ -339,4 +340,111 @@ test_that("batch_correct_counts forwards the default MOSuite plot colors", {
 
   expect_equal(pca_args$color_values, expected_colors)
   expect_equal(histogram_args$color_values, expected_colors)
+})
+
+test_that("batch_correct_counts PCA matches standalone plot_pca on batch output", {
+  pca_capture <- capture_saved_pca_plot()
+  local_mocked_bindings(
+    print_or_save_plot = pca_capture$print_or_save_plot,
+    .package = "MOSuite"
+  )
+
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts),
+      "norm" = list("voom" = as.data.frame(nidap_norm_counts))
+    )
+  ) |>
+    batch_correct_counts(
+      count_type = "norm",
+      sub_count_type = "voom",
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      covariates_colnames = "Group",
+      batch_colname = "Batch",
+      label_colname = NULL,
+      plot_corr_matrix_heatmap = FALSE,
+      print_plots = TRUE,
+      save_plots = FALSE
+    )
+
+  expected_pca <- plot_pca(
+    moo@counts$batch,
+    sample_metadata = moo@sample_meta,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Batch",
+    label_colname = NULL,
+    samples_to_rename = c(""),
+    principal_components = c(1, 2),
+    legend_position = "top",
+    point_size = 5,
+    label_font_size = 3,
+    label_offset_y_ = 2,
+    label_offset_x_ = 2,
+    log_transform = FALSE,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+
+  expect_s3_class(pca_capture$get(), "ggplot")
+  expect_pca_coordinates_equal(pca_capture$get(), expected_pca)
+})
+
+test_that("batch_correct_counts histogram matches standalone plot_histogram on batch output", {
+  histogram_capture <- capture_saved_histogram_plot()
+  local_mocked_bindings(
+    print_or_save_plot = histogram_capture$print_or_save_plot,
+    .package = "MOSuite"
+  )
+
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "clean" = as.data.frame(nidap_clean_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts),
+      "norm" = list("voom" = as.data.frame(nidap_norm_counts))
+    )
+  ) |>
+    batch_correct_counts(
+      count_type = "norm",
+      sub_count_type = "voom",
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      covariates_colnames = "Group",
+      batch_colname = "Batch",
+      label_colname = NULL,
+      plot_corr_matrix_heatmap = FALSE,
+      print_plots = TRUE,
+      save_plots = FALSE,
+      interactive_plots = FALSE
+    )
+
+  expected_histogram <- plot_histogram(
+    moo@counts$batch,
+    sample_metadata = moo@sample_meta,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Batch",
+    label_colname = NULL,
+    color_by_group = TRUE,
+    set_min_max_for_x_axis = FALSE,
+    minimum_for_x_axis = -1,
+    maximum_for_x_axis = 1,
+    x_axis_label = "Batch Corrected Counts",
+    legend_position = "top",
+    legend_font_size = NULL,
+    number_of_legend_columns = 6,
+    interactive_plots = FALSE
+  ) +
+    ggplot2::labs(caption = "batch-corrected counts")
+
+  expect_s3_class(histogram_capture$get(), "ggplot")
+  expect_histogram_layers_equal(histogram_capture$get(), expected_histogram)
 })

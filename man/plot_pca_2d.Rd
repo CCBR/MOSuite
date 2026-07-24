@@ -24,6 +24,9 @@ plot_pca_2d(
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   interactive_plots = FALSE,
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
@@ -51,6 +54,9 @@ plot_pca_2d(
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   interactive_plots = FALSE,
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
@@ -78,6 +84,9 @@ plot_pca_2d(
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   interactive_plots = FALSE,
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
@@ -139,6 +148,16 @@ number and length of legend labels.}
 \item{label_offset_x_}{horizontal offset for text labels on the PCA plot.}
 
 \item{label_offset_y_}{vertical offset for text labels on the PCA plot.}
+
+\item{log_transform}{If \code{TRUE}, apply \code{log(x + log_transform_pseudocount, base = log_transform_base)} to sample
+count columns before PCA. Use this for count-like data such as raw, clean, filt, or CPM-like counts; leave it
+\code{FALSE} for already normalized/log-scale or batch-corrected values to avoid double transformation.}
+
+\item{log_transform_pseudocount}{Pseudocount added before log-transforming counts when \code{log_transform} is
+\code{TRUE}.}
+
+\item{log_transform_base}{Logarithm base to use when \code{log_transform} is \code{TRUE}. Use a numeric value, or \code{"e"},
+\code{"ln"}, or \code{"natural"} for natural log. Default is \code{"ln"} to match the original PCA transform.}
 
 \item{interactive_plots}{set to TRUE to make the PCA plot interactive with \code{plotly}.}
 

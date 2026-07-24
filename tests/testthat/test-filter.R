@@ -203,6 +203,227 @@ test_that("remove_low_count_genes works", {
   )
 })
 
+test_that("remove_low_count_genes counts threshold values inclusively", {
+  df <- data.frame(
+    Gene = c("exact_keep", "below_minimum", "above_keep"),
+    S1 = c(4, 4, 5),
+    S2 = c(5, 0, 5),
+    S3 = c(0, 0, 0),
+    check.names = FALSE
+  )
+  sample_meta <- data.frame(
+    Sample = c("S1", "S2", "S3"),
+    Group = c("A", "A", "A"),
+    row.names = c("S1", "S2", "S3"),
+    check.names = FALSE
+  )
+
+  result <- remove_low_count_genes(
+    counts_dat = df,
+    sample_metadata = sample_meta,
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    use_cpm_counts_to_filter = FALSE,
+    use_group_based_filtering = FALSE,
+    minimum_count_value_to_be_considered_nonzero = 4,
+    minimum_number_of_samples_with_nonzero_counts_in_total = 2,
+    minimum_number_of_samples_with_nonzero_counts_in_a_group = 2
+  )
+
+  expect_equal(result$Gene, c("exact_keep", "above_keep"))
+})
+
+test_that("remove_low_count_genes uses original filter threshold parameters", {
+  df <- data.frame(
+    Gene = c("keep", "remove"),
+    S1 = c(4, 4),
+    S2 = c(4, 0),
+    check.names = FALSE
+  )
+  sample_meta <- data.frame(
+    Sample = c("S1", "S2"),
+    Group = c("A", "A"),
+    row.names = c("S1", "S2"),
+    check.names = FALSE
+  )
+
+  result <- remove_low_count_genes(
+    counts_dat = df,
+    sample_metadata = sample_meta,
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    use_cpm_counts_to_filter = FALSE,
+    use_group_based_filtering = FALSE,
+    minimum_count_value_to_be_considered_nonzero = 4,
+    minimum_number_of_samples_with_nonzero_counts_in_total = 2,
+    minimum_number_of_samples_with_nonzero_counts_in_a_group = 2
+  )
+
+  expect_equal(result$Gene, "keep")
+})
+
+test_that("remove_low_count_genes ignores non-numeric annotation columns", {
+  df <- data.frame(
+    Gene = c("keep", "remove"),
+    Symbol = c("A", "B"),
+    S1 = c(4, 4),
+    S2 = c(4, 0),
+    check.names = FALSE
+  )
+  sample_meta <- data.frame(
+    Sample = c("S1", "S2"),
+    Group = c("A", "A"),
+    row.names = c("S1", "S2"),
+    check.names = FALSE
+  )
+
+  result <- remove_low_count_genes(
+    counts_dat = df,
+    sample_metadata = sample_meta,
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    use_cpm_counts_to_filter = FALSE,
+    use_group_based_filtering = FALSE,
+    minimum_count_value_to_be_considered_nonzero = 4,
+    minimum_number_of_samples_with_nonzero_counts_in_total = 2,
+    minimum_number_of_samples_with_nonzero_counts_in_a_group = 2
+  )
+
+  expect_equal(result$Gene, "keep")
+  expect_equal(result$Symbol, "A")
+})
+
+test_that("remove_low_count_genes distinguishes total sample minimum 8 from 9", {
+  sample_names <- paste0("S", 1:10)
+  df <- data.frame(
+    Gene = c("passes_exactly_eight", "passes_nine"),
+    S1 = c(4, 4),
+    S2 = c(4, 4),
+    S3 = c(4, 4),
+    S4 = c(4, 4),
+    S5 = c(4, 4),
+    S6 = c(4, 4),
+    S7 = c(4, 4),
+    S8 = c(4, 4),
+    S9 = c(0, 4),
+    S10 = c(0, 0),
+    check.names = FALSE
+  )
+  sample_meta <- data.frame(
+    Sample = sample_names,
+    Group = rep("A", length(sample_names)),
+    row.names = sample_names,
+    check.names = FALSE
+  )
+
+  total_8 <- remove_low_count_genes(
+    counts_dat = df,
+    sample_metadata = sample_meta,
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    use_cpm_counts_to_filter = FALSE,
+    use_group_based_filtering = FALSE,
+    minimum_count_value_to_be_considered_nonzero = 4,
+    minimum_number_of_samples_with_nonzero_counts_in_total = 8,
+    minimum_number_of_samples_with_nonzero_counts_in_a_group = 2
+  )
+  total_9 <- remove_low_count_genes(
+    counts_dat = df,
+    sample_metadata = sample_meta,
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    use_cpm_counts_to_filter = FALSE,
+    use_group_based_filtering = FALSE,
+    minimum_count_value_to_be_considered_nonzero = 4,
+    minimum_number_of_samples_with_nonzero_counts_in_total = 9,
+    minimum_number_of_samples_with_nonzero_counts_in_a_group = 2
+  )
+
+  expect_equal(total_8$Gene, c("passes_exactly_eight", "passes_nine"))
+  expect_equal(total_9$Gene, "passes_nine")
+})
+
+test_that("remove_low_count_genes applies sample minimum within groups", {
+  df <- data.frame(
+    Gene = c(
+      "group_exact_keep",
+      "split_across_groups",
+      "one_group_keep",
+      "single_sample_total_only"
+    ),
+    S1 = c(4, 4, 0, 5),
+    S2 = c(4, 0, 0, 0),
+    S3 = c(0, 4, 5, 0),
+    S4 = c(0, 0, 4, 0),
+    check.names = FALSE
+  )
+  sample_meta <- data.frame(
+    Sample = c("S1", "S2", "S3", "S4"),
+    Group = c("A", "A", "B", "B"),
+    row.names = paste0("metadata_row_", 1:4),
+    check.names = FALSE
+  )
+
+  group_result <- remove_low_count_genes(
+    counts_dat = df,
+    sample_metadata = sample_meta,
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    use_cpm_counts_to_filter = FALSE,
+    use_group_based_filtering = TRUE,
+    minimum_count_value_to_be_considered_nonzero = 4,
+    minimum_number_of_samples_with_nonzero_counts_in_total = 1,
+    minimum_number_of_samples_with_nonzero_counts_in_a_group = 2
+  )
+  non_group_result <- remove_low_count_genes(
+    counts_dat = df,
+    sample_metadata = sample_meta,
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    use_cpm_counts_to_filter = FALSE,
+    use_group_based_filtering = FALSE,
+    minimum_count_value_to_be_considered_nonzero = 4,
+    minimum_number_of_samples_with_nonzero_counts_in_total = 2,
+    minimum_number_of_samples_with_nonzero_counts_in_a_group = 2
+  )
+
+  expect_equal(group_result$Gene, c("group_exact_keep", "one_group_keep"))
+  expect_equal(
+    non_group_result$Gene,
+    c("group_exact_keep", "split_across_groups", "one_group_keep")
+  )
+})
+
+test_that("remove_low_count_genes ignores missing group assignments", {
+  df <- data.frame(
+    Gene = c("keep", "remove"),
+    S1 = c(4, 4),
+    S2 = c(4, 0),
+    S3 = c(0, 4),
+    check.names = FALSE
+  )
+  sample_meta <- data.frame(
+    Sample = c("S1", "S2", "S3"),
+    Group = c("A", "A", NA),
+    row.names = c("S1", "S2", "S3"),
+    check.names = FALSE
+  )
+
+  result <- remove_low_count_genes(
+    counts_dat = df,
+    sample_metadata = sample_meta,
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    use_cpm_counts_to_filter = FALSE,
+    use_group_based_filtering = TRUE,
+    minimum_count_value_to_be_considered_nonzero = 4,
+    minimum_number_of_samples_with_nonzero_counts_in_total = 1,
+    minimum_number_of_samples_with_nonzero_counts_in_a_group = 2
+  )
+
+  expect_equal(result$Gene, "keep")
+})
+
 test_that("remove_low_count_genes works with group-based filtering (no grouped tibble crash)", {
   df <- data.frame(
     Gene = c(
@@ -319,6 +540,7 @@ test_that("filter_counts forwards plotting parameters", {
   expect_true(histogram_args$set_min_max_for_x_axis)
   expect_equal(histogram_args$minimum_for_x_axis, -2)
   expect_equal(histogram_args$maximum_for_x_axis, 2)
+  expect_equal(histogram_args$x_axis_label, "CPM")
   expect_equal(histogram_args$legend_font_size, 11)
   expect_equal(histogram_args$legend_position, "right")
   expect_equal(histogram_args$number_of_legend_columns, 2)
@@ -350,11 +572,11 @@ test_that("filter_counts handles histogram label combinations", {
   local_mocked_bindings(
     plot_pca = function(...) {
       pca_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     plot_histogram = function(...) {
       histogram_args <<- list(...)
-      ggplot2::ggplot()
+      return(ggplot2::ggplot())
     },
     print_or_save_plot = function(...) invisible(NULL),
     .package = "MOSuite"
@@ -498,4 +720,173 @@ test_that("filter_counts forwards the default MOSuite plot colors", {
 
   expect_equal(pca_args$color_values, default_colors)
   expect_equal(histogram_args$color_values, default_colors)
+})
+
+test_that("filter_counts adds a dotted threshold line and label to the histogram", {
+  histogram_plot <- NULL
+  histogram_args <- NULL
+
+  local_mocked_bindings(
+    plot_pca = function(...) {
+      return(ggplot2::ggplot())
+    },
+    plot_histogram = function(...) {
+      histogram_args <<- list(...)
+      return(ggplot2::ggplot())
+    },
+    print_or_save_plot = function(plot, filename, ...) {
+      if (basename(filename) == "histogram.png") {
+        histogram_plot <<- plot
+      }
+      return(invisible(NULL))
+    },
+    .package = "MOSuite"
+  )
+
+  moo <- create_multiOmicDataSet_from_dataframes(
+    as.data.frame(nidap_sample_metadata),
+    as.data.frame(nidap_clean_raw_counts),
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene"
+  )
+
+  filter_counts(
+    moo,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    label_colname = "Label",
+    count_type = "raw",
+    minimum_count_value_to_be_considered_nonzero = 4,
+    plot_corr_matrix_heatmap = FALSE,
+    print_plots = TRUE,
+    save_plots = FALSE
+  )
+
+  histogram_data <- ggplot2::ggplot_build(histogram_plot)$data
+
+  expect_true(histogram_args$use_log2_x_axis)
+  expect_true(histogram_args$return_ggplot)
+  expect_equal(histogram_data[[1]]$xintercept, 4 + 0.5)
+  expect_equal(histogram_data[[1]]$linetype, 2)
+  expect_equal(histogram_data[[1]]$linewidth, 1)
+  expect_equal(histogram_data[[2]]$x, 4 + 0.5)
+  expect_equal(histogram_data[[2]]$label, "CPM: 4")
+})
+
+test_that("filter_counts PCA matches standalone plot_pca on filtered output", {
+  pca_capture <- capture_saved_pca_plot()
+  local_mocked_bindings(
+    print_or_save_plot = pca_capture$print_or_save_plot,
+    .package = "MOSuite"
+  )
+
+  moo <- create_multiOmicDataSet_from_dataframes(
+    as.data.frame(nidap_sample_metadata),
+    as.data.frame(nidap_clean_raw_counts),
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene"
+  ) |>
+    filter_counts(
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      label_colname = NULL,
+      count_type = "raw",
+      use_cpm_counts_to_filter = FALSE,
+      minimum_count_value_to_be_considered_nonzero = 8,
+      minimum_number_of_samples_with_nonzero_counts_in_total = 7,
+      plot_corr_matrix_heatmap = FALSE,
+      print_plots = TRUE,
+      save_plots = FALSE
+    )
+
+  expected_pca <- plot_pca(
+    moo@counts$filt,
+    sample_metadata = moo@sample_meta,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    label_colname = NULL,
+    samples_to_rename = c(""),
+    principal_components = c(1, 2),
+    legend_position = "top",
+    point_size = 5,
+    label_font_size = 3,
+    label_offset_y_ = 2,
+    label_offset_x_ = 2,
+    log_transform = TRUE,
+    log_transform_pseudocount = 0.5,
+    log_transform_base = "ln",
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+
+  expect_s3_class(pca_capture$get(), "ggplot")
+  expect_pca_coordinates_equal(pca_capture$get(), expected_pca)
+})
+
+test_that("filter_counts histogram matches standalone plot_histogram on filtered output", {
+  histogram_capture <- capture_saved_histogram_plot()
+  local_mocked_bindings(
+    print_or_save_plot = histogram_capture$print_or_save_plot,
+    .package = "MOSuite"
+  )
+
+  moo <- create_multiOmicDataSet_from_dataframes(
+    as.data.frame(nidap_sample_metadata),
+    as.data.frame(nidap_clean_raw_counts),
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene"
+  ) |>
+    filter_counts(
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      label_colname = NULL,
+      count_type = "raw",
+      use_cpm_counts_to_filter = FALSE,
+      minimum_count_value_to_be_considered_nonzero = 8,
+      minimum_number_of_samples_with_nonzero_counts_in_total = 7,
+      plot_corr_matrix_heatmap = FALSE,
+      print_plots = TRUE,
+      save_plots = FALSE,
+      interactive_plots = FALSE
+    )
+
+  histogram_threshold_x <- 8 + 0.5
+  expected_histogram <- plot_histogram(
+    moo@counts$filt,
+    sample_metadata = moo@sample_meta,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    label_colname = NULL,
+    color_by_group = TRUE,
+    set_min_max_for_x_axis = FALSE,
+    minimum_for_x_axis = -1,
+    maximum_for_x_axis = 1,
+    x_axis_label = "Count",
+    legend_position = "top",
+    legend_font_size = NULL,
+    number_of_legend_columns = 6,
+    interactive_plots = FALSE,
+    return_ggplot = TRUE,
+    use_log2_x_axis = TRUE
+  ) +
+    ggplot2::labs(caption = "filtered counts") +
+    ggplot2::geom_vline(
+      xintercept = histogram_threshold_x,
+      linetype = 2,
+      linewidth = 1
+    ) +
+    ggplot2::annotate(
+      "text",
+      x = histogram_threshold_x,
+      y = Inf,
+      label = "Count: 8",
+      hjust = -0.05,
+      vjust = 1.5,
+      size = 3
+    )
+
+  expect_s3_class(histogram_capture$get(), "ggplot")
+  expect_histogram_layers_equal(histogram_capture$get(), expected_histogram)
 })

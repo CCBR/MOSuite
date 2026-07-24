@@ -43,7 +43,7 @@
     {
       "key": "label_colname",
       "displayName": "Labels Column",
-      "description": "The column from the sample metadata containing the sample labels as you wish them to appear in\nheatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to\ndisplay on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column\nwith your preferred Labels here. The selected column should contain unique names for each sample.\nUse `add_label_to_pca` to control whether these labels are displayed on the PCA plot.\n",
+      "description": "The column from the sample metadata containing the sample labels as you wish them to appear in\nheatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to\ndisplay on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with\nyour preferred Labels here. The selected column should contain unique names for each sample. Use `add_label_to_pca`to control whether these labels are displayed on the PCA plot.\n",
       "paramGroup": "Basic",
       "sourceDataset": "Sample_Metadata",
       "defaultValue": "Label",
@@ -105,7 +105,7 @@
     {
       "key": "minimum_count_value_to_be_considered_nonzero",
       "displayName": "Minimum Count Value to be Considered Nonzero",
-      "description": "Minimum count value to be considered non-zero for a sample\n",
+      "description": "Minimum value in the selected filtering table required for a\nsample to be considered nonzero. If `use_cpm_counts_to_filter` is `TRUE`, this threshold is applied to CPM values.\nIf `use_cpm_counts_to_filter` is `FALSE`, this threshold is applied directly to the selected `count_type` table.\n",
       "paramType": "NUMBER",
       "paramGroup": "Filtering",
       "paramValues": null,
@@ -117,7 +117,7 @@
     {
       "key": "minimum_number_of_samples_with_nonzero_counts_in_total",
       "displayName": "Minimum Number of Samples with Nonzero Counts in Total",
-      "description": "Minimum number of samples (total) with non-zero counts\n",
+      "description": "Minimum number of samples in total that must meet the\n`minimum_count_value_to_be_considered_nonzero` threshold for a feature to be kept.\n",
       "paramType": "NUMBER",
       "paramGroup": "Filtering",
       "paramValues": null,
@@ -129,7 +129,7 @@
     {
       "key": "use_group_based_filtering",
       "displayName": "Use Group-Based Filtering",
-      "description": "If TRUE, only keeps features (e.g. genes) that have at least a certain number of\nsamples with nonzero CPM counts in at least one group\n",
+      "description": "If TRUE, only keeps features (e.g. genes) that have at least a certain number of\nsamples passing the threshold in at least one group\n",
       "paramType": "BOOLEAN",
       "paramGroup": "Filtering",
       "paramValues": null,
@@ -141,7 +141,7 @@
     {
       "key": "minimum_number_of_samples_with_nonzero_counts_in_a_group",
       "displayName": "Minimum Number of Samples with Nonzero Counts in a Group",
-      "description": "Only keeps genes that have at least this number of\nsamples with nonzero CPM counts in at least one group\n",
+      "description": "Only keeps genes that have at least this number of\nsamples meeting the threshold in at least one group\n",
       "paramType": "NUMBER",
       "paramGroup": "Filtering",
       "paramValues": null,

@@ -108,7 +108,7 @@ get_colors_lst <- function(
 #' @inheritParams get_colors_lst
 #' @param dat data frame
 #' @param colname column name in `dat`
-#' @returns named vector of colors for each unique observation in `dat$colname`. Factor columns use factor level order;
+#' @returns named vector of colors for each unique observation in `dat[[colname]]`. Factor columns use factor level order;
 #'   other columns use first-observed order.
 #' @export
 #'
@@ -294,7 +294,7 @@ display_palette <- function(palette = mosuite_palette) {
 #' @param moo `multiOmicDataSet` object (see `create_multiOmicDataSet_from_dataframes()`)
 #' @param colname group column name to set the palette for
 #'
-#' @returns `moo` with colors updated at `moo@analyses$colors$colname`
+#' @returns `moo` with colors updated at `moo@analyses$colors[[colname]]`
 #' @export
 #'
 #' @examples
@@ -321,7 +321,7 @@ S7::method(set_color_pal, multiOmicDataSet) <- function(
   palette_fun = select_mosuite_colors,
   ...
 ) {
-  moo@analyses[["colors"]][[colname]] <- get_colors_vctr(
+  moo@analyses$colors[[colname]] <- get_colors_vctr(
     dat = moo@sample_meta,
     colname = colname,
     palette_fun = palette_fun,

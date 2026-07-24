@@ -29,6 +29,12 @@
 #'
 #' @details
 #'
+#'  PCA is sensitive to feature scale. For raw, cleaned, filtered, or CPM-like count data, setting
+#'  `log_transform = TRUE` compresses high-count features before PCA so ordination is less dominated by abundance
+#'  differences. Do not enable this for already normalized/log-scale data, such as voom/logCPM `norm` counts or
+#'  batch-corrected normalized counts, because that would apply a second log transform. The default PCA transform uses
+#'  the original MOSuite PCA scaling, `log(x + 0.5)`.
+#'
 #'  See the low-level function docs for additional arguments
 #'  depending on whether you're plotting 2 or 3 PCs:
 #'
@@ -134,13 +140,13 @@ build_pca_hover_text <- function(
     label_colname
   }
 
-  format_hover_text(
+  return(format_hover_text(
     pca_data,
     primary_colname = label_hover_colname,
     secondary_colname = group_colname,
     missing_col_context = "PCA",
     require_secondary = TRUE
-  )
+  ))
 }
 
 #' Perform and plot a 2D Principal Components Analysis
@@ -169,6 +175,9 @@ plot_pca_2d <- S7::new_generic(
     label_font_size = 3,
     label_offset_x_ = 2,
     label_offset_y_ = 2,
+    log_transform = FALSE,
+    log_transform_pseudocount = 0.5,
+    log_transform_base = "ln",
     interactive_plots = FALSE,
     plots_subdir = "pca",
     plot_filename = "pca_2D.png",
@@ -199,6 +208,9 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   interactive_plots = FALSE,
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
@@ -224,6 +236,9 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
     label_font_size = label_font_size,
     label_offset_x_ = label_offset_x_,
     label_offset_y_ = label_offset_y_,
+    log_transform = log_transform,
+    log_transform_pseudocount = log_transform_pseudocount,
+    log_transform_base = log_transform_base,
     interactive_plots = interactive_plots,
     plots_subdir = plots_subdir,
     plot_filename = plot_filename,
@@ -273,6 +288,13 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 #' @param label_font_size font size for text labels on the PCA plot.
 #' @param label_offset_x_ horizontal offset for text labels on the PCA plot.
 #' @param label_offset_y_ vertical offset for text labels on the PCA plot.
+#' @param log_transform If `TRUE`, apply `log(x + log_transform_pseudocount, base = log_transform_base)` to sample
+#'   count columns before PCA. Use this for count-like data such as raw, clean, filt, or CPM-like counts; leave it
+#'   `FALSE` for already normalized/log-scale or batch-corrected values to avoid double transformation.
+#' @param log_transform_pseudocount Pseudocount added before log-transforming counts when `log_transform` is
+#'   `TRUE`.
+#' @param log_transform_base Logarithm base to use when `log_transform` is `TRUE`. Use a numeric value, or `"e"`,
+#'   `"ln"`, or `"natural"` for natural log. Default is `"ln"` to match the original PCA transform.
 #' @param interactive_plots set to TRUE to make the PCA plot interactive with `plotly`.
 #' @param plots_subdir subdirectory in `figures/` where PCA plots are saved.
 #' @param plot_filename output filename for the PCA plot image.
@@ -301,6 +323,9 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   label_font_size = 3,
   label_offset_x_ = 2,
   label_offset_y_ = 2,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   interactive_plots = FALSE,
   plots_subdir = "pca",
   plot_filename = "pca_2D.png",
@@ -323,6 +348,14 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
   }
   if (is.null(feature_id_colname)) {
     feature_id_colname <- colnames(moo_counts)[1]
+  }
+  if (isTRUE(log_transform)) {
+    moo_counts <- log_transform_counts(
+      moo_counts,
+      feature_id_colname = feature_id_colname,
+      pseudocount = log_transform_pseudocount,
+      base = log_transform_base
+    )
   }
 
   # calculate PCA
@@ -462,6 +495,9 @@ plot_pca_3d <- S7::new_generic(
     principal_components = c(1, 2, 3),
     point_size = 8,
     label_font_size = 24,
+    log_transform = FALSE,
+    log_transform_pseudocount = 0.5,
+    log_transform_base = "ln",
     color_values = NULL,
     plot_title = "PCA 3D",
     plot_filename = "pca_3D.html",
@@ -488,6 +524,9 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   color_values = NULL,
   plot_title = "PCA 3D",
   plot_filename = "pca_3D.html",
@@ -512,6 +551,9 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
       principal_components = principal_components,
       point_size = point_size,
       label_font_size = label_font_size,
+      log_transform = log_transform,
+      log_transform_pseudocount = log_transform_pseudocount,
+      log_transform_base = log_transform_base,
       color_values = color_values,
       plot_title = plot_title,
       plot_filename = plot_filename,
@@ -545,6 +587,13 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
 #'
 #' @param principal_components vector with numbered principal components to plot
 #' @param point_size size for `ggplot2::geom_point()`
+#' @param log_transform If `TRUE`, apply `log(x + log_transform_pseudocount, base = log_transform_base)` to sample
+#'   count columns before PCA. Use this for count-like data such as raw, clean, filt, or CPM-like counts; leave it
+#'   `FALSE` for already normalized/log-scale or batch-corrected values to avoid double transformation.
+#' @param log_transform_pseudocount Pseudocount added before log-transforming counts when `log_transform` is
+#'   `TRUE`.
+#' @param log_transform_base Logarithm base to use when `log_transform` is `TRUE`. Use a numeric value, or `"e"`,
+#'   `"ln"`, or `"natural"` for natural log. Default is `"ln"` to match the original PCA transform.
 #' @param plot_title title for the plot
 #'
 #' @returns `plotly::plot_ly` figure
@@ -565,6 +614,9 @@ S7::method(plot_pca_3d, S7::class_data.frame) <- function(
   principal_components = c(1, 2, 3),
   point_size = 8,
   label_font_size = 24,
+  log_transform = FALSE,
+  log_transform_pseudocount = 0.5,
+  log_transform_base = "ln",
   color_values = NULL,
   plot_title = "PCA 3D",
   plot_filename = "pca_3D.html",
@@ -588,6 +640,17 @@ S7::method(plot_pca_3d, S7::class_data.frame) <- function(
   }
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
+  }
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- colnames(moo_counts)[1]
+  }
+  if (isTRUE(log_transform)) {
+    moo_counts <- log_transform_counts(
+      moo_counts,
+      feature_id_colname = feature_id_colname,
+      pseudocount = log_transform_pseudocount,
+      base = log_transform_base
+    )
   }
 
   # if (is.null(color_values)) {

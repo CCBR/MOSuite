@@ -15,7 +15,7 @@
 #' @param return_mean_and_sd if TRUE, return Mean and Standard Deviation of groups in addition to DEG estimates for
 #'   contrast(s)
 #'
-#' @returns `multiOmicDataSet` with `diff` added to the `analyses` slot (i.e. `moo@analyses$diff`)
+#' @returns `multiOmicDataSet` with `diff` added to the `analyses` slot (i.e. `moo@analyses[["diff"]]`)
 #' @export
 #'
 #' @family moo methods
