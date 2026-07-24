@@ -7,6 +7,7 @@
 render_report(
   qmd_template = system.file("quarto", "report.qmd", package = "MOSuite"),
   qmd_src = NULL,
+  output_dir = ".",
   ...
 )
 }
@@ -17,6 +18,10 @@ render_report(
 rendering. If \code{NULL} (default), the template will be copied to the current
 working directory with the same filename as the template. If a file already
 exists at \code{qmd_src}, it will not be overwritten.}
+
+\item{output_dir}{Directory where the rendered report and supporting files
+will be saved. Defaults to \code{"."} (current working directory). Resolved to
+an absolute path before passing to \code{quarto::quarto_render()}.}
 
 \item{...}{Additional arguments passed to \code{quarto::quarto_render()}, such as a named list of parameters.}
 }
