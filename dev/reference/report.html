@@ -2,21 +2,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-07-23">
+<meta name="dcterms.date" content="2026-07-24">
 
 <title>MOSuite analysis report</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -69,10 +72,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="report_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="report_files/libs/quarto-html/anchor.min.js"></script>
 <link href="report_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="report_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="report_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="report_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="report_files/libs/bootstrap/bootstrap-9b7a7401f4b25f16fab518238f30cb8c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="report_files/libs/bootstrap/bootstrap-2b36aa87206fc78aa0a3f561bfe08483.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="report_files/libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
 <script src="report_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <script src="report_files/libs/plotly-binding-4.12.1/plotly.js"></script>
@@ -105,7 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 23, 2026</p>
+      <p class="date">July 24, 2026</p>
     </div>
   </div>
   
@@ -1005,8 +1008,8 @@ Joining with `by = join_by(GeneName)`</code></pre>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">color_values =</span> moo<span class="sc">@</span>analyses[[<span class="st">"colors"</span>]][[group_colname]]</span>
 <span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item" id="htmlwidget-a0d14c841cc702e9bf88" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-a0d14c841cc702e9bf88">{"x":{"visdat":{"20b72e86d512":["function () ","plotlyVisDat"]},"cur_data":"20b72e86d512","attrs":{"20b72e86d512":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"size":8},"hoverinfo":"text","text":{},"color":{},"size":24,"colors":["#5954d6","#e1562c","#b80058"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"PC1"},"yaxis":{"title":"PC2"},"zaxis":{"title":"PC3"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-37.029887404207201,-46.202726529239861,-47.38832948806099],"y":[33.200566070307481,40.838627625724087,28.814546147005061],"z":[4.7406847243840753,-10.906448043253107,-13.204218047115665],"mode":"markers","marker":{"color":"rgba(89,84,214,1)","size":8,"sizemode":"area","line":{"color":"rgba(89,84,214,1)"}},"hoverinfo":["text","text","text"],"text":["Label: A1<br>Group: A","Label: A2<br>Group: A","Label: A3<br>Group: A"],"type":"scatter3d","name":"A","textfont":{"color":"rgba(89,84,214,1)","size":55},"error_y":{"color":"rgba(89,84,214,1)","width":55},"error_x":{"color":"rgba(89,84,214,1)","width":55},"line":{"color":"rgba(89,84,214,1)","width":55},"frame":null},{"x":[-28.694926741752855,-13.178325203869919,-15.174264901109929],"y":[-29.61351670342993,-34.916643374714155,-65.245132469700437],"z":[25.172778558047206,13.33410158127648,7.1777565898973972],"mode":"markers","marker":{"color":"rgba(225,86,44,1)","size":8,"sizemode":"area","line":{"color":"rgba(225,86,44,1)"}},"hoverinfo":["text","text","text"],"text":["Label: B1<br>Group: B","Label: B2<br>Group: B","Label: B3<br>Group: B"],"type":"scatter3d","name":"B","textfont":{"color":"rgba(225,86,44,1)","size":55},"error_y":{"color":"rgba(225,86,44,1)","width":55},"error_x":{"color":"rgba(225,86,44,1)","width":55},"line":{"color":"rgba(225,86,44,1)","width":55},"frame":null},{"x":[54.383108042646434,77.413153148631366,55.872199076963142],"y":[-0.31296701193077309,31.436049026500836,-4.2015293097620674],"z":[-44.49320374920331,67.633314692756514,-49.454766306789836],"mode":"markers","marker":{"color":"rgba(184,0,88,1)","size":8,"sizemode":"area","line":{"color":"rgba(184,0,88,1)"}},"hoverinfo":["text","text","text"],"text":["Label: C1<br>Group: C","Label: C2<br>Group: C","Label: C3<br>Group: C"],"type":"scatter3d","name":"C","textfont":{"color":"rgba(184,0,88,1)","size":55},"error_y":{"color":"rgba(184,0,88,1)","width":55},"error_x":{"color":"rgba(184,0,88,1)","width":55},"line":{"color":"rgba(184,0,88,1)","width":55},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-46f4f830ef57907b9e04" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-46f4f830ef57907b9e04">{"x":{"visdat":{"20aa36ac77da":["function () ","plotlyVisDat"]},"cur_data":"20aa36ac77da","attrs":{"20aa36ac77da":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"size":8},"hoverinfo":"text","text":{},"color":{},"size":24,"colors":["#5954d6","#e1562c","#b80058"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"PC1"},"yaxis":{"title":"PC2"},"zaxis":{"title":"PC3"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-37.02988740420713,-46.202726529239996,-47.388329488061188],"y":[33.20056607030736,40.838627625724037,28.814546147005224],"z":[4.7406847243841019,-10.906448043253027,-13.204218047115619],"mode":"markers","marker":{"color":"rgba(89,84,214,1)","size":8,"sizemode":"area","line":{"color":"rgba(89,84,214,1)"}},"hoverinfo":["text","text","text"],"text":["Label: A1<br>Group: A","Label: A2<br>Group: A","Label: A3<br>Group: A"],"type":"scatter3d","name":"A","textfont":{"color":"rgba(89,84,214,1)","size":55},"error_y":{"color":"rgba(89,84,214,1)","width":55},"error_x":{"color":"rgba(89,84,214,1)","width":55},"line":{"color":"rgba(89,84,214,1)","width":55},"frame":null},{"x":[-28.694926741752916,-13.178325203869875,-15.174264901109913],"y":[-29.61351670343015,-34.916643374714177,-65.245132469700494],"z":[25.172778558047199,13.334101581276443,7.1777565898972835],"mode":"markers","marker":{"color":"rgba(225,86,44,1)","size":8,"sizemode":"area","line":{"color":"rgba(225,86,44,1)"}},"hoverinfo":["text","text","text"],"text":["Label: B1<br>Group: B","Label: B2<br>Group: B","Label: B3<br>Group: B"],"type":"scatter3d","name":"B","textfont":{"color":"rgba(225,86,44,1)","size":55},"error_y":{"color":"rgba(225,86,44,1)","width":55},"error_x":{"color":"rgba(225,86,44,1)","width":55},"line":{"color":"rgba(225,86,44,1)","width":55},"frame":null},{"x":[54.383108042646533,77.413153148631352,55.872199076963149],"y":[-0.31296701193061999,31.436049026500761,-4.2015293097619741],"z":[-44.493203749203325,67.633314692756926,-49.454766306789963],"mode":"markers","marker":{"color":"rgba(184,0,88,1)","size":8,"sizemode":"area","line":{"color":"rgba(184,0,88,1)"}},"hoverinfo":["text","text","text"],"text":["Label: C1<br>Group: C","Label: C2<br>Group: C","Label: C3<br>Group: C"],"type":"scatter3d","name":"C","textfont":{"color":"rgba(184,0,88,1)","size":55},"error_y":{"color":"rgba(184,0,88,1)","width":55},"error_x":{"color":"rgba(184,0,88,1)","width":55},"line":{"color":"rgba(184,0,88,1)","width":55},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -1134,7 +1137,7 @@ Max y: 4.56088783571366</code></pre>
 <div class="cell-output cell-output-stderr">
 <pre><code>Genes in initial dataset: 7943
 
-Max y: 4.34744066227959</code></pre>
+Max y: 4.34744066227962</code></pre>
 </div>
 <div class="cell-output-display">
 <div>

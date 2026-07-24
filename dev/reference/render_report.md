@@ -83,15 +83,12 @@ render_report(execute_params = list(
 #>   html-math-method: mathjax
 #>   wrap: none
 #>   default-image-extension: png
-#>   variables: {}
 #>   
 #> metadata
 #>   document-css: false
 #>   link-citations: true
 #>   date-format: long
 #>   lang: en
-#>   engines:
-#>     - path: /opt/quarto/share/extension-subtrees/julia-engine/_extensions/julia-engine/julia-engine.js
 #>   title: MOSuite analysis report
 #>   date: today
 #>   
