@@ -18,8 +18,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r load}
-#library(MOSuite)
-devtools::load_all()
+library(MOSuite)
 ```
 
 ## Default plots from main functions
