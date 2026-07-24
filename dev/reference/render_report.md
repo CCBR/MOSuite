@@ -36,7 +36,9 @@ render_report(
 
   Additional arguments passed to
   [`quarto::quarto_render()`](https://quarto-dev.github.io/quarto-r/reference/quarto_render.html),
-  such as a named list of parameters.
+  such as `execute_params` (a named list of parameters) or `quarto_args`
+  (a character vector of CLI flags, e.g.
+  `c("--output-dir", "/path/to/out")`).
 
 ## Details
 
@@ -93,6 +95,60 @@ render_report(execute_params = list(
 #>   date: today
 #>   
 #> Output created: report.html
+#> 
+#> 
+
+# Render to a specific output directory
+render_report(
+  quarto_args = c("--output-dir", "./results"),
+  execute_params = list(
+    counts_csv = system.file("extdata", "nidap", "Raw_Counts.csv.gz",
+                             package = "MOSuite"),
+    samplesheet_csv = system.file("extdata", "nidap",
+      "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+      package = "MOSuite")
+  )
+)
+#> 
+#> 
+#> processing file: report.qmd
+#> 1/17                   
+#> 2/17 [deps]            
+#> 3/17                   
+#> 4/17 [initialize]      
+#> 5/17                   
+#> 6/17 [analyze]         
+#> 7/17                   
+#> 8/17 [pca_3D]          
+#> 9/17                   
+#> 10/17 [expr_heatmap]    
+#> 11/17                   
+#> 12/17 [volcano_summary] 
+#> 13/17                   
+#> 14/17 [volcano_enhanced]
+#> 15/17                   
+#> 16/17 [venn_diagram]    
+#> 17/17                   
+#> output file: report.knit.md
+#> 
+#> pandoc 
+#>   to: html
+#>   output-file: report.html
+#>   standalone: true
+#>   section-divs: true
+#>   html-math-method: mathjax
+#>   wrap: none
+#>   default-image-extension: png
+#>   
+#> metadata
+#>   document-css: false
+#>   link-citations: true
+#>   date-format: long
+#>   lang: en
+#>   title: MOSuite analysis report
+#>   date: today
+#>   
+#> Output created: results/report.html
 #> 
 #> 
 ```
