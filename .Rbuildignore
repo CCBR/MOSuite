@@ -35,3 +35,4 @@
 ^vignettes/memory\.Rmd$
 ^volc-sum-params\.json$
 VennDiagram.*\.log
+^\.posit/assistant$
