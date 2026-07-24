@@ -13,7 +13,7 @@ batch_correct_counts(
   samples_to_include = NULL,
   covariates_colnames = "Group",
   batch_colname = "Batch",
-  label_colname = NULL,
+  label_colname = "Label",
   samples_to_rename = c(""),
   add_label_to_pca = TRUE,
   principal_component_on_x_axis = 1,
@@ -73,9 +73,9 @@ value in every row to skip batch correction (alternatively, simply do not run th
 
 \item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in
 heatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to
-display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column
-with your preferred Labels here. The selected column should contain unique names for each sample.
-Use \code{add_label_to_pca} to control whether these labels are displayed on the PCA plot.}
+display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with
+your preferred Labels here. The selected column should contain unique names for each sample. Use \code{add_label_to_pca}
+to control whether these labels are displayed on the PCA plot.}
 
 \item{samples_to_rename}{If you do not have a Plot Labels Column in your sample metadata table, you can use this
 parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for

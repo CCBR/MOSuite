@@ -62,20 +62,23 @@ Before, After, etc.).}
 
 \item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in
 heatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to
-display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column
-with your preferred Labels here. The selected column should contain unique names for each sample.
-Use \code{add_label_to_pca} to control whether these labels are displayed on the PCA plot.}
+display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with
+your preferred Labels here. The selected column should contain unique names for each sample. Use \code{add_label_to_pca}
+to control whether these labels are displayed on the PCA plot.}
 
 \item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or
 you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
 analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
 
-\item{minimum_count_value_to_be_considered_nonzero}{Minimum count value to be considered non-zero for a sample}
+\item{minimum_count_value_to_be_considered_nonzero}{Minimum value in the selected filtering table required for a
+sample to be considered nonzero. If \code{use_cpm_counts_to_filter} is \code{TRUE}, this threshold is applied to CPM values.
+If \code{use_cpm_counts_to_filter} is \code{FALSE}, this threshold is applied directly to the selected \code{count_type} table.}
 
-\item{minimum_number_of_samples_with_nonzero_counts_in_total}{Minimum number of samples (total) with non-zero counts}
+\item{minimum_number_of_samples_with_nonzero_counts_in_total}{Minimum number of samples in total that must meet the
+\code{minimum_count_value_to_be_considered_nonzero} threshold for a feature to be kept.}
 
 \item{minimum_number_of_samples_with_nonzero_counts_in_a_group}{Only keeps genes that have at least this number of
-samples with nonzero CPM counts in at least one group}
+samples meeting the threshold in at least one group}
 
 \item{use_cpm_counts_to_filter}{If no transformation has been been performed on counts matrix (eg Raw Counts) set to
 TRUE. If TRUE counts will be transformed to CPM and filtered based on given criteria. If gene counts matrix has
@@ -84,7 +87,7 @@ transformation will be applied and features will be filtered as is. For RNAseq d
 transformed to CPM in order to properly filter.}
 
 \item{use_group_based_filtering}{If TRUE, only keeps features (e.g. genes) that have at least a certain number of
-samples with nonzero CPM counts in at least one group}
+samples passing the threshold in at least one group}
 
 \item{principal_component_on_x_axis}{The principal component to plot on the x-axis for the PCA plot. Choices include
 1, 2, 3, ... (default: 1)}

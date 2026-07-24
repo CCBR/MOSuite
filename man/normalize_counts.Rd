@@ -66,9 +66,9 @@ Before, After, etc.).}
 
 \item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in
 heatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to
-display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column
-with your preferred Labels here. The selected column should contain unique names for each sample.
-Use \code{add_label_to_pca} to control whether these labels are displayed on the PCA plot.}
+display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with
+your preferred Labels here. The selected column should contain unique names for each sample. Use \code{add_label_to_pca}
+to control whether these labels are displayed on the PCA plot.}
 
 \item{input_in_log_counts}{set this to \code{TRUE} if counts are already log2-transformed}
 

@@ -337,7 +337,7 @@
     {
       "key": "colors_for_plots",
       "displayName": "Colors for Plots",
-      "description": "Optional colors for PCA/histogram/heatmap plots. If `NULL`, colors are taken from\n`moo@analyses$colors[[group_colname]]`.\nColors must either be names in `grDevices::colors()` or valid hex codes.\nUnnamed colors are assigned by factor level order when the grouping column is a factor;\notherwise, they follow the order in which groups first appear in the metadata column. If more groups are present\nthan colors provided,\nsupplied colors are used first and additional colors are generated from the selected palette for the remaining\ngroups; random colors are used only if that palette returns fewer colors than the number of groups.\n",
+      "description": "Optional colors for PCA/histogram/heatmap plots. If `NULL`, colors are taken from\n`moo@analyses[[\"colors\"]][[group_colname]]`.\nColors must either be names in `grDevices::colors()` or valid hex codes.\nUnnamed colors are assigned by factor level order when the grouping column is a factor;\notherwise, they follow the order in which groups first appear in the metadata column. If more groups are present\nthan colors provided,\nsupplied colors are used first and additional colors are generated from the selected palette for the remaining\ngroups; random colors are used only if that palette returns fewer colors than the number of groups.\n",
       "paramType": "MULTISELECT",
       "paramGroup": "Visualization",
       "paramValues": [
