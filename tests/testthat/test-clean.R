@@ -67,6 +67,136 @@ test_that("clean_raw_counts works for RENEE data", {
   )
 })
 
+test_that("strip_ensembl_version removes version suffix", {
+  ids <- c("ENSG00000121410.11", "ENSG00000268895.5", "ENSG00000148584.15")
+  result <- MOSuite:::strip_ensembl_version(ids)
+  expect_equal(
+    result,
+    c("ENSG00000121410", "ENSG00000268895", "ENSG00000148584")
+  )
+})
+
+test_that("strip_ensembl_version is a no-op for IDs without version", {
+  ids <- c("ENSG00000121410", "ENSG00000268895")
+  result <- MOSuite:::strip_ensembl_version(ids)
+  expect_equal(result, ids)
+})
+
+test_that("separate_gene_meta_columns splits Ensembl|GeneName format", {
+  counts_dat <- data.frame(
+    `ENSG00000121410|A1BG` = c(10, 20),
+    sample1 = c(100, 200),
+    check.names = FALSE
+  )
+  colnames(counts_dat)[1] <- "ENSG00000121410|A1BG"
+  # Rename so first col is the feature ID
+  counts_dat2 <- data.frame(
+    feature_id = c("ENSG00000121410|A1BG", "ENSG00000268895|A1BG-AS1"),
+    sample1 = c(100, 200),
+    stringsAsFactors = FALSE
+  )
+  result <- MOSuite:::separate_gene_meta_columns(
+    counts_dat2,
+    split_gene_name = TRUE
+  )
+  expect_true("Ensembl_ID" %in% colnames(result))
+  expect_equal(result$Ensembl_ID, c("ENSG00000121410", "ENSG00000268895"))
+})
+
+test_that("separate_gene_meta_columns strips Ensembl version when present", {
+  counts_dat <- data.frame(
+    feature_id = c("ENSG00000121410.11|A1BG", "ENSG00000268895.5|A1BG-AS1"),
+    sample1 = c(100, 200),
+    stringsAsFactors = FALSE
+  )
+  result <- MOSuite:::separate_gene_meta_columns(
+    counts_dat,
+    split_gene_name = TRUE
+  )
+  expect_true("Ensembl_ID" %in% colnames(result))
+  expect_true("Ensembl_ID_version" %in% colnames(result))
+  expect_equal(result$Ensembl_ID, c("ENSG00000121410", "ENSG00000268895"))
+  expect_equal(
+    result$Ensembl_ID_version,
+    c("ENSG00000121410.11", "ENSG00000268895.5")
+  )
+})
+
+test_that("separate_gene_meta_columns uses Feature_id_1/2 when format unknown", {
+  counts_dat <- data.frame(
+    feature_id = c("geneA|isoform1", "geneB|isoform2"),
+    sample1 = c(10, 20),
+    stringsAsFactors = FALSE
+  )
+  result <- MOSuite:::separate_gene_meta_columns(
+    counts_dat,
+    split_gene_name = TRUE
+  )
+  expect_true("Feature_id_1" %in% colnames(result))
+  expect_true("Feature_id_2" %in% colnames(result))
+})
+
+test_that("separate_gene_meta_columns does not split when split_gene_name = FALSE", {
+  counts_dat <- data.frame(
+    feature_id = c("ENSG00000121410|A1BG", "ENSG00000268895|other"),
+    sample1 = c(10, 20),
+    stringsAsFactors = FALSE
+  )
+  result <- MOSuite:::separate_gene_meta_columns(
+    counts_dat,
+    split_gene_name = FALSE
+  )
+  expect_equal(colnames(result)[1], "feature_id")
+  expect_equal(ncol(result), 2)
+})
+
+test_that("clean_raw_counts cleans column names with special characters", {
+  counts_dat <- data.frame(
+    GeneName = c("geneA", "geneB"),
+    `sample-1` = c(10, 20),
+    `sample 2` = c(30, 40),
+    check.names = FALSE
+  )
+  meta <- data.frame(Sample = c("sample-1", "sample 2"))
+  moo <- create_multiOmicDataSet_from_dataframes(
+    sample_metadata = meta,
+    counts_dat = counts_dat,
+    sample_id_colname = "Sample"
+  )
+  result <- clean_raw_counts(
+    moo,
+    sample_id_colname = "Sample",
+    feature_id_colname = "GeneName",
+    cleanup_column_names = TRUE
+  )
+  clean_cols <- colnames(result@counts$clean)
+  expect_false(any(grepl("-| ", clean_cols)))
+})
+
+test_that("clean_raw_counts prefixes numeric-starting column names with X", {
+  counts_dat <- data.frame(
+    GeneName = c("geneA", "geneB"),
+    `1sample` = c(10, 20),
+    `2sample` = c(30, 40),
+    check.names = FALSE
+  )
+  meta <- data.frame(Sample = c("1sample", "2sample"))
+  moo <- create_multiOmicDataSet_from_dataframes(
+    sample_metadata = meta,
+    counts_dat = counts_dat,
+    sample_id_colname = "Sample"
+  )
+  result <- clean_raw_counts(
+    moo,
+    sample_id_colname = "Sample",
+    feature_id_colname = "GeneName",
+    cleanup_column_names = TRUE
+  )
+  clean_cols <- colnames(result@counts$clean)
+  expect_false(any(grepl("^[0-9]", clean_cols)))
+  expect_true(any(grepl("^X[0-9]", clean_cols)))
+})
+
 test_that("aggregate_duplicate_gene_names returns collapsed dfout", {
   counts_dat <- data.frame(
     gene_id = c("A", "A", "B"),
