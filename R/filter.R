@@ -407,6 +407,11 @@ remove_low_count_genes <- function(
     sample_id_colname <- colnames(sample_metadata)[1]
   }
   sample_colnames <- setdiff(colnames(df), feature_id_colname)
+  sample_colnames <- sample_colnames[vapply(
+    df[sample_colnames],
+    is.numeric,
+    logical(1)
+  )]
 
   # USE CPM Transformation
   trans_df <- df

@@ -262,6 +262,37 @@ test_that("remove_low_count_genes uses original filter threshold parameters", {
   expect_equal(result$Gene, "keep")
 })
 
+test_that("remove_low_count_genes ignores non-numeric annotation columns", {
+  df <- data.frame(
+    Gene = c("keep", "remove"),
+    Symbol = c("A", "B"),
+    S1 = c(4, 4),
+    S2 = c(4, 0),
+    check.names = FALSE
+  )
+  sample_meta <- data.frame(
+    Sample = c("S1", "S2"),
+    Group = c("A", "A"),
+    row.names = c("S1", "S2"),
+    check.names = FALSE
+  )
+
+  result <- remove_low_count_genes(
+    counts_dat = df,
+    sample_metadata = sample_meta,
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    use_cpm_counts_to_filter = FALSE,
+    use_group_based_filtering = FALSE,
+    minimum_count_value_to_be_considered_nonzero = 4,
+    minimum_number_of_samples_with_nonzero_counts_in_total = 2,
+    minimum_number_of_samples_with_nonzero_counts_in_a_group = 2
+  )
+
+  expect_equal(result$Gene, "keep")
+  expect_equal(result$Symbol, "A")
+})
+
 test_that("remove_low_count_genes distinguishes total sample minimum 8 from 9", {
   sample_names <- paste0("S", 1:10)
   df <- data.frame(
