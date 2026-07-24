@@ -29,11 +29,11 @@ test_that("get_colors_lst works on nidap_sample_metadata", {
         C = "#b80058"
       ),
       Replicate = c(
-        `1` = "#5954d6",
-        `2` = "#e1562c",
-        `3` = "#b80058"
+        `1` = "#00c6f8",
+        `2` = "#d163e6",
+        `3` = "#00a76c"
       ),
-      Batch = c(`1` = "#5954d6", `2` = "#e1562c"),
+      Batch = c(`1` = "#ff9287", `2` = "#008cf9"),
       Label = c(
         A1 = "#5954d6",
         A2 = "#e1562c",
@@ -55,16 +55,16 @@ test_that("get_colors_lst handles alternative palette functions", {
     package = "MOSuite"
   ) |>
     readr::read_tsv()
-  expect_message(
-    expect_warning(
+  # With offset logic, small columns are padded so brewer.pal is never called
+  # with n < 3; no warning or message should be emitted.
+  expect_no_warning(
+    expect_no_message(
       get_colors_lst(
         sample_meta,
         palette_fun = RColorBrewer::brewer.pal,
         name = "Set3"
-      ),
-      "minimal value for n is 3"
-    ),
-    "Warning raised in "
+      )
+    )
   )
 })
 test_that("get_colors_vctr falls back to random colors when n exceeds palette max", {
@@ -81,6 +81,31 @@ test_that("get_colors_vctr falls back to random colors when n exceeds palette ma
   )
   expect_length(result, 13)
   expect_named(result, paste0("cat", seq_len(13)))
+})
+
+test_that("get_colors_vctr retries from offset 0 when offset pushes past palette end", {
+  # Palette has 12 colors; offset=10, n_obs=5: 10+5=15 > 12, so retry without offset.
+  # The column should receive palette colors 1-5, not random colors.
+  dat <- data.frame(group = paste0("x", seq_len(5)))
+  result <- get_colors_vctr(dat, "group", color_offset = 10L)
+  expect_length(result, 5)
+  expect_named(result, paste0("x", seq_len(5)))
+  # Should get the first 5 palette colors (same as offset=0), not random
+  expected <- get_colors_vctr(dat, "group", color_offset = 0L)
+  expect_equal(result, expected)
+})
+
+test_that("get_colors_lst columns exceeding palette size fall back to random colors", {
+  # 13 unique values exceeds the 12-color mosuite_palette; should message and use random colors
+  dat_big <- data.frame(group = paste0("cat", seq_len(13)))
+  expect_no_warning(
+    expect_message(
+      result <- get_colors_lst(dat_big),
+      "exceeds the palette maximum"
+    )
+  )
+  expect_length(result$group, 13)
+  expect_named(result$group, paste0("cat", seq_len(13)))
 })
 
 test_that("resolve_plot_colors preserves named color mappings", {
@@ -256,11 +281,11 @@ test_that("set_color_pal overrides the color palette", {
         C = "#b80058"
       ),
       Replicate = c(
-        `1` = "#5954d6",
-        `2` = "#e1562c",
-        `3` = "#b80058"
+        `1` = "#00c6f8",
+        `2` = "#d163e6",
+        `3` = "#00a76c"
       ),
-      Batch = c(`1` = "#5954d6", `2` = "#e1562c"),
+      Batch = c(`1` = "#ff9287", `2` = "#008cf9"),
       Label = c(
         A1 = "#5954d6",
         A2 = "#e1562c",
@@ -300,11 +325,11 @@ test_that("set_color_pal overrides the color palette", {
         C = "#8DA0CB"
       ),
       Replicate = c(
-        `1` = "#5954d6",
-        `2` = "#e1562c",
-        `3` = "#b80058"
+        `1` = "#00c6f8",
+        `2` = "#d163e6",
+        `3` = "#00a76c"
       ),
-      Batch = c(`1` = "#5954d6", `2` = "#e1562c"),
+      Batch = c(`1` = "#ff9287", `2` = "#008cf9"),
       Label = c(
         A1 = "#5954d6",
         A2 = "#e1562c",

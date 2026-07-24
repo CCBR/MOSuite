@@ -78,7 +78,7 @@ get_observed_values <- function(dat, colname) {
 #'   `grDevices::palette.colors`.
 #' @param ... additional arguments forwarded to `palette_fun`
 #'
-#' @returns named list, with each column in `sample_metadata` containing entry with a named vector of colors
+#' @returns named list, with each column in `sample_metadata` containing a corresponding entry with a named vector of colors
 #' @export
 #'
 #' @examples
@@ -92,13 +92,33 @@ get_colors_lst <- function(
   ...
 ) {
   dat_colnames <- colnames(sample_metadata)
-  color_lists <- dat_colnames |>
-    purrr::map(
-      .f = get_colors_vctr,
+
+  # Probe palette size with a large n; palette_fun should clamp or error.
+  # Warnings are suppressed because some palettes warn when n exceeds their max.
+  n_palette <- tryCatch(
+    suppressWarnings(length(palette_fun(n = 100L, ...))),
+    error = function(e) length(mosuite_palette)
+  )
+
+  color_offset <- 0L
+  color_lists <- vector("list", length(dat_colnames))
+  for (i in seq_along(dat_colnames)) {
+    colname <- dat_colnames[[i]]
+    n_obs <- length(get_observed_values(sample_metadata, colname))
+    # Only offset when the column is small enough that unique colors are available
+    use_offset <- n_obs <= n_palette / 2 && color_offset + n_obs <= n_palette
+    vctr <- get_colors_vctr(
       dat = sample_metadata,
+      colname = colname,
       palette_fun = palette_fun,
+      color_offset = if (use_offset) color_offset else 0L,
       ...
     )
+    if (use_offset) {
+      color_offset <- color_offset + n_obs
+    }
+    color_lists[[i]] <- vctr
+  }
   names(color_lists) <- dat_colnames
   return(color_lists)
 }
@@ -108,6 +128,9 @@ get_colors_lst <- function(
 #' @inheritParams get_colors_lst
 #' @param dat data frame
 #' @param colname column name in `dat`
+#' @param color_offset integer; number of palette colors to skip before
+#'   assigning colors to this column's values. Used by [get_colors_lst()] to
+#'   avoid repeating colors across columns with few unique values.
 #' @returns named vector of colors for each unique observation in `dat[[colname]]`. Factor columns use factor level order;
 #'   other columns use first-observed order.
 #' @export
@@ -116,6 +139,7 @@ get_colors_vctr <- function(
   dat,
   colname,
   palette_fun = select_mosuite_colors,
+  color_offset = 0L,
   ...
 ) {
   obs <- get_observed_values(dat, colname)
@@ -127,17 +151,32 @@ get_colors_vctr <- function(
       warned_cnd <<- cnd
       invokeRestart("muffleWarning")
     },
-    palette_fun(n = n_obs, ...)
+    palette_fun(n = n_obs + color_offset, ...)
   )
 
-  # if fewer colors were returned than needed (e.g. when n exceeds the palette maximum,
-  # such as Okabe-Ito's maximum of 9), fall back to random colors
-  if (length(colors_vctr) < n_obs) {
-    message(glue::glue(
-      "Number of unique values ({n_obs}) in column \"{colname}\" ",
-      "exceeds the palette maximum. Falling back to random colors."
-    ))
-    colors_vctr <- get_random_colors(n_obs)
+  # if fewer colors were returned than needed, handle gracefully
+  if (length(colors_vctr) < n_obs + color_offset) {
+    # If an offset pushed us past the palette end but n_obs alone would fit,
+    # retry from the start of the palette before falling back to random colors.
+    if (color_offset > 0L) {
+      colors_vctr <- withCallingHandlers(
+        warning = function(cnd) {
+          warned_cnd <<- cnd
+          invokeRestart("muffleWarning")
+        },
+        palette_fun(n = n_obs, ...)
+      )
+      color_offset <- 0L
+    }
+    # If still not enough colors, fall back to random
+    if (length(colors_vctr) < n_obs) {
+      message(glue::glue(
+        "Number of unique values ({n_obs}) in column \"{colname}\" ",
+        "exceeds the palette maximum. Falling back to random colors."
+      ))
+      colors_vctr <- get_random_colors(n_obs)
+      color_offset <- 0L
+    }
   } else if (!is.null(warned_cnd)) {
     # warning was raised but we still have enough colors (e.g. brewer.pal warns when n < 3
     # but returns 3 colors); convert to a message and re-raise the original warning
@@ -147,9 +186,8 @@ get_colors_vctr <- function(
     warning(conditionMessage(warned_cnd))
   }
 
-  # if more colors are returned than are in the observations, truncate the vector.
-  # this occurs when using RColorBrewer::brewer.pal with n < 3
-  colors_vctr <- colors_vctr[seq_len(n_obs)]
+  # Apply offset and truncate to n_obs
+  colors_vctr <- colors_vctr[seq.int(color_offset + 1L, color_offset + n_obs)]
 
   names(colors_vctr) <- obs
   return(colors_vctr)
