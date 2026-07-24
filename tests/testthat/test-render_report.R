@@ -3,12 +3,13 @@ test_that("render_report runs in a temporary directory", {
   skip_if_not_installed("knitr")
   skip_if_not_installed("rmarkdown")
 
-  tmp <- withr::local_tempdir()
-  withr::local_dir(tmp)
+  work_dir <- withr::local_tempdir()
+  out_dir <- withr::local_tempdir()
+  withr::local_dir(work_dir)
 
   expect_no_error(
     render_report(
-      output_dir = tmp,
+      output_dir = out_dir,
       execute_params = list(
         counts_csv = system.file(
           "extdata",
@@ -31,5 +32,6 @@ test_that("render_report runs in a temporary directory", {
   )
 
   expect_true(file.exists("report.qmd"))
-  expect_true(file.exists("report.html"))
+  expect_true(file.exists(file.path(out_dir, "report.html")))
+  expect_false(file.exists("report.html"))
 })
