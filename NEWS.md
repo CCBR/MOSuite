@@ -10,6 +10,7 @@
   - Add optional group coloring to `plot_read_depth()` and the `clean_raw_counts()` read-depth output while preserving the single-color default when no group is selected.
 - New report template & helper function: `render_report()`. (#120, @kelly-sovacool)
 - Fix ggplot2 size deprecation warning in `plot_volcano_summary()`. (#228, @kelly-sovacool)
+- docs: show how to set `output_dir` in `render_report()`. (#235, @kelly-sovacool)
 
 ## MOSuite 0.3.2
 
