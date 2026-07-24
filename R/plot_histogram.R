@@ -373,7 +373,9 @@ S7::method(plot_histogram, S7::class_data.frame) <- function(
           exponents <- unique(c(seq(0, max_power, by = step), max_power))
           raw_breaks <- c(0, 2^exponents)
         }
-        raw_breaks <- raw_breaks[raw_breaks >= 0 & raw_breaks <= raw_upper_limit]
+        raw_breaks <- raw_breaks[
+          raw_breaks >= 0 & raw_breaks <= raw_upper_limit
+        ]
         return(unique(raw_breaks + log2_axis_pseudocount))
       },
       labels = function(x) {

@@ -260,7 +260,8 @@ filter_counts <- function(
       "Count"
     }
     log2_axis_pseudocount <- 0.5
-    histogram_threshold_x <- minimum_count_value_to_be_considered_nonzero + log2_axis_pseudocount
+    histogram_threshold_x <- minimum_count_value_to_be_considered_nonzero +
+      log2_axis_pseudocount
 
     # Base histogram plot
     hist_plot <- plot_histogram(
@@ -428,7 +429,9 @@ remove_low_count_genes <- function(
         "{glue::glue_collapse(missing_samples, sep = ', ')}"
       ))
     }
-    sample_groups <- as.character(sample_metadata[[group_colname]][sample_match])
+    sample_groups <- as.character(sample_metadata[[group_colname]][
+      sample_match
+    ])
     groups <- unique(stats::na.omit(sample_groups))
     if (length(groups) == 0) {
       stop(glue::glue(
@@ -446,7 +449,8 @@ remove_low_count_genes <- function(
     keep_rows <- rowSums(
       passing_samples_by_group >=
         minimum_number_of_samples_with_nonzero_counts_in_a_group
-    ) >= 1
+    ) >=
+      1
     df_filt <- trans_df[keep_rows, , drop = FALSE]
   } else {
     keep_rows <- (rowSums(passing_counts) >=

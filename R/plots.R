@@ -206,7 +206,10 @@ get_legend_text_size <- function(
     1
   )
 
-  return(max(min_legend_text_size, floor(max_legend_text_size / sqrt(label_pressure))))
+  return(max(
+    min_legend_text_size,
+    floor(max_legend_text_size / sqrt(label_pressure))
+  ))
 }
 
 #' Add wrapped colour legend layout to a ggplot
@@ -246,11 +249,13 @@ add_colour_legend_layout <- function(
     guide_args$override.aes <- guide_override_aes
   }
 
-  return(plot +
-    ggplot2::guides(
-      colour = do.call(ggplot2::guide_legend, guide_args)
-    ) +
-    ggplot2::theme(
-      legend.box = "vertical"
-    ))
+  return(
+    plot +
+      ggplot2::guides(
+        colour = do.call(ggplot2::guide_legend, guide_args)
+      ) +
+      ggplot2::theme(
+        legend.box = "vertical"
+      )
+  )
 }

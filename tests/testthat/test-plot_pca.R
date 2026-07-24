@@ -697,7 +697,10 @@ test_that("plot_pca_2d log_transform defaults to original natural-log transform"
   )
 
   option_points <- ggplot2::ggplot_build(p_from_option)$data[[1]][, c("x", "y")]
-  manual_points <- ggplot2::ggplot_build(p_from_manual_transform)$data[[1]][, c("x", "y")]
+  manual_points <- ggplot2::ggplot_build(p_from_manual_transform)$data[[1]][, c(
+    "x",
+    "y"
+  )]
   expect_equal(option_points, manual_points, tolerance = 1e-8)
 })
 
@@ -729,9 +732,21 @@ test_that("plot_pca_3d log_transform defaults to original natural-log transform"
   manual_traces <- plotly::plotly_build(fig_from_manual_transform)$x$data
   expect_equal(length(option_traces), length(manual_traces))
   for (trace_index in seq_along(option_traces)) {
-    expect_equal(option_traces[[trace_index]]$x, manual_traces[[trace_index]]$x, tolerance = 1e-8)
-    expect_equal(option_traces[[trace_index]]$y, manual_traces[[trace_index]]$y, tolerance = 1e-8)
-    expect_equal(option_traces[[trace_index]]$z, manual_traces[[trace_index]]$z, tolerance = 1e-8)
+    expect_equal(
+      option_traces[[trace_index]]$x,
+      manual_traces[[trace_index]]$x,
+      tolerance = 1e-8
+    )
+    expect_equal(
+      option_traces[[trace_index]]$y,
+      manual_traces[[trace_index]]$y,
+      tolerance = 1e-8
+    )
+    expect_equal(
+      option_traces[[trace_index]]$z,
+      manual_traces[[trace_index]]$z,
+      tolerance = 1e-8
+    )
   }
 })
 
@@ -763,6 +778,9 @@ test_that("plot_pca_2d log_transform supports log2 base", {
   )
 
   option_points <- ggplot2::ggplot_build(p_from_option)$data[[1]][, c("x", "y")]
-  manual_points <- ggplot2::ggplot_build(p_from_manual_transform)$data[[1]][, c("x", "y")]
+  manual_points <- ggplot2::ggplot_build(p_from_manual_transform)$data[[1]][, c(
+    "x",
+    "y"
+  )]
   expect_equal(option_points, manual_points, tolerance = 1e-8)
 })
