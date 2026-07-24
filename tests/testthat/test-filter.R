@@ -394,6 +394,36 @@ test_that("remove_low_count_genes applies sample minimum within groups", {
   )
 })
 
+test_that("remove_low_count_genes ignores missing group assignments", {
+  df <- data.frame(
+    Gene = c("keep", "remove"),
+    S1 = c(4, 4),
+    S2 = c(4, 0),
+    S3 = c(0, 4),
+    check.names = FALSE
+  )
+  sample_meta <- data.frame(
+    Sample = c("S1", "S2", "S3"),
+    Group = c("A", "A", NA),
+    row.names = c("S1", "S2", "S3"),
+    check.names = FALSE
+  )
+
+  result <- remove_low_count_genes(
+    counts_dat = df,
+    sample_metadata = sample_meta,
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    use_cpm_counts_to_filter = FALSE,
+    use_group_based_filtering = TRUE,
+    minimum_count_value_to_be_considered_nonzero = 4,
+    minimum_number_of_samples_with_nonzero_counts_in_total = 1,
+    minimum_number_of_samples_with_nonzero_counts_in_a_group = 2
+  )
+
+  expect_equal(result$Gene, "keep")
+})
+
 test_that("remove_low_count_genes works with group-based filtering (no grouped tibble crash)", {
   df <- data.frame(
     Gene = c(

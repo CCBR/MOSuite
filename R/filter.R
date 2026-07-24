@@ -453,8 +453,10 @@ remove_low_count_genes <- function(
     passing_samples_by_group <- vapply(
       groups,
       function(group) {
-        group_sample_colnames <- sample_colnames[sample_groups == group]
-        return(rowSums(passing_counts[, group_sample_colnames, drop = FALSE]))
+        group_sample_colnames <- sample_colnames[
+          !is.na(sample_groups) & sample_groups == group
+        ]
+        rowSums(passing_counts[, group_sample_colnames, drop = FALSE])
       },
       numeric(nrow(passing_counts))
     )
