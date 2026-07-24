@@ -11,6 +11,7 @@
 - New function `display_colors()` shows a multiOmicDataSet's chosen color palettes, and `get_colors_lst()` now takes a palette vector rather than function for simplicity. (#236, @kelly-sovacool)
 - New report template & helper function: `render_report()`. (#120, @kelly-sovacool)
 - Fix ggplot2 size deprecation warning in `plot_volcano_summary()`. (#228, @kelly-sovacool)
+- docs: show how to set `output_dir` in `render_report()`. (#235, @kelly-sovacool)
 
 ## MOSuite 0.3.2
 
