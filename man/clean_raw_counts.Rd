@@ -44,7 +44,7 @@ which new name: old_name: new_name}
 single-color bar fill.}
 
 \item{colors_for_plots}{optional colors used when \code{group_colname} is supplied. If \code{NULL}, colors are taken from
-\code{moo@analyses[["colors"]][[group_colname]]}.
+\code{moo@analyses$colors[[group_colname]]}.
 Named vectors are matched to group values;
 unnamed vectors follow group order and are extended with MOSuite colors when too few colors are supplied.}
 

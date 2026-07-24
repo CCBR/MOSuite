@@ -12,7 +12,7 @@
 #' @param group_colname sample metadata column used to color the read-depth plot. Leave blank to use the current
 #'   single-color bar fill.
 #' @param colors_for_plots optional colors used when `group_colname` is supplied. If `NULL`, colors are taken from
-#'   `moo@analyses[["colors"]][[group_colname]]`.
+#'   `moo@analyses$colors[[group_colname]]`.
 #'   Named vectors are matched to group values;
 #'   unnamed vectors follow group order and are extended with MOSuite colors when too few colors are supplied.
 #' @param cleanup_column_names Invalid raw counts column names can cause errors

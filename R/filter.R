@@ -80,7 +80,7 @@
 #'   If `NULL`, the size is scaled automatically.
 #' @param number_of_histogram_legend_columns number of columns for the histogram legend
 #' @param colors_for_plots Optional colors for PCA/histogram/heatmap plots. If `NULL`, colors are taken from
-#'   `moo@analyses[["colors"]][[group_colname]]`.
+#'   `moo@analyses$colors[[group_colname]]`.
 #'   Colors must either be names in `grDevices::colors()` or valid hex codes.
 #'   Unnamed colors are assigned by factor level order when the grouping column is a factor;
 #'   otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
@@ -205,12 +205,12 @@ filter_counts <- function(
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
     # use consistent colors
     colors_for_plots <- colors_for_plots %||%
-      moo@analyses[["colors"]][[group_colname]]
+      moo@analyses$colors[[group_colname]]
 
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots
     } else {
-      colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
+      colors_for_histogram <- moo@analyses$colors[[label_colname]]
     }
 
     pca_plot <- plot_pca(

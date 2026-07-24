@@ -167,12 +167,12 @@ batch_correct_counts <- function(
 
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
     colors_for_plots <- colors_for_plots %||%
-      moo@analyses[["colors"]][[batch_colname]]
+      moo@analyses$colors[[batch_colname]]
 
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots
     } else {
-      colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
+      colors_for_histogram <- moo@analyses$colors[[label_colname]]
     }
     pca_plot <- plot_pca(
       combat_edata,

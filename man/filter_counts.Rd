@@ -130,7 +130,7 @@ If \code{NULL}, the size is scaled automatically.}
 \item{number_of_histogram_legend_columns}{number of columns for the histogram legend}
 
 \item{colors_for_plots}{Optional colors for PCA/histogram/heatmap plots. If \code{NULL}, colors are taken from
-\code{moo@analyses[["colors"]][[group_colname]]}.
+\code{moo@analyses$colors[[group_colname]]}.
 Colors must either be names in \code{grDevices::colors()} or valid hex codes.
 Unnamed colors are assigned by factor level order when the grouping column is a factor;
 otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
