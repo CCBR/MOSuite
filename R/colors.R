@@ -78,7 +78,8 @@ get_observed_values <- function(dat, colname) {
 #'   `grDevices::palette.colors`.
 #' @param ... additional arguments forwarded to `palette_fun`
 #'
-#' @returns named list, with each column in `sample_metadata` containing a corresponding entry with a named vector of colors
+#' @returns named list, with each column in `sample_metadata` containing a corresponding entry with a named vector of
+#'   colors
 #' @export
 #'
 #' @examples
@@ -131,8 +132,8 @@ get_colors_lst <- function(
 #' @param color_offset integer; number of palette colors to skip before
 #'   assigning colors to this column's values. Used by [get_colors_lst()] to
 #'   avoid repeating colors across columns with few unique values.
-#' @returns named vector of colors for each unique observation in `dat[[colname]]`. Factor columns use factor level order;
-#'   other columns use first-observed order.
+#' @returns named vector of colors for each unique observation in `dat[[colname]]`. Factor columns use factor level
+#'   order; other columns use first-observed order.
 #' @export
 #'
 get_colors_vctr <- function(
