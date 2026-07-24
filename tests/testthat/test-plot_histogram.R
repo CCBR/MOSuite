@@ -84,7 +84,6 @@ get_histogram_colour_guide_ncol <- function(plot) {
   return(plot$guides$guides$colour$params$ncol)
 }
 
-
 get_plotly_text <- function(plot) {
   traces <- plotly::plotly_build(plot)$x$data
   return(unlist(
@@ -199,7 +198,6 @@ test_that("plot_histogram legend columns target the colour guide", {
 
   expect_equal(get_histogram_colour_guide_ncol(plot), 2)
 })
-
 
 test_that("plot_histogram uses line glyphs for density legend keys", {
   plot <- plot_histogram(
@@ -754,6 +752,63 @@ test_that("plot_histogram resolves sample colors by first observed sample order"
     colour_scale$palette.cache,
     c(B1 = "#5954d6", A1 = "#e1562c", C1 = "#b80058", A2 = "#00c6f8")
   )
+})
+
+test_that("plot_histogram automatically sets log2 axis breaks when requested", {
+  counts_dat <- data.frame(
+    Gene = "gene_a",
+    S1 = 0,
+    S2 = 4,
+    S3 = 16,
+    check.names = FALSE
+  )
+  sample_metadata <- data.frame(
+    Sample = c("S1", "S2", "S3"),
+    Group = c("A", "A", "A"),
+    check.names = FALSE
+  )
+
+  plot <- plot_histogram(
+    counts_dat,
+    sample_metadata = sample_metadata,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    color_by_group = FALSE,
+    use_log2_x_axis = TRUE
+  )
+  x_scale <- plot$scales$get_scales("x")
+  axis_breaks <- x_scale$breaks(c(0.5, 64.5))
+
+  expect_equal(plot$data$count, c(0.5, 4.5, 16.5))
+  expect_true(all(c(0.5, 4.5, 16.5, 64.5) %in% axis_breaks))
+  expect_equal(x_scale$labels(c(0.5, 4.5, 16.5)), c("0", "4", "16"))
+})
+
+test_that("plot_histogram automatic log2 axis starts at zero", {
+  counts_dat <- data.frame(
+    Gene = "gene_a",
+    S1 = 4,
+    S2 = 16,
+    check.names = FALSE
+  )
+  sample_metadata <- data.frame(
+    Sample = c("S1", "S2"),
+    Group = c("A", "A"),
+    check.names = FALSE
+  )
+
+  plot <- plot_histogram(
+    counts_dat,
+    sample_metadata = sample_metadata,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    color_by_group = FALSE,
+    use_log2_x_axis = TRUE
+  )
+  x_scale <- plot$scales$get_scales("x")
+
+  expect_equal(2^x_scale$limits[1], 0.5)
+  expect_equal(x_scale$labels(2^x_scale$limits[1]), "0")
 })
 
 test_that("plot_histogram works with tibbles", {

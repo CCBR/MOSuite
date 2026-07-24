@@ -176,6 +176,50 @@ clean_raw_counts <- function(
   )
 
   moo@counts[["clean"]] <- counts_dat
+  if (isTRUE(print_plots) || isTRUE(save_plots)) {
+    # CPM histogram after cleaning
+    #
+    # This QC plot is built from the cleaned count table after sample renaming,
+    # column cleanup, gene-name splitting, and duplicate aggregation. CPM is
+    # calculated first so library-size differences are accounted for, then genes
+    # with zero counts in every sample are removed from the plotted CPM table.
+    # When group_colname is supplied, the histogram is colored by that sample
+    # metadata group. The CPM calculation is plot-only here; it does not replace
+    # the raw or cleaned count slots used by downstream workflow steps.
+    cpm_feature_id_colname <- colnames(counts_dat)[1]
+    sample_colnames <- colnames(counts_dat)[
+      vapply(counts_dat, is.numeric, logical(1))
+    ]
+    color_cpm_histogram_by_group <- !is.null(group_colname) &&
+      nzchar(trimws(group_colname))
+    cpm_counts_dat <- calc_cpm_df(
+      counts_dat[, c(cpm_feature_id_colname, sample_colnames), drop = FALSE],
+      feature_id_colname = cpm_feature_id_colname
+    )
+    cpm_counts_dat <- cpm_counts_dat[
+      rowSums(cpm_counts_dat[, sample_colnames, drop = FALSE] != 0) > 0,
+      ,
+      drop = FALSE
+    ]
+    cpm_hist_plot <- plot_histogram(
+      cpm_counts_dat,
+      sample_metadata = sample_metadata,
+      sample_id_colname = sample_id_colname,
+      feature_id_colname = cpm_feature_id_colname,
+      group_colname = group_colname,
+      color_values = colors_for_plots,
+      color_by_group = color_cpm_histogram_by_group,
+      x_axis_label = "CPM",
+      use_log2_x_axis = TRUE
+    ) +
+      ggplot2::labs(caption = "CPM counts")
+    print_or_save_plot(
+      cpm_hist_plot,
+      filename = file.path(plots_subdir, "cpm_histogram.png"),
+      print_plots = print_plots,
+      save_plots = save_plots
+    )
+  }
   return(moo)
 }
 

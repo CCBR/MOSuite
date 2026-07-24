@@ -147,6 +147,11 @@ head(venn_dat)
 
 ## Customizing plots
 
+```{r print-plots-false, echo = FALSE}
+options(moo_print_plots = FALSE)
+options(moo_save_plots = FALSE)
+```
+
 ### Plots from main functions
 
 The plotting functions called by the main analysis functions can be called directly

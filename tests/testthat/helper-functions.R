@@ -57,3 +57,57 @@ test_with_dir <- function(desc, ...) {
   )
   return(invisible())
 }
+
+pca_point_coordinates <- function(plot) {
+  built_plot <- ggplot2::ggplot_build(plot)
+  return(built_plot$data[[1]][, c("x", "y")])
+}
+
+capture_saved_pca_plot <- function() {
+  pca_plot <- NULL
+  print_or_save_plot <- function(plot, filename, ...) {
+    if (basename(filename) == "pca.png") {
+      pca_plot <<- plot
+    }
+    return(invisible(NULL))
+  }
+  return(list(
+    get = function() pca_plot,
+    print_or_save_plot = print_or_save_plot
+  ))
+}
+
+expect_pca_coordinates_equal <- function(actual_plot, expected_plot) {
+  expect_equal(
+    pca_point_coordinates(actual_plot),
+    pca_point_coordinates(expected_plot),
+    tolerance = 1e-8
+  )
+}
+
+histogram_layer_data <- function(plot) {
+  built_plot <- ggplot2::ggplot_build(plot)
+  return(built_plot$data)
+}
+
+capture_saved_histogram_plot <- function() {
+  histogram_plot <- NULL
+  print_or_save_plot <- function(plot, filename, ...) {
+    if (basename(filename) == "histogram.png") {
+      histogram_plot <<- plot
+    }
+    return(invisible(NULL))
+  }
+  return(list(
+    get = function() histogram_plot,
+    print_or_save_plot = print_or_save_plot
+  ))
+}
+
+expect_histogram_layers_equal <- function(actual_plot, expected_plot) {
+  expect_equal(
+    histogram_layer_data(actual_plot),
+    histogram_layer_data(expected_plot),
+    tolerance = 1e-8
+  )
+}

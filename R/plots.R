@@ -39,6 +39,7 @@ print_or_save_plot <- function(
         gp = grid::gpar(fontsize = 9, col = "grey40")
       )
     }
+    return(invisible(NULL))
   }
   if (!is.null(caption) && inherits(plot_obj, "ggplot")) {
     plot_obj <- plot_obj + ggplot2::labs(caption = caption)
@@ -110,13 +111,13 @@ format_hover_text <- function(
     return(primary_text)
   }
 
-  paste0(
+  return(paste0(
     primary_text,
     "<br>",
     secondary_colname,
     ": ",
     plot_data[[secondary_colname]]
-  )
+  ))
 }
 
 #' Compute a wrapped colour legend column count
@@ -166,7 +167,7 @@ get_legend_column_count <- function(
   if (!is.null(ncol)) {
     legend_columns <- min(ncol, legend_columns)
   }
-  legend_columns
+  return(legend_columns)
 }
 
 #' Compute colour legend text size
@@ -205,7 +206,10 @@ get_legend_text_size <- function(
     1
   )
 
-  max(min_legend_text_size, floor(max_legend_text_size / sqrt(label_pressure)))
+  return(max(
+    min_legend_text_size,
+    floor(max_legend_text_size / sqrt(label_pressure))
+  ))
 }
 
 #' Add wrapped colour legend layout to a ggplot
@@ -245,11 +249,13 @@ add_colour_legend_layout <- function(
     guide_args$override.aes <- guide_override_aes
   }
 
-  plot +
-    ggplot2::guides(
-      colour = do.call(ggplot2::guide_legend, guide_args)
-    ) +
-    ggplot2::theme(
-      legend.box = "vertical"
-    )
+  return(
+    plot +
+      ggplot2::guides(
+        colour = do.call(ggplot2::guide_legend, guide_args)
+      ) +
+      ggplot2::theme(
+        legend.box = "vertical"
+      )
+  )
 }

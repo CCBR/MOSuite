@@ -65,7 +65,7 @@ contrast(s)}
 \item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 }
 \value{
-\code{multiOmicDataSet} with \code{diff} added to the \code{analyses} slot (i.e. \code{moo@analyses$diff})
+\code{multiOmicDataSet} with \code{diff} added to the \code{analyses} slot (i.e. \code{moo@analyses[["diff"]]})
 }
 \description{
 Differential expression analysis
