@@ -571,6 +571,10 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
   } else {
     nrows <- number_of_rows_in_grid_layout
   }
+  if (!is.numeric(nrows) || length(nrows) != 1 || is.na(nrows) || nrows < 1) {
+    nrows <- 1
+  }
+  nrows <- as.integer(nrows)
   ncols <- ceiling(nplots / nrows)
   output_width <- image_width
   output_height <- image_height

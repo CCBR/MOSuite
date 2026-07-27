@@ -155,6 +155,39 @@ test_that("plot_volcano_enhanced displays selected genes", {
   )))
 })
 
+test_that("plot_volcano_enhanced defaults invalid manual grid rows to one", {
+  options(mosuite_test_grid_rows = list())
+  trace(
+    patchwork::wrap_plots,
+    tracer = quote(options(
+      mosuite_test_grid_rows = append(
+        getOption("mosuite_test_grid_rows"),
+        list(nrow)
+      )
+    )),
+    print = FALSE
+  )
+  on.exit(untrace(patchwork::wrap_plots), add = TRUE)
+  on.exit(options(mosuite_test_grid_rows = NULL), add = TRUE)
+
+  invalid_rows <- list(0, -1, NA_real_, c(1, 2))
+  for (invalid_row in invalid_rows) {
+    options(mosuite_test_grid_rows = list())
+    expect_no_error(
+      result <- plot_volcano_enhanced(
+        nidap_deg_analysis,
+        use_default_grid_layout = FALSE,
+        number_of_rows_in_grid_layout = invalid_row,
+        save_plots = FALSE,
+        print_plots = FALSE
+      )
+    )
+
+    expect_s3_class(result, "data.frame")
+    expect_equal(getOption("mosuite_test_grid_rows")[[1]], 1L)
+  }
+})
+
 test_that("plot_volcano_enhanced works with multiOmicDataSet", {
   # Create a multiOmicDataSet with differential analysis results
   moo <- multiOmicDataSet(
