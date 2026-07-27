@@ -1,9 +1,11 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://ccbr.github.io/MOSuite/404.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/AGENTS.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/CONTRIBUTING.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/LICENSE-text.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/LICENSE.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/PULL_REQUEST_TEMPLATE.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/SECURITY.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/articles/cli.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/articles/index.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/articles/intro.html</loc></url>
@@ -31,6 +33,8 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/create_multiOmicDataSet_from_dataframes.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/create_multiOmicDataSet_from_files.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/diff_counts.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/display_colors.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/display_palette.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/do_math.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/extract_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/figures/pca/pca_3D.html</loc></url>
@@ -39,13 +43,16 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/gene_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/get_colors_lst.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/get_colors_vctr.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/get_observed_values.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/get_pc_percent_lab.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/get_random_colors.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/glue_gene_symbols.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/index.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/join_dfs_wide.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/load_moo_from_data_dir.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/log_transform_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/meta_tbl_to_dat.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/mosuite_palette.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/multiOmicDataSet.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_batch_corrected_counts.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/nidap_batch_corrected_counts_2.html</loc></url>
@@ -72,6 +79,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_histogram.data.frame.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_histogram.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_histogram.multiOmicDataSet.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/plot_palette.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_pca.data.frame.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_pca.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/plot_pca.multiOmicDataSet.html</loc></url>
@@ -88,7 +96,11 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/reexports.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/remove_low_count_genes.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/rename_samples.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/render_report.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/resolve_plot_colors.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/results/report.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/run_deseq2.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/select_mosuite_colors.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/separate_gene_meta_columns.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/set_color_pal.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/setup_capsule_environment.html</loc></url>

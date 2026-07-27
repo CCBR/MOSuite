@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +36,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Plot histogram for counts dataframe</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.3.2/R/plot_histogram.R" class="external-link"><code>R/plot_histogram.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.4.0/R/plot_histogram.R" class="external-link"><code>R/plot_histogram.R</code></a></small>
       <div class="d-none name"><code>plot_histogram.data.frame.Rd</code></div>
     </div>
 
@@ -81,7 +81,9 @@ column with your preferred Labels here. The selected column should contain uniqu
 
 
 <dt id="arg-color-values">color_values<a class="anchor" aria-label="anchor" href="#arg-color-values"></a></dt>
-<dd><p>vector of colors as hex values or names recognized by R</p></dd>
+<dd><p>vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+the metadata column. Defaults to <code>NULL</code>; when <code>NULL</code>, <code>mosuite_palette</code> is used.</p></dd>
 
 
 <dt id="arg-color-by-group">color_by_group<a class="anchor" aria-label="anchor" href="#arg-color-by-group"></a></dt>
@@ -114,7 +116,8 @@ column you select in the "Group Column Used to Color Histogram" parameter (below
 
 
 <dt id="arg-legend-font-size">legend_font_size<a class="anchor" aria-label="anchor" href="#arg-legend-font-size"></a></dt>
-<dd><p>passed to <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">ggplot2::element_text()</a></code> via <code><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">ggplot2::theme()</a></code></p></dd>
+<dd><p>passed to <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">ggplot2::element_text()</a></code> via <code><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">ggplot2::theme()</a></code>. If <code>NULL</code>, the size is scaled
+automatically based on the number and length of legend labels.</p></dd>
 
 
 <dt id="arg-number-of-legend-columns">number_of_legend_columns<a class="anchor" aria-label="anchor" href="#arg-number-of-legend-columns"></a></dt>
@@ -125,6 +128,16 @@ column you select in the "Group Column Used to Color Histogram" parameter (below
 <dd><p>set to TRUE to make the plot interactive with <code>plotly</code>, allowing you to hover your mouse
 over a point or line to view sample information. The similarity heat map will not display if this toggle is set to
 TRUE. Default is FALSE.</p></dd>
+
+
+<dt id="arg-return-ggplot">return_ggplot<a class="anchor" aria-label="anchor" href="#arg-return-ggplot"></a></dt>
+<dd><p>If <code>TRUE</code>, return the ggplot object prepared for interactive hover text before converting it to
+plotly. Used when callers need to add more ggplot layers first. Default is <code>FALSE</code>.</p></dd>
+
+
+<dt id="arg-use-log-x-axis">use_log2_x_axis<a class="anchor" aria-label="anchor" href="#arg-use-log-x-axis"></a></dt>
+<dd><p>If <code>TRUE</code>, add a display-only pseudocount to plotted values and use a log2 x-axis. Default is
+<code>FALSE</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -175,7 +188,7 @@ TRUE. Default is FALSE.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

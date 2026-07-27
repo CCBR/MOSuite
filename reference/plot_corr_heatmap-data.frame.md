@@ -46,7 +46,11 @@ Plot correlation heatmap for counts dataframe
 
 - color_values:
 
-  vector of colors as hex values or names recognized by R
+  vector of colors as hex values or names recognized by R. Unnamed
+  colors are assigned by factor level order when the grouping column is
+  a factor; otherwise, they are assigned in the order groups first
+  appear in the metadata column. Defaults to `NULL`; when `NULL`,
+  `mosuite_palette` is used.
 
 ## See also
 

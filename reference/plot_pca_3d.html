@@ -9,7 +9,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Perform and plot a 3D Principal Components Analysis</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.3.2/R/plot_pca.R" class="external-link"><code>R/plot_pca.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.4.0/R/plot_pca.R" class="external-link"><code>R/plot_pca.R</code></a></small>
       <div class="d-none name"><code>plot_pca_3d.Rd</code></div>
     </div>
 
@@ -62,13 +62,16 @@
 <span>  principal_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  point_size <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>  label_font_size <span class="op">=</span> <span class="fl">24</span>,</span>
-<span>  color_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5954d6"</span>, <span class="st">"#e1562c"</span>, <span class="st">"#b80058"</span>, <span class="st">"#00c6f8"</span>, <span class="st">"#d163e6"</span>, <span class="st">"#00a76c"</span>,</span>
-<span>    <span class="st">"#ff9287"</span>, <span class="st">"#008cf9"</span>, <span class="st">"#006e00"</span>, <span class="st">"#796880"</span>, <span class="st">"#FFA500"</span>, <span class="st">"#878500"</span><span class="op">)</span>,</span>
+<span>  log_transform <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  log_transform_pseudocount <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  log_transform_base <span class="op">=</span> <span class="st">"ln"</span>,</span>
+<span>  color_values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  plot_title <span class="op">=</span> <span class="st">"PCA 3D"</span>,</span>
 <span>  plot_filename <span class="op">=</span> <span class="st">"pca_3D.html"</span>,</span>
 <span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span>,</span>
 <span>  save_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"save_plots"</span><span class="op">)</span>,</span>
-<span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span></span>
+<span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## S7 method for class &lt;MOSuite::multiOmicDataSet&gt;</span></span>
@@ -85,13 +88,16 @@
 <span>  principal_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  point_size <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>  label_font_size <span class="op">=</span> <span class="fl">24</span>,</span>
-<span>  color_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5954d6"</span>, <span class="st">"#e1562c"</span>, <span class="st">"#b80058"</span>, <span class="st">"#00c6f8"</span>, <span class="st">"#d163e6"</span>, <span class="st">"#00a76c"</span>,</span>
-<span>    <span class="st">"#ff9287"</span>, <span class="st">"#008cf9"</span>, <span class="st">"#006e00"</span>, <span class="st">"#796880"</span>, <span class="st">"#FFA500"</span>, <span class="st">"#878500"</span><span class="op">)</span>,</span>
+<span>  log_transform <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  log_transform_pseudocount <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  log_transform_base <span class="op">=</span> <span class="st">"ln"</span>,</span>
+<span>  color_values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  plot_title <span class="op">=</span> <span class="st">"PCA 3D"</span>,</span>
 <span>  plot_filename <span class="op">=</span> <span class="st">"pca_3D.html"</span>,</span>
 <span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span>,</span>
 <span>  save_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"save_plots"</span><span class="op">)</span>,</span>
-<span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span></span>
+<span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## S7 method for class &lt;data.frame&gt;</span></span>
@@ -108,13 +114,16 @@
 <span>  principal_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  point_size <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>  label_font_size <span class="op">=</span> <span class="fl">24</span>,</span>
-<span>  color_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5954d6"</span>, <span class="st">"#e1562c"</span>, <span class="st">"#b80058"</span>, <span class="st">"#00c6f8"</span>, <span class="st">"#d163e6"</span>, <span class="st">"#00a76c"</span>,</span>
-<span>    <span class="st">"#ff9287"</span>, <span class="st">"#008cf9"</span>, <span class="st">"#006e00"</span>, <span class="st">"#796880"</span>, <span class="st">"#FFA500"</span>, <span class="st">"#878500"</span><span class="op">)</span>,</span>
+<span>  log_transform <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  log_transform_pseudocount <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  log_transform_base <span class="op">=</span> <span class="st">"ln"</span>,</span>
+<span>  color_values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  plot_title <span class="op">=</span> <span class="st">"PCA 3D"</span>,</span>
 <span>  plot_filename <span class="op">=</span> <span class="st">"pca_3D.html"</span>,</span>
 <span>  print_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"print_plots"</span><span class="op">)</span>,</span>
 <span>  save_plots <span class="op">=</span> <span class="fu">options</span><span class="fu">::</span><span class="fu"><a href="https://dgkf.github.io/options/reference/opt.html" class="external-link">opt</a></span><span class="op">(</span><span class="st">"save_plots"</span><span class="op">)</span>,</span>
-<span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span></span>
+<span>  plots_subdir <span class="op">=</span> <span class="st">"pca"</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -170,8 +179,27 @@
 <dd><p>font size used for labels in the interactive figure.</p></dd>
 
 
+<dt id="arg-log-transform">log_transform<a class="anchor" aria-label="anchor" href="#arg-log-transform"></a></dt>
+<dd><p>If <code>TRUE</code>, apply <code>log(x + log_transform_pseudocount, base = log_transform_base)</code> to sample
+count columns before PCA. Use this for count-like data such as raw, clean, filt, or CPM-like counts; leave it
+<code>FALSE</code> for already normalized/log-scale or batch-corrected values to avoid double transformation.</p></dd>
+
+
+<dt id="arg-log-transform-pseudocount">log_transform_pseudocount<a class="anchor" aria-label="anchor" href="#arg-log-transform-pseudocount"></a></dt>
+<dd><p>Pseudocount added before log-transforming counts when <code>log_transform</code> is
+<code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-log-transform-base">log_transform_base<a class="anchor" aria-label="anchor" href="#arg-log-transform-base"></a></dt>
+<dd><p>Logarithm base to use when <code>log_transform</code> is <code>TRUE</code>. Use a numeric value, or <code>"e"</code>,
+<code>"ln"</code>, or <code>"natural"</code> for natural log. Default is <code>"ln"</code> to match the original PCA transform.</p></dd>
+
+
 <dt id="arg-color-values">color_values<a class="anchor" aria-label="anchor" href="#arg-color-values"></a></dt>
-<dd><p>vector of colors as hex values or names recognized by R.</p></dd>
+<dd><p>vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+level order when the grouping column is a factor; otherwise, they follow the order in which groups first appear in
+the metadata column. Defaults to <code>NULL</code>; when <code>NULL</code>, <code>mosuite_palette</code> is used for <code>data.frame</code> dispatch and
+stored colors are used for <code>multiOmicDataSet</code> dispatch.</p></dd>
 
 
 <dt id="arg-plot-title">plot_title<a class="anchor" aria-label="anchor" href="#arg-plot-title"></a></dt>
@@ -192,6 +220,10 @@
 
 <dt id="arg-plots-subdir">plots_subdir<a class="anchor" aria-label="anchor" href="#arg-plots-subdir"></a></dt>
 <dd><p>output subdirectory for saved plots.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>additional arguments passed to methods</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -215,7 +247,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

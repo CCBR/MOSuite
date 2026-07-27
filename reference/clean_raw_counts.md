@@ -18,6 +18,8 @@ clean_raw_counts(
   sample_id_colname = NULL,
   feature_id_colname = NULL,
   samples_to_rename = "",
+  group_colname = "",
+  colors_for_plots = NULL,
   cleanup_column_names = TRUE,
   split_gene_name = TRUE,
   aggregate_rows_with_duplicate_gene_names = TRUE,
@@ -63,6 +65,19 @@ clean_raw_counts(
   renaming. Use the following format to describe which old name (in your
   sample metadata table) you want to rename to which new name: old_name:
   new_name
+
+- group_colname:
+
+  sample metadata column used to color the read-depth plot. Leave blank
+  to use the current single-color bar fill.
+
+- colors_for_plots:
+
+  optional colors used when `group_colname` is supplied. If `NULL`,
+  colors are taken from `moo@analyses$colors[[group_colname]]`. Named
+  vectors are matched to group values; unnamed vectors follow group
+  order and are extended with MOSuite colors when too few colors are
+  supplied.
 
 - cleanup_column_names:
 
@@ -158,6 +173,7 @@ moo <- create_multiOmicDataSet_from_dataframes(
 #> Column used to Aggregate duplicate IDs: GeneName
 #> Number of rows before Collapse: 43280
 #> no duplicated IDs in GeneName
+#> Saving 6.67 x 6.67 in image
 head(moo@counts$clean)
 #>        GeneName A1 A2 A3 B1 B2 B3 C1 C2 C3
 #> 1 RP23-271O17.1  0  0  0  0  0  0  0  0  0

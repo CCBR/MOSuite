@@ -375,14 +375,17 @@ plot_volcano_summary(nidap_deg_analysis, print_plots = TRUE)
 #> Fold change column: B-A_logFC
 #> pval column: B-A_pval
 #> Total number of features included in volcano plot: 7943
+#> Warning: Ignoring unknown parameters: `segment.linewidth`
 #> Preparing table for contrast: C-A
 #> Fold change column: C-A_logFC
 #> pval column: C-A_pval
 #> Total number of features included in volcano plot: 7943
+#> Warning: Ignoring unknown parameters: `segment.linewidth`
 #> Preparing table for contrast: B-C
 #> Fold change column: B-C_logFC
 #> pval column: B-C_pval
 #> Total number of features included in volcano plot: 7943
+#> Warning: Ignoring unknown parameters: `segment.linewidth`
 
 #> Saving 6.67 x 6.67 in image
 #>                   Gene Contrast          FC     logFC      tstat         pval

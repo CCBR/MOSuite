@@ -42,7 +42,11 @@ Plot histogram for counts dataframe
 
 - color_values:
 
-  vector of colors as hex values or names recognized by R
+  vector of colors as hex values or names recognized by R. Unnamed
+  colors are assigned by factor level order when the grouping column is
+  a factor; otherwise, they follow the order in which groups first
+  appear in the metadata column. Defaults to `NULL`; when `NULL`,
+  `mosuite_palette` is used.
 
 - color_by_group:
 
@@ -86,7 +90,9 @@ Plot histogram for counts dataframe
   passed to
   [`ggplot2::element_text()`](https://ggplot2.tidyverse.org/reference/element.html)
   via
-  [`ggplot2::theme()`](https://ggplot2.tidyverse.org/reference/theme.html)
+  [`ggplot2::theme()`](https://ggplot2.tidyverse.org/reference/theme.html).
+  If `NULL`, the size is scaled automatically based on the number and
+  length of legend labels.
 
 - number_of_legend_columns:
 
@@ -99,6 +105,17 @@ Plot histogram for counts dataframe
   to hover your mouse over a point or line to view sample information.
   The similarity heat map will not display if this toggle is set to
   TRUE. Default is FALSE.
+
+- return_ggplot:
+
+  If `TRUE`, return the ggplot object prepared for interactive hover
+  text before converting it to plotly. Used when callers need to add
+  more ggplot layers first. Default is `FALSE`.
+
+- use_log2_x_axis:
+
+  If `TRUE`, add a display-only pseudocount to plotted values and use a
+  log2 x-axis. Default is `FALSE`.
 
 - ...:
 

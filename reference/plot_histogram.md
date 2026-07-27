@@ -60,6 +60,7 @@ moo <- multiOmicDataSet(
   counts_lst = list("raw" = nidap_raw_counts)
 )
 p <- plot_histogram(moo, count_type = "raw")
+#> color_values contains 3 colors for 9 values in column Sample. Generating 6 additional colors.
 
 # customize the plot
 plot_histogram(moo,

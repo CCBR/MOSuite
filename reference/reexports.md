@@ -7,4 +7,5 @@ to see their documentation.
 
   [`:=()`](https://rlang.r-lib.org/reference/dyn-dots.html),
   [`!!()`](https://rlang.r-lib.org/reference/injection-operator.html),
-  [`.data`](https://rlang.r-lib.org/reference/dot-data.html)
+  [`.data`](https://rlang.r-lib.org/reference/dot-data.html),
+  [`%||%`](https://rlang.r-lib.org/reference/op-null-default.html)

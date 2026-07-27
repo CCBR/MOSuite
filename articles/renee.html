@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>RSEM counts from RENEE</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.3.2/vignettes/renee.Rmd" class="external-link"><code>vignettes/renee.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.4.0/vignettes/renee.Rmd" class="external-link"><code>vignettes/renee.Rmd</code></a></small>
       <div class="d-none name"><code>renee.Rmd</code></div>
     </div>
 
@@ -72,8 +72,6 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CCBR/MOSuite" class="external-link">MOSuite</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
-<span><span class="co">#&gt; 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
@@ -183,21 +181,16 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; no duplicated IDs in gene_id</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span><span class="co">#&gt; * filtering clean counts</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of features after filtering: 291</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; colors_for_plots NULL</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; colors_for_plots character</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span><span class="co">#&gt; * normalizing filt counts</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total number of features included: 291</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span><span class="co">#&gt; Sample columns: KO_S3, Sample columns: KO_S4, Sample columns: WT_S1, Sample columns: WT_S2</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -270,9 +263,9 @@
 <span><span class="co">#&gt;  ..  .. ..$ WT_S2  : num [1:291] 10 12.24 8.82 8.82 8.82 ...</span></span>
 <span><span class="co">#&gt;  @ analyses   :List of 3</span></span>
 <span><span class="co">#&gt;  .. $ colors   :List of 2</span></span>
-<span><span class="co">#&gt;  ..  ..$ sample_id: Named chr [1:4] "#000000" "#E69F00" "#56B4E9" "#009E73"</span></span>
+<span><span class="co">#&gt;  ..  ..$ sample_id: Named chr [1:4] "#5954d6" "#e1562c" "#b80058" "#00c6f8"</span></span>
 <span><span class="co">#&gt;  ..  .. ..- attr(*, "names")= chr [1:4] "KO_S3" "KO_S4" "WT_S1" "WT_S2"</span></span>
-<span><span class="co">#&gt;  ..  ..$ condition: Named chr [1:2] "#000000" "#E69F00"</span></span>
+<span><span class="co">#&gt;  ..  ..$ condition: Named chr [1:2] "#d163e6" "#00a76c"</span></span>
 <span><span class="co">#&gt;  ..  .. ..- attr(*, "names")= chr [1:2] "knockout" "wildtype"</span></span>
 <span><span class="co">#&gt;  .. $ diff     :List of 1</span></span>
 <span><span class="co">#&gt;  ..  ..$ knockout-wildtype:'data.frame': 291 obs. of  6 variables:</span></span>
@@ -301,7 +294,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

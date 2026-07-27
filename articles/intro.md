@@ -2,8 +2,6 @@
 
 ``` r
 library(MOSuite)
-#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
-#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -56,31 +54,22 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> Number of rows before Collapse: 43280
     #> 
     #> no duplicated IDs in GeneName
-    #> 
+
+![](intro_files/figure-html/nidap_data-2.png)
+
+    #> Saving 7.29 x 4.51 in image
     #> * filtering clean counts
     #> 
     #> Number of features after filtering: 7943
-    #> 
-    #> colors_for_plots NULL
-    #> 
-    #> colors_for_plots character
 
-![](intro_files/figure-html/nidap_data-2.png)![](intro_files/figure-html/nidap_data-3.png)
-
-    #> Saving 7.29 x 4.51 in image
-
-![](intro_files/figure-html/nidap_data-4.png)
+![](intro_files/figure-html/nidap_data-3.png)![](intro_files/figure-html/nidap_data-4.png)![](intro_files/figure-html/nidap_data-5.png)
 
     #> Saving 7.29 x 4.51 in image
     #> * normalizing filt counts
     #> 
     #> Total number of features included: 7943
 
-![](intro_files/figure-html/nidap_data-5.png)![](intro_files/figure-html/nidap_data-6.png)
-
-    #> Saving 7.29 x 4.51 in image
-
-![](intro_files/figure-html/nidap_data-7.png)
+![](intro_files/figure-html/nidap_data-6.png)![](intro_files/figure-html/nidap_data-7.png)![](intro_files/figure-html/nidap_data-8.png)
 
     #> Saving 7.29 x 4.51 in image
     #> Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
@@ -99,24 +88,22 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> Adjusting the Data
 
-![](intro_files/figure-html/nidap_data-8.png)
+![](intro_files/figure-html/nidap_data-9.png)![](intro_files/figure-html/nidap_data-10.png)![](intro_files/figure-html/nidap_data-11.png)
 
     #> Saving 7.29 x 4.51 in image
-
-![](intro_files/figure-html/nidap_data-9.png)
-
-    #> Saving 7.29 x 4.51 in image
-
-![](intro_files/figure-html/nidap_data-10.png)
-
     #> The total number of features in output: 7943
+    #> 
     #> Number of samples after batch correction: 10
+    #> 
     #> * differential counts
+    #> 
     #> Setting first column of `counts` as gene annotation.
+    #> 
     #> Total number of genes included: 7943
+    #> 
     #> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
 
-![](intro_files/figure-html/nidap_data-11.png)
+![](intro_files/figure-html/nidap_data-12.png)
 
     #> Saving 7.29 x 4.51 in image
     #> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
@@ -126,7 +113,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> 
     #> Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
 
-![](intro_files/figure-html/nidap_data-12.png)
+![](intro_files/figure-html/nidap_data-13.png)
 
     #> Saving 7.29 x 4.51 in image
 
@@ -377,15 +364,15 @@ str(moo_nidap)
 #>  ..  ..$ C3      : num [1:7943] 6.48 7.04 7.18 6.1 7.1 ...
 #>  @ analyses   :List of 3
 #>  .. $ colors   :List of 5
-#>  ..  ..$ Sample   : Named chr [1:9] "#000000" "#E69F00" "#56B4E9" "#009E73" ...
+#>  ..  ..$ Sample   : Named chr [1:9] "#5954d6" "#e1562c" "#b80058" "#00c6f8" ...
 #>  ..  .. ..- attr(*, "names")= chr [1:9] "A1" "A2" "A3" "B1" ...
-#>  ..  ..$ Group    : Named chr [1:3] "#000000" "#E69F00" "#56B4E9"
+#>  ..  ..$ Group    : Named chr [1:3] "#5954d6" "#e1562c" "#b80058"
 #>  ..  .. ..- attr(*, "names")= chr [1:3] "A" "B" "C"
-#>  ..  ..$ Replicate: Named chr [1:3] "#000000" "#E69F00" "#56B4E9"
+#>  ..  ..$ Replicate: Named chr [1:3] "#00c6f8" "#d163e6" "#00a76c"
 #>  ..  .. ..- attr(*, "names")= chr [1:3] "1" "2" "3"
-#>  ..  ..$ Batch    : Named chr [1:2] "#000000" "#E69F00"
+#>  ..  ..$ Batch    : Named chr [1:2] "#ff9287" "#008cf9"
 #>  ..  .. ..- attr(*, "names")= chr [1:2] "1" "2"
-#>  ..  ..$ Label    : Named chr [1:9] "#000000" "#E69F00" "#56B4E9" "#009E73" ...
+#>  ..  ..$ Label    : Named chr [1:9] "#5954d6" "#e1562c" "#b80058" "#00c6f8" ...
 #>  ..  .. ..- attr(*, "names")= chr [1:9] "A1" "A2" "A3" "B1" ...
 #>  .. $ diff     :List of 3
 #>  ..  ..$ B-A:'data.frame':   7943 obs. of  6 variables:

@@ -19,6 +19,22 @@ Plot correlation heatmap for multiOmicDataSet
   count type within the list. Must be a name in
   `names(moo@counts[[count_type]])`.
 
+- group_colname:
+
+  The column from the sample metadata containing the sample group
+  information. This is usually a column showing to which experimental
+  treatments each sample belongs (e.g. WildType, Knockout, Tumor,
+  Normal, Before, After, etc.).
+
+- color_values:
+
+  vector of colors as hex values or names recognized by R. Unnamed
+  colors are assigned by factor level order when the grouping column is
+  a factor; otherwise, they are assigned in the order groups first
+  appear in the metadata column. Defaults to `NULL`; when `NULL`,
+  `mosuite_palette` is used for `data.frame` dispatch and stored colors
+  are used for `multiOmicDataSet` dispatch.
+
 - ...:
 
   additional arguments forwarded to

@@ -18,8 +18,7 @@ plot_expr_heatmap(
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = NULL,
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -44,8 +43,6 @@ plot_expr_heatmap(
   group_columns = c("Group", "Replicate", "Batch"),
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
-  group_colors = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
   set_min_heatmap_color = -2,
@@ -58,7 +55,8 @@ plot_expr_heatmap(
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "heatmap"
+  plots_subdir = "heatmap",
+  ...
 )
 
 ## S7 method for class <MOSuite::multiOmicDataSet>
@@ -72,8 +70,7 @@ plot_expr_heatmap(
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = NULL,
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -98,8 +95,6 @@ plot_expr_heatmap(
   group_columns = c("Group", "Replicate", "Batch"),
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
-  group_colors = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
   set_min_heatmap_color = -2,
@@ -112,7 +107,8 @@ plot_expr_heatmap(
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "heatmap"
+  plots_subdir = "heatmap",
+  ...
 )
 
 ## S7 method for class <data.frame>
@@ -126,8 +122,7 @@ plot_expr_heatmap(
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
-  color_values = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
+  color_values = NULL,
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -152,8 +147,6 @@ plot_expr_heatmap(
   group_columns = c("Group", "Replicate", "Batch"),
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
-  group_colors = c("#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-    "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"),
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
   set_min_heatmap_color = -2,
@@ -166,7 +159,8 @@ plot_expr_heatmap(
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "heatmap"
+  plots_subdir = "heatmap",
+  ...
 )
 ```
 
@@ -235,7 +229,12 @@ plot_expr_heatmap(
 
 - color_values:
 
-  vector of colors as hex values or names recognized by R
+  vector of colors as hex values or names recognized by R. Unnamed
+  colors are assigned by factor level order when the grouping column is
+  a factor; otherwise, they are assigned in the order groups first
+  appear in the metadata column. Defaults to `NULL`; when `NULL`,
+  `mosuite_palette` is used for `data.frame` dispatch and stored colors
+  are used for `multiOmicDataSet` dispatch.
 
 - include_all_genes:
 
@@ -357,10 +356,6 @@ plot_expr_heatmap(
   Enter each sample to color in the format: group_name: color This
   parameter is ignored if "Assign Colors" is set to FALSE.
 
-- group_colors:
-
-  Set group annotation colors.
-
 - heatmap_color_scheme:
 
   color scheme (TODO document options)
@@ -426,6 +421,10 @@ plot_expr_heatmap(
 
   subdirectory in `figures/` where plots will be saved if `save_plots`
   is `TRUE`
+
+- ...:
+
+  additional arguments passed to methods
 
 ## Value
 

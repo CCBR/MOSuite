@@ -1,5 +1,66 @@
 # Changelog
 
+## MOSuite 0.4.0
+
+- Fix expression heatmap clustering to correctly use the selected gene
+  and sample distance metrics and clustering methods.
+  ([\#231](https://github.com/CCBR/MOSuite/issues/231),
+  [@phoman14](https://github.com/phoman14))
+- Update PCA label, point-size, and histogram behavior.
+  ([\#230](https://github.com/CCBR/MOSuite/issues/230),
+  [@phoman14](https://github.com/phoman14))
+- Add optional count log-transform controls for PCA plots.
+  ([\#234](https://github.com/CCBR/MOSuite/issues/234),
+  [@phoman14](https://github.com/phoman14))
+- Add a post-clean CPM histogram output in
+  [`clean_raw_counts()`](https://ccbr.github.io/MOSuite/reference/clean_raw_counts.md).
+  ([\#234](https://github.com/CCBR/MOSuite/issues/234),
+  [@phoman14](https://github.com/phoman14))
+- Improvements to plot colors:
+  ([\#223](https://github.com/CCBR/MOSuite/issues/223),
+  [@phoman14](https://github.com/phoman14))
+  - Align plot color defaults with the MOSuite Code Ocean capsule
+    defaults while preserving fallback random colors when a requested
+    palette is too short.
+  - Improve top and bottom legend wrapping and automatic legend text
+    sizing for PCA and histogram plots with many or long labels.
+  - Add optional group coloring to
+    [`plot_read_depth()`](https://ccbr.github.io/MOSuite/reference/plot_read_depth.md)
+    and the
+    [`clean_raw_counts()`](https://ccbr.github.io/MOSuite/reference/clean_raw_counts.md)
+    read-depth output while preserving the single-color default when no
+    group is selected.
+- New function
+  [`display_colors()`](https://ccbr.github.io/MOSuite/reference/display_colors.md)
+  shows a multiOmicDataSet’s chosen color palettes, and
+  [`get_colors_lst()`](https://ccbr.github.io/MOSuite/reference/get_colors_lst.md)
+  now takes a palette vector rather than function for simplicity.
+  ([\#236](https://github.com/CCBR/MOSuite/issues/236),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+- New report template & helper function:
+  [`render_report()`](https://ccbr.github.io/MOSuite/reference/render_report.md).
+  ([\#120](https://github.com/CCBR/MOSuite/issues/120),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+- Fix ggplot2 size deprecation warning in
+  [`plot_volcano_summary()`](https://ccbr.github.io/MOSuite/reference/plot_volcano_summary.md).
+  ([\#228](https://github.com/CCBR/MOSuite/issues/228),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+- docs: show how to set `output_dir` in
+  [`render_report()`](https://ccbr.github.io/MOSuite/reference/render_report.md).
+  ([\#235](https://github.com/CCBR/MOSuite/issues/235),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+
+## MOSuite 0.3.2
+
+- Support ggplot2 v4.0.0 for correlation heatmap plots in
+  [`filter_counts()`](https://ccbr.github.io/MOSuite/reference/filter_counts.md),
+  [`normalize_counts()`](https://ccbr.github.io/MOSuite/reference/normalize_counts.md),
+  and
+  [`batch_correct_counts()`](https://ccbr.github.io/MOSuite/reference/batch_correct_counts.md).
+  ([\#205](https://github.com/CCBR/MOSuite/issues/205),
+  [@copilot](https://github.com/copilot),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+
 ## MOSuite 0.3.1
 
 - Fix recursion error in

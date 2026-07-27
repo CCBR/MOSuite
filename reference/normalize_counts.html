@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +36,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Normalize counts</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.3.2/R/normalize.R" class="external-link"><code>R/normalize.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.4.0/R/normalize.R" class="external-link"><code>R/normalize.R</code></a></small>
       <div class="d-none name"><code>normalize_counts.Rd</code></div>
     </div>
 
@@ -54,7 +54,7 @@
 <span>  samples_to_include <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sample_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  group_colname <span class="op">=</span> <span class="st">"Group"</span>,</span>
-<span>  label_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  label_colname <span class="op">=</span> <span class="st">"Label"</span>,</span>
 <span>  input_in_log_counts <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  voom_normalization_method <span class="op">=</span> <span class="st">"quantile"</span>,</span>
 <span>  samples_to_rename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span>,</span>
@@ -65,12 +65,12 @@
 <span>  label_offset_x_ <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  label_offset_y_ <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  label_font_size <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  point_size_for_pca <span class="op">=</span> <span class="fl">8</span>,</span>
+<span>  point_size_for_pca <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  color_histogram_by_group <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  set_min_max_for_x_axis_for_histogram <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  minimum_for_x_axis_for_histogram <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
 <span>  maximum_for_x_axis_for_histogram <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  legend_font_size_for_histogram <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  legend_font_size_for_histogram <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  legend_position_for_histogram <span class="op">=</span> <span class="st">"top"</span>,</span>
 <span>  number_of_histogram_legend_columns <span class="op">=</span> <span class="fl">6</span>,</span>
 <span>  plot_corr_matrix_heatmap <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -125,10 +125,10 @@ Before, After, etc.).</p></dd>
 
 <dt id="arg-label-colname">label_colname<a class="anchor" aria-label="anchor" href="#arg-label-colname"></a></dt>
 <dd><p>The column from the sample metadata containing the sample labels as you wish them to appear in
-the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
-labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
-column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
-<code>NULL</code> – <code>sample_id_colname</code> will be used.)</p></dd>
+heatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to
+display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with
+your preferred Labels here. The selected column should contain unique names for each sample. Use <code>add_label_to_pca</code>
+to control whether these labels are displayed on the PCA plot.</p></dd>
 
 
 <dt id="arg-input-in-log-counts">input_in_log_counts<a class="anchor" aria-label="anchor" href="#arg-input-in-log-counts"></a></dt>
@@ -147,7 +147,8 @@ which new name: old_name: new_name</p></dd>
 
 
 <dt id="arg-add-label-to-pca">add_label_to_pca<a class="anchor" aria-label="anchor" href="#arg-add-label-to-pca"></a></dt>
-<dd><p>label points on the PCA plot</p></dd>
+<dd><p>If <code>TRUE</code>, display labels from <code>label_colname</code> on PCA points. If <code>FALSE</code>, the PCA plot uses
+unlabeled points while heatmap labels still use <code>label_colname</code>.</p></dd>
 
 
 <dt id="arg-principal-component-on-x-axis">principal_component_on_x_axis<a class="anchor" aria-label="anchor" href="#arg-principal-component-on-x-axis"></a></dt>
@@ -182,7 +183,7 @@ which new name: old_name: new_name</p></dd>
 
 <dt id="arg-color-histogram-by-group">color_histogram_by_group<a class="anchor" aria-label="anchor" href="#arg-color-histogram-by-group"></a></dt>
 <dd><p>Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by
-the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.</p></dd>
+the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is TRUE.</p></dd>
 
 
 <dt id="arg-set-min-max-for-x-axis-for-histogram">set_min_max_for_x_axis_for_histogram<a class="anchor" aria-label="anchor" href="#arg-set-min-max-for-x-axis-for-histogram"></a></dt>
@@ -198,7 +199,8 @@ the column you select in the "Group Column Used to Color Histogram" parameter (b
 
 
 <dt id="arg-legend-font-size-for-histogram">legend_font_size_for_histogram<a class="anchor" aria-label="anchor" href="#arg-legend-font-size-for-histogram"></a></dt>
-<dd><p>legend font size for the histogram plot</p></dd>
+<dd><p>legend font size for the histogram plot.
+If <code>NULL</code>, the size is scaled automatically.</p></dd>
 
 
 <dt id="arg-legend-position-for-histogram">legend_position_for_histogram<a class="anchor" aria-label="anchor" href="#arg-legend-position-for-histogram"></a></dt>
@@ -217,8 +219,14 @@ not be be created. Default is <code>TRUE</code>.</p></dd>
 
 
 <dt id="arg-colors-for-plots">colors_for_plots<a class="anchor" aria-label="anchor" href="#arg-colors-for-plots"></a></dt>
-<dd><p>Colors for the PCA and histogram will be picked, in order, from this list.
-Colors must either be names in <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code> or valid hex codes.</p></dd>
+<dd><p>Optional colors for PCA/histogram/heatmap plots. If <code>NULL</code>, colors are taken from
+<code>moo@analyses$colors[[group_colname]]</code>.
+Colors must either be names in <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code> or valid hex codes.
+Unnamed colors are assigned by factor level order when the grouping column is a factor;
+otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
+than colors provided,
+supplied colors are used first and additional colors are generated from the selected palette for the remaining
+groups; random colors are used only if that palette returns fewer colors than the number of groups.</p></dd>
 
 
 <dt id="arg-print-plots">print_plots<a class="anchor" aria-label="anchor" href="#arg-print-plots"></a></dt>
@@ -278,7 +286,6 @@ is set to <code>TRUE</code>. Default is <code>FALSE</code>.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> * normalizing filt counts</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Total number of features included: 7943</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Saving 6.67 x 6.67 in image</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving 6.67 x 6.67 in image</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">moo</span><span class="op">@</span><span class="va">counts</span><span class="op">[[</span><span class="st">"norm"</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"voom"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            Gene       A1       A2       A3       B1       B2       B3       C1</span>
@@ -306,7 +313,7 @@ is set to <code>TRUE</code>. Default is <code>FALSE</code>.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>
