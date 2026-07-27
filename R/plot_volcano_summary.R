@@ -425,6 +425,12 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
     ### PH: END Build table for Volcano plot
   }
 
+  # Only pass custom labels when the summary label toggles request them.
+  plot_additional_labels <- ""
+  if (isTRUE(add_features) || isTRUE(label_features)) {
+    plot_additional_labels <- custom_gene_list
+  }
+
   plot_volcano_enhanced(
     diff_dat,
     feature_id_colname = feature_id_colname,
@@ -435,7 +441,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
     value_to_sort_the_output_dataset = value_to_sort_the_output_dataset,
     num_features_to_label = num_features_to_label,
     use_only_addition_labels = label_features,
-    additional_labels = custom_gene_list,
+    additional_labels = plot_additional_labels,
     lab_size = label_font_size,
     title = "Volcano Plot Summary",
     ylim = if (use_default_y_axis_limit) 0 else y_axis_limit,

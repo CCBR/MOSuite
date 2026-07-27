@@ -134,6 +134,54 @@ test_that("plot_volcano_summary respects non-Gene feature ID column", {
   expect_false("Gene" %in% colnames(df_volc_sum))
 })
 
+test_that("plot_volcano_summary only forwards custom labels when requested", {
+  options(mosuite_test_select_labels = list())
+  trace(
+    EnhancedVolcano::EnhancedVolcano,
+    tracer = quote(options(
+      mosuite_test_select_labels = append(
+        getOption("mosuite_test_select_labels"),
+        list(selectLab)
+      )
+    )),
+    print = FALSE
+  )
+  on.exit(untrace(EnhancedVolcano::EnhancedVolcano), add = TRUE)
+  on.exit(options(mosuite_test_select_labels = NULL), add = TRUE)
+
+  custom_label <- tail(nidap_deg_analysis$Gene, 1)
+
+  result <- plot_volcano_summary(
+    nidap_deg_analysis,
+    custom_gene_list = custom_label,
+    add_features = FALSE,
+    label_features = FALSE,
+    num_features_to_label = 1,
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_s3_class(result, "data.frame")
+  captured_select_labels <- getOption("mosuite_test_select_labels")
+  expect_false(custom_label %in% captured_select_labels[[1]])
+
+  options(mosuite_test_select_labels = list())
+
+  result <- plot_volcano_summary(
+    nidap_deg_analysis,
+    custom_gene_list = custom_label,
+    add_features = TRUE,
+    label_features = FALSE,
+    num_features_to_label = 1,
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_s3_class(result, "data.frame")
+  captured_select_labels <- getOption("mosuite_test_select_labels")
+  expect_true(custom_label %in% captured_select_labels[[1]])
+})
+
 test_that("plot_volcano_summary works with multiOmicDataSet", {
   # Create a multiOmicDataSet with differential analysis results
   moo <- multiOmicDataSet(
