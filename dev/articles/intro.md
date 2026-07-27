@@ -368,9 +368,9 @@ str(moo_nidap)
 #>  ..  .. ..- attr(*, "names")= chr [1:9] "A1" "A2" "A3" "B1" ...
 #>  ..  ..$ Group    : Named chr [1:3] "#5954d6" "#e1562c" "#b80058"
 #>  ..  .. ..- attr(*, "names")= chr [1:3] "A" "B" "C"
-#>  ..  ..$ Replicate: Named chr [1:3] "#5954d6" "#e1562c" "#b80058"
+#>  ..  ..$ Replicate: Named chr [1:3] "#00c6f8" "#d163e6" "#00a76c"
 #>  ..  .. ..- attr(*, "names")= chr [1:3] "1" "2" "3"
-#>  ..  ..$ Batch    : Named chr [1:2] "#5954d6" "#e1562c"
+#>  ..  ..$ Batch    : Named chr [1:2] "#ff9287" "#008cf9"
 #>  ..  .. ..- attr(*, "names")= chr [1:2] "1" "2"
 #>  ..  ..$ Label    : Named chr [1:9] "#5954d6" "#e1562c" "#b80058" "#00c6f8" ...
 #>  ..  .. ..- attr(*, "names")= chr [1:9] "A1" "A2" "A3" "B1" ...

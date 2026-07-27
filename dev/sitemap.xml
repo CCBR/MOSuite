@@ -32,6 +32,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/create_multiOmicDataSet_from_dataframes.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/create_multiOmicDataSet_from_files.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/diff_counts.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/dev/reference/display_colors.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/display_palette.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/do_math.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/extract_counts.html</loc></url>
@@ -77,6 +78,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.data.frame.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/plot_histogram.multiOmicDataSet.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/dev/reference/plot_palette.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/plot_pca.data.frame.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/plot_pca.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/dev/reference/plot_pca.multiOmicDataSet.html</loc></url>

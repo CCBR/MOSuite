@@ -198,7 +198,7 @@ str(moo)
 #>  .. $ colors   :List of 2
 #>  ..  ..$ sample_id: Named chr [1:4] "#5954d6" "#e1562c" "#b80058" "#00c6f8"
 #>  ..  .. ..- attr(*, "names")= chr [1:4] "KO_S3" "KO_S4" "WT_S1" "WT_S2"
-#>  ..  ..$ condition: Named chr [1:2] "#5954d6" "#e1562c"
+#>  ..  ..$ condition: Named chr [1:2] "#d163e6" "#00a76c"
 #>  ..  .. ..- attr(*, "names")= chr [1:2] "knockout" "wildtype"
 #>  .. $ diff     :List of 1
 #>  ..  ..$ knockout-wildtype:'data.frame': 291 obs. of  6 variables:

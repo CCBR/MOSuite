@@ -2,8 +2,9 @@
 
 Uses `color_values` when supplied; otherwise generates colors with
 [`get_colors_vctr()`](https://ccbr.github.io/MOSuite/dev/reference/get_colors_vctr.md).
-If too few colors are provided, missing colors are generated and
-appended.
+If `color_values` is named and covers all observed values, it is
+returned as-is. If too few colors are provided, missing colors are
+generated and appended.
 
 ## Usage
 
@@ -12,8 +13,7 @@ resolve_plot_colors(
   dat,
   colname,
   color_values = NULL,
-  palette_fun = select_mosuite_colors,
-  ...
+  palette = mosuite_palette
 )
 ```
 
@@ -29,16 +29,13 @@ resolve_plot_colors(
 
 - color_values:
 
-  optional vector of colors
+  optional named or unnamed character vector of colors
 
-- palette_fun:
+- palette:
 
-  function used to generate colors
-
-- ...:
-
-  additional arguments forwarded to `palette_fun`
+  character vector of colors used to generate defaults
 
 ## Value
 
-named vector of colors matching observed values in `colname`
+named character vector of colors matching observed values in
+`dat[[colname]]`

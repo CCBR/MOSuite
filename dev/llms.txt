@@ -147,6 +147,8 @@ for recommended usage
   : Volcano Plot - Summary
 - [`print_or_save_plot()`](https://ccbr.github.io/MOSuite/dev/reference/print_or_save_plot.md)
   : Print and/or save a ggplot
+- [`display_colors()`](https://ccbr.github.io/MOSuite/dev/reference/display_colors.md)
+  : Display colors for a multiOmicDataSet object
 - [`get_colors_lst()`](https://ccbr.github.io/MOSuite/dev/reference/get_colors_lst.md)
   : Create named list of default colors for plotting
 - [`get_colors_vctr()`](https://ccbr.github.io/MOSuite/dev/reference/get_colors_vctr.md)
