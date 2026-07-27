@@ -439,7 +439,11 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
     lab_size = label_font_size,
     title = "Volcano Plot Summary",
     ylim = if (use_default_y_axis_limit) 0 else y_axis_limit,
-    custom_xlim = if (use_default_x_axis_limit) "" else as.character(x_axis_limit),
+    custom_xlim = if (use_default_x_axis_limit) {
+      ""
+    } else {
+      as.character(x_axis_limit)
+    },
     axis_lab_size = axis_lab_size,
     axis_tick_lab_size = axis_tick_lab_size,
     point_size = point_size,

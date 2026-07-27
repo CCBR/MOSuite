@@ -490,7 +490,9 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
     plots_list[[i]] <- volcano_plot
   }
   nplots <- length(plots_list)
-  if (isTRUE(use_default_grid_layout) || is.null(number_of_rows_in_grid_layout)) {
+  if (
+    isTRUE(use_default_grid_layout) || is.null(number_of_rows_in_grid_layout)
+  ) {
     nrows <- ceiling(nplots / ceiling(sqrt(nplots)))
   } else {
     nrows <- number_of_rows_in_grid_layout
