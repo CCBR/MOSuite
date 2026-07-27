@@ -188,6 +188,88 @@ test_that("plot_volcano_enhanced defaults invalid manual grid rows to one", {
   }
 })
 
+test_that("plot_volcano_enhanced scales grid output dimensions", {
+  options(
+    mosuite_test_grid_rows = list(),
+    mosuite_test_plot_output_args = list()
+  )
+  trace(
+    patchwork::wrap_plots,
+    tracer = quote(options(
+      mosuite_test_grid_rows = append(
+        getOption("mosuite_test_grid_rows"),
+        list(nrow)
+      )
+    )),
+    print = FALSE
+  )
+  trace(
+    ggplot2::ggsave,
+    tracer = quote({
+      options(
+        mosuite_test_plot_output_args = append(
+          getOption("mosuite_test_plot_output_args"),
+          list(list(
+            width = width,
+            height = height,
+            units = units,
+            dpi = dpi,
+            filename = filename
+          ))
+        )
+      )
+    }),
+    print = FALSE
+  )
+  on.exit(untrace(patchwork::wrap_plots), add = TRUE)
+  on.exit(untrace(ggplot2::ggsave), add = TRUE)
+  on.exit(options(
+    mosuite_test_grid_rows = NULL,
+    mosuite_test_plot_output_args = NULL
+  ), add = TRUE)
+
+  plots_dir <- tempfile("volcano-grid-output-")
+  dir.create(plots_dir)
+  on.exit(unlink(plots_dir, recursive = TRUE), add = TRUE)
+
+  cases <- list(
+    list(nrows = 2, scale = TRUE, width = 100, height = 400),
+    list(nrows = 1, scale = TRUE, width = 200, height = 200),
+    list(nrows = 2, scale = FALSE, width = 100, height = 200)
+  )
+
+  for (case in cases) {
+    options(
+      mosuite_test_grid_rows = list(),
+      mosuite_test_plot_output_args = list()
+    )
+    expect_no_error(
+      result <- plot_volcano_enhanced(
+        nidap_deg_analysis,
+        use_default_grid_layout = FALSE,
+        number_of_rows_in_grid_layout = case$nrows,
+        scale_image_to_grid = case$scale,
+        image_width = 100,
+        image_height = 200,
+        save_plots = TRUE,
+        print_plots = FALSE,
+        plots_subdir = plots_dir
+      )
+    )
+
+    expect_s3_class(result, "data.frame")
+    captured_grid_rows <- getOption("mosuite_test_grid_rows")[[1]]
+    captured_output_args <- getOption("mosuite_test_plot_output_args")[[1]]
+    expect_equal(captured_grid_rows, as.integer(case$nrows))
+    expect_equal(captured_output_args$width, case$width)
+    expect_equal(captured_output_args$height, case$height)
+    expect_equal(captured_output_args$units, "px")
+    expect_equal(captured_output_args$dpi, 300)
+    expect_match(captured_output_args$filename, basename(plots_dir), fixed = TRUE)
+    expect_match(captured_output_args$filename, "volcano_enhanced.png", fixed = TRUE)
+  }
+})
+
 test_that("plot_volcano_enhanced works with multiOmicDataSet", {
   # Create a multiOmicDataSet with differential analysis results
   moo <- multiOmicDataSet(
