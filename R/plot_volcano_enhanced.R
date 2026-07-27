@@ -380,9 +380,19 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
     }
     if (grepl("adj", signif_colname[i])) {
       ylab <- bquote(~ -Log[10] ~ "FDR")
+      signif_legend_label <- "FDR"
+      signif_and_fc_legend_label <- "FDR and log2 FC"
     } else {
       ylab <- bquote(~ -Log[10] ~ "p-value")
+      signif_legend_label <- "p-value"
+      signif_and_fc_legend_label <- "p-value and log2 FC"
     }
+    legend_labels <- c(
+      "NS",
+      expression(Log[2] ~ FC),
+      signif_legend_label,
+      signif_and_fc_legend_label
+    )
     if (use_custom_lab) {
       if (lfc_name != change_colname[i]) {
         xlab <- gsub("_", " ", lfc_name)
@@ -408,6 +418,7 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
       pCutoff = signif_threshold,
       FCcutoff = change_threshold,
       axisLabSize = axis_lab_size,
+      legendLabels = legend_labels,
       labSize = lab_size,
       pointSize = point_size,
       shapeCustom = shapeCustom
@@ -436,6 +447,7 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
         pCutoff = signif_threshold,
         FCcutoff = change_threshold,
         axisLabSize = axis_lab_size,
+        legendLabels = legend_labels,
         labSize = lab_size,
         pointSize = point_size,
         shapeCustom = shapeCustom
