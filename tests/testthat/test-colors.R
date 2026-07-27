@@ -29,11 +29,11 @@ test_that("get_colors_lst works on nidap_sample_metadata", {
         C = "#b80058"
       ),
       Replicate = c(
-        `1` = "#5954d6",
-        `2` = "#e1562c",
-        `3` = "#b80058"
+        `1` = "#00c6f8",
+        `2` = "#d163e6",
+        `3` = "#00a76c"
       ),
-      Batch = c(`1` = "#5954d6", `2` = "#e1562c"),
+      Batch = c(`1` = "#ff9287", `2` = "#008cf9"),
       Label = c(
         A1 = "#5954d6",
         A2 = "#e1562c",
@@ -48,24 +48,19 @@ test_that("get_colors_lst works on nidap_sample_metadata", {
     )
   )
 })
-test_that("get_colors_lst handles alternative palette functions", {
+test_that("get_colors_lst handles alternative palette vectors", {
   sample_meta <- system.file(
     "extdata",
     "sample_metadata.tsv.gz",
     package = "MOSuite"
   ) |>
     readr::read_tsv()
-  expect_message(
-    expect_warning(
-      get_colors_lst(
-        sample_meta,
-        palette_fun = RColorBrewer::brewer.pal,
-        name = "Set3"
-      ),
-      "minimal value for n is 3"
-    ),
-    "Warning raised in "
+  result <- get_colors_lst(
+    sample_meta,
+    palette = RColorBrewer::brewer.pal(12, "Set3")
   )
+  expect_type(result, "list")
+  expect_length(result, ncol(sample_meta))
 })
 test_that("get_colors_vctr falls back to random colors when n exceeds palette max", {
   # MOSuite's default palette has 12 colors. When n > 12, the function
@@ -81,6 +76,31 @@ test_that("get_colors_vctr falls back to random colors when n exceeds palette ma
   )
   expect_length(result, 13)
   expect_named(result, paste0("cat", seq_len(13)))
+})
+
+test_that("get_colors_vctr retries from offset 0 when offset pushes past palette end", {
+  # Palette has 12 colors; offset=10, n_obs=5: 10+5=15 > 12, so retry without offset.
+  # The column should receive palette colors 1-5, not random colors.
+  dat <- data.frame(group = paste0("x", seq_len(5)))
+  result <- get_colors_vctr(dat, "group", color_offset = 10L)
+  expect_length(result, 5)
+  expect_named(result, paste0("x", seq_len(5)))
+  # Should get the first 5 palette colors (same as offset=0), not random
+  expected <- get_colors_vctr(dat, "group", color_offset = 0L)
+  expect_equal(result, expected)
+})
+
+test_that("get_colors_lst columns exceeding palette size fall back to random colors", {
+  # 13 unique values exceeds the 12-color mosuite_palette; should message and use random colors
+  dat_big <- data.frame(group = paste0("cat", seq_len(13)))
+  expect_no_warning(
+    expect_message(
+      result <- get_colors_lst(dat_big),
+      "exceeds the palette maximum"
+    )
+  )
+  expect_length(result$group, 13)
+  expect_named(result$group, paste0("cat", seq_len(13)))
 })
 
 test_that("resolve_plot_colors preserves named color mappings", {
@@ -205,6 +225,20 @@ test_that("get_observed_values respects factor level order and excludes unseen l
   expect_equal(result, c("A", "B"))
 })
 
+test_that("get_colors_vctr returns empty character vector when column has zero observed values", {
+  expect_equal(
+    get_colors_vctr(data.frame(group = character(0)), "group"),
+    character(0)
+  )
+  expect_equal(
+    get_colors_vctr(
+      data.frame(group = c(NA_character_, NA_character_)),
+      "group"
+    ),
+    character(0)
+  )
+})
+
 test_that("get_colors_vctr handles a column with NA values", {
   dat <- data.frame(group = c("A", NA, "B", "A"))
   result <- get_colors_vctr(dat, "group")
@@ -229,6 +263,15 @@ test_that("resolve_plot_colors returns color_values unchanged when column is all
 test_that("display_palette returns a ggplot invisibly", {
   result <- display_palette(c("#FF0000", "#00FF00", "#0000FF"))
   expect_s3_class(result, "gg")
+})
+
+test_that("display_colors returns a patchwork object", {
+  moo <- create_multiOmicDataSet_from_dataframes(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    counts_dat = as.data.frame(nidap_raw_counts)
+  )
+  result <- display_colors(moo)
+  expect_s3_class(result, "patchwork")
 })
 
 test_that("set_color_pal overrides the color palette", {
@@ -256,11 +299,11 @@ test_that("set_color_pal overrides the color palette", {
         C = "#b80058"
       ),
       Replicate = c(
-        `1` = "#5954d6",
-        `2` = "#e1562c",
-        `3` = "#b80058"
+        `1` = "#00c6f8",
+        `2` = "#d163e6",
+        `3` = "#00a76c"
       ),
-      Batch = c(`1` = "#5954d6", `2` = "#e1562c"),
+      Batch = c(`1` = "#ff9287", `2` = "#008cf9"),
       Label = c(
         A1 = "#5954d6",
         A2 = "#e1562c",
@@ -277,8 +320,7 @@ test_that("set_color_pal overrides the color palette", {
   moo2 <- moo |>
     set_color_pal(
       colname = "Group",
-      palette_fun = RColorBrewer::brewer.pal,
-      name = "Set2"
+      palette = RColorBrewer::brewer.pal(3, "Set2")
     )
   expect_equal(
     moo2@analyses$colors,
@@ -300,11 +342,11 @@ test_that("set_color_pal overrides the color palette", {
         C = "#8DA0CB"
       ),
       Replicate = c(
-        `1` = "#5954d6",
-        `2` = "#e1562c",
-        `3` = "#b80058"
+        `1` = "#00c6f8",
+        `2` = "#d163e6",
+        `3` = "#00a76c"
       ),
-      Batch = c(`1` = "#5954d6", `2` = "#e1562c"),
+      Batch = c(`1` = "#ff9287", `2` = "#008cf9"),
       Label = c(
         A1 = "#5954d6",
         A2 = "#e1562c",

@@ -8,8 +8,7 @@ resolve_plot_colors(
   dat,
   colname,
   color_values = NULL,
-  palette_fun = select_mosuite_colors,
-  ...
+  palette = mosuite_palette
 )
 }
 \arguments{
@@ -17,18 +16,18 @@ resolve_plot_colors(
 
 \item{colname}{column name in \code{dat}}
 
-\item{color_values}{optional vector of colors}
+\item{color_values}{optional named or unnamed character vector of colors}
 
-\item{palette_fun}{function used to generate colors}
-
-\item{...}{additional arguments forwarded to \code{palette_fun}}
+\item{palette}{character vector of colors used to generate defaults}
 }
 \value{
-named vector of colors matching observed values in \code{colname}
+named character vector of colors matching observed values in
+\code{dat[[colname]]}
 }
 \description{
 Uses \code{color_values} when supplied; otherwise generates colors with
-\code{get_colors_vctr()}. If too few colors are provided, missing colors are generated
-and appended.
+\code{\link[=get_colors_vctr]{get_colors_vctr()}}. If \code{color_values} is named and covers all observed
+values, it is returned as-is. If too few colors are provided, missing colors
+are generated and appended.
 }
 \keyword{internal}

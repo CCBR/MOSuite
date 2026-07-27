@@ -15,7 +15,8 @@ get_observed_values(dat, colname)
 character vector of observed values
 }
 \description{
-Returns non-missing values from \code{dat[[colname]]}. For factor columns, values are
-returned in factor-level order; otherwise, values keep first-observed order.
+Returns non-missing values from \code{dat[[colname]]}. For factor columns, values
+are returned in factor-level order; otherwise, values keep first-observed
+order.
 }
 \keyword{internal}

@@ -292,8 +292,8 @@ test_that("batch_correct_counts forwards the default MOSuite plot colors", {
   pca_args <- NULL
   histogram_args <- NULL
   expected_colors <- c(
-    "1" = "#5954d6",
-    "2" = "#e1562c"
+    "1" = "#ff9287",
+    "2" = "#008cf9"
   )
 
   local_mocked_bindings(
@@ -432,6 +432,7 @@ test_that("batch_correct_counts histogram matches standalone plot_histogram on b
     sample_id_colname = "Sample",
     feature_id_colname = "Gene",
     group_colname = "Batch",
+    color_values = moo@analyses$colors[["Batch"]],
     label_colname = NULL,
     color_by_group = TRUE,
     set_min_max_for_x_axis = FALSE,
