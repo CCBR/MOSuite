@@ -39,6 +39,8 @@ plot_volcano_summary(
   use_default_y_axis_limit = TRUE,
   y_axis_limit = 10,
   point_size = 2,
+  axis_lab_size = 18,
+  axis_tick_lab_size = 12,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
   image_width = 15,
@@ -87,6 +89,8 @@ plot_volcano_summary(
   use_default_y_axis_limit = TRUE,
   y_axis_limit = 10,
   point_size = 2,
+  axis_lab_size = 18,
+  axis_tick_lab_size = 12,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
   image_width = 15,
@@ -135,6 +139,8 @@ plot_volcano_summary(
   use_default_y_axis_limit = TRUE,
   y_axis_limit = 10,
   point_size = 2,
+  axis_lab_size = 18,
+  axis_tick_lab_size = 12,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
   image_width = 15,
@@ -230,6 +236,10 @@ B-A. Default: FALSE}
 \item{y_axis_limit}{Custom y-axis limit. Default: c(0, 10)}
 
 \item{point_size}{Size of the points in the plot. Default: 1}
+
+\item{axis_lab_size}{Size of the axis labels. Default: 18}
+
+\item{axis_tick_lab_size}{Size of the axis tick labels. Default: 12}
 
 \item{add_deg_columns}{Add additional columns from the DEG analysis to the
 output dataset. Default: \verb{"FC", "logFC", "tstat", "pval", "adjpval"}}

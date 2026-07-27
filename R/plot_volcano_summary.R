@@ -45,6 +45,8 @@ plot_volcano_summary <- S7::new_generic(
     use_default_y_axis_limit = TRUE,
     y_axis_limit = 10,
     point_size = 2,
+    axis_lab_size = 18,
+    axis_tick_lab_size = 12,
     add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
     graphics_device = grDevices::png,
     image_width = 15,
@@ -96,6 +98,8 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
   use_default_y_axis_limit = TRUE,
   y_axis_limit = 10,
   point_size = 2,
+  axis_lab_size = 18,
+  axis_tick_lab_size = 12,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
   image_width = 15,
@@ -144,6 +148,8 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
         use_default_y_axis_limit,
         y_axis_limit,
         point_size,
+        axis_lab_size,
+        axis_tick_lab_size,
         add_deg_columns,
         graphics_device,
         image_width,
@@ -200,6 +206,8 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
 #' @param use_default_y_axis_limit Set to TRUE to use the default y-axis limit. Default: TRUE
 #' @param y_axis_limit Custom y-axis limit. Default: c(0, 10)
 #' @param point_size Size of the points in the plot. Default: 1
+#' @param axis_lab_size Size of the axis labels. Default: 18
+#' @param axis_tick_lab_size Size of the axis tick labels. Default: 12
 #' @param add_deg_columns Add additional columns from the DEG analysis to the
 #'   output dataset. Default: `"FC", "logFC", "tstat", "pval", "adjpval"`
 #' @param use_default_grid_layout Set to TRUE to use the default grid layout. Default: TRUE
@@ -248,6 +256,8 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   use_default_y_axis_limit = TRUE,
   y_axis_limit = 10,
   point_size = 2,
+  axis_lab_size = 18,
+  axis_tick_lab_size = 12,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
   image_width = 15,
@@ -261,7 +271,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   save_plots = options::opt("save_plots"),
   plots_subdir = "diff"
 ) {
-  abort_packages_not_installed("patchwork", "ggrepel")
+  abort_packages_not_installed("EnhancedVolcano")
   diff_dat <- as.data.frame(moo_diff)
 
   ## -------------------------------- ##
@@ -278,15 +288,15 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   if (is.null(feature_id_colname)) {
     feature_id_colname <- colnames(diff_dat)[1]
   }
-  feature_ids <- diff_dat[[feature_id_colname]]
 
   #  Identify all contrasts in DEG output table
   volcols <- colnames(diff_dat)
   statcols <- volcols[grepl("logFC", volcols)]
   contrasts <- unique(gsub("_logFC", "", statcols))
 
-  Plots <- list()
   df_outs <- list()
+  plot_change_colnames <- character(0)
+  plot_signif_colnames <- character(0)
 
   #  Create Volcano for each DEG comparison
   for (contrast in contrasts) {
@@ -308,6 +318,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
       diff_dat <- diff_dat |>
         dplyr::arrange(dplyr::desc(abs(diff_dat[, tstatcol])))
     }
+    feature_ids <- diff_dat[[feature_id_colname]]
 
     ## optional Parameter: Provide a list of features to label on Volcano plot
     ## work with a list of features
@@ -378,6 +389,8 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
     } else {
       new_contrast_label <- old_contrast
     }
+    plot_change_colnames <- c(plot_change_colnames, new_contrast_label)
+    plot_signif_colnames <- c(plot_signif_colnames, pvalcol)
 
     filtered_features <- feature_ids[
       diff_dat[, pvalcol] < signif_threshold &
@@ -409,129 +422,37 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
 
     df_out1 <- new_df
     df_outs[[contrast]] <- df_out1
-
     ### PH: END Build table for Volcano plot
-
-    ### PH: START Make plot - Can we use Enhanced volcano function from other template to make figure instead of ggplot
-    ### shown here
-
-    message(paste0(
-      "Total number of features included in volcano plot: ",
-      nrow(diff_dat)
-    ))
-    ## special nudge/repel of specific features
-    if (displace_feature_labels) {
-      gn <- trimws(
-        unlist(strsplit(
-          c(custom_gene_list_special_label_displacement),
-          ","
-        )),
-        which = c("both")
-      )
-      ind_gn <- match(gn, feature_ids[custom_gene_list_ind]) # get the indices of the listed features
-      nudge_x_all <- rep(c(0.2), length(feature_ids[custom_gene_list_ind]))
-      nudge_y_all <- rep(c(0.2), length(feature_ids[custom_gene_list_ind]))
-      nudge_x_all[ind_gn] <- c(special_label_displacement_x_axis)
-      nudge_y_all[ind_gn] <- c(special_label_displacement_y_axis)
-    } else {
-      nudge_x_all <- label_x_adj
-      nudge_y_all <- label_y_adj
-    }
-
-    # set plot parameters
-    if (use_default_y_axis_limit) {
-      negative_log10_p_values <- -log10(diff_dat[, pvalcol])
-      ymax <- ceiling(max(negative_log10_p_values[is.finite(
-        negative_log10_p_values
-      )]))
-    } else {
-      ymax <- y_axis_limit
-    }
-    if (use_default_x_axis_limit) {
-      xmax1 <- ceiling(max(diff_dat[, lfccol]))
-      xmax2 <- ceiling(max(-diff_dat[, lfccol]))
-      xmax <- max(xmax1, xmax2)
-    } else {
-      xmax <- x_axis_limit
-    }
-
-    grm <- diff_dat[, c(new_contrast_label, pvalcol)]
-    grm[, "neglogpval"] <- -log10(diff_dat[, pvalcol])
-    colnames(grm) <- c("FC", "pval", "neglogpval")
-    # message(grm[custom_gene_list_ind, ])
-    p <- ggplot2::ggplot(
-      grm,
-      ggplot2::aes(
-        x = !!rlang::sym("FC"),
-        y = !!rlang::sym("neglogpval")
-      )
-    ) + # modified by RAS
-      ggplot2::theme_classic() +
-      ggplot2::geom_point(
-        color = color_of_non_significant_features,
-        size = point_size
-      ) +
-      ggplot2::geom_vline(
-        xintercept = c(-change_threshold, change_threshold),
-        color = color_of_logfold_change_threshold_line,
-        alpha = 1.0
-      ) +
-      ggplot2::geom_hline(
-        yintercept = -log10(signif_threshold),
-        color = color_of_signif_threshold_line,
-        alpha = 1.0
-      ) +
-      ggplot2::geom_point(
-        data = grm[diff_dat[, pvalcol] < signif_threshold, ],
-        color = color_of_features_meeting_only_signif_threshold,
-        size = point_size
-      ) +
-      ggplot2::geom_point(
-        data = grm[
-          diff_dat[, pvalcol] < signif_threshold &
-            abs(grm[, "FC"]) > change_threshold,
-        ],
-        color = color_for_features_meeting_pvalue_and_foldchange_thresholds,
-        size = point_size
-      ) +
-      ggrepel::geom_text_repel(
-        data = grm[custom_gene_list_ind, ],
-        label = feature_ids[custom_gene_list_ind],
-        color = color_gene_label,
-        fontface = label_font_type,
-        nudge_x = nudge_x_all,
-        nudge_y = nudge_y_all,
-        size = label_font_size,
-        segment.linewidth = line_thickness
-      ) +
-      ggplot2::xlim(-xmax, xmax) +
-      ggplot2::ylim(0, ymax) +
-      ggplot2::xlab(new_contrast_label) +
-      ggplot2::ylab(pvalcol)
-
-    if (aspect_ratio > 0) {
-      p <- p + ggplot2::coord_fixed(ratio = aspect_ratio)
-    }
-
-    Plots[[contrast]] <- p
-    ### PH: END Make plot - Can we use Enhanced volcano function from other template to make figure instead of ggplot
-    ### shown here
   }
 
-  ## Print plots
-  nplots <- length(Plots)
-  if (use_default_grid_layout) {
-    nrows <- ceiling(nplots / ceiling(sqrt(nplots)))
-  } else {
-    nrows <- number_of_rows_in_grid_layout
-  }
-  plot_patchwork <- patchwork::wrap_plots(Plots, nrow = nrows)
-  print_or_save_plot(
-    plot_patchwork,
-    filename = file.path(plots_subdir, plot_filename),
+  plot_volcano_enhanced(
+    diff_dat,
+    feature_id_colname = feature_id_colname,
+    signif_colname = plot_signif_colnames,
+    signif_threshold = signif_threshold,
+    change_colname = plot_change_colnames,
+    change_threshold = change_threshold,
+    value_to_sort_the_output_dataset = value_to_sort_the_output_dataset,
+    num_features_to_label = num_features_to_label,
+    use_only_addition_labels = label_features,
+    additional_labels = custom_gene_list,
+    lab_size = label_font_size,
+    title = "Volcano Plot Summary",
+    ylim = if (use_default_y_axis_limit) 0 else y_axis_limit,
+    custom_xlim = if (use_default_x_axis_limit) "" else as.character(x_axis_limit),
+    axis_lab_size = axis_lab_size,
+    axis_tick_lab_size = axis_tick_lab_size,
+    point_size = point_size,
+    image_width = image_width * dpi,
+    image_height = image_height * dpi,
+    dpi = dpi,
+    use_default_grid_layout = use_default_grid_layout,
+    number_of_rows_in_grid_layout = number_of_rows_in_grid_layout,
+    scale_image_to_grid = TRUE,
     print_plots = print_plots,
     save_plots = save_plots,
-    graphics_device = graphics_device
+    plots_subdir = plots_subdir,
+    plot_filename = plot_filename
   )
 
   df_out <- unique(do.call("rbind", df_outs))

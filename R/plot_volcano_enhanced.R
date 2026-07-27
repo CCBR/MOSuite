@@ -32,10 +32,14 @@ plot_volcano_enhanced <- S7::new_generic(
     xlim_additional = 0,
     ylim_additional = 0,
     axis_lab_size = 24,
+    axis_tick_lab_size = 14,
     point_size = 2,
     image_width = 3000,
     image_height = 3000,
     dpi = 300,
+    use_default_grid_layout = TRUE,
+    number_of_rows_in_grid_layout = NULL,
+    scale_image_to_grid = FALSE,
     interactive_plots = FALSE,
     print_plots = options::opt("print_plots"),
     save_plots = options::opt("save_plots"),
@@ -69,10 +73,14 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
   xlim_additional = 0,
   ylim_additional = 0,
   axis_lab_size = 24,
+  axis_tick_lab_size = 14,
   point_size = 2,
   image_width = 3000,
   image_height = 3000,
   dpi = 300,
+  use_default_grid_layout = TRUE,
+  number_of_rows_in_grid_layout = NULL,
+  scale_image_to_grid = FALSE,
   interactive_plots = FALSE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -102,10 +110,14 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
         xlim_additional,
         ylim_additional,
         axis_lab_size,
+        axis_tick_lab_size,
         point_size,
         image_width,
         image_height,
         dpi,
+        use_default_grid_layout,
+        number_of_rows_in_grid_layout,
+        scale_image_to_grid,
         interactive_plots,
         print_plots,
         save_plots,
@@ -142,11 +154,14 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
 #' @param xlim_additional Additional space to add to the X-axis limits.
 #' @param ylim_additional Additional space to add to the Y-axis limits.
 #' @param axis_lab_size Size of the axis labels.
+#' @param axis_tick_lab_size Size of the axis tick labels.
 #' @param point_size Size of the points in the plot.
 #' @param image_width output image width in pixels - only used if save_plots is TRUE
 #' @param image_height output image height in pixels - only used if save_plots is TRUE
 #' @param dpi dots-per-inch of the output image (see `ggsave()`) - only used if save_plots is TRUE
 #' @param plot_filename plot output filename - only used if save_plots is TRUE
+#' @param scale_image_to_grid If TRUE, multiplies the saved image width and height by the number of grid columns and
+#'   rows so each stitched plot keeps the requested single-plot size.
 #'
 #' @keywords plotters volcano
 #'
@@ -176,17 +191,21 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
   xlim_additional = 0,
   ylim_additional = 0,
   axis_lab_size = 24,
+  axis_tick_lab_size = 14,
   point_size = 2,
   image_width = 3000,
   image_height = 3000,
   dpi = 300,
+  use_default_grid_layout = TRUE,
+  number_of_rows_in_grid_layout = NULL,
+  scale_image_to_grid = FALSE,
   interactive_plots = FALSE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   plots_subdir = "diff",
   plot_filename = "volcano_enhanced.png"
 ) {
-  abort_packages_not_installed("EnhancedVolcano")
+  abort_packages_not_installed("EnhancedVolcano", "patchwork")
   ### PH
   # Input - DEG table from Limma DEG template
   # Output - Volcano plot + interactive Volcano Plot
@@ -392,7 +411,10 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
       labSize = lab_size,
       pointSize = point_size,
       shapeCustom = shapeCustom
-    )
+    ) +
+      ggplot2::theme(
+        axis.text = ggplot2::element_text(size = axis_tick_lab_size)
+      )
 
     ## Creating plot that can be converted to plotly interactive plot (no labels):
     ## PH: make this feature an option not default
@@ -417,7 +439,10 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
         labSize = lab_size,
         pointSize = point_size,
         shapeCustom = shapeCustom
-      )
+      ) +
+        ggplot2::theme(
+          axis.text = ggplot2::element_text(size = axis_tick_lab_size)
+        )
 
       # Extract the data used for plotting
       plot_data <- ggplot2::ggplot_build(p_empty)$data[[1]]
@@ -452,15 +477,28 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
     }
     plots_list[[i]] <- volcano_plot
   }
-  plot_patchwork <- patchwork::wrap_plots(plots_list)
+  nplots <- length(plots_list)
+  if (isTRUE(use_default_grid_layout) || is.null(number_of_rows_in_grid_layout)) {
+    nrows <- ceiling(nplots / ceiling(sqrt(nplots)))
+  } else {
+    nrows <- number_of_rows_in_grid_layout
+  }
+  ncols <- ceiling(nplots / nrows)
+  output_width <- image_width
+  output_height <- image_height
+  if (isTRUE(scale_image_to_grid)) {
+    output_width <- image_width * ncols
+    output_height <- image_height * nrows
+  }
+  plot_patchwork <- patchwork::wrap_plots(plots_list, nrow = nrows)
   print_or_save_plot(
     plot_patchwork,
     filename = file.path(plots_subdir, plot_filename),
     print_plots = print_plots,
     save_plots = save_plots,
     units = "px",
-    width = image_width,
-    height = image_height,
+    width = output_width,
+    height = output_height,
     dpi = dpi
   )
 

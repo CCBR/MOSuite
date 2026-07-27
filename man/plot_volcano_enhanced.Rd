@@ -28,10 +28,14 @@ plot_volcano_enhanced(
   xlim_additional = 0,
   ylim_additional = 0,
   axis_lab_size = 24,
+  axis_tick_lab_size = 14,
   point_size = 2,
   image_width = 3000,
   image_height = 3000,
   dpi = 300,
+  use_default_grid_layout = TRUE,
+  number_of_rows_in_grid_layout = NULL,
+  scale_image_to_grid = FALSE,
   interactive_plots = FALSE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -62,10 +66,14 @@ plot_volcano_enhanced(
   xlim_additional = 0,
   ylim_additional = 0,
   axis_lab_size = 24,
+  axis_tick_lab_size = 14,
   point_size = 2,
   image_width = 3000,
   image_height = 3000,
   dpi = 300,
+  use_default_grid_layout = TRUE,
+  number_of_rows_in_grid_layout = NULL,
+  scale_image_to_grid = FALSE,
   interactive_plots = FALSE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -96,10 +104,14 @@ plot_volcano_enhanced(
   xlim_additional = 0,
   ylim_additional = 0,
   axis_lab_size = 24,
+  axis_tick_lab_size = 14,
   point_size = 2,
   image_width = 3000,
   image_height = 3000,
   dpi = 300,
+  use_default_grid_layout = TRUE,
+  number_of_rows_in_grid_layout = NULL,
+  scale_image_to_grid = FALSE,
   interactive_plots = FALSE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -157,6 +169,8 @@ for labeling in the volcano plot, ignoring the top features.}
 
 \item{axis_lab_size}{Size of the axis labels.}
 
+\item{axis_tick_lab_size}{Size of the axis tick labels.}
+
 \item{point_size}{Size of the points in the plot.}
 
 \item{image_width}{output image width in pixels - only used if save_plots is TRUE}
@@ -164,6 +178,9 @@ for labeling in the volcano plot, ignoring the top features.}
 \item{image_height}{output image height in pixels - only used if save_plots is TRUE}
 
 \item{dpi}{dots-per-inch of the output image (see \code{ggsave()}) - only used if save_plots is TRUE}
+
+\item{scale_image_to_grid}{If TRUE, multiplies the saved image width and height by the number of grid columns and
+rows so each stitched plot keeps the requested single-plot size.}
 
 \item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover
 your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
