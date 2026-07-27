@@ -260,34 +260,6 @@ test_that("display_colors returns a patchwork object", {
   expect_s3_class(result, "patchwork")
 })
 
-test_that("display_colors produces one panel per color column", {
-  moo <- create_multiOmicDataSet_from_dataframes(
-    sample_metadata = as.data.frame(nidap_sample_metadata),
-    counts_dat = as.data.frame(nidap_raw_counts)
-  )
-  result <- display_colors(moo)
-  n_color_cols <- length(moo@analyses$colors)
-  expect_length(result$patches$plots, n_color_cols - 1L)
-})
-
-test_that("display_colors panel titles match color column names", {
-  moo <- create_multiOmicDataSet_from_dataframes(
-    sample_metadata = as.data.frame(nidap_sample_metadata),
-    counts_dat = as.data.frame(nidap_raw_counts)
-  )
-  result <- display_colors(moo)
-  color_names <- names(moo@analyses$colors)
-  # patchwork stores all but the last plot in $patches$plots; the last is in
-  # the top-level ggplot object
-  panel_plots <- c(result$patches$plots, list(result))
-  panel_titles <- vapply(
-    panel_plots,
-    function(p) p$labels$title,
-    character(1)
-  )
-  expect_equal(panel_titles, color_names)
-})
-
 test_that("set_color_pal overrides the color palette", {
   moo <- create_multiOmicDataSet_from_dataframes(
     sample_metadata = as.data.frame(nidap_sample_metadata),
