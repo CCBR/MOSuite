@@ -11,7 +11,7 @@
   "label_features": false,
   "custom_gene_list": "",
   "default_label_color": "black",
-  "custom_label_color": "green3",
+  "custom_label_color": "black",
   "label_x_adj": 0.2,
   "label_y_adj": 0.2,
   "line_thickness": 0.5,
