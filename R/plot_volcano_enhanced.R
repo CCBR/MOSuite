@@ -159,6 +159,8 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
 #' @param image_width output image width in pixels - only used if save_plots is TRUE
 #' @param image_height output image height in pixels - only used if save_plots is TRUE
 #' @param dpi dots-per-inch of the output image (see `ggsave()`) - only used if save_plots is TRUE
+#' @param use_default_grid_layout Set to TRUE to use the default grid layout. Default: TRUE
+#' @param number_of_rows_in_grid_layout Number of rows in the grid layout. Default: NULL
 #' @param plot_filename plot output filename - only used if save_plots is TRUE
 #' @param scale_image_to_grid If TRUE, multiplies the saved image width and height by the number of grid columns and
 #'   rows so each stitched plot keeps the requested single-plot size.

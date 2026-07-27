@@ -179,6 +179,10 @@ for labeling in the volcano plot, ignoring the top features.}
 
 \item{dpi}{dots-per-inch of the output image (see \code{ggsave()}) - only used if save_plots is TRUE}
 
+\item{use_default_grid_layout}{Set to TRUE to use the default grid layout. Default: TRUE}
+
+\item{number_of_rows_in_grid_layout}{Number of rows in the grid layout. Default: NULL}
+
 \item{scale_image_to_grid}{If TRUE, multiplies the saved image width and height by the number of grid columns and
 rows so each stitched plot keeps the requested single-plot size.}
 
