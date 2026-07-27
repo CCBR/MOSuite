@@ -143,12 +143,16 @@ get_colors_vctr <- function(
   obs <- get_observed_values(dat, colname)
   n_obs <- length(obs)
 
-  # if fewer colors are available than needed, handle gracefully
-  if (length(palette) < n_obs + color_offset) {
-    # If an offset pushed us past the palette end but n_obs alone would fit,
-    # retry from the start of the palette before falling back to random colors.
-    if (color_offset > 0L && length(palette) >= n_obs) {
-      color_offset <- 0L
+  if (n_obs == 0) {
+    colors_vctr <- character(0)
+  } else {
+    # if fewer colors are available than needed, handle gracefully
+    if (length(palette) < n_obs + color_offset) {
+      # If an offset pushed us past the palette end but n_obs alone would fit,
+      # retry from the start of the palette before falling back to random colors.
+      if (color_offset > 0L && length(palette) >= n_obs) {
+        color_offset <- 0L
+      }
     }
     # If still not enough colors, fall back to random
     if (length(palette) < n_obs) {
@@ -157,13 +161,12 @@ get_colors_vctr <- function(
         "exceeds the palette maximum. Falling back to random colors."
       ))
       colors_vctr <- get_random_colors(n_obs)
-      names(colors_vctr) <- obs
-      return(colors_vctr)
+    } else {
+      colors_vctr <- palette[seq.int(color_offset + 1L, color_offset + n_obs)]
     }
+    names(colors_vctr) <- obs
   }
 
-  colors_vctr <- palette[seq.int(color_offset + 1L, color_offset + n_obs)]
-  names(colors_vctr) <- obs
   return(colors_vctr)
 }
 
