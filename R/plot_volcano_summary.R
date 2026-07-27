@@ -278,6 +278,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   if (is.null(feature_id_colname)) {
     feature_id_colname <- colnames(diff_dat)[1]
   }
+  feature_ids <- diff_dat[[feature_id_colname]]
 
   #  Identify all contrasts in DEG output table
   volcols <- colnames(diff_dat)
@@ -320,7 +321,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
         )),
         which = c("both")
       )
-      ind <- match(gl, diff_dat$Gene) # get the indices of the listed features
+      ind <- match(gl, feature_ids) # get the indices of the listed features
       custom_gene_list_ind <- c(1:num_features_to_label, ind) # when list provided
       color_gene_label <- c(
         rep(c(default_label_color), num_features_to_label),
@@ -336,7 +337,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
         )),
         which = c("both")
       ) # unpack the gene list provided by the user and remove white spaces
-      ind <- match(gl, diff_dat$Gene) # get the indices of the listed features
+      ind <- match(gl, feature_ids) # get the indices of the listed features
       custom_gene_list_ind <- ind # when list provided
       color_gene_label <- rep(c(custom_label_color), length(ind))
     } else {
@@ -378,7 +379,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
       new_contrast_label <- old_contrast
     }
 
-    filtered_features <- diff_dat$Gene[
+    filtered_features <- feature_ids[
       diff_dat[, pvalcol] < signif_threshold &
         abs(diff_dat[, new_contrast_label]) > change_threshold
     ]
@@ -427,9 +428,9 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
         )),
         which = c("both")
       )
-      ind_gn <- match(gn, diff_dat$Gene[custom_gene_list_ind]) # get the indices of the listed features
-      nudge_x_all <- rep(c(0.2), length(diff_dat$Gene[custom_gene_list_ind]))
-      nudge_y_all <- rep(c(0.2), length(diff_dat$Gene[custom_gene_list_ind]))
+      ind_gn <- match(gn, feature_ids[custom_gene_list_ind]) # get the indices of the listed features
+      nudge_x_all <- rep(c(0.2), length(feature_ids[custom_gene_list_ind]))
+      nudge_y_all <- rep(c(0.2), length(feature_ids[custom_gene_list_ind]))
       nudge_x_all[ind_gn] <- c(special_label_displacement_x_axis)
       nudge_y_all[ind_gn] <- c(special_label_displacement_y_axis)
     } else {
@@ -495,7 +496,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
       ) +
       ggrepel::geom_text_repel(
         data = grm[custom_gene_list_ind, ],
-        label = diff_dat$Gene[custom_gene_list_ind],
+        label = feature_ids[custom_gene_list_ind],
         color = color_gene_label,
         fontface = label_font_type,
         nudge_x = nudge_x_all,

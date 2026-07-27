@@ -117,6 +117,23 @@ test_that("plot_volcano_summary works on nidap dataset", {
   )
 })
 
+test_that("plot_volcano_summary respects non-Gene feature ID column", {
+  deg_analysis <- nidap_deg_analysis |>
+    dplyr::rename(feature_id = Gene)
+
+  df_volc_sum <- plot_volcano_summary(
+    deg_analysis,
+    feature_id_colname = "feature_id",
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_s3_class(df_volc_sum, "data.frame")
+  expect_true(nrow(df_volc_sum) > 0)
+  expect_true("feature_id" %in% colnames(df_volc_sum))
+  expect_false("Gene" %in% colnames(df_volc_sum))
+})
+
 test_that("plot_volcano_summary works with multiOmicDataSet", {
   # Create a multiOmicDataSet with differential analysis results
   moo <- multiOmicDataSet(
