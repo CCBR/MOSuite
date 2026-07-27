@@ -225,6 +225,20 @@ test_that("get_observed_values respects factor level order and excludes unseen l
   expect_equal(result, c("A", "B"))
 })
 
+test_that("get_colors_vctr returns empty character vector when column has zero observed values", {
+  expect_equal(
+    get_colors_vctr(data.frame(group = character(0)), "group"),
+    character(0)
+  )
+  expect_equal(
+    get_colors_vctr(
+      data.frame(group = c(NA_character_, NA_character_)),
+      "group"
+    ),
+    character(0)
+  )
+})
+
 test_that("get_colors_vctr handles a column with NA values", {
   dat <- data.frame(group = c("A", NA, "B", "A"))
   result <- get_colors_vctr(dat, "group")
