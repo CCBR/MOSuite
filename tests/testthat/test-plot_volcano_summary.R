@@ -182,6 +182,116 @@ test_that("plot_volcano_summary only forwards custom labels when requested", {
   expect_true(custom_label %in% captured_select_labels[[1]])
 })
 
+test_that("plot_volcano_summary forwards shared styling parameters", {
+  options(mosuite_test_volcano_args = list())
+  trace(
+    EnhancedVolcano::EnhancedVolcano,
+    tracer = quote(options(
+      mosuite_test_volcano_args = append(
+        getOption("mosuite_test_volcano_args"),
+        list(list(
+          labSize = labSize,
+          labCol = labCol,
+          col = col,
+          cutoffLineCol = cutoffLineCol
+        ))
+      )
+    )),
+    print = FALSE
+  )
+  on.exit(untrace(EnhancedVolcano::EnhancedVolcano), add = TRUE)
+  on.exit(options(mosuite_test_volcano_args = NULL), add = TRUE)
+
+  custom_label <- tail(nidap_deg_analysis$Gene, 1)
+  point_colors <- c("grey40", "orange", "dodgerblue", "firebrick")
+
+  result <- plot_volcano_summary(
+    nidap_deg_analysis,
+    add_features = TRUE,
+    custom_gene_list = custom_label,
+    label_font_size = 7,
+    default_label_color = "purple",
+    custom_label_color = "darkgreen",
+    color_of_signif_threshold_line = "cyan",
+    color_of_non_significant_features = point_colors[1],
+    color_of_logfold_change_threshold_line = point_colors[2],
+    color_of_features_meeting_only_signif_threshold = point_colors[3],
+    color_for_features_meeting_pvalue_and_foldchange_thresholds = point_colors[4],
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_s3_class(result, "data.frame")
+  captured_args <- getOption("mosuite_test_volcano_args")[[1]]
+  expect_equal(captured_args$labSize, 7)
+  expect_true("darkgreen" %in% captured_args$labCol)
+  expect_equal(captured_args$col, point_colors)
+  expect_equal(captured_args$cutoffLineCol, "cyan")
+})
+
+test_that("plot_volcano_summary uses EnhancedVolcano default colors", {
+  options(mosuite_test_volcano_args = list())
+  trace(
+    EnhancedVolcano::EnhancedVolcano,
+    tracer = quote(options(
+      mosuite_test_volcano_args = append(
+        getOption("mosuite_test_volcano_args"),
+        list(list(
+          col = col,
+          cutoffLineCol = cutoffLineCol
+        ))
+      )
+    )),
+    print = FALSE
+  )
+  on.exit(untrace(EnhancedVolcano::EnhancedVolcano), add = TRUE)
+  on.exit(options(mosuite_test_volcano_args = NULL), add = TRUE)
+
+  result <- plot_volcano_summary(
+    nidap_deg_analysis,
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_s3_class(result, "data.frame")
+  captured_args <- getOption("mosuite_test_volcano_args")[[1]]
+  expect_equal(captured_args$col, c("grey30", "forestgreen", "royalblue", "red2"))
+  expect_equal(captured_args$cutoffLineCol, "black")
+})
+
+test_that("plot_volcano_summary uses comparison titles without subtitles", {
+  options(mosuite_test_volcano_args = list())
+  trace(
+    EnhancedVolcano::EnhancedVolcano,
+    tracer = quote(options(
+      mosuite_test_volcano_args = append(
+        getOption("mosuite_test_volcano_args"),
+        list(list(
+          title = title,
+          subtitle = subtitle
+        ))
+      )
+    )),
+    print = FALSE
+  )
+  on.exit(untrace(EnhancedVolcano::EnhancedVolcano), add = TRUE)
+  on.exit(options(mosuite_test_volcano_args = NULL), add = TRUE)
+
+  result <- plot_volcano_summary(
+    nidap_deg_analysis,
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_s3_class(result, "data.frame")
+  captured_args <- getOption("mosuite_test_volcano_args")
+  expect_equal(
+    vapply(captured_args, `[[`, character(1), "title"),
+    c("B-A", "C-A", "B-C")
+  )
+  expect_true(all(vapply(captured_args, function(x) is.null(x$subtitle), logical(1))))
+})
+
 test_that("plot_volcano_summary works with multiOmicDataSet", {
   # Create a multiOmicDataSet with differential analysis results
   moo <- multiOmicDataSet(

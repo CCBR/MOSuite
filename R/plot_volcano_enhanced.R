@@ -19,21 +19,31 @@ plot_volcano_enhanced <- S7::new_generic(
     change_threshold = 1.0,
     value_to_sort_the_output_dataset = "p-value",
     num_features_to_label = 30,
-    use_only_addition_labels = FALSE,
-    additional_labels = "",
+    label_features = FALSE,
+    custom_gene_list = "",
     is_red = TRUE,
-    lab_size = 4,
+    label_font_size = 4,
     change_sig_name = "p-value",
     change_lfc_name = "log2FC",
     title = "Volcano Plots",
     use_custom_lab = FALSE,
-    ylim = 0,
-    custom_xlim = "",
+    use_default_x_axis_limit = TRUE,
+    x_axis_limit = 5,
+    use_default_y_axis_limit = TRUE,
+    y_axis_limit = 10,
     xlim_additional = 0,
     ylim_additional = 0,
     axis_lab_size = 24,
     axis_tick_lab_size = 14,
     point_size = 2,
+    default_label_color = "black",
+    custom_label_color = "green3",
+    color_of_signif_threshold_line = "black",
+    color_of_non_significant_features = "grey30",
+    color_of_logfold_change_threshold_line = "forestgreen",
+    color_of_features_meeting_only_signif_threshold = "royalblue",
+    color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
+    graphics_device = grDevices::png,
     image_width = 3000,
     image_height = 3000,
     dpi = 300,
@@ -60,21 +70,31 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
   change_threshold = 1.0,
   value_to_sort_the_output_dataset = "p-value",
   num_features_to_label = 30,
-  use_only_addition_labels = FALSE,
-  additional_labels = "",
+  label_features = FALSE,
+  custom_gene_list = "",
   is_red = TRUE,
-  lab_size = 4,
+  label_font_size = 4,
   change_sig_name = "p-value",
   change_lfc_name = "log2FC",
   title = "Volcano Plots",
   use_custom_lab = FALSE,
-  ylim = 0,
-  custom_xlim = "",
+  use_default_x_axis_limit = TRUE,
+  x_axis_limit = 5,
+  use_default_y_axis_limit = TRUE,
+  y_axis_limit = 10,
   xlim_additional = 0,
   ylim_additional = 0,
   axis_lab_size = 24,
   axis_tick_lab_size = 14,
   point_size = 2,
+  default_label_color = "black",
+  custom_label_color = "green3",
+  color_of_signif_threshold_line = "black",
+  color_of_non_significant_features = "grey30",
+  color_of_logfold_change_threshold_line = "forestgreen",
+  color_of_features_meeting_only_signif_threshold = "royalblue",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
+  graphics_device = grDevices::png,
   image_width = 3000,
   image_height = 3000,
   dpi = 300,
@@ -97,32 +117,42 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
         change_threshold,
         value_to_sort_the_output_dataset,
         num_features_to_label,
-        use_only_addition_labels,
-        additional_labels,
-        is_red,
-        lab_size,
-        change_sig_name,
-        change_lfc_name,
-        title,
-        use_custom_lab,
-        ylim,
-        custom_xlim,
-        xlim_additional,
-        ylim_additional,
-        axis_lab_size,
-        axis_tick_lab_size,
-        point_size,
-        image_width,
-        image_height,
-        dpi,
-        use_default_grid_layout,
-        number_of_rows_in_grid_layout,
-        scale_image_to_grid,
-        interactive_plots,
-        print_plots,
-        save_plots,
-        plots_subdir,
-        plot_filename
+        label_features = label_features,
+        custom_gene_list = custom_gene_list,
+        is_red = is_red,
+        label_font_size = label_font_size,
+        change_sig_name = change_sig_name,
+        change_lfc_name = change_lfc_name,
+        title = title,
+        use_custom_lab = use_custom_lab,
+        use_default_x_axis_limit = use_default_x_axis_limit,
+        x_axis_limit = x_axis_limit,
+        use_default_y_axis_limit = use_default_y_axis_limit,
+        y_axis_limit = y_axis_limit,
+        xlim_additional = xlim_additional,
+        ylim_additional = ylim_additional,
+        axis_lab_size = axis_lab_size,
+        axis_tick_lab_size = axis_tick_lab_size,
+        point_size = point_size,
+        default_label_color = default_label_color,
+        custom_label_color = custom_label_color,
+        color_of_signif_threshold_line = color_of_signif_threshold_line,
+        color_of_non_significant_features = color_of_non_significant_features,
+        color_of_logfold_change_threshold_line = color_of_logfold_change_threshold_line,
+        color_of_features_meeting_only_signif_threshold = color_of_features_meeting_only_signif_threshold,
+        color_for_features_meeting_pvalue_and_foldchange_thresholds = color_for_features_meeting_pvalue_and_foldchange_thresholds,
+        graphics_device = graphics_device,
+        image_width = image_width,
+        image_height = image_height,
+        dpi = dpi,
+        use_default_grid_layout = use_default_grid_layout,
+        number_of_rows_in_grid_layout = number_of_rows_in_grid_layout,
+        scale_image_to_grid = scale_image_to_grid,
+        interactive_plots = interactive_plots,
+        print_plots = print_plots,
+        save_plots = save_plots,
+        plots_subdir = plots_subdir,
+        plot_filename = plot_filename
       )
   )
 }
@@ -140,22 +170,35 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
 #'   `change_colname`)
 #' @param value_to_sort_the_output_dataset How to sort the output dataset. Options are "fold-change" or "p-value".
 #' @param num_features_to_label Number of top features/genes to label in the volcano plot. Default is 30.
-#' @param use_only_addition_labels If `TRUE`, only the additional labels specified in `additional_labels` will be used
-#'   for labeling in the volcano plot, ignoring the top features.
-#' @param additional_labels comma-separated string of feature names or IDs to include in the volcano plot.
+#' @param label_features If `TRUE`, only the features specified in `custom_gene_list` will be used for labeling in the
+#'   volcano plot, ignoring the top features.
+#' @param custom_gene_list comma-separated string of feature names or IDs to include in the volcano plot.
 #' @param is_red Logical. If TRUE, highlights points in red.
-#' @param lab_size Size of the labels in the volcano plot.
+#' @param label_font_size Size of the labels in the volcano plot.
 #' @param change_sig_name Name for the significance column in the plot. Default is "p-value".
 #' @param change_lfc_name Name for the fold change column in the plot. Default is "log2FC".
 #' @param title Title of the plot. Default is "Volcano Plots".
 #' @param use_custom_lab If TRUE, uses custom labels for the plot (set by `change_sig_name` and `change_lfc_name`)
-#' @param ylim Y-axis limits for the plot.
-#' @param custom_xlim Custom X-axis limits for the plot.
+#' @param use_default_x_axis_limit Set to TRUE to use the default x-axis limit.
+#' @param x_axis_limit Custom x-axis limit. A single value is treated symmetrically, and a two-value vector is treated
+#'   as lower and upper limits.
+#' @param use_default_y_axis_limit Set to TRUE to use the default y-axis limit.
+#' @param y_axis_limit Custom y-axis limit.
 #' @param xlim_additional Additional space to add to the X-axis limits.
 #' @param ylim_additional Additional space to add to the Y-axis limits.
 #' @param axis_lab_size Size of the axis labels.
 #' @param axis_tick_lab_size Size of the axis tick labels.
 #' @param point_size Size of the points in the plot.
+#' @param default_label_color Set the color for the text used to add feature labels to points.
+#' @param custom_label_color Set the color for labels from `custom_gene_list`.
+#' @param color_of_signif_threshold_line Color of the significance threshold line.
+#' @param color_of_non_significant_features Color of the non-significant features.
+#' @param color_of_logfold_change_threshold_line Color of the features that meet only the log fold change threshold.
+#' @param color_of_features_meeting_only_signif_threshold Color of the features that meet only the significance
+#'   threshold.
+#' @param color_for_features_meeting_pvalue_and_foldchange_thresholds Color of the features that meet both the p-value
+#'   and fold change thresholds.
+#' @param graphics_device passed to `ggsave(device)`. Default: `grDevices::png`
 #' @param image_width output image width in pixels - only used if save_plots is TRUE
 #' @param image_height output image height in pixels - only used if save_plots is TRUE
 #' @param dpi dots-per-inch of the output image (see `ggsave()`) - only used if save_plots is TRUE
@@ -180,21 +223,31 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
   change_threshold = 1.0,
   value_to_sort_the_output_dataset = "p-value",
   num_features_to_label = 30,
-  use_only_addition_labels = FALSE,
-  additional_labels = "",
+  label_features = FALSE,
+  custom_gene_list = "",
   is_red = TRUE,
-  lab_size = 4,
+  label_font_size = 4,
   change_sig_name = "p-value",
   change_lfc_name = "log2FC",
   title = "Volcano Plots",
   use_custom_lab = FALSE,
-  ylim = 0,
-  custom_xlim = "",
+  use_default_x_axis_limit = TRUE,
+  x_axis_limit = 5,
+  use_default_y_axis_limit = TRUE,
+  y_axis_limit = 10,
   xlim_additional = 0,
   ylim_additional = 0,
   axis_lab_size = 24,
   axis_tick_lab_size = 14,
   point_size = 2,
+  default_label_color = "black",
+  custom_label_color = "green3",
+  color_of_signif_threshold_line = "black",
+  color_of_non_significant_features = "grey30",
+  color_of_logfold_change_threshold_line = "forestgreen",
+  color_of_features_meeting_only_signif_threshold = "royalblue",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
+  graphics_device = grDevices::png,
   image_width = 3000,
   image_height = 3000,
   dpi = 300,
@@ -280,15 +333,12 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
     }
 
     genes_to_label <- as.character(df_sub[1:num_features_to_label, label_col])
-    #        additional_labels <- unlist(str_split(additional_labels,","))
-    ## Modifying Additional Labels List:
-    ## Replace commas with spaces and split the string
-    split_values <- unlist(strsplit(gsub(",", " ", additional_labels), " "))
-    additional_labels <- split_values[split_values != ""]
+    split_values <- unlist(strsplit(gsub(",", " ", custom_gene_list), " "))
+    custom_labels <- split_values[split_values != ""]
 
-    filter <- additional_labels %in% df[, label_col]
-    missing_labels <- additional_labels[!filter]
-    additional_labels <- additional_labels[filter]
+    filter <- custom_labels %in% df[, label_col]
+    missing_labels <- custom_labels[!filter]
+    custom_labels <- custom_labels[filter]
 
     if (length(missing_labels) > 0) {
       message(glue::glue(
@@ -296,10 +346,17 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
       ))
     }
 
-    if (use_only_addition_labels) {
-      genes_to_label <- additional_labels
+    if (label_features) {
+      genes_to_label <- custom_labels
     } else {
-      genes_to_label <- unique(append(genes_to_label, additional_labels))
+      genes_to_label <- unique(append(genes_to_label, custom_labels))
+    }
+
+    labels_in_plot_order <- df[[label_col]][df[[label_col]] %in% genes_to_label]
+    label_colors <- rep(default_label_color, length(labels_in_plot_order))
+    label_colors[labels_in_plot_order %in% custom_labels] <- custom_label_color
+    if (length(label_colors) == 0) {
+      label_colors <- default_label_color
     }
 
     significant <- vector(length = nrow(df))
@@ -321,8 +378,8 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
     # fix pvalue == 0
     shapeCustom <- rep(19, nrow(df))
     maxy <- max(-log10(df[[sig_name]]), na.rm = TRUE)
-    if (ylim > 0) {
-      maxy <- ylim
+    if (!isTRUE(use_default_y_axis_limit)) {
+      maxy <- y_axis_limit
     }
 
     message(paste0("Max y: ", maxy, "\n"))
@@ -352,24 +409,21 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
     maxy <- ceiling(maxy)
 
     ## X-axis custom range change:
-    if (custom_xlim == "") {
+    if (isTRUE(use_default_x_axis_limit)) {
       xlim <- c(
         floor(min(df[, lfc_name])) - xlim_additional,
         ceiling(max(df[, lfc_name])) + xlim_additional
       )
-    } else if (grepl(",", custom_xlim) == FALSE) {
+    } else if (is.character(x_axis_limit) && grepl(",", x_axis_limit)) {
+      split_values <- strsplit(x_axis_limit, ",")[[1]]
+      xlim <- as.numeric(trimws(split_values[1:2]))
+    } else if (length(x_axis_limit) == 1) {
       xlim <- c(
-        -1 * as.numeric(trimws(custom_xlim)),
-        as.numeric(trimws(custom_xlim))
+        -1 * as.numeric(x_axis_limit),
+        as.numeric(x_axis_limit)
       )
     } else {
-      split_values <- strsplit(custom_xlim, ",")[[1]]
-
-      # Trim whitespace and convert to numeric values
-      x_min <- as.numeric(trimws(split_values[1]))
-      x_max <- as.numeric(trimws(split_values[2]))
-
-      xlim <- c(x_min, x_max)
+      xlim <- as.numeric(x_axis_limit[1:2])
     }
 
     ### Create axis labels
@@ -404,15 +458,18 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
       }
     }
 
+    title_is_per_plot <- length(title) == length(change_colname)
+    plot_title <- if (title_is_per_plot) title[i] else title
+    plot_subtitle <- if (title_is_per_plot) NULL else group
+
     volcano_plot <- EnhancedVolcano::EnhancedVolcano(
       df,
       x = lfc_name,
       y = sig_name,
       lab = df[, label_col],
       selectLab = genes_to_label,
-      title = title,
-      # CHANGE NW: See line 78
-      subtitle = group,
+      title = plot_title,
+      subtitle = plot_subtitle,
       xlab = xlab,
       ylab = ylab,
       xlim = xlim,
@@ -421,8 +478,16 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
       FCcutoff = change_threshold,
       axisLabSize = axis_lab_size,
       legendLabels = legend_labels,
-      labSize = lab_size,
+      labSize = label_font_size,
+      labCol = label_colors,
       pointSize = point_size,
+      col = c(
+        color_of_non_significant_features,
+        color_of_logfold_change_threshold_line,
+        color_of_features_meeting_only_signif_threshold,
+        color_for_features_meeting_pvalue_and_foldchange_thresholds
+      ),
+      cutoffLineCol = color_of_signif_threshold_line,
       shapeCustom = shapeCustom
     ) +
       ggplot2::theme(
@@ -439,9 +504,8 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
         lab = rep("", nrow(df)),
         # Setting labels to empty strings
         selectLab = NULL,
-        title = title,
-        # CHANGE NW: See line 78
-        subtitle = group,
+        title = plot_title,
+        subtitle = plot_subtitle,
         xlab = xlab,
         ylab = ylab,
         xlim = xlim,
@@ -450,8 +514,16 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
         FCcutoff = change_threshold,
         axisLabSize = axis_lab_size,
         legendLabels = legend_labels,
-        labSize = lab_size,
+        labSize = label_font_size,
+        labCol = default_label_color,
         pointSize = point_size,
+        col = c(
+          color_of_non_significant_features,
+          color_of_logfold_change_threshold_line,
+          color_of_features_meeting_only_signif_threshold,
+          color_for_features_meeting_pvalue_and_foldchange_thresholds
+        ),
+        cutoffLineCol = color_of_signif_threshold_line,
         shapeCustom = shapeCustom
       ) +
         ggplot2::theme(
@@ -515,7 +587,8 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
     units = "px",
     width = output_width,
     height = output_height,
-    dpi = dpi
+    dpi = dpi,
+    device = graphics_device
   )
 
   df_final <- cbind(diff_dat, do.call(cbind, rank))

@@ -15,21 +15,31 @@ plot_volcano_enhanced(
   change_threshold = 1,
   value_to_sort_the_output_dataset = "p-value",
   num_features_to_label = 30,
-  use_only_addition_labels = FALSE,
-  additional_labels = "",
+  label_features = FALSE,
+  custom_gene_list = "",
   is_red = TRUE,
-  lab_size = 4,
+  label_font_size = 4,
   change_sig_name = "p-value",
   change_lfc_name = "log2FC",
   title = "Volcano Plots",
   use_custom_lab = FALSE,
-  ylim = 0,
-  custom_xlim = "",
+  use_default_x_axis_limit = TRUE,
+  x_axis_limit = 5,
+  use_default_y_axis_limit = TRUE,
+  y_axis_limit = 10,
   xlim_additional = 0,
   ylim_additional = 0,
   axis_lab_size = 24,
   axis_tick_lab_size = 14,
   point_size = 2,
+  default_label_color = "black",
+  custom_label_color = "green3",
+  color_of_signif_threshold_line = "black",
+  color_of_non_significant_features = "grey30",
+  color_of_logfold_change_threshold_line = "forestgreen",
+  color_of_features_meeting_only_signif_threshold = "royalblue",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
+  graphics_device = grDevices::png,
   image_width = 3000,
   image_height = 3000,
   dpi = 300,
@@ -53,21 +63,31 @@ plot_volcano_enhanced(
   change_threshold = 1,
   value_to_sort_the_output_dataset = "p-value",
   num_features_to_label = 30,
-  use_only_addition_labels = FALSE,
-  additional_labels = "",
+  label_features = FALSE,
+  custom_gene_list = "",
   is_red = TRUE,
-  lab_size = 4,
+  label_font_size = 4,
   change_sig_name = "p-value",
   change_lfc_name = "log2FC",
   title = "Volcano Plots",
   use_custom_lab = FALSE,
-  ylim = 0,
-  custom_xlim = "",
+  use_default_x_axis_limit = TRUE,
+  x_axis_limit = 5,
+  use_default_y_axis_limit = TRUE,
+  y_axis_limit = 10,
   xlim_additional = 0,
   ylim_additional = 0,
   axis_lab_size = 24,
   axis_tick_lab_size = 14,
   point_size = 2,
+  default_label_color = "black",
+  custom_label_color = "green3",
+  color_of_signif_threshold_line = "black",
+  color_of_non_significant_features = "grey30",
+  color_of_logfold_change_threshold_line = "forestgreen",
+  color_of_features_meeting_only_signif_threshold = "royalblue",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
+  graphics_device = grDevices::png,
   image_width = 3000,
   image_height = 3000,
   dpi = 300,
@@ -91,21 +111,31 @@ plot_volcano_enhanced(
   change_threshold = 1,
   value_to_sort_the_output_dataset = "p-value",
   num_features_to_label = 30,
-  use_only_addition_labels = FALSE,
-  additional_labels = "",
+  label_features = FALSE,
+  custom_gene_list = "",
   is_red = TRUE,
-  lab_size = 4,
+  label_font_size = 4,
   change_sig_name = "p-value",
   change_lfc_name = "log2FC",
   title = "Volcano Plots",
   use_custom_lab = FALSE,
-  ylim = 0,
-  custom_xlim = "",
+  use_default_x_axis_limit = TRUE,
+  x_axis_limit = 5,
+  use_default_y_axis_limit = TRUE,
+  y_axis_limit = 10,
   xlim_additional = 0,
   ylim_additional = 0,
   axis_lab_size = 24,
   axis_tick_lab_size = 14,
   point_size = 2,
+  default_label_color = "black",
+  custom_label_color = "green3",
+  color_of_signif_threshold_line = "black",
+  color_of_non_significant_features = "grey30",
+  color_of_logfold_change_threshold_line = "forestgreen",
+  color_of_features_meeting_only_signif_threshold = "royalblue",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
+  graphics_device = grDevices::png,
   image_width = 3000,
   image_height = 3000,
   dpi = 300,
@@ -142,14 +172,14 @@ to determine which points are considered significant in the volcano plot.}
 
 \item{num_features_to_label}{Number of top features/genes to label in the volcano plot. Default is 30.}
 
-\item{use_only_addition_labels}{If \code{TRUE}, only the additional labels specified in \code{additional_labels} will be used
-for labeling in the volcano plot, ignoring the top features.}
+\item{label_features}{If \code{TRUE}, only the features specified in \code{custom_gene_list} will be used for labeling in the
+volcano plot, ignoring the top features.}
 
-\item{additional_labels}{comma-separated string of feature names or IDs to include in the volcano plot.}
+\item{custom_gene_list}{comma-separated string of feature names or IDs to include in the volcano plot.}
 
 \item{is_red}{Logical. If TRUE, highlights points in red.}
 
-\item{lab_size}{Size of the labels in the volcano plot.}
+\item{label_font_size}{Size of the labels in the volcano plot.}
 
 \item{change_sig_name}{Name for the significance column in the plot. Default is "p-value".}
 
@@ -159,9 +189,14 @@ for labeling in the volcano plot, ignoring the top features.}
 
 \item{use_custom_lab}{If TRUE, uses custom labels for the plot (set by \code{change_sig_name} and \code{change_lfc_name})}
 
-\item{ylim}{Y-axis limits for the plot.}
+\item{use_default_x_axis_limit}{Set to TRUE to use the default x-axis limit.}
 
-\item{custom_xlim}{Custom X-axis limits for the plot.}
+\item{x_axis_limit}{Custom x-axis limit. A single value is treated symmetrically, and a two-value vector is treated
+as lower and upper limits.}
+
+\item{use_default_y_axis_limit}{Set to TRUE to use the default y-axis limit.}
+
+\item{y_axis_limit}{Custom y-axis limit.}
 
 \item{xlim_additional}{Additional space to add to the X-axis limits.}
 
@@ -172,6 +207,24 @@ for labeling in the volcano plot, ignoring the top features.}
 \item{axis_tick_lab_size}{Size of the axis tick labels.}
 
 \item{point_size}{Size of the points in the plot.}
+
+\item{default_label_color}{Set the color for the text used to add feature labels to points.}
+
+\item{custom_label_color}{Set the color for labels from \code{custom_gene_list}.}
+
+\item{color_of_signif_threshold_line}{Color of the significance threshold line.}
+
+\item{color_of_non_significant_features}{Color of the non-significant features.}
+
+\item{color_of_logfold_change_threshold_line}{Color of the features that meet only the log fold change threshold.}
+
+\item{color_of_features_meeting_only_signif_threshold}{Color of the features that meet only the significance
+threshold.}
+
+\item{color_for_features_meeting_pvalue_and_foldchange_thresholds}{Color of the features that meet both the p-value
+and fold change thresholds.}
+
+\item{graphics_device}{passed to \code{ggsave(device)}. Default: \code{grDevices::png}}
 
 \item{image_width}{output image width in pixels - only used if save_plots is TRUE}
 

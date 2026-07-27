@@ -34,11 +34,11 @@ plot_volcano_summary <- S7::new_generic(
     custom_gene_list_special_label_displacement = "",
     special_label_displacement_x_axis = 2,
     special_label_displacement_y_axis = 2,
-    color_of_signif_threshold_line = "blue",
-    color_of_non_significant_features = "black",
-    color_of_logfold_change_threshold_line = "red",
-    color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
-    color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
+    color_of_signif_threshold_line = "black",
+    color_of_non_significant_features = "grey30",
+    color_of_logfold_change_threshold_line = "forestgreen",
+    color_of_features_meeting_only_signif_threshold = "royalblue",
+    color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
     flip_vplot = FALSE,
     use_default_x_axis_limit = TRUE,
     x_axis_limit = 5,
@@ -54,7 +54,6 @@ plot_volcano_summary <- S7::new_generic(
     dpi = 300,
     use_default_grid_layout = TRUE,
     number_of_rows_in_grid_layout = 1,
-    aspect_ratio = 0,
     plot_filename = "volcano_summary.png",
     print_plots = options::opt("print_plots"),
     save_plots = options::opt("save_plots"),
@@ -87,11 +86,11 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
   custom_gene_list_special_label_displacement = "",
   special_label_displacement_x_axis = 2,
   special_label_displacement_y_axis = 2,
-  color_of_signif_threshold_line = "blue",
-  color_of_non_significant_features = "black",
-  color_of_logfold_change_threshold_line = "red",
-  color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
-  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
+  color_of_signif_threshold_line = "black",
+  color_of_non_significant_features = "grey30",
+  color_of_logfold_change_threshold_line = "forestgreen",
+  color_of_features_meeting_only_signif_threshold = "royalblue",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
   flip_vplot = FALSE,
   use_default_x_axis_limit = TRUE,
   x_axis_limit = 5,
@@ -107,7 +106,6 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = 1,
-  aspect_ratio = 0,
   plot_filename = "volcano_summary.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -157,7 +155,6 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
         dpi,
         use_default_grid_layout,
         number_of_rows_in_grid_layout,
-        aspect_ratio,
         plot_filename,
         print_plots,
         save_plots,
@@ -192,13 +189,13 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
 #'   special displacement of the feature label.
 #' @param special_label_displacement_x_axis Displacement of the feature label on the x-axis. Default: 2
 #' @param special_label_displacement_y_axis Displacement of the feature label on the y-axis. Default: 2
-#' @param color_of_signif_threshold_line Color of the significance threshold line. Default: "blue"
-#' @param color_of_non_significant_features Color of the non-significant features. Default: "black"
-#' @param color_of_logfold_change_threshold_line Color of the log fold change threshold line. Default: "red"
+#' @param color_of_signif_threshold_line Color of the significance threshold line. Default: "black"
+#' @param color_of_non_significant_features Color of the non-significant features. Default: "grey30"
+#' @param color_of_logfold_change_threshold_line Color of the log fold change threshold line. Default: "forestgreen"
 #' @param color_of_features_meeting_only_signif_threshold Color of the features that meet only the significance
-#'   threshold. Default: "lightgoldenrod2"
+#'   threshold. Default: "royalblue"
 #' @param color_for_features_meeting_pvalue_and_foldchange_thresholds Color of the features that meet both the p-value
-#'   and fold change thresholds. Default: "red"
+#'   and fold change thresholds. Default: "red2"
 #' @param flip_vplot Set to TRUE to flip the fold change values so that the volcano plot looks like a comparison was
 #'   B-A. Default: FALSE
 #' @param use_default_x_axis_limit Set to TRUE to use the default x-axis limit. Default: TRUE
@@ -212,7 +209,6 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
 #'   output dataset. Default: `"FC", "logFC", "tstat", "pval", "adjpval"`
 #' @param use_default_grid_layout Set to TRUE to use the default grid layout. Default: TRUE
 #' @param number_of_rows_in_grid_layout Number of rows in the grid layout. Default: 1
-#' @param aspect_ratio Aspect ratio of the output image. Default: 4/3
 #' @param graphics_device passed to `ggsave(device)`. Default: `grDevices::png`
 #' @param plot_filename Filename for the output plot. Default: "volcano_plot.png"
 #'
@@ -245,11 +241,11 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   custom_gene_list_special_label_displacement = "",
   special_label_displacement_x_axis = 2,
   special_label_displacement_y_axis = 2,
-  color_of_signif_threshold_line = "blue",
-  color_of_non_significant_features = "black",
-  color_of_logfold_change_threshold_line = "red",
-  color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
-  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
+  color_of_signif_threshold_line = "black",
+  color_of_non_significant_features = "grey30",
+  color_of_logfold_change_threshold_line = "forestgreen",
+  color_of_features_meeting_only_signif_threshold = "royalblue",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
   flip_vplot = FALSE,
   use_default_x_axis_limit = TRUE,
   x_axis_limit = 5,
@@ -265,7 +261,6 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = 1,
-  aspect_ratio = 0,
   plot_filename = "volcano_summary.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -319,47 +314,6 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
         dplyr::arrange(dplyr::desc(abs(diff_dat[, tstatcol])))
     }
     feature_ids <- diff_dat[[feature_id_colname]]
-
-    ## optional Parameter: Provide a list of features to label on Volcano plot
-    ## work with a list of features
-    if (add_features == TRUE) {
-      gl <- trimws(
-        unlist(strsplit(
-          c(
-            custom_gene_list
-          ),
-          ","
-        )),
-        which = c("both")
-      )
-      ind <- match(gl, feature_ids) # get the indices of the listed features
-      custom_gene_list_ind <- c(1:num_features_to_label, ind) # when list provided
-      color_gene_label <- c(
-        rep(c(default_label_color), num_features_to_label),
-        rep(c(custom_label_color), length(ind))
-      )
-    } else if (label_features == TRUE) {
-      gl <- trimws(
-        unlist(strsplit(
-          c(
-            custom_gene_list
-          ),
-          ","
-        )),
-        which = c("both")
-      ) # unpack the gene list provided by the user and remove white spaces
-      ind <- match(gl, feature_ids) # get the indices of the listed features
-      custom_gene_list_ind <- ind # when list provided
-      color_gene_label <- rep(c(custom_label_color), length(ind))
-    } else {
-      if (num_features_to_label > 0) {
-        # if no list provided label the number of features given by the user
-        custom_gene_list_ind <- 1:num_features_to_label
-        color_gene_label <- rep(c(default_label_color), num_features_to_label)
-      } else if (num_features_to_label == 0) {
-        custom_gene_list_ind <- 0
-      }
-    }
 
     ## optional Parameter: IF DEG was set up A-B User can Flip FC values so that Volcano plot looks like comparison was
     ## B-A
@@ -430,6 +384,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   if (isTRUE(add_features) || isTRUE(label_features)) {
     plot_additional_labels <- custom_gene_list
   }
+  plot_titles <- gsub("_logFC$", "", plot_change_colnames)
 
   plot_volcano_enhanced(
     diff_dat,
@@ -440,19 +395,25 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
     change_threshold = change_threshold,
     value_to_sort_the_output_dataset = value_to_sort_the_output_dataset,
     num_features_to_label = num_features_to_label,
-    use_only_addition_labels = label_features,
-    additional_labels = plot_additional_labels,
-    lab_size = label_font_size,
-    title = "Volcano Plot Summary",
-    ylim = if (use_default_y_axis_limit) 0 else y_axis_limit,
-    custom_xlim = if (use_default_x_axis_limit) {
-      ""
-    } else {
-      as.character(x_axis_limit)
-    },
+    label_features = label_features,
+    custom_gene_list = plot_additional_labels,
+    label_font_size = label_font_size,
+    title = plot_titles,
+    use_default_x_axis_limit = use_default_x_axis_limit,
+    x_axis_limit = x_axis_limit,
+    use_default_y_axis_limit = use_default_y_axis_limit,
+    y_axis_limit = y_axis_limit,
     axis_lab_size = axis_lab_size,
     axis_tick_lab_size = axis_tick_lab_size,
     point_size = point_size,
+    default_label_color = default_label_color,
+    custom_label_color = custom_label_color,
+    color_of_signif_threshold_line = color_of_signif_threshold_line,
+    color_of_non_significant_features = color_of_non_significant_features,
+    color_of_logfold_change_threshold_line = color_of_logfold_change_threshold_line,
+    color_of_features_meeting_only_signif_threshold = color_of_features_meeting_only_signif_threshold,
+    color_for_features_meeting_pvalue_and_foldchange_thresholds = color_for_features_meeting_pvalue_and_foldchange_thresholds,
+    graphics_device = graphics_device,
     image_width = image_width * dpi,
     image_height = image_height * dpi,
     dpi = dpi,

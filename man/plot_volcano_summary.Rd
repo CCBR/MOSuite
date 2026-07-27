@@ -28,11 +28,11 @@ plot_volcano_summary(
   custom_gene_list_special_label_displacement = "",
   special_label_displacement_x_axis = 2,
   special_label_displacement_y_axis = 2,
-  color_of_signif_threshold_line = "blue",
-  color_of_non_significant_features = "black",
-  color_of_logfold_change_threshold_line = "red",
-  color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
-  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
+  color_of_signif_threshold_line = "black",
+  color_of_non_significant_features = "grey30",
+  color_of_logfold_change_threshold_line = "forestgreen",
+  color_of_features_meeting_only_signif_threshold = "royalblue",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
   flip_vplot = FALSE,
   use_default_x_axis_limit = TRUE,
   x_axis_limit = 5,
@@ -48,7 +48,6 @@ plot_volcano_summary(
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = 1,
-  aspect_ratio = 0,
   plot_filename = "volcano_summary.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -78,11 +77,11 @@ plot_volcano_summary(
   custom_gene_list_special_label_displacement = "",
   special_label_displacement_x_axis = 2,
   special_label_displacement_y_axis = 2,
-  color_of_signif_threshold_line = "blue",
-  color_of_non_significant_features = "black",
-  color_of_logfold_change_threshold_line = "red",
-  color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
-  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
+  color_of_signif_threshold_line = "black",
+  color_of_non_significant_features = "grey30",
+  color_of_logfold_change_threshold_line = "forestgreen",
+  color_of_features_meeting_only_signif_threshold = "royalblue",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
   flip_vplot = FALSE,
   use_default_x_axis_limit = TRUE,
   x_axis_limit = 5,
@@ -98,7 +97,6 @@ plot_volcano_summary(
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = 1,
-  aspect_ratio = 0,
   plot_filename = "volcano_summary.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -128,11 +126,11 @@ plot_volcano_summary(
   custom_gene_list_special_label_displacement = "",
   special_label_displacement_x_axis = 2,
   special_label_displacement_y_axis = 2,
-  color_of_signif_threshold_line = "blue",
-  color_of_non_significant_features = "black",
-  color_of_logfold_change_threshold_line = "red",
-  color_of_features_meeting_only_signif_threshold = "lightgoldenrod2",
-  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red",
+  color_of_signif_threshold_line = "black",
+  color_of_non_significant_features = "grey30",
+  color_of_logfold_change_threshold_line = "forestgreen",
+  color_of_features_meeting_only_signif_threshold = "royalblue",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
   flip_vplot = FALSE,
   use_default_x_axis_limit = TRUE,
   x_axis_limit = 5,
@@ -148,7 +146,6 @@ plot_volcano_summary(
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = 1,
-  aspect_ratio = 0,
   plot_filename = "volcano_summary.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -212,17 +209,17 @@ special displacement of the feature label.}
 
 \item{special_label_displacement_y_axis}{Displacement of the feature label on the y-axis. Default: 2}
 
-\item{color_of_signif_threshold_line}{Color of the significance threshold line. Default: "blue"}
+\item{color_of_signif_threshold_line}{Color of the significance threshold line. Default: "black"}
 
-\item{color_of_non_significant_features}{Color of the non-significant features. Default: "black"}
+\item{color_of_non_significant_features}{Color of the non-significant features. Default: "grey30"}
 
-\item{color_of_logfold_change_threshold_line}{Color of the log fold change threshold line. Default: "red"}
+\item{color_of_logfold_change_threshold_line}{Color of the log fold change threshold line. Default: "forestgreen"}
 
 \item{color_of_features_meeting_only_signif_threshold}{Color of the features that meet only the significance
-threshold. Default: "lightgoldenrod2"}
+threshold. Default: "royalblue"}
 
 \item{color_for_features_meeting_pvalue_and_foldchange_thresholds}{Color of the features that meet both the p-value
-and fold change thresholds. Default: "red"}
+and fold change thresholds. Default: "red2"}
 
 \item{flip_vplot}{Set to TRUE to flip the fold change values so that the volcano plot looks like a comparison was
 B-A. Default: FALSE}
@@ -255,8 +252,6 @@ output dataset. Default: \verb{"FC", "logFC", "tstat", "pval", "adjpval"}}
 \item{use_default_grid_layout}{Set to TRUE to use the default grid layout. Default: TRUE}
 
 \item{number_of_rows_in_grid_layout}{Number of rows in the grid layout. Default: 1}
-
-\item{aspect_ratio}{Aspect ratio of the output image. Default: 4/3}
 
 \item{plot_filename}{Filename for the output plot. Default: "volcano_plot.png"}
 
