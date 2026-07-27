@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.2.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.4.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,22 @@
       <small>Source: <a href="https://github.com/CCBR/MOSuite/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.0" id="mosuite-040">MOSuite 0.4.0<a class="anchor" aria-label="anchor" href="#mosuite-040"></a></h2>
+<ul><li>Fix expression heatmap clustering to correctly use the selected gene and sample distance metrics and clustering methods. (<a href="https://github.com/CCBR/MOSuite/issues/231" class="external-link">#231</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)</li>
+<li>Update PCA label, point-size, and histogram behavior. (<a href="https://github.com/CCBR/MOSuite/issues/230" class="external-link">#230</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)</li>
+<li>Add optional count log-transform controls for PCA plots. (<a href="https://github.com/CCBR/MOSuite/issues/234" class="external-link">#234</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)</li>
+<li>Add a post-clean CPM histogram output in <code><a href="../reference/clean_raw_counts.html">clean_raw_counts()</a></code>. (<a href="https://github.com/CCBR/MOSuite/issues/234" class="external-link">#234</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)</li>
+<li>Improvements to plot colors: (<a href="https://github.com/CCBR/MOSuite/issues/223" class="external-link">#223</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)
+<ul><li>Align plot color defaults with the MOSuite Code Ocean capsule defaults while preserving fallback random colors when a requested palette is too short.</li>
+<li>Improve top and bottom legend wrapping and automatic legend text sizing for PCA and histogram plots with many or long labels.</li>
+<li>Add optional group coloring to <code><a href="../reference/plot_read_depth.html">plot_read_depth()</a></code> and the <code><a href="../reference/clean_raw_counts.html">clean_raw_counts()</a></code> read-depth output while preserving the single-color default when no group is selected.</li>
+</ul></li>
+<li>New function <code><a href="../reference/display_colors.html">display_colors()</a></code> shows a multiOmicDataSet’s chosen color palettes, and <code><a href="../reference/get_colors_lst.html">get_colors_lst()</a></code> now takes a palette vector rather than function for simplicity. (<a href="https://github.com/CCBR/MOSuite/issues/236" class="external-link">#236</a>, <a href="https://github.com/kelly-sovacool" class="external-link">@kelly-sovacool</a>)</li>
+<li>New report template &amp; helper function: <code><a href="../reference/render_report.html">render_report()</a></code>. (<a href="https://github.com/CCBR/MOSuite/issues/120" class="external-link">#120</a>, <a href="https://github.com/kelly-sovacool" class="external-link">@kelly-sovacool</a>)</li>
+<li>Fix ggplot2 size deprecation warning in <code><a href="../reference/plot_volcano_summary.html">plot_volcano_summary()</a></code>. (<a href="https://github.com/CCBR/MOSuite/issues/228" class="external-link">#228</a>, <a href="https://github.com/kelly-sovacool" class="external-link">@kelly-sovacool</a>)</li>
+<li>docs: show how to set <code>output_dir</code> in <code><a href="../reference/render_report.html">render_report()</a></code>. (<a href="https://github.com/CCBR/MOSuite/issues/235" class="external-link">#235</a>, <a href="https://github.com/kelly-sovacool" class="external-link">@kelly-sovacool</a>)</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.2" id="mosuite-032">MOSuite 0.3.2<a class="anchor" aria-label="anchor" href="#mosuite-032"></a></h2>
 <ul><li>Support ggplot2 v4.0.0 for correlation heatmap plots in <code><a href="../reference/filter_counts.html">filter_counts()</a></code>, <code><a href="../reference/normalize_counts.html">normalize_counts()</a></code>, and <code><a href="../reference/batch_correct_counts.html">batch_correct_counts()</a></code>. (<a href="https://github.com/CCBR/MOSuite/issues/205" class="external-link">#205</a>, <a href="https://github.com/copilot" class="external-link">@copilot</a>, <a href="https://github.com/kelly-sovacool" class="external-link">@kelly-sovacool</a>)</li>
