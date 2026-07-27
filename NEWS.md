@@ -1,5 +1,7 @@
 ## MOSuite development version
 
+## MOSuite 0.4.0
+
 - Fix expression heatmap clustering to correctly use the selected gene and sample distance metrics and clustering methods. (#231, @phoman14)
 - Update PCA label, point-size, and histogram behavior. (#230, @phoman14)
 - Add optional count log-transform controls for PCA plots.  (#234, @phoman14)
