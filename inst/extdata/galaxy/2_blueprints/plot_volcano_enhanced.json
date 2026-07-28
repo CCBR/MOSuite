@@ -114,11 +114,11 @@
     {
       "key": "use_only_addition_labels",
       "displayName": "Label Only My Feature List",
-      "description": "If `TRUE`, only the additional labels specified in `additional_labels` will be used\nfor labeling in the volcano plot, ignoring the top features.\n",
+      "description": "Select TRUE when you want to label ONLY a specific list of features given in the \"My Feature List\" parameter.",
       "paramType": "BOOLEAN",
       "paramGroup": "Label",
       "paramValues": null,
-      "defaultValue": false,
+      "defaultValue": "FALSE",
       "condition": null,
       "content": null,
       "objectPropertyReference": null
@@ -126,7 +126,7 @@
     {
       "key": "additional_labels",
       "displayName": "My Feature List",
-      "description": "comma-separated string of feature names or IDs to include in the volcano plot.\n",
+      "description": "Additional features (genes) to label. If the option to use only custom labels is selected, these will be the only points labeled on the plot. Otherwise, these will be plotted in addition to the other top features. This should be a comma-separated or space-delimited list.",
       "paramType": "STRING",
       "paramGroup": "Label",
       "paramValues": null,
@@ -138,11 +138,11 @@
     {
       "key": "lab_size",
       "displayName": "Label Size",
-      "description": "Size of the labels in the volcano plot.\n",
+      "description": "",
       "paramType": "NUMBER",
       "paramGroup": "Label",
       "paramValues": null,
-      "defaultValue": 4,
+      "defaultValue": "4",
       "condition": null,
       "content": null,
       "objectPropertyReference": null
@@ -198,11 +198,11 @@
     {
       "key": "ylim",
       "displayName": "Y-Limit",
-      "description": "Y-axis limits for the plot.\n",
+      "description": "Maximum value for y-axis. Defaults to -log10(min(pval)). Set to 0 for automatic scaling.",
       "paramType": "NUMBER",
       "paramGroup": "Plot",
       "paramValues": null,
-      "defaultValue": 0,
+      "defaultValue": "0",
       "condition": null,
       "content": null,
       "objectPropertyReference": null
@@ -210,7 +210,7 @@
     {
       "key": "custom_xlim",
       "displayName": "Custom X-axis limits",
-      "description": "Custom X-axis limits for the plot.\n",
+      "description": "Leave empty for automatic scaling, put one number for symmetrical scale (i.e, putting \"5\" would result in a range from \"-5\" to \"5\"), or put two numbers separated by comma for \"asymmetrical\" scale (i.e, putting \"-2,4\" would result in a range from \"-2\" to \"4\")",
       "paramType": "STRING",
       "paramGroup": "Plot",
       "paramValues": null,
