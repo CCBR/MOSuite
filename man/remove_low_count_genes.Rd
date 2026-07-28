@@ -33,9 +33,8 @@ used.)}
 column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
 Before, After, etc.).}
 
-\item{filtering_method}{Filtering strategy for low-count removal. Use \code{"manual"} (default)
-to apply explicit threshold parameters or \code{"adaptive"} to apply
-\code{edgeR::filterByExpr()}.}
+\item{filtering_method}{Filtering strategy for low-count removal. Use \code{"adaptive"} to apply
+\code{edgeR::filterByExpr()} (default) or \code{"manual"} to use explicit threshold parameters.}
 
 \item{use_cpm_counts_to_filter}{If no transformation has been been performed on counts matrix (eg Raw Counts) set to
 TRUE. If TRUE counts will be transformed to CPM and filtered based on given criteria. If gene counts matrix has
