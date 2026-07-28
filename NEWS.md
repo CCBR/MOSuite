@@ -1,5 +1,10 @@
 ## MOSuite development version
 
+- Filtering updates in `filter_counts()` and `remove_low_count_genes()`. (#TBD, @TJoshMeyer)
+  - Add adaptive filtering mode (`filtering_method = "adaptive"`) using `edgeR::filterByExpr()` as the default behavior.
+  - Retain explicit threshold filtering as expert mode (`filtering_method = "manual"`).
+  - Expose `minimum_number_of_groups_passing_filter` for manual group-based filtering (default `1`) instead of hardcoding one-group pass behavior.
+
 - Improvements to plots: (#223, @phoman14)
   - Align plot color defaults with the MOSuite Code Ocean capsule defaults while preserving fallback random colors when a requested palette is too short.
   - Improve top and bottom legend wrapping and automatic legend text sizing for PCA and histogram plots with many or long labels.
