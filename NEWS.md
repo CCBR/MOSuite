@@ -1,6 +1,6 @@
 ## MOSuite development version
 
-- Fix `plot_volcano_summary()` feature-column handling, grid layout, and volcano legend labels. (#239, @phoman14)
+- Fix `plot_volcano_summary()` feature-column handling, grid layout, and volcano legend labels; `plot_volcano_summary()` plot now uses `plot_volcano_enhanced()` for rendering. (#239, @phoman14)
 - New report template & helper function: `render_report()`. (#120, @kelly-sovacool)
 - Fix ggplot2 size deprecation warning in `plot_volcano_summary()`. (#228, @kelly-sovacool)
 
