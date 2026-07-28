@@ -23,17 +23,16 @@ plot_volcano_summary <- S7::new_generic(
     add_features = FALSE,
     label_features = FALSE,
     custom_gene_list = "",
+    label_significant_features_only = TRUE,
     default_label_color = "black",
     custom_label_color = "black",
-    label_x_adj = 0.2,
-    label_y_adj = 0.2,
-    line_thickness = 0.5,
-    label_font_size = 4,
-    label_font_type = 1,
-    displace_feature_labels = FALSE,
-    custom_gene_list_special_label_displacement = "",
-    special_label_displacement_x_axis = 2,
-    special_label_displacement_y_axis = 2,
+    label_font_size = 7,
+    draw_connectors = FALSE,
+    change_sig_name = "p-value",
+    change_lfc_name = "log2FC",
+    title = "Volcano Plots",
+    title_font_size = 24,
+    use_custom_lab = FALSE,
     color_of_signif_threshold_line = "black",
     color_of_non_significant_features = "grey30",
     color_of_logfold_change_threshold_line = "forestgreen",
@@ -45,8 +44,8 @@ plot_volcano_summary <- S7::new_generic(
     use_default_y_axis_limit = TRUE,
     y_axis_limit = 10,
     point_size = 2,
-    axis_lab_size = 18,
-    axis_tick_lab_size = 12,
+    axis_lab_size = 24,
+    axis_tick_lab_size = 16,
     add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
     graphics_device = grDevices::png,
     image_width = 15,
@@ -75,17 +74,16 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
   add_features = FALSE,
   label_features = FALSE,
   custom_gene_list = "",
+  label_significant_features_only = TRUE,
   default_label_color = "black",
   custom_label_color = "black",
-  label_x_adj = 0.2,
-  label_y_adj = 0.2,
-  line_thickness = 0.5,
-  label_font_size = 4,
-  label_font_type = 1,
-  displace_feature_labels = FALSE,
-  custom_gene_list_special_label_displacement = "",
-  special_label_displacement_x_axis = 2,
-  special_label_displacement_y_axis = 2,
+  label_font_size = 7,
+  draw_connectors = FALSE,
+  change_sig_name = "p-value",
+  change_lfc_name = "log2FC",
+  title = "Volcano Plots",
+  title_font_size = 24,
+  use_custom_lab = FALSE,
   color_of_signif_threshold_line = "black",
   color_of_non_significant_features = "grey30",
   color_of_logfold_change_threshold_line = "forestgreen",
@@ -97,8 +95,8 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
   use_default_y_axis_limit = TRUE,
   y_axis_limit = 10,
   point_size = 2,
-  axis_lab_size = 18,
-  axis_tick_lab_size = 12,
+  axis_lab_size = 24,
+  axis_tick_lab_size = 16,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
   image_width = 15,
@@ -124,17 +122,16 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
         add_features,
         label_features,
         custom_gene_list,
+        label_significant_features_only,
         default_label_color,
         custom_label_color,
-        label_x_adj,
-        label_y_adj,
-        line_thickness,
         label_font_size,
-        label_font_type,
-        displace_feature_labels,
-        custom_gene_list_special_label_displacement,
-        special_label_displacement_x_axis,
-        special_label_displacement_y_axis,
+        draw_connectors,
+        change_sig_name,
+        change_lfc_name,
+        title,
+        title_font_size,
+        use_custom_lab,
         color_of_signif_threshold_line,
         color_of_non_significant_features,
         color_of_logfold_change_threshold_line,
@@ -174,21 +171,20 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
 #'   "custom_gene_list" parameter.
 #' @param custom_gene_list Provide a list of features (comma separated) to be labeled on the volcano plot. You must
 #'   toggle one of the following ON to see these labels: "Add features" or "Label Only My Feature List".
+#' @param label_significant_features_only If `TRUE`, automatic labels are selected only from features that pass both
+#'   the significance and fold-change thresholds.
 #' @param default_label_color Set the color for the text used to add feature (gene) name labels to points.
 #' @param custom_label_color Set the color for the specific list of features (features) provided in the "Feature List"
 #'   parameter.
-#' @param label_x_adj adjust position of the labels on the x-axis. Default: 0.2
-#' @param label_y_adj adjust position of the labels on the y-axis. Default: 0.2
-#' @param line_thickness Set the thickness of the lines in the plot. Default: 0.5
-#' @param label_font_size Set the font size of the labels. Default: 4
-#' @param label_font_type Set the font type of the labels. Default: 1
-#' @param displace_feature_labels Set to TRUE to displace gene labels. Default: FALSE. Set TRUE if you want to displace
-#'   the feature (gene) label for a specific set of features. Make sure to use custom x- and y- limits and give
-#'   sufficient space for displacement; otherwise other labels than the desired ones will appear displaced.
-#' @param custom_gene_list_special_label_displacement Provide a list of features (comma separated) for which you want
-#'   special displacement of the feature label.
-#' @param special_label_displacement_x_axis Displacement of the feature label on the x-axis. Default: 2
-#' @param special_label_displacement_y_axis Displacement of the feature label on the y-axis. Default: 2
+#' @param label_font_size Set the font size of the labels. Default: 7
+#' @param draw_connectors If `TRUE`, draw connector lines from labels to their points and spread labels to reduce
+#'   overlap.
+#' @param change_sig_name Name for the significance column in the plot. Default is "p-value".
+#' @param change_lfc_name Name for the fold change column in the plot. Default is "log2FC".
+#' @param title Title of the plot. Default is "Volcano Plots".
+#' @param title_font_size Size of the plot title. Default: 24
+#' @param use_custom_lab If TRUE, uses custom labels for the plot axes, set by `change_sig_name` and
+#'   `change_lfc_name`.
 #' @param color_of_signif_threshold_line Color of the significance threshold line. Default: "black"
 #' @param color_of_non_significant_features Color of the non-significant features. Default: "grey30"
 #' @param color_of_logfold_change_threshold_line Color of the log fold change threshold line. Default: "forestgreen"
@@ -203,8 +199,8 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
 #' @param use_default_y_axis_limit Set to TRUE to use the default y-axis limit. Default: TRUE
 #' @param y_axis_limit Custom y-axis limit. Default: c(0, 10)
 #' @param point_size Size of the points in the plot. Default: 1
-#' @param axis_lab_size Size of the axis labels. Default: 18
-#' @param axis_tick_lab_size Size of the axis tick labels. Default: 12
+#' @param axis_lab_size Size of the axis labels. Default: 24
+#' @param axis_tick_lab_size Size of the axis tick labels. Default: 16
 #' @param add_deg_columns Add additional columns from the DEG analysis to the
 #'   output dataset. Default: `"FC", "logFC", "tstat", "pval", "adjpval"`
 #' @param use_default_grid_layout Set to TRUE to use the default grid layout. Default: TRUE
@@ -230,17 +226,16 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   add_features = FALSE,
   label_features = FALSE,
   custom_gene_list = "",
+  label_significant_features_only = TRUE,
   default_label_color = "black",
   custom_label_color = "black",
-  label_x_adj = 0.2,
-  label_y_adj = 0.2,
-  line_thickness = 0.5,
-  label_font_size = 4,
-  label_font_type = 1,
-  displace_feature_labels = FALSE,
-  custom_gene_list_special_label_displacement = "",
-  special_label_displacement_x_axis = 2,
-  special_label_displacement_y_axis = 2,
+  label_font_size = 7,
+  draw_connectors = FALSE,
+  change_sig_name = "p-value",
+  change_lfc_name = "log2FC",
+  title = "Volcano Plots",
+  title_font_size = 24,
+  use_custom_lab = FALSE,
   color_of_signif_threshold_line = "black",
   color_of_non_significant_features = "grey30",
   color_of_logfold_change_threshold_line = "forestgreen",
@@ -252,8 +247,8 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   use_default_y_axis_limit = TRUE,
   y_axis_limit = 10,
   point_size = 2,
-  axis_lab_size = 18,
-  axis_tick_lab_size = 12,
+  axis_lab_size = 24,
+  axis_tick_lab_size = 16,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
   image_width = 15,
@@ -389,9 +384,10 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
     plot_additional_labels <- custom_gene_list
   }
   plot_titles <- gsub("_logFC$", "", plot_change_colnames)
+  plot_titles <- if (identical(title, "Volcano Plots")) plot_titles else title
 
   message("\nRunning Enhanced Volcano:")
-  plot_volcano_enhanced(
+  volcano_enhanced_result <- plot_volcano_enhanced(
     diff_dat,
     feature_id_colname = feature_id_colname,
     signif_colname = plot_signif_colnames,
@@ -402,8 +398,14 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
     num_features_to_label = num_features_to_label,
     label_features = label_features,
     custom_gene_list = plot_additional_labels,
+    label_significant_features_only = label_significant_features_only,
     label_font_size = label_font_size,
+    draw_connectors = draw_connectors,
+    change_sig_name = change_sig_name,
+    change_lfc_name = change_lfc_name,
     title = plot_titles,
+    title_font_size = title_font_size,
+    use_custom_lab = use_custom_lab,
     use_default_x_axis_limit = use_default_x_axis_limit,
     x_axis_limit = x_axis_limit,
     use_default_y_axis_limit = use_default_y_axis_limit,
@@ -424,12 +426,48 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
     dpi = dpi,
     use_default_grid_layout = use_default_grid_layout,
     number_of_rows_in_grid_layout = number_of_rows_in_grid_layout,
-    scale_image_to_grid = TRUE,
-    print_plots = print_plots,
-    save_plots = save_plots,
+    scale_image_to_grid = FALSE,
+    print_plots = FALSE,
+    save_plots = FALSE,
     plots_subdir = plots_subdir,
     plot_filename = plot_filename
   )
+
+  plots_list <- attr(volcano_enhanced_result, "plots")
+  if (length(plots_list) > 0) {
+    nplots <- length(plots_list)
+    if (nplots > 1) {
+      abort_packages_not_installed("patchwork")
+      if (
+        isTRUE(use_default_grid_layout) || is.null(number_of_rows_in_grid_layout)
+      ) {
+        nrows <- ceiling(nplots / ceiling(sqrt(nplots)))
+      } else {
+        nrows <- number_of_rows_in_grid_layout
+      }
+      if (!is.numeric(nrows) || length(nrows) != 1 || is.na(nrows) || nrows < 1) {
+        nrows <- 1
+      }
+      nrows <- as.integer(nrows)
+      ncols <- ceiling(nplots / nrows)
+      plot_obj <- patchwork::wrap_plots(plots_list, nrow = nrows)
+    } else {
+      nrows <- 1
+      ncols <- 1
+      plot_obj <- plots_list[[1]]
+    }
+    print_or_save_plot(
+      plot_obj,
+      filename = file.path(plots_subdir, plot_filename),
+      print_plots = print_plots,
+      save_plots = save_plots,
+      units = "px",
+      width = image_width * dpi * ncols,
+      height = image_height * dpi * nrows,
+      dpi = dpi,
+      device = graphics_device
+    )
+  }
 
   df_out <- unique(do.call("rbind", df_outs))
 

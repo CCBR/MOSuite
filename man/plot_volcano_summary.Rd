@@ -17,17 +17,16 @@ plot_volcano_summary(
   add_features = FALSE,
   label_features = FALSE,
   custom_gene_list = "",
+  label_significant_features_only = TRUE,
   default_label_color = "black",
   custom_label_color = "black",
-  label_x_adj = 0.2,
-  label_y_adj = 0.2,
-  line_thickness = 0.5,
-  label_font_size = 4,
-  label_font_type = 1,
-  displace_feature_labels = FALSE,
-  custom_gene_list_special_label_displacement = "",
-  special_label_displacement_x_axis = 2,
-  special_label_displacement_y_axis = 2,
+  label_font_size = 7,
+  change_sig_name = "p-value",
+  change_lfc_name = "log2FC",
+  title = "Volcano Plots",
+  title_font_size = 24,
+  use_custom_lab = FALSE,
+  draw_connectors = FALSE,
   color_of_signif_threshold_line = "black",
   color_of_non_significant_features = "grey30",
   color_of_logfold_change_threshold_line = "forestgreen",
@@ -39,8 +38,8 @@ plot_volcano_summary(
   use_default_y_axis_limit = TRUE,
   y_axis_limit = 10,
   point_size = 2,
-  axis_lab_size = 18,
-  axis_tick_lab_size = 12,
+  axis_lab_size = 24,
+  axis_tick_lab_size = 16,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
   image_width = 15,
@@ -66,17 +65,16 @@ plot_volcano_summary(
   add_features = FALSE,
   label_features = FALSE,
   custom_gene_list = "",
+  label_significant_features_only = TRUE,
   default_label_color = "black",
   custom_label_color = "black",
-  label_x_adj = 0.2,
-  label_y_adj = 0.2,
-  line_thickness = 0.5,
-  label_font_size = 4,
-  label_font_type = 1,
-  displace_feature_labels = FALSE,
-  custom_gene_list_special_label_displacement = "",
-  special_label_displacement_x_axis = 2,
-  special_label_displacement_y_axis = 2,
+  label_font_size = 7,
+  change_sig_name = "p-value",
+  change_lfc_name = "log2FC",
+  title = "Volcano Plots",
+  title_font_size = 24,
+  use_custom_lab = FALSE,
+  draw_connectors = FALSE,
   color_of_signif_threshold_line = "black",
   color_of_non_significant_features = "grey30",
   color_of_logfold_change_threshold_line = "forestgreen",
@@ -88,8 +86,8 @@ plot_volcano_summary(
   use_default_y_axis_limit = TRUE,
   y_axis_limit = 10,
   point_size = 2,
-  axis_lab_size = 18,
-  axis_tick_lab_size = 12,
+  axis_lab_size = 24,
+  axis_tick_lab_size = 16,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
   image_width = 15,
@@ -115,17 +113,16 @@ plot_volcano_summary(
   add_features = FALSE,
   label_features = FALSE,
   custom_gene_list = "",
+  label_significant_features_only = TRUE,
   default_label_color = "black",
   custom_label_color = "black",
-  label_x_adj = 0.2,
-  label_y_adj = 0.2,
-  line_thickness = 0.5,
-  label_font_size = 4,
-  label_font_type = 1,
-  displace_feature_labels = FALSE,
-  custom_gene_list_special_label_displacement = "",
-  special_label_displacement_x_axis = 2,
-  special_label_displacement_y_axis = 2,
+  label_font_size = 7,
+  change_sig_name = "p-value",
+  change_lfc_name = "log2FC",
+  title = "Volcano Plots",
+  title_font_size = 24,
+  use_custom_lab = FALSE,
+  draw_connectors = FALSE,
   color_of_signif_threshold_line = "black",
   color_of_non_significant_features = "grey30",
   color_of_logfold_change_threshold_line = "forestgreen",
@@ -137,8 +134,8 @@ plot_volcano_summary(
   use_default_y_axis_limit = TRUE,
   y_axis_limit = 10,
   point_size = 2,
-  axis_lab_size = 18,
-  axis_tick_lab_size = 12,
+  axis_lab_size = 24,
+  axis_tick_lab_size = 16,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
   image_width = 15,
@@ -183,31 +180,29 @@ Features to Label" parameter.}
 \item{custom_gene_list}{Provide a list of features (comma separated) to be labeled on the volcano plot. You must
 toggle one of the following ON to see these labels: "Add features" or "Label Only My Feature List".}
 
+\item{label_significant_features_only}{If \code{TRUE}, automatic labels are selected only from features that pass both
+the significance and fold-change thresholds.}
+
 \item{default_label_color}{Set the color for the text used to add feature (gene) name labels to points.}
 
 \item{custom_label_color}{Set the color for the specific list of features (features) provided in the "Feature List"
 parameter.}
 
-\item{label_x_adj}{adjust position of the labels on the x-axis. Default: 0.2}
+\item{label_font_size}{Set the font size of the labels. Default: 7}
 
-\item{label_y_adj}{adjust position of the labels on the y-axis. Default: 0.2}
+\item{change_sig_name}{Name for the significance column in the plot. Default is "p-value".}
 
-\item{line_thickness}{Set the thickness of the lines in the plot. Default: 0.5}
+\item{change_lfc_name}{Name for the fold change column in the plot. Default is "log2FC".}
 
-\item{label_font_size}{Set the font size of the labels. Default: 4}
+\item{title}{Title of the plot. Default is "Volcano Plots".}
 
-\item{label_font_type}{Set the font type of the labels. Default: 1}
+\item{title_font_size}{Size of the plot title. Default: 24}
 
-\item{displace_feature_labels}{Set to TRUE to displace gene labels. Default: FALSE. Set TRUE if you want to displace
-the feature (gene) label for a specific set of features. Make sure to use custom x- and y- limits and give
-sufficient space for displacement; otherwise other labels than the desired ones will appear displaced.}
+\item{use_custom_lab}{If TRUE, uses custom labels for the plot axes, set by \code{change_sig_name} and
+\code{change_lfc_name}.}
 
-\item{custom_gene_list_special_label_displacement}{Provide a list of features (comma separated) for which you want
-special displacement of the feature label.}
-
-\item{special_label_displacement_x_axis}{Displacement of the feature label on the x-axis. Default: 2}
-
-\item{special_label_displacement_y_axis}{Displacement of the feature label on the y-axis. Default: 2}
+\item{draw_connectors}{If \code{TRUE}, draw connector lines from labels to their points and spread labels to reduce
+overlap.}
 
 \item{color_of_signif_threshold_line}{Color of the significance threshold line. Default: "black"}
 
@@ -234,9 +229,9 @@ B-A. Default: FALSE}
 
 \item{point_size}{Size of the points in the plot. Default: 1}
 
-\item{axis_lab_size}{Size of the axis labels. Default: 18}
+\item{axis_lab_size}{Size of the axis labels. Default: 24}
 
-\item{axis_tick_lab_size}{Size of the axis tick labels. Default: 12}
+\item{axis_tick_lab_size}{Size of the axis tick labels. Default: 16}
 
 \item{add_deg_columns}{Add additional columns from the DEG analysis to the
 output dataset. Default: \verb{"FC", "logFC", "tstat", "pval", "adjpval"}}

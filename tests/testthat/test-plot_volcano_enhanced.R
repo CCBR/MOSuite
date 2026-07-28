@@ -118,6 +118,237 @@ test_that("plot_volcano_enhanced uses EnhancedVolcano default colors", {
   expect_equal(captured_args$cutoffLineCol, "black")
 })
 
+test_that("plot_volcano_enhanced defaults match summary-style text sizing", {
+  options(mosuite_test_volcano_args = list())
+  trace(
+    EnhancedVolcano::EnhancedVolcano,
+    tracer = quote(options(
+      mosuite_test_volcano_args = append(
+        getOption("mosuite_test_volcano_args"),
+        list(list(
+          axisLabSize = axisLabSize,
+          titleLabSize = titleLabSize,
+          labSize = labSize,
+          drawConnectors = drawConnectors,
+          pointSize = pointSize
+        ))
+      )
+    )),
+    print = FALSE
+  )
+  on.exit(untrace(EnhancedVolcano::EnhancedVolcano), add = TRUE)
+  on.exit(options(mosuite_test_volcano_args = NULL), add = TRUE)
+
+  result <- plot_volcano_enhanced(
+    nidap_deg_analysis,
+    change_colname = "B-A_logFC",
+    signif_colname = "B-A_pval",
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_s3_class(result, "data.frame")
+  captured_args <- getOption("mosuite_test_volcano_args")[[1]]
+  expect_equal(captured_args$axisLabSize, 24)
+  expect_equal(captured_args$titleLabSize, 24)
+  expect_equal(captured_args$labSize, 7)
+  expect_false(captured_args$drawConnectors)
+  expect_equal(captured_args$pointSize, 2)
+
+  volcano_plot <- attr(result, "plots")[[1]]
+  expect_equal(volcano_plot$theme$axis.text$size, 16)
+})
+
+test_that("plot_volcano_enhanced supports custom axis labels and padding", {
+  options(mosuite_test_volcano_args = list())
+  trace(
+    EnhancedVolcano::EnhancedVolcano,
+    tracer = quote(options(
+      mosuite_test_volcano_args = append(
+        getOption("mosuite_test_volcano_args"),
+        list(list(
+          xlab = xlab,
+          ylab = ylab,
+          xlim = xlim,
+          ylim = ylim
+        ))
+      )
+    )),
+    print = FALSE
+  )
+  on.exit(untrace(EnhancedVolcano::EnhancedVolcano), add = TRUE)
+  on.exit(options(mosuite_test_volcano_args = NULL), add = TRUE)
+
+  volcano_data <- data.frame(
+    Gene = c("left_gene", "right_gene", "not_significant"),
+    `B-A_logFC` = c(-1.2, 2.4, 0.2),
+    `B-A_pval` = c(0.001, 0.02, 0.5),
+    check.names = FALSE
+  )
+
+  result <- plot_volcano_enhanced(
+    volcano_data,
+    feature_id_colname = "Gene",
+    change_colname = "B-A_logFC",
+    signif_colname = "B-A_pval",
+    change_lfc_name = "Custom fold change",
+    change_sig_name = "Custom significance",
+    use_custom_lab = TRUE,
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_s3_class(result, "data.frame")
+  captured_args <- getOption("mosuite_test_volcano_args")[[1]]
+  expect_equal(captured_args$xlab, "Custom fold change")
+  expect_equal(captured_args$ylab, "Custom significance")
+  expect_equal(captured_args$xlim, c(-2, 3))
+  expect_equal(captured_args$ylim, c(0, 3))
+})
+
+test_that("plot_volcano_enhanced saves defaults on a 10 inch canvas", {
+  options(mosuite_test_plot_output_args = list())
+  trace(
+    ggplot2::ggsave,
+    tracer = quote({
+      options(
+        mosuite_test_plot_output_args = append(
+          getOption("mosuite_test_plot_output_args"),
+          list(list(
+            width = width,
+            height = height,
+            units = units,
+            dpi = dpi
+          ))
+        )
+      )
+    }),
+    print = FALSE
+  )
+  on.exit(untrace(ggplot2::ggsave), add = TRUE)
+  on.exit(options(mosuite_test_plot_output_args = NULL), add = TRUE)
+
+  plots_dir <- tempfile("volcano-default-canvas-")
+  dir.create(plots_dir)
+  on.exit(unlink(plots_dir, recursive = TRUE), add = TRUE)
+
+  result <- plot_volcano_enhanced(
+    nidap_deg_analysis,
+    change_colname = "B-A_logFC",
+    signif_colname = "B-A_pval",
+    save_plots = TRUE,
+    print_plots = FALSE,
+    plots_subdir = plots_dir
+  )
+
+  expect_s3_class(result, "data.frame")
+  captured_output_args <- getOption("mosuite_test_plot_output_args")[[1]]
+  expect_equal(captured_output_args$width, 3000)
+  expect_equal(captured_output_args$height, 3000)
+  expect_equal(captured_output_args$units, "px")
+  expect_equal(captured_output_args$dpi, 300)
+})
+
+test_that("plot_volcano_enhanced matches selected-gene summary styling", {
+  options(mosuite_test_volcano_args = list())
+  trace(
+    EnhancedVolcano::EnhancedVolcano,
+    tracer = quote(options(
+      mosuite_test_volcano_args = append(
+        getOption("mosuite_test_volcano_args"),
+        list(list(
+          title = title,
+          subtitle = subtitle,
+          selectLab = selectLab,
+          labSize = labSize,
+          labCol = labCol
+        ))
+      )
+    )),
+    print = FALSE
+  )
+  on.exit(untrace(EnhancedVolcano::EnhancedVolcano), add = TRUE)
+  on.exit(options(mosuite_test_volcano_args = NULL), add = TRUE)
+
+  volcano_data <- data.frame(
+    Gene = c("left_gene", "right_gene", "not_selected"),
+    `G2-G1_logFC` = c(-1.4, 1.5, 0.2),
+    `G2-G1_adjpval` = c(0.01, 0.02, 0.5),
+    `G2-G1_tstat` = c(-10, 9, 1),
+    check.names = FALSE
+  )
+  selected_genes <- c("left_gene", "right_gene")
+
+  result <- plot_volcano_enhanced(
+    volcano_data,
+    feature_id_colname = "Gene",
+    signif_colname = "G2-G1_adjpval",
+    change_colname = "G2-G1_logFC",
+    signif_threshold = 0.05,
+    change_threshold = 1,
+    value_to_sort_the_output_dataset = "t-statistic",
+    num_features_to_label = 20,
+    label_features = TRUE,
+    custom_gene_list = paste(selected_genes, collapse = ","),
+    custom_label_color = "black",
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_s3_class(result, "data.frame")
+  captured_args <- getOption("mosuite_test_volcano_args")[[1]]
+  expect_equal(captured_args$title, "G2-G1")
+  expect_null(captured_args$subtitle)
+  expect_setequal(captured_args$selectLab, selected_genes)
+  expect_equal(captured_args$labSize, 7)
+  expect_true(all(captured_args$labCol == "black"))
+})
+
+test_that("plot_volcano_enhanced mimics summary contrast title and t-statistic labels", {
+  options(mosuite_test_volcano_args = list())
+  trace(
+    EnhancedVolcano::EnhancedVolcano,
+    tracer = quote(options(
+      mosuite_test_volcano_args = append(
+        getOption("mosuite_test_volcano_args"),
+        list(list(
+          title = title,
+          subtitle = subtitle,
+          selectLab = selectLab
+        ))
+      )
+    )),
+    print = FALSE
+  )
+  on.exit(untrace(EnhancedVolcano::EnhancedVolcano), add = TRUE)
+  on.exit(options(mosuite_test_volcano_args = NULL), add = TRUE)
+
+  volcano_data <- data.frame(
+    Gene = c("p_value_top", "tstat_top", "fold_change_top"),
+    `G2-G1_logFC` = c(1.2, -1.3, 2.5),
+    `G2-G1_pval` = c(0.0001, 0.02, 0.03),
+    `G2-G1_tstat` = c(2, -10, 5),
+    check.names = FALSE
+  )
+
+  result <- plot_volcano_enhanced(
+    volcano_data,
+    feature_id_colname = "Gene",
+    change_colname = "G2-G1_logFC",
+    signif_colname = "G2-G1_pval",
+    value_to_sort_the_output_dataset = "t-statistic",
+    num_features_to_label = 1,
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_s3_class(result, "data.frame")
+  captured_args <- getOption("mosuite_test_volcano_args")[[1]]
+  expect_equal(captured_args$title, "G2-G1")
+  expect_null(captured_args$subtitle)
+  expect_equal(captured_args$selectLab, "tstat_top")
+})
+
 test_that("plot_volcano_enhanced displays selected genes", {
   options(mosuite_test_select_labels = list())
   trace(
@@ -160,54 +391,39 @@ test_that("plot_volcano_enhanced displays selected genes", {
   )))
 })
 
-test_that("plot_volcano_enhanced defaults invalid manual grid rows to one", {
-  options(mosuite_test_grid_rows = list())
-  trace(
-    patchwork::wrap_plots,
-    tracer = quote(options(
-      mosuite_test_grid_rows = append(
-        getOption("mosuite_test_grid_rows"),
-        list(nrow)
-      )
-    )),
-    print = FALSE
+test_that("plot_volcano_enhanced offsets labels when connectors are enabled", {
+  volcano_data <- data.frame(
+    Gene = c("gene_a", "gene_b", "not_selected"),
+    `B-A_logFC` = c(2, -2, 0.1),
+    `B-A_pval` = c(0.001, 0.002, 0.5),
+    check.names = FALSE
   )
-  on.exit(untrace(patchwork::wrap_plots), add = TRUE)
-  on.exit(options(mosuite_test_grid_rows = NULL), add = TRUE)
 
-  invalid_rows <- list(0, -1, NA_real_, c(1, 2))
-  for (invalid_row in invalid_rows) {
-    options(mosuite_test_grid_rows = list())
-    expect_no_error(
-      result <- plot_volcano_enhanced(
-        nidap_deg_analysis,
-        use_default_grid_layout = FALSE,
-        number_of_rows_in_grid_layout = invalid_row,
-        save_plots = FALSE,
-        print_plots = FALSE
-      )
-    )
+  result <- suppressWarnings(plot_volcano_enhanced(
+    volcano_data,
+    feature_id_colname = "Gene",
+    change_colname = "B-A_logFC",
+    signif_colname = "B-A_pval",
+    label_features = TRUE,
+    custom_gene_list = "gene_a,gene_b",
+    draw_connectors = TRUE,
+    save_plots = FALSE,
+    print_plots = FALSE
+  ))
 
-    expect_s3_class(result, "data.frame")
-    expect_equal(getOption("mosuite_test_grid_rows")[[1]], 1L)
-  }
+  expect_s3_class(result, "data.frame")
+  volcano_plot <- attr(result, "plots")[[1]]
+  layer_geoms <- vapply(
+    volcano_plot$layers,
+    function(layer) class(layer$geom)[1],
+    character(1)
+  )
+  expect_true("GeomTextRepel" %in% layer_geoms)
+  expect_false("GeomText" %in% layer_geoms)
 })
 
-test_that("plot_volcano_enhanced scales grid output dimensions", {
-  options(
-    mosuite_test_grid_rows = list(),
-    mosuite_test_plot_output_args = list()
-  )
-  trace(
-    patchwork::wrap_plots,
-    tracer = quote(options(
-      mosuite_test_grid_rows = append(
-        getOption("mosuite_test_grid_rows"),
-        list(nrow)
-      )
-    )),
-    print = FALSE
-  )
+test_that("plot_volcano_enhanced saves multiple comparisons separately", {
+  options(mosuite_test_plot_output_args = list())
   trace(
     ggplot2::ggsave,
     tracer = quote({
@@ -226,64 +442,94 @@ test_that("plot_volcano_enhanced scales grid output dimensions", {
     }),
     print = FALSE
   )
-  on.exit(untrace(patchwork::wrap_plots), add = TRUE)
   on.exit(untrace(ggplot2::ggsave), add = TRUE)
   on.exit(
-    options(
-      mosuite_test_grid_rows = NULL,
-      mosuite_test_plot_output_args = NULL
-    ),
+    options(mosuite_test_plot_output_args = NULL),
     add = TRUE
   )
 
-  plots_dir <- tempfile("volcano-grid-output-")
+  plots_dir <- tempfile("volcano-separate-output-")
   dir.create(plots_dir)
   on.exit(unlink(plots_dir, recursive = TRUE), add = TRUE)
 
-  cases <- list(
-    list(nrows = 2, scale = TRUE, width = 100, height = 400),
-    list(nrows = 1, scale = TRUE, width = 200, height = 200),
-    list(nrows = 2, scale = FALSE, width = 100, height = 200)
+  expect_no_error(
+    result <- plot_volcano_enhanced(
+      nidap_deg_analysis,
+      change_colname = c("B-A_logFC", "C-A_logFC", "B-C_logFC"),
+      signif_colname = c("B-A_adjpval", "C-A_adjpval", "B-C_adjpval"),
+      image_width = 100,
+      image_height = 200,
+      draw_connectors = FALSE,
+      save_plots = TRUE,
+      print_plots = FALSE,
+      plots_subdir = plots_dir
+    )
   )
 
-  for (case in cases) {
-    options(
-      mosuite_test_grid_rows = list(),
-      mosuite_test_plot_output_args = list()
-    )
-    expect_no_error(
-      result <- plot_volcano_enhanced(
-        nidap_deg_analysis,
-        use_default_grid_layout = FALSE,
-        number_of_rows_in_grid_layout = case$nrows,
-        scale_image_to_grid = case$scale,
-        image_width = 100,
-        image_height = 200,
-        save_plots = TRUE,
-        print_plots = FALSE,
-        plots_subdir = plots_dir
-      )
-    )
+  expect_s3_class(result, "data.frame")
+  captured_output_args <- getOption("mosuite_test_plot_output_args")
+  expect_length(captured_output_args, 3)
+  expect_equal(
+    vapply(captured_output_args, `[[`, numeric(1), "width"),
+    rep(100, 3)
+  )
+  expect_equal(
+    vapply(captured_output_args, `[[`, numeric(1), "height"),
+    rep(200, 3)
+  )
+  expect_equal(
+    vapply(captured_output_args, `[[`, character(1), "units"),
+    rep("px", 3)
+  )
+  expect_equal(
+    vapply(captured_output_args, `[[`, numeric(1), "dpi"),
+    rep(300, 3)
+  )
+  output_filenames <- vapply(captured_output_args, `[[`, character(1), "filename")
+  expect_true(all(grepl(basename(plots_dir), output_filenames, fixed = TRUE)))
+  expect_true(any(grepl("volcano_enhanced_B-A.png", output_filenames, fixed = TRUE)))
+  expect_true(any(grepl("volcano_enhanced_C-A.png", output_filenames, fixed = TRUE)))
+  expect_true(any(grepl("volcano_enhanced_B-C.png", output_filenames, fixed = TRUE)))
+})
 
-    expect_s3_class(result, "data.frame")
-    captured_grid_rows <- getOption("mosuite_test_grid_rows")[[1]]
-    captured_output_args <- getOption("mosuite_test_plot_output_args")[[1]]
-    expect_equal(captured_grid_rows, as.integer(case$nrows))
-    expect_equal(captured_output_args$width, case$width)
-    expect_equal(captured_output_args$height, case$height)
-    expect_equal(captured_output_args$units, "px")
-    expect_equal(captured_output_args$dpi, 300)
-    expect_match(
-      captured_output_args$filename,
-      basename(plots_dir),
-      fixed = TRUE
+test_that("plot_volcano_enhanced preserves filename for one comparison", {
+  options(mosuite_test_plot_output_args = list())
+  trace(
+    ggplot2::ggsave,
+    tracer = quote({
+      options(
+        mosuite_test_plot_output_args = append(
+          getOption("mosuite_test_plot_output_args"),
+          list(list(filename = filename))
+        )
+      )
+    }),
+    print = FALSE
+  )
+  on.exit(untrace(ggplot2::ggsave), add = TRUE)
+  on.exit(options(mosuite_test_plot_output_args = NULL), add = TRUE)
+
+  plots_dir <- tempfile("volcano-single-output-")
+  dir.create(plots_dir)
+  on.exit(unlink(plots_dir, recursive = TRUE), add = TRUE)
+
+  expect_no_error(
+    result <- plot_volcano_enhanced(
+      nidap_deg_analysis,
+      change_colname = "B-A_logFC",
+      signif_colname = "B-A_pval",
+      save_plots = TRUE,
+      print_plots = FALSE,
+      plots_subdir = plots_dir,
+      plot_filename = "custom_volcano.png"
     )
-    expect_match(
-      captured_output_args$filename,
-      "volcano_enhanced.png",
-      fixed = TRUE
-    )
-  }
+  )
+
+  expect_s3_class(result, "data.frame")
+  captured_output_args <- getOption("mosuite_test_plot_output_args")
+  expect_length(captured_output_args, 1)
+  expect_match(captured_output_args[[1]]$filename, basename(plots_dir), fixed = TRUE)
+  expect_match(captured_output_args[[1]]$filename, "custom_volcano.png", fixed = TRUE)
 })
 
 test_that("plot_volcano_enhanced works with multiOmicDataSet", {
