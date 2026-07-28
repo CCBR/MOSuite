@@ -251,8 +251,8 @@ is set to \code{TRUE}. Default is \code{FALSE}.}
 
 \item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 
-\item{plot_filename}{plot output filename - only used if save_plots is TRUE. When multiple comparisons are saved,
-the comparison name is appended before the file extension.}
+\item{plot_filename}{plot output filename - only used if save_plots is TRUE. When multiple comparisons are saved
+separately, the comparison name is appended before the file extension.}
 }
 \description{
 Uses \href{https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html}{Bioconductor's Enhanced Volcano Plot}.

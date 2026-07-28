@@ -21,12 +21,12 @@ plot_volcano_summary(
   default_label_color = "black",
   custom_label_color = "black",
   label_font_size = 7,
+  draw_connectors = FALSE,
   change_sig_name = "p-value",
   change_lfc_name = "log2FC",
   title = "Volcano Plots",
   title_font_size = 24,
   use_custom_lab = FALSE,
-  draw_connectors = FALSE,
   color_of_signif_threshold_line = "black",
   color_of_non_significant_features = "grey30",
   color_of_logfold_change_threshold_line = "forestgreen",
@@ -69,12 +69,12 @@ plot_volcano_summary(
   default_label_color = "black",
   custom_label_color = "black",
   label_font_size = 7,
+  draw_connectors = FALSE,
   change_sig_name = "p-value",
   change_lfc_name = "log2FC",
   title = "Volcano Plots",
   title_font_size = 24,
   use_custom_lab = FALSE,
-  draw_connectors = FALSE,
   color_of_signif_threshold_line = "black",
   color_of_non_significant_features = "grey30",
   color_of_logfold_change_threshold_line = "forestgreen",
@@ -117,12 +117,12 @@ plot_volcano_summary(
   default_label_color = "black",
   custom_label_color = "black",
   label_font_size = 7,
+  draw_connectors = FALSE,
   change_sig_name = "p-value",
   change_lfc_name = "log2FC",
   title = "Volcano Plots",
   title_font_size = 24,
   use_custom_lab = FALSE,
-  draw_connectors = FALSE,
   color_of_signif_threshold_line = "black",
   color_of_non_significant_features = "grey30",
   color_of_logfold_change_threshold_line = "forestgreen",
@@ -166,7 +166,8 @@ to determine which points are considered significant in the volcano plot.}
 \item{change_threshold}{Numeric value specifying the fold change cutoff for significance (i.e. filters on
 \code{change_colname})}
 
-\item{value_to_sort_the_output_dataset}{How to sort the output dataset. Options are "fold-change" or "p-value".}
+\item{value_to_sort_the_output_dataset}{How to sort the output dataset. Options are "fold-change", "p-value", or
+"t-statistic".}
 
 \item{num_features_to_label}{Number of top features/genes to label in the volcano plot. Default is 30.}
 
@@ -190,6 +191,9 @@ parameter.}
 
 \item{label_font_size}{Set the font size of the labels. Default: 7}
 
+\item{draw_connectors}{If \code{TRUE}, draw connector lines from labels to their points and spread labels to reduce
+overlap.}
+
 \item{change_sig_name}{Name for the significance column in the plot. Default is "p-value".}
 
 \item{change_lfc_name}{Name for the fold change column in the plot. Default is "log2FC".}
@@ -200,9 +204,6 @@ parameter.}
 
 \item{use_custom_lab}{If TRUE, uses custom labels for the plot axes, set by \code{change_sig_name} and
 \code{change_lfc_name}.}
-
-\item{draw_connectors}{If \code{TRUE}, draw connector lines from labels to their points and spread labels to reduce
-overlap.}
 
 \item{color_of_signif_threshold_line}{Color of the significance threshold line. Default: "black"}
 
