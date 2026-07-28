@@ -19,7 +19,7 @@ test_that("mosuite cli", {
   command <- paste0(
     system.file("exec", "mosuite", package = "MOSuite"),
     " create_multiOmicDataSet_from_files --json=",
-    test_path("data", "example_args.json", package = "MOSuite")
+    test_path("data", "example_args.json")
   )
   expect_snapshot(system(command))
 })
@@ -37,7 +37,7 @@ test_that("cli_exec --json --debug", {
         "create_multiOmicDataSet_from_files",
         paste0(
           '--json="',
-          test_path("data", "example_args.json", package = "MOSuite"),
+          test_path("data", "example_args.json"),
           '"'
         ),
         "--debug"
@@ -56,7 +56,7 @@ test_that("cli_exec --json --debug", {
       "filter_counts",
       paste0(
         '--json="',
-        test_path("data", "example_args.json", package = "MOSuite"),
+        test_path("data", "example_args.json"),
         '"'
       ),
       "--debug"
