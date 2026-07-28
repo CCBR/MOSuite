@@ -11,6 +11,7 @@ test_that("filter_counts reproduces NIDAP results", {
       sample_id_colname = "Sample",
       feature_id_colname = "Gene",
       count_type = "raw",
+      filtering_method = "manual",
       print_plots = TRUE
     )
   rds_counts_filt <- moo@counts$filt |>
@@ -36,6 +37,7 @@ test_that("filter_counts works on RENEE dataset", {
       sample_id_colname = "sample_id",
       group_colname = "condition",
       label_colname = "sample_id",
+      filtering_method = "manual",
       samples_to_include = c("KO_S3", "KO_S4", "WT_S1", "WT_S2"),
       minimum_count_value_to_be_considered_nonzero = 1,
       minimum_number_of_samples_with_nonzero_counts_in_total = 1,
@@ -128,6 +130,7 @@ test_that("remove_low_count_genes works", {
       sample_metadata = sample_meta,
       feature_id_colname = "Gene",
       group_colname = "Group",
+      filtering_method = "manual",
       use_cpm_counts_to_filter = TRUE,
       use_group_based_filtering = FALSE,
       minimum_count_value_to_be_considered_nonzero = 8,
@@ -241,6 +244,7 @@ test_that("remove_low_count_genes works with group-based filtering (no grouped t
     sample_metadata = sample_meta,
     feature_id_colname = "Gene",
     group_colname = "Group",
+    filtering_method = "manual",
     use_cpm_counts_to_filter = TRUE,
     use_group_based_filtering = TRUE,
     minimum_count_value_to_be_considered_nonzero = 8,
@@ -283,6 +287,7 @@ test_that("filter_counts forwards plotting parameters", {
     feature_id_colname = "Gene",
     label_colname = "Label",
     count_type = "raw",
+    filtering_method = "manual",
     samples_to_rename = c("A1:Alpha 1"),
     add_label_to_pca = FALSE,
     principal_component_on_x_axis = 2,
@@ -364,6 +369,7 @@ test_that("filter_counts forwards the default MOSuite plot colors", {
     feature_id_colname = "Gene",
     label_colname = "Label",
     count_type = "raw",
+    filtering_method = "manual",
     plot_corr_matrix_heatmap = FALSE,
     print_plots = TRUE,
     save_plots = FALSE
@@ -371,4 +377,31 @@ test_that("filter_counts forwards the default MOSuite plot colors", {
 
   expect_equal(pca_args$color_values, default_colors)
   expect_equal(histogram_args$color_values, default_colors)
+})
+
+test_that("filter_counts adaptive mode works and returns expected columns", {
+  moo <- create_multiOmicDataSet_from_dataframes(
+    readr::read_tsv(
+      system.file("extdata", "sample_metadata.tsv.gz", package = "MOSuite")
+    ),
+    gene_counts |> glue_gene_symbols()
+  )
+
+  res <- filter_counts(
+    moo,
+    feature_id_colname = "gene_id",
+    sample_id_colname = "sample_id",
+    group_colname = "condition",
+    label_colname = "sample_id",
+    samples_to_include = c("KO_S3", "KO_S4", "WT_S1", "WT_S2"),
+    filtering_method = "adaptive",
+    use_group_based_filtering = TRUE,
+    print_plots = FALSE,
+    save_plots = FALSE,
+    count_type = "raw"
+  )
+
+  expect_s3_class(res@counts$filt, "data.frame")
+  expect_true("gene_id" %in% colnames(res@counts$filt))
+  expect_true(nrow(res@counts$filt) > 0)
 })

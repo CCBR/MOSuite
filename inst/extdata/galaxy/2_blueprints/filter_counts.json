@@ -90,6 +90,21 @@
       "objectPropertyReference": null
     },
     {
+      "key": "filtering_method",
+      "displayName": "Filtering Method",
+      "description": "Filtering strategy for low-count removal. Use \"adaptive\" to apply edgeR::filterByExpr() or \"manual\" to use explicit threshold parameters.\n",
+      "paramType": "TEXT",
+      "paramGroup": "Filtering",
+      "paramValues": [
+        "adaptive",
+        "manual"
+      ],
+      "defaultValue": "adaptive",
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
       "key": "use_cpm_counts_to_filter",
       "displayName": "Use CPM Counts to filter",
       "description": "If no transformation has been been performed on counts matrix (eg Raw Counts) set to\nTRUE. If TRUE counts will be transformed to CPM and filtered based on given criteria. If gene counts matrix has\nbeen transformed (eg log2, CPM, FPKM or some form of Normalization) set to FALSE. If FALSE no further\ntransformation will be applied and features will be filtered as is. For RNAseq data RAW counts should be\ntransformed to CPM in order to properly filter.\n",
@@ -145,6 +160,18 @@
       "paramGroup": "Filtering",
       "paramValues": null,
       "defaultValue": 3,
+      "condition": null,
+      "content": null,
+      "objectPropertyReference": null
+    },
+    {
+      "key": "minimum_number_of_groups_passing_filter",
+      "displayName": "Minimum Number of Groups Passing Filter",
+      "description": "Manual-mode only. Minimum number of groups that must pass the within-group nonzero sample threshold for a feature to be retained.\n",
+      "paramType": "NUMBER",
+      "paramGroup": "Filtering",
+      "paramValues": null,
+      "defaultValue": 1,
       "condition": null,
       "content": null,
       "objectPropertyReference": null

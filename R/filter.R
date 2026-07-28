@@ -47,10 +47,14 @@
 #'   transformed to CPM in order to properly filter.
 #' @param minimum_count_value_to_be_considered_nonzero Minimum count value to be considered non-zero for a sample
 #' @param minimum_number_of_samples_with_nonzero_counts_in_total Minimum number of samples (total) with non-zero counts
+#' @param filtering_method Filtering strategy for low-count removal. Use `"adaptive"` to apply
+#'   `edgeR::filterByExpr()` (default) or `"manual"` to use explicit threshold parameters.
 #' @param use_group_based_filtering If TRUE, only keeps features (e.g. genes) that have at least a certain number of
 #'   samples with nonzero CPM counts in at least one group
 #' @param minimum_number_of_samples_with_nonzero_counts_in_a_group Only keeps genes that have at least this number of
 #'   samples with nonzero CPM counts in at least one group
+#' @param minimum_number_of_groups_passing_filter Manual-mode only. Minimum number of groups that must pass
+#'   `minimum_number_of_samples_with_nonzero_counts_in_a_group` for a feature to be retained.
 #' @param principal_component_on_x_axis The principal component to plot on the x-axis for the PCA plot. Choices include
 #'   1, 2, 3, ... (default: 1)
 #' @param principal_component_on_y_axis The principal component to plot on the y-axis for the PCA plot. Choices include
@@ -117,7 +121,9 @@ filter_counts <- function(
   samples_to_include = NULL,
   minimum_count_value_to_be_considered_nonzero = 8,
   minimum_number_of_samples_with_nonzero_counts_in_total = 7,
+  filtering_method = c("adaptive", "manual"),
   minimum_number_of_samples_with_nonzero_counts_in_a_group = 3,
+  minimum_number_of_groups_passing_filter = 1,
   use_cpm_counts_to_filter = TRUE,
   use_group_based_filtering = FALSE,
   principal_component_on_x_axis = 1,
@@ -143,6 +149,9 @@ filter_counts <- function(
   interactive_plots = FALSE,
   plots_subdir = "filt"
 ) {
+  # Normalize filtering mode early so downstream branches can rely on one of two values.
+  filtering_method <- match.arg(filtering_method)
+
   if (!(count_type %in% names(moo@counts))) {
     stop(glue::glue("count_type {count_type} not in moo@counts"))
   }
@@ -171,17 +180,19 @@ filter_counts <- function(
       tidyselect::all_of(samples_to_include)
     )
 
-  # filter out low count genes
+  # Apply either adaptive (filterByExpr) or manual threshold filtering.
   df_filt <- remove_low_count_genes(
     counts_dat = df,
     sample_metadata = sample_metadata,
     feature_id_colname = feature_id_colname,
     group_colname = group_colname,
+    filtering_method = filtering_method,
     use_cpm_counts_to_filter = use_cpm_counts_to_filter,
     use_group_based_filtering = use_group_based_filtering,
     minimum_count_value_to_be_considered_nonzero = minimum_count_value_to_be_considered_nonzero,
     minimum_number_of_samples_with_nonzero_counts_in_total = minimum_number_of_samples_with_nonzero_counts_in_total,
-    minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group
+    minimum_number_of_samples_with_nonzero_counts_in_a_group = minimum_number_of_samples_with_nonzero_counts_in_a_group,
+    minimum_number_of_groups_passing_filter = minimum_number_of_groups_passing_filter
   )
   if (nrow(df_filt) == 0) {
     warning(
@@ -328,18 +339,67 @@ remove_low_count_genes <- function(
   counts_dat,
   sample_metadata,
   feature_id_colname,
+  sample_id_colname = NULL,
   group_colname,
+  filtering_method = c("adaptive", "manual"),
   use_cpm_counts_to_filter = TRUE,
   use_group_based_filtering = FALSE,
   minimum_count_value_to_be_considered_nonzero = 8,
   minimum_number_of_samples_with_nonzero_counts_in_total = 7,
-  minimum_number_of_samples_with_nonzero_counts_in_a_group = 3
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = 3,
+  minimum_number_of_groups_passing_filter = 1
 ) {
   # TODO refactor with tidyverse
   value <- isexpr1 <- NULL
+  filtering_method <- match.arg(filtering_method)
+
+  if (minimum_number_of_groups_passing_filter < 1) {
+    stop("minimum_number_of_groups_passing_filter must be >= 1")
+  }
+  if (minimum_number_of_groups_passing_filter %% 1 != 0) {
+    stop("minimum_number_of_groups_passing_filter must be an integer")
+  }
+
   df <- counts_dat
+  sample_metadata <- as.data.frame(sample_metadata)
+  if (is.null(sample_id_colname)) {
+    sample_id_colname <- colnames(sample_metadata)[1]
+  }
 
   df <- df[stats::complete.cases(df), ]
+
+  if (identical(filtering_method, "adaptive")) {
+    # Adaptive mode delegates feature retention to edgeR's design-aware filter.
+    counts_matr <- as.matrix(df[, -1, drop = FALSE])
+    rownames(counts_matr) <- df[, feature_id_colname]
+    dge <- edgeR::DGEList(counts = counts_matr)
+
+    if (isTRUE(use_group_based_filtering)) {
+      # Preserve current group-aware behavior by providing per-sample group labels.
+      sample_ids <- colnames(df)[-1]
+      sample_match <- match(sample_ids, sample_metadata[[sample_id_colname]])
+      if (anyNA(sample_match)) {
+        stop("Not all count matrix samples are present in sample_metadata")
+      }
+      keep <- edgeR::filterByExpr(
+        dge,
+        group = as.factor(sample_metadata[[group_colname]][sample_match])
+      )
+    } else {
+      keep <- edgeR::filterByExpr(dge)
+    }
+
+    df_filt <- df[keep, , drop = FALSE]
+    message("Filtering method: adaptive (edgeR::filterByExpr)")
+    message(paste0("Number of features after filtering: ", nrow(df_filt)))
+    return(df_filt)
+  }
+
+  if (!isTRUE(use_group_based_filtering) && minimum_number_of_groups_passing_filter != 1) {
+    warning(
+      "minimum_number_of_groups_passing_filter is ignored when use_group_based_filtering is FALSE"
+    )
+  }
 
   # USE CPM Transformation
   trans_df <- df
@@ -351,13 +411,16 @@ remove_low_count_genes <- function(
     rownames(trans_df) <- trans_df[, feature_id_colname]
     trans_df[, feature_id_colname] <- NULL
 
+    # Manual group-based mode: mark each sample as passing/not passing the nonzero threshold.
     counts <- trans_df >= minimum_count_value_to_be_considered_nonzero # boolean matrix
 
     tcounts <- as.data.frame(t(counts))
     colnum <- dim(counts)[1] # number of genes
-    tcounts <- merge(sample_metadata[group_colname], tcounts, by = "row.names")
+    sample_groups <- sample_metadata[, c(sample_id_colname, group_colname), drop = FALSE]
+    tcounts <- merge(sample_groups, tcounts, by.x = sample_id_colname, by.y = "row.names")
+    colnames(tcounts)[1] <- sample_id_colname
     tcounts$Row.names <- NULL
-    melted <- reshape2::melt(tcounts, id.vars = group_colname)
+    melted <- reshape2::melt(tcounts, id.vars = c(sample_id_colname, group_colname))
     tcounts.tot <- dplyr::summarise(
       dplyr::group_by_at(melted, c(group_colname, "variable")),
       sum = sum(value)
@@ -365,14 +428,17 @@ remove_low_count_genes <- function(
     tcounts.group <- tcounts.tot |>
       tidyr::pivot_wider(names_from = "variable", values_from = "sum") |>
       as.data.frame()
+    gene_count_cols <- setdiff(colnames(tcounts.group), group_colname)
+    # Keep features that satisfy the within-group sample threshold in at least N groups.
     tcounts.keep <- colSums(
-      tcounts.group[(1:colnum + 1)] >=
+      tcounts.group[, gene_count_cols, drop = FALSE] >=
         minimum_number_of_samples_with_nonzero_counts_in_a_group
     ) >=
-      1
+      minimum_number_of_groups_passing_filter
     df_filt <- trans_df[tcounts.keep, ] |>
       tibble::rownames_to_column(feature_id_colname)
   } else {
+    # Manual non-group mode: apply a single across-all-samples prevalence requirement.
     trans_df$isexpr1 <- (rowSums(
       as.matrix(trans_df[, -1]) > minimum_count_value_to_be_considered_nonzero
     ) >=
