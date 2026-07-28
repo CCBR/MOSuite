@@ -3,11 +3,15 @@ test_that("plot_venn_diagram works with defaults", {
     p <- plot_venn_diagram(
       nidap_volcano_summary_dat,
       print_plots = FALSE,
-      save_plots = TRUE
+      save_plots = FALSE
     )
   )
   expect_equal(
-    plot_venn_diagram(nidap_volcano_summary_dat),
+    plot_venn_diagram(
+      nidap_volcano_summary_dat,
+      print_plots = FALSE,
+      save_plots = FALSE
+    ),
     as.data.frame(nidap_venn_diagram_dat)
   )
 })

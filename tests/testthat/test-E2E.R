@@ -68,7 +68,7 @@ test_that("E2E workflow succeeds for NIDAP data", {
       counts_dat = as.data.frame(nidap_raw_counts)
     ) |>
       clean_raw_counts() |>
-      filter_counts(group_colname = "Group", filtering_method = "manual") |>
+      filter_counts(group_colname = "Group") |>
       normalize_counts(group_colname = "Group") |>
       batch_correct_counts(
         covariates_colname = "Group",

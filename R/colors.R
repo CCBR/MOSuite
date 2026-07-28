@@ -274,6 +274,14 @@ display_palette <- function(palette = mosuite_palette) {
   total_w <- n * panel_w_in + 0.4
   total_h <- 2.5
 
+  soft <- suppressWarnings(grDevices::grSoftVersion())
+  cairo_available <- length(soft) > 0 && isTRUE(nzchar(soft[["cairo"]]))
+
+  if (!cairo_available) {
+    print(p)
+    return(invisible(p))
+  }
+
   tmp <- tempfile(fileext = ".png")
   ggplot2::ggsave(tmp, plot = p, width = total_w, height = total_h, dpi = 150)
 
