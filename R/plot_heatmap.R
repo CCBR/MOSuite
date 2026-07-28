@@ -669,9 +669,6 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
     # if (=FALSE) {
     #   col.pal = rev(col.pal)
     # }
-    # Define metrics for clustering
-    drows1 <- gene_distance_metric
-    dcols1 <- smpl_distance_metric
     minx <- min(dat)
     maxx <- max(dat)
     if (autoscale_heatmap_color) {
@@ -683,31 +680,58 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
     }
     breaks <- sapply(breaks, signif, 4)
     legbreaks <- sapply(legbreaks, signif, 4)
-    # Run cluster method using
-    hcrow <- stats::hclust(stats::dist(dat), method = gene_clustering_method)
-    # hc <- stats::hclust(stats::dist(t(dat)), method = smpl_clustering_method)
+    # Build distance matrices explicitly before hclust() so user-selected
+    # distance metrics are used. Calling stats::dist(dat) directly would force
+    # Euclidean distance and ignore gene_distance_metric/smpl_distance_metric.
+    heatmap_dist <- function(x, metric) {
+      metric <- trimws(metric)
+      if (identical(metric, "correlation")) {
+        corr <- stats::cor(t(x), use = "pairwise.complete.obs")
+        corr[is.na(corr)] <- 0
+        return(stats::as.dist(1 - corr))
+      }
 
-    if (FALSE) {
-      sort_hclust <- function(...) {
-        return(stats::as.hclust(rev(
-          dendsort::dendsort(stats::as.dendrogram(...))
-        )))
-      }
-    } else {
-      sort_hclust <- function(...) {
-        return(stats::as.hclust(dendsort::dendsort(stats::as.dendrogram(...))))
-      }
+      return(stats::dist(x, method = metric))
     }
-    # if (clus) {
-    #   colclus <- sort_hclust(hc)
-    # } else {
-    #   colclus <- FALSE
-    # }
+
+    sort_hclust <- function(hc, reverse = FALSE, rotation_order = NULL) {
+      dend <- dendsort::dendsort(stats::as.dendrogram(hc))
+      if (reverse) {
+        dend <- rev(dend)
+      }
+      if (!is.null(rotation_order) && length(rotation_order) > 0) {
+        dend <- dendextend::rotate(dend, rotation_order)
+      }
+      return(stats::as.hclust(dend))
+    }
+
     if (clus2) {
+      hcrow <- stats::hclust(
+        heatmap_dist(dat, gene_distance_metric),
+        method = gene_clustering_method
+      )
       rowclus <- sort_hclust(hcrow)
     } else {
       rowclus <- FALSE
     }
+    if (clus) {
+      sample_rotation <- NULL
+      if (reorder_dendrogram == TRUE) {
+        sample_rotation <- reorder_dendrogram_order
+      }
+      hccol <- stats::hclust(
+        heatmap_dist(t(dat), smpl_distance_metric),
+        method = smpl_clustering_method
+      )
+      colclus <- sort_hclust(
+        hccol,
+        reverse = TRUE,
+        rotation_order = sample_rotation
+      )
+    } else {
+      colclus <- FALSE
+    }
+
     if (display_smpl_dendrograms) {
       smpl_treeheight <- 25
     } else {
@@ -739,32 +763,20 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
       show_rownames = rn,
       show_colnames = cn,
       cluster_rows = rowclus,
-      cluster_cols = clus,
-      clustering_distance_rows = drows1,
-      clustering_distance_cols = dcols1,
+      cluster_cols = colclus,
       annotation_col = annotation_col,
       annotation_colors = annot_col,
       labels_col = labels_col
     )
-    # mat <- t(dat)
-    callback <- function(hc, mat) {
-      dend <- rev(dendsort::dendsort(stats::as.dendrogram(hc)))
-      if (reorder_dendrogram == TRUE) {
-        dend <- dend |> dendextend::rotate(reorder_dendrogram_order)
-      } else {
-        dend <- dend |> dendextend::rotate(c(1:stats::nobs(dend)))
-      }
-      return(stats::as.hclust(dend))
-    }
     ### PH: END SET up heatmap function for do.call
 
     ## Make Heatmap
+    # Row and column clustering are handled above by heatmap_dist(),
+    # stats::hclust(), and sort_hclust(), then passed in via cluster_rows
+    # and cluster_cols.
     return(do.call(
       ComplexHeatmap::pheatmap,
-      c(
-        hm.parameters,
-        list(clustering_callback = callback)
-      )
+      hm.parameters
     ))
   }
   # End doheatmap() function.

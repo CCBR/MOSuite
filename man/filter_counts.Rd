@@ -10,7 +10,7 @@ filter_counts(
   feature_id_colname = NULL,
   sample_id_colname = NULL,
   group_colname = "Group",
-  label_colname = NULL,
+  label_colname = "Label",
   samples_to_include = NULL,
   minimum_count_value_to_be_considered_nonzero = 8,
   minimum_number_of_samples_with_nonzero_counts_in_total = 7,
@@ -22,7 +22,7 @@ filter_counts(
   principal_component_on_x_axis = 1,
   principal_component_on_y_axis = 2,
   legend_position_for_pca = "top",
-  point_size_for_pca = 3,
+  point_size_for_pca = 5,
   add_label_to_pca = TRUE,
   label_font_size = 3,
   label_offset_y_ = 2,
@@ -62,24 +62,27 @@ column showing to which experimental treatments each sample belongs (e.g. WildTy
 Before, After, etc.).}
 
 \item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in
-the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
-labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
-column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
-\code{NULL} -- \code{sample_id_colname} will be used.)}
+heatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to
+display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with
+your preferred Labels here. The selected column should contain unique names for each sample. Use \code{add_label_to_pca}
+to control whether these labels are displayed on the PCA plot.}
 
 \item{samples_to_include}{Which samples would you like to include? Usually, you will choose all sample columns, or
 you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
 analysis downstream of this step. (Default: \code{NULL} - all sample IDs in \code{moo@sample_meta} will be used.)}
 
-\item{minimum_count_value_to_be_considered_nonzero}{Minimum count value to be considered non-zero for a sample}
+\item{minimum_count_value_to_be_considered_nonzero}{Minimum value in the selected filtering table required for a
+sample to be considered nonzero. If \code{use_cpm_counts_to_filter} is \code{TRUE}, this threshold is applied to CPM values.
+If \code{use_cpm_counts_to_filter} is \code{FALSE}, this threshold is applied directly to the selected \code{count_type} table.}
 
-\item{minimum_number_of_samples_with_nonzero_counts_in_total}{Minimum number of samples (total) with non-zero counts}
+\item{minimum_number_of_samples_with_nonzero_counts_in_total}{Minimum number of samples in total that must meet the
+\code{minimum_count_value_to_be_considered_nonzero} threshold for a feature to be kept.}
 
 \item{filtering_method}{Filtering strategy for low-count removal. Use \code{"adaptive"} to apply
 \code{edgeR::filterByExpr()} (default) or \code{"manual"} to use explicit threshold parameters.}
 
 \item{minimum_number_of_samples_with_nonzero_counts_in_a_group}{Only keeps genes that have at least this number of
-samples with nonzero CPM counts in at least one group}
+samples meeting the threshold in at least one group}
 
 \item{minimum_number_of_groups_passing_filter}{Manual-mode only. Minimum number of groups that must pass
 \code{minimum_number_of_samples_with_nonzero_counts_in_a_group} for a feature to be retained.}
@@ -91,7 +94,7 @@ transformation will be applied and features will be filtered as is. For RNAseq d
 transformed to CPM in order to properly filter.}
 
 \item{use_group_based_filtering}{If TRUE, only keeps features (e.g. genes) that have at least a certain number of
-samples with nonzero CPM counts in at least one group}
+samples passing the threshold in at least one group}
 
 \item{principal_component_on_x_axis}{The principal component to plot on the x-axis for the PCA plot. Choices include
 1, 2, 3, ... (default: 1)}
@@ -103,7 +106,8 @@ samples with nonzero CPM counts in at least one group}
 
 \item{point_size_for_pca}{geom point size for the PCA plot}
 
-\item{add_label_to_pca}{label points on the PCA plot}
+\item{add_label_to_pca}{If \code{TRUE}, display labels from \code{label_colname} on PCA points. If \code{FALSE}, the PCA plot uses
+unlabeled points while heatmap labels still use \code{label_colname}.}
 
 \item{label_font_size}{label font size for the PCA plot}
 
@@ -135,8 +139,8 @@ If \code{NULL}, the size is scaled automatically.}
 
 \item{colors_for_plots}{Optional colors for PCA/histogram/heatmap plots. If \code{NULL}, colors are taken from
 \code{moo@analyses$colors[[group_colname]]}.
-Colors must either be names in \code{grDevices::colors()} or valid hex codes. Unnamed colors are assigned by factor level order
-when the grouping column is a factor;
+Colors must either be names in \code{grDevices::colors()} or valid hex codes.
+Unnamed colors are assigned by factor level order when the grouping column is a factor;
 otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
 than colors provided,
 supplied colors are used first and additional colors are generated from the selected palette for the remaining

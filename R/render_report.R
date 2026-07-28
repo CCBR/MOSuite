@@ -12,7 +12,9 @@
 #'   rendering. If `NULL` (default), the template will be copied to the current
 #'   working directory with the same filename as the template. If a file already
 #'   exists at `qmd_src`, it will not be overwritten.
-#' @param ... Additional arguments passed to `quarto::quarto_render()`, such as a named list of parameters.
+#' @param ... Additional arguments passed to `quarto::quarto_render()`, such as
+#'   `execute_params` (a named list of parameters) or `quarto_args` (a
+#'   character vector of CLI flags, e.g. `c("--output-dir", "/path/to/out")`).
 #'
 #' @export
 #'
@@ -29,6 +31,20 @@
 #'       package = "MOSuite"
 #'     )
 #'   ))
+#'
+#'   # Render to a specific output directory
+#'   render_report(
+#'     quarto_args = c("--output-dir", "./results"),
+#'     execute_params = list(
+#'       counts_csv = system.file("extdata", "nidap", "Raw_Counts.csv.gz",
+#'         package = "MOSuite"
+#'       ),
+#'       samplesheet_csv = system.file("extdata", "nidap",
+#'         "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+#'         package = "MOSuite"
+#'       )
+#'     )
+#'   )
 #' }
 render_report <- function(
   qmd_template = system.file("quarto", "report.qmd", package = "MOSuite"),
@@ -39,6 +55,8 @@ render_report <- function(
   if (is.null(qmd_src)) {
     qmd_src <- basename(qmd_template)
   }
+  # Resolve to absolute path so quarto subprocess uses the correct directory
+  qmd_src <- normalizePath(qmd_src, mustWork = FALSE)
   if (!file.exists(qmd_src)) {
     ok <- file.copy(qmd_template, qmd_src, overwrite = FALSE)
     if (!isTRUE(ok)) {

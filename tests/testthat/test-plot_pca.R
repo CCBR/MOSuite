@@ -178,8 +178,7 @@ test_that("plot_pca layers are expected", {
       "#878500"
     ),
     legend_position = "top",
-    point_size = 1,
-    add_label = TRUE,
+    point_size = 5,
     label_font_size = 3,
     label_offset_y_ = 2,
     label_offset_x_ = 2
@@ -230,6 +229,22 @@ get_colour_guide_ncol <- function(plot) {
   plot$guides$guides$colour$params$ncol
 }
 
+has_text_repel_layer <- function(plot) {
+  any(vapply(
+    plot$layers,
+    function(layer) inherits(layer$geom, "GeomTextRepel"),
+    logical(1)
+  ))
+}
+
+get_plotly_text <- function(plot) {
+  traces <- plotly::plotly_build(plot)$x$data
+  unlist(
+    lapply(traces, function(trace) trace$text),
+    use.names = FALSE
+  )
+}
+
 test_that("2D PCA wraps long top and bottom sample-name legends", {
   sample_columns <- setdiff(colnames(nidap_filtered_counts), "Gene")
   long_sample_names <- stats::setNames(
@@ -255,9 +270,8 @@ test_that("2D PCA wraps long top and bottom sample-name legends", {
       sample_id_colname = "Sample",
       feature_id_colname = "Gene",
       group_colname = "Sample",
-      label_colname = "Label",
+      label_colname = NULL,
       legend_position = legend_position,
-      add_label = FALSE,
       print_plots = FALSE,
       save_plots = FALSE
     )
@@ -287,7 +301,7 @@ test_that("2D and 3D PCA resolve unnamed colors by first observed group order", 
     sample_metadata = nidap_sample_metadata,
     feature_id_colname = "Gene",
     color_values = color_values,
-    add_label = FALSE,
+    label_colname = NULL,
     print_plots = FALSE,
     save_plots = FALSE
   )
@@ -348,7 +362,7 @@ test_that("2D and 3D PCA resolve unnamed colors by factor level order", {
     sample_metadata = sample_metadata,
     feature_id_colname = "Gene",
     color_values = color_values,
-    add_label = FALSE,
+    label_colname = NULL,
     print_plots = FALSE,
     save_plots = FALSE
   )
@@ -391,7 +405,7 @@ test_that("2D PCA preserves named color mappings", {
     sample_metadata = nidap_sample_metadata,
     feature_id_colname = "Gene",
     color_values = color_values,
-    add_label = FALSE,
+    label_colname = NULL,
     print_plots = FALSE,
     save_plots = FALSE
   )
@@ -537,7 +551,7 @@ test_that("plot_pca_2d works with and without labels", {
     moo,
     count_type = "filt",
     principal_components = c(1, 2),
-    add_label = TRUE,
+    label_colname = "Label",
     save_plots = FALSE,
     print_plots = FALSE
   )
@@ -547,11 +561,226 @@ test_that("plot_pca_2d works with and without labels", {
     moo,
     count_type = "filt",
     principal_components = c(1, 2),
-    add_label = FALSE,
+    label_colname = NULL,
     save_plots = FALSE,
     print_plots = FALSE
   )
 
-  # With labels should have more layers (geom_text_repel)
-  expect_gt(length(p_with_labels$layers), length(p_without_labels$layers))
+  expect_true(has_text_repel_layer(p_with_labels))
+  expect_false(has_text_repel_layer(p_without_labels))
+})
+
+test_that("plot_pca_2d interactive hover text includes label column when provided", {
+  sample_metadata <- as.data.frame(nidap_sample_metadata)
+  sample_metadata$PlotLabel <- paste0("plot-label-", sample_metadata$Sample)
+  moo <- multiOmicDataSet(
+    sample_metadata = sample_metadata,
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts)
+    )
+  )
+
+  p_with_labels <- suppressWarnings(plot_pca_2d(
+    moo,
+    count_type = "filt",
+    principal_components = c(1, 2),
+    group_colname = "Group",
+    label_colname = "PlotLabel",
+    interactive_plots = TRUE,
+    save_plots = FALSE,
+    print_plots = FALSE
+  ))
+  p_without_labels <- suppressWarnings(plot_pca_2d(
+    moo,
+    count_type = "filt",
+    principal_components = c(1, 2),
+    group_colname = "Group",
+    label_colname = NULL,
+    interactive_plots = TRUE,
+    save_plots = FALSE,
+    print_plots = FALSE
+  ))
+
+  hover_text_with_labels <- get_plotly_text(p_with_labels)
+  hover_text_without_labels <- get_plotly_text(p_without_labels)
+  expect_true(any(grepl("Group: A", hover_text_with_labels, fixed = TRUE)))
+  expect_true(any(grepl(
+    "PlotLabel: plot-label-A1",
+    hover_text_with_labels,
+    fixed = TRUE
+  )))
+  expect_false(any(grepl("Sample: A1", hover_text_with_labels, fixed = TRUE)))
+  expect_true(any(grepl("Sample: A1", hover_text_without_labels, fixed = TRUE)))
+  expect_true(any(grepl("Group: A", hover_text_without_labels, fixed = TRUE)))
+  expect_false(any(grepl(
+    "PlotLabel:",
+    hover_text_without_labels,
+    fixed = TRUE
+  )))
+})
+
+test_that("plot_pca_3d hover text includes label column when provided", {
+  sample_metadata <- as.data.frame(nidap_sample_metadata)
+  sample_metadata$PlotLabel <- paste0("plot-label-", sample_metadata$Sample)
+  moo <- multiOmicDataSet(
+    sample_metadata = sample_metadata,
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "filt" = as.data.frame(nidap_filtered_counts)
+    )
+  )
+
+  fig_with_labels <- plot_pca_3d(
+    moo,
+    count_type = "filt",
+    principal_components = c(1, 2, 3),
+    group_colname = "Group",
+    label_colname = "PlotLabel",
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+  fig_without_labels <- plot_pca_3d(
+    moo,
+    count_type = "filt",
+    principal_components = c(1, 2, 3),
+    group_colname = "Group",
+    label_colname = NULL,
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  hover_text_with_labels <- get_plotly_text(fig_with_labels)
+  hover_text_without_labels <- get_plotly_text(fig_without_labels)
+  expect_true(any(grepl("Group: A", hover_text_with_labels, fixed = TRUE)))
+  expect_true(any(grepl(
+    "PlotLabel: plot-label-A1",
+    hover_text_with_labels,
+    fixed = TRUE
+  )))
+  expect_false(any(grepl("Sample: A1", hover_text_with_labels, fixed = TRUE)))
+  expect_true(any(grepl("Sample: A1", hover_text_without_labels, fixed = TRUE)))
+  expect_true(any(grepl("Group: A", hover_text_without_labels, fixed = TRUE)))
+  expect_false(any(grepl(
+    "PlotLabel:",
+    hover_text_without_labels,
+    fixed = TRUE
+  )))
+})
+
+test_that("plot_pca_2d log_transform defaults to original natural-log transform", {
+  counts_log <- nidap_filtered_counts |>
+    dplyr::mutate(dplyr::across(
+      tidyselect::all_of(nidap_sample_metadata$Sample),
+      ~ log(.x + 0.5)
+    ))
+
+  p_from_option <- plot_pca_2d(
+    nidap_filtered_counts,
+    sample_metadata = nidap_sample_metadata,
+    feature_id_colname = "Gene",
+    label_colname = NULL,
+    log_transform = TRUE,
+    log_transform_pseudocount = 0.5,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+  p_from_manual_transform <- plot_pca_2d(
+    counts_log,
+    sample_metadata = nidap_sample_metadata,
+    feature_id_colname = "Gene",
+    label_colname = NULL,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+
+  option_points <- ggplot2::ggplot_build(p_from_option)$data[[1]][, c("x", "y")]
+  manual_points <- ggplot2::ggplot_build(p_from_manual_transform)$data[[1]][, c(
+    "x",
+    "y"
+  )]
+  expect_equal(option_points, manual_points, tolerance = 1e-8)
+})
+
+test_that("plot_pca_3d log_transform defaults to original natural-log transform", {
+  counts_log <- nidap_filtered_counts |>
+    dplyr::mutate(dplyr::across(
+      tidyselect::all_of(nidap_sample_metadata$Sample),
+      ~ log(.x + 0.5)
+    ))
+
+  fig_from_option <- plot_pca_3d(
+    nidap_filtered_counts,
+    sample_metadata = nidap_sample_metadata,
+    feature_id_colname = "Gene",
+    log_transform = TRUE,
+    log_transform_pseudocount = 0.5,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+  fig_from_manual_transform <- plot_pca_3d(
+    counts_log,
+    sample_metadata = nidap_sample_metadata,
+    feature_id_colname = "Gene",
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+
+  option_traces <- plotly::plotly_build(fig_from_option)$x$data
+  manual_traces <- plotly::plotly_build(fig_from_manual_transform)$x$data
+  expect_equal(length(option_traces), length(manual_traces))
+  for (trace_index in seq_along(option_traces)) {
+    expect_equal(
+      option_traces[[trace_index]]$x,
+      manual_traces[[trace_index]]$x,
+      tolerance = 1e-8
+    )
+    expect_equal(
+      option_traces[[trace_index]]$y,
+      manual_traces[[trace_index]]$y,
+      tolerance = 1e-8
+    )
+    expect_equal(
+      option_traces[[trace_index]]$z,
+      manual_traces[[trace_index]]$z,
+      tolerance = 1e-8
+    )
+  }
+})
+
+test_that("plot_pca_2d log_transform supports log2 base", {
+  counts_log <- nidap_filtered_counts |>
+    dplyr::mutate(dplyr::across(
+      tidyselect::all_of(nidap_sample_metadata$Sample),
+      ~ log2(.x + 0.5)
+    ))
+
+  p_from_option <- plot_pca_2d(
+    nidap_filtered_counts,
+    sample_metadata = nidap_sample_metadata,
+    feature_id_colname = "Gene",
+    label_colname = NULL,
+    log_transform = TRUE,
+    log_transform_pseudocount = 0.5,
+    log_transform_base = 2,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+  p_from_manual_transform <- plot_pca_2d(
+    counts_log,
+    sample_metadata = nidap_sample_metadata,
+    feature_id_colname = "Gene",
+    label_colname = NULL,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+
+  option_points <- ggplot2::ggplot_build(p_from_option)$data[[1]][, c("x", "y")]
+  manual_points <- ggplot2::ggplot_build(p_from_manual_transform)$data[[1]][, c(
+    "x",
+    "y"
+  )]
+  expect_equal(option_points, manual_points, tolerance = 1e-8)
 })

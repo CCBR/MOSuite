@@ -7,10 +7,10 @@
 remove_low_count_genes(
   counts_dat,
   sample_metadata,
-  feature_id_colname,
   sample_id_colname = NULL,
+  feature_id_colname,
   group_colname,
-  filtering_method = c("adaptive", "manual"),
+  filtering_method = c("manual", "adaptive"),
   use_cpm_counts_to_filter = TRUE,
   use_group_based_filtering = FALSE,
   minimum_count_value_to_be_considered_nonzero = 8,
@@ -20,6 +20,10 @@ remove_low_count_genes(
 )
 }
 \arguments{
+\item{sample_id_colname}{The column from the sample metadata containing the sample names. The names in this column
+must exactly match the names used as the sample column names of your input Counts Matrix. (Default: \code{NULL} - first
+column in the sample metadata will be used.)}
+
 \item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).
 This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
 Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
@@ -29,8 +33,9 @@ used.)}
 column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
 Before, After, etc.).}
 
-\item{filtering_method}{Filtering strategy for low-count removal. Use \code{"adaptive"} to apply
-\code{edgeR::filterByExpr()} (default) or \code{"manual"} to use explicit threshold parameters.}
+\item{filtering_method}{Filtering strategy for low-count removal. Use \code{"manual"} (default)
+to apply explicit threshold parameters or \code{"adaptive"} to apply
+\code{edgeR::filterByExpr()}.}
 
 \item{use_cpm_counts_to_filter}{If no transformation has been been performed on counts matrix (eg Raw Counts) set to
 TRUE. If TRUE counts will be transformed to CPM and filtered based on given criteria. If gene counts matrix has
@@ -39,14 +44,17 @@ transformation will be applied and features will be filtered as is. For RNAseq d
 transformed to CPM in order to properly filter.}
 
 \item{use_group_based_filtering}{If TRUE, only keeps features (e.g. genes) that have at least a certain number of
-samples with nonzero CPM counts in at least one group}
+samples passing the threshold in at least one group}
 
-\item{minimum_count_value_to_be_considered_nonzero}{Minimum count value to be considered non-zero for a sample}
+\item{minimum_count_value_to_be_considered_nonzero}{Minimum value in the selected filtering table required for a
+sample to be considered nonzero. If \code{use_cpm_counts_to_filter} is \code{TRUE}, this threshold is applied to CPM values.
+If \code{use_cpm_counts_to_filter} is \code{FALSE}, this threshold is applied directly to the selected \code{count_type} table.}
 
-\item{minimum_number_of_samples_with_nonzero_counts_in_total}{Minimum number of samples (total) with non-zero counts}
+\item{minimum_number_of_samples_with_nonzero_counts_in_total}{Minimum number of samples in total that must meet the
+\code{minimum_count_value_to_be_considered_nonzero} threshold for a feature to be kept.}
 
 \item{minimum_number_of_samples_with_nonzero_counts_in_a_group}{Only keeps genes that have at least this number of
-samples with nonzero CPM counts in at least one group}
+samples meeting the threshold in at least one group}
 
 \item{minimum_number_of_groups_passing_filter}{Manual-mode only. Minimum number of groups that must pass
 \code{minimum_number_of_samples_with_nonzero_counts_in_a_group} for a feature to be retained.}

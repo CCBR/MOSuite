@@ -18,7 +18,9 @@ rendering. If \code{NULL} (default), the template will be copied to the current
 working directory with the same filename as the template. If a file already
 exists at \code{qmd_src}, it will not be overwritten.}
 
-\item{...}{Additional arguments passed to \code{quarto::quarto_render()}, such as a named list of parameters.}
+\item{...}{Additional arguments passed to \code{quarto::quarto_render()}, such as
+\code{execute_params} (a named list of parameters) or \code{quarto_args} (a
+character vector of CLI flags, e.g. \code{c("--output-dir", "/path/to/out")}).}
 }
 \description{
 Copy the Quarto template to the current working directory and render it
@@ -42,5 +44,19 @@ if (requireNamespace("quarto", quietly = TRUE) &&
       package = "MOSuite"
     )
   ))
+
+  # Render to a specific output directory
+  render_report(
+    quarto_args = c("--output-dir", "./results"),
+    execute_params = list(
+      counts_csv = system.file("extdata", "nidap", "Raw_Counts.csv.gz",
+        package = "MOSuite"
+      ),
+      samplesheet_csv = system.file("extdata", "nidap",
+        "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+        package = "MOSuite"
+      )
+    )
+  )
 }
 }

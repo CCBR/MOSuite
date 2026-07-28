@@ -2,8 +2,9 @@ utils::globalVariables("mosuite_palette")
 
 #' Get random colors.
 #'
-#' Note: this function is not guaranteed to create a color blind friendly palette.
-#' Consider using other palettes such as `RColorBrewer::display.brewer.all(colorblindFriendly = TRUE)`.
+#' Note: this function is not guaranteed to create a color blind friendly
+#' palette. Consider using other palettes such as
+#' `RColorBrewer::display.brewer.all(colorblindFriendly = TRUE)`.
 #'
 #' @param num_colors number of colors to select.
 #' @param n number of random RGB values to generate in the color space.
@@ -50,8 +51,9 @@ select_mosuite_colors <- function(n, ...) {
 
 #' Get observed values from a column
 #'
-#' Returns non-missing values from `dat[[colname]]`. For factor columns, values are
-#' returned in factor-level order; otherwise, values keep first-observed order.
+#' Returns non-missing values from `dat[[colname]]`. For factor columns, values
+#' are returned in factor-level order; otherwise, values keep first-observed
+#' order.
 #'
 #' @param dat data frame
 #' @param colname column name in `dat`
@@ -73,107 +75,121 @@ get_observed_values <- function(dat, colname) {
 #'
 #' @inheritParams create_multiOmicDataSet_from_dataframes
 #'
-#' @param palette_fun Function for selecting colors. Assumed to contain `n` for the number of colors. Defaults to
-#'   MOSuite's default plot palette. To use the previous R default palette behavior, pass
-#'   `grDevices::palette.colors`.
-#' @param ... additional arguments forwarded to `palette_fun`
+#' @param palette Character vector of colors to assign. Defaults to
+#'   `mosuite_palette`.
 #'
-#' @returns named list, with each column in `sample_metadata` containing entry with a named vector of colors
+#' @returns named list, with each column in `sample_metadata` containing a corresponding entry with a named vector of
+#'   colors
 #' @export
 #'
 #' @examples
 #' get_colors_lst(nidap_sample_metadata)
-#' \dontrun{
-#' get_colors_lst(nidap_sample_metadata, palette_fun = RColorBrewer::brewer.pal, name = "Set3")
-#' }
+#' get_colors_lst(nidap_sample_metadata, palette = RColorBrewer::brewer.pal(12, "Set3"))
 get_colors_lst <- function(
   sample_metadata,
-  palette_fun = select_mosuite_colors,
-  ...
+  palette = mosuite_palette
 ) {
   dat_colnames <- colnames(sample_metadata)
-  color_lists <- dat_colnames |>
-    purrr::map(
-      .f = get_colors_vctr,
+  n_palette <- length(palette)
+
+  color_offset <- 0L
+  color_lists <- vector("list", length(dat_colnames))
+  for (i in seq_along(dat_colnames)) {
+    colname <- dat_colnames[[i]]
+    n_obs <- length(get_observed_values(sample_metadata, colname))
+    # Only offset when the column is small enough that unique colors are available
+    use_offset <- n_obs <= n_palette / 2 && color_offset + n_obs <= n_palette
+    vctr <- get_colors_vctr(
       dat = sample_metadata,
-      palette_fun = palette_fun,
-      ...
+      colname = colname,
+      palette = palette,
+      color_offset = if (use_offset) color_offset else 0L
     )
+    if (use_offset) {
+      color_offset <- color_offset + n_obs
+    }
+    color_lists[[i]] <- vctr
+  }
   names(color_lists) <- dat_colnames
   return(color_lists)
 }
 
 #' Get vector of colors for observations in one column of a data frame
 #'
+#' Assigns one color per unique observed value in `dat[[colname]]`, drawn from
+#' `palette` starting at `color_offset`. If the palette is too short,
+#' falls back to `get_random_colors()`. Factor columns use factor-level order;
+#' other columns use first-observed order.
+#'
 #' @inheritParams get_colors_lst
 #' @param dat data frame
 #' @param colname column name in `dat`
-#' @returns named vector of colors for each unique observation in `dat$colname`. Factor columns use factor level order;
-#'   other columns use first-observed order.
+#' @param color_offset integer; number of palette colors to skip before
+#'   assigning colors to this column's values. Used by [get_colors_lst()] to
+#'   avoid repeating colors across columns with few unique values.
+#' @returns Named character vector of hex colors, one per unique observed value
+#'   in `dat[[colname]]`.
 #' @export
 #'
+#' @examples
+#' get_colors_vctr(nidap_sample_metadata, "Group")
+#' get_colors_vctr(nidap_sample_metadata, "Group", color_offset = 3L)
 get_colors_vctr <- function(
   dat,
   colname,
-  palette_fun = select_mosuite_colors,
-  ...
+  palette = mosuite_palette,
+  color_offset = 0L
 ) {
   obs <- get_observed_values(dat, colname)
   n_obs <- length(obs)
 
-  warned_cnd <- NULL
-  colors_vctr <- withCallingHandlers(
-    warning = function(cnd) {
-      warned_cnd <<- cnd
-      invokeRestart("muffleWarning")
-    },
-    palette_fun(n = n_obs, ...)
-  )
-
-  # if fewer colors were returned than needed (e.g. when n exceeds the palette maximum,
-  # such as Okabe-Ito's maximum of 9), fall back to random colors
-  if (length(colors_vctr) < n_obs) {
-    message(glue::glue(
-      "Number of unique values ({n_obs}) in column \"{colname}\" ",
-      "exceeds the palette maximum. Falling back to random colors."
-    ))
-    colors_vctr <- get_random_colors(n_obs)
-  } else if (!is.null(warned_cnd)) {
-    # warning was raised but we still have enough colors (e.g. brewer.pal warns when n < 3
-    # but returns 3 colors); convert to a message and re-raise the original warning
-    message(glue::glue(
-      'Warning raised in get_color_vctr() for column "{colname}"'
-    ))
-    warning(conditionMessage(warned_cnd))
+  if (n_obs == 0) {
+    colors_vctr <- character(0)
+  } else {
+    # if fewer colors are available than needed, handle gracefully
+    if (length(palette) < n_obs + color_offset) {
+      # If an offset pushed us past the palette end but n_obs alone would fit,
+      # retry from the start of the palette before falling back to random colors.
+      if (color_offset > 0L && length(palette) >= n_obs) {
+        color_offset <- 0L
+      }
+    }
+    # If still not enough colors, fall back to random
+    if (length(palette) < n_obs) {
+      message(glue::glue(
+        "Number of unique values ({n_obs}) in column \"{colname}\" ",
+        "exceeds the palette maximum. Falling back to random colors."
+      ))
+      colors_vctr <- get_random_colors(n_obs)
+    } else {
+      colors_vctr <- palette[seq.int(color_offset + 1L, color_offset + n_obs)]
+    }
+    names(colors_vctr) <- obs
   }
 
-  # if more colors are returned than are in the observations, truncate the vector.
-  # this occurs when using RColorBrewer::brewer.pal with n < 3
-  colors_vctr <- colors_vctr[seq_len(n_obs)]
-
-  names(colors_vctr) <- obs
   return(colors_vctr)
 }
+
 
 #' Resolve plotting colors for one column
 #'
 #' Uses `color_values` when supplied; otherwise generates colors with
-#' `get_colors_vctr()`. If too few colors are provided, missing colors are generated
-#' and appended.
+#' [get_colors_vctr()]. If `color_values` is named and covers all observed
+#' values, it is returned as-is. If too few colors are provided, missing colors
+#' are generated and appended.
 #'
 #' @param dat data frame
 #' @param colname column name in `dat`
-#' @param color_values optional vector of colors
-#' @param palette_fun function used to generate colors
-#' @param ... additional arguments forwarded to `palette_fun`
-#' @returns named vector of colors matching observed values in `colname`
+#' @param color_values optional named or unnamed character vector of colors
+#' @param palette character vector of colors used to generate defaults
+#' @returns named character vector of colors matching observed values in
+#'   `dat[[colname]]`
 #' @keywords internal
 resolve_plot_colors <- function(
   dat,
   colname,
   color_values = NULL,
-  palette_fun = select_mosuite_colors,
-  ...
+  palette = mosuite_palette
 ) {
   obs <- get_observed_values(dat, colname)
 
@@ -182,7 +198,7 @@ resolve_plot_colors <- function(
   }
 
   if (is.null(color_values)) {
-    return(get_colors_vctr(dat, colname, palette_fun = palette_fun, ...))
+    return(get_colors_vctr(dat, colname, palette = palette))
   }
 
   if (!is.null(names(color_values))) {
@@ -201,8 +217,7 @@ resolve_plot_colors <- function(
     generated_colors <- get_colors_vctr(
       dat,
       colname,
-      palette_fun = palette_fun,
-      ...
+      palette = palette
     )
     color_values <- c(
       unname(color_values),
@@ -236,7 +251,55 @@ display_palette <- function(palette = mosuite_palette) {
     idx = factor(seq_len(n))
   )
 
-  p <- ggplot2::ggplot(df) +
+  p <- plot_palette(df) +
+    ggplot2::labs(title = "mosuite_palette")
+
+  return(p)
+}
+
+#' Display colors for a multiOmicDataSet object
+#'
+#' Plots a palette strip for each group column stored in `moo@analyses$colors`,
+#' stacked vertically. Each strip shows the assigned hex colors and their codes.
+#'
+#' @param moo A `multiOmicDataSet` object (see
+#'   [create_multiOmicDataSet_from_dataframes()]).
+#' @returns A [patchwork][patchwork::wrap_plots] of [ggplot2::ggplot] objects,
+#'   one per group column in `moo@analyses$colors`.
+#' @export
+#' @examples
+#' moo <- create_multiOmicDataSet_from_dataframes(nidap_sample_metadata, nidap_raw_counts)
+#' display_colors(moo)
+display_colors <- function(moo) {
+  abort_packages_not_installed("patchwork")
+  colors_lst <- moo@analyses$colors
+  plots_lst <- lapply(names(colors_lst), function(colname) {
+    palette <- colors_lst[[colname]]
+    n <- length(palette)
+    df <- data.frame(
+      hex = palette,
+      idx = factor(seq_len(n))
+    )
+    return(
+      p <- plot_palette(df) +
+        ggplot2::labs(title = colname)
+    )
+  })
+  return(patchwork::wrap_plots(plots_lst, ncol = 1))
+}
+
+#' Plot a palette tile strip
+#'
+#' Renders a data frame with columns `hex` and `idx` as a row of colored tiles,
+#' each labeled with its hex code. Used internally by [display_palette()] and
+#' [display_colors()].
+#'
+#' @param dat data frame with columns `hex` (hex color codes) and `idx`
+#'   (factor, used for faceting)
+#' @returns a [ggplot2::ggplot] object
+#' @keywords internal
+plot_palette <- function(dat) {
+  p <- ggplot2::ggplot(dat) +
     ggplot2::geom_rect(
       ggplot2::aes(fill = .data$hex),
       xmin = 0,
@@ -265,31 +328,9 @@ display_palette <- function(palette = mosuite_palette) {
         size = 12,
         margin = ggplot2::margin(b = 8)
       ),
-      plot.margin = ggplot2::margin(10, 10, 10, 10)
-    ) +
-    ggplot2::labs(title = "mosuite_palette")
-
-  # Render at a width that gives each tile enough room for its horizontal label
-  panel_w_in <- 0.85
-  total_w <- n * panel_w_in + 0.4
-  total_h <- 2.5
-
-  soft <- suppressWarnings(grDevices::grSoftVersion())
-  cairo_available <- length(soft) > 0 && isTRUE(nzchar(soft[["cairo"]]))
-
-  if (!cairo_available) {
-    print(p)
-    return(invisible(p))
-  }
-
-  tmp <- tempfile(fileext = ".png")
-  ggplot2::ggsave(tmp, plot = p, width = total_w, height = total_h, dpi = 150)
-
-  img <- png::readPNG(tmp)
-  grid::grid.newpage()
-  grid::grid.draw(grid::rasterGrob(img, width = grid::unit(1, "npc")))
-
-  invisible(p)
+      plot.margin = ggplot2::margin(4, 4, 4, 4)
+    )
+  return(p)
 }
 
 #' Set color palette for a single group/column
@@ -301,7 +342,7 @@ display_palette <- function(palette = mosuite_palette) {
 #' @param moo `multiOmicDataSet` object (see `create_multiOmicDataSet_from_dataframes()`)
 #' @param colname group column name to set the palette for
 #'
-#' @returns `moo` with colors updated at `moo@analyses$colors$colname`
+#' @returns `moo` with colors updated at `moo@analyses$colors[[colname]]`
 #' @export
 #'
 #' @examples
@@ -310,14 +351,14 @@ display_palette <- function(palette = mosuite_palette) {
 #'   counts_dat = as.data.frame(nidap_raw_counts)
 #' )
 #' moo@analyses$colors$Group
-#' moo <- moo |> set_color_pal("Group", palette_fun = RColorBrewer::brewer.pal, name = "Set2")
+#' moo <- moo |> set_color_pal("Group", palette = RColorBrewer::brewer.pal(3, "Set2"))
 #' moo@analyses$colors$Group
 #'
 #' @family moo methods
 set_color_pal <- S7::new_generic(
   "set_color_pal",
   "moo",
-  function(moo, colname, palette_fun = select_mosuite_colors, ...) {
+  function(moo, colname, palette = mosuite_palette) {
     return(S7::S7_dispatch())
   }
 )
@@ -325,14 +366,12 @@ set_color_pal <- S7::new_generic(
 S7::method(set_color_pal, multiOmicDataSet) <- function(
   moo,
   colname,
-  palette_fun = select_mosuite_colors,
-  ...
+  palette = mosuite_palette
 ) {
-  moo@analyses[["colors"]][[colname]] <- get_colors_vctr(
+  moo@analyses$colors[[colname]] <- get_colors_vctr(
     dat = moo@sample_meta,
     colname = colname,
-    palette_fun = palette_fun,
-    ...
+    palette = palette
   )
   return(moo)
 }

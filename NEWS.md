@@ -5,12 +5,20 @@
   - Retain explicit threshold filtering as expert mode (`filtering_method = "manual"`).
   - Expose `minimum_number_of_groups_passing_filter` for manual group-based filtering (default `1`) instead of hardcoding one-group pass behavior.
 
-- Improvements to plots: (#223, @phoman14)
+## MOSuite 0.4.0
+
+- Fix expression heatmap clustering to correctly use the selected gene and sample distance metrics and clustering methods. (#231, @phoman14)
+- Update PCA label, point-size, and histogram behavior. (#230, @phoman14)
+- Add optional count log-transform controls for PCA plots.  (#234, @phoman14)
+- Add a post-clean CPM histogram output in `clean_raw_counts()`. (#234, @phoman14)
+- Improvements to plot colors: (#223, @phoman14)
   - Align plot color defaults with the MOSuite Code Ocean capsule defaults while preserving fallback random colors when a requested palette is too short.
   - Improve top and bottom legend wrapping and automatic legend text sizing for PCA and histogram plots with many or long labels.
   - Add optional group coloring to `plot_read_depth()` and the `clean_raw_counts()` read-depth output while preserving the single-color default when no group is selected.
+- New function `display_colors()` shows a multiOmicDataSet's chosen color palettes, and `get_colors_lst()` now takes a palette vector rather than function for simplicity. (#236, @kelly-sovacool)
 - New report template & helper function: `render_report()`. (#120, @kelly-sovacool)
 - Fix ggplot2 size deprecation warning in `plot_volcano_summary()`. (#228, @kelly-sovacool)
+- docs: show how to set `output_dir` in `render_report()`. (#235, @kelly-sovacool)
 
 ## MOSuite 0.3.2
 

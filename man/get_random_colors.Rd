@@ -15,8 +15,9 @@ get_random_colors(num_colors, n = 2000)
 vector of random colors in hex format.
 }
 \description{
-Note: this function is not guaranteed to create a color blind friendly palette.
-Consider using other palettes such as \code{RColorBrewer::display.brewer.all(colorblindFriendly = TRUE)}.
+Note: this function is not guaranteed to create a color blind friendly
+palette. Consider using other palettes such as
+\code{RColorBrewer::display.brewer.all(colorblindFriendly = TRUE)}.
 }
 \examples{
 \dontrun{

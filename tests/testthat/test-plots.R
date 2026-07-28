@@ -113,7 +113,12 @@ test_that("save_or_print_plot works for ggplot", {
       filename = "read_depth.png",
       print_plots = FALSE,
       save_plots = TRUE,
-      plots_dir = tmp
+      plots_dir = tmp,
+      device = grDevices::png,
+      width = 7,
+      height = 7,
+      units = "in",
+      dpi = 300
     ),
     "read_depth.png"
   )
