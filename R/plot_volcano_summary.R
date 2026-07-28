@@ -303,6 +303,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
 
     message(paste0("Fold change column: ", lfccol))
     message(paste0(signif_colname, " column: ", pvalcol))
+    message(paste0("Total number of features included in volcano plot: ", nrow(diff_dat)))
 
     if (value_to_sort_the_output_dataset == "fold-change") {
       diff_dat <- diff_dat |>
@@ -386,6 +387,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   }
   plot_titles <- gsub("_logFC$", "", plot_change_colnames)
 
+  message("\nRunning Enhanced Volcano:")
   plot_volcano_enhanced(
     diff_dat,
     feature_id_colname = feature_id_colname,

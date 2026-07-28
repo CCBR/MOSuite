@@ -7,22 +7,27 @@
       Preparing table for contrast: B-A
       Fold change column: B-A_logFC
       pval column: B-A_pval
+      Total number of features included in volcano plot: 7943
       Preparing table for contrast: C-A
       Fold change column: C-A_logFC
       pval column: C-A_pval
+      Total number of features included in volcano plot: 7943
       Preparing table for contrast: B-C
       Fold change column: B-C_logFC
       pval column: B-C_pval
+      Total number of features included in volcano plot: 7943
+      
+      Running Enhanced Volcano:
       Genes in initial dataset: 7943
-    
+      
       Max y: 8.50040315712758
-    
+      
       Genes in initial dataset: 7943
-    
+      
       Max y: 8.6648959905039
-    
+      
       Genes in initial dataset: 7943
-    
+      
       Max y: 8.22576265118411
-    
+      
 
