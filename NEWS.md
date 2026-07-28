@@ -1,6 +1,6 @@
 ## MOSuite development version
 
-- Filtering updates in `filter_counts()` and `remove_low_count_genes()`. (#TBD, @TJoshMeyer)
+- Filtering updates in `filter_counts()` and `remove_low_count_genes()`. (#245, @TJoshMeyer)
   - Add adaptive filtering mode (`filtering_method = "adaptive"`) using `edgeR::filterByExpr()` as the default behavior.
   - Retain explicit threshold filtering as expert mode (`filtering_method = "manual"`).
   - Expose `minimum_number_of_groups_passing_filter` for manual group-based filtering (default `1`) instead of hardcoding one-group pass behavior.
