@@ -335,7 +335,8 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
         df <- df |>
           dplyr::mutate(.mosuite_sort_tstat = diff_dat[[tstat_colname]]) |>
           dplyr::arrange(dplyr::desc(abs(.data$.mosuite_sort_tstat))) |>
-          dplyr::select(-.data$.mosuite_sort_tstat)
+          # Previous tidyselect form: dplyr::select(-.data$.mosuite_sort_tstat)
+          dplyr::select(-tidyselect::all_of(".mosuite_sort_tstat"))
       } else {
         warning(glue::glue(
           "Could not find t-statistic column '{tstat_colname}'. Labels were not sorted by t-statistic."
