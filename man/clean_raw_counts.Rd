@@ -10,6 +10,8 @@ clean_raw_counts(
   sample_id_colname = NULL,
   feature_id_colname = NULL,
   samples_to_rename = "",
+  group_colname = "",
+  colors_for_plots = NULL,
   cleanup_column_names = TRUE,
   split_gene_name = TRUE,
   aggregate_rows_with_duplicate_gene_names = TRUE,
@@ -37,6 +39,14 @@ used.)}
 parameter to rename samples manually for display on the PCA plot. Use "Add item" to add each additional sample for
 renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to
 which new name: old_name: new_name}
+
+\item{group_colname}{sample metadata column used to color the read-depth plot. Leave blank to use the current
+single-color bar fill.}
+
+\item{colors_for_plots}{optional colors used when \code{group_colname} is supplied. If \code{NULL}, colors are taken from
+\code{moo@analyses$colors[[group_colname]]}.
+Named vectors are matched to group values;
+unnamed vectors follow group order and are extended with MOSuite colors when too few colors are supplied.}
 
 \item{cleanup_column_names}{Invalid raw counts column names can cause errors
 in the downstream analysis. If this is \code{TRUE}, any invalid column names

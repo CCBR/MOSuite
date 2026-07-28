@@ -12,7 +12,7 @@ normalize_counts(
   samples_to_include = NULL,
   sample_id_colname = NULL,
   group_colname = "Group",
-  label_colname = NULL,
+  label_colname = "Label",
   input_in_log_counts = FALSE,
   voom_normalization_method = "quantile",
   samples_to_rename = c(""),
@@ -23,12 +23,12 @@ normalize_counts(
   label_offset_x_ = 2,
   label_offset_y_ = 2,
   label_font_size = 3,
-  point_size_for_pca = 8,
+  point_size_for_pca = 5,
   color_histogram_by_group = TRUE,
   set_min_max_for_x_axis_for_histogram = FALSE,
   minimum_for_x_axis_for_histogram = -1,
   maximum_for_x_axis_for_histogram = 1,
-  legend_font_size_for_histogram = 10,
+  legend_font_size_for_histogram = NULL,
   legend_position_for_histogram = "top",
   number_of_histogram_legend_columns = 6,
   plot_corr_matrix_heatmap = TRUE,
@@ -64,10 +64,10 @@ column showing to which experimental treatments each sample belongs (e.g. WildTy
 Before, After, etc.).}
 
 \item{label_colname}{The column from the sample metadata containing the sample labels as you wish them to appear in
-the plots produced by this template. This can be the same Sample Names Column. However, you may desire different
-labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
-column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
-\code{NULL} -- \code{sample_id_colname} will be used.)}
+heatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to
+display on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with
+your preferred Labels here. The selected column should contain unique names for each sample. Use \code{add_label_to_pca}
+to control whether these labels are displayed on the PCA plot.}
 
 \item{input_in_log_counts}{set this to \code{TRUE} if counts are already log2-transformed}
 
@@ -78,7 +78,8 @@ parameter to rename samples manually for display on the PCA plot. Use "Add item"
 renaming. Use the following format to describe which old name (in your sample metadata table) you want to rename to
 which new name: old_name: new_name}
 
-\item{add_label_to_pca}{label points on the PCA plot}
+\item{add_label_to_pca}{If \code{TRUE}, display labels from \code{label_colname} on PCA points. If \code{FALSE}, the PCA plot uses
+unlabeled points while heatmap labels still use \code{label_colname}.}
 
 \item{principal_component_on_x_axis}{The principal component to plot on the x-axis for the PCA plot. Choices include
 1, 2, 3, ... (default: 1)}
@@ -97,7 +98,7 @@ which new name: old_name: new_name}
 \item{point_size_for_pca}{geom point size for the PCA plot}
 
 \item{color_histogram_by_group}{Set to FALSE to label histogram by Sample Names, or set to TRUE to label histogram by
-the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is FALSE.}
+the column you select in the "Group Column Used to Color Histogram" parameter (below). Default is TRUE.}
 
 \item{set_min_max_for_x_axis_for_histogram}{whether to set min/max value for histogram x-axis}
 
@@ -105,7 +106,8 @@ the column you select in the "Group Column Used to Color Histogram" parameter (b
 
 \item{maximum_for_x_axis_for_histogram}{x-axis maximum for histogram plot}
 
-\item{legend_font_size_for_histogram}{legend font size for the histogram plot}
+\item{legend_font_size_for_histogram}{legend font size for the histogram plot.
+If \code{NULL}, the size is scaled automatically.}
 
 \item{legend_position_for_histogram}{legend position for the histogram plot. consider setting to 'none' for a large
 number of samples.}
@@ -116,8 +118,14 @@ number of samples.}
 matrix heatmap. If this function takes longer than 5 minutes to run, Set to \code{FALSE} and the correlation matrix will
 not be be created. Default is \code{TRUE}.}
 
-\item{colors_for_plots}{Colors for the PCA and histogram will be picked, in order, from this list.
-Colors must either be names in \code{grDevices::colors()} or valid hex codes.}
+\item{colors_for_plots}{Optional colors for PCA/histogram/heatmap plots. If \code{NULL}, colors are taken from
+\code{moo@analyses$colors[[group_colname]]}.
+Colors must either be names in \code{grDevices::colors()} or valid hex codes.
+Unnamed colors are assigned by factor level order when the grouping column is a factor;
+otherwise, they follow the order in which groups first appear in the metadata column. If more groups are present
+than colors provided,
+supplied colors are used first and additional colors are generated from the selected palette for the remaining
+groups; random colors are used only if that palette returns fewer colors than the number of groups.}
 
 \item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
 

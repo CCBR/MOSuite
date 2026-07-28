@@ -53,9 +53,10 @@
     {
       "key": "label_colname",
       "displayName": "Labels Column",
-      "description": "The column from the sample metadata containing the sample labels as you wish them to appear in\nthe plots produced by this template. This can be the same Sample Names Column. However, you may desire different\nlabels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the\ncolumn with your preferred Labels here. The selected column should contain unique names for each sample. (Default:\n`NULL` -- `sample_id_colname` will be used.)\n",
+      "description": "The column from the sample metadata containing the sample labels as you wish them to appear in\nheatmap and PCA figures. This can be the same Sample Names Column. However, you may desire different labels to\ndisplay on your figures (e.g. shorter labels are sometimes preferred on plots). In that case, select the column with\nyour preferred Labels here. The selected column should contain unique names for each sample. Use `add_label_to_pca`to control whether these labels are displayed on the PCA plot.\n",
       "paramGroup": "Basic",
       "sourceDataset": "sample_metadata",
+      "defaultValue": "Label",
       "columnType": "ALL",
       "isMulti": null
     }
@@ -114,7 +115,7 @@
     {
       "key": "colors_for_plots",
       "displayName": "Colors for plots",
-      "description": "Colors for the PCA and histogram will be picked, in order, from this list.\nColors must either be names in `grDevices::colors()` or valid hex codes.\n",
+      "description": "Optional colors for PCA/histogram/heatmap plots. If `NULL`, colors are taken from\n`moo@analyses$colors[[group_colname]]`.\nColors must either be names in `grDevices::colors()` or valid hex codes.\nUnnamed colors are assigned by factor level order when the grouping column is a factor;\notherwise, they follow the order in which groups first appear in the metadata column. If more groups are present\nthan colors provided,\nsupplied colors are used first and additional colors are generated from the selected palette for the remaining\ngroups; random colors are used only if that palette returns fewer colors than the number of groups.\n",
       "paramType": "MULTISELECT",
       "paramGroup": "Visualization",
       "paramValues": [

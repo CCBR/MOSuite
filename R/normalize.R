@@ -34,7 +34,7 @@ normalize_counts <- function(
   samples_to_include = NULL,
   sample_id_colname = NULL,
   group_colname = "Group",
-  label_colname = NULL,
+  label_colname = "Label",
   input_in_log_counts = FALSE,
   voom_normalization_method = "quantile",
   samples_to_rename = c(""),
@@ -45,12 +45,12 @@ normalize_counts <- function(
   label_offset_x_ = 2,
   label_offset_y_ = 2,
   label_font_size = 3,
-  point_size_for_pca = 8,
+  point_size_for_pca = 5,
   color_histogram_by_group = TRUE,
   set_min_max_for_x_axis_for_histogram = FALSE,
   minimum_for_x_axis_for_histogram = -1,
   maximum_for_x_axis_for_histogram = 1,
-  legend_font_size_for_histogram = 10,
+  legend_font_size_for_histogram = NULL,
   legend_position_for_histogram = "top",
   number_of_histogram_legend_columns = 6,
   plot_corr_matrix_heatmap = TRUE,
@@ -72,6 +72,7 @@ normalize_counts <- function(
   if (is.null(samples_to_include)) {
     samples_to_include <- sample_metadata |> dplyr::pull(sample_id_colname)
   }
+  pca_label_colname <- if (isTRUE(add_label_to_pca)) label_colname else NULL
   if (is.null(label_colname)) {
     label_colname <- sample_id_colname
   }
@@ -103,13 +104,13 @@ normalize_counts <- function(
   message(paste0("Total number of features included: ", nrow(df.voom)))
   ### PH: END Limma Normalization
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
-    if (is.null(colors_for_plots)) {
-      colors_for_plots <- moo@analyses[["colors"]][[group_colname]]
-    }
+    colors_for_plots <- colors_for_plots %||%
+      moo@analyses$colors[[group_colname]]
+
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots
     } else {
-      colors_for_histogram <- moo@analyses[["colors"]][[label_colname]]
+      colors_for_histogram <- moo@analyses$colors[[label_colname]]
     }
     pca_plot <- plot_pca(
       df.voom,
@@ -117,7 +118,7 @@ normalize_counts <- function(
       sample_id_colname = sample_id_colname,
       samples_to_rename = samples_to_rename,
       group_colname = group_colname,
-      label_colname = label_colname,
+      label_colname = pca_label_colname,
       color_values = colors_for_plots,
       principal_components = c(
         principal_component_on_x_axis,
@@ -125,10 +126,10 @@ normalize_counts <- function(
       ),
       legend_position = legend_position_for_pca,
       point_size = point_size_for_pca,
-      add_label = add_label_to_pca,
       label_font_size = label_font_size,
       label_offset_y_ = label_offset_y_,
       label_offset_x_ = label_offset_x_,
+      log_transform = FALSE,
       print_plots = FALSE,
       save_plots = FALSE
     ) +
@@ -143,11 +144,17 @@ normalize_counts <- function(
       color_values = colors_for_histogram,
       color_by_group = color_histogram_by_group,
       x_axis_label = "Normalized Counts",
+      set_min_max_for_x_axis = set_min_max_for_x_axis_for_histogram,
+      minimum_for_x_axis = minimum_for_x_axis_for_histogram,
+      maximum_for_x_axis = maximum_for_x_axis_for_histogram,
       legend_position = legend_position_for_histogram,
       legend_font_size = legend_font_size_for_histogram,
-      number_of_legend_columns = number_of_histogram_legend_columns
-    ) +
-      ggplot2::labs(caption = "normalized counts")
+      number_of_legend_columns = number_of_histogram_legend_columns,
+      interactive_plots = interactive_plots
+    )
+    if (!isTRUE(interactive_plots)) {
+      hist_plot <- hist_plot + ggplot2::labs(caption = "normalized counts")
+    }
     if (isTRUE(plot_corr_matrix_heatmap)) {
       corHM_plot <- plot_corr_heatmap(
         df.filt,
@@ -166,16 +173,32 @@ normalize_counts <- function(
         caption = "normalized counts"
       )
     }
-
-    print_or_save_plot(
-      pca_plot,
-      filename = file.path(plots_subdir, "pca.png"),
-      print_plots = print_plots,
-      save_plots = save_plots
-    )
+    plot_ext <- "png"
+    if (isTRUE(interactive_plots)) {
+      pca_plot <- pca_plot |> plotly::ggplotly(tooltip = "text")
+      plot_ext <- "html"
+    }
+    if (identical(plot_ext, "png")) {
+      print_or_save_plot(
+        pca_plot,
+        filename = file.path(plots_subdir, glue::glue("pca.{plot_ext}")),
+        print_plots = print_plots,
+        save_plots = save_plots,
+        width = 7,
+        height = 7,
+        units = "in"
+      )
+    } else {
+      print_or_save_plot(
+        pca_plot,
+        filename = file.path(plots_subdir, glue::glue("pca.{plot_ext}")),
+        print_plots = print_plots,
+        save_plots = save_plots
+      )
+    }
     print_or_save_plot(
       hist_plot,
-      filename = file.path(plots_subdir, "histogram.png"),
+      filename = file.path(plots_subdir, glue::glue("histogram.{plot_ext}")),
       print_plots = print_plots,
       save_plots = save_plots
     )

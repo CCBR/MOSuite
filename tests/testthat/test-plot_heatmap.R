@@ -121,6 +121,40 @@ test_that("correlation heatmap works", {
   )
 })
 
+test_that("correlation heatmap resolves annotation colors by first observed group order", {
+  counts_dat <- nidap_filtered_counts[, c(
+    "Gene",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "C1",
+    "C2",
+    "C3"
+  )]
+  sample_metadata <- as.data.frame(nidap_sample_metadata)
+  sample_metadata <- sample_metadata[
+    match(colnames(counts_dat)[-1], sample_metadata$Sample),
+  ]
+
+  p <- plot_corr_heatmap(
+    counts_dat,
+    sample_metadata = sample_metadata,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    label_colname = "Label",
+    group_colname = "Group",
+    color_values = c("#5954d6", "#e1562c", "#b80058")
+  )
+
+  expect_equal(
+    p@top_annotation@anno_list$Group@color_mapping@colors[c("B", "A", "C")],
+    c(B = "#5954D6FF", A = "#E1562CFF", C = "#B80058FF")
+  )
+})
+
 test_that("plot_corr_heatmap method dispatch works", {
   moo <- multiOmicDataSet(
     sample_metadata = as.data.frame(nidap_sample_metadata),
@@ -260,4 +294,291 @@ test_that("plot_expr_heatmap works", {
   )
 
   expect_equal(p_moo@matrix, p_dat@matrix)
+})
+
+test_that("plot_expr_heatmap uses stored colors for all group_columns from moo@analyses$colors", {
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list(
+      "raw" = as.data.frame(nidap_raw_counts),
+      "norm" = list("voom" = as.data.frame(nidap_norm_counts))
+    )
+  )
+  custom_colors <- list(
+    Group = c(A = "#AA0000", B = "#00AA00", C = "#0000AA"),
+    Replicate = c("1" = "#111111", "2" = "#222222", "3" = "#333333"),
+    Batch = c("1" = "#AAAAAA", "2" = "#BBBBBB")
+  )
+  moo@analyses$colors <- custom_colors
+
+  expect_message(
+    p <- plot_expr_heatmap(
+      moo,
+      count_type = "norm",
+      sub_count_type = "voom",
+      feature_id_colname = "Gene",
+      group_columns = c("Group", "Replicate", "Batch")
+    ),
+    "total number of genes in heatmap",
+    fixed = FALSE
+  )
+
+  expect_equal(
+    p@top_annotation@anno_list$Group@color_mapping@colors,
+    c(A = "#AA0000FF", B = "#00AA00FF", C = "#0000AAFF")
+  )
+  expect_equal(
+    p@top_annotation@anno_list$Replicate@color_mapping@colors,
+    c("1" = "#111111FF", "2" = "#222222FF", "3" = "#333333FF")
+  )
+  expect_equal(
+    p@top_annotation@anno_list$Batch@color_mapping@colors,
+    c("1" = "#AAAAAAFF", "2" = "#BBBBBBFF")
+  )
+})
+
+test_that("plot_expr_heatmap resolves annotation colors by first observed group order", {
+  counts_dat <- nidap_norm_counts[, c(
+    "Gene",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "C1",
+    "C2",
+    "C3"
+  )]
+  sample_metadata <- as.data.frame(nidap_sample_metadata)
+  sample_metadata <- sample_metadata[
+    match(colnames(counts_dat)[-1], sample_metadata$Sample),
+  ]
+
+  expect_message(
+    p <- plot_expr_heatmap(
+      as.data.frame(counts_dat),
+      sample_metadata = sample_metadata,
+      feature_id_colname = "Gene",
+      samples_to_include = colnames(counts_dat)[-1],
+      group_columns = "Group",
+      group_colors = c("#5954d6", "#e1562c", "#b80058")
+    ),
+    "total number of genes in heatmap",
+    fixed = FALSE
+  )
+
+  expect_equal(
+    p@top_annotation@anno_list$Group@color_mapping@colors[c("B", "A", "C")],
+    c(B = "#5954D6FF", A = "#E1562CFF", C = "#B80058FF")
+  )
+})
+
+test_that("plot_expr_heatmap uses selected gene distance metric", {
+  counts_dat <- data.frame(
+    Gene = paste0("g", 1:8),
+    s1 = c(
+      -0.6264538,
+      0.1836433,
+      -0.8356286,
+      1.5952808,
+      0.3295078,
+      -0.8204684,
+      0.4874291,
+      0.7383247
+    ),
+    s2 = c(
+      0.57578135,
+      -0.30538839,
+      1.51178117,
+      0.38984324,
+      -0.62124058,
+      -2.21469989,
+      1.12493092,
+      -0.04493361
+    ),
+    s3 = c(
+      -0.01619026,
+      0.94383621,
+      0.82122120,
+      0.59390132,
+      0.91897737,
+      0.78213630,
+      0.07456498,
+      -1.98935170
+    ),
+    s4 = c(
+      0.61982575,
+      -0.05612874,
+      -0.15579551,
+      -1.47075238,
+      -0.47815006,
+      0.41794156,
+      1.35867955,
+      -0.10278773
+    ),
+    s5 = c(
+      0.38767161,
+      -0.05380504,
+      -1.37705956,
+      -0.41499456,
+      -0.39428995,
+      -0.05931340,
+      1.10002537,
+      0.76317575
+    ),
+    check.names = FALSE
+  )
+  sample_metadata <- data.frame(
+    Sample = paste0("s", 1:5),
+    Group = c("A", "A", "B", "B", "C")
+  )
+
+  common_args <- list(
+    moo_counts = counts_dat,
+    sample_metadata = sample_metadata,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    include_all_genes = TRUE,
+    filter_top_genes_by_variance = FALSE,
+    center_and_rescale_expression = FALSE,
+    cluster_genes = TRUE,
+    gene_clustering_method = "complete",
+    cluster_samples = FALSE,
+    arrange_sample_columns = TRUE,
+    group_columns = "Group",
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+
+  expect_message(
+    p_euclidean <- do.call(
+      plot_expr_heatmap,
+      c(common_args, list(gene_distance_metric = "euclidean"))
+    ),
+    "total number of genes in heatmap"
+  )
+  expect_message(
+    p_correlation <- do.call(
+      plot_expr_heatmap,
+      c(common_args, list(gene_distance_metric = "correlation"))
+    ),
+    "total number of genes in heatmap"
+  )
+
+  expect_equal(
+    p_euclidean@row_dend_param$obj$order,
+    c(2, 5, 4, 3, 1, 7, 8, 6)
+  )
+  expect_equal(
+    p_correlation@row_dend_param$obj$order,
+    c(2, 5, 6, 3, 4, 1, 7, 8)
+  )
+})
+
+test_that("plot_expr_heatmap uses selected sample clustering method", {
+  counts_dat <- data.frame(
+    Gene = paste0("g", 1:8),
+    s1 = c(
+      -0.89691455,
+      0.18484918,
+      1.58784533,
+      -1.13037567,
+      -0.08025176,
+      0.13242028,
+      0.70795473,
+      -0.23969802
+    ),
+    s2 = c(
+      1.9844739,
+      -0.1387870,
+      0.4176508,
+      0.9817528,
+      -0.3926954,
+      -1.0396690,
+      1.7822290,
+      -2.3110691
+    ),
+    s3 = c(
+      0.87860458,
+      0.03580672,
+      1.01282869,
+      0.43226515,
+      2.09081921,
+      -1.19992582,
+      1.58963820,
+      1.95465164
+    ),
+    s4 = c(
+      0.004937777,
+      -2.451706388,
+      0.477237303,
+      -0.596558169,
+      0.792203270,
+      0.289636710,
+      0.738938604,
+      0.318960401
+    ),
+    s5 = c(
+      1.0761644,
+      -0.2841577,
+      -0.7766753,
+      -0.5956605,
+      -1.7259798,
+      -0.9025845,
+      -0.5590619,
+      -0.2465126
+    ),
+    s6 = c(
+      -0.38358623,
+      -1.95910318,
+      -0.84170506,
+      1.90354747,
+      0.62249393,
+      1.99092044,
+      -0.30548372,
+      -0.09084424
+    ),
+    check.names = FALSE
+  )
+  sample_metadata <- data.frame(
+    Sample = paste0("s", 1:6),
+    Group = c("A", "A", "B", "B", "C", "C")
+  )
+
+  common_args <- list(
+    moo_counts = counts_dat,
+    sample_metadata = sample_metadata,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    include_all_genes = TRUE,
+    filter_top_genes_by_variance = FALSE,
+    center_and_rescale_expression = FALSE,
+    cluster_genes = FALSE,
+    cluster_samples = TRUE,
+    arrange_sample_columns = FALSE,
+    smpl_distance_metric = "euclidean",
+    group_columns = "Group",
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+
+  expect_message(
+    p_complete <- do.call(
+      plot_expr_heatmap,
+      c(common_args, list(smpl_clustering_method = "complete"))
+    ),
+    "total number of genes in heatmap"
+  )
+  expect_message(
+    p_single <- do.call(
+      plot_expr_heatmap,
+      c(common_args, list(smpl_clustering_method = "single"))
+    ),
+    "total number of genes in heatmap"
+  )
+
+  expect_equal(p_complete@column_dend_param$obj$order, c(6, 5, 2, 3, 4, 1))
+  expect_equal(p_single@column_dend_param$obj$order, c(2, 3, 5, 6, 4, 1))
 })

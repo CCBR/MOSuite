@@ -4,20 +4,18 @@
 \alias{set_color_pal}
 \title{Set color palette for a single group/column}
 \usage{
-set_color_pal(moo, colname, palette_fun = grDevices::palette.colors, ...)
+set_color_pal(moo, colname, palette = mosuite_palette)
 }
 \arguments{
 \item{moo}{\code{multiOmicDataSet} object (see \code{create_multiOmicDataSet_from_dataframes()})}
 
 \item{colname}{group column name to set the palette for}
 
-\item{palette_fun}{Function for selecting colors. Assumed to contain \code{n} for the number of colors. Default:
-\code{grDevices::palette.colors()}}
-
-\item{...}{additional arguments forwarded to \code{palette_fun}}
+\item{palette}{Character vector of colors to assign. Defaults to
+\code{mosuite_palette}.}
 }
 \value{
-\code{moo} with colors updated at \code{moo@analyses$colors$colname}
+\code{moo} with colors updated at \code{moo@analyses$colors[[colname]]}
 }
 \description{
 This allows you to set custom palettes individually for groups in the dataset
@@ -28,7 +26,7 @@ moo <- create_multiOmicDataSet_from_dataframes(
   counts_dat = as.data.frame(nidap_raw_counts)
 )
 moo@analyses$colors$Group
-moo <- moo |> set_color_pal("Group", palette_fun = RColorBrewer::brewer.pal, name = "Set2")
+moo <- moo |> set_color_pal("Group", palette = RColorBrewer::brewer.pal(3, "Set2"))
 moo@analyses$colors$Group
 
 }

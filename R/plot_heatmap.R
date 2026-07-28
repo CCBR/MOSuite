@@ -42,10 +42,7 @@
 #'   feature_id_colname = NULL,
 #'   group_colname = "Group",
 #'   label_colname = "Label",
-#'   color_values = c(
-#'     "#5954d6", "#e1562c", "#b80058", "#00c6f8", "#d163e6", "#00a76c",
-#'     "#ff9287", "#008cf9", "#006e00", "#796880", "#FFA500", "#878500"
-#'   ))
+#'   color_values = mosuite_palette)
 #' ```
 #'
 #' @seealso
@@ -64,6 +61,13 @@ plot_corr_heatmap <- S7::new_generic("plot_corr_heatmap", "moo_counts")
 #' @param count_type the type of counts to use. Must be a name in the counts slot (`names(moo@counts)`).
 #' @param sub_count_type used if `count_type` is a list in the counts slot: specify the sub count type within the list.
 #'   Must be a name in `names(moo@counts[[count_type]])`.
+#' @param group_colname The column from the sample metadata containing the sample group information. This is usually a
+#'   column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
+#'   Before, After, etc.).
+#' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+#'   level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
+#'   the metadata column. Defaults to `NULL`; when `NULL`, `mosuite_palette` is used for `data.frame` dispatch and
+#'   stored colors are used for `multiOmicDataSet` dispatch.
 #' @param ... additional arguments forwarded to [plot_corr_heatmap()] for `data.frame`
 #'
 #' @rdname plot_corr_heatmap-multiOmicDataSet
@@ -76,12 +80,17 @@ S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
   moo_counts,
   count_type,
   sub_count_type = NULL,
+  group_colname = "Group",
+  color_values = NULL,
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  color_values <- color_values %||% moo_counts@analyses$colors[group_colname]
   return(plot_corr_heatmap(
     counts_dat,
     sample_metadata = moo_counts@sample_meta,
+    group_colname = group_colname,
+    color_values = color_values,
     ...
   ))
 }
@@ -105,7 +114,9 @@ S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
 #'   labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
 #'   column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
 #'   `NULL` -- `sample_id_colname` will be used.)
-#' @param color_values vector of colors as hex values or names recognized by R
+#' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+#'   level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
+#'   the metadata column. Defaults to `NULL`; when `NULL`, `mosuite_palette` is used.
 #'
 #' @rdname plot_corr_heatmap-data.frame
 #' @aliases plot_corr_heatmap.data.frame
@@ -120,22 +131,10 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
   feature_id_colname = NULL,
   group_colname = "Group",
   label_colname = "Label",
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  )
+  color_values = NULL
 ) {
   abort_packages_not_installed("amap", "ComplexHeatmap", "dendsort")
+  color_values <- color_values %||% mosuite_palette
   counts_dat <- moo_counts
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
@@ -154,20 +153,15 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
   # cannot set rownames on a tibble
   sample_metadata <- sample_metadata |> as.data.frame()
   rownames(sample_metadata) <- sample_metadata[[label_colname]]
-  annoVal <- lapply(group_colname, function(x) {
-    # TODO this only works on dataframes, not tibbles
-    out <- as.factor(sample_metadata |> dplyr::pull(x)) |> levels()
-    # names(out)=x
-    return(out)
-  }) |>
-    unlist()
-  col <- color_values[seq_along(annoVal)]
-  names(col) <- annoVal
-
+  # normalize color_values to a named list so each column can have its own colors
+  if (!is.list(color_values)) {
+    color_values <- stats::setNames(
+      rep(list(color_values), length(group_colname)),
+      group_colname
+    )
+  }
   cols <- lapply(group_colname, function(x) {
-    ax <- as.factor(sample_metadata |> dplyr::pull(x)) |> levels()
-    out <- col[ax]
-    return(out)
+    return(resolve_plot_colors(sample_metadata, x, color_values[[x]]))
   })
   names(cols) <- (group_colname)
 
@@ -255,7 +249,10 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
 #'   labels to display on your figure (e.g. shorter labels are sometimes preferred on plots). In that case, select the
 #'   column with your preferred Labels here. The selected column should contain unique names for each sample. (Default:
 #'   `NULL` -- `sample_id_colname` will be used.)
-#' @param color_values vector of colors as hex values or names recognized by R
+#' @param color_values vector of colors as hex values or names recognized by R. Unnamed colors are assigned by factor
+#'   level order when the grouping column is a factor; otherwise, they are assigned in the order groups first appear in
+#'   the metadata column. Defaults to `NULL`; when `NULL`, `mosuite_palette` is used for `data.frame` dispatch and
+#'   stored colors are used for `multiOmicDataSet` dispatch.
 #' @param samples_to_include Which samples would you like to include? Usually, you will choose all sample columns, or
 #'   you could choose to remove certain samples. Samples excluded here will be removed in this step and from further
 #'   analysis downstream of this step. (Default: `NULL` - all sample IDs in `moo@sample_meta` will be used.)
@@ -295,7 +292,6 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
 #' @param assign_group_colors If TRUE, set the groups assigned colors (below)
 #' @param assign_color_to_sample_groups Enter each sample to color in the format: group_name: color This parameter is
 #'   ignored if "Assign Colors" is set to FALSE.
-#' @param group_colors Set group annotation colors.
 #' @param heatmap_color_scheme color scheme (TODO document options)
 #' @param autoscale_heatmap_color Set to TRUE to autoscale the heatmap colors between the maximum and minimum heatmap
 #'   color parameters. If FALSE, set the heatmap colors between "Set max heatmap color" and "Set min heatmap color"
@@ -312,6 +308,7 @@ S7::method(plot_corr_heatmap, S7::class_data.frame) <- function(
 #' @param display_numbers Setting to FALSE (default) will not display numerical value of heat on heatmap. Set to TRUE if
 #'   you want to see these numbers on the plot.
 #' @param plot_filename plot output filename - only used if save_plots is TRUE
+#' @param ... additional arguments passed to methods
 #'
 #' @export
 #' @returns heatmap from `ComplexHeatmap::Heatmap()`
@@ -365,20 +362,7 @@ plot_expr_heatmap <- S7::new_generic(
     group_colname = "Group",
     label_colname = NULL,
     samples_to_include = NULL,
-    color_values = c(
-      "#5954d6",
-      "#e1562c",
-      "#b80058",
-      "#00c6f8",
-      "#d163e6",
-      "#00a76c",
-      "#ff9287",
-      "#008cf9",
-      "#006e00",
-      "#796880",
-      "#FFA500",
-      "#878500"
-    ),
+    color_values = NULL,
     include_all_genes = FALSE,
     filter_top_genes_by_variance = TRUE,
     top_genes_by_variance_to_include = 500,
@@ -403,20 +387,6 @@ plot_expr_heatmap <- S7::new_generic(
     group_columns = c("Group", "Replicate", "Batch"),
     assign_group_colors = FALSE,
     assign_color_to_sample_groups = c(),
-    group_colors = c(
-      "#5954d6",
-      "#e1562c",
-      "#b80058",
-      "#00c6f8",
-      "#d163e6",
-      "#00a76c",
-      "#ff9287",
-      "#008cf9",
-      "#006e00",
-      "#796880",
-      "#FFA500",
-      "#878500"
-    ),
     heatmap_color_scheme = "Default",
     autoscale_heatmap_color = TRUE,
     set_min_heatmap_color = -2,
@@ -429,7 +399,8 @@ plot_expr_heatmap <- S7::new_generic(
     plot_filename = "expr_heatmap.png",
     print_plots = options::opt("print_plots"),
     save_plots = options::opt("save_plots"),
-    plots_subdir = "heatmap"
+    plots_subdir = "heatmap",
+    ...
   ) {
     return(S7::S7_dispatch())
   }
@@ -447,20 +418,7 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = NULL,
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -485,20 +443,6 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
   group_columns = c("Group", "Replicate", "Batch"),
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
-  group_colors = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
   set_min_heatmap_color = -2,
@@ -511,58 +455,59 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "heatmap"
+  plots_subdir = "heatmap",
+  ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  color_values <- color_values %||% moo_counts@analyses$colors[group_columns]
   heatmap_plot <- plot_expr_heatmap(
     counts_dat,
     count_type = count_type,
     sub_count_type = sub_count_type,
     sample_metadata = moo_counts@sample_meta,
     sample_id_colname = NULL,
-    feature_id_colname,
-    group_colname,
-    label_colname,
-    samples_to_include,
-    color_values,
-    include_all_genes,
-    filter_top_genes_by_variance,
-    top_genes_by_variance_to_include,
-    specific_genes_to_include_in_heatmap,
-    cluster_genes,
-    gene_distance_metric,
-    gene_clustering_method,
-    display_gene_dendrograms,
-    display_gene_names,
-    center_and_rescale_expression,
-    cluster_samples,
-    arrange_sample_columns,
-    order_by_gene_expression,
-    gene_to_order_columns,
-    gene_expression_order,
-    smpl_distance_metric,
-    smpl_clustering_method,
-    display_smpl_dendrograms,
-    reorder_dendrogram,
-    reorder_dendrogram_order,
-    display_sample_names,
-    group_columns,
-    assign_group_colors,
-    assign_color_to_sample_groups,
-    group_colors,
-    heatmap_color_scheme,
-    autoscale_heatmap_color,
-    set_min_heatmap_color,
-    set_max_heatmap_color,
-    aspect_ratio,
-    legend_font_size,
-    gene_name_font_size,
-    sample_name_font_size,
-    display_numbers,
+    feature_id_colname = feature_id_colname,
+    group_colname = group_colname,
+    label_colname = label_colname,
+    samples_to_include = samples_to_include,
+    color_values = color_values,
+    include_all_genes = include_all_genes,
+    filter_top_genes_by_variance = filter_top_genes_by_variance,
+    top_genes_by_variance_to_include = top_genes_by_variance_to_include,
+    specific_genes_to_include_in_heatmap = specific_genes_to_include_in_heatmap,
+    cluster_genes = cluster_genes,
+    gene_distance_metric = gene_distance_metric,
+    gene_clustering_method = gene_clustering_method,
+    display_gene_dendrograms = display_gene_dendrograms,
+    display_gene_names = display_gene_names,
+    center_and_rescale_expression = center_and_rescale_expression,
+    cluster_samples = cluster_samples,
+    arrange_sample_columns = arrange_sample_columns,
+    order_by_gene_expression = order_by_gene_expression,
+    gene_to_order_columns = gene_to_order_columns,
+    gene_expression_order = gene_expression_order,
+    smpl_distance_metric = smpl_distance_metric,
+    smpl_clustering_method = smpl_clustering_method,
+    display_smpl_dendrograms = display_smpl_dendrograms,
+    reorder_dendrogram = reorder_dendrogram,
+    reorder_dendrogram_order = reorder_dendrogram_order,
+    display_sample_names = display_sample_names,
+    group_columns = group_columns,
+    assign_group_colors = assign_group_colors,
+    assign_color_to_sample_groups = assign_color_to_sample_groups,
+    heatmap_color_scheme = heatmap_color_scheme,
+    autoscale_heatmap_color = autoscale_heatmap_color,
+    set_min_heatmap_color = set_min_heatmap_color,
+    set_max_heatmap_color = set_max_heatmap_color,
+    aspect_ratio = aspect_ratio,
+    legend_font_size = legend_font_size,
+    gene_name_font_size = gene_name_font_size,
+    sample_name_font_size = sample_name_font_size,
+    display_numbers = display_numbers,
     plot_filename = plot_filename,
-    print_plots,
-    save_plots,
-    plots_subdir
+    print_plots = print_plots,
+    save_plots = save_plots,
+    plots_subdir = plots_subdir
   )
   return(heatmap_plot)
 }
@@ -578,20 +523,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   group_colname = "Group",
   label_colname = NULL,
   samples_to_include = NULL,
-  color_values = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
+  color_values = NULL,
   include_all_genes = FALSE,
   filter_top_genes_by_variance = TRUE,
   top_genes_by_variance_to_include = 500,
@@ -616,20 +548,6 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   group_columns = c("Group", "Replicate", "Batch"),
   assign_group_colors = FALSE,
   assign_color_to_sample_groups = c(),
-  group_colors = c(
-    "#5954d6",
-    "#e1562c",
-    "#b80058",
-    "#00c6f8",
-    "#d163e6",
-    "#00a76c",
-    "#ff9287",
-    "#008cf9",
-    "#006e00",
-    "#796880",
-    "#FFA500",
-    "#878500"
-  ),
   heatmap_color_scheme = "Default",
   autoscale_heatmap_color = TRUE,
   set_min_heatmap_color = -2,
@@ -642,10 +560,12 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   plot_filename = "expr_heatmap.png",
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
-  plots_subdir = "heatmap"
+  plots_subdir = "heatmap",
+  ...
 ) {
   ## This function uses pheatmap to draw a heatmap, scaling first by rows
   ## (with samples in columns and genes in rows)
+  color_values <- color_values %||% mosuite_palette
   Gene <- NULL
   # TODO support tibbles; currently these must be dataframes
   counts_dat <- as.data.frame(moo_counts)
@@ -749,9 +669,6 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
     # if (=FALSE) {
     #   col.pal = rev(col.pal)
     # }
-    # Define metrics for clustering
-    drows1 <- gene_distance_metric
-    dcols1 <- smpl_distance_metric
     minx <- min(dat)
     maxx <- max(dat)
     if (autoscale_heatmap_color) {
@@ -763,31 +680,58 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
     }
     breaks <- sapply(breaks, signif, 4)
     legbreaks <- sapply(legbreaks, signif, 4)
-    # Run cluster method using
-    hcrow <- stats::hclust(stats::dist(dat), method = gene_clustering_method)
-    # hc <- stats::hclust(stats::dist(t(dat)), method = smpl_clustering_method)
+    # Build distance matrices explicitly before hclust() so user-selected
+    # distance metrics are used. Calling stats::dist(dat) directly would force
+    # Euclidean distance and ignore gene_distance_metric/smpl_distance_metric.
+    heatmap_dist <- function(x, metric) {
+      metric <- trimws(metric)
+      if (identical(metric, "correlation")) {
+        corr <- stats::cor(t(x), use = "pairwise.complete.obs")
+        corr[is.na(corr)] <- 0
+        return(stats::as.dist(1 - corr))
+      }
 
-    if (FALSE) {
-      sort_hclust <- function(...) {
-        return(stats::as.hclust(rev(
-          dendsort::dendsort(stats::as.dendrogram(...))
-        )))
-      }
-    } else {
-      sort_hclust <- function(...) {
-        return(stats::as.hclust(dendsort::dendsort(stats::as.dendrogram(...))))
-      }
+      return(stats::dist(x, method = metric))
     }
-    # if (clus) {
-    #   colclus <- sort_hclust(hc)
-    # } else {
-    #   colclus <- FALSE
-    # }
+
+    sort_hclust <- function(hc, reverse = FALSE, rotation_order = NULL) {
+      dend <- dendsort::dendsort(stats::as.dendrogram(hc))
+      if (reverse) {
+        dend <- rev(dend)
+      }
+      if (!is.null(rotation_order) && length(rotation_order) > 0) {
+        dend <- dendextend::rotate(dend, rotation_order)
+      }
+      return(stats::as.hclust(dend))
+    }
+
     if (clus2) {
+      hcrow <- stats::hclust(
+        heatmap_dist(dat, gene_distance_metric),
+        method = gene_clustering_method
+      )
       rowclus <- sort_hclust(hcrow)
     } else {
       rowclus <- FALSE
     }
+    if (clus) {
+      sample_rotation <- NULL
+      if (reorder_dendrogram == TRUE) {
+        sample_rotation <- reorder_dendrogram_order
+      }
+      hccol <- stats::hclust(
+        heatmap_dist(t(dat), smpl_distance_metric),
+        method = smpl_clustering_method
+      )
+      colclus <- sort_hclust(
+        hccol,
+        reverse = TRUE,
+        rotation_order = sample_rotation
+      )
+    } else {
+      colclus <- FALSE
+    }
+
     if (display_smpl_dendrograms) {
       smpl_treeheight <- 25
     } else {
@@ -819,32 +763,20 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
       show_rownames = rn,
       show_colnames = cn,
       cluster_rows = rowclus,
-      cluster_cols = clus,
-      clustering_distance_rows = drows1,
-      clustering_distance_cols = dcols1,
+      cluster_cols = colclus,
       annotation_col = annotation_col,
       annotation_colors = annot_col,
       labels_col = labels_col
     )
-    # mat <- t(dat)
-    callback <- function(hc, mat) {
-      dend <- rev(dendsort::dendsort(stats::as.dendrogram(hc)))
-      if (reorder_dendrogram == TRUE) {
-        dend <- dend |> dendextend::rotate(reorder_dendrogram_order)
-      } else {
-        dend <- dend |> dendextend::rotate(c(1:stats::nobs(dend)))
-      }
-      return(stats::as.hclust(dend))
-    }
     ### PH: END SET up heatmap function for do.call
 
     ## Make Heatmap
+    # Row and column clustering are handled above by heatmap_dist(),
+    # stats::hclust(), and sort_hclust(), then passed in via cluster_rows
+    # and cluster_cols.
     return(do.call(
       ComplexHeatmap::pheatmap,
-      c(
-        hm.parameters,
-        list(clustering_callback = callback)
-      )
+      hm.parameters
     ))
   }
   # End doheatmap() function.
@@ -1025,25 +957,40 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   annotation_col <- as.data.frame(unclass(annotation_col))
   annotation_col[] <- lapply(annotation_col, factor)
   x <- length(unlist(lapply(annotation_col, levels)))
-  if (x > length(group_colors)) {
-    k <- x - length(group_colors)
-    more_cols <- get_random_colors(k)
-    group_colors <- c(group_colors, more_cols)
+  if (!is.list(color_values) && x > length(color_values)) {
+    generated_group_colors <- get_colors_vctr(
+      data.frame(group_color_index = seq_len(x)),
+      "group_color_index"
+    )
+    more_cols <- unname(generated_group_colors)[seq.int(
+      length(color_values) + 1,
+      x
+    )]
+    color_values <- c(color_values, more_cols)
   }
   rownames(annotation_col) <- annot[[label_colname]]
   annot_col <- list()
-  b <- 1
-  i <- 1
-  while (i <= length(group_columns)) {
-    cnam <- group_columns[i]
-    grp <- as.factor(annotation_col[, i])
-    c <- b + length(levels(grp)) - 1
-    col <- group_colors[b:c]
-    names(col) <- levels(grp)
-    assign(cnam, col)
-    annot_col <- append(annot_col, mget(cnam))
-    b <- c + 1
-    i <- i + 1
+  next_color <- 1
+  for (cnam in group_columns) {
+    group_levels <- stats::na.omit(unique(annot[[cnam]]))
+
+    if (is.list(color_values) && cnam %in% names(color_values)) {
+      col <- resolve_plot_colors(annot, cnam, color_values[[cnam]])
+    } else if (
+      !is.null(names(color_values)) &&
+        all(as.character(group_levels) %in% names(color_values))
+    ) {
+      col <- resolve_plot_colors(annot, cnam, color_values)
+    } else {
+      color_slice <- color_values[
+        next_color:(next_color + length(group_levels) - 1)
+      ]
+      col <- resolve_plot_colors(annot, cnam, color_slice)
+    }
+
+    next_color <- next_color + length(group_levels)
+
+    annot_col[[cnam]] <- col
   }
 
   if (assign_group_colors == TRUE) {

@@ -79,6 +79,143 @@ sample_meta <- structure(
   row.names = c("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"),
   class = "data.frame"
 )
+
+get_histogram_colour_guide_ncol <- function(plot) {
+  return(plot$guides$guides$colour$params$ncol)
+}
+
+get_plotly_text <- function(plot) {
+  traces <- plotly::plotly_build(plot)$x$data
+  return(unlist(
+    lapply(traces, function(trace) trace$text),
+    use.names = FALSE
+  ))
+}
+
+test_that("plot_histogram interactive hover text includes sample and group", {
+  counts_dat <- log_counts |>
+    as.data.frame() |>
+    tibble::rownames_to_column("Gene")
+
+  plot_by_group <- suppressWarnings(plot_histogram(
+    counts_dat,
+    sample_metadata = sample_meta,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    color_by_group = TRUE,
+    interactive_plots = TRUE
+  ))
+  plot_by_sample <- suppressWarnings(plot_histogram(
+    counts_dat,
+    sample_metadata = sample_meta,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    color_by_group = FALSE,
+    interactive_plots = TRUE
+  ))
+
+  hover_text_by_group <- get_plotly_text(plot_by_group)
+  hover_text_by_sample <- get_plotly_text(plot_by_sample)
+  expect_true(any(grepl("Sample: A1", hover_text_by_group, fixed = TRUE)))
+  expect_true(any(grepl("Group: A", hover_text_by_group, fixed = TRUE)))
+  expect_true(any(grepl("Sample: A1", hover_text_by_sample, fixed = TRUE)))
+  expect_true(any(grepl("Group: A", hover_text_by_sample, fixed = TRUE)))
+})
+
+test_that("plot_histogram interactive output keeps legend", {
+  counts_dat <- log_counts |>
+    as.data.frame() |>
+    tibble::rownames_to_column("Gene")
+
+  plot <- suppressWarnings(plot_histogram(
+    counts_dat,
+    sample_metadata = sample_meta,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    color_by_group = TRUE,
+    interactive_plots = TRUE
+  ))
+  built_plot <- plotly::plotly_build(plot)
+
+  expect_false(identical(built_plot$x$layout$showlegend, FALSE))
+  expect_true(any(vapply(
+    built_plot$x$data,
+    function(trace) !is.null(trace$name) && nzchar(trace$name),
+    logical(1)
+  )))
+})
+
+test_that("plot_histogram wraps long top and bottom sample-name legends", {
+  counts_dat <- log_counts |>
+    as.data.frame() |>
+    tibble::rownames_to_column("Gene")
+  sample_columns <- setdiff(colnames(counts_dat), "Gene")
+  long_sample_names <- stats::setNames(
+    sprintf("SampleName%05d", seq_along(sample_columns)),
+    sample_columns
+  )
+  colnames(counts_dat) <- ifelse(
+    colnames(counts_dat) %in% names(long_sample_names),
+    unname(long_sample_names[colnames(counts_dat)]),
+    colnames(counts_dat)
+  )
+  sample_metadata <- sample_meta
+  sample_metadata$Sample <- unname(long_sample_names[as.character(
+    sample_metadata$Sample
+  )])
+  sample_metadata$Label <- sample_metadata$Sample
+
+  for (legend_position in c("top", "bottom")) {
+    plot <- plot_histogram(
+      counts_dat,
+      sample_metadata = sample_metadata,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      color_by_group = FALSE,
+      legend_position = legend_position,
+      number_of_legend_columns = 6
+    )
+
+    expect_equal(get_histogram_colour_guide_ncol(plot), 3)
+  }
+})
+
+test_that("plot_histogram legend columns target the colour guide", {
+  plot <- plot_histogram(
+    log_counts |>
+      as.data.frame() |>
+      tibble::rownames_to_column("Gene"),
+    sample_meta,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    color_by_group = FALSE,
+    legend_position = "top",
+    number_of_legend_columns = 2
+  )
+
+  expect_equal(get_histogram_colour_guide_ncol(plot), 2)
+})
+
+test_that("plot_histogram uses line glyphs for density legend keys", {
+  plot <- plot_histogram(
+    nidap_filtered_counts,
+    sample_metadata = nidap_sample_metadata,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    color_by_group = TRUE
+  )
+
+  expect_equal(
+    plot$guides$guides$colour$params$override.aes,
+    list(linetype = 1, linewidth = 2, shape = NA, fill = NA)
+  )
+  expect_s3_class(plot$theme$legend.key, "element_blank")
+})
+
 test_that("plot_histogram works with rownames", {
   p <- plot_histogram(
     log_counts |> as.data.frame() |> tibble::rownames_to_column("Gene"),
@@ -513,6 +650,165 @@ test_that("plot_histogram works with rownames", {
       class = c("tbl_df", "tbl", "data.frame")
     )
   )
+})
+
+test_that("plot_histogram resolves group colors by first observed group order", {
+  color_values <- c("#5954d6", "#e1562c", "#b80058")
+  counts_dat <- nidap_filtered_counts[, c(
+    "Gene",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "C1",
+    "C2",
+    "C3"
+  )]
+  plot <- plot_histogram(
+    counts_dat,
+    sample_metadata = nidap_sample_metadata,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    color_values = color_values,
+    color_by_group = TRUE
+  )
+  scales <- ggplot2::ggplot_build(plot)$plot$scales$scales
+  colour_scale <- scales[[which(vapply(
+    scales,
+    function(scale) "colour" %in% scale$aesthetics,
+    logical(1)
+  ))[[1]]]]
+
+  expect_equal(
+    colour_scale$palette.cache,
+    c(B = "#5954d6", A = "#e1562c", C = "#b80058")
+  )
+})
+
+test_that("plot_histogram resolves group colors by factor level order", {
+  color_values <- c("#5954d6", "#e1562c", "#b80058")
+  counts_dat <- nidap_filtered_counts[, c(
+    "Gene",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "C1",
+    "C2",
+    "C3"
+  )]
+  sample_metadata <- nidap_sample_metadata
+  sample_metadata$Group <- factor(
+    sample_metadata$Group,
+    levels = c("C", "A", "B")
+  )
+
+  plot <- plot_histogram(
+    counts_dat,
+    sample_metadata = sample_metadata,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    color_values = color_values,
+    color_by_group = TRUE
+  )
+  scales <- ggplot2::ggplot_build(plot)$plot$scales$scales
+  colour_scale <- scales[[which(vapply(
+    scales,
+    function(scale) "colour" %in% scale$aesthetics,
+    logical(1)
+  ))[[1]]]]
+
+  expect_equal(
+    colour_scale$palette.cache,
+    c(C = "#5954d6", A = "#e1562c", B = "#b80058")
+  )
+})
+
+test_that("plot_histogram resolves sample colors by first observed sample order", {
+  color_values <- c("#5954d6", "#e1562c", "#b80058", "#00c6f8")
+  counts_dat <- nidap_filtered_counts[, c("Gene", "B1", "A1", "C1", "A2")]
+  plot <- plot_histogram(
+    counts_dat,
+    sample_metadata = nidap_sample_metadata,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    color_values = color_values,
+    color_by_group = FALSE
+  )
+  scales <- ggplot2::ggplot_build(plot)$plot$scales$scales
+  colour_scale <- scales[[which(vapply(
+    scales,
+    function(scale) "colour" %in% scale$aesthetics,
+    logical(1)
+  ))[[1]]]]
+
+  expect_equal(
+    colour_scale$palette.cache,
+    c(B1 = "#5954d6", A1 = "#e1562c", C1 = "#b80058", A2 = "#00c6f8")
+  )
+})
+
+test_that("plot_histogram automatically sets log2 axis breaks when requested", {
+  counts_dat <- data.frame(
+    Gene = "gene_a",
+    S1 = 0,
+    S2 = 4,
+    S3 = 16,
+    check.names = FALSE
+  )
+  sample_metadata <- data.frame(
+    Sample = c("S1", "S2", "S3"),
+    Group = c("A", "A", "A"),
+    check.names = FALSE
+  )
+
+  plot <- plot_histogram(
+    counts_dat,
+    sample_metadata = sample_metadata,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    color_by_group = FALSE,
+    use_log2_x_axis = TRUE
+  )
+  x_scale <- plot$scales$get_scales("x")
+  axis_breaks <- x_scale$breaks(c(0.5, 64.5))
+
+  expect_equal(plot$data$count, c(0.5, 4.5, 16.5))
+  expect_true(all(c(0.5, 4.5, 16.5, 64.5) %in% axis_breaks))
+  expect_equal(x_scale$labels(c(0.5, 4.5, 16.5)), c("0", "4", "16"))
+})
+
+test_that("plot_histogram automatic log2 axis starts at zero", {
+  counts_dat <- data.frame(
+    Gene = "gene_a",
+    S1 = 4,
+    S2 = 16,
+    check.names = FALSE
+  )
+  sample_metadata <- data.frame(
+    Sample = c("S1", "S2"),
+    Group = c("A", "A"),
+    check.names = FALSE
+  )
+
+  plot <- plot_histogram(
+    counts_dat,
+    sample_metadata = sample_metadata,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    color_by_group = FALSE,
+    use_log2_x_axis = TRUE
+  )
+  x_scale <- plot$scales$get_scales("x")
+
+  expect_equal(2^x_scale$limits[1], 0.5)
+  expect_equal(x_scale$labels(2^x_scale$limits[1]), "0")
 })
 
 test_that("plot_histogram works with tibbles", {

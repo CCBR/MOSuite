@@ -13,6 +13,11 @@ rlang::`!!`
 #' @export
 rlang::.data
 
+#' default for null values
+#' @importFrom rlang %||%
+#' @export
+rlang::`%||%`
+
 # Suppress R CMD check note 'All declared Imports should be used'.
 # These are used in S7 methods.
 #' @importFrom dendextend rotate

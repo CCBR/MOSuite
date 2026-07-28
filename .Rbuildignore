@@ -26,7 +26,7 @@
 ^README.*$
 ^renv\.lock$
 ^renv$
-^report.*$
+^report
 ^Rplots\.pdf$
 ^SECURITY\.md$
 ^tests/figures$
@@ -35,3 +35,4 @@
 ^vignettes/memory\.Rmd$
 ^volc-sum-params\.json$
 VennDiagram.*\.log
+^\.posit/assistant$
