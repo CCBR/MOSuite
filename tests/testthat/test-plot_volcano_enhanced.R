@@ -485,11 +485,28 @@ test_that("plot_volcano_enhanced saves multiple comparisons separately", {
     vapply(captured_output_args, `[[`, numeric(1), "dpi"),
     rep(300, 3)
   )
-  output_filenames <- vapply(captured_output_args, `[[`, character(1), "filename")
+  output_filenames <- vapply(
+    captured_output_args,
+    `[[`,
+    character(1),
+    "filename"
+  )
   expect_true(all(grepl(basename(plots_dir), output_filenames, fixed = TRUE)))
-  expect_true(any(grepl("volcano_enhanced_B-A.png", output_filenames, fixed = TRUE)))
-  expect_true(any(grepl("volcano_enhanced_C-A.png", output_filenames, fixed = TRUE)))
-  expect_true(any(grepl("volcano_enhanced_B-C.png", output_filenames, fixed = TRUE)))
+  expect_true(any(grepl(
+    "volcano_enhanced_B-A.png",
+    output_filenames,
+    fixed = TRUE
+  )))
+  expect_true(any(grepl(
+    "volcano_enhanced_C-A.png",
+    output_filenames,
+    fixed = TRUE
+  )))
+  expect_true(any(grepl(
+    "volcano_enhanced_B-C.png",
+    output_filenames,
+    fixed = TRUE
+  )))
 })
 
 test_that("plot_volcano_enhanced preserves filename for one comparison", {
@@ -528,8 +545,16 @@ test_that("plot_volcano_enhanced preserves filename for one comparison", {
   expect_s3_class(result, "data.frame")
   captured_output_args <- getOption("mosuite_test_plot_output_args")
   expect_length(captured_output_args, 1)
-  expect_match(captured_output_args[[1]]$filename, basename(plots_dir), fixed = TRUE)
-  expect_match(captured_output_args[[1]]$filename, "custom_volcano.png", fixed = TRUE)
+  expect_match(
+    captured_output_args[[1]]$filename,
+    basename(plots_dir),
+    fixed = TRUE
+  )
+  expect_match(
+    captured_output_args[[1]]$filename,
+    "custom_volcano.png",
+    fixed = TRUE
+  )
 })
 
 test_that("plot_volcano_enhanced works with multiOmicDataSet", {

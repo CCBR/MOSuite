@@ -368,8 +368,16 @@ test_that("plot_volcano_summary combines enhanced plots into one grid figure", {
   expect_equal(captured_output_args[[1]]$height, 200)
   expect_equal(captured_output_args[[1]]$units, "px")
   expect_equal(captured_output_args[[1]]$dpi, 100)
-  expect_match(captured_output_args[[1]]$filename, basename(plots_dir), fixed = TRUE)
-  expect_match(captured_output_args[[1]]$filename, "volcano_summary.png", fixed = TRUE)
+  expect_match(
+    captured_output_args[[1]]$filename,
+    basename(plots_dir),
+    fixed = TRUE
+  )
+  expect_match(
+    captured_output_args[[1]]$filename,
+    "volcano_summary.png",
+    fixed = TRUE
+  )
 })
 
 test_that("plot_volcano_summary displays selected genes", {

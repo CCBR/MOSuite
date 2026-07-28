@@ -439,13 +439,16 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
     if (nplots > 1) {
       abort_packages_not_installed("patchwork")
       if (
-        isTRUE(use_default_grid_layout) || is.null(number_of_rows_in_grid_layout)
+        isTRUE(use_default_grid_layout) ||
+          is.null(number_of_rows_in_grid_layout)
       ) {
         nrows <- ceiling(nplots / ceiling(sqrt(nplots)))
       } else {
         nrows <- number_of_rows_in_grid_layout
       }
-      if (!is.numeric(nrows) || length(nrows) != 1 || is.na(nrows) || nrows < 1) {
+      if (
+        !is.numeric(nrows) || length(nrows) != 1 || is.na(nrows) || nrows < 1
+      ) {
         nrows <- 1
       }
       nrows <- as.integer(nrows)

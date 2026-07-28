@@ -628,7 +628,9 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
     comparison_labels <- gsub("_logFC$", "", change_colname[seq_len(nplots)])
     plot_output_filenames <- vapply(
       comparison_labels,
-      function(comparison_label) suffix_plot_filename(plot_filename, comparison_label),
+      function(comparison_label) {
+        suffix_plot_filename(plot_filename, comparison_label)
+      },
       character(1)
     )
   }
