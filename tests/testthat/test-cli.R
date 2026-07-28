@@ -82,6 +82,21 @@ test_that("mosuite --help", {
   expect_error(cli_exec("not_a_function"), "not a known function")
 })
 
+test_that("cli_parse handles logical-like strings", {
+  expect_true(cli_parse("true"))
+  expect_true(cli_parse("True"))
+  expect_true(cli_parse("TRUE"))
+  expect_false(cli_parse("false"))
+  expect_false(cli_parse("False"))
+  expect_false(cli_parse("FALSE"))
+})
+
+test_that("cli_exec_impl passes positional args", {
+  # Positional args are parsed via cli_parse() and appended as unnamed elements.
+  expect_equal(cli_exec(c("do_math", "TRUE", "FALSE")), 3)
+  expect_equal(cli_exec(c("do_math", "FALSE", "TRUE")), -1)
+})
+
 test_that("cli_unknown suggests closest matching function", {
   # Test with a typo that has a close match
   result <- cli_unknown("filter_count", getNamespaceExports("MOSuite"))
