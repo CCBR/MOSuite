@@ -461,7 +461,10 @@ remove_low_count_genes <- function(
     return(df_filt)
   }
 
-  if (!isTRUE(use_group_based_filtering) && minimum_number_of_groups_passing_filter != 1) {
+  if (
+    !isTRUE(use_group_based_filtering) &&
+      minimum_number_of_groups_passing_filter != 1
+  ) {
     warning(
       "minimum_number_of_groups_passing_filter is ignored when use_group_based_filtering is FALSE"
     )
