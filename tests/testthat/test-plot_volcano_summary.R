@@ -216,7 +216,9 @@ test_that("plot_volcano_summary forwards shared styling parameters", {
     color_of_non_significant_features = point_colors[1],
     color_of_logfold_change_threshold_line = point_colors[2],
     color_of_features_meeting_only_signif_threshold = point_colors[3],
-    color_for_features_meeting_pvalue_and_foldchange_thresholds = point_colors[4],
+    color_for_features_meeting_pvalue_and_foldchange_thresholds = point_colors[
+      4
+    ],
     save_plots = FALSE,
     print_plots = FALSE
   )
@@ -255,7 +257,10 @@ test_that("plot_volcano_summary uses EnhancedVolcano default colors", {
 
   expect_s3_class(result, "data.frame")
   captured_args <- getOption("mosuite_test_volcano_args")[[1]]
-  expect_equal(captured_args$col, c("grey30", "forestgreen", "royalblue", "red2"))
+  expect_equal(
+    captured_args$col,
+    c("grey30", "forestgreen", "royalblue", "red2")
+  )
   expect_equal(captured_args$cutoffLineCol, "black")
 })
 
@@ -289,7 +294,11 @@ test_that("plot_volcano_summary uses comparison titles without subtitles", {
     vapply(captured_args, `[[`, character(1), "title"),
     c("B-A", "C-A", "B-C")
   )
-  expect_true(all(vapply(captured_args, function(x) is.null(x$subtitle), logical(1))))
+  expect_true(all(vapply(
+    captured_args,
+    function(x) is.null(x$subtitle),
+    logical(1)
+  )))
 })
 
 test_that("plot_volcano_summary displays selected genes", {
