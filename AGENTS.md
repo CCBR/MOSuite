@@ -18,7 +18,6 @@ Helper functions from `usethis` and `devtools` are used extensively for developm
 - The package must pass `devtools::check()`.
 - R code should adhere to the tidyverse style guide. https://style.tidyverse.org/
 - Only include one return statement at the end of a function. Explicit returns are preferred but not required for R functions.
-- Ignore the files in `inst/extdata/galaxy`. They are deprecated and will be removed at a later date.
 
 ## Commit messages
 
