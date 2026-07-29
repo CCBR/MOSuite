@@ -1,7 +1,4 @@
 test_that("plot_volcano_summary works on nidap dataset", {
-  old_options <- options(lifecycle_verbosity = "quiet")
-  on.exit(options(old_options), add = TRUE)
-
   expect_snapshot(
     df_volc_sum <- plot_volcano_summary(
       nidap_deg_analysis,

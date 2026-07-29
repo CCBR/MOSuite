@@ -1,7 +1,4 @@
 test_that("plot_volcano_enhanced works on nidap dataset", {
-  old_options <- options(lifecycle_verbosity = "quiet")
-  on.exit(options(old_options), add = TRUE)
-
   expect_snapshot(
     df_volc_enh <- plot_volcano_enhanced(
       nidap_deg_analysis,

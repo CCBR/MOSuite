@@ -22,6 +22,18 @@
       
       Max y: 8.50040315712758
       
+    Condition
+      Warning:
+      Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+      i Please use `linewidth` instead.
+      i The deprecated feature was likely used in the EnhancedVolcano package.
+        Please report the issue to the authors.
+      Warning:
+      The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
+      i Please use the `linewidth` argument instead.
+      i The deprecated feature was likely used in the EnhancedVolcano package.
+        Please report the issue to the authors.
+    Message
       Genes in initial dataset: 7943
       
       Max y: 8.6648959905039
