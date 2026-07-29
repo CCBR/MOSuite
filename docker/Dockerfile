@@ -66,10 +66,6 @@ RUN mosuite --help
 # copy .Rprofile to R_HOME
 ADD .github/.Rprofile /opt2/conda/lib/R/
 
-# copy example script & json to data
-COPY ./inst/extdata/example_script.sh /data2/
-COPY ./inst/extdata/json_args/ /data2/json_args/
-
 # cleanup
 WORKDIR /data2
 RUN apt-get clean && apt-get purge \
