@@ -173,59 +173,12 @@ heatmap_plot <- plot_expr_heatmap(
 
 ### Volcano
 
-#### Summary
-
-``` r
-dat_volcano_summary <- moo@analyses$diff |>
-  join_dfs_wide() |>
-  plot_volcano_summary()
-#> Joining with `by = join_by(GeneName)`
-#> Joining with `by = join_by(GeneName)`
-#> Preparing table for contrast: B-A
-#> Fold change column: B-A_logFC
-#> pval column: B-A_pval
-#> Total number of features included in volcano plot: 7943
-#> Warning in ggrepel::geom_text_repel(data = grm[custom_gene_list_ind, ], :
-#> Ignoring unknown parameters: `segment.linewidth`
-#> Preparing table for contrast: C-A
-#> Fold change column: C-A_logFC
-#> pval column: C-A_pval
-#> Total number of features included in volcano plot: 7943
-#> Warning in ggrepel::geom_text_repel(data = grm[custom_gene_list_ind, ], :
-#> Ignoring unknown parameters: `segment.linewidth`
-#> Preparing table for contrast: B-C
-#> Fold change column: B-C_logFC
-#> pval column: B-C_pval
-#> Total number of features included in volcano plot: 7943
-#> Warning in ggrepel::geom_text_repel(data = grm[custom_gene_list_ind, ], :
-#> Ignoring unknown parameters: `segment.linewidth`
-```
-
-![](visualization_files/figure-html/volcano_summary-1.png)
-
-    #> Saving 5 x 4 in image
-
-    head(dat_volcano_summary)
-    #>       GeneName Contrast         FC     logFC     tstat         pval
-    #> B-A.1     Dntt      B-A -42.727551 -5.417095 -15.54572 3.460410e-09
-    #> B-A.2   Tmsb4x      B-A   3.845863  1.943307  12.82926 2.930649e-08
-    #> B-A.3     Flt3      B-A  -7.743692 -2.953022 -11.29797 1.173487e-07
-    #> B-A.4  Tspan13      B-A  -7.035795 -2.814713 -11.06018 1.476477e-07
-    #> B-A.5    Tapt1      B-A  -5.297586 -2.405335 -10.64544 2.226279e-07
-    #> B-A.6    Itgb7      B-A   8.882141  3.150907  10.62882 2.263833e-07
-    #>            adjpval
-    #> B-A.1 2.748604e-05
-    #> B-A.2 1.163907e-04
-    #> B-A.3 2.931915e-04
-    #> B-A.4 2.931915e-04
-    #> B-A.5 2.996937e-04
-    #> B-A.6 2.996937e-04
-
 #### Enhanced
 
+Create an enhanced volcano plot for each contrast:
+
 ``` r
-dat_volcano_enhanced <- moo@analyses$diff |>
-  join_dfs_wide() |>
+dat_volcano_enhanced <- moo |>
   plot_volcano_enhanced()
 #> Joining with `by = join_by(GeneName)`
 #> Joining with `by = join_by(GeneName)`
@@ -247,17 +200,89 @@ dat_volcano_enhanced <- moo@analyses$diff |>
 #> generated.
 #> Genes in initial dataset: 7943
 #> 
+#> Max y: 4.70280335204325
+#> 
+#> Genes in initial dataset: 7943
+#> 
 #> Max y: 4.34744066227962
 ```
 
-![](visualization_files/figure-html/volcano_enhanced-1.png)
+![](visualization_files/figure-html/volcano_enhanced-1.png)![](visualization_files/figure-html/volcano_enhanced-2.png)![](visualization_files/figure-html/volcano_enhanced-3.png)
+
+or plot only one contrast at a time by selecting the contrast from the
+`analyses` slot:
+
+``` r
+dat_volcano_enhanced_B_A <- moo@analyses$diff[["B-A"]] |>
+  plot_volcano_enhanced(
+    feature_id_colname = "GeneName",
+    change_colname = "logFC",
+    signif_colname = "adjpval"
+  )
+#> Genes in initial dataset: 7943
+#> Max y: 4.56088783571366
+```
+
+![](visualization_files/figure-html/volcano_enhanced_single_contrast-1.png)
+
+#### Summary
+
+Create an enhanced volcano plot for each contrast and compose them in
+one figure:
+
+``` r
+dat_volcano_summary <- moo |>
+  plot_volcano_summary()
+#> Joining with `by = join_by(GeneName)`
+#> Joining with `by = join_by(GeneName)`
+#> Preparing table for contrast: B-A
+#> Fold change column: B-A_logFC
+#> Significance column: B-A_adjpval
+#> Total number of features included in volcano plot: 7943
+#> Preparing table for contrast: C-A
+#> Fold change column: C-A_logFC
+#> Significance column: C-A_adjpval
+#> Total number of features included in volcano plot: 7943
+#> Preparing table for contrast: B-C
+#> Fold change column: B-C_logFC
+#> Significance column: B-C_adjpval
+#> Total number of features included in volcano plot: 7943
+#> Running Enhanced Volcano:
+#> Genes in initial dataset: 7943
+#> Max y: 4.56088783571366
+#> Genes in initial dataset: 7943
+#> Max y: 4.70280335204325
+#> Genes in initial dataset: 7943
+#> Max y: 4.34744066227962
+```
+
+![](visualization_files/figure-html/volcano_summary-1.png)
+
+``` r
+
+head(dat_volcano_summary)
+#>       GeneName Contrast         FC     logFC     tstat         pval
+#> B-A.1     Dntt      B-A -42.727551 -5.417095 -15.54572 3.460410e-09
+#> B-A.2   Tmsb4x      B-A   3.845863  1.943307  12.82926 2.930649e-08
+#> B-A.3     Flt3      B-A  -7.743692 -2.953022 -11.29797 1.173487e-07
+#> B-A.4  Tspan13      B-A  -7.035795 -2.814713 -11.06018 1.476477e-07
+#> B-A.5    Tapt1      B-A  -5.297586 -2.405335 -10.64544 2.226279e-07
+#> B-A.6    Itgb7      B-A   8.882141  3.150907  10.62882 2.263833e-07
+#>            adjpval
+#> B-A.1 2.748604e-05
+#> B-A.2 1.163907e-04
+#> B-A.3 2.931915e-04
+#> B-A.4 2.931915e-04
+#> B-A.5 2.996937e-04
+#> B-A.6 2.996937e-04
+```
 
 ### Venn Diagram
 
 ``` r
 venn_dat <- dat_volcano_summary |> plot_venn_diagram()
-#> All intersections: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516),c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")
-#> Intersections returned: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516)
+#> All intersections: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(6, 19, 36, 136, 6, 42, 396),c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")
+#> Intersections returned: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(6, 19, 36, 136, 6, 42, 396)
 ```
 
 ![](visualization_files/figure-html/venn_diagram-1.png)
@@ -265,12 +290,12 @@ venn_dat <- dat_volcano_summary |> plot_venn_diagram()
 ``` r
 head(venn_dat)
 #>    Gene      Intersection Id Size
-#> 1  Dntt (B-A ∩ B-C ∩ C-A)  1   80
-#> 2  Flt3 (B-A ∩ B-C ∩ C-A)  1   80
-#> 3   Id2 (B-A ∩ B-C ∩ C-A)  1   80
-#> 4 Eltd1 (B-A ∩ B-C ∩ C-A)  1   80
-#> 5 Runx3 (B-A ∩ B-C ∩ C-A)  1   80
-#> 6 Dusp6 (B-A ∩ B-C ∩ C-A)  1   80
+#> 1   Id2 (B-A ∩ B-C ∩ C-A)  1    6
+#> 2   Myc (B-A ∩ B-C ∩ C-A)  1    6
+#> 3 Prr13 (B-A ∩ B-C ∩ C-A)  1    6
+#> 4  Cd34 (B-A ∩ B-C ∩ C-A)  1    6
+#> 5 Esyt1 (B-A ∩ B-C ∩ C-A)  1    6
+#> 6 Mgat1 (B-A ∩ B-C ∩ C-A)  1    6
 ```
 
 ## Customizing plots

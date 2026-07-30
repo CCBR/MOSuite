@@ -253,7 +253,9 @@ plot_venn_diagram(
 
 - plot_filename:
 
-  plot output filename - only used if save_plots is TRUE
+  plot output filename - only used if save_plots is TRUE. When multiple
+  comparisons are saved separately, the comparison name is appended
+  before the file extension.
 
 - print_plots:
 
