@@ -130,7 +130,7 @@ dat_volcano_enhanced <- moo |>
 
 or plot only one contrast at a time by selecting the contrast from the `analyses` slot:
 
-```{r volcano_enhanced, fig.height=7}
+```{r volcano_enhanced_single_contrast, fig.height=7}
 dat_volcano_enhanced_B_A <- moo@analyses$diff[["B-A"]] |>
   plot_volcano_enhanced(
     feature_id_colname = "GeneName",
