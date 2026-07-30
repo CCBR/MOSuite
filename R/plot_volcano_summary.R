@@ -174,6 +174,7 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
 #'   per contrast (e.g. `c("B-A_adjpval", "C-A_adjpval")`). Defaults to `NULL`,
 #'   which auto-detects corresponding columns by checking for `_adjpval` first,
 #'   then `_pval`, for each contrast in `change_colname`.
+#' @param signif_threshold Numeric significance threshold (p-value or adjusted p-value cutoff). Default: 0.05
 #' @param add_features Add custom_gene_list To Labels. Set TRUE when you want to label a specific set of features
 #'   (features) in the "custom_gene_list" parameter" IN ADDITION to the number of features you set in the "Number of
 #'   Features to Label" parameter.

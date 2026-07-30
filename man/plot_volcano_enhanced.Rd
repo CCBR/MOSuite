@@ -166,6 +166,8 @@ contrast (e.g. \code{c("B-A_adjpval", "C-A_adjpval")}). Defaults to \code{NULL},
 which auto-detects corresponding columns by checking for \verb{_adjpval} first,
 then \verb{_pval}, for each contrast in \code{change_colname}.}
 
+\item{signif_threshold}{Numeric significance threshold (p-value or adjusted p-value cutoff). Default: 0.05}
+
 \item{change_threshold}{Numeric value specifying the fold change cutoff for significance (i.e. filters on
 \code{change_colname})}
 

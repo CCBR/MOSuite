@@ -168,6 +168,7 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
 #'   contrast (e.g. `c("B-A_adjpval", "C-A_adjpval")`). Defaults to `NULL`,
 #'   which auto-detects corresponding columns by checking for `_adjpval` first,
 #'   then `_pval`, for each contrast in `change_colname`.
+#' @param signif_threshold Numeric significance threshold (p-value or adjusted p-value cutoff). Default: 0.05
 #' @param change_threshold Numeric value specifying the fold change cutoff for significance (i.e. filters on
 #'   `change_colname`)
 #' @param value_to_sort_the_output_dataset How to sort the output dataset. Options are "fold-change", "p-value", or
