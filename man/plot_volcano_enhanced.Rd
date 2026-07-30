@@ -9,9 +9,9 @@
 plot_volcano_enhanced(
   moo_diff,
   feature_id_colname = NULL,
-  signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+  change_colname = NULL,
+  signif_colname = NULL,
   signif_threshold = 0.05,
-  change_colname = c("B-A_logFC", "B-C_logFC"),
   change_threshold = 1,
   value_to_sort_the_output_dataset = "p-value",
   num_features_to_label = 30,
@@ -57,9 +57,9 @@ plot_volcano_enhanced(
 plot_volcano_enhanced(
   moo_diff,
   feature_id_colname = NULL,
-  signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+  change_colname = NULL,
+  signif_colname = NULL,
   signif_threshold = 0.05,
-  change_colname = c("B-A_logFC", "B-C_logFC"),
   change_threshold = 1,
   value_to_sort_the_output_dataset = "p-value",
   num_features_to_label = 30,
@@ -105,9 +105,9 @@ plot_volcano_enhanced(
 plot_volcano_enhanced(
   moo_diff,
   feature_id_colname = NULL,
-  signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+  change_colname = NULL,
+  signif_colname = NULL,
   signif_threshold = 0.05,
-  change_colname = c("B-A_logFC", "B-C_logFC"),
   change_threshold = 1,
   value_to_sort_the_output_dataset = "p-value",
   num_features_to_label = 30,
@@ -157,13 +157,14 @@ This is usually the first column of your input Counts Matrix. Only columns of Te
 Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
 used.)}
 
-\item{signif_colname}{column name of significance values (e.g., adjusted p-values or FDR). This column will be used
-to determine which points are considered significant in the volcano plot.}
+\item{change_colname}{Character vector of logFC column names, one per
+contrast (e.g. \code{c("B-A_logFC", "C-A_logFC")}). Defaults to \code{NULL}, which
+auto-detects all columns ending in \verb{_logFC}.}
 
-\item{signif_threshold}{Numeric value specifying the significance cutoff for p-values (i.e. filters on
-\code{signif_colname})}
-
-\item{change_colname}{column name of fold change values.}
+\item{signif_colname}{Character vector of significance column names, one per
+contrast (e.g. \code{c("B-A_adjpval", "C-A_adjpval")}). Defaults to \code{NULL},
+which auto-detects corresponding columns by checking for \verb{_adjpval} first,
+then \verb{_pval}, for each contrast in \code{change_colname}.}
 
 \item{change_threshold}{Numeric value specifying the fold change cutoff for significance (i.e. filters on
 \code{change_colname})}
