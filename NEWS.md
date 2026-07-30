@@ -2,7 +2,7 @@
 
 ## MOSuite 0.4.0
 
-- Fix `plot_volcano_summary()` feature-column handling. `plot_volcano_summary()` plot now uses `plot_volcano_enhanced()` for rendering. (#239, @phoman14)
+- Fix how `plot_volcano_summary()` & `plot_volcano_enhanced` handle detecting column names for features, significance, and fold-change. `plot_volcano_summary()` plot now uses `plot_volcano_enhanced()` for rendering. (#239, @phoman14)
 - Update PCA label, point-size, and histogram behavior. (#230, @phoman14)
 - Add optional count log-transform controls for PCA plots.  (#234, @phoman14)
 - Add a post-clean CPM histogram output in `clean_raw_counts()`. (#234, @phoman14)
