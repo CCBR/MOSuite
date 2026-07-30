@@ -6,25 +6,40 @@
     Message
       Preparing table for contrast: B-A
       Fold change column: B-A_logFC
-      pval column: B-A_pval
+      Significance column: B-A_adjpval
       Total number of features included in volcano plot: 7943
-    Condition
-      Warning in `ggrepel::geom_text_repel()`:
-      Ignoring unknown parameters: `segment.linewidth`
-    Message
       Preparing table for contrast: C-A
       Fold change column: C-A_logFC
-      pval column: C-A_pval
+      Significance column: C-A_adjpval
       Total number of features included in volcano plot: 7943
-    Condition
-      Warning in `ggrepel::geom_text_repel()`:
-      Ignoring unknown parameters: `segment.linewidth`
-    Message
       Preparing table for contrast: B-C
       Fold change column: B-C_logFC
-      pval column: B-C_pval
+      Significance column: B-C_adjpval
       Total number of features included in volcano plot: 7943
+      
+      Running Enhanced Volcano:
+      Genes in initial dataset: 7943
+      
+      Max y: 4.60041859457819
+      
     Condition
-      Warning in `ggrepel::geom_text_repel()`:
-      Ignoring unknown parameters: `segment.linewidth`
+      Warning:
+      Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+      i Please use `linewidth` instead.
+      i The deprecated feature was likely used in the EnhancedVolcano package.
+        Please report the issue to the authors.
+      Warning:
+      The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
+      i Please use the `linewidth` argument instead.
+      i The deprecated feature was likely used in the EnhancedVolcano package.
+        Please report the issue to the authors.
+    Message
+      Genes in initial dataset: 7943
+      
+      Max y: 4.76491142795451
+      
+      Genes in initial dataset: 7943
+      
+      Max y: 4.32577808863472
+      
 
