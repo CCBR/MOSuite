@@ -36,3 +36,4 @@
 ^volc-sum-params\.json$
 VennDiagram.*\.log
 ^\.posit/assistant$
+^AGENTS\.md$
