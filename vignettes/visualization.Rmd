@@ -124,19 +124,27 @@ heatmap_plot <- plot_expr_heatmap(
 Create an enhanced volcano plot for each contrast:
 
 ```{r volcano_enhanced, fig.height=7}
-dat_volcano_enhanced <- moo@analyses$diff |>
-  join_dfs_wide() |>
+dat_volcano_enhanced <- moo |>
   plot_volcano_enhanced()
 ```
 
+or plot only one contrast at a time by selecting the contrast from the `analyses` slot:
+
+```{r volcano_enhanced, fig.height=7}
+dat_volcano_enhanced_B_A <- moo@analyses$diff[["B-A"]] |>
+  plot_volcano_enhanced(
+    feature_id_colname = "GeneName",
+    change_colname = "logFC",
+    signif_colname = "adjpval"
+  )
+```
 
 #### Summary
 
 Create an enhanced volcano plot for each contrast and compose them in one figure:
 
 ```{r volcano_summary, fig.height=10, fig.width=8}
-dat_volcano_summary <- moo@analyses$diff |>
-  join_dfs_wide() |>
+dat_volcano_summary <- moo |>
   plot_volcano_summary()
 
 head(dat_volcano_summary)
