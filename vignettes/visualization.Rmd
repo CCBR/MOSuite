@@ -119,28 +119,40 @@ heatmap_plot <- plot_expr_heatmap(
 
 ### Volcano
 
+#### Enhanced
+
+Create an enhanced volcano plot for each contrast:
+
+```{r volcano_enhanced, fig.height=7}
+dat_volcano_enhanced <- moo |>
+  plot_volcano_enhanced()
+```
+
+or plot only one contrast at a time by selecting the contrast from the `analyses` slot:
+
+```{r volcano_enhanced_single_contrast, fig.height=7}
+dat_volcano_enhanced_B_A <- moo@analyses$diff[["B-A"]] |>
+  plot_volcano_enhanced(
+    feature_id_colname = "GeneName",
+    change_colname = "logFC",
+    signif_colname = "adjpval"
+  )
+```
+
 #### Summary
 
-```{r volcano_summary}
-dat_volcano_summary <- moo@analyses$diff |>
-  join_dfs_wide() |>
+Create an enhanced volcano plot for each contrast and compose them in one figure:
+
+```{r volcano_summary, fig.height=10, fig.width=8}
+dat_volcano_summary <- moo |>
   plot_volcano_summary()
 
 head(dat_volcano_summary)
 ```
 
-#### Enhanced
-
-```{r volcano_enhanced}
-dat_volcano_enhanced <- moo@analyses$diff |>
-  join_dfs_wide() |>
-  plot_volcano_enhanced()
-```
-
-
 ### Venn Diagram
 
-```{r venn_diagram}
+```{r venn_diagram, fig.width=7, fig.height=7}
 venn_dat <- dat_volcano_summary |> plot_venn_diagram()
 head(venn_dat)
 ```

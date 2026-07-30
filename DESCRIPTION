@@ -25,6 +25,7 @@ Depends:
     R (>= 4.1.0)
 Imports:
     assertthat,
+    cli,
     dendextend,
     DESeq2,
     dplyr,
@@ -39,7 +40,6 @@ Imports:
     methods,
     options,
     plotly,
-    png,
     purrr,
     reshape2,
     rlang,

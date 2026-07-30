@@ -88,6 +88,18 @@ references:
   year: '2026'
   doi: 10.32614/CRAN.package.assertthat
 - type: software
+  title: cli
+  abstract: 'cli: Helpers for Developing Command Line Interfaces'
+  notes: Imports
+  url: https://cli.r-lib.org
+  repository: https://CRAN.R-project.org/package=cli
+  authors:
+  - family-names: Csárdi
+    given-names: Gábor
+    email: gabor@posit.co
+  year: '2026'
+  doi: 10.32614/CRAN.package.cli
+- type: software
   title: dendextend
   abstract: 'dendextend: Extending ''dendrogram'' Functionality in R'
   notes: Imports
@@ -401,19 +413,6 @@ references:
     email: pedro@plot.ly
   year: '2026'
   doi: 10.32614/CRAN.package.plotly
-- type: software
-  title: png
-  abstract: 'png: Read and write PNG images'
-  notes: Imports
-  url: https://www.rforge.net/png/
-  repository: https://CRAN.R-project.org/package=png
-  authors:
-  - family-names: Urbanek
-    given-names: Simon
-    email: Simon.Urbanek@r-project.org
-    orcid: https://orcid.org/0000-0003-2297-1732
-  year: '2026'
-  doi: 10.32614/CRAN.package.png
 - type: software
   title: purrr
   abstract: 'purrr: Functional Programming Tools'

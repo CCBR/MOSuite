@@ -9,29 +9,43 @@
 plot_volcano_enhanced(
   moo_diff,
   feature_id_colname = NULL,
-  signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+  change_colname = NULL,
+  signif_colname = NULL,
   signif_threshold = 0.05,
-  change_colname = c("B-A_logFC", "B-C_logFC"),
   change_threshold = 1,
   value_to_sort_the_output_dataset = "p-value",
   num_features_to_label = 30,
-  use_only_addition_labels = FALSE,
-  additional_labels = "",
-  is_red = TRUE,
-  lab_size = 4,
+  label_features = FALSE,
+  custom_gene_list = "",
+  label_significant_features_only = TRUE,
+  label_font_size = 7,
+  draw_connectors = FALSE,
   change_sig_name = "p-value",
   change_lfc_name = "log2FC",
   title = "Volcano Plots",
+  title_font_size = 24,
   use_custom_lab = FALSE,
-  ylim = 0,
-  custom_xlim = "",
-  xlim_additional = 0,
-  ylim_additional = 0,
+  use_default_x_axis_limit = TRUE,
+  x_axis_limit = 5,
+  use_default_y_axis_limit = TRUE,
+  y_axis_limit = 10,
   axis_lab_size = 24,
+  axis_tick_lab_size = 16,
   point_size = 2,
+  default_label_color = "black",
+  custom_label_color = "black",
+  color_of_signif_threshold_line = "black",
+  color_of_non_significant_features = "grey30",
+  color_of_logfold_change_threshold_line = "forestgreen",
+  color_of_features_meeting_only_signif_threshold = "royalblue",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
+  graphics_device = grDevices::png,
   image_width = 3000,
   image_height = 3000,
   dpi = 300,
+  use_default_grid_layout = TRUE,
+  number_of_rows_in_grid_layout = NULL,
+  scale_image_to_grid = FALSE,
   interactive_plots = FALSE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -43,29 +57,43 @@ plot_volcano_enhanced(
 plot_volcano_enhanced(
   moo_diff,
   feature_id_colname = NULL,
-  signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+  change_colname = NULL,
+  signif_colname = NULL,
   signif_threshold = 0.05,
-  change_colname = c("B-A_logFC", "B-C_logFC"),
   change_threshold = 1,
   value_to_sort_the_output_dataset = "p-value",
   num_features_to_label = 30,
-  use_only_addition_labels = FALSE,
-  additional_labels = "",
-  is_red = TRUE,
-  lab_size = 4,
+  label_features = FALSE,
+  custom_gene_list = "",
+  label_significant_features_only = TRUE,
+  label_font_size = 7,
+  draw_connectors = FALSE,
   change_sig_name = "p-value",
   change_lfc_name = "log2FC",
   title = "Volcano Plots",
+  title_font_size = 24,
   use_custom_lab = FALSE,
-  ylim = 0,
-  custom_xlim = "",
-  xlim_additional = 0,
-  ylim_additional = 0,
+  use_default_x_axis_limit = TRUE,
+  x_axis_limit = 5,
+  use_default_y_axis_limit = TRUE,
+  y_axis_limit = 10,
   axis_lab_size = 24,
+  axis_tick_lab_size = 16,
   point_size = 2,
+  default_label_color = "black",
+  custom_label_color = "black",
+  color_of_signif_threshold_line = "black",
+  color_of_non_significant_features = "grey30",
+  color_of_logfold_change_threshold_line = "forestgreen",
+  color_of_features_meeting_only_signif_threshold = "royalblue",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
+  graphics_device = grDevices::png,
   image_width = 3000,
   image_height = 3000,
   dpi = 300,
+  use_default_grid_layout = TRUE,
+  number_of_rows_in_grid_layout = NULL,
+  scale_image_to_grid = FALSE,
   interactive_plots = FALSE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -77,29 +105,43 @@ plot_volcano_enhanced(
 plot_volcano_enhanced(
   moo_diff,
   feature_id_colname = NULL,
-  signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+  change_colname = NULL,
+  signif_colname = NULL,
   signif_threshold = 0.05,
-  change_colname = c("B-A_logFC", "B-C_logFC"),
   change_threshold = 1,
   value_to_sort_the_output_dataset = "p-value",
   num_features_to_label = 30,
-  use_only_addition_labels = FALSE,
-  additional_labels = "",
-  is_red = TRUE,
-  lab_size = 4,
+  label_features = FALSE,
+  custom_gene_list = "",
+  label_significant_features_only = TRUE,
+  label_font_size = 7,
+  draw_connectors = FALSE,
   change_sig_name = "p-value",
   change_lfc_name = "log2FC",
   title = "Volcano Plots",
+  title_font_size = 24,
   use_custom_lab = FALSE,
-  ylim = 0,
-  custom_xlim = "",
-  xlim_additional = 0,
-  ylim_additional = 0,
+  use_default_x_axis_limit = TRUE,
+  x_axis_limit = 5,
+  use_default_y_axis_limit = TRUE,
+  y_axis_limit = 10,
   axis_lab_size = 24,
+  axis_tick_lab_size = 16,
   point_size = 2,
+  default_label_color = "black",
+  custom_label_color = "black",
+  color_of_signif_threshold_line = "black",
+  color_of_non_significant_features = "grey30",
+  color_of_logfold_change_threshold_line = "forestgreen",
+  color_of_features_meeting_only_signif_threshold = "royalblue",
+  color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
+  graphics_device = grDevices::png,
   image_width = 3000,
   image_height = 3000,
   dpi = 300,
+  use_default_grid_layout = TRUE,
+  number_of_rows_in_grid_layout = NULL,
+  scale_image_to_grid = FALSE,
   interactive_plots = FALSE,
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
@@ -115,29 +157,37 @@ This is usually the first column of your input Counts Matrix. Only columns of Te
 Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
 used.)}
 
-\item{signif_colname}{column name of significance values (e.g., adjusted p-values or FDR). This column will be used
-to determine which points are considered significant in the volcano plot.}
+\item{change_colname}{Character vector of logFC column names, one per
+contrast (e.g. \code{c("B-A_logFC", "C-A_logFC")}). Defaults to \code{NULL}, which
+auto-detects all columns ending in \verb{_logFC}.}
 
-\item{signif_threshold}{Numeric value specifying the significance cutoff for p-values (i.e. filters on
-\code{signif_colname})}
+\item{signif_colname}{Character vector of significance column names, one per
+contrast (e.g. \code{c("B-A_adjpval", "C-A_adjpval")}). Defaults to \code{NULL},
+which auto-detects corresponding columns by checking for \verb{_adjpval} first,
+then \verb{_pval}, for each contrast in \code{change_colname}.}
 
-\item{change_colname}{column name of fold change values.}
+\item{signif_threshold}{Numeric significance threshold (p-value or adjusted p-value cutoff). Default: 0.05}
 
 \item{change_threshold}{Numeric value specifying the fold change cutoff for significance (i.e. filters on
 \code{change_colname})}
 
-\item{value_to_sort_the_output_dataset}{How to sort the output dataset. Options are "fold-change" or "p-value".}
+\item{value_to_sort_the_output_dataset}{How to sort the output dataset. Options are "fold-change", "p-value", or
+"t-statistic".}
 
 \item{num_features_to_label}{Number of top features/genes to label in the volcano plot. Default is 30.}
 
-\item{use_only_addition_labels}{If \code{TRUE}, only the additional labels specified in \code{additional_labels} will be used
-for labeling in the volcano plot, ignoring the top features.}
+\item{label_features}{If \code{TRUE}, only the features specified in \code{custom_gene_list} will be used for labeling in the
+volcano plot, ignoring the top features.}
 
-\item{additional_labels}{comma-separated string of feature names or IDs to include in the volcano plot.}
+\item{custom_gene_list}{comma-separated string of feature names or IDs to include in the volcano plot.}
 
-\item{is_red}{Logical. If TRUE, highlights points in red.}
+\item{label_significant_features_only}{If \code{TRUE}, automatic labels are selected only from features that pass both
+the significance and fold-change thresholds.}
 
-\item{lab_size}{Size of the labels in the volcano plot.}
+\item{label_font_size}{Size of the labels in the volcano plot.}
+
+\item{draw_connectors}{If \code{TRUE}, draw connector lines from labels to their points and spread labels to reduce
+overlap.}
 
 \item{change_sig_name}{Name for the significance column in the plot. Default is "p-value".}
 
@@ -145,25 +195,54 @@ for labeling in the volcano plot, ignoring the top features.}
 
 \item{title}{Title of the plot. Default is "Volcano Plots".}
 
+\item{title_font_size}{Size of the plot title.}
+
 \item{use_custom_lab}{If TRUE, uses custom labels for the plot (set by \code{change_sig_name} and \code{change_lfc_name})}
 
-\item{ylim}{Y-axis limits for the plot.}
+\item{use_default_x_axis_limit}{Set to TRUE to use the default x-axis limit.}
 
-\item{custom_xlim}{Custom X-axis limits for the plot.}
+\item{x_axis_limit}{Custom x-axis limit. A single value is treated symmetrically, and a two-value vector is treated
+as lower and upper limits.}
 
-\item{xlim_additional}{Additional space to add to the X-axis limits.}
+\item{use_default_y_axis_limit}{Set to TRUE to use the default y-axis limit.}
 
-\item{ylim_additional}{Additional space to add to the Y-axis limits.}
+\item{y_axis_limit}{Custom y-axis limit.}
 
 \item{axis_lab_size}{Size of the axis labels.}
 
+\item{axis_tick_lab_size}{Size of the axis tick labels.}
+
 \item{point_size}{Size of the points in the plot.}
+
+\item{default_label_color}{Set the color for the text used to add feature labels to points.}
+
+\item{custom_label_color}{Set the color for labels from \code{custom_gene_list}.}
+
+\item{color_of_signif_threshold_line}{Color of the significance threshold line.}
+
+\item{color_of_non_significant_features}{Color of the non-significant features.}
+
+\item{color_of_logfold_change_threshold_line}{Color of the features that meet only the log fold change threshold.}
+
+\item{color_of_features_meeting_only_signif_threshold}{Color of the features that meet only the significance
+threshold.}
+
+\item{color_for_features_meeting_pvalue_and_foldchange_thresholds}{Color of the features that meet both the p-value
+and fold change thresholds.}
+
+\item{graphics_device}{passed to \code{ggsave(device)}. Default: \code{grDevices::png}}
 
 \item{image_width}{output image width in pixels - only used if save_plots is TRUE}
 
 \item{image_height}{output image height in pixels - only used if save_plots is TRUE}
 
 \item{dpi}{dots-per-inch of the output image (see \code{ggsave()}) - only used if save_plots is TRUE}
+
+\item{use_default_grid_layout}{Retained for compatibility. Grid layout is handled by \code{plot_volcano_summary()}.}
+
+\item{number_of_rows_in_grid_layout}{Retained for compatibility. Grid layout is handled by \code{plot_volcano_summary()}.}
+
+\item{scale_image_to_grid}{Retained for compatibility. Grid layout is handled by \code{plot_volcano_summary()}.}
 
 \item{interactive_plots}{set to TRUE to make PCA and Histogram plots interactive with \code{plotly}, allowing you to hover
 your mouse over a point or line to view sample information. The similarity heat map will not display if this toggle
@@ -175,7 +254,8 @@ is set to \code{TRUE}. Default is \code{FALSE}.}
 
 \item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
 
-\item{plot_filename}{plot output filename - only used if save_plots is TRUE}
+\item{plot_filename}{plot output filename - only used if save_plots is TRUE. When multiple comparisons are saved
+separately, the comparison name is appended before the file extension.}
 }
 \description{
 Uses \href{https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html}{Bioconductor's Enhanced Volcano Plot}.
