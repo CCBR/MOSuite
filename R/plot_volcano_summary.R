@@ -15,7 +15,8 @@ plot_volcano_summary <- S7::new_generic(
   function(
     moo_diff,
     feature_id_colname = NULL,
-    signif_colname = "pval",
+    change_colname = NULL,
+    signif_colname = NULL,
     signif_threshold = 0.05,
     change_threshold = 1,
     value_to_sort_the_output_dataset = "t-statistic",
@@ -66,7 +67,8 @@ plot_volcano_summary <- S7::new_generic(
 S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
   moo_diff,
   feature_id_colname = NULL,
-  signif_colname = "pval",
+  change_colname = NULL,
+  signif_colname = NULL,
   signif_threshold = 0.05,
   change_threshold = 1,
   value_to_sort_the_output_dataset = "t-statistic",
@@ -114,6 +116,7 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
       join_dfs_wide() |>
       plot_volcano_summary(
         feature_id_colname,
+        change_colname,
         signif_colname,
         signif_threshold,
         change_threshold,
@@ -164,6 +167,13 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
 #' @inheritParams plot_volcano_enhanced
 #' @inheritParams filter_counts
 #'
+#' @param change_colname Character vector of full logFC column names, one per
+#'   contrast (e.g. `c("B-A_logFC", "C-A_logFC")`). Defaults to `NULL`, which
+#'   auto-detects all columns ending in `_logFC`.
+#' @param signif_colname Character vector of full significance column names, one
+#'   per contrast (e.g. `c("B-A_adjpval", "C-A_adjpval")`). Defaults to `NULL`,
+#'   which auto-detects corresponding columns by checking for `_adjpval` first,
+#'   then `_pval`, for each contrast in `change_colname`.
 #' @param add_features Add custom_gene_list To Labels. Set TRUE when you want to label a specific set of features
 #'   (features) in the "custom_gene_list" parameter" IN ADDITION to the number of features you set in the "Number of
 #'   Features to Label" parameter.
@@ -218,7 +228,8 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
 S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   moo_diff,
   feature_id_colname = NULL,
-  signif_colname = "pval",
+  change_colname = NULL,
+  signif_colname = NULL,
   signif_threshold = 0.05,
   change_threshold = 1,
   value_to_sort_the_output_dataset = "t-statistic",
@@ -280,24 +291,26 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   }
 
   #  Identify all contrasts in DEG output table
-  volcols <- colnames(diff_dat)
-  statcols <- volcols[grepl("logFC", volcols)]
-  contrasts <- unique(gsub("_logFC", "", statcols))
+  resolved <- resolve_volcano_colnames(diff_dat, change_colname, signif_colname)
+  change_colname <- resolved$change_colname
+  signif_colname <- resolved$signif_colname
+  contrasts <- unique(sub("_logFC$", "", change_colname))
 
   df_outs <- list()
   plot_change_colnames <- character(0)
   plot_signif_colnames <- character(0)
 
   #  Create Volcano for each DEG comparison
-  for (contrast in contrasts) {
+  for (i in seq_along(contrasts)) {
+    contrast <- contrasts[i]
     ### PH: START Build table for Volcano plot
     message(paste0("Preparing table for contrast: ", contrast))
-    lfccol <- paste0(contrast, "_logFC")
-    pvalcol <- paste0(contrast, "_", signif_colname)
+    lfccol <- change_colname[i]
+    pvalcol <- signif_colname[i]
     tstatcol <- paste0(contrast, "_", "tstat")
 
     message(paste0("Fold change column: ", lfccol))
-    message(paste0(signif_colname, " column: ", pvalcol))
+    message(paste0("Significance column: ", pvalcol))
     message(paste0(
       "Total number of features included in volcano plot: ",
       nrow(diff_dat)

@@ -22,6 +22,10 @@
     Message
       Genes in initial dataset: 7943
       
+      Max y: 4.76491142795451
+      
+      Genes in initial dataset: 7943
+      
       Max y: 4.32577808863472
       
 

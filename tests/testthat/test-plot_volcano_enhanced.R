@@ -556,6 +556,47 @@ test_that("plot_volcano_enhanced preserves filename for one comparison", {
   )
 })
 
+test_that("plot_volcano_enhanced auto-detects change_colname and signif_colname when NULL", {
+  # Regression test: all three contrasts in nidap_deg_analysis should be
+  # detected automatically, preferring _adjpval over _pval.
+  expect_no_error(
+    result <- plot_volcano_enhanced(
+      nidap_deg_analysis,
+      save_plots = FALSE,
+      print_plots = FALSE
+    )
+  )
+  expect_s3_class(result, "data.frame")
+  expect_length(
+    attr(result, "plots"),
+    length(grep("_logFC$", colnames(nidap_deg_analysis)))
+  )
+})
+
+test_that("plot_volcano_enhanced errors when no _logFC columns and change_colname is NULL", {
+  bad_df <- data.frame(
+    Gene = letters[1:3],
+    `B-A_adjpval` = c(0.01, 0.02, 0.5),
+    check.names = FALSE
+  )
+  expect_error(
+    plot_volcano_enhanced(bad_df, save_plots = FALSE, print_plots = FALSE),
+    regexp = "_logFC"
+  )
+})
+
+test_that("plot_volcano_enhanced errors when no adjpval/pval columns and signif_colname is NULL", {
+  bad_df <- data.frame(
+    Gene = letters[1:3],
+    `B-A_logFC` = c(1, -1, 0.1),
+    check.names = FALSE
+  )
+  expect_error(
+    plot_volcano_enhanced(bad_df, save_plots = FALSE, print_plots = FALSE),
+    regexp = "auto-detect"
+  )
+})
+
 test_that("plot_volcano_enhanced works with multiOmicDataSet", {
   # Create a multiOmicDataSet with differential analysis results
   moo <- multiOmicDataSet(

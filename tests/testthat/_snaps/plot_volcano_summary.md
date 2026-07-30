@@ -6,21 +6,21 @@
     Message
       Preparing table for contrast: B-A
       Fold change column: B-A_logFC
-      pval column: B-A_pval
+      Significance column: B-A_adjpval
       Total number of features included in volcano plot: 7943
       Preparing table for contrast: C-A
       Fold change column: C-A_logFC
-      pval column: C-A_pval
+      Significance column: C-A_adjpval
       Total number of features included in volcano plot: 7943
       Preparing table for contrast: B-C
       Fold change column: B-C_logFC
-      pval column: B-C_pval
+      Significance column: B-C_adjpval
       Total number of features included in volcano plot: 7943
       
       Running Enhanced Volcano:
       Genes in initial dataset: 7943
       
-      Max y: 8.50040315712758
+      Max y: 4.60041859457819
       
     Condition
       Warning:
@@ -36,10 +36,10 @@
     Message
       Genes in initial dataset: 7943
       
-      Max y: 8.6648959905039
+      Max y: 4.76491142795451
       
       Genes in initial dataset: 7943
       
-      Max y: 8.22576265118411
+      Max y: 4.32577808863472
       
 

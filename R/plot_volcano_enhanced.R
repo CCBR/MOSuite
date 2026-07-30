@@ -13,9 +13,9 @@ plot_volcano_enhanced <- S7::new_generic(
   function(
     moo_diff,
     feature_id_colname = NULL,
-    signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+    change_colname = NULL,
+    signif_colname = NULL,
     signif_threshold = 0.05,
-    change_colname = c("B-A_logFC", "B-C_logFC"),
     change_threshold = 1.0,
     value_to_sort_the_output_dataset = "p-value",
     num_features_to_label = 30,
@@ -64,9 +64,9 @@ plot_volcano_enhanced <- S7::new_generic(
 S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
   moo_diff,
   feature_id_colname = NULL,
-  signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+  change_colname = NULL,
+  signif_colname = NULL,
   signif_threshold = 0.05,
-  change_colname = c("B-A_logFC", "B-C_logFC"),
   change_threshold = 1.0,
   value_to_sort_the_output_dataset = "p-value",
   num_features_to_label = 30,
@@ -111,9 +111,9 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
     join_dfs_wide(moo_diff@analyses$diff) |>
       plot_volcano_enhanced(
         feature_id_colname,
+        change_colname,
         signif_colname,
         signif_threshold,
-        change_colname,
         change_threshold,
         value_to_sort_the_output_dataset,
         num_features_to_label,
@@ -161,11 +161,13 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
 #' @inheritParams filter_counts
 #'
 #' @param moo_diff Differential expression analysis result from one or more contrasts. This must be a dataframe.
-#' @param signif_colname column name of significance values (e.g., adjusted p-values or FDR). This column will be used
-#'   to determine which points are considered significant in the volcano plot.
-#' @param signif_threshold Numeric value specifying the significance cutoff for p-values (i.e. filters on
-#'   `signif_colname`)
-#' @param change_colname column name of fold change values.
+#' @param change_colname Character vector of logFC column names, one per
+#'   contrast (e.g. `c("B-A_logFC", "C-A_logFC")`). Defaults to `NULL`, which
+#'   auto-detects all columns ending in `_logFC`.
+#' @param signif_colname Character vector of significance column names, one per
+#'   contrast (e.g. `c("B-A_adjpval", "C-A_adjpval")`). Defaults to `NULL`,
+#'   which auto-detects corresponding columns by checking for `_adjpval` first,
+#'   then `_pval`, for each contrast in `change_colname`.
 #' @param change_threshold Numeric value specifying the fold change cutoff for significance (i.e. filters on
 #'   `change_colname`)
 #' @param value_to_sort_the_output_dataset How to sort the output dataset. Options are "fold-change", "p-value", or
@@ -220,9 +222,9 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
 S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
   moo_diff,
   feature_id_colname = NULL,
-  signif_colname = c("B-A_adjpval", "B-C_adjpval"),
+  change_colname = NULL,
+  signif_colname = NULL,
   signif_threshold = 0.05,
-  change_colname = c("B-A_logFC", "B-C_logFC"),
   change_threshold = 1.0,
   value_to_sort_the_output_dataset = "p-value",
   num_features_to_label = 30,
@@ -275,6 +277,11 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
     feature_id_colname <- colnames(diff_dat)[1]
   }
   label_col <- feature_id_colname
+
+  # Resolve/auto-detect change_colname and signif_colname
+  resolved <- resolve_volcano_colnames(diff_dat, change_colname, signif_colname)
+  change_colname <- resolved$change_colname
+  signif_colname <- resolved$signif_colname
 
   rank <- list()
   plots_list <- list()
