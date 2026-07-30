@@ -109,6 +109,10 @@ Test files are organized as described in
 <https://style.tidyverse.org/tests.html>.
 Take a look at the existing code in this package for examples.
 
+Ensure your tests cover all of the code changes you make, including various
+parameter options and edge cases.
+Do not skip tests unless you can give a strong reason for doing so.
+
 #### document
 
 If you have written a new function or changed the API of an existing function,

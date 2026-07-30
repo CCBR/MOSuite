@@ -9,6 +9,8 @@ multi-omic experiments.
 Development of MOSuite follows the R packages 2nd edition (https://r-pkgs.org/),
 with a few minor exceptions noted below.
 Helper functions from `usethis` and `devtools` are used extensively for development tasks.
+Human developers should refer to the [contributing guidelines](./.github/CONTRIBUTING.md)
+for detailed instructions on how to contribute to MOSuite.
 
 ## Package conventions
 
@@ -38,6 +40,8 @@ irrelevant checklist items should be crossed out.
 - If code is AI-generated, the PR should be labeled `generated-by-AI`. There should be a brief, concise statement in the PR description of how AI was used in creating the PR (model used, high-level prompt intent, manual review confirmation).
 - When new features, bug fixes, or other behavioral changes are introduced to the code,
 unit tests must be added or updated to cover the new or changed functionality.
+- Unit tests should cover all of the code that is added or modified in a PR.
+- Unit tests should not be skipped without a strong reason.
 - If there are any API or other user-facing changes, the documentation must be updated both inline via roxygen comments and long-form docs in the `vignettes/` directory as R Markdown files.
 - The `R-CMD-check` github actions workflow must pass before the PR can be approved.
 
