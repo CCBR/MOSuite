@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +21,6 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/intro.html">Introduction to MultiOmicsSuite</a></li>
     <li><a class="dropdown-item" href="../articles/renee.html">RSEM counts from RENEE</a></li>
     <li><a class="dropdown-item" href="../articles/visualization.html">Visualization with built-in plots</a></li>
-    <li><a class="dropdown-item" href="../articles/cli.html">Calling MOSuite from the CLI</a></li>
     <li><a class="dropdown-item" href="../articles/memory.html">Memory Usage</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -36,13 +35,16 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.4.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.4.1/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.1" id="mosuite-041">MOSuite 0.4.1<a class="anchor" aria-label="anchor" href="#mosuite-041"></a></h2>
+<ul><li>Fix how <code><a href="../reference/plot_volcano_summary.html">plot_volcano_summary()</a></code> &amp; <code>plot_volcano_enhanced</code> handle detecting column names for features, significance, and fold-change. <code><a href="../reference/plot_volcano_summary.html">plot_volcano_summary()</a></code> plot now uses <code><a href="../reference/plot_volcano_enhanced.html">plot_volcano_enhanced()</a></code> for rendering. (<a href="https://github.com/CCBR/MOSuite/issues/239" class="external-link">#239</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.0" id="mosuite-040">MOSuite 0.4.0<a class="anchor" aria-label="anchor" href="#mosuite-040"></a></h2>
-<ul><li>Fix expression heatmap clustering to correctly use the selected gene and sample distance metrics and clustering methods. (<a href="https://github.com/CCBR/MOSuite/issues/231" class="external-link">#231</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)</li>
-<li>Update PCA label, point-size, and histogram behavior. (<a href="https://github.com/CCBR/MOSuite/issues/230" class="external-link">#230</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)</li>
+<ul><li>Update PCA label, point-size, and histogram behavior. (<a href="https://github.com/CCBR/MOSuite/issues/230" class="external-link">#230</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)</li>
 <li>Add optional count log-transform controls for PCA plots. (<a href="https://github.com/CCBR/MOSuite/issues/234" class="external-link">#234</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)</li>
 <li>Add a post-clean CPM histogram output in <code><a href="../reference/clean_raw_counts.html">clean_raw_counts()</a></code>. (<a href="https://github.com/CCBR/MOSuite/issues/234" class="external-link">#234</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)</li>
 <li>Improvements to plot colors: (<a href="https://github.com/CCBR/MOSuite/issues/223" class="external-link">#223</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)

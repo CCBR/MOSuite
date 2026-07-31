@@ -4,7 +4,7 @@
 
 Published
 
-July 27, 2026
+July 31, 2026
 
 ``` r
 library(MOSuite)
@@ -358,31 +358,39 @@ dat_volcano_summary <- moo@analyses$diff |>
     Joining with `by = join_by(GeneName)`
     Preparing table for contrast: B-A
     Fold change column: B-A_logFC
-    pval column: B-A_pval
+    Significance column: B-A_adjpval
     Total number of features included in volcano plot: 7943
-
-    Warning in ggrepel::geom_text_repel(data = grm[custom_gene_list_ind, ], :
-    Ignoring unknown parameters: `segment.linewidth`
-
     Preparing table for contrast: C-A
     Fold change column: C-A_logFC
-    pval column: C-A_pval
+    Significance column: C-A_adjpval
     Total number of features included in volcano plot: 7943
-
-    Warning in ggrepel::geom_text_repel(data = grm[custom_gene_list_ind, ], :
-    Ignoring unknown parameters: `segment.linewidth`
-
     Preparing table for contrast: B-C
     Fold change column: B-C_logFC
-    pval column: B-C_pval
+    Significance column: B-C_adjpval
     Total number of features included in volcano plot: 7943
+    Running Enhanced Volcano:
+    Genes in initial dataset: 7943
+    Max y: 4.56088783571366
 
-    Warning in ggrepel::geom_text_repel(data = grm[custom_gene_list_ind, ], :
-    Ignoring unknown parameters: `segment.linewidth`
+    Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+    ℹ Please use `linewidth` instead.
+    ℹ The deprecated feature was likely used in the EnhancedVolcano package.
+      Please report the issue to the authors.
+
+    Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
+    ℹ Please use the `linewidth` argument instead.
+    ℹ The deprecated feature was likely used in the EnhancedVolcano package.
+      Please report the issue to the authors.
+
+    Genes in initial dataset: 7943
+
+    Max y: 4.70280335204325
+
+    Genes in initial dataset: 7943
+
+    Max y: 4.34744066227962
 
 ![](report_files/figure-html/volcano_summary-1.png)
-
-    Saving 7 x 5 in image
 
 ``` r
 head(dat_volcano_summary)
@@ -415,22 +423,16 @@ dat_volcano_enhanced <- moo@analyses$diff |>
     Joining with `by = join_by(GeneName)`
     Genes in initial dataset: 7943
     Max y: 4.56088783571366
-
-    Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-    ℹ Please use `linewidth` instead.
-    ℹ The deprecated feature was likely used in the EnhancedVolcano package.
-      Please report the issue to the authors.
-
-    Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
-    ℹ Please use the `linewidth` argument instead.
-    ℹ The deprecated feature was likely used in the EnhancedVolcano package.
-      Please report the issue to the authors.
-
     Genes in initial dataset: 7943
-
+    Max y: 4.70280335204325
+    Genes in initial dataset: 7943
     Max y: 4.34744066227962
 
 ![](report_files/figure-html/volcano_enhanced-1.png)
+
+![](report_files/figure-html/volcano_enhanced-2.png)
+
+![](report_files/figure-html/volcano_enhanced-3.png)
 
 ### Venn Diagram
 
@@ -438,9 +440,9 @@ dat_volcano_enhanced <- moo@analyses$diff |>
 venn_dat <- dat_volcano_summary |> plot_venn_diagram()
 ```
 
-    All intersections: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516),c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")
+    All intersections: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(6, 19, 36, 136, 6, 42, 396),c("Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")
 
-    Intersections returned: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(80, 119, 264, 493, 152, 270, 516)
+    Intersections returned: 1:7,c(1, 2, 3, 4, 5, 6, 7),c(6, 19, 36, 136, 6, 42, 396)
 
 ![](report_files/figure-html/venn_diagram-1.png)
 
@@ -449,9 +451,9 @@ head(venn_dat)
 ```
 
        Gene      Intersection Id Size
-    1  Dntt (B-A ∩ B-C ∩ C-A)  1   80
-    2  Flt3 (B-A ∩ B-C ∩ C-A)  1   80
-    3   Id2 (B-A ∩ B-C ∩ C-A)  1   80
-    4 Eltd1 (B-A ∩ B-C ∩ C-A)  1   80
-    5 Runx3 (B-A ∩ B-C ∩ C-A)  1   80
-    6 Dusp6 (B-A ∩ B-C ∩ C-A)  1   80
+    1   Id2 (B-A ∩ B-C ∩ C-A)  1    6
+    2   Myc (B-A ∩ B-C ∩ C-A)  1    6
+    3 Prr13 (B-A ∩ B-C ∩ C-A)  1    6
+    4  Cd34 (B-A ∩ B-C ∩ C-A)  1    6
+    5 Esyt1 (B-A ∩ B-C ∩ C-A)  1    6
+    6 Mgat1 (B-A ∩ B-C ∩ C-A)  1    6

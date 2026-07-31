@@ -6,7 +6,6 @@
 <url><loc>https://ccbr.github.io/MOSuite/LICENSE.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/PULL_REQUEST_TEMPLATE.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/SECURITY.html</loc></url>
-<url><loc>https://ccbr.github.io/MOSuite/articles/cli.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/articles/index.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/articles/intro.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/articles/memory.html</loc></url>
@@ -98,6 +97,7 @@
 <url><loc>https://ccbr.github.io/MOSuite/reference/rename_samples.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/render_report.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/resolve_plot_colors.html</loc></url>
+<url><loc>https://ccbr.github.io/MOSuite/reference/resolve_volcano_colnames.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/results/report.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/run_deseq2.html</loc></url>
 <url><loc>https://ccbr.github.io/MOSuite/reference/select_mosuite_colors.html</loc></url>

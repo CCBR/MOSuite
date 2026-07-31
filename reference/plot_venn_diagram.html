@@ -15,7 +15,7 @@ An S7 generic with methods for multiOmicDataSet and data.frame."><meta property=
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +29,6 @@ An S7 generic with methods for multiOmicDataSet and data.frame."><meta property=
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/intro.html">Introduction to MultiOmicsSuite</a></li>
     <li><a class="dropdown-item" href="../articles/renee.html">RSEM counts from RENEE</a></li>
     <li><a class="dropdown-item" href="../articles/visualization.html">Visualization with built-in plots</a></li>
-    <li><a class="dropdown-item" href="../articles/cli.html">Calling MOSuite from the CLI</a></li>
     <li><a class="dropdown-item" href="../articles/memory.html">Memory Usage</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -44,7 +43,7 @@ An S7 generic with methods for multiOmicDataSet and data.frame."><meta property=
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Plot a venn diagram, UpSet plot, or table of intersections</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.4.0/R/plot_venn_diagram.R" class="external-link"><code>R/plot_venn_diagram.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.4.1/R/plot_venn_diagram.R" class="external-link"><code>R/plot_venn_diagram.R</code></a></small>
       <div class="d-none name"><code>plot_venn_diagram.Rd</code></div>
     </div>
 
@@ -293,7 +292,8 @@ same colors as <code>venn_fill_colors</code>)</p></dd>
 
 
 <dt id="arg-plot-filename">plot_filename<a class="anchor" aria-label="anchor" href="#arg-plot-filename"></a></dt>
-<dd><p>plot output filename - only used if save_plots is TRUE</p></dd>
+<dd><p>plot output filename - only used if save_plots is TRUE. When multiple comparisons are saved
+separately, the comparison name is appended before the file extension.</p></dd>
 
 
 <dt id="arg-print-plots">print_plots<a class="anchor" aria-label="anchor" href="#arg-print-plots"></a></dt>
