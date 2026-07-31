@@ -19,33 +19,25 @@
 #' @export
 #'
 #' @examples
-#' if (requireNamespace("quarto", quietly = TRUE) &&
-#'   requireNamespace("knitr", quietly = TRUE) &&
-#'   requireNamespace("rmarkdown", quietly = TRUE)) {
-#'   render_report(execute_params = list(
+#' render_report(execute_params = list(
+#'   counts_csv = system.file("extdata", "nidap", "Raw_Counts.csv.gz",
+#'                            package = "MOSuite"),
+#'   samplesheet_csv = system.file("extdata", "nidap",
+#'     "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
+#'     package = "MOSuite")
+#' ))
+#'
+#' # Render to a specific output directory
+#' render_report(
+#'   quarto_args = c("--output-dir", "./results"),
+#'   execute_params = list(
 #'     counts_csv = system.file("extdata", "nidap", "Raw_Counts.csv.gz",
-#'       package = "MOSuite"
-#'     ),
+#'                              package = "MOSuite"),
 #'     samplesheet_csv = system.file("extdata", "nidap",
 #'       "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
-#'       package = "MOSuite"
-#'     )
-#'   ))
-#'
-#'   # Render to a specific output directory
-#'   render_report(
-#'     quarto_args = c("--output-dir", "./results"),
-#'     execute_params = list(
-#'       counts_csv = system.file("extdata", "nidap", "Raw_Counts.csv.gz",
-#'         package = "MOSuite"
-#'       ),
-#'       samplesheet_csv = system.file("extdata", "nidap",
-#'         "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
-#'         package = "MOSuite"
-#'       )
-#'     )
+#'       package = "MOSuite")
 #'   )
-#' }
+#' )
 render_report <- function(
   qmd_template = system.file("quarto", "report.qmd", package = "MOSuite"),
   qmd_src = NULL,

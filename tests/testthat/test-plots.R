@@ -1,14 +1,5 @@
 set.seed(20250225)
 
-skip_if_png_device_unavailable <- function() {
-  soft <- suppressWarnings(grDevices::grSoftVersion())
-  ok <- length(soft) > 0 && isTRUE(nzchar(soft[["cairo"]]))
-
-  if (!isTRUE(ok)) {
-    skip("PNG graphics device unavailable in this runtime")
-  }
-}
-
 corr_heatmap_fixture <- function() {
   return(plot_corr_heatmap(
     nidap_filtered_counts |>
@@ -36,7 +27,6 @@ corr_heatmap_fixture <- function() {
 }
 
 test_that("print_or_save_plot saves ComplexHeatmap to disk without error", {
-  skip_if_png_device_unavailable()
   p <- corr_heatmap_fixture()
   outfile <- tempfile(fileext = ".png")
   result <- print_or_save_plot(
@@ -53,7 +43,6 @@ test_that("print_or_save_plot saves ComplexHeatmap to disk without error", {
 })
 
 test_that("print_or_save_plot saves ggplot without error", {
-  skip_if_png_device_unavailable()
   p <- plot_read_depth(nidap_clean_raw_counts)
   outfile <- tempfile(fileext = ".png")
   result <- print_or_save_plot(
@@ -70,7 +59,6 @@ test_that("print_or_save_plot saves ggplot without error", {
 })
 
 test_that("print_or_save_plot prints ComplexHeatmap with caption without error", {
-  skip_if_png_device_unavailable()
   p <- corr_heatmap_fixture()
   outfile <- tempfile(fileext = ".png")
   withr::with_png(outfile, {
@@ -87,7 +75,6 @@ test_that("print_or_save_plot prints ComplexHeatmap with caption without error",
 })
 
 test_that("save_or_print_plot works for ComplexHeatmap", {
-  skip_if_png_device_unavailable()
   p <- corr_heatmap_fixture()
   skip_on_ci()
   tmp <- withr::local_tempdir()
@@ -103,7 +90,6 @@ test_that("save_or_print_plot works for ComplexHeatmap", {
   )
 })
 test_that("save_or_print_plot works for ggplot", {
-  skip_if_png_device_unavailable()
   p <- plot_read_depth(nidap_clean_raw_counts)
   skip_on_ci()
   tmp <- withr::local_tempdir()
