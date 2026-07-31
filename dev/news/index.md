@@ -2,15 +2,6 @@
 
 ## MOSuite 0.4.0
 
-- Fix how
-  [`plot_volcano_summary()`](https://ccbr.github.io/MOSuite/dev/reference/plot_volcano_summary.md)
-  & `plot_volcano_enhanced` handle detecting column names for features,
-  significance, and fold-change.
-  [`plot_volcano_summary()`](https://ccbr.github.io/MOSuite/dev/reference/plot_volcano_summary.md)
-  plot now uses
-  [`plot_volcano_enhanced()`](https://ccbr.github.io/MOSuite/dev/reference/plot_volcano_enhanced.md)
-  for rendering. ([\#239](https://github.com/CCBR/MOSuite/issues/239),
-  [@phoman14](https://github.com/phoman14))
 - Update PCA label, point-size, and histogram behavior.
   ([\#230](https://github.com/CCBR/MOSuite/issues/230),
   [@phoman14](https://github.com/phoman14))
