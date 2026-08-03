@@ -1,5 +1,7 @@
 ## MOSuite development version
 
+## MOSuite 0.4.1
+
 - Fix how `plot_volcano_summary()` & `plot_volcano_enhanced` handle detecting column names for features, significance, and fold-change. `plot_volcano_summary()` plot now uses `plot_volcano_enhanced()` for rendering. (#239, @phoman14)
 
 ## MOSuite 0.4.0
