@@ -200,11 +200,11 @@ dat_volcano_enhanced <- moo |>
 #> generated.
 #> Genes in initial dataset: 7943
 #> 
-#> Max y: 4.70280335204323
+#> Max y: 4.70280335204325
 #> 
 #> Genes in initial dataset: 7943
 #> 
-#> Max y: 4.34744066227959
+#> Max y: 4.34744066227962
 ```
 
 ![](visualization_files/figure-html/volcano_enhanced-1.png)![](visualization_files/figure-html/volcano_enhanced-2.png)![](visualization_files/figure-html/volcano_enhanced-3.png)
@@ -251,9 +251,9 @@ dat_volcano_summary <- moo |>
 #> Genes in initial dataset: 7943
 #> Max y: 4.56088783571366
 #> Genes in initial dataset: 7943
-#> Max y: 4.70280335204323
+#> Max y: 4.70280335204325
 #> Genes in initial dataset: 7943
-#> Max y: 4.34744066227959
+#> Max y: 4.34744066227962
 ```
 
 ![](visualization_files/figure-html/volcano_summary-1.png)
