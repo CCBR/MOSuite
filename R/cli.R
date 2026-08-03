@@ -23,67 +23,68 @@ cli_exec_impl <- function(clargs) {
   usage <- length(clargs) == 0 || clargs[1L] %in% c("help", "--help")
 
   if (usage) {
-    return(cli_usage())
-  }
-
-  # extract method
-  method <- clargs[1L]
-
-  # check request for help on requested method
-  help <-
-    clargs[2L] %in% c("help", "--help")
-
-  if (help) {
-    return(cli_help(method))
-  }
-
-  # check for known function in MOSuite
-  exports <- getNamespaceExports("MOSuite")
-  if (!method %in% exports) {
-    return(stop(cli_unknown(method, exports)))
-  }
-
-  # begin building call
-  # if --json in arguments, call cli_from_json()
-  if (any(stringr::str_detect(clargs, "^--json"))) {
-    f <- getExportedValue("MOSuite", "cli_from_json")
-    args <- list(f)
-    args$method <- method
+    result <- cli_usage()
   } else {
-    # otherwise call the method directly
-    f <- getExportedValue("MOSuite", method)
-    args <- list(f)
-  }
+    # extract method
+    method <- clargs[1L]
 
-  for (clarg in clargs[-1L]) {
-    # convert '--no-<flag>' into a FALSE parameter
-    if (grepl("^--no-", clarg)) {
-      key <- substring(clarg, 6L)
-      args[[key]] <- FALSE
-    } else if (grepl("^--[^=]+=", clarg)) {
-      # convert '--param=value' flags
-      index <- regexpr("=", clarg, fixed = TRUE)
-      key <- substring(clarg, 3L, index - 1L)
-      val <- substring(clarg, index + 1L)
-      args[[key]] <- cli_parse(val)
-    } else if (grepl("^--", clarg)) {
-      # convert '--flag' into a TRUE parameter
-      key <- substring(clarg, 3L)
-      args[[key]] <- TRUE
-    } else if (grepl("=", clarg, fixed = TRUE)) {
-      # convert 'param=value' flags
-      index <- regexpr("=", clarg, fixed = TRUE)
-      key <- substring(clarg, 1L, index - 1L)
-      val <- substring(clarg, index + 1L)
-      args[[key]] <- cli_parse(val)
+    # check request for help on requested method
+    help <- clargs[2L] %in% c("help", "--help")
+
+    if (help) {
+      result <- cli_help(method)
     } else {
-      # take other parameters as-is
-      args[[length(args) + 1L]] <- cli_parse(clarg)
+      # check for known function in MOSuite
+      exports <- getNamespaceExports("MOSuite")
+      if (!method %in% exports) {
+        stop(cli_unknown(method, exports))
+      }
+
+      # begin building call
+      # if --json in arguments, call cli_from_json()
+      if (any(stringr::str_detect(clargs, "^--json"))) {
+        f <- getExportedValue("MOSuite", "cli_from_json")
+        args <- list(f)
+        args$method <- method
+      } else {
+        # otherwise call the method directly
+        f <- getExportedValue("MOSuite", method)
+        args <- list(f)
+      }
+
+      for (clarg in clargs[-1L]) {
+        # convert '--no-<flag>' into a FALSE parameter
+        if (grepl("^--no-", clarg)) {
+          key <- substring(clarg, 6L)
+          args[[key]] <- FALSE
+        } else if (grepl("^--[^=]+=", clarg)) {
+          # convert '--param=value' flags
+          index <- regexpr("=", clarg, fixed = TRUE)
+          key <- substring(clarg, 3L, index - 1L)
+          val <- substring(clarg, index + 1L)
+          args[[key]] <- cli_parse(val)
+        } else if (grepl("^--", clarg)) {
+          # convert '--flag' into a TRUE parameter
+          key <- substring(clarg, 3L)
+          args[[key]] <- TRUE
+        } else if (grepl("=", clarg, fixed = TRUE)) {
+          # convert 'param=value' flags
+          index <- regexpr("=", clarg, fixed = TRUE)
+          key <- substring(clarg, 1L, index - 1L)
+          val <- substring(clarg, index + 1L)
+          args[[key]] <- cli_parse(val)
+        } else {
+          # take other parameters as-is
+          args[[length(args) + 1L]] <- cli_parse(clarg)
+        }
+      }
+
+      # invoke method with parsed arguments
+      result <- do.call(args[[1L]], args[-1L], envir = globalenv())
     }
   }
 
-  # invoke method with parsed arguments
-  return(do.call(args[[1L]], args[-1L], envir = globalenv()))
+  return(result)
 }
 
 #' Print CLI usage information
@@ -175,16 +176,16 @@ cli_unknown <- function(method, exports) {
 #'   object.
 #' @keywords internal
 cli_parse <- function(text) {
-  # handle logical-like values up-front
   if (text %in% c("true", "True", "TRUE")) {
-    return(TRUE)
+    result <- TRUE
   } else if (text %in% c("false", "False", "FALSE")) {
-    return(FALSE)
+    result <- FALSE
+  } else {
+    # parse the expression
+    value <- parse(text = text)[[1L]]
+    result <- if (is.language(value)) text else value
   }
-
-  # parse the expression
-  value <- parse(text = text)[[1L]]
-  return(if (is.language(value)) text else value)
+  return(result)
 }
 
 #' Call an MOSuite function with arguments specified in a json file
@@ -240,7 +241,7 @@ cli_from_json <- function(method, json, debug = FALSE) {
 
   # invoke method with parsed arguments from json
   if (isTRUE(debug)) {
-    return(invisible(call_expr))
+    result <- call_expr
   } else {
     result <- do.call(fcn_args[[1L]], fcn_args[-1L], envir = globalenv())
 

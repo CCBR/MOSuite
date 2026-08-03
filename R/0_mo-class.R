@@ -113,10 +113,7 @@ multiOmicDataSet <- S7::new_class(
     # TODO any sample ID in filt or norm_cpm counts must also be in sample_meta
     # TODO counts can only contain 1 feature name column, and all other columns are sample counts
 
-    if (length(errors) > 0) {
-      return(errors)
-    }
-    return(NULL)
+    return(if (length(errors) > 0) errors else NULL)
   }
 )
 

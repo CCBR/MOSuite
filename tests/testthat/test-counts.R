@@ -94,6 +94,77 @@ test_that("calc_cpm_df preserves rownames", {
   )
 })
 
+test_that("log_transform_counts transforms counts correctly", {
+  dat <- data.frame(
+    gene_id = c("g1", "g2"),
+    s1 = c(1, 4),
+    s2 = c(9, 0)
+  )
+  result <- log_transform_counts(dat, pseudocount = 1, base = 2)
+  expect_equal(result$s1, log(c(1, 4) + 1, base = 2))
+  expect_equal(result$s2, log(c(9, 0) + 1, base = 2))
+})
+
+test_that("log_transform_counts uses natural log by default", {
+  dat <- data.frame(gene_id = "g1", s1 = 10)
+  result <- log_transform_counts(dat, pseudocount = 0.5, base = "ln")
+  expect_equal(result$s1, log(10.5))
+})
+
+test_that("log_transform_counts errors for invalid pseudocount", {
+  dat <- data.frame(gene_id = "g1", s1 = 1)
+  expect_error(
+    log_transform_counts(dat, pseudocount = "a"),
+    "pseudocount must be a single numeric value"
+  )
+  expect_error(
+    log_transform_counts(dat, pseudocount = -1),
+    "pseudocount cannot be negative"
+  )
+})
+
+test_that("log_transform_counts errors when count + pseudocount <= 0", {
+  dat <- data.frame(gene_id = "g1", s1 = -2)
+  expect_error(log_transform_counts(dat, pseudocount = 1), "greater than 0")
+})
+
+test_that("resolve_log_transform_base returns exp(1) for string aliases", {
+  expect_equal(resolve_log_transform_base("e"), exp(1))
+  expect_equal(resolve_log_transform_base("ln"), exp(1))
+  expect_equal(resolve_log_transform_base("natural"), exp(1))
+  expect_equal(resolve_log_transform_base("E"), exp(1))
+  expect_equal(resolve_log_transform_base("LN"), exp(1))
+})
+
+test_that("resolve_log_transform_base returns numeric base as-is", {
+  expect_equal(resolve_log_transform_base(2), 2)
+  expect_equal(resolve_log_transform_base(10), 10)
+})
+
+test_that("resolve_log_transform_base errors for invalid string", {
+  expect_error(
+    resolve_log_transform_base("log2"),
+    "must be a single numeric value"
+  )
+})
+
+test_that("resolve_log_transform_base errors for non-numeric non-string", {
+  expect_error(
+    resolve_log_transform_base(TRUE),
+    "must be a single numeric value"
+  )
+  expect_error(
+    resolve_log_transform_base(c(2, 10)),
+    "must be a single numeric value"
+  )
+})
+
+test_that("resolve_log_transform_base errors for base <= 0 or base == 1", {
+  expect_error(resolve_log_transform_base(0), "greater than 0")
+  expect_error(resolve_log_transform_base(-1), "greater than 0")
+  expect_error(resolve_log_transform_base(1), "cannot equal 1")
+})
+
 test_that("calc_cpm_df preserves non-integer character rownames", {
   df <- nidap_clean_raw_counts |> as.data.frame()
   rownames(df) <- paste0("row_", seq_len(nrow(df)))
