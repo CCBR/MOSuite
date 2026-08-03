@@ -478,6 +478,90 @@ test_that("remove_low_count_genes works with group-based filtering (no grouped t
   expect_true(nrow(result) > 0)
 })
 
+test_that("remove_low_count_genes adaptive fallback runs without group metadata", {
+  df <- data.frame(
+    Gene = c("GeneA", "GeneB", "GeneC"),
+    A1 = c(100L, 5L, 0L),
+    A2 = c(120L, 3L, 1L),
+    A3 = c(90L, 4L, 0L),
+    B1 = c(80L, 6L, 0L),
+    B2 = c(110L, 2L, 1L),
+    B3 = c(95L, 5L, 0L)
+  )
+  sample_meta <- data.frame(
+    Sample = c("A1", "A2", "A3", "B1", "B2", "B3"),
+    Group = c("A", "A", "A", "B", "B", "B")
+  )
+  expect_warning(
+    remove_low_count_genes(
+      counts_dat = df,
+      sample_metadata = sample_meta,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      group_colname = "Group",
+      filtering_method = "adaptive",
+      use_group_based_filtering = FALSE
+    ),
+    regexp = "without usable group metadata"
+  )
+  result <- suppressWarnings(remove_low_count_genes(
+    counts_dat = df,
+    sample_metadata = sample_meta,
+    sample_id_colname = "Sample",
+    feature_id_colname = "Gene",
+    group_colname = "Group",
+    filtering_method = "adaptive",
+    use_group_based_filtering = FALSE
+  ))
+  expect_s3_class(result, "data.frame")
+  expect_true("Gene" %in% colnames(result))
+})
+
+test_that("remove_low_count_genes stops on invalid minimum_number_of_groups_passing_filter", {
+  df <- data.frame(Gene = "GeneA", A1 = 100L, B1 = 90L)
+  meta <- data.frame(Sample = c("A1", "B1"), Group = c("A", "B"))
+  expect_error(
+    remove_low_count_genes(
+      counts_dat = df,
+      sample_metadata = meta,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      group_colname = "Group",
+      filtering_method = "manual",
+      minimum_number_of_groups_passing_filter = 0
+    ),
+    regexp = "must be >= 1"
+  )
+  expect_error(
+    remove_low_count_genes(
+      counts_dat = df,
+      sample_metadata = meta,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      group_colname = "Group",
+      filtering_method = "manual",
+      minimum_number_of_groups_passing_filter = 1.5
+    ),
+    regexp = "must be an integer"
+  )
+})
+
+test_that("remove_low_count_genes stops when sample_id_colname absent from metadata", {
+  df <- data.frame(Gene = "GeneA", A1 = 100L)
+  meta <- data.frame(SampleID = "A1", Group = "A")
+  expect_error(
+    remove_low_count_genes(
+      counts_dat = df,
+      sample_metadata = meta,
+      sample_id_colname = "Sample",
+      feature_id_colname = "Gene",
+      group_colname = "Group",
+      filtering_method = "manual"
+    ),
+    regexp = "not in sample_metadata"
+  )
+})
+
 test_that("filter_counts forwards plotting parameters", {
   pca_args <- NULL
   histogram_args <- NULL
