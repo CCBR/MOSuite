@@ -129,7 +129,7 @@ filter_counts <- function(
   minimum_number_of_samples_with_nonzero_counts_in_a_group = 3,
   minimum_number_of_groups_passing_filter = 1,
   use_cpm_counts_to_filter = TRUE,
-  use_group_based_filtering = FALSE,
+  use_group_based_filtering = TRUE,
   principal_component_on_x_axis = 1,
   principal_component_on_y_axis = 2,
   legend_position_for_pca = "top",
@@ -388,13 +388,14 @@ remove_low_count_genes <- function(
   group_colname,
   filtering_method = c("manual", "adaptive"),
   use_cpm_counts_to_filter = TRUE,
-  use_group_based_filtering = FALSE,
+  use_group_based_filtering = TRUE,
   minimum_count_value_to_be_considered_nonzero = 8,
   minimum_number_of_samples_with_nonzero_counts_in_total = 7,
   minimum_number_of_samples_with_nonzero_counts_in_a_group = 3,
   minimum_number_of_groups_passing_filter = 1
 ) {
   filtering_method <- match.arg(filtering_method)
+  n_features_in <- nrow(counts_dat)
 
   if (minimum_number_of_groups_passing_filter < 1) {
     stop("minimum_number_of_groups_passing_filter must be >= 1")
@@ -408,6 +409,11 @@ remove_low_count_genes <- function(
   if (is.null(sample_id_colname)) {
     sample_id_colname <- colnames(sample_metadata)[1]
   }
+  if (!(sample_id_colname %in% colnames(sample_metadata))) {
+    stop(glue::glue(
+      "sample_id_colname {sample_id_colname} not in sample_metadata"
+    ))
+  }
 
   df <- df[stats::complete.cases(df), ]
   if (is.null(sample_id_colname)) {
@@ -419,20 +425,29 @@ remove_low_count_genes <- function(
     is.numeric,
     logical(1)
   )]
+  if (length(sample_colnames) == 0) {
+    stop(
+      "No numeric sample columns found after applying feature and sample selections"
+    )
+  }
+
+  # Hardcoded to edgeR::filterByExpr defaults (see ?edgeR::filterByExpr) so the
+  # provenance log reflects the exact values used rather than implicit package defaults.
+  adaptive_filter_controls <- list(
+    min.count = 10,
+    min.total.count = 15,
+    large.n = 10,
+    min.prop = 0.7
+  )
 
   if (identical(filtering_method, "adaptive")) {
-    # Adaptive mode delegates feature retention to edgeR's design-aware filter.
+    # Adaptive mode delegates feature retention to edgeR's filterByExpr.
     counts_matr <- as.matrix(df[, sample_colnames, drop = FALSE])
     rownames(counts_matr) <- df[, feature_id_colname]
     dge <- edgeR::DGEList(counts = counts_matr)
 
     if (isTRUE(use_group_based_filtering)) {
       # Preserve current group-aware behavior by providing per-sample group labels.
-      if (!(sample_id_colname %in% colnames(sample_metadata))) {
-        stop(glue::glue(
-          "sample_id_colname {sample_id_colname} not in sample_metadata"
-        ))
-      }
       if (!(group_colname %in% colnames(sample_metadata))) {
         stop(glue::glue("group_colname {group_colname} not in sample_metadata"))
       }
@@ -447,18 +462,80 @@ remove_low_count_genes <- function(
           "{glue::glue_collapse(missing_samples, sep = ', ')}"
         ))
       }
+      sample_groups <- as.character(sample_metadata[[group_colname]][
+        sample_match
+      ])
+      group_levels <- unique(stats::na.omit(sample_groups))
+      if (length(group_levels) == 0) {
+        stop(glue::glue(
+          "group_colname {group_colname} has no non-missing values for selected samples"
+        ))
+      }
+      message(glue::glue(
+        "Filtering method: adaptive (group-aware using group_colname='{group_colname}')."
+      ))
+      message(glue::glue(
+        "Adaptive filter controls used: min.count={adaptive_filter_controls$min.count}, ",
+        "min.total.count={adaptive_filter_controls$min.total.count}, ",
+        "large.n={adaptive_filter_controls$large.n}, min.prop={adaptive_filter_controls$min.prop}."
+      ))
+      message(glue::glue(
+        "Sample/group context used: selected_samples={length(sample_colnames)}, groups={length(group_levels)} (group levels: ",
+        "{glue::glue_collapse(group_levels, sep = ', ')})."
+      ))
       keep <- edgeR::filterByExpr(
         dge,
-        group = as.factor(sample_metadata[[group_colname]][sample_match])
+        group = as.factor(sample_groups),
+        min.count = adaptive_filter_controls$min.count,
+        min.total.count = adaptive_filter_controls$min.total.count,
+        large.n = adaptive_filter_controls$large.n,
+        min.prop = adaptive_filter_controls$min.prop
       )
     } else {
-      keep <- edgeR::filterByExpr(dge)
+      warning(
+        "Adaptive filtering is running without usable group metadata. ",
+        "Provide group_colname with use_group_based_filtering=TRUE for recommended group-aware behavior."
+      )
+      message(
+        "Filtering method: adaptive (no usable group metadata detected; using fallback behavior)."
+      )
+      message(glue::glue(
+        "Adaptive filter controls used: min.count={adaptive_filter_controls$min.count}, ",
+        "min.total.count={adaptive_filter_controls$min.total.count}, ",
+        "large.n={adaptive_filter_controls$large.n}, min.prop={adaptive_filter_controls$min.prop}."
+      ))
+      message(glue::glue(
+        "Sample/group context used: selected_samples={length(sample_colnames)}, groups=NA."
+      ))
+      keep <- edgeR::filterByExpr(
+        dge,
+        min.count = adaptive_filter_controls$min.count,
+        min.total.count = adaptive_filter_controls$min.total.count,
+        large.n = adaptive_filter_controls$large.n,
+        min.prop = adaptive_filter_controls$min.prop
+      )
     }
 
     df_filt <- df[keep, , drop = FALSE]
-    message("Filtering method: adaptive (edgeR::filterByExpr)")
-    message(paste0("Number of features after filtering: ", nrow(df_filt)))
+    message(glue::glue(
+      "Features retained after filtering: {nrow(df_filt)} of {n_features_in}."
+    ))
     return(df_filt)
+  }
+
+  # R has no call-site detection; value-matching is the only way to identify preset usage.
+  manual_using_default_presets <-
+    identical(minimum_count_value_to_be_considered_nonzero, 8) &&
+    identical(minimum_number_of_samples_with_nonzero_counts_in_total, 7) &&
+    identical(minimum_number_of_samples_with_nonzero_counts_in_a_group, 3) &&
+    identical(minimum_number_of_groups_passing_filter, 1) &&
+    isTRUE(use_cpm_counts_to_filter)
+
+  if (isTRUE(manual_using_default_presets)) {
+    message(
+      "Manual mode is using preset thresholds. ",
+      "Treat these as starting points and review QC plots before downstream DEG/pathway interpretation."
+    )
   }
 
   if (
@@ -478,12 +555,20 @@ remove_low_count_genes <- function(
   passing_counts <- as.matrix(trans_df[, sample_colnames, drop = FALSE]) >=
     minimum_count_value_to_be_considered_nonzero
 
+  if (isTRUE(use_group_based_filtering)) {
+    message("Filtering method: manual (group-based filtering ON).")
+  } else {
+    message("Filtering method: manual (group-based filtering OFF).")
+  }
+  message(glue::glue(
+    "Manual filter controls used: use_cpm_counts_to_filter={use_cpm_counts_to_filter}, ",
+    "minimum_count_value_to_be_considered_nonzero={minimum_count_value_to_be_considered_nonzero}, ",
+    "minimum_number_of_samples_with_nonzero_counts_in_total={minimum_number_of_samples_with_nonzero_counts_in_total}, ",
+    "minimum_number_of_samples_with_nonzero_counts_in_a_group={minimum_number_of_samples_with_nonzero_counts_in_a_group}, ",
+    "minimum_number_of_groups_passing_filter={minimum_number_of_groups_passing_filter}."
+  ))
+
   if (use_group_based_filtering == TRUE) {
-    if (!(sample_id_colname %in% colnames(sample_metadata))) {
-      stop(glue::glue(
-        "sample_id_colname {sample_id_colname} not in sample_metadata"
-      ))
-    }
     if (!(group_colname %in% colnames(sample_metadata))) {
       stop(glue::glue("group_colname {group_colname} not in sample_metadata"))
     }
@@ -507,6 +592,10 @@ remove_low_count_genes <- function(
         "group_colname {group_colname} has no non-missing values for selected samples"
       ))
     }
+    message(glue::glue(
+      "Sample/group context used: selected_samples={length(sample_colnames)}, groups={length(groups)} (group levels: ",
+      "{glue::glue_collapse(groups, sep = ', ')})."
+    ))
     passing_samples_by_group <- vapply(
       groups,
       function(group) {
@@ -517,6 +606,7 @@ remove_low_count_genes <- function(
       },
       numeric(nrow(passing_counts))
     )
+    # Previously hardcoded to >= 1; now respects the minimum_number_of_groups_passing_filter param.
     keep_rows <- rowSums(
       passing_samples_by_group >=
         minimum_number_of_samples_with_nonzero_counts_in_a_group
@@ -526,10 +616,15 @@ remove_low_count_genes <- function(
   } else {
     keep_rows <- (rowSums(passing_counts) >=
       minimum_number_of_samples_with_nonzero_counts_in_total)
+    message(glue::glue(
+      "Sample/group context used: selected_samples={length(sample_colnames)}, groups=NA."
+    ))
     df_filt <- trans_df[keep_rows, , drop = FALSE]
   }
   rownames(df_filt) <- NULL
 
-  message(paste0("Number of features after filtering: ", nrow(df_filt)))
+  message(glue::glue(
+    "Features retained after filtering: {nrow(df_filt)} of {n_features_in}."
+  ))
   return(df_filt)
 }

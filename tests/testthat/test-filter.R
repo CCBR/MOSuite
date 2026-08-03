@@ -12,6 +12,7 @@ test_that("filter_counts reproduces NIDAP results", {
       feature_id_colname = "Gene",
       count_type = "raw",
       filtering_method = "manual",
+      use_group_based_filtering = FALSE,
       print_plots = TRUE
     )
   rds_counts_filt <- moo@counts$filt |>
@@ -559,6 +560,7 @@ test_that("filter_counts forwards plotting parameters", {
     moo,
     sample_id_colname = "Sample",
     feature_id_colname = "Gene",
+    group_colname = "Group",
     label_colname = "Label",
     count_type = "raw",
     add_label_to_pca = TRUE,
@@ -645,6 +647,7 @@ test_that("filter_counts handles histogram label combinations", {
       moo,
       sample_id_colname = "Sample",
       feature_id_colname = "Gene",
+      group_colname = "Group",
       label_colname = combination$label_colname,
       count_type = "raw",
       color_histogram_by_group = combination$color_histogram_by_group,

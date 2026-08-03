@@ -18,7 +18,7 @@ filter_counts(
   minimum_number_of_samples_with_nonzero_counts_in_a_group = 3,
   minimum_number_of_groups_passing_filter = 1,
   use_cpm_counts_to_filter = TRUE,
-  use_group_based_filtering = FALSE,
+  use_group_based_filtering = TRUE,
   principal_component_on_x_axis = 1,
   principal_component_on_y_axis = 2,
   legend_position_for_pca = "top",

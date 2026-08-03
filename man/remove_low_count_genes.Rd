@@ -12,7 +12,7 @@ remove_low_count_genes(
   group_colname,
   filtering_method = c("manual", "adaptive"),
   use_cpm_counts_to_filter = TRUE,
-  use_group_based_filtering = FALSE,
+  use_group_based_filtering = TRUE,
   minimum_count_value_to_be_considered_nonzero = 8,
   minimum_number_of_samples_with_nonzero_counts_in_total = 7,
   minimum_number_of_samples_with_nonzero_counts_in_a_group = 3,
