@@ -13,6 +13,8 @@ test_that("filter_counts reproduces NIDAP results", {
       count_type = "raw",
       filtering_method = "manual",
       use_group_based_filtering = FALSE,
+      minimum_count_value_to_be_considered_nonzero = 8,
+      minimum_number_of_samples_with_nonzero_counts_in_total = 7,
       print_plots = TRUE
     )
   rds_counts_filt <- moo@counts$filt |>

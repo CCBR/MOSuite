@@ -123,8 +123,8 @@ filter_counts <- function(
   group_colname = "Group",
   label_colname = "Label",
   samples_to_include = NULL,
-  minimum_count_value_to_be_considered_nonzero = 8,
-  minimum_number_of_samples_with_nonzero_counts_in_total = 7,
+  minimum_count_value_to_be_considered_nonzero = 1,
+  minimum_number_of_samples_with_nonzero_counts_in_total = 3,
   filtering_method = c("adaptive", "manual"),
   minimum_number_of_samples_with_nonzero_counts_in_a_group = 3,
   minimum_number_of_groups_passing_filter = 1,
@@ -389,8 +389,8 @@ remove_low_count_genes <- function(
   filtering_method = c("manual", "adaptive"),
   use_cpm_counts_to_filter = TRUE,
   use_group_based_filtering = TRUE,
-  minimum_count_value_to_be_considered_nonzero = 8,
-  minimum_number_of_samples_with_nonzero_counts_in_total = 7,
+  minimum_count_value_to_be_considered_nonzero = 1,
+  minimum_number_of_samples_with_nonzero_counts_in_total = 3,
   minimum_number_of_samples_with_nonzero_counts_in_a_group = 3,
   minimum_number_of_groups_passing_filter = 1
 ) {
@@ -526,8 +526,8 @@ remove_low_count_genes <- function(
 
   # R has no call-site detection; value-matching is the only way to identify preset usage.
   manual_using_default_presets <-
-    identical(minimum_count_value_to_be_considered_nonzero, 8) &&
-    identical(minimum_number_of_samples_with_nonzero_counts_in_total, 7) &&
+    identical(minimum_count_value_to_be_considered_nonzero, 1) &&
+    identical(minimum_number_of_samples_with_nonzero_counts_in_total, 3) &&
     identical(minimum_number_of_samples_with_nonzero_counts_in_a_group, 3) &&
     identical(minimum_number_of_groups_passing_filter, 1) &&
     isTRUE(use_cpm_counts_to_filter)
