@@ -63,12 +63,11 @@ get_observed_values <- function(dat, colname) {
   values <- dplyr::pull(dat, colname)
   observed_values <- stats::na.omit(as.character(values))
 
-  result <- if (is.factor(values)) {
-    levels(values)[levels(values) %in% observed_values]
-  } else {
-    unique(observed_values)
+  if (is.factor(values)) {
+    return(levels(values)[levels(values) %in% observed_values])
   }
-  return(result)
+
+  return(unique(observed_values))
 }
 
 
@@ -195,35 +194,38 @@ resolve_plot_colors <- function(
   obs <- get_observed_values(dat, colname)
 
   if (length(obs) == 0) {
-    result <- color_values
-  } else if (is.null(color_values)) {
-    result <- get_colors_vctr(dat, colname, palette = palette)
-  } else if (
-    !is.null(names(color_values)) && all(obs %in% names(color_values))
-  ) {
-    result <- color_values
-  } else {
-    if (length(color_values) < length(obs)) {
-      n_missing <- length(obs) - length(color_values)
-      message(glue::glue(
-        "color_values contains {length(color_values)} colors for ",
-        "{length(obs)} values in column {colname}. Generating ",
-        "{n_missing} additional colors."
-      ))
-      generated_colors <- get_colors_vctr(
-        dat,
-        colname,
-        palette = palette
-      )
-      color_values <- c(
-        unname(color_values),
-        unname(generated_colors)[seq.int(length(color_values) + 1, length(obs))]
-      )
-    }
-    result <- stats::setNames(unname(color_values)[seq_along(obs)], obs)
+    return(color_values)
   }
 
-  return(result)
+  if (is.null(color_values)) {
+    return(get_colors_vctr(dat, colname, palette = palette))
+  }
+
+  if (!is.null(names(color_values))) {
+    if (all(obs %in% names(color_values))) {
+      return(color_values)
+    }
+  }
+
+  if (length(color_values) < length(obs)) {
+    n_missing <- length(obs) - length(color_values)
+    message(glue::glue(
+      "color_values contains {length(color_values)} colors for ",
+      "{length(obs)} values in column {colname}. Generating ",
+      "{n_missing} additional colors."
+    ))
+    generated_colors <- get_colors_vctr(
+      dat,
+      colname,
+      palette = palette
+    )
+    color_values <- c(
+      unname(color_values),
+      unname(generated_colors)[seq.int(length(color_values) + 1, length(obs))]
+    )
+  }
+
+  return(stats::setNames(unname(color_values)[seq_along(obs)], obs))
 }
 
 #' Display the mosuite color palette

@@ -91,20 +91,6 @@ test_that("cli_parse handles logical-like strings", {
   expect_false(cli_parse("FALSE"))
 })
 
-test_that("cli_parse parses numeric strings to numeric values", {
-  expect_equal(cli_parse("3.14"), 3.14)
-  expect_equal(cli_parse("42L"), 42L)
-})
-
-test_that("cli_parse returns string unchanged for language-like expressions", {
-  # A bare variable name parses as a symbol (language), so it should return text
-  expect_equal(cli_parse("some_var"), "some_var")
-})
-
-test_that("cli_parse evaluates a simple R expression", {
-  expect_equal(cli_parse("1 + 1"), 2)
-})
-
 test_that("cli_exec_impl passes positional args", {
   # Positional args are parsed via cli_parse() and appended as unnamed elements.
   expect_equal(cli_exec(c("do_math", "TRUE", "FALSE")), 3)

@@ -120,21 +120,20 @@ log_transform_counts <- function(
 resolve_log_transform_base <- function(base) {
   if (is.character(base) && length(base) == 1) {
     base <- tolower(base)
-    if (!base %in% c("e", "ln", "natural")) {
-      stop(
-        "base must be a single numeric value or one of 'e', 'ln', or 'natural'"
-      )
+    if (base %in% c("e", "ln", "natural")) {
+      return(exp(1))
     }
-    base <- exp(1)
-  } else {
-    if (!is.numeric(base) || length(base) != 1) {
-      stop(
-        "base must be a single numeric value or one of 'e', 'ln', or 'natural'"
-      )
-    }
-    if (base <= 0 || base == 1) {
-      stop("base must be greater than 0 and cannot equal 1")
-    }
+    stop(
+      "base must be a single numeric value or one of 'e', 'ln', or 'natural'"
+    )
+  }
+  if (!is.numeric(base) || length(base) != 1) {
+    stop(
+      "base must be a single numeric value or one of 'e', 'ln', or 'natural'"
+    )
+  }
+  if (base <= 0 || base == 1) {
+    stop("base must be greater than 0 and cannot equal 1")
   }
   return(base)
 }

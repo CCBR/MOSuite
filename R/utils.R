@@ -260,12 +260,10 @@ load_moo_from_data_dir <- function(data_dir = file.path("..", "data")) {
 #'
 #' @export
 parse_optional_vector <- function(x) {
-  result <- if (is.null(x) || identical(x, "") || length(x) == 0) {
-    NULL
-  } else {
-    trimws(unlist(strsplit(x, ",")))
+  if (is.null(x) || identical(x, "") || length(x) == 0) {
+    return(NULL)
   }
-  return(result)
+  return(trimws(unlist(strsplit(x, ","))))
 }
 
 #' Parse comma-separated string with default fallback
@@ -288,8 +286,10 @@ parse_optional_vector <- function(x) {
 #' @export
 parse_vector_with_default <- function(x, default) {
   parsed <- parse_optional_vector(x)
-  result <- if (is.null(parsed)) default else parsed
-  return(result)
+  if (is.null(parsed)) {
+    return(default)
+  }
+  return(parsed)
 }
 
 #' Parse sample rename pairs from string
@@ -324,5 +324,9 @@ parse_samples_to_rename <- function(x) {
     }
   }
 
-  return(if (length(result) == 0) NULL else result)
+  if (length(result) == 0) {
+    return(NULL)
+  }
+
+  return(result)
 }
