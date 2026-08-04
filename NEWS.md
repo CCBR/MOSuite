@@ -5,9 +5,12 @@
   - Retain explicit threshold filtering as expert mode (`filtering_method = "manual"`).
   - Expose `minimum_number_of_groups_passing_filter` for manual group-based filtering (default `1`) instead of hardcoding one-group pass behavior.
 
-## MOSuite 0.4.0
+## MOSuite 0.4.1
 
 - Fix how `plot_volcano_summary()` & `plot_volcano_enhanced` handle detecting column names for features, significance, and fold-change. `plot_volcano_summary()` plot now uses `plot_volcano_enhanced()` for rendering. (#239, @phoman14)
+
+## MOSuite 0.4.0
+
 - Update PCA label, point-size, and histogram behavior. (#230, @phoman14)
 - Add optional count log-transform controls for PCA plots.  (#234, @phoman14)
 - Add a post-clean CPM histogram output in `clean_raw_counts()`. (#234, @phoman14)
