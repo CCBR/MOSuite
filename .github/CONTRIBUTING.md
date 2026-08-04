@@ -14,6 +14,30 @@ If you've decided to work on an issue,
 [assign yourself to the issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/assigning-issues-and-pull-requests-to-other-github-users#assigning-an-individual-issue-or-pull-request)
 so others will know you're working on it.
 
+## AI Use
+
+AI usage is welcome for generating code, documentation, and other text in this repository.
+Please remember that this project is maintained by humans; every discussion,
+issue, and pull request is read and reviewed by humans (and sometimes machines,
+too).
+Therefore, there are guidelines to make sure contributors' AI usage is helpful
+and responsible:
+
+- **All AI usage in any form must be disclosed.**
+  You must state the tool you used (e.g. Claude Code, Cursor, Amp,
+  Copilot), the model (e.g. Claude Sonnet 5, GPT-5.6 Sol),
+  and a brief description of the extent that the work was AI-assisted.
+
+- **The human-in-the-loop must fully understand all code.**
+  If you can't explain what your changes do and how they interact with the
+  greater system without the aid of AI tools, do not contribute to this project.
+
+- **Issues and discussions can use AI assistance but must have a full human-in-the-loop.**
+  This means that any content generated with AI must have been reviewed _and
+  edited_ by a human before submission. AI is very good at being overly verbose
+  and including noise that distracts from the main point. Humans must do their
+  research and trim this down.
+
 ## Pull request process
 
 We use [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow)
