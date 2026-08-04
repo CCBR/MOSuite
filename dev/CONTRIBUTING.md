@@ -52,20 +52,32 @@ cd MOSuite
 
 ### If this is your first time cloning the repo, install dependencies
 
+#### R dependencies
+
 - In an R console, install the R development dependencies with
-  `devtools::install_dev_deps()`, and then make sure the package passes
-  R CMD check by running `devtools::check()`. If R CMD check doesn’t
-  pass cleanly, it’s a good idea to ask for help before continuing.
+  `devtools::install_dev_deps()`.
+- Alternatively, we have a docker container available with MOSuite’s
+  dependencies installed:
+  [`docker://nciccbr/mosuite-minmal:latest`](https://hub.docker.com/r/nciccbr/mosuite-minimal).
+  You can launch the container using your preferred engine (e.g. Docker,
+  Podman, apptainer/singularity) with your clone of the repo mounted
+  while developing your contributions.
 
-- Install [`pre-commit`](https://pre-commit.com/#install) if you don’t
-  already have it. Then from the repo’s root directory, run
+Before you make any changes, make sure the package passes R CMD check by
+running `devtools::check()`. If R CMD check doesn’t pass cleanly, it’s a
+good idea to **ask for help before continuing**.
 
-  ``` sh
-  pre-commit install
-  ```
+#### Pre-commit
 
-  This will install the repo’s pre-commit hooks. You’ll only need to do
-  this step the first time you clone the repo.
+Install [`pre-commit`](https://pre-commit.com/#install) if you don’t
+already have it. Then from the repo’s root directory, run
+
+``` sh
+pre-commit install
+```
+
+This will install the repo’s pre-commit hooks. You’ll only need to do
+this step the first time you clone the repo.
 
 ### Create a branch
 

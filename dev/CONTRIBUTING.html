@@ -62,13 +62,19 @@
 </div>
 <div class="section level3">
 <h3 id="if-this-is-your-first-time-cloning-the-repo-install-dependencies">If this is your first time cloning the repo, install dependencies<a class="anchor" aria-label="anchor" href="#if-this-is-your-first-time-cloning-the-repo-install-dependencies"></a></h3>
-<ul><li><p>In an R console, install the R development dependencies with <code>devtools::install_dev_deps()</code>, and then make sure the package passes R CMD check by running <code>devtools::check()</code>. If R CMD check doesn’t pass cleanly, it’s a good idea to ask for help before continuing.</p></li>
-<li>
+<div class="section level4">
+<h4 id="r-dependencies">R dependencies<a class="anchor" aria-label="anchor" href="#r-dependencies"></a></h4>
+<ul><li>In an R console, install the R development dependencies with <code>devtools::install_dev_deps()</code>.</li>
+<li>Alternatively, we have a docker container available with MOSuite’s dependencies installed: <a href="https://hub.docker.com/r/nciccbr/mosuite-minimal" class="external-link"><code>docker://nciccbr/mosuite-minmal:latest</code></a>. You can launch the container using your preferred engine (e.g. Docker, Podman, apptainer/singularity) with your clone of the repo mounted while developing your contributions.</li>
+</ul><p>Before you make any changes, make sure the package passes R CMD check by running <code>devtools::check()</code>. If R CMD check doesn’t pass cleanly, it’s a good idea to <strong>ask for help before continuing</strong>.</p>
+</div>
+<div class="section level4">
+<h4 id="pre-commit">Pre-commit<a class="anchor" aria-label="anchor" href="#pre-commit"></a></h4>
 <p>Install <a href="https://pre-commit.com/#install" class="external-link"><code>pre-commit</code></a> if you don’t already have it. Then from the repo’s root directory, run</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">pre-commit</span> install</span></code></pre></div>
 <p>This will install the repo’s pre-commit hooks. You’ll only need to do this step the first time you clone the repo.</p>
-</li>
-</ul></div>
+</div>
+</div>
 <div class="section level3">
 <h3 id="create-a-branch">Create a branch<a class="anchor" aria-label="anchor" href="#create-a-branch"></a></h3>
 <p>Create a Git branch for your pull request (PR). Give the branch a descriptive name for the changes you will make, such as <code>iss-10</code> if it is for a specific issue.</p>
