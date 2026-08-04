@@ -518,7 +518,8 @@ remove_low_count_genes <- function(
 
     df_filt <- df[keep, , drop = FALSE]
     message(glue::glue(
-      "Features retained after filtering: {nrow(df_filt)} of {n_features_in}."
+      "Features retained after filtering: {nrow(df_filt)} of {n_features_in} ",
+      "({round(nrow(df_filt) / n_features_in * 100, 1)}% retention)."
     ))
     return(df_filt)
   }
@@ -624,7 +625,8 @@ remove_low_count_genes <- function(
   rownames(df_filt) <- NULL
 
   message(glue::glue(
-    "Features retained after filtering: {nrow(df_filt)} of {n_features_in}."
+    "Features retained after filtering: {nrow(df_filt)} of {n_features_in} ",
+    "({round(nrow(df_filt) / n_features_in * 100, 1)}% retention)."
   ))
   return(df_filt)
 }
