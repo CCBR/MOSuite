@@ -98,7 +98,7 @@ diff_counts <- function(
   contrast_colname <- contrast_colname |> unlist()
   contrasts <- contrasts |> unlist()
 
-  # TODO support tibbles (https://github.com/CCBR/MOSuite/issues/97)
+  # TODO support tibbles
   counts_dat <- counts_dat |> as.data.frame()
 
   if (is.null(sample_id_colname)) {
