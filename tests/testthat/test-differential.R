@@ -55,6 +55,7 @@ test_that("diff_counts works for RENEE on macOS", {
     filter_counts(
       group_colname = "condition",
       label_colname = "sample_id",
+      filtering_method = "manual",
       minimum_count_value_to_be_considered_nonzero = 1,
       minimum_number_of_samples_with_nonzero_counts_in_total = 1,
       minimum_number_of_samples_with_nonzero_counts_in_a_group = 1
@@ -179,6 +180,7 @@ test_that("diff_counts behaves consistently across platforms", {
     filter_counts(
       group_colname = "condition",
       label_colname = "sample_id",
+      filtering_method = "manual",
       minimum_count_value_to_be_considered_nonzero = 1,
       minimum_number_of_samples_with_nonzero_counts_in_total = 1,
       minimum_number_of_samples_with_nonzero_counts_in_a_group = 1

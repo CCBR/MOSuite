@@ -1,5 +1,10 @@
 ## MOSuite development version
 
+- Filtering updates in `filter_counts()` and `remove_low_count_genes()`. (#245, @TJoshMeyer)
+  - Add adaptive filtering mode (`filtering_method = "adaptive"`) using `edgeR::filterByExpr()` as the default behavior.
+  - Retain explicit threshold filtering as expert mode (`filtering_method = "manual"`).
+  - Expose `minimum_number_of_groups_passing_filter` for manual group-based filtering (default `1`) instead of hardcoding one-group pass behavior.
+
 ## MOSuite 0.4.1
 
 - Fix how `plot_volcano_summary()` & `plot_volcano_enhanced` handle detecting column names for features, significance, and fold-change. `plot_volcano_summary()` plot now uses `plot_volcano_enhanced()` for rendering. (#239, @phoman14)
