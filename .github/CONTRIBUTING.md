@@ -14,44 +14,6 @@ If you've decided to work on an issue,
 [assign yourself to the issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/assigning-issues-and-pull-requests-to-other-github-users#assigning-an-individual-issue-or-pull-request)
 so others will know you're working on it.
 
-## AI Use
-
-Generative AI usage is welcome for generating code, documentation, and other text in this repository.
-Please remember that this project is maintained by humans; every discussion,
-issue, and pull request is read and reviewed by humans (and sometimes machines,
-too).
-Therefore, there are guidelines to make sure contributors' AI usage is helpful,
-productive, and responsible:
-
-- **All AI usage in any form must be disclosed.**
-  You must:
-  - State the tool and model version used
-    (e.g. Claude Code w/ Claude Sonnet 5, Codex w/ GPT-5.6 Sol, Copilot w/ GPT-5.6 Terra, etc.)
-  - Include a brief description of how AI assistance was used
-    (e.g. writing code, writing unit tests, troubleshooting problems, software design discussion, commit messages, preparing pull requests).
-
-- **The human-in-the-loop must fully understand and approve all code.**
-  You must be able to explain what your changes do and how they interact with the
-  greater system -- in your own words, without the aid of AI tools.
-  Do not assume that AI-generated output is correct, accurate, or complete.
-  You must evaluate the output of AI tools;
-  do not blindly accept AI-suggested code or other content.
-
-  From the [NIH AI Policy](https://nih.sharepoint.com/sites/NIH-ai/SitePages/Responsible-AI.aspx):
-  > Do not rely on the technology to be a software developer by proxy: All
-  > well-written code must adhere to security design and ethical principles.
-  > **All code output needs to be reviewed** for completeness, quality,
-  > efficiency, and, most of all, security. Leverage manual and automated
-  > validation tools and testing technologies to help ensure these factors. **If
-  > you cannot identify or understand what a piece of AI generated code does,
-  > you should not use it.**
-
-- **Issues and discussions can use AI assistance but must have a full human-in-the-loop.**
-  This means that any content generated with AI must have been reviewed _and
-  edited_ by a human before submission. AI is very good at being overly verbose
-  and including noise that distracts from the main point. Humans must do their
-  research and trim this down to be concise and precise.
-
 ## Pull request process
 
 We use [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow)
@@ -88,29 +50,20 @@ cd MOSuite
 
 ### If this is your first time cloning the repo, install dependencies
 
-#### R dependencies
-
 - In an R console, install the R development dependencies with
-  `devtools::install_dev_deps()`.
-- Alternatively, we have a docker container available with MOSuite's dependencies installed:
-  [`docker://nciccbr/mosuite-minmal:latest`](https://hub.docker.com/r/nciccbr/mosuite-minimal).
-  You can launch the container using your preferred engine (e.g. Docker, Podman, apptainer/singularity)
-  with your clone of the repo mounted while developing your contributions.
+  `devtools::install_dev_deps()`, and then make sure the package passes R CMD
+  check by running `devtools::check()`. If R CMD check doesn't pass cleanly,
+  it's a good idea to ask for help before continuing.
 
-Before you make any changes, make sure the package passes R CMD check by running `devtools::check()`.
-If R CMD check doesn't pass cleanly, it's a good idea to **ask for help before continuing**.
+- Install [`pre-commit`](https://pre-commit.com/#install) if you don't already
+  have it. Then from the repo's root directory, run
 
-#### Pre-commit
+  ```sh
+  pre-commit install
+  ```
 
-Install [`pre-commit`](https://pre-commit.com/#install) if you don't already
-have it. Then from the repo's root directory, run
-
-```sh
-pre-commit install
-```
-
-This will install the repo's pre-commit hooks.
-You'll only need to do this step the first time you clone the repo.
+  This will install the repo's pre-commit hooks.
+  You'll only need to do this step the first time you clone the repo.
 
 ### Create a branch
 
@@ -155,10 +108,6 @@ the code.
 Test files are organized as described in
 <https://style.tidyverse.org/tests.html>.
 Take a look at the existing code in this package for examples.
-
-Ensure your tests cover all of the code changes you make, including various
-parameter options and edge cases.
-Do not skip tests unless you can give a strong reason for doing so.
 
 #### document
 
