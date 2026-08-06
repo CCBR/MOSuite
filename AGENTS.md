@@ -29,7 +29,7 @@ for detailed instructions on how to contribute to MOSuite.
 - If mixed changes are present, split into multiple logical commits; the number of commits does not need to equal the number of files changed.
 - Subject format must be: `<type>(optional-scope): short imperative summary` (<=72 chars), e.g., `fix(profile): update release table parser`.
 - Add a body only when needed to explain **why** and notable impact; never include secrets, tokens, PHI, or large diffs.
-- For commits containing any AI-generated code, commit messages, or any other content,
+- For commits containing any AI-generated code, commit messages, or any other AI-generated content,
   add this final italicized footer line in the commit message body: "_AI assistance: [model]_".
   Replace [model] with the actual model version used, e.g. Claude Sonnet 5, GPT-5.6 Sol, etc.
 

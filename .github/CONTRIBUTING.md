@@ -23,6 +23,28 @@ too).
 Therefore, there are guidelines to make sure contributors' AI usage is helpful,
 productive, and responsible:
 
+- **The human-in-the-loop must fully understand and approve all code and content.**
+  You must evaluate the output of AI tools.
+  Do not assume that AI-generated output is correct, accurate, or complete.
+  You must be able to explain what your changes do and how they interact with the
+  greater system in your own words.
+
+  From the [NIH AI Policy](https://nih.sharepoint.com/sites/NIH-ai/SitePages/Responsible-AI.aspx):
+  > Do not rely on the technology to be a software developer by proxy: All
+  > well-written code must adhere to security design and ethical principles.
+  > **All code output needs to be reviewed** for completeness, quality,
+  > efficiency, and, most of all, security.
+  > Leverage manual and automated validation tools and testing technologies to
+  > help ensure these factors.
+  > **If you cannot identify or understand what a piece of AI generated code
+  > does, you should not use it.**
+
+- **Issues and discussions can use AI assistance but must have a full human-in-the-loop.**
+  This means that any content generated with AI must have been reviewed _and
+  edited_ by a human before submission. AI is very good at being overly verbose
+  and including noise that distracts from the main point. Humans must do their
+  research and trim this down to be concise and precise.
+
 - **All AI usage in any form must be disclosed.**
   You must:
   - State the tool and model version used
@@ -30,27 +52,13 @@ productive, and responsible:
   - Include a brief description of how AI assistance was used
     (e.g. writing code, writing unit tests, troubleshooting problems, software design discussion, commit messages, preparing pull requests).
 
-- **The human-in-the-loop must fully understand and approve all code.**
-  You must be able to explain what your changes do and how they interact with the
-  greater system -- in your own words, without the aid of AI tools.
-  Do not assume that AI-generated output is correct, accurate, or complete.
-  You must evaluate the output of AI tools;
-  do not blindly accept AI-suggested code or other content.
 
-  From the [NIH AI Policy](https://nih.sharepoint.com/sites/NIH-ai/SitePages/Responsible-AI.aspx):
-  > Do not rely on the technology to be a software developer by proxy: All
-  > well-written code must adhere to security design and ethical principles.
-  > **All code output needs to be reviewed** for completeness, quality,
-  > efficiency, and, most of all, security. Leverage manual and automated
-  > validation tools and testing technologies to help ensure these factors. **If
-  > you cannot identify or understand what a piece of AI generated code does,
-  > you should not use it.**
-
-- **Issues and discussions can use AI assistance but must have a full human-in-the-loop.**
-  This means that any content generated with AI must have been reviewed _and
-  edited_ by a human before submission. AI is very good at being overly verbose
-  and including noise that distracts from the main point. Humans must do their
-  research and trim this down to be concise and precise.
+<sub>
+_These AI usage guidelines were adapted from
+[ghostty](https://github.com/ghostty-org/ghostty/blob/22d13172cde98a0a4dda05d3d6a3fcb0dd8ed018/AI_POLICY.md)
+and the
+[NIH AI Policy](https://nih.sharepoint.com/sites/NIH-ai/SitePages/Responsible-AI.aspx)._
+</sub>
 
 ## Pull request process
 
