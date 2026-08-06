@@ -51,9 +51,7 @@ if (getRversion() < "4.3.0") importFrom("S7", "@")
 importFrom(DESeq2,DESeq)
 importFrom(dendextend,rotate)
 importFrom(matrixStats,rowVars)
-importFrom(rlang,
-  "!!",
-  "%||%",
-  ":=",
-  .data
-)
+importFrom(rlang,"!!")
+importFrom(rlang,"%||%")
+importFrom(rlang,":=")
+importFrom(rlang,.data)
