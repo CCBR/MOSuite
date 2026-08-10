@@ -19,6 +19,10 @@ env:
   R_VERSION: 4.4
   CONTEXT: "./"
   NAMESPACE: "nciccbr"
+
+permissions:
+  packages: write
+
 jobs:
   build-docker:
     runs-on: ubuntu-latest
@@ -31,6 +35,9 @@ jobs:
           - { dockerfile_path: "docker/Dockerfile", image_name: "mosuite" }
           - { dockerfile_path: "docker/Dockerfile_minimal", image_name: "mosuite-minimal" }
           - { dockerfile_path: "docker/Dockerfile_dev", image_name: "mosuite-dev" }
+        include:
+          - host: ghcr.io
+          - host: docker.io
     steps:
       - uses: actions/checkout@v6
         with:
@@ -48,9 +55,9 @@ jobs:
             version="$(grep 'Version:' ./DESCRIPTION | sed 's/Version: /v/')"
           fi
 
-          docker_tags="${NAMESPACE}/${image_name}:${version}"
+          docker_tags="${{ matrix.config.host }}/${NAMESPACE}/${image_name}:${version}"
           if [ "${{ github.event_name }}" = "release" ]; then
-            docker_tags="${docker_tags},${NAMESPACE}/${image_name}:latest"
+            docker_tags="${docker_tags},${{ matrix.config.host }}/${NAMESPACE}/${image_name}:latest"
           fi
 
           echo "date=$(date +"%Y-%m-%d")" >> "$GITHUB_OUTPUT"
@@ -60,11 +67,19 @@ jobs:
           echo "docker_tags=${docker_tags}" >> "$GITHUB_OUTPUT"
 
       - name: Login to DockerHub
-        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ github.event_name != 'pull_request' && matrix.config.host == 'docker.io' }}
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to ghcr
+        if: ${{ github.event_name != 'pull_request' && matrix.config.host == 'ghcr.io' }}
+        uses: docker/login-action@v3
+        with:
+          registry: https://${{ matrix.config.host }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
