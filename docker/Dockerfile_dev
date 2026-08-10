@@ -11,6 +11,11 @@ ENV REPONAME=${REPONAME}
 # ARG R_VERSION=4.4
 # ENV R_VERSION=${R_VERSION}
 
+# install python, pip
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
+    python3-pip
+
 # install zsh, pre-commit
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.1/zsh-in-docker.sh)" && \
   pip install pre-commit
