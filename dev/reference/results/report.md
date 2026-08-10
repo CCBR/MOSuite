@@ -4,7 +4,7 @@
 
 Published
 
-August 4, 2026
+August 10, 2026
 
 ``` r
 library(MOSuite)
@@ -384,11 +384,11 @@ dat_volcano_summary <- moo@analyses$diff |>
 
     Genes in initial dataset: 7943
 
-    Max y: 4.70280335204325
+    Max y: 4.70280335204323
 
     Genes in initial dataset: 7943
 
-    Max y: 4.34744066227962
+    Max y: 4.34744066227959
 
 ![](report_files/figure-html/volcano_summary-1.png)
 
@@ -424,9 +424,9 @@ dat_volcano_enhanced <- moo@analyses$diff |>
     Genes in initial dataset: 7943
     Max y: 4.56088783571366
     Genes in initial dataset: 7943
-    Max y: 4.70280335204325
+    Max y: 4.70280335204323
     Genes in initial dataset: 7943
-    Max y: 4.34744066227962
+    Max y: 4.34744066227959
 
 ![](report_files/figure-html/volcano_enhanced-1.png)
 
