@@ -27,6 +27,6 @@ RUN apt-get update && apt-get upgrade -y && \
 # install package dependencies, but not the R package itself
 # using --mount avoids copying the context into the image
 RUN --mount=type=bind,source=.,target=/opt/MOSuite \
-    R -e "install.packages(pak, repos = 'https://cloud.r-project.org/')" && \
+    R -e "install.packages('pak', repos = 'https://cloud.r-project.org/')" && \
     R -e "pak::local_install_dev_deps('/opt/MOSuite', upgrade=FALSE)" && \
     R -s -e "dir.create('/data'); readr::write_csv(tibble::as_tibble(installed.packages()), '/data/r-packages_mosuite-minimal.csv')"
