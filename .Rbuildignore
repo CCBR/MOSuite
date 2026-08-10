@@ -37,3 +37,4 @@
 VennDiagram.*\.log
 ^\.posit/assistant$
 ^AGENTS\.md$
+^.devcontainer/$
