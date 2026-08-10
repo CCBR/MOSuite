@@ -1,0 +1,26 @@
+FROM rocker/tidyverse:4.4
+
+# build time variables
+ARG BUILD_DATE="000000"
+ENV BUILD_DATE=${BUILD_DATE}
+ARG BUILD_TAG="000000"
+ENV BUILD_TAG=${BUILD_TAG}
+ARG REPONAME="000000"
+ENV REPONAME=${REPONAME}
+
+# ARG R_VERSION=4.4
+# ENV R_VERSION=${R_VERSION}
+
+# install zsh, pre-commit
+RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.1/zsh-in-docker.sh)" && \
+  pip install pre-commit
+
+# install package dependencies, but not the R package itself
+# using --mount avoids copying the context into the image
+RUN --mount=type=bind,source=.,target=/opt/MOSuite \
+    R -e "pak::local_install_dev_deps('/opt/MOSuite', upgrade=FALSE)" && \
+    R -s -e "dir.create('/data'); readr::write_csv(tibble::as_tibble(installed.packages()), '/data/r-packages_mosuite-minimal.csv')"
+
+# cleanup
+RUN apt-get clean && apt-get purge \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

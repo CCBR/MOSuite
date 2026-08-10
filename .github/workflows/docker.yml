@@ -30,6 +30,7 @@ jobs:
         config:
           - { dockerfile_path: "docker/Dockerfile", image_name: "mosuite" }
           - { dockerfile_path: "docker/Dockerfile_minimal", image_name: "mosuite-minimal" }
+          - { dockerfile_path: "docker/Dockerfile_dev", image_name: "mosuite-dev" }
     steps:
       - uses: actions/checkout@v6
         with:
