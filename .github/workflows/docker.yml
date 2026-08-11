@@ -16,7 +16,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  R_VERSION: 4.4
   CONTEXT: "./"
   NAMESPACE: "nciccbr"
 jobs:
@@ -53,6 +52,11 @@ jobs:
             docker_tags="${docker_tags},${NAMESPACE}/${image_name}:latest"
           fi
 
+          # fetch R version: get the previous release version from r-hub API.
+          # staying one version behind release helps wait for packages to catch
+          # up so we're not on the bleeding edge.
+          echo "r_version=$(curl -fsSL https://api.r-hub.io/rversions/r-oldrel | jq -r '.version')" >> "$GITHUB_OUTPUT"
+
           echo "date=$(date +"%Y-%m-%d")" >> "$GITHUB_OUTPUT"
           echo "dockerfile_path=${{ matrix.config.dockerfile_path }}" >> "$GITHUB_OUTPUT"
           echo "image_name=${image_name}" >> "$GITHUB_OUTPUT"
@@ -76,4 +80,4 @@ jobs:
             BUILD_DATE=${{ steps.vars.outputs.date }}
             BUILD_TAG=${{ steps.vars.outputs.version }}
             REPONAME=${{ steps.vars.outputs.image_name }}
-            R_VERSION=${{ env.R_VERSION }}
+            R_VERSION=${{ steps.vars.outputs.r_version }}

@@ -1,4 +1,8 @@
-FROM rocker/tidyverse:4.4
+ARG R_VERSION=4.4
+FROM rocker/tidyverse:${R_VERSION}
+
+ARG R_VERSION
+ENV R_VERSION=${R_VERSION}
 
 # build time variables
 ARG BUILD_DATE="000000"
@@ -7,9 +11,6 @@ ARG BUILD_TAG="000000"
 ENV BUILD_TAG=${BUILD_TAG}
 ARG REPONAME="000000"
 ENV REPONAME=${REPONAME}
-
-# ARG R_VERSION=4.4
-# ENV R_VERSION=${R_VERSION}
 
 # install python, pip, pre-commit zsh
 RUN apt-get update && apt-get upgrade -y && \
