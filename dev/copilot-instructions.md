@@ -15,13 +15,15 @@
 
 ## CI & enforcement suggestions (automatable)
 
-1.  **PR template**: include optional AI-assistance disclosure fields
-    (model used, high-level prompt intent, manual review confirmation).
+1.  **Pull Request template**: include optional AI-assistance disclosure
+    fields (model used, high-level prompt intent, manual review
+    confirmation).
 2.  **Pre-merge check (GitHub Action)**: verify
     `.github/copilot-instructions.md` is present in the repository and
     that new pipeline files include a `# CRAFT:` header.
 3.  **Lint jobs**: `ruff` for Python, `shellcheck` for shell, `lintr`
-    for R, and `nf-core lint` or Snakemake lint checks where applicable.
+    for R, and `nf-core lint` for Snakemake, or Snakemake lint checks
+    where applicable.
 4.  **Secrets scan**: run `TruffleHog` or `Gitleaks` on PRs to detect
     accidental credentials.
 5.  **AI usage label**: if AI usage is declared, an Action should add
@@ -168,15 +170,15 @@ Rules:
 
 ## Pull Requests
 
-When opening a pull request, use the repository’s pull request template
-(usually it is `.github/PULL_REQUEST_TEMPLATE.md`). Different repos have
-different PR templates depending on their needs. Ensure that the pull
-request follows the repository’s PR template and includes all required
-information. Do not allow the developer to proceed with opening a PR if
-it does not fill out all sections of the template. Before a PR can be
-moved from draft to “ready for review”, all of the relevant checklist
-items must be checked, and any irrelevant checklist items should be
-crossed out.
+When opening a pull request, agents and authors must use the
+repository’s pull request template (`.github/PULL_REQUEST_TEMPLATE.md`).
+Different repos have different PR templates depending on their needs.
+Ensure that the pull request follows the repository’s PR template and
+includes all required information. Do not allow the developer to proceed
+with opening a PR if it does not fill out all sections of the template.
+Before a PR can be moved from draft to “ready for review”, all of the
+relevant checklist items must be checked, and any irrelevant checklist
+items should be crossed out.
 
 When new features, bug fixes, or other behavioral changes are introduced
 to the code, unit tests must be added or updated to cover the new or
@@ -202,6 +204,18 @@ etc.) should never be included in the changelog. Example:
     ## development version
 
     - Fix bug in `detect_absolute_paths()` to ignore comments. (#123, @username)
+
+## Release Process
+
+To cut a new release in a repo, first use the draft-release workflow
+(`.github/workflows/draft-release.yml`) to draft the release. Then the
+human developer must review the draft release and ensure it meets
+quality standards, then publish the release. AI agents must not publish
+a release, it can only be done by human developers. When the release is
+published, the post-release workflow
+(`.github/workflows/post-release.yml`) will run automatically and open a
+new Pull Request. The human developer must then review the PR, and
+approve & merge it if the PR meets quality standards.
 
 ## Onboarding checklist for new developers
 

@@ -50,11 +50,11 @@
 <div class="section level2">
 <h2 id="ci--enforcement-suggestions-automatable">CI &amp; enforcement suggestions (automatable)<a class="anchor" aria-label="anchor" href="#ci--enforcement-suggestions-automatable"></a></h2>
 <ol style="list-style-type: decimal"><li>
-<strong>PR template</strong>: include optional AI-assistance disclosure fields (model used, high-level prompt intent, manual review confirmation).</li>
+<strong>Pull Request template</strong>: include optional AI-assistance disclosure fields (model used, high-level prompt intent, manual review confirmation).</li>
 <li>
 <strong>Pre-merge check (GitHub Action)</strong>: verify <code>.github/copilot-instructions.md</code> is present in the repository and that new pipeline files include a <code># CRAFT:</code> header.</li>
 <li>
-<strong>Lint jobs</strong>: <code>ruff</code> for Python, <code>shellcheck</code> for shell, <code>lintr</code> for R, and <code>nf-core lint</code> or Snakemake lint checks where applicable.</li>
+<strong>Lint jobs</strong>: <code>ruff</code> for Python, <code>shellcheck</code> for shell, <code>lintr</code> for R, and <code>nf-core lint</code> for Snakemake, or Snakemake lint checks where applicable.</li>
 <li>
 <strong>Secrets scan</strong>: run <code>TruffleHog</code> or <code>Gitleaks</code> on PRs to detect accidental credentials.</li>
 <li>
@@ -153,7 +153,7 @@ Rules:
 </div>
 <div class="section level2">
 <h2 id="pull-requests">Pull Requests<a class="anchor" aria-label="anchor" href="#pull-requests"></a></h2>
-<p>When opening a pull request, use the repository’s pull request template (usually it is <code>.github/PULL_REQUEST_TEMPLATE.md</code>). Different repos have different PR templates depending on their needs. Ensure that the pull request follows the repository’s PR template and includes all required information. Do not allow the developer to proceed with opening a PR if it does not fill out all sections of the template. Before a PR can be moved from draft to “ready for review”, all of the relevant checklist items must be checked, and any irrelevant checklist items should be crossed out.</p>
+<p>When opening a pull request, agents and authors must use the repository’s pull request template (<code>.github/PULL_REQUEST_TEMPLATE.md</code>). Different repos have different PR templates depending on their needs. Ensure that the pull request follows the repository’s PR template and includes all required information. Do not allow the developer to proceed with opening a PR if it does not fill out all sections of the template. Before a PR can be moved from draft to “ready for review”, all of the relevant checklist items must be checked, and any irrelevant checklist items should be crossed out.</p>
 <p>When new features, bug fixes, or other behavioral changes are introduced to the code, unit tests must be added or updated to cover the new or changed functionality.</p>
 <p>If there are any API or other user-facing changes, the documentation must be updated both inline via docstrings and long-form docs in the <code>docs/</code> or <code>vignettes/</code> directory.</p>
 <p>When a repo contains a build workflow (i.e. a workflow file in <code>.github/workflows</code> starting with <code>build</code> or named <code>R-CMD-check</code>), the build workflow must pass before the PR can be approved.</p>
@@ -164,6 +164,10 @@ Rules:
 
 - Fix bug in `detect_absolute_paths()` to ignore comments. (#123, @username)</code></pre>
 </div>
+</div>
+<div class="section level2">
+<h2 id="release-process">Release Process<a class="anchor" aria-label="anchor" href="#release-process"></a></h2>
+<p>To cut a new release in a repo, first use the draft-release workflow (<code>.github/workflows/draft-release.yml</code>) to draft the release. Then the human developer must review the draft release and ensure it meets quality standards, then publish the release. AI agents must not publish a release, it can only be done by human developers. When the release is published, the post-release workflow (<code>.github/workflows/post-release.yml</code>) will run automatically and open a new Pull Request. The human developer must then review the PR, and approve &amp; merge it if the PR meets quality standards.</p>
 </div>
 <div class="section level2">
 <h2 id="onboarding-checklist-for-new-developers">Onboarding checklist for new developers<a class="anchor" aria-label="anchor" href="#onboarding-checklist-for-new-developers"></a></h2>
