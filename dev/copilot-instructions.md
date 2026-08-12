@@ -22,8 +22,8 @@
     `.github/copilot-instructions.md` is present in the repository and
     that new pipeline files include a `# CRAFT:` header.
 3.  **Lint jobs**: `ruff` for Python, `shellcheck` for shell, `lintr`
-    for R, and `nf-core lint` for Snakemake, or Snakemake lint checks
-    where applicable.
+    for R, `nf-core lint` for Nextflow, or Snakemake lint checks where
+    applicable.
 4.  **Secrets scan**: run `TruffleHog` or `Gitleaks` on PRs to detect
     accidental credentials.
 5.  **AI usage label**: if AI usage is declared, an Action should add
