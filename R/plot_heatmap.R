@@ -567,7 +567,7 @@ S7::method(plot_expr_heatmap, S7::class_data.frame) <- function(
   ## (with samples in columns and genes in rows)
   color_values <- color_values %||% mosuite_palette
   Gene <- NULL
-  # TODO support tibbles; currently these must be dataframes
+  # TODO support tibbles; currently these must be dataframes (https://github.com/CCBR/MOSuite/issues/97)
   counts_dat <- as.data.frame(moo_counts)
   sample_metadata <- as.data.frame(sample_metadata)
 
