@@ -1,3 +1,11 @@
 {
-    "image": "nciccbr/mosuite-dev:v0.4.1.9001"
+    "image": "nciccbr/mosuite-dev:v0.4.1.9001",
+    // Forward the host's SSH agent socket only, so git/ssh can use loaded
+    // keys for auth without ever exposing ~/.ssh (keys, config, known_hosts).
+    "mounts": [
+        "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent,type=bind"
+    ],
+    "remoteEnv": {
+        "SSH_AUTH_SOCK": "/ssh-agent"
+    }
 }
