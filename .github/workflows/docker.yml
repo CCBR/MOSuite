@@ -4,12 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       docker_image_tag:
-        description: "Tag to apply to the built docker image (e.g. 'v0.3.0'). If not
+        description:
+          "Tag to apply to the built docker image (e.g. 'v0.3.0'). If not
           specified, it will be determined from the DESCRIPTION file."
         required: false
         default: ""
   release:
-    types: [ published ]
+    types: [published]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -28,8 +29,14 @@ jobs:
       matrix:
         config:
           - { dockerfile_path: "docker/Dockerfile", image_name: "mosuite" }
-          - { dockerfile_path: "docker/Dockerfile_minimal", image_name: "mosuite-minimal" }
-          - { dockerfile_path: "docker/Dockerfile_dev", image_name: "mosuite-dev" }
+          - {
+              dockerfile_path: "docker/Dockerfile-minimal",
+              image_name: "mosuite-minimal",
+            }
+          - {
+              dockerfile_path: "docker/Dockerfile-dev",
+              image_name: "mosuite-dev",
+            }
     steps:
       - uses: actions/checkout@v6
         with:
