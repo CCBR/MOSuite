@@ -21,7 +21,7 @@ RUN apt-get update && apt-get upgrade -y && \
     /opt/pyenv/bin/pip3 install --no-cache-dir --upgrade pip && \
     /opt/pyenv/bin/pip3 install --no-cache-dir pre-commit && \
     sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.1/zsh-in-docker.sh)" -- \
-      -t robbyrussell -p git -p ssh-agent && \
+      -p git -p ssh-agent && \
       chsh -s /bin/zsh && \
     rm -rf ~/.cache/pip* && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
