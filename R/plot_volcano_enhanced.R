@@ -403,8 +403,7 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
       "Not significant" = color_of_non_significant_features,
       "Fold change only" = color_of_logfold_change_threshold_line,
       "Significant only" = color_of_features_meeting_only_signif_threshold,
-      "Significant and fold change" =
-        color_for_features_meeting_pvalue_and_foldchange_thresholds
+      "Significant and fold change" = color_for_features_meeting_pvalue_and_foldchange_thresholds
     )
     custom_colors <- unname(color_values[significant])
     names(custom_colors) <- significant

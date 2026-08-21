@@ -116,16 +116,24 @@ test_that("plot_volcano_enhanced colors exact threshold boundaries as non-signif
     print_plots = FALSE
   )
 
-  captured_colors <- getOption("mosuite_test_volcano_boundary_args")[[1]]$colCustom
+  captured_colors <- getOption("mosuite_test_volcano_boundary_args")[[
+    1
+  ]]$colCustom
   expect_equal(
     captured_colors[names(captured_colors) == "Not significant"],
     rep("grey30", 2)
   )
   expect_true(
-    all(captured_colors[names(captured_colors) == "Significant only"] == "royalblue")
+    all(
+      captured_colors[names(captured_colors) == "Significant only"] ==
+        "royalblue"
+    )
   )
   expect_true(
-    all(captured_colors[names(captured_colors) == "Fold change only"] == "forestgreen")
+    all(
+      captured_colors[names(captured_colors) == "Fold change only"] ==
+        "forestgreen"
+    )
   )
 })
 

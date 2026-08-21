@@ -48,7 +48,10 @@ test_that("plot_volcano_summary excludes features on exact thresholds", {
   )
 
   expect_false(
-    any(c("both_boundary", "p_boundary", "fc_boundary", "neither") %in% result$Gene)
+    any(
+      c("both_boundary", "p_boundary", "fc_boundary", "neither") %in%
+        result$Gene
+    )
   )
 })
 
