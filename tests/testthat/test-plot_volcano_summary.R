@@ -28,6 +28,30 @@ test_that("plot_volcano_summary respects non-Gene feature ID column", {
   expect_false("Gene" %in% colnames(df_volc_sum))
 })
 
+test_that("plot_volcano_summary excludes features on exact thresholds", {
+  boundary_data <- data.frame(
+    Gene = c("both_boundary", "p_boundary", "fc_boundary", "neither"),
+    `B-A_logFC` = c(1, 0.5, 1, 0.5),
+    `B-A_pval` = c(0.05, 0.05, 0.06, 0.06),
+    `B-A_tstat` = c(2, 2, 2, 2),
+    check.names = FALSE
+  )
+
+  result <- plot_volcano_summary(
+    boundary_data,
+    feature_id_colname = "Gene",
+    change_colname = "B-A_logFC",
+    signif_colname = "B-A_pval",
+    add_deg_columns = "none",
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_false(
+    any(c("both_boundary", "p_boundary", "fc_boundary", "neither") %in% result$Gene)
+  )
+})
+
 test_that("plot_volcano_summary only forwards custom labels when requested", {
   options(mosuite_test_select_labels = list())
   trace(

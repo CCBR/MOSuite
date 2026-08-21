@@ -168,9 +168,10 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
 #'   contrast (e.g. `c("B-A_adjpval", "C-A_adjpval")`). Defaults to `NULL`,
 #'   which auto-detects corresponding columns by checking for `_adjpval` first,
 #'   then `_pval`, for each contrast in `change_colname`.
-#' @param signif_threshold Numeric significance threshold (p-value or adjusted p-value cutoff). Default: 0.05
+#' @param signif_threshold Numeric significance threshold (p-value or adjusted p-value cutoff). Features meet this
+#'   threshold when their value is less than the cutoff. Default: 0.05
 #' @param change_threshold Numeric value specifying the fold change cutoff for significance (i.e. filters on
-#'   `change_colname`)
+#'   `change_colname`). Features meet this threshold when the absolute value is greater than the cutoff.
 #' @param value_to_sort_the_output_dataset How to sort the output dataset. Options are "fold-change", "p-value", or
 #'   "t-statistic".
 #' @param num_features_to_label Number of top features/genes to label in the volcano plot. Default is 30.
@@ -390,11 +391,23 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
 
     significant <- vector(length = nrow(df))
     significant[] <- "Not significant"
-    significant[which(abs(df[, 2]) > change_threshold)] <- "Fold change only"
-    significant[which(df[, 3] < signif_threshold)] <- "Significant only"
-    significant[which(
-      abs(df[, 2]) > change_threshold & df[, 3] < signif_threshold
-    )] <- "Significant and fold change"
+    meets_change <- !is.na(df[[lfc_name]]) &
+      abs(df[[lfc_name]]) > change_threshold
+    meets_significance <- !is.na(df[[sig_name]]) &
+      df[[sig_name]] < signif_threshold
+    significant[meets_change] <- "Fold change only"
+    significant[meets_significance] <- "Significant only"
+    significant[meets_change & meets_significance] <-
+      "Significant and fold change"
+    color_values <- c(
+      "Not significant" = color_of_non_significant_features,
+      "Fold change only" = color_of_logfold_change_threshold_line,
+      "Significant only" = color_of_features_meeting_only_signif_threshold,
+      "Significant and fold change" =
+        color_for_features_meeting_pvalue_and_foldchange_thresholds
+    )
+    custom_colors <- unname(color_values[significant])
+    names(custom_colors) <- significant
 
     ### PH: END Build table for Volcano plot
 
@@ -525,6 +538,7 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
         color_of_features_meeting_only_signif_threshold,
         color_for_features_meeting_pvalue_and_foldchange_thresholds
       ),
+      colCustom = custom_colors,
       cutoffLineCol = color_of_signif_threshold_line,
       shapeCustom = shapeCustom
     ) +
@@ -563,6 +577,7 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
           color_of_features_meeting_only_signif_threshold,
           color_for_features_meeting_pvalue_and_foldchange_thresholds
         ),
+        colCustom = custom_colors,
         cutoffLineCol = color_of_signif_threshold_line,
         shapeCustom = shapeCustom
       ) +
