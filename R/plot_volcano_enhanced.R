@@ -107,6 +107,8 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
   plots_subdir = "diff",
   plot_filename = "volcano_enhanced.png"
 ) {
+  sig_fc_color <- color_for_features_meeting_pvalue_and_foldchange_thresholds
+
   return(
     join_dfs_wide(moo_diff@analyses$diff) |>
       plot_volcano_enhanced(
@@ -140,7 +142,7 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
         color_of_non_significant_features = color_of_non_significant_features,
         color_of_logfold_change_threshold_line = color_of_logfold_change_threshold_line,
         color_of_features_meeting_only_signif_threshold = color_of_features_meeting_only_signif_threshold,
-        color_for_features_meeting_pvalue_and_foldchange_thresholds = color_for_features_meeting_pvalue_and_foldchange_thresholds,
+        color_for_features_meeting_pvalue_and_foldchange_thresholds = sig_fc_color,
         graphics_device = graphics_device,
         image_width = image_width,
         image_height = image_height,
@@ -355,14 +357,18 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
 
     if (label_significant_features_only) {
       df_sub <- df[
-        df[[sig_name]] <= signif_threshold &
-          abs(df[[lfc_name]]) >= change_threshold,
+        df[[sig_name]] < signif_threshold &
+          abs(df[[lfc_name]]) > change_threshold,
       ]
     } else {
       df_sub <- df
     }
 
-    genes_to_label <- as.character(df_sub[1:num_features_to_label, label_col])
+    if (nrow(df_sub) == 0) {
+      genes_to_label <- character(0)
+    } else {
+      genes_to_label <- as.character(df_sub[1:num_features_to_label, label_col])
+    }
     split_values <- unlist(strsplit(gsub(",", " ", custom_gene_list), " "))
     custom_labels <- split_values[split_values != ""]
 

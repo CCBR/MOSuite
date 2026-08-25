@@ -120,8 +120,8 @@ test_that("plot_volcano_enhanced colors exact threshold boundaries as non-signif
     1
   ]]$colCustom
   expect_equal(
-    captured_colors[names(captured_colors) == "Not significant"],
-    rep("grey30", 2)
+    unname(captured_colors[names(captured_colors) == "Not significant"]),
+    rep("grey30", 4)
   )
   expect_true(
     all(
@@ -135,6 +135,43 @@ test_that("plot_volcano_enhanced colors exact threshold boundaries as non-signif
         "forestgreen"
     )
   )
+})
+
+test_that("plot_volcano_enhanced labels only strict threshold hits", {
+  options(mosuite_test_volcano_label_args = list())
+  trace(
+    EnhancedVolcano::EnhancedVolcano,
+    tracer = quote(options(
+      mosuite_test_volcano_label_args = append(
+        getOption("mosuite_test_volcano_label_args"),
+        list(list(selectLab = selectLab))
+      )
+    )),
+    print = FALSE
+  )
+  on.exit(untrace(EnhancedVolcano::EnhancedVolcano), add = TRUE)
+  on.exit(options(mosuite_test_volcano_label_args = NULL), add = TRUE)
+
+  boundary_data <- data.frame(
+    Gene = c("both_boundary", "p_boundary", "fc_boundary", "neither"),
+    annotation = c("a", "b", "c", "d"),
+    `B-A_logFC` = c(1, 0.5, 1, 0.5),
+    `B-A_pval` = c(0.05, 0.05, 0.06, 0.06),
+    check.names = FALSE
+  )
+
+  plot_volcano_enhanced(
+    boundary_data,
+    feature_id_colname = "Gene",
+    change_colname = "B-A_logFC",
+    signif_colname = "B-A_pval",
+    label_significant_features_only = TRUE,
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  captured_labels <- getOption("mosuite_test_volcano_label_args")[[1]]$selectLab
+  expect_length(captured_labels, 0)
 })
 
 test_that("plot_volcano_enhanced uses EnhancedVolcano default colors", {

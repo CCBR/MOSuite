@@ -744,7 +744,7 @@ filter_diff <- function(
 
   ## filter genes
   significant <- datsignif < significance_cutoff
-  changed <- abs(datchange) >= change_cutoff
+  changed <- abs(datchange) > change_cutoff
   if (filtering_mode == "any") {
     selgenes <- apply(significant & changed, 1, any)
     select_genes <- genes[selgenes]
@@ -763,7 +763,7 @@ filter_diff <- function(
   message(
     glue::glue(
       "Total number of genes selected with {significance_column} < {significance_cutoff}",
-      " and \u007c {change_column} \u007c \u2265 {change_cutoff} is sum(selgenes)"
+      " and \u007c {change_column} \u007c > {change_cutoff} is sum(selgenes)"
     )
   )
 
@@ -777,8 +777,8 @@ filter_diff <- function(
 
   ### PH: START Create DEG summary Barplot
   ## do plot
-  significant <- apply(datsignif, 2, function(x) x <= significance_cutoff)
-  changed <- apply(datchange, 2, function(x) abs(x) >= change_cutoff)
+  significant <- apply(datsignif, 2, function(x) x < significance_cutoff)
+  changed <- apply(datchange, 2, function(x) abs(x) > change_cutoff)
   dd <- significant & changed
   if (draw_bar_border) {
     bar_border <- "black"
