@@ -107,6 +107,7 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
   plots_subdir = "diff",
   plot_filename = "volcano_enhanced.png"
 ) {
+  # Local alias for long parameter name to satisfy 120-character line length linter
   sig_fc_color <- color_for_features_meeting_pvalue_and_foldchange_thresholds
 
   return(
@@ -171,9 +172,10 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
 #'   which auto-detects corresponding columns by checking for `_adjpval` first,
 #'   then `_pval`, for each contrast in `change_colname`.
 #' @param signif_threshold Numeric significance threshold (p-value or adjusted p-value cutoff). Features meet this
-#'   threshold when their value is less than the cutoff. Default: 0.05
+#'   threshold when their value is less than the cutoff (exclusive). Default: 0.05
 #' @param change_threshold Numeric value specifying the fold change cutoff for significance (i.e. filters on
-#'   `change_colname`). Features meet this threshold when the absolute value is greater than the cutoff.
+#'   `change_colname`). Features meet this threshold when the absolute value is greater than the cutoff (exclusive).
+#'   Default: 1.0
 #' @param value_to_sort_the_output_dataset How to sort the output dataset. Options are "fold-change", "p-value", or
 #'   "t-statistic".
 #' @param num_features_to_label Number of top features/genes to label in the volcano plot. Default is 30.

@@ -568,11 +568,11 @@ plot_mean_variance <- function(voom_elist) {
 #' @inheritParams option_params
 #' @inheritParams filter_counts
 #' @param significance_column Column name for significance, e.g. `"pval"` or `"pvaladj"` (default)
-#' @param significance_cutoff Features will only be kept if their `significance_column` is less then this cutoff
-#'   threshold
+#' @param significance_cutoff Features will only be kept if their `significance_column` is less than the cutoff
+#'   threshold (exclusive)
 #' @param change_column Column name for change, e.g. `"logFC"` (default)
-#' @param change_cutoff Features will only be kept if the absolute value of their `change_column` is greater than or
-#'   equal to this cutoff threshold
+#' @param change_cutoff Features will only be kept if the absolute value of their `change_column` is greater than the
+#'   cutoff threshold (exclusive)
 #' @param filtering_mode Accepted values: `"any"` or `"all"` to include features that meet the criteria in _any_
 #'   contrast or in _all_ contrasts
 #' @param include_estimates Column names of estimates to include. Default: `c("FC", "logFC", "tstat", "pval",

@@ -86,6 +86,8 @@ test_that("plot_volcano_enhanced forwards shared styling parameters", {
 
 test_that("plot_volcano_enhanced colors exact threshold boundaries as non-significant", {
   options(mosuite_test_volcano_boundary_args = list())
+  # Dynamically intercept internal arguments (colCustom) passed into EnhancedVolcano
+  # to verify point-color assignments without modifying package source code.
   trace(
     EnhancedVolcano::EnhancedVolcano,
     tracer = quote(options(
