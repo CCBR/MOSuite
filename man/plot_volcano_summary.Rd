@@ -173,7 +173,8 @@ then \verb{_pval}, for each contrast in \code{change_colname}.}
 threshold when their value is less than the cutoff (exclusive). Default: 0.05}
 
 \item{change_threshold}{Numeric value specifying the fold change cutoff for significance (i.e. filters on
-\code{change_colname}). Features meet this threshold when the absolute value is greater than the cutoff (exclusive). Default: 1.0}
+\code{change_colname}). Features meet this threshold when the absolute value is greater than the cutoff (exclusive).
+Default: 1.0}
 
 \item{value_to_sort_the_output_dataset}{How to sort the output dataset. Options are "fold-change", "p-value", or
 "t-statistic".}
