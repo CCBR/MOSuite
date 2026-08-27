@@ -157,7 +157,7 @@ normalize_counts <- function(
     }
     if (isTRUE(plot_corr_matrix_heatmap)) {
       corHM_plot <- plot_corr_heatmap(
-        df.filt,
+        df.voom,
         sample_metadata = sample_metadata,
         sample_id_colname = sample_id_colname,
         feature_id_colname = feature_id_colname,
