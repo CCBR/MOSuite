@@ -1,5 +1,9 @@
 ## MOSuite development version
 
+- `normalize_counts()` now uses normalized counts instead of filtered counts for
+  the correlation heatmap so it matches the PCA and histogram outputs. (#269,
+  @phoman14)
+
 ## MOSuite 0.4.1
 
 - Fix how `plot_volcano_summary()` & `plot_volcano_enhanced` handle detecting column names for features, significance, and fold-change. `plot_volcano_summary()` plot now uses `plot_volcano_enhanced()` for rendering. (#239, @phoman14)
