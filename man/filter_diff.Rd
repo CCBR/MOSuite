@@ -43,13 +43,13 @@ used.)}
 
 \item{significance_column}{Column name for significance, e.g. \code{"pval"} or \code{"pvaladj"} (default)}
 
-\item{significance_cutoff}{Features will only be kept if their \code{significance_column} is less then this cutoff
-threshold}
+\item{significance_cutoff}{Features will only be kept if their \code{significance_column} is less than the cutoff
+threshold (exclusive)}
 
 \item{change_column}{Column name for change, e.g. \code{"logFC"} (default)}
 
-\item{change_cutoff}{Features will only be kept if the absolute value of their \code{change_column} is greater than or
-equal to this cutoff threshold}
+\item{change_cutoff}{Features will only be kept if the absolute value of their \code{change_column} is greater than the
+cutoff threshold (exclusive)}
 
 \item{filtering_mode}{Accepted values: \code{"any"} or \code{"all"} to include features that meet the criteria in \emph{any}
 contrast or in \emph{all} contrasts}
