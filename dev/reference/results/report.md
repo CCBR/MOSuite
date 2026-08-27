@@ -4,10 +4,16 @@
 
 Published
 
-August 12, 2026
+August 27, 2026
 
 ``` r
 library(MOSuite)
+```
+
+    Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+    'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
+
+``` r
 library(dplyr)
 ```
 
@@ -271,7 +277,7 @@ moo <- moo |>
     Joining with `by = join_by(GeneName)`
     * filtering differential features
 
-    Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
+    Total number of genes selected with adjpval < 0.05 and | logFC | > 1 is sum(selgenes)
 
 ![](report_files/figure-html/analyze-13.png)
 

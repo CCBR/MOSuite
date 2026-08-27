@@ -233,12 +233,14 @@ then <code>_pval</code>, for each contrast in <code>change_colname</code>.</p></
 
 
 <dt id="arg-signif-threshold">signif_threshold<a class="anchor" aria-label="anchor" href="#arg-signif-threshold"></a></dt>
-<dd><p>Numeric significance threshold (p-value or adjusted p-value cutoff). Default: 0.05</p></dd>
+<dd><p>Numeric significance threshold (p-value or adjusted p-value cutoff). Features meet this
+threshold when their value is less than the cutoff (exclusive). Default: 0.05</p></dd>
 
 
 <dt id="arg-change-threshold">change_threshold<a class="anchor" aria-label="anchor" href="#arg-change-threshold"></a></dt>
 <dd><p>Numeric value specifying the fold change cutoff for significance (i.e. filters on
-<code>change_colname</code>)</p></dd>
+<code>change_colname</code>). Features meet this threshold when the absolute value is greater than the cutoff (exclusive).
+Default: 1.0</p></dd>
 
 
 <dt id="arg-value-to-sort-the-output-dataset">value_to_sort_the_output_dataset<a class="anchor" aria-label="anchor" href="#arg-value-to-sort-the-output-dataset"></a></dt>

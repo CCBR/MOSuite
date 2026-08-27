@@ -60,8 +60,8 @@ filter_diff(
 
 - significance_cutoff:
 
-  Features will only be kept if their `significance_column` is less then
-  this cutoff threshold
+  Features will only be kept if their `significance_column` is less than
+  the cutoff threshold (exclusive)
 
 - change_column:
 
@@ -70,7 +70,7 @@ filter_diff(
 - change_cutoff:
 
   Features will only be kept if the absolute value of their
-  `change_column` is greater than or equal to this cutoff threshold
+  `change_column` is greater than the cutoff threshold (exclusive)
 
 - filtering_mode:
 
@@ -215,7 +215,7 @@ moo <- multiOmicDataSet(
 #> Joining with `by = join_by(Gene)`
 #> Joining with `by = join_by(Gene)`
 #> * filtering differential features
-#> Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
+#> Total number of genes selected with adjpval < 0.05 and | logFC | > 1 is sum(selgenes)
 #> Saving 6.67 x 6.67 in image
 head(moo@analyses$diff_filt)
 #>            Gene B-A_FC B-A_logFC B-A_tstat B-A_pval B-A_adjpval C-A_FC

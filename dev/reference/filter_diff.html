@@ -101,8 +101,8 @@ used.)</p></dd>
 
 
 <dt id="arg-significance-cutoff">significance_cutoff<a class="anchor" aria-label="anchor" href="#arg-significance-cutoff"></a></dt>
-<dd><p>Features will only be kept if their <code>significance_column</code> is less then this cutoff
-threshold</p></dd>
+<dd><p>Features will only be kept if their <code>significance_column</code> is less than the cutoff
+threshold (exclusive)</p></dd>
 
 
 <dt id="arg-change-column">change_column<a class="anchor" aria-label="anchor" href="#arg-change-column"></a></dt>
@@ -110,8 +110,8 @@ threshold</p></dd>
 
 
 <dt id="arg-change-cutoff">change_cutoff<a class="anchor" aria-label="anchor" href="#arg-change-cutoff"></a></dt>
-<dd><p>Features will only be kept if the absolute value of their <code>change_column</code> is greater than or
-equal to this cutoff threshold</p></dd>
+<dd><p>Features will only be kept if the absolute value of their <code>change_column</code> is greater than the
+cutoff threshold (exclusive)</p></dd>
 
 
 <dt id="arg-filtering-mode">filtering_mode<a class="anchor" aria-label="anchor" href="#arg-filtering-mode"></a></dt>
@@ -248,7 +248,7 @@ groups in the dataset are used.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Gene)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Gene)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> * filtering differential features</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Total number of genes selected with adjpval &lt; 0.05 and | logFC | ≥ 1 is sum(selgenes)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Total number of genes selected with adjpval &lt; 0.05 and | logFC | &gt; 1 is sum(selgenes)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Saving 6.67 x 6.67 in image</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">moo</span><span class="op">@</span><span class="va">analyses</span><span class="op">$</span><span class="va">diff_filt</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            Gene B-A_FC B-A_logFC B-A_tstat B-A_pval B-A_adjpval C-A_FC</span>

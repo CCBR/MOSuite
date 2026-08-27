@@ -2,6 +2,8 @@
 
 ``` r
 library(MOSuite)
+#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -137,7 +139,7 @@ moo <- moo |>
 #> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
 #> * filtering differential features
 #> 
-#> Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
+#> Total number of genes selected with adjpval < 0.05 and | logFC | > 1 is sum(selgenes)
 #> 
 #> Saving 7.29 x 4.51 in image
 

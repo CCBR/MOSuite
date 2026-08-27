@@ -2,6 +2,8 @@
 
 ``` r
 library(MOSuite)
+#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -111,7 +113,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
     #> Joining with `by = join_by(GeneName)`
     #> * filtering differential features
     #> 
-    #> Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
+    #> Total number of genes selected with adjpval < 0.05 and | logFC | > 1 is sum(selgenes)
 
 ![](intro_files/figure-html/nidap_data-13.png)
 

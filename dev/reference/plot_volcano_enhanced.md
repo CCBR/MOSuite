@@ -182,12 +182,14 @@ plot_volcano_enhanced(
 - signif_threshold:
 
   Numeric significance threshold (p-value or adjusted p-value cutoff).
-  Default: 0.05
+  Features meet this threshold when their value is less than the cutoff
+  (exclusive). Default: 0.05
 
 - change_threshold:
 
   Numeric value specifying the fold change cutoff for significance (i.e.
-  filters on `change_colname`)
+  filters on `change_colname`). Features meet this threshold when the
+  absolute value is greater than the cutoff (exclusive). Default: 1.0
 
 - value_to_sort_the_output_dataset:
 

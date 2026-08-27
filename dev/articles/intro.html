@@ -72,6 +72,8 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CCBR/MOSuite" class="external-link">MOSuite</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
+<span><span class="co">#&gt; 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
@@ -166,7 +168,7 @@
 <span><span class="co">#&gt; Joining with `by = join_by(GeneName)`</span></span>
 <span><span class="co">#&gt; * filtering differential features</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of genes selected with adjpval &lt; 0.05 and | logFC | ≥ 1 is sum(selgenes)</span></span></code></pre>
+<span><span class="co">#&gt; Total number of genes selected with adjpval &lt; 0.05 and | logFC | &gt; 1 is sum(selgenes)</span></span></code></pre>
 <p><img src="intro_files/figure-html/nidap_data-13.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Saving 7.29 x 4.51 in image</span></span>
 <span></span>
