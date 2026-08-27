@@ -661,8 +661,8 @@ build_volcano_plot_data <- function(
     }
     colnames(df) <- c(label_col, lfc_name, sig_name)
   } else {
-    lfc_name <- change_colname[i]
-    sig_name <- signif_colname[i]
+    lfc_name <- change_colname[contrast_idx]
+    sig_name <- signif_colname[contrast_idx]
   }
 
   group <- gsub("_pval|p_val_", "", sig_name)
