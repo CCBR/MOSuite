@@ -32,6 +32,7 @@ current working directory. You can specify additional arguments to
 You can edit the copy of \code{report.qmd} in the current working directory to customize the report.
 }
 \examples{
+\dontrun{
 render_report(execute_params = list(
   counts_csv = system.file("extdata", "nidap", "Raw_Counts.csv.gz",
                            package = "MOSuite"),
@@ -51,4 +52,5 @@ render_report(
       package = "MOSuite")
   )
 )
+}
 }
