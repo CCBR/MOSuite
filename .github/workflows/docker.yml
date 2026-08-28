@@ -4,19 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       docker_image_tag:
-        description: "Tag to apply to the built docker image (e.g. 'v0.3.0'). If not
+        description:
+          "Tag to apply to the built docker image (e.g. 'v0.3.0'). If not
           specified, it will be determined from the DESCRIPTION file."
         required: false
         default: ""
   release:
-    types: [ published ]
+    types: [published]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  R_VERSION: 4.4
   CONTEXT: "./"
   NAMESPACE: "nciccbr"
 jobs:
@@ -29,7 +29,14 @@ jobs:
       matrix:
         config:
           - { dockerfile_path: "docker/Dockerfile", image_name: "mosuite" }
-          - { dockerfile_path: "docker/Dockerfile_minimal", image_name: "mosuite-minimal" }
+          - {
+              dockerfile_path: "docker/Dockerfile-minimal",
+              image_name: "mosuite-minimal",
+            }
+          - {
+              dockerfile_path: "docker/Dockerfile-dev",
+              image_name: "mosuite-dev",
+            }
     steps:
       - uses: actions/checkout@v6
         with:
@@ -51,6 +58,11 @@ jobs:
           if [ "${{ github.event_name }}" = "release" ]; then
             docker_tags="${docker_tags},${NAMESPACE}/${image_name}:latest"
           fi
+
+          # fetch R version: get the previous release version from r-hub API.
+          # staying one version behind release helps wait for packages to catch
+          # up so we're not on the bleeding edge.
+          echo "r_version=$(curl -fsSL https://api.r-hub.io/rversions/r-oldrel | jq -r '.version')" >> "$GITHUB_OUTPUT"
 
           echo "date=$(date +"%Y-%m-%d")" >> "$GITHUB_OUTPUT"
           echo "dockerfile_path=${{ matrix.config.dockerfile_path }}" >> "$GITHUB_OUTPUT"
@@ -75,4 +87,4 @@ jobs:
             BUILD_DATE=${{ steps.vars.outputs.date }}
             BUILD_TAG=${{ steps.vars.outputs.version }}
             REPONAME=${{ steps.vars.outputs.image_name }}
-            R_VERSION=${{ env.R_VERSION }}
+            R_VERSION=${{ steps.vars.outputs.r_version }}

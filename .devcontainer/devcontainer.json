@@ -1,0 +1,7 @@
+{
+    "image": "nciccbr/mosuite-dev:v0.4.1.9001",
+    // sshd enables VS Code to connect via SSH -A, forwarding the host agent into the container.
+    "features": {
+        "ghcr.io/devcontainers/features/sshd:1": {}
+    }
+}
