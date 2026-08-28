@@ -30,6 +30,7 @@
 ^Rplots\.pdf$
 ^SECURITY\.md$
 ^tests/figures$
+^tests/testthat/figures/var
 ^vignettes/cli\.Rmd$
 ^vignettes/figures/$
 ^vignettes/memory\.Rmd$

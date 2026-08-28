@@ -605,7 +605,7 @@ references:
   doi: 10.32614/CRAN.package.broom
 - type: software
   title: cffr
-  abstract: 'cffr: Generate Citation File Format (''CFF'') Metadata for R Packages'
+  abstract: 'cffr: Generate Citation File Format (''CFF'') Metadata'
   notes: Suggests
   url: https://docs.ropensci.org/cffr/
   repository: https://CRAN.R-project.org/package=cffr

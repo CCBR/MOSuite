@@ -84,6 +84,101 @@ test_that("plot_volcano_enhanced forwards shared styling parameters", {
   expect_equal(captured_args$cutoffLineCol, "cyan")
 })
 
+test_that("build_volcano_plot_data colors exact threshold boundaries as non-significant", {
+  diff_dat <- data.frame(
+    Gene = c("both_boundary", "p_boundary", "fc_boundary", "neither"),
+    annotation = c("a", "b", "c", "d"),
+    `B-A_logFC` = c(1, 0.5, 1, 0.5),
+    `B-A_pval` = c(0.05, 0.05, 0.06, 0.06),
+    check.names = FALSE
+  )
+
+  volcano_data <- build_volcano_plot_data(
+    diff_dat = diff_dat,
+    label_col = "Gene",
+    change_colname = "B-A_logFC",
+    signif_colname = "B-A_pval",
+    contrast_idx = 1,
+    use_custom_lab = FALSE,
+    change_lfc_name = "log2FC",
+    change_sig_name = "p-value",
+    value_to_sort_the_output_dataset = "p-value",
+    label_significant_features_only = TRUE,
+    signif_threshold = 0.05,
+    change_threshold = 1,
+    num_features_to_label = 30,
+    custom_gene_list = "",
+    label_features = FALSE,
+    default_label_color = "black",
+    custom_label_color = "black",
+    color_of_non_significant_features = "grey30",
+    color_of_logfold_change_threshold_line = "forestgreen",
+    color_of_features_meeting_only_signif_threshold = "royalblue",
+    color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2"
+  )
+
+  point_colors_by_class <- volcano_data$custom_colors
+  expect_equal(
+    unname(point_colors_by_class[
+      names(point_colors_by_class) == "Not significant"
+    ]),
+    rep("grey30", 4)
+  )
+  expect_true(
+    all(
+      point_colors_by_class[
+        names(point_colors_by_class) == "Significant only"
+      ] ==
+        "royalblue"
+    )
+  )
+  expect_true(
+    all(
+      point_colors_by_class[
+        names(point_colors_by_class) == "Fold change only"
+      ] ==
+        "forestgreen"
+    )
+  )
+})
+
+test_that("plot_volcano_enhanced labels only strict threshold hits", {
+  options(mosuite_test_volcano_label_args = list())
+  trace(
+    EnhancedVolcano::EnhancedVolcano,
+    tracer = quote(options(
+      mosuite_test_volcano_label_args = append(
+        getOption("mosuite_test_volcano_label_args"),
+        list(list(selectLab = selectLab))
+      )
+    )),
+    print = FALSE
+  )
+  on.exit(untrace(EnhancedVolcano::EnhancedVolcano), add = TRUE)
+  on.exit(options(mosuite_test_volcano_label_args = NULL), add = TRUE)
+
+  boundary_data <- data.frame(
+    Gene = c("both_boundary", "p_boundary", "fc_boundary", "neither"),
+    annotation = c("a", "b", "c", "d"),
+    `B-A_logFC` = c(1, 0.5, 1, 0.5),
+    `B-A_pval` = c(0.05, 0.05, 0.06, 0.06),
+    check.names = FALSE
+  )
+
+  plot_volcano_enhanced(
+    boundary_data,
+    feature_id_colname = "Gene",
+    change_colname = "B-A_logFC",
+    signif_colname = "B-A_pval",
+    label_significant_features_only = TRUE,
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  captured_labels <- getOption("mosuite_test_volcano_label_args")[[1]]$selectLab
+  expect_length(captured_labels, 0)
+})
+
 test_that("plot_volcano_enhanced uses EnhancedVolcano default colors", {
   options(mosuite_test_volcano_args = list())
   trace(

@@ -50,7 +50,7 @@
       Setting first column of `counts` as gene annotation.
       Total number of genes included: 291
       * filtering differential features
-      Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
+      Total number of genes selected with adjpval < 0.05 and | logFC | > 1 is sum(selgenes)
 
 # E2E workflow succeeds for NIDAP data
 
@@ -106,5 +106,5 @@
       Joining with `by = join_by(GeneName)`
       Joining with `by = join_by(GeneName)`
       * filtering differential features
-      Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
+      Total number of genes selected with adjpval < 0.05 and | logFC | > 1 is sum(selgenes)
 

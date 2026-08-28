@@ -19,6 +19,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' render_report(execute_params = list(
 #'   counts_csv = system.file("extdata", "nidap", "Raw_Counts.csv.gz",
 #'                            package = "MOSuite"),
@@ -38,6 +39,7 @@
 #'       package = "MOSuite")
 #'   )
 #' )
+#' }
 render_report <- function(
   qmd_template = system.file("quarto", "report.qmd", package = "MOSuite"),
   qmd_src = NULL,
