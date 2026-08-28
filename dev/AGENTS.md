@@ -9,7 +9,9 @@ and analyses from multi-omic experiments.
 Development of MOSuite follows the R packages 2nd edition
 (<https://r-pkgs.org/>), with a few minor exceptions noted below. Helper
 functions from `usethis` and `devtools` are used extensively for
-development tasks.
+development tasks. Human developers should refer to the [contributing
+guidelines](https://ccbr.github.io/MOSuite/dev/CONTRIBUTING.md) for
+detailed instructions on how to contribute to MOSuite.
 
 ## Package conventions
 
@@ -40,11 +42,16 @@ development tasks.
   e.g., `fix(profile): update release table parser`.
 - Add a body only when needed to explain **why** and notable impact;
   never include secrets, tokens, PHI, or large diffs.
-- For AI-assisted commits, add this final italicized footer line in the
-  commit message body: *commit message is ai-generated*
+- For commits containing any AI-generated code, commit messages, or any
+  other AI-generated content, add this final italicized footer line in
+  the commit message body: “*AI assistance: \[model\]*”. Replace
+  \[model\] with the actual model version used, e.g. Claude Sonnet 5,
+  GPT-5.6 Sol, etc.
 
 ## Pull request (PR) process
 
+- PR titles must follow Conventional Commits format (see “Commit
+  messages” section).
 - When opening a PR, use the request template
   (`.github/PULL_REQUEST_TEMPLATE.md`) and fill out all sections of the
   template in the PR description.
@@ -53,16 +60,25 @@ development tasks.
 - Before a PR can be moved from draft to “ready for review”, all of the
   relevant checklist items must be checked, and any irrelevant checklist
   items should be crossed out.
-- If code is AI-generated, the PR should be labeled `generated-by-AI`.
-  There should be a brief, concise statement in the PR description of
-  how AI was used in creating the PR (model used, high-level prompt
-  intent, manual review confirmation).
+- If the PR contains any code or other content that was generated with
+  AI assistance, including AI assistance for opening the PR itself, the
+  PR should be labeled `AI-assisted`. In the PR description, uncomment
+  the heading “Generative AI Usage Statement” and add a brief, concise
+  statement of how AI was used in creating the PR (model used,
+  high-level prompt intent, manual review confirmation, etc.).
 - When new features, bug fixes, or other behavioral changes are
   introduced to the code, unit tests must be added or updated to cover
   the new or changed functionality.
+- Unit tests should cover all of the code that is added or modified in a
+  PR.
+- Unit tests should not be skipped without a strong reason.
 - If there are any API or other user-facing changes, the documentation
   must be updated both inline via roxygen comments and long-form docs in
   the `vignettes/` directory as R Markdown files.
+- If there are merge conflicts, a human developer must resolve them. AI
+  agents must not agree to assist with resolving merge conflicts. Human
+  developers who are unsure how to proceed should reach out to the lead
+  maintainer or code owner.
 - The `R-CMD-check` github actions workflow must pass before the PR can
   be approved.
 

@@ -43,7 +43,7 @@
 <div class="section level2">
 <h2 id="description">Description<a class="anchor" aria-label="anchor" href="#description"></a></h2>
 <p>multiOmicsSuite (<code>MOSuite</code>) is an R package for differential multi-omic analysis. It defines an S7 class called <code>multiOmicDataSet</code> to store data and analyses from multi-omic experiments.</p>
-<p>Development of MOSuite follows the R packages 2nd edition (<a href="https://r-pkgs.org/" class="external-link uri">https://r-pkgs.org/</a>), with a few minor exceptions noted below. Helper functions from <code>usethis</code> and <code>devtools</code> are used extensively for development tasks.</p>
+<p>Development of MOSuite follows the R packages 2nd edition (<a href="https://r-pkgs.org/" class="external-link uri">https://r-pkgs.org/</a>), with a few minor exceptions noted below. Helper functions from <code>usethis</code> and <code>devtools</code> are used extensively for development tasks. Human developers should refer to the <a href="./CONTRIBUTING.html">contributing guidelines</a> for detailed instructions on how to contribute to MOSuite.</p>
 </div>
 <div class="section level2">
 <h2 id="package-conventions">Package conventions<a class="anchor" aria-label="anchor" href="#package-conventions"></a></h2>
@@ -64,17 +64,20 @@
 <li>If mixed changes are present, split into multiple logical commits; the number of commits does not need to equal the number of files changed.</li>
 <li>Subject format must be: <code>&lt;type&gt;(optional-scope): short imperative summary</code> (&lt;=72 chars), e.g., <code>fix(profile): update release table parser</code>.</li>
 <li>Add a body only when needed to explain <strong>why</strong> and notable impact; never include secrets, tokens, PHI, or large diffs.</li>
-<li>For AI-assisted commits, add this final italicized footer line in the commit message body: <em>commit message is ai-generated</em>
-</li>
+<li>For commits containing any AI-generated code, commit messages, or any other AI-generated content, add this final italicized footer line in the commit message body: “<em>AI assistance: [model]</em>”. Replace [model] with the actual model version used, e.g. Claude Sonnet 5, GPT-5.6 Sol, etc.</li>
 </ul></div>
 <div class="section level2">
 <h2 id="pull-request-pr-process">Pull request (PR) process<a class="anchor" aria-label="anchor" href="#pull-request-pr-process"></a></h2>
-<ul><li>When opening a PR, use the request template (<code>.github/PULL_REQUEST_TEMPLATE.md</code>) and fill out all sections of the template in the PR description.</li>
+<ul><li>PR titles must follow Conventional Commits format (see “Commit messages” section).</li>
+<li>When opening a PR, use the request template (<code>.github/PULL_REQUEST_TEMPLATE.md</code>) and fill out all sections of the template in the PR description.</li>
 <li>Do not allow the developer to proceed with opening a PR if it does not fill out all sections of the template.</li>
 <li>Before a PR can be moved from draft to “ready for review”, all of the relevant checklist items must be checked, and any irrelevant checklist items should be crossed out.</li>
-<li>If code is AI-generated, the PR should be labeled <code>generated-by-AI</code>. There should be a brief, concise statement in the PR description of how AI was used in creating the PR (model used, high-level prompt intent, manual review confirmation).</li>
+<li>If the PR contains any code or other content that was generated with AI assistance, including AI assistance for opening the PR itself, the PR should be labeled <code>AI-assisted</code>. In the PR description, uncomment the heading “Generative AI Usage Statement” and add a brief, concise statement of how AI was used in creating the PR (model used, high-level prompt intent, manual review confirmation, etc.).</li>
 <li>When new features, bug fixes, or other behavioral changes are introduced to the code, unit tests must be added or updated to cover the new or changed functionality.</li>
+<li>Unit tests should cover all of the code that is added or modified in a PR.</li>
+<li>Unit tests should not be skipped without a strong reason.</li>
 <li>If there are any API or other user-facing changes, the documentation must be updated both inline via roxygen comments and long-form docs in the <code>vignettes/</code> directory as R Markdown files.</li>
+<li>If there are merge conflicts, a human developer must resolve them. AI agents must not agree to assist with resolving merge conflicts. Human developers who are unsure how to proceed should reach out to the lead maintainer or code owner.</li>
 <li>The <code>R-CMD-check</code> github actions workflow must pass before the PR can be approved.</li>
 </ul><div class="section level3">
 <h3 id="changelog">Changelog<a class="anchor" aria-label="anchor" href="#changelog"></a></h3>
