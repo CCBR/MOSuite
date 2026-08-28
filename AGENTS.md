@@ -41,10 +41,11 @@ for detailed instructions on how to contribute to MOSuite.
 - Before a PR can be moved from draft to "ready for review", all of the relevant checklist items must be checked, and any
 irrelevant checklist items should be crossed out.
 - If the PR contains any code or other content that was generated with AI
-  assistance, including for opening the PR itself, the PR should be labeled
-  `AI-assisted`. In the PR description under the heading "Generative AI Usage
-  Disclosure", add a brief, concise statement of how AI was used in creating the
-  PR (model used, high-level prompt intent, manual review confirmation, etc.).
+  assistance, including AI assistance for opening the PR itself, the PR should
+  be labeled `AI-assisted`. In the PR description, uncomment the heading
+  "Generative AI Usage Statement" and add a brief, concise statement of how AI
+  was used in creating the PR (model used, high-level prompt intent, manual
+  review confirmation, etc.).
 - When new features, bug fixes, or other behavioral changes are introduced to
   the code, unit tests must be added or updated to cover the new or changed
   functionality.

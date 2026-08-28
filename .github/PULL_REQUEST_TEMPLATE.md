@@ -2,6 +2,8 @@
 
 <!--
 Provide a brief summary of what is included in this Pull Request (PR).
+If the PR contains complex changes, include a brief description of the rationale
+behind the implementation decisions.
 -->
 
 ## Issues
@@ -13,8 +15,9 @@ If this PR fixes any issues,
 when referring to the issue so it will be closed automatically when the PR is merged.
 -->
 
-## Generative AI Usage Disclosure
-
+<!-- Uncomment the below header if including an AI usage statement:
+## Generative AI Usage Statement
+-->
 <!--
 Include a brief description of how AI assistance was used to generate any of the code or content included in this PR,
 e.g. writing code, writing unit tests, troubleshooting problems, software design discussion, commit messages, or preparing the PR.
