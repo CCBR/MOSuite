@@ -166,8 +166,10 @@ batch_correct_counts <- function(
   }
 
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
+    default_group_colors <- get_colors_lst(sample_metadata)[[batch_colname]]
     colors_for_plots <- colors_for_plots %||%
-      moo@analyses$colors[[batch_colname]]
+      moo@analyses$colors[[batch_colname]] %||%
+      default_group_colors
 
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots

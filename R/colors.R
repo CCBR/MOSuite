@@ -73,7 +73,7 @@ get_observed_values <- function(dat, colname) {
 
 #' Create named list of default colors for plotting
 #'
-#' @inheritParams create_multiOmicDataSet_from_dataframes
+#' @inheritParams MOObject::create_multiOmicDataSet_from_dataframes
 #'
 #' @param palette Character vector of colors to assign. Defaults to
 #'   `mosuite_palette`.

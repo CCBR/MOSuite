@@ -38,6 +38,7 @@ Imports:
     limma,
     matrixStats,
     methods,
+    MOObject,
     options,
     plotly,
     purrr,
@@ -80,6 +81,8 @@ Suggests:
     V8,
     VennDiagram,
     withr
+Remotes:
+    CCBR/MOObject
 VignetteBuilder:
     knitr
 biocViews:

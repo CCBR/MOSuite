@@ -15,8 +15,8 @@ log_transform_counts(
 \arguments{
 \item{counts_dat}{data frame of feature counts.}
 
-\item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first
-column in the count data will be used.)}
+\item{feature_id_colname}{column in \code{counts_dat} that contains feature IDs.
+If \code{NULL}, use the first column.}
 
 \item{sample_colnames}{optional vector of sample columns to transform. If \code{NULL}, all columns except
 \code{feature_id_colname} are transformed.}

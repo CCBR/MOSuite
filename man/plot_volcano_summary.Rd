@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_volcano_summary.R
 \name{plot_volcano_summary}
 \alias{plot_volcano_summary}
-\alias{plot_volcano_summary,MOSuite::multiOmicDataSet-method}
+\alias{plot_volcano_summary,MOObject::multiOmicDataSet-method}
 \alias{plot_volcano_summary,data.frame-method}
 \title{Volcano Plot - Summary}
 \usage{
@@ -54,7 +54,7 @@ plot_volcano_summary(
   plots_subdir = "diff"
 )
 
-## S7 method for class <MOSuite::multiOmicDataSet>
+## S7 method for class <MOObject::multiOmicDataSet>
 plot_volcano_summary(
   moo_diff,
   feature_id_colname = NULL,

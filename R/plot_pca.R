@@ -264,7 +264,7 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 
 #' Perform and plot a 2D Principal Components Analysis
 #'
-#' @inheritParams create_multiOmicDataSet_from_dataframes
+#' @inheritParams MOObject::create_multiOmicDataSet_from_dataframes
 #' @inheritParams plot_histogram
 #' @inheritParams plot_expr_heatmap
 #' @inheritParams filter_counts

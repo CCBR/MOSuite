@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_pca.R
 \name{plot_pca_3d}
 \alias{plot_pca_3d}
-\alias{plot_pca_3d,MOSuite::multiOmicDataSet-method}
+\alias{plot_pca_3d,MOObject::multiOmicDataSet-method}
 \alias{plot_pca_3d,data.frame-method}
 \title{Perform and plot a 3D Principal Components Analysis}
 \usage{
@@ -31,7 +31,7 @@ plot_pca_3d(
   ...
 )
 
-## S7 method for class <MOSuite::multiOmicDataSet>
+## S7 method for class <MOObject::multiOmicDataSet>
 plot_pca_3d(
   moo_counts,
   count_type = NULL,

@@ -426,13 +426,18 @@ test_that("batch_correct_counts histogram matches standalone plot_histogram on b
       interactive_plots = FALSE
     )
 
+  batch_colors <- moo@analyses$colors[["Batch"]]
+  if (is.null(batch_colors)) {
+    batch_colors <- get_colors_lst(moo@sample_meta)[["Batch"]]
+  }
+
   expected_histogram <- plot_histogram(
     moo@counts$batch,
     sample_metadata = moo@sample_meta,
     sample_id_colname = "Sample",
     feature_id_colname = "Gene",
     group_colname = "Batch",
-    color_values = moo@analyses$colors[["Batch"]],
+    color_values = batch_colors,
     label_colname = NULL,
     color_by_group = TRUE,
     set_min_max_for_x_axis = FALSE,

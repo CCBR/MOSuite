@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_venn_diagram.R
 \name{plot_venn_diagram}
 \alias{plot_venn_diagram}
-\alias{plot_venn_diagram,MOSuite::multiOmicDataSet-method}
+\alias{plot_venn_diagram,MOObject::multiOmicDataSet-method}
 \alias{plot_venn_diagram,data.frame-method}
 \title{Plot a venn diagram, UpSet plot, or table of intersections}
 \usage{
@@ -42,7 +42,7 @@ plot_venn_diagram(
   plots_subdir = "diff"
 )
 
-## S7 method for class <MOSuite::multiOmicDataSet>
+## S7 method for class <MOObject::multiOmicDataSet>
 plot_venn_diagram(
   moo_diff_summary_dat,
   feature_id_colname = NULL,

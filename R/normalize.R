@@ -104,8 +104,10 @@ normalize_counts <- function(
   message(paste0("Total number of features included: ", nrow(df.voom)))
   ### PH: END Limma Normalization
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
+    default_group_colors <- get_colors_lst(sample_metadata)[[group_colname]]
     colors_for_plots <- colors_for_plots %||%
-      moo@analyses$colors[[group_colname]]
+      moo@analyses$colors[[group_colname]] %||%
+      default_group_colors
 
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots

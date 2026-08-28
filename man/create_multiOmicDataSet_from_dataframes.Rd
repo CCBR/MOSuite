@@ -13,18 +13,18 @@ create_multiOmicDataSet_from_dataframes(
 )
 }
 \arguments{
-\item{sample_metadata}{sample metadata as a data frame or tibble. The first column is assumed to contain the sample
-IDs which must correspond to column names in the raw counts.}
+\item{sample_metadata}{sample metadata as a data frame. The first column is
+assumed to contain sample IDs that correspond to columns in raw counts.}
 
-\item{counts_dat}{data frame of feature counts (e.g. expected feature counts from RSEM).}
+\item{counts_dat}{data frame of feature counts.}
 
-\item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} -
-first column in the sample metadata will be used.)}
+\item{sample_id_colname}{column in \code{sample_metadata} that contains sample IDs.
+If \code{NULL}, use the first column.}
 
-\item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first
-column in the count data will be used.)}
+\item{feature_id_colname}{column in \code{counts_dat} that contains feature IDs.
+If \code{NULL}, use the first column.}
 
-\item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
+\item{count_type}{type to assign the values of \code{counts_dat} to in \code{counts}.}
 }
 \value{
 \link{multiOmicDataSet} object
@@ -32,32 +32,10 @@ column in the count data will be used.)}
 \description{
 Construct a multiOmicDataSet object from data frames
 }
-\examples{
-sample_meta <- data.frame(
-  sample_id = c("KO_S3", "KO_S4", "WT_S1", "WT_S2"),
-  condition = factor(
-    c("knockout", "knockout", "wildtype", "wildtype"),
-    levels = c("wildtype", "knockout")
-  )
-)
-moo <- create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts)
-head(moo@sample_meta)
-head(moo@counts$raw)
-head(moo@annotation)
-
-sample_meta_nidap <- readr::read_csv(system.file("extdata", "nidap",
-  "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
-  package = "MOSuite"
-))
-raw_counts_nidap <- readr::read_csv(system.file("extdata", "nidap", "Raw_Counts.csv.gz",
-  package = "MOSuite"
-))
-moo_nidap <- create_multiOmicDataSet_from_dataframes(sample_meta_nidap, raw_counts_nidap)
-
-}
 \seealso{
+\code{\link[MOObject:create_multiOmicDataSet_from_dataframes]{MOObject::create_multiOmicDataSet_from_dataframes()}}
+
 Other moo constructors:
-\code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}},
-\code{\link[=multiOmicDataSet]{multiOmicDataSet()}}
+\code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}}
 }
 \concept{moo constructors}

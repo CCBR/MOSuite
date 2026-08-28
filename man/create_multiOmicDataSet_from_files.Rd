@@ -15,22 +15,21 @@ create_multiOmicDataSet_from_files(
 )
 }
 \arguments{
-\item{sample_meta_filepath}{path to text file with sample IDs and metadata for differential analysis.}
+\item{sample_meta_filepath}{path to sample metadata file.}
 
-\item{feature_counts_filepath}{path to text file of expected feature counts (e.g. gene counts from RSEM).}
+\item{feature_counts_filepath}{path to feature counts file.}
 
-\item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
+\item{count_type}{type to assign the values of \code{counts_dat} to in \code{counts}.}
 
-\item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} -
-first column in the sample metadata will be used.)}
+\item{sample_id_colname}{column in \code{sample_metadata} that contains sample IDs.
+If \code{NULL}, use the first column.}
 
-\item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first
-column in the count data will be used.)}
+\item{feature_id_colname}{column in \code{counts_dat} that contains feature IDs.
+If \code{NULL}, use the first column.}
 
-\item{delim}{Delimiter used in the input files. Any delimiter accepted by \code{readr::read_delim()} can be used.
-If the files are in CSV format, set \code{delim = ','}; for TSV format, set \code{delim = '\\t'}.}
+\item{delim}{delimiter for \code{readr::read_delim()}.}
 
-\item{...}{additional arguments forwarded to \code{readr::read_delim()}.}
+\item{...}{additional arguments passed to \code{readr::read_delim()}.}
 }
 \value{
 \link{multiOmicDataSet} object
@@ -38,34 +37,10 @@ If the files are in CSV format, set \code{delim = ','}; for TSV format, set \cod
 \description{
 Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).
 }
-\examples{
-moo <- create_multiOmicDataSet_from_files(
-  sample_meta_filepath = system.file("extdata",
-    "sample_metadata.tsv.gz",
-    package = "MOSuite"
-  ),
-  feature_counts_filepath = system.file("extdata",
-    "RSEM.genes.expected_count.all_samples.txt.gz",
-    package = "MOSuite"
-  ),
-  delim = "\t"
-)
-moo@counts$raw |> head()
-moo@sample_meta
-
-moo_nidap <- create_multiOmicDataSet_from_files(
-  system.file("extdata", "nidap",
-    "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
-    package = "MOSuite"
-  ),
-  system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
-  delim = ","
-)
-
-}
 \seealso{
+\code{\link[MOObject:create_multiOmicDataSet_from_files]{MOObject::create_multiOmicDataSet_from_files()}}
+
 Other moo constructors:
-\code{\link[=create_multiOmicDataSet_from_dataframes]{create_multiOmicDataSet_from_dataframes()}},
-\code{\link[=multiOmicDataSet]{multiOmicDataSet()}}
+\code{\link[=create_multiOmicDataSet_from_dataframes]{create_multiOmicDataSet_from_dataframes()}}
 }
 \concept{moo constructors}

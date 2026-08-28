@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_volcano_enhanced.R
 \name{plot_volcano_enhanced}
 \alias{plot_volcano_enhanced}
-\alias{plot_volcano_enhanced,MOSuite::multiOmicDataSet-method}
+\alias{plot_volcano_enhanced,MOObject::multiOmicDataSet-method}
 \alias{plot_volcano_enhanced,data.frame-method}
 \title{Enhanced Volcano Plot}
 \usage{
@@ -53,7 +53,7 @@ plot_volcano_enhanced(
   plot_filename = "volcano_enhanced.png"
 )
 
-## S7 method for class <MOSuite::multiOmicDataSet>
+## S7 method for class <MOObject::multiOmicDataSet>
 plot_volcano_enhanced(
   moo_diff,
   feature_id_colname = NULL,

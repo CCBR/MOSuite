@@ -2,45 +2,20 @@
 % Please edit documentation in R/0_mo-class.R
 \name{extract_counts}
 \alias{extract_counts}
-\alias{extract_counts,MOSuite::multiOmicDataSet-method}
 \title{Extract count data}
 \usage{
 extract_counts(moo, count_type, sub_count_type = NULL)
-
-## S7 method for class <MOSuite::multiOmicDataSet>
-extract_counts(moo, count_type, sub_count_type = NULL)
 }
 \arguments{
-\item{moo}{multiOmicDataSet containing \code{count_type} & \code{sub_count_type} in the counts slot}
+\item{moo}{multiOmicDataSet containing counts.}
 
-\item{count_type}{the type of counts to use -- must be a name in the counts slot (\code{moo@counts[[count_type]]})}
+\item{count_type}{count type in \code{moo@counts}.}
 
-\item{sub_count_type}{if \code{count_type} is a list, specify the sub count type within the list
-(\code{moo@counts[[count_type]][[sub_count_type]]}). (Default: \code{NULL})}
+\item{sub_count_type}{subtype in \code{moo@counts[[count_type]]} when that entry is a list.}
 }
 \description{
 Extract count data
 }
-\examples{
-moo <- multiOmicDataSet(
-  sample_metadata = as.data.frame(nidap_sample_metadata),
-  anno_dat = data.frame(),
-  counts_lst = list(
-    "raw" = as.data.frame(nidap_raw_counts),
-    "clean" = as.data.frame(nidap_clean_raw_counts),
-    "filt" = as.data.frame(nidap_filtered_counts),
-    "norm" = list(
-      "voom" = as.data.frame(nidap_norm_counts)
-    )
-  )
-)
-
-moo |>
-  extract_counts("filt") |>
-  head()
-
-moo |>
-  extract_counts("norm", "voom") |>
-  head()
-
+\seealso{
+\code{\link[MOObject:extract_counts]{MOObject::extract_counts()}}
 }

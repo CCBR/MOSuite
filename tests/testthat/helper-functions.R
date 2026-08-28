@@ -1,4 +1,9 @@
 equal_dfs <- function(x, y) {
+  attr(x, "spec") <- NULL
+  attr(x, "problems") <- NULL
+  attr(y, "spec") <- NULL
+  attr(y, "problems") <- NULL
+
   return(all(
     class(x) == class(y),
     names(x) == names(y),
