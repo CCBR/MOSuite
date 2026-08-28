@@ -1,5 +1,9 @@
 ## MOSuite development version
 
+- Filtering updates in `filter_counts()` and `remove_low_count_genes()`. (#245, @TJoshMeyer)
+  - Add adaptive filtering mode (`filtering_method = "adaptive"`) using `edgeR::filterByExpr()` as the default behavior.
+  - Retain explicit threshold filtering as expert mode (`filtering_method = "manual"`).
+  - Expose `minimum_number_of_groups_passing_filter` for manual group-based filtering (default `1`) instead of hardcoding one-group pass behavior.
 - Align Volcano Plot threshold comparisons across labeling, coloring, and summary filtering, and use resolved column names for classification. (#266, @TJoshMeyer)
 - `normalize_counts()` now uses normalized counts instead of filtered counts for
   the correlation heatmap so it matches the PCA and histogram outputs. (#269,

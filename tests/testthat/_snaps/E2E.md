@@ -4,7 +4,8 @@
       moo <- filter_diff(diff_counts(normalize_counts(filter_counts(clean_raw_counts(
         create_multiOmicDataSet_from_files(sample_meta_filepath = metadata_tsv,
           feature_counts_filepath = gene_counts_tsv)), group_colname = "condition",
-      label_colname = "sample_id", minimum_count_value_to_be_considered_nonzero = 1,
+      label_colname = "sample_id", filtering_method = "manual",
+      minimum_count_value_to_be_considered_nonzero = 1,
       minimum_number_of_samples_with_nonzero_counts_in_total = 1,
       minimum_number_of_samples_with_nonzero_counts_in_a_group = 1, ), group_colname = "condition",
       label_colname = "sample_id"), covariates_colnames = "condition",
@@ -80,9 +81,14 @@
       Number of rows before Collapse: 43280
       no duplicated IDs in GeneName
       * filtering clean counts
-      Number of features after filtering: 7943
+    Condition
+      Warning in `filterByExpr.DGEList()`:
+      All samples appear to belong to the same group.
+    Message
+      Filtering method: adaptive (edgeR::filterByExpr)
+      Number of features after filtering: 6812
       * normalizing filt counts
-      Total number of features included: 7943
+      Total number of features included: 6812
       Sample columns: A1, Sample columns: A2, Sample columns: A3, Sample columns: B1, Sample columns: B2, Sample columns: B3, Sample columns: C1, Sample columns: C2, Sample columns: C3
       * batch-correcting norm-voom counts
       Found2batches
@@ -92,11 +98,11 @@
       Finding parametric adjustments
       Adjusting the Data
       
-      The total number of features in output: 7943
+      The total number of features in output: 6812
       Number of samples after batch correction: 10
       * differential counts
       Setting first column of `counts` as gene annotation.
-      Total number of genes included: 7942
+      Total number of genes included: 6811
       Joining with `by = join_by(GeneName)`
       Joining with `by = join_by(GeneName)`
       * filtering differential features

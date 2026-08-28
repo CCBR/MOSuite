@@ -10,11 +10,13 @@ remove_low_count_genes(
   sample_id_colname = NULL,
   feature_id_colname,
   group_colname,
+  filtering_method = c("manual", "adaptive"),
   use_cpm_counts_to_filter = TRUE,
-  use_group_based_filtering = FALSE,
+  use_group_based_filtering = TRUE,
   minimum_count_value_to_be_considered_nonzero = 8,
   minimum_number_of_samples_with_nonzero_counts_in_total = 7,
-  minimum_number_of_samples_with_nonzero_counts_in_a_group = 3
+  minimum_number_of_samples_with_nonzero_counts_in_a_group = 3,
+  minimum_number_of_groups_passing_filter = 1
 )
 }
 \arguments{
@@ -30,6 +32,9 @@ used.)}
 \item{group_colname}{The column from the sample metadata containing the sample group information. This is usually a
 column showing to which experimental treatments each sample belongs (e.g. WildType, Knockout, Tumor, Normal,
 Before, After, etc.).}
+
+\item{filtering_method}{Filtering strategy for low-count removal. Use \code{"adaptive"} to apply
+\code{edgeR::filterByExpr()} (default) or \code{"manual"} to use explicit threshold parameters.}
 
 \item{use_cpm_counts_to_filter}{If no transformation has been been performed on counts matrix (eg Raw Counts) set to
 TRUE. If TRUE counts will be transformed to CPM and filtered based on given criteria. If gene counts matrix has
@@ -49,6 +54,9 @@ If \code{use_cpm_counts_to_filter} is \code{FALSE}, this threshold is applied di
 
 \item{minimum_number_of_samples_with_nonzero_counts_in_a_group}{Only keeps genes that have at least this number of
 samples meeting the threshold in at least one group}
+
+\item{minimum_number_of_groups_passing_filter}{Manual-mode only. Minimum number of groups that must pass
+\code{minimum_number_of_samples_with_nonzero_counts_in_a_group} for a feature to be retained.}
 }
 \value{
 counts matrix with low-count genes removed
