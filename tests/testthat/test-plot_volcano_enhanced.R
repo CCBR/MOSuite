@@ -337,9 +337,9 @@ test_that("plot_volcano_enhanced saves defaults on a 10 inch canvas", {
 
   expect_s3_class(result, "data.frame")
   captured_output_args <- getOption("mosuite_test_plot_output_args")[[1]]
-  expect_equal(captured_output_args$width, 3000)
-  expect_equal(captured_output_args$height, 3000)
-  expect_equal(captured_output_args$units, "px")
+  expect_equal(captured_output_args$width, 10)
+  expect_equal(captured_output_args$height, 10)
+  expect_equal(captured_output_args$units, "in")
   expect_equal(captured_output_args$dpi, 300)
 })
 
@@ -551,8 +551,8 @@ test_that("plot_volcano_enhanced saves multiple comparisons separately", {
       nidap_deg_analysis,
       change_colname = c("B-A_logFC", "C-A_logFC", "B-C_logFC"),
       signif_colname = c("B-A_adjpval", "C-A_adjpval", "B-C_adjpval"),
-      image_width = 100,
-      image_height = 200,
+      image_width = 1,
+      image_height = 2,
       draw_connectors = FALSE,
       save_plots = TRUE,
       print_plots = FALSE,
@@ -565,15 +565,15 @@ test_that("plot_volcano_enhanced saves multiple comparisons separately", {
   expect_length(captured_output_args, 3)
   expect_equal(
     vapply(captured_output_args, `[[`, numeric(1), "width"),
-    rep(100, 3)
+    rep(1, 3)
   )
   expect_equal(
     vapply(captured_output_args, `[[`, numeric(1), "height"),
-    rep(200, 3)
+    rep(2, 3)
   )
   expect_equal(
     vapply(captured_output_args, `[[`, character(1), "units"),
-    rep("px", 3)
+    rep("in", 3)
   )
   expect_equal(
     vapply(captured_output_args, `[[`, numeric(1), "dpi"),

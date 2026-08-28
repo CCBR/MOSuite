@@ -43,8 +43,8 @@ plot_volcano_summary(
   axis_tick_lab_size = 16,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
-  image_width = 15,
-  image_height = 15,
+  image_width = 10,
+  image_height = 10,
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = 1,
@@ -92,8 +92,8 @@ plot_volcano_summary(
   axis_tick_lab_size = 16,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
-  image_width = 15,
-  image_height = 15,
+  image_width = 10,
+  image_height = 10,
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = 1,
@@ -141,8 +141,8 @@ plot_volcano_summary(
   axis_tick_lab_size = 16,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
-  image_width = 15,
-  image_height = 15,
+  image_width = 10,
+  image_height = 10,
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = 1,
@@ -249,9 +249,9 @@ output dataset. Default: \verb{"FC", "logFC", "tstat", "pval", "adjpval"}}
 
 \item{graphics_device}{passed to \code{ggsave(device)}. Default: \code{grDevices::png}}
 
-\item{image_width}{output image width in pixels - only used if save_plots is TRUE}
+\item{image_width}{output image width in inches - only used if save_plots is TRUE. Default: 10}
 
-\item{image_height}{output image height in pixels - only used if save_plots is TRUE}
+\item{image_height}{output image height in inches - only used if save_plots is TRUE. Default: 10}
 
 \item{dpi}{dots-per-inch of the output image (see \code{ggsave()}) - only used if save_plots is TRUE}
 

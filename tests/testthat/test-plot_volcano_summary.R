@@ -285,9 +285,9 @@ test_that("plot_volcano_summary combines enhanced plots into one grid figure", {
   expect_s3_class(result, "data.frame")
   captured_output_args <- getOption("mosuite_test_plot_output_args")
   expect_length(captured_output_args, 1)
-  expect_equal(captured_output_args[[1]]$width, 300)
-  expect_equal(captured_output_args[[1]]$height, 200)
-  expect_equal(captured_output_args[[1]]$units, "px")
+  expect_equal(captured_output_args[[1]]$width, 3)
+  expect_equal(captured_output_args[[1]]$height, 2)
+  expect_equal(captured_output_args[[1]]$units, "in")
   expect_equal(captured_output_args[[1]]$dpi, 100)
   expect_match(
     captured_output_args[[1]]$filename,
