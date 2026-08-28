@@ -46,6 +46,7 @@ productive, and responsible:
   research and trim this down to be concise and precise.
 
 - **All AI usage should be disclosed.**
+  In the footer of commit messages and in Pull Request descriptions:
   - State the tool and model version used
     (e.g. Claude Code w/ Claude Sonnet 5, Codex w/ GPT-5.6 Sol, Copilot w/ GPT-5.6 Terra, etc.)
   - Include a brief description of how AI assistance was used
