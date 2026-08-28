@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.4.1.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.4.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,14 @@
       <small>Source: <a href="https://github.com/CCBR/MOSuite/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.2" id="mosuite-042">MOSuite 0.4.2<a class="anchor" aria-label="anchor" href="#mosuite-042"></a></h2>
+<ul><li>Align Volcano Plot threshold comparisons across labeling, coloring, and summary filtering, and use resolved column names for classification. (<a href="https://github.com/CCBR/MOSuite/issues/266" class="external-link">#266</a>, <a href="https://github.com/TJoshMeyer" class="external-link">@TJoshMeyer</a>)</li>
+<li>
+<code><a href="../reference/normalize_counts.html">normalize_counts()</a></code> now uses normalized counts instead of filtered counts for the correlation heatmap so it matches the PCA and histogram outputs. (<a href="https://github.com/CCBR/MOSuite/issues/269" class="external-link">#269</a>,
+<ol class="example" style="list-style-type: decimal"><li>
+</li></ol></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.1" id="mosuite-041">MOSuite 0.4.1<a class="anchor" aria-label="anchor" href="#mosuite-041"></a></h2>
 <ul><li>Fix how <code><a href="../reference/plot_volcano_summary.html">plot_volcano_summary()</a></code> &amp; <code>plot_volcano_enhanced</code> handle detecting column names for features, significance, and fold-change. <code><a href="../reference/plot_volcano_summary.html">plot_volcano_summary()</a></code> plot now uses <code><a href="../reference/plot_volcano_enhanced.html">plot_volcano_enhanced()</a></code> for rendering. (<a href="https://github.com/CCBR/MOSuite/issues/239" class="external-link">#239</a>, 1)</li>

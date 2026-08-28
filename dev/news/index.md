@@ -1,5 +1,17 @@
 # Changelog
 
+## MOSuite 0.4.2
+
+- Align Volcano Plot threshold comparisons across labeling, coloring,
+  and summary filtering, and use resolved column names for
+  classification. ([\#266](https://github.com/CCBR/MOSuite/issues/266),
+  [@TJoshMeyer](https://github.com/TJoshMeyer))
+- [`normalize_counts()`](https://ccbr.github.io/MOSuite/dev/reference/normalize_counts.md)
+  now uses normalized counts instead of filtered counts for the
+  correlation heatmap so it matches the PCA and histogram outputs.
+  ([\#269](https://github.com/CCBR/MOSuite/issues/269),
+  1.  
+
 ## MOSuite 0.4.1
 
 - Fix how
