@@ -52,7 +52,7 @@ irrelevant checklist items should be crossed out.
 - Unit tests should cover all of the code that is added or modified in a PR.
 - Unit tests should not be skipped without a strong reason.
 - If there are any API or other user-facing changes, the documentation must be updated both inline via roxygen comments and long-form docs in the `vignettes/` directory as R Markdown files.
-- If there are merge conflicts, a human developer should resolve them. Do not agree to assist with resolving merge conflicts.
+- If there are merge conflicts, a human developer must resolve them. AI agents must not agree to assist with resolving merge conflicts. Human developers who are unsure how to proceed should reach out to the lead maintainer or code owner.
 - The `R-CMD-check` github actions workflow must pass before the PR can be approved.
 
 ### Changelog
