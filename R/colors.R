@@ -1,5 +1,7 @@
 utils::globalVariables("mosuite_palette")
 
+`%||%` <- rlang::`%||%`
+
 #' Get random colors.
 #'
 #' Note: this function is not guaranteed to create a color blind friendly
@@ -112,6 +114,66 @@ get_colors_lst <- function(
   }
   names(color_lists) <- dat_colnames
   return(color_lists)
+}
+
+#' Get constructor-style default colors for a multiOmicDataSet column
+#'
+#' Returns stored colors from `moo@analyses$colors[[colname]]` when available;
+#' otherwise recreates the default colors that MOSuite constructors assigned
+#' before the object class moved to MOObject.
+#'
+#' @param moo `multiOmicDataSet` object
+#' @param colname column name in `moo@sample_meta`
+#' @param palette Character vector of colors to assign. Defaults to
+#'   `mosuite_palette`.
+#'
+#' @returns Named character vector of colors, or `NULL` when `colname` is not
+#'   present in `moo@sample_meta`.
+#' @keywords internal
+get_moo_default_colors <- function(
+  moo,
+  colname,
+  palette = mosuite_palette
+) {
+  if (!(colname %in% colnames(moo@sample_meta))) {
+    return(NULL)
+  }
+
+  default_colors <- get_colors_lst(
+    sample_metadata = moo@sample_meta,
+    palette = palette
+  )
+  color_values <- moo@analyses$colors[[colname]] %||% default_colors[[colname]]
+
+  return(color_values)
+}
+
+#' Get constructor-style default colors for multiple multiOmicDataSet columns
+#'
+#' Returns a named list of colors, one entry per requested column. Stored colors
+#' are preferred and missing entries fall back to constructor-style defaults.
+#'
+#' @inheritParams get_moo_default_colors
+#' @param colnames character vector of column names in `moo@sample_meta`
+#'
+#' @returns Named list of color vectors.
+#' @keywords internal
+get_moo_default_color_list <- function(
+  moo,
+  colnames,
+  palette = mosuite_palette
+) {
+  default_colors <- get_colors_lst(
+    sample_metadata = moo@sample_meta,
+    palette = palette
+  )
+
+  color_list <- lapply(colnames, function(colname) {
+    moo@analyses$colors[[colname]] %||% default_colors[[colname]]
+  })
+  names(color_list) <- colnames
+
+  return(color_list)
 }
 
 #' Get vector of colors for observations in one column of a data frame

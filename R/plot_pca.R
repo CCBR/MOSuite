@@ -82,12 +82,25 @@ S7::method(plot_pca, multiOmicDataSet) <- function(
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+  dots <- list(...)
+  if (is.null(dots$color_values)) {
+    group_colname <- dots$group_colname %||% "Group"
+    dots$color_values <- get_moo_default_colors(
+      moo = moo_counts,
+      colname = group_colname
+    )
+  }
   return(
-    plot_pca(
-      counts_dat,
-      sample_metadata = moo_counts@sample_meta,
-      principal_components = principal_components,
-      ...
+    do.call(
+      plot_pca,
+      c(
+        list(
+          moo_counts = counts_dat,
+          sample_metadata = moo_counts@sample_meta,
+          principal_components = principal_components
+        ),
+        dots
+      )
     )
   )
 }
@@ -234,7 +247,11 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
-  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
+  color_values <- color_values %||%
+    get_moo_default_colors(
+      moo = moo_counts,
+      colname = group_colname
+    )
   return(plot_pca_2d(
     counts_dat,
     sample_metadata = moo_counts@sample_meta,
@@ -551,7 +568,11 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
-  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
+  color_values <- color_values %||%
+    get_moo_default_colors(
+      moo = moo_counts,
+      colname = group_colname
+    )
   return(
     plot_pca_3d(
       counts_dat,

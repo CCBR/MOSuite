@@ -85,7 +85,11 @@ S7::method(plot_corr_heatmap, multiOmicDataSet) <- function(
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
-  color_values <- color_values %||% moo_counts@analyses$colors[group_colname]
+  color_values <- color_values %||%
+    get_moo_default_color_list(
+      moo = moo_counts,
+      colnames = group_colname
+    )
   return(plot_corr_heatmap(
     counts_dat,
     sample_metadata = moo_counts@sample_meta,
@@ -459,7 +463,11 @@ S7::method(plot_expr_heatmap, multiOmicDataSet) <- function(
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
-  color_values <- color_values %||% moo_counts@analyses$colors[group_columns]
+  color_values <- color_values %||%
+    get_moo_default_color_list(
+      moo = moo_counts,
+      colnames = group_columns
+    )
   heatmap_plot <- plot_expr_heatmap(
     counts_dat,
     count_type = count_type,

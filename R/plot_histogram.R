@@ -87,7 +87,11 @@ S7::method(plot_histogram, multiOmicDataSet) <- function(
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
-  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
+  color_values <- color_values %||%
+    get_moo_default_colors(
+      moo = moo_counts,
+      colname = group_colname
+    )
   return(plot_histogram(
     counts_dat,
     sample_metadata = moo_counts@sample_meta,
