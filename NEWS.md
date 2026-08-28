@@ -1,5 +1,7 @@
 ## MOSuite development version
 
+## MOSuite 0.4.2
+
 - Align Volcano Plot threshold comparisons across labeling, coloring, and summary filtering, and use resolved column names for classification. (#266, @TJoshMeyer)
 - `normalize_counts()` now uses normalized counts instead of filtered counts for
   the correlation heatmap so it matches the PCA and histogram outputs. (#269,
