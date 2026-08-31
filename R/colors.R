@@ -133,15 +133,11 @@ get_moo_default_colors <- function(
   colname,
   palette = mosuite_palette
 ) {
-  if (!(colname %in% colnames(moo@sample_meta))) {
-    return(NULL)
-  }
-
-  default_colors <- get_colors_lst(
-    sample_metadata = moo@sample_meta,
+  color_values <- get_moo_default_color_list(
+    moo = moo,
+    colnames = colname,
     palette = palette
-  )
-  color_values <- moo@analyses$colors[[colname]] %||% default_colors[[colname]]
+  )[[1]]
 
   return(color_values)
 }
@@ -167,6 +163,10 @@ get_moo_default_color_list <- function(
   )
 
   color_list <- lapply(colnames, function(colname) {
+    if (!(colname %in% colnames(moo@sample_meta))) {
+      return(NULL)
+    }
+
     moo@analyses$colors[[colname]] %||% default_colors[[colname]]
   })
   names(color_list) <- colnames
