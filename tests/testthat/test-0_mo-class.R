@@ -207,6 +207,7 @@ test_that("write_multiOmicDataSet_properties works", {
       "norm" = list("voom" = as.data.frame(nidap_norm_counts))
     )
   ) |>
+    set_default_colors() |>
     diff_counts(
       count_type = "filt",
       sub_count_type = NULL,
@@ -277,7 +278,37 @@ test_that("write_multiOmicDataSet_properties works", {
     "diff_B-C.csv"
   )))
   expect_true(file.exists(file.path(temp_dir, "analyses", "diff_filt.csv")))
-  expect_false(dir.exists(file.path(temp_dir, "analyses", "colors")))
+  expect_true(dir.exists(file.path(temp_dir, "analyses", "colors")))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Sample.rds"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Batch.rds"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Group.rds"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Label.rds"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "analyses",
+    "colors",
+    "colors_Replicate.rds"
+  )))
 })
 
 test_that("write_multiOmicDataSet and read_multiOmicDataSet work", {

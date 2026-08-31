@@ -105,6 +105,7 @@ Other moo methods:
 \code{\link[=plot_pca]{plot_pca()}},
 \code{\link[=plot_read_depth]{plot_read_depth()}},
 \code{\link[=run_deseq2]{run_deseq2()}},
-\code{\link[=set_color_pal]{set_color_pal()}}
+\code{\link[=set_color_pal]{set_color_pal()}},
+\code{\link[=set_default_colors]{set_default_colors()}}
 }
 \concept{moo methods}
