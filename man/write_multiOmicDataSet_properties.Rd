@@ -7,9 +7,9 @@
 write_multiOmicDataSet_properties(moo, output_dir = "moo")
 }
 \arguments{
-\item{moo}{multiOmicDataSet object to write.}
+\item{moo}{\code{multiOmicDataSet} object to write properties from}
 
-\item{output_dir}{output directory.}
+\item{output_dir}{Directory where the properties will be saved (default: "moo")}
 }
 \value{
 Invisibly returns the \code{output_dir} where the files were saved

@@ -7,9 +7,9 @@
 write_multiOmicDataSet(moo, filepath = "moo.rds")
 }
 \arguments{
-\item{moo}{multiOmicDataSet object to serialize.}
+\item{moo}{\link[MOObject]{multiOmicDataSet} object to serialize}
 
-\item{filepath}{output path for RDS file.}
+\item{filepath}{Path to the RDS file to write (default: "moo.rds")}
 }
 \value{
 Invisibly returns \code{filepath}

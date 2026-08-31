@@ -7,7 +7,7 @@
 read_multiOmicDataSet(filepath)
 }
 \arguments{
-\item{filepath}{path to an RDS file produced by \code{\link[MOObject:write_multiOmicDataSet]{write_multiOmicDataSet()}}.}
+\item{filepath}{Path to an RDS file produced by \code{\link[MOObject:write_multiOmicDataSet]{write_multiOmicDataSet()}}}
 }
 \value{
 \link{multiOmicDataSet}

@@ -7,8 +7,8 @@
 get_colors_lst(sample_metadata, palette = mosuite_palette)
 }
 \arguments{
-\item{sample_metadata}{sample metadata as a data frame. The first column is
-assumed to contain sample IDs that correspond to columns in raw counts.}
+\item{sample_metadata}{sample metadata as a data frame or tibble. The first column is assumed to contain the sample
+IDs which must correspond to column names in the raw counts.}
 
 \item{palette}{Character vector of colors to assign. Defaults to
 \code{mosuite_palette}.}

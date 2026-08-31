@@ -15,21 +15,22 @@ create_multiOmicDataSet_from_files(
 )
 }
 \arguments{
-\item{sample_meta_filepath}{path to sample metadata file.}
+\item{sample_meta_filepath}{path to text file with sample IDs and metadata for differential analysis.}
 
-\item{feature_counts_filepath}{path to feature counts file.}
+\item{feature_counts_filepath}{path to text file of expected feature counts (e.g. gene counts from RSEM).}
 
-\item{count_type}{type to assign the values of \code{counts_dat} to in \code{counts}.}
+\item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
 
-\item{sample_id_colname}{column in \code{sample_metadata} that contains sample IDs.
-If \code{NULL}, use the first column.}
+\item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} -
+first column in the sample metadata will be used.)}
 
-\item{feature_id_colname}{column in \code{counts_dat} that contains feature IDs.
-If \code{NULL}, use the first column.}
+\item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first
+column in the count data will be used.)}
 
-\item{delim}{delimiter for \code{readr::read_delim()}.}
+\item{delim}{Delimiter used in the input files. Any delimiter accepted by \code{readr::read_delim()} can be used.
+If the files are in CSV format, set \code{delim = ','}; for TSV format, set \code{delim = '\t'}.}
 
-\item{...}{additional arguments passed to \code{readr::read_delim()}.}
+\item{...}{additional arguments forwarded to \code{readr::read_delim()}.}
 }
 \value{
 \link{multiOmicDataSet} object

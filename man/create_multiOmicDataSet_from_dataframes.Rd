@@ -13,18 +13,18 @@ create_multiOmicDataSet_from_dataframes(
 )
 }
 \arguments{
-\item{sample_metadata}{sample metadata as a data frame. The first column is
-assumed to contain sample IDs that correspond to columns in raw counts.}
+\item{sample_metadata}{sample metadata as a data frame or tibble. The first column is assumed to contain the sample
+IDs which must correspond to column names in the raw counts.}
 
-\item{counts_dat}{data frame of feature counts.}
+\item{counts_dat}{data frame of feature counts (e.g. expected feature counts from RSEM).}
 
-\item{sample_id_colname}{column in \code{sample_metadata} that contains sample IDs.
-If \code{NULL}, use the first column.}
+\item{sample_id_colname}{name of the column in \code{sample_metadata} that contains the sample IDs. (Default: \code{NULL} -
+first column in the sample metadata will be used.)}
 
-\item{feature_id_colname}{column in \code{counts_dat} that contains feature IDs.
-If \code{NULL}, use the first column.}
+\item{feature_id_colname}{name of the column in \code{counts_dat} that contains feature/gene IDs. (Default: \code{NULL} - first
+column in the count data will be used.)}
 
-\item{count_type}{type to assign the values of \code{counts_dat} to in \code{counts}.}
+\item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
 }
 \value{
 \link{multiOmicDataSet} object
