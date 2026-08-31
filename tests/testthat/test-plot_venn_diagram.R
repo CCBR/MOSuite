@@ -32,16 +32,24 @@ test_that("plot_venn_diagram builds intersections directly from DEG MOO results"
   expect_true("(B-A ∩ C-A)" %in% result$Intersection)
 })
 
-test_that("plot_venn_diagram respects selected MOO contrasts", {
+test_that("plot_venn_diagram respects a subset of MOO contrasts", {
+  moo <- make_venn_test_moo()
+  moo@analyses$diff[["D-A"]] <- data.frame(
+    Gene = c("both", "da_only"),
+    logFC = c(2, 2),
+    adjpval = c(0.01, 0.01)
+  )
+
   result <- plot_venn_diagram(
-    make_venn_test_moo(),
-    select_contrasts = "B-A",
+    moo,
+    select_contrasts = c("B-A", "C-A"),
     print_plots = FALSE,
     save_plots = FALSE
   )
 
-  expect_setequal(result$Gene, c("both", "ba_only"))
-  expect_true(all(result$Intersection == "(B-A)"))
+  expect_setequal(result$Gene, c("both", "ba_only", "ca_only"))
+  expect_false("da_only" %in% result$Gene)
+  expect_false(any(grepl("D-A", result$Intersection, fixed = TRUE)))
 })
 
 test_that("plot_venn_diagram errors for missing contrast DEG columns", {
