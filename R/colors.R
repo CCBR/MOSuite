@@ -1,7 +1,5 @@
 utils::globalVariables("mosuite_palette")
 
-`%||%` <- rlang::`%||%`
-
 #' Get random colors.
 #'
 #' Note: this function is not guaranteed to create a color blind friendly
