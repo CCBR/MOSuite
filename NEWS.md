@@ -1,6 +1,6 @@
 ## MOSuite development version
 
-- The `multiOmicDataSet` class has been moved to a new package, `MOObject`. This change is backward-compatible.
+- The `multiOmicDataSet` class has been moved to a new package, `MOObject`. This change is backward-compatible. (#277, @kelly-sovacool)
 
 ## MOSuite 0.4.2
 
