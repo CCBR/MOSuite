@@ -82,6 +82,9 @@ S7::method(plot_pca, multiOmicDataSet) <- function(
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+
+  # when no explicit color_values are provided, use stored colors if present,
+  # otherwise recreate defaults from sample metadata.
   dots <- list(...)
   if (is.null(dots$color_values)) {
     group_colname <- dots$group_colname %||% "Group"
@@ -90,6 +93,9 @@ S7::method(plot_pca, multiOmicDataSet) <- function(
       colname = group_colname
     )
   }
+
+  # Forward all user-supplied arguments (including the injected color_values)
+  # to the data.frame dispatch without dropping or renaming any entries.
   return(
     do.call(
       plot_pca,

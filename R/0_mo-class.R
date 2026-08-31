@@ -1,4 +1,4 @@
-# MOSuite consumes the object layer from MOObject.
+# Re-exports and wrappers for MOObject::multiOmicDataSet and related functions
 
 #' @importFrom MOObject multiOmicDataSet
 #' @export

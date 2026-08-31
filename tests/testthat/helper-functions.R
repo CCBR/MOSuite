@@ -1,4 +1,5 @@
 equal_dfs <- function(x, y) {
+  # Ignore readr parse metadata so comparisons focus on data content.
   attr(x, "spec") <- NULL
   attr(x, "problems") <- NULL
   attr(y, "spec") <- NULL
