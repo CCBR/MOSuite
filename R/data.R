@@ -56,15 +56,6 @@
 #' @keywords data
 "nidap_deg_gene_list"
 
-#' Summarized differential expression analysis for input to venn diagram
-#' @keywords data
-"nidap_volcano_summary_dat"
-
-#' Output data from venn diagram.
-#' The result of running `plot_venn_diagram()` on `nidap_volcano_summary_dat`
-#' @keywords data
-"nidap_venn_diagram_dat"
-
 #' Default MOSuite color palette
 #'
 #' A character vector of 12 hex color codes used as the default palette throughout MOSuite plots.

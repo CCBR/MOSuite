@@ -160,6 +160,6 @@ dat_volcano_enhanced <- moo@analyses$diff |>
 ### Venn Diagram
 
 ```{r venn_diagram}
-venn_dat <- dat_volcano_summary |> plot_venn_diagram()
+venn_dat <- moo |> plot_venn_diagram()
 head(venn_dat)
 ```

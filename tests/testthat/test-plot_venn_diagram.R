@@ -1,56 +1,81 @@
-test_that("plot_venn_diagram works with defaults", {
-  expect_snapshot(
-    p <- plot_venn_diagram(
-      nidap_volcano_summary_dat,
-      print_plots = FALSE,
-      save_plots = TRUE
+make_venn_test_moo <- function() {
+  contrast_ba <- data.frame(
+    Gene = c("both", "ba_only", "p_boundary", "fc_boundary"),
+    logFC = c(2, 2, 2, 1),
+    adjpval = c(0.01, 0.01, 0.05, 0.01)
+  )
+  contrast_ca <- data.frame(
+    Gene = c("both", "ca_only", "p_boundary", "fc_boundary"),
+    logFC = c(-2, -2, -2, -1),
+    adjpval = c(0.01, 0.01, 0.05, 0.01)
+  )
+  return(
+    multiOmicDataSet(
+      sample_metadata = data.frame(Sample = "S1"),
+      anno_dat = data.frame(),
+      counts_lst = list(raw = data.frame(Gene = "seed", S1 = 1)),
+      analyses_lst = list(diff = list("B-A" = contrast_ba, "C-A" = contrast_ca))
     )
   )
-  expect_equal(
-    plot_venn_diagram(nidap_volcano_summary_dat),
-    as.data.frame(nidap_venn_diagram_dat)
+}
+
+test_that("plot_venn_diagram builds intersections directly from DEG MOO results", {
+  result <- plot_venn_diagram(
+    make_venn_test_moo(),
+    print_plots = FALSE,
+    save_plots = FALSE
   )
+
+  expect_s3_class(result, "data.frame")
+  expect_setequal(result$Gene, c("both", "ba_only", "ca_only"))
+  expect_false(any(result$Gene %in% c("p_boundary", "fc_boundary")))
+  expect_true("(B-A ∩ C-A)" %in% result$Intersection)
 })
-test_that("plot_venn_diagram raises condition for empty df", {
+
+test_that("plot_venn_diagram respects selected MOO contrasts", {
+  result <- plot_venn_diagram(
+    make_venn_test_moo(),
+    select_contrasts = "B-A",
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+
+  expect_setequal(result$Gene, c("both", "ba_only"))
+  expect_true(all(result$Intersection == "(B-A)"))
+})
+
+test_that("plot_venn_diagram errors for missing contrast DEG columns", {
   expect_error(
-    plot_venn_diagram(structure(
-      list(
-        GeneName = character(0),
-        Contrast = character(0),
-        FC = numeric(0),
-        logFC = numeric(0),
-        tstat = numeric(0),
-        pval = numeric(0),
-        adjpval = numeric(0)
-      ),
-      class = "data.frame",
-      row.names = integer(0)
-    )),
-    "Dataframe is empty"
-  )
-})
-
-test_that("intersection matrix assignment avoids recursive evaluation error", {
-  # This test demonstrates the fix for the recursive default argument reference error
-  # The error occurred with this pattern:
-  #   Intersection <- sapply(colnames(Intersection), function(x) Intersection[, x])
-  # The fix uses a temporary variable:
-  #   intersection_matrix <- Intersection;
-  #   Intersection <- sapply(colnames(intersection_matrix), ...)
-
-  # Call plot_venn_diagram directly to ensure the fix works in practice
-  expect_no_error({
-    result <- plot_venn_diagram(
-      nidap_volcano_summary_dat,
+    plot_venn_diagram(
+      make_venn_test_moo(),
+      signif_colname = "missing_column",
       print_plots = FALSE,
       save_plots = FALSE
-    )
-  })
+    ),
+    "Required DEG columns not found"
+  )
+})
 
-  # Verify the result has the expected structure
-  expect_s3_class(result, "data.frame")
-  expect_true("Gene" %in% colnames(result))
-  expect_true("Intersection" %in% colnames(result))
-  expect_true("Id" %in% colnames(result))
-  expect_true("Size" %in% colnames(result))
+test_that("plot_venn_diagram uses an Intersection plot for more than five contrasts", {
+  moo <- make_venn_test_moo()
+  moo@analyses$diff <- rep(moo@analyses$diff["B-A"], 6)
+  names(moo@analyses$diff) <- paste0("contrast_", seq_len(6))
+  for (contrast_name in names(moo@analyses$diff)) {
+    moo@analyses$diff[[contrast_name]] <- data.frame(
+      Gene = c("both", contrast_name),
+      logFC = c(2, 2),
+      adjpval = c(0.01, 0.01)
+    )
+  }
+
+  expect_no_error(
+    suppressWarnings(
+      plot_venn_diagram(
+        moo,
+        plot_type = "Venn diagram",
+        print_plots = FALSE,
+        save_plots = FALSE
+      )
+    )
+  )
 })

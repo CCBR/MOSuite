@@ -3,13 +3,15 @@
 \name{plot_venn_diagram}
 \alias{plot_venn_diagram}
 \alias{plot_venn_diagram,MOSuite::multiOmicDataSet-method}
-\alias{plot_venn_diagram,data.frame-method}
 \title{Plot a venn diagram, UpSet plot, or table of intersections}
 \usage{
 plot_venn_diagram(
   moo_diff_summary_dat,
   feature_id_colname = NULL,
-  contrasts_colname = "Contrast",
+  signif_colname = "adjpval",
+  signif_threshold = 0.05,
+  change_colname = "logFC",
+  change_threshold = 1,
   select_contrasts = c(),
   plot_type = "Venn diagram",
   intersection_ids = c(),
@@ -46,44 +48,10 @@ plot_venn_diagram(
 plot_venn_diagram(
   moo_diff_summary_dat,
   feature_id_colname = NULL,
-  contrasts_colname = "Contrast",
-  select_contrasts = c(),
-  plot_type = "Venn diagram",
-  intersection_ids = c(),
-  venn_force_unique = TRUE,
-  venn_numbers_format = "raw",
-  venn_significant_digits = 2,
-  venn_fill_colors = c("darkgoldenrod2", "darkolivegreen2", "mediumpurple3",
-    "darkorange2", "lightgreen"),
-  venn_fill_transparency = 0.2,
-  venn_border_colors = "fill colors",
-  venn_font_size_for_category_names = 3,
-  venn_category_names_distance = c(),
-  venn_category_names_position = c(),
-  venn_font_size_for_counts = 6,
-  venn_outer_margin = 0,
-  intersections_order = "degree",
-  display_empty_intersections = FALSE,
-  intersection_bar_color = "steelblue4",
-  intersection_point_size = 2.2,
-  intersection_line_width = 0.7,
-  table_font_size = 0.7,
-  table_content = "all intersections",
-  graphics_device = grDevices::png,
-  dpi = 300,
-  image_width = 4000,
-  image_height = 3000,
-  plot_filename = "venn_diagram.png",
-  print_plots = options::opt("print_plots"),
-  save_plots = options::opt("save_plots"),
-  plots_subdir = "diff"
-)
-
-## S7 method for class <data.frame>
-plot_venn_diagram(
-  moo_diff_summary_dat,
-  feature_id_colname = NULL,
-  contrasts_colname = "Contrast",
+  signif_colname = "adjpval",
+  signif_threshold = 0.05,
+  change_colname = "logFC",
+  change_threshold = 1,
   select_contrasts = c(),
   plot_type = "Venn diagram",
   intersection_ids = c(),
@@ -117,17 +85,21 @@ plot_venn_diagram(
 )
 }
 \arguments{
-\item{moo_diff_summary_dat}{Summarized differential expression analysis}
+\item{moo_diff_summary_dat}{multiOmicDataSet containing per-contrast differential expression results.}
 
-\item{feature_id_colname}{The column from the counts data containing the Feature IDs (Usually Gene or Protein ID).
-This is usually the first column of your input Counts Matrix. Only columns of Text type from your input Counts
-Matrix will be available to select for this parameter. (Default: \code{NULL} - first column in the counts matrix will be
-used.)}
+\item{feature_id_colname}{Feature identifier column in each contrast result. Defaults to the first column.}
 
-\item{contrasts_colname}{Name of the column in \code{moo_diff_summary_dat} that contains the contrast names (default:
-"Contrast")}
+\item{signif_colname}{Significance column in each contrast result. Default: \code{"adjpval"}.}
 
-\item{select_contrasts}{A vector of contrast names to select for the plot. If empty, all contrasts are used.}
+\item{signif_threshold}{Features pass the significance threshold when their value is less than this cutoff
+(exclusive). Default: \code{0.05}.}
+
+\item{change_colname}{Log fold-change column in each contrast result. Default: \code{"logFC"}.}
+
+\item{change_threshold}{Features pass the fold-change threshold when their absolute value is greater than this
+cutoff (exclusive). Default: \code{1.0}.}
+
+\item{select_contrasts}{Contrast names to include. If empty, all available contrasts are used.}
 
 \item{plot_type}{Type of plot to generate: "Venn diagram" or "Intersection plot". Default: "Venn diagram"}
 
@@ -171,14 +143,13 @@ same colors as \code{venn_fill_colors})}
 \item{table_font_size}{Font size for the table in the plot. Default: 3}
 
 \item{table_content}{Content of the table in the plot. Default: NULL}
-
 \item{graphics_device}{passed to \code{ggsave(device)}. Default: \code{grDevices::png}}
 
 \item{dpi}{dots-per-inch of the output image (see \code{ggsave()}) - only used if save_plots is TRUE}
 
-\item{image_width}{output image width in inches - only used if save_plots is TRUE. Default: 10}
+\item{image_width}{output image width in pixels - only used if save_plots is TRUE}
 
-\item{image_height}{output image height in inches - only used if save_plots is TRUE. Default: 10}
+\item{image_height}{output image height in pixels - only used if save_plots is TRUE}
 
 \item{plot_filename}{plot output filename - only used if save_plots is TRUE. When multiple comparisons are saved
 separately, the comparison name is appended before the file extension.}
@@ -194,10 +165,5 @@ Generates Venn diagram of intersections across a series of sets (e.g., intersect
 tested contrasts). This Venn diagram is available for up to five sets; Intersection plot is available for any number
 of sets. Specific sets can be selected for the visualizations and the returned dataset may include all (default) or
 specified intersections.
-An S7 generic with methods for \code{multiOmicDataSet} and \code{data.frame}.
+An S7 generic for \code{multiOmicDataSet} inputs.
 }
-\examples{
-plot_venn_diagram(nidap_volcano_summary_dat, print_plots = TRUE)
-
-}
-\keyword{plotters}
