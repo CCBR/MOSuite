@@ -1,5 +1,7 @@
 ## MOSuite development version
 
+- Harmonize Volcano Plot output dimensions as physical inches with 300 DPI defaults for Enhanced and Summary plots. (#274, @TJoshMeyer)
+
 ## MOSuite 0.4.2
 
 - Align Volcano Plot threshold comparisons across labeling, coloring, and summary filtering, and use resolved column names for classification. (#266, @TJoshMeyer)

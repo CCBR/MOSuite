@@ -176,9 +176,9 @@ same colors as \code{venn_fill_colors})}
 
 \item{dpi}{dots-per-inch of the output image (see \code{ggsave()}) - only used if save_plots is TRUE}
 
-\item{image_width}{output image width in pixels - only used if save_plots is TRUE}
+\item{image_width}{output image width in inches - only used if save_plots is TRUE. Default: 10}
 
-\item{image_height}{output image height in pixels - only used if save_plots is TRUE}
+\item{image_height}{output image height in inches - only used if save_plots is TRUE. Default: 10}
 
 \item{plot_filename}{plot output filename - only used if save_plots is TRUE. When multiple comparisons are saved
 separately, the comparison name is appended before the file extension.}
