@@ -8,7 +8,7 @@ MOObject::multiOmicDataSet
 #'
 #' @inheritParams MOObject::create_multiOmicDataSet_from_dataframes
 #' @seealso [MOObject::create_multiOmicDataSet_from_dataframes()]
-#' @returns [multiOmicDataSet] object
+#' @returns A `multiOmicDataSet` object.
 #' @export
 #' @family moo constructors
 create_multiOmicDataSet_from_dataframes <- function(
@@ -37,7 +37,7 @@ create_multiOmicDataSet_from_dataframes <- function(
 #'
 #' @inheritParams MOObject::create_multiOmicDataSet_from_files
 #' @seealso [MOObject::create_multiOmicDataSet_from_files()]
-#' @returns [multiOmicDataSet] object
+#' @returns A `multiOmicDataSet` object.
 #' @export
 #' @family moo constructors
 create_multiOmicDataSet_from_files <- function(
@@ -70,29 +70,38 @@ create_multiOmicDataSet_from_files <- function(
 #'
 #' @inheritParams MOObject::extract_counts
 #' @seealso [MOObject::extract_counts()]
+#' @returns A data frame of counts.
 #' @export
 extract_counts <- MOObject::extract_counts
 
-#' Write a multiOmicDataSet to disk as an RDS file
+#' Write a multiOmicDataSet to RDS
 #'
 #' @inheritParams MOObject::write_multiOmicDataSet
 #' @seealso [MOObject::write_multiOmicDataSet()]
-#' @return Invisibly returns `filepath`
+#' @returns Invisibly returns `filepath`.
 #' @export
 write_multiOmicDataSet <- MOObject::write_multiOmicDataSet
 
-#' Read a multiOmicDataSet from disk
+#' Read a multiOmicDataSet from RDS
 #'
 #' @inheritParams MOObject::read_multiOmicDataSet
 #' @seealso [MOObject::read_multiOmicDataSet()]
-#' @return [multiOmicDataSet]
+#' @returns A `multiOmicDataSet` object.
 #' @export
 read_multiOmicDataSet <- MOObject::read_multiOmicDataSet
 
-#' Write multiOmicDataSet properties to disk as CSV files
+#' Write multiOmicDataSet properties to individual files.
 #'
 #' @inheritParams MOObject::write_multiOmicDataSet_properties
 #' @seealso [MOObject::write_multiOmicDataSet_properties()]
-#' @return Invisibly returns the `output_dir` where the files were saved
+#' @returns Invisibly returns `output_dir`.
 #' @export
 write_multiOmicDataSet_properties <- MOObject::write_multiOmicDataSet_properties
+
+#' Read multiOmicDataSet properties from individual files.
+#'
+#' @inheritParams MOObject::read_multiOmicDataSet_properties
+#' @seealso [MOObject::read_multiOmicDataSet_properties()]
+#' @returns A `multiOmicDataSet` object.
+#' @export
+read_multiOmicDataSet_properties <- MOObject::read_multiOmicDataSet_properties

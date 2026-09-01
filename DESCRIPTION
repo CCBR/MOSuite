@@ -38,7 +38,7 @@ Imports:
     limma,
     matrixStats,
     methods,
-    MOObject,
+    MOObject (>= 0.5.0),
     options,
     plotly,
     purrr,
