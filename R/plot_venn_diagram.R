@@ -209,6 +209,14 @@ S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
 #' @param intersection_line_width Width of the lines in the intersection plot. Default: 0.5
 #' @param table_font_size Font size for the table in the plot. Default: 3
 #' @param table_content Content of the table in the plot. Default: NULL
+#' @param graphics_device Graphics device used to save the plot. Default: `grDevices::png`
+#' @param dpi Dots per inch of the saved plot. Default: 300
+#' @param image_width Saved plot width in pixels. Default: 4000
+#' @param image_height Saved plot height in pixels. Default: 3000
+#' @param plot_filename Filename for the saved plot. Default: `"venn_diagram.png"`
+#' @param print_plots Whether to print plots. Default: `options::opt("print_plots")`
+#' @param save_plots Whether to save plots. Default: `options::opt("save_plots")`
+#' @param plots_subdir Subdirectory for saved plots. Default: `"diff"`
 #'
 #' @keywords internal
 #'

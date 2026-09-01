@@ -82,6 +82,22 @@ same colors as \code{venn_fill_colors})}
 \item{table_font_size}{Font size for the table in the plot. Default: 3}
 
 \item{table_content}{Content of the table in the plot. Default: NULL}
+
+\item{graphics_device}{Graphics device used to save the plot. Default: \code{grDevices::png}}
+
+\item{dpi}{Dots per inch of the saved plot. Default: 300}
+
+\item{image_width}{Saved plot width in pixels. Default: 4000}
+
+\item{image_height}{Saved plot height in pixels. Default: 3000}
+
+\item{plot_filename}{Filename for the saved plot. Default: \code{"venn_diagram.png"}}
+
+\item{print_plots}{Whether to print plots. Default: \code{options::opt("print_plots")}}
+
+\item{save_plots}{Whether to save plots. Default: \code{options::opt("save_plots")}}
+
+\item{plots_subdir}{Subdirectory for saved plots. Default: \code{"diff"}}
 }
 \description{
 Build Venn or UpSet intersections from feature sets

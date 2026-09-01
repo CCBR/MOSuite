@@ -143,22 +143,22 @@ same colors as \code{venn_fill_colors})}
 \item{table_font_size}{Font size for the table in the plot. Default: 3}
 
 \item{table_content}{Content of the table in the plot. Default: NULL}
-\item{graphics_device}{passed to \code{ggsave(device)}. Default: \code{grDevices::png}}
 
-\item{dpi}{dots-per-inch of the output image (see \code{ggsave()}) - only used if save_plots is TRUE}
+\item{graphics_device}{Graphics device used to save the plot. Default: \code{grDevices::png}}
 
-\item{image_width}{output image width in pixels - only used if save_plots is TRUE}
+\item{dpi}{Dots per inch of the saved plot. Default: 300}
 
-\item{image_height}{output image height in pixels - only used if save_plots is TRUE}
+\item{image_width}{Saved plot width in pixels. Default: 4000}
 
-\item{plot_filename}{plot output filename - only used if save_plots is TRUE. When multiple comparisons are saved
-separately, the comparison name is appended before the file extension.}
+\item{image_height}{Saved plot height in pixels. Default: 3000}
 
-\item{print_plots}{Whether to print plots during analysis (Defaults to \code{FALSE}, overwritable using option 'moo_print_plots' or environment variable 'MOO_PRINT_PLOTS')}
+\item{plot_filename}{Filename for the saved plot. Default: \code{"venn_diagram.png"}}
 
-\item{save_plots}{Whether to save plots to files during analysis (Defaults to \code{TRUE}, overwritable using option 'moo_save_plots' or environment variable 'MOO_SAVE_PLOTS')}
+\item{print_plots}{Whether to print plots. Default: \code{options::opt("print_plots")}}
 
-\item{plots_subdir}{subdirectory in \verb{figures/} where plots will be saved if \code{save_plots} is \code{TRUE}}
+\item{save_plots}{Whether to save plots. Default: \code{options::opt("save_plots")}}
+
+\item{plots_subdir}{Subdirectory for saved plots. Default: \code{"diff"}}
 }
 \description{
 Generates Venn diagram of intersections across a series of sets (e.g., intersections of significant genes across
