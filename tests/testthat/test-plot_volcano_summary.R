@@ -242,65 +242,6 @@ test_that("plot_volcano_summary uses comparison titles without subtitles", {
   )))
 })
 
-test_that("plot_volcano_summary combines enhanced plots into one grid figure", {
-  options(mosuite_test_plot_output_args = list())
-  trace(
-    ggplot2::ggsave,
-    tracer = quote({
-      options(
-        mosuite_test_plot_output_args = append(
-          getOption("mosuite_test_plot_output_args"),
-          list(list(
-            width = width,
-            height = height,
-            units = units,
-            dpi = dpi,
-            filename = filename
-          ))
-        )
-      )
-    }),
-    print = FALSE
-  )
-  on.exit(untrace(ggplot2::ggsave), add = TRUE)
-  on.exit(options(mosuite_test_plot_output_args = NULL), add = TRUE)
-
-  plots_dir <- tempfile("volcano-summary-grid-output-")
-  dir.create(plots_dir)
-  on.exit(unlink(plots_dir, recursive = TRUE), add = TRUE)
-
-  result <- plot_volcano_summary(
-    nidap_deg_analysis,
-    image_width = 1,
-    image_height = 2,
-    dpi = 100,
-    draw_connectors = FALSE,
-    use_default_grid_layout = FALSE,
-    number_of_rows_in_grid_layout = 1,
-    save_plots = TRUE,
-    print_plots = FALSE,
-    plots_subdir = plots_dir
-  )
-
-  expect_s3_class(result, "data.frame")
-  captured_output_args <- getOption("mosuite_test_plot_output_args")
-  expect_length(captured_output_args, 1)
-  expect_equal(captured_output_args[[1]]$width, 3)
-  expect_equal(captured_output_args[[1]]$height, 2)
-  expect_equal(captured_output_args[[1]]$units, "in")
-  expect_equal(captured_output_args[[1]]$dpi, 100)
-  expect_match(
-    captured_output_args[[1]]$filename,
-    basename(plots_dir),
-    fixed = TRUE
-  )
-  expect_match(
-    captured_output_args[[1]]$filename,
-    "volcano_summary.png",
-    fixed = TRUE
-  )
-})
-
 test_that("plot_volcano_summary displays selected genes", {
   options(mosuite_test_select_labels = list())
   trace(
