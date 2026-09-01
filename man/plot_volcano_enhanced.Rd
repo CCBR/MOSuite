@@ -40,8 +40,8 @@ plot_volcano_enhanced(
   color_of_features_meeting_only_signif_threshold = "royalblue",
   color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
   graphics_device = grDevices::png,
-  image_width = 3000,
-  image_height = 3000,
+  image_width = 10,
+  image_height = 10,
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = NULL,
@@ -88,8 +88,8 @@ plot_volcano_enhanced(
   color_of_features_meeting_only_signif_threshold = "royalblue",
   color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
   graphics_device = grDevices::png,
-  image_width = 3000,
-  image_height = 3000,
+  image_width = 10,
+  image_height = 10,
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = NULL,
@@ -136,8 +136,8 @@ plot_volcano_enhanced(
   color_of_features_meeting_only_signif_threshold = "royalblue",
   color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
   graphics_device = grDevices::png,
-  image_width = 3000,
-  image_height = 3000,
+  image_width = 10,
+  image_height = 10,
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = NULL,
@@ -234,9 +234,9 @@ and fold change thresholds.}
 
 \item{graphics_device}{passed to \code{ggsave(device)}. Default: \code{grDevices::png}}
 
-\item{image_width}{output image width in pixels - only used if save_plots is TRUE}
+\item{image_width}{output image width in inches - only used if save_plots is TRUE. Default: 10}
 
-\item{image_height}{output image height in pixels - only used if save_plots is TRUE}
+\item{image_height}{output image height in inches - only used if save_plots is TRUE. Default: 10}
 
 \item{dpi}{dots-per-inch of the output image (see \code{ggsave()}) - only used if save_plots is TRUE}
 

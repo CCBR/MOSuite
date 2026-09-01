@@ -44,8 +44,8 @@ plot_volcano_enhanced <- S7::new_generic(
     color_of_features_meeting_only_signif_threshold = "royalblue",
     color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
     graphics_device = grDevices::png,
-    image_width = 3000,
-    image_height = 3000,
+    image_width = 10,
+    image_height = 10,
     dpi = 300,
     use_default_grid_layout = TRUE,
     number_of_rows_in_grid_layout = NULL,
@@ -95,8 +95,8 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
   color_of_features_meeting_only_signif_threshold = "royalblue",
   color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
   graphics_device = grDevices::png,
-  image_width = 3000,
-  image_height = 3000,
+  image_width = 10,
+  image_height = 10,
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = NULL,
@@ -210,8 +210,8 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
 #' @param color_for_features_meeting_pvalue_and_foldchange_thresholds Color of the features that meet both the p-value
 #'   and fold change thresholds.
 #' @param graphics_device passed to `ggsave(device)`. Default: `grDevices::png`
-#' @param image_width output image width in pixels - only used if save_plots is TRUE
-#' @param image_height output image height in pixels - only used if save_plots is TRUE
+#' @param image_width output image width in inches - only used if save_plots is TRUE. Default: 10
+#' @param image_height output image height in inches - only used if save_plots is TRUE. Default: 10
 #' @param dpi dots-per-inch of the output image (see `ggsave()`) - only used if save_plots is TRUE
 #' @param use_default_grid_layout Retained for compatibility. Grid layout is handled by `plot_volcano_summary()`.
 #' @param number_of_rows_in_grid_layout Retained for compatibility. Grid layout is handled by `plot_volcano_summary()`.
@@ -259,8 +259,8 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
   color_of_features_meeting_only_signif_threshold = "royalblue",
   color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
   graphics_device = grDevices::png,
-  image_width = 3000,
-  image_height = 3000,
+  image_width = 10,
+  image_height = 10,
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = NULL,
@@ -586,7 +586,7 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
       filename = file.path(plots_subdir, plot_output_filenames[[i]]),
       print_plots = print_plots,
       save_plots = save_plots,
-      units = "px",
+      units = "in",
       width = image_width,
       height = image_height,
       dpi = dpi,
