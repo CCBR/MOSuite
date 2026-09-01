@@ -2,7 +2,7 @@
 % Please edit documentation in R/0_mo-class.R
 \name{write_multiOmicDataSet_properties}
 \alias{write_multiOmicDataSet_properties}
-\title{Write multiOmicDataSet properties to disk as CSV files}
+\title{Write multiOmicDataSet properties to individual files.}
 \usage{
 write_multiOmicDataSet_properties(moo, output_dir = "moo")
 }
@@ -12,10 +12,10 @@ write_multiOmicDataSet_properties(moo, output_dir = "moo")
 \item{output_dir}{Directory where the properties will be saved (default: "moo")}
 }
 \value{
-Invisibly returns the \code{output_dir} where the files were saved
+Invisibly returns \code{output_dir}.
 }
 \description{
-Write multiOmicDataSet properties to disk as CSV files
+Write multiOmicDataSet properties to individual files.
 }
 \seealso{
 \code{\link[MOObject:write_multiOmicDataSet_properties]{MOObject::write_multiOmicDataSet_properties()}}

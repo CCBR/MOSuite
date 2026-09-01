@@ -27,7 +27,7 @@ column in the count data will be used.)}
 \item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
 }
 \value{
-\link{multiOmicDataSet} object
+A \code{multiOmicDataSet} object.
 }
 \description{
 Construct a multiOmicDataSet object from data frames

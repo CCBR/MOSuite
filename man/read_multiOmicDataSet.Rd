@@ -2,7 +2,7 @@
 % Please edit documentation in R/0_mo-class.R
 \name{read_multiOmicDataSet}
 \alias{read_multiOmicDataSet}
-\title{Read a multiOmicDataSet from disk}
+\title{Read a multiOmicDataSet from RDS}
 \usage{
 read_multiOmicDataSet(filepath)
 }
@@ -10,10 +10,10 @@ read_multiOmicDataSet(filepath)
 \item{filepath}{Path to an RDS file produced by \code{\link[MOObject:write_multiOmicDataSet]{write_multiOmicDataSet()}}}
 }
 \value{
-\link{multiOmicDataSet}
+A \code{multiOmicDataSet} object.
 }
 \description{
-Read a multiOmicDataSet from disk
+Read a multiOmicDataSet from RDS
 }
 \seealso{
 \code{\link[MOObject:read_multiOmicDataSet]{MOObject::read_multiOmicDataSet()}}

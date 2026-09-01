@@ -33,7 +33,7 @@ If the files are in CSV format, set \code{delim = ','}; for TSV format, set \cod
 \item{...}{additional arguments forwarded to \code{readr::read_delim()}.}
 }
 \value{
-\link{multiOmicDataSet} object
+A \code{multiOmicDataSet} object.
 }
 \description{
 Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).

@@ -14,6 +14,9 @@ extract_counts(moo, count_type, sub_count_type = NULL)
 \item{sub_count_type}{if \code{count_type} is a list, specify the sub count type within the list
 (\code{moo@counts[[count_type]][[sub_count_type]]}). (Default: \code{NULL})}
 }
+\value{
+A data frame of counts.
+}
 \description{
 Extract count data
 }
