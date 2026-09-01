@@ -243,8 +243,7 @@ test_that("write_multiOmicDataSet_properties works", {
     )
   moo_nidap@analyses$foo <- "bar"
 
-  temp_dir <- tempfile(pattern = "moo-write-")
-  on.exit(unlink(temp_dir, recursive = TRUE), add = TRUE)
+  temp_dir <- withr::local_tempdir(pattern = "moo-write-")
 
   expect_equal(write_multiOmicDataSet_properties(moo_nidap, temp_dir), temp_dir)
 
@@ -323,8 +322,7 @@ test_that("write_multiOmicDataSet and read_multiOmicDataSet work", {
   )
 
   # Write to temp file
-  temp_file <- tempfile(pattern = "moo-", fileext = ".rds")
-  on.exit(unlink(temp_file), add = TRUE)
+  temp_file <- withr::local_tempfile(pattern = "moo-", fileext = ".rds")
 
   # Test write returns filepath invisibly
   expect_equal(write_multiOmicDataSet(moo, temp_file), temp_file)
@@ -353,8 +351,7 @@ test_that("write_multiOmicDataSet validates input", {
 })
 
 test_that("read_multiOmicDataSet validates input", {
-  temp_file <- tempfile(fileext = ".rds")
-  on.exit(unlink(temp_file), add = TRUE)
+  temp_file <- withr::local_tempfile(fileext = ".rds")
 
   # Write a non-moo object
   readr::write_rds(list(a = 1, b = 2), temp_file)
@@ -377,8 +374,7 @@ test_that("write and read preserves complex moo with analyses", {
     )
   )
 
-  temp_file <- tempfile(pattern = "moo-complex-", fileext = ".rds")
-  on.exit(unlink(temp_file), add = TRUE)
+  temp_file <- withr::local_tempfile(pattern = "moo-complex-", fileext = ".rds")
 
   write_multiOmicDataSet(moo_complex, temp_file)
   moo_restored <- read_multiOmicDataSet(temp_file)
