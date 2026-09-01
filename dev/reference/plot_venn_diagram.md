@@ -245,11 +245,13 @@ plot_venn_diagram(
 
 - image_width:
 
-  output image width in pixels - only used if save_plots is TRUE
+  output image width in inches - only used if save_plots is TRUE.
+  Default: 10
 
 - image_height:
 
-  output image height in pixels - only used if save_plots is TRUE
+  output image height in inches - only used if save_plots is TRUE.
+  Default: 10
 
 - plot_filename:
 

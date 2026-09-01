@@ -94,8 +94,8 @@ An S7 generic with methods for <code>multiOmicDataSet</code> and <code>data.fram
 <span>  axis_tick_lab_size <span class="op">=</span> <span class="fl">16</span>,</span>
 <span>  add_deg_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FC"</span>, <span class="st">"logFC"</span>, <span class="st">"tstat"</span>, <span class="st">"pval"</span>, <span class="st">"adjpval"</span><span class="op">)</span>,</span>
 <span>  graphics_device <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span>,</span>
-<span>  image_width <span class="op">=</span> <span class="fl">15</span>,</span>
-<span>  image_height <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>  image_width <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  image_height <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  dpi <span class="op">=</span> <span class="fl">300</span>,</span>
 <span>  use_default_grid_layout <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  number_of_rows_in_grid_layout <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -143,8 +143,8 @@ An S7 generic with methods for <code>multiOmicDataSet</code> and <code>data.fram
 <span>  axis_tick_lab_size <span class="op">=</span> <span class="fl">16</span>,</span>
 <span>  add_deg_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FC"</span>, <span class="st">"logFC"</span>, <span class="st">"tstat"</span>, <span class="st">"pval"</span>, <span class="st">"adjpval"</span><span class="op">)</span>,</span>
 <span>  graphics_device <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span>,</span>
-<span>  image_width <span class="op">=</span> <span class="fl">15</span>,</span>
-<span>  image_height <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>  image_width <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  image_height <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  dpi <span class="op">=</span> <span class="fl">300</span>,</span>
 <span>  use_default_grid_layout <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  number_of_rows_in_grid_layout <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -192,8 +192,8 @@ An S7 generic with methods for <code>multiOmicDataSet</code> and <code>data.fram
 <span>  axis_tick_lab_size <span class="op">=</span> <span class="fl">16</span>,</span>
 <span>  add_deg_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FC"</span>, <span class="st">"logFC"</span>, <span class="st">"tstat"</span>, <span class="st">"pval"</span>, <span class="st">"adjpval"</span><span class="op">)</span>,</span>
 <span>  graphics_device <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span>,</span>
-<span>  image_width <span class="op">=</span> <span class="fl">15</span>,</span>
-<span>  image_height <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>  image_width <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  image_height <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  dpi <span class="op">=</span> <span class="fl">300</span>,</span>
 <span>  use_default_grid_layout <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  number_of_rows_in_grid_layout <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -377,11 +377,11 @@ output dataset. Default: <code>"FC", "logFC", "tstat", "pval", "adjpval"</code><
 
 
 <dt id="arg-image-width">image_width<a class="anchor" aria-label="anchor" href="#arg-image-width"></a></dt>
-<dd><p>output image width in pixels - only used if save_plots is TRUE</p></dd>
+<dd><p>output image width in inches - only used if save_plots is TRUE. Default: 10</p></dd>
 
 
 <dt id="arg-image-height">image_height<a class="anchor" aria-label="anchor" href="#arg-image-height"></a></dt>
-<dd><p>output image height in pixels - only used if save_plots is TRUE</p></dd>
+<dd><p>output image height in inches - only used if save_plots is TRUE. Default: 10</p></dd>
 
 
 <dt id="arg-dpi">dpi<a class="anchor" aria-label="anchor" href="#arg-dpi"></a></dt>
