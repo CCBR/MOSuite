@@ -11,11 +11,20 @@ read_multiOmicDataSet_properties(input_dir)
 \code{\link[MOObject:write_multiOmicDataSet_properties]{write_multiOmicDataSet_properties()}}.}
 }
 \value{
-A \code{multiOmicDataSet} object.
+A \link[MOObject:multiOmicDataSet]{MOObject::multiOmicDataSet} object.
 }
 \description{
-Read multiOmicDataSet properties from individual files.
+Re-exported from \link[MOObject:read_multiOmicDataSet_properties]{MOObject::read_multiOmicDataSet_properties} -- view the MOObject docs for details.
 }
 \seealso{
 \code{\link[MOObject:read_multiOmicDataSet_properties]{MOObject::read_multiOmicDataSet_properties()}}
+
+Other moo IO:
+\code{\link[=create_multiOmicDataSet_from_dataframes]{create_multiOmicDataSet_from_dataframes()}},
+\code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}},
+\code{\link[=multiOmicDataSet]{multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet]{read_multiOmicDataSet()}},
+\code{\link[=write_multiOmicDataSet]{write_multiOmicDataSet()}},
+\code{\link[=write_multiOmicDataSet_properties]{write_multiOmicDataSet_properties()}}
 }
+\concept{moo IO}

@@ -15,8 +15,17 @@ write_multiOmicDataSet(moo, filepath = "moo.rds")
 Invisibly returns \code{filepath}.
 }
 \description{
-Write a multiOmicDataSet to RDS
+Re-exported from \link[MOObject:write_multiOmicDataSet]{MOObject::write_multiOmicDataSet} -- view the MOObject docs for details.
 }
 \seealso{
 \code{\link[MOObject:write_multiOmicDataSet]{MOObject::write_multiOmicDataSet()}}
+
+Other moo IO:
+\code{\link[=create_multiOmicDataSet_from_dataframes]{create_multiOmicDataSet_from_dataframes()}},
+\code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}},
+\code{\link[=multiOmicDataSet]{multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet]{read_multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet_properties]{read_multiOmicDataSet_properties()}},
+\code{\link[=write_multiOmicDataSet_properties]{write_multiOmicDataSet_properties()}}
 }
+\concept{moo IO}

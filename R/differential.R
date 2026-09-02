@@ -19,6 +19,7 @@
 #' @export
 #'
 #' @family moo methods
+#' @family main analysis
 #'
 #' @examples
 #' moo <- multiOmicDataSet(
@@ -601,6 +602,7 @@ plot_mean_variance <- function(voom_elist) {
 #' @param plots_subdir subdirectory in where plots will be saved if `save_plots` is `TRUE`
 #'
 #' @family moo methods
+#' @family main analysis
 #'
 #' @export
 #'

@@ -55,6 +55,7 @@
 #'   clean_raw_counts(sample_id_colname = "Sample", feature_id_colname = "GeneName")
 #' head(moo@counts$clean)
 #' @family moo methods
+#' @family main analysis
 clean_raw_counts <- function(
   moo,
   count_type = "raw",

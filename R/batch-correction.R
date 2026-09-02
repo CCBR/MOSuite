@@ -45,6 +45,7 @@
 #' head(moo@counts[["batch"]])
 #'
 #' @family moo methods
+#' @family main analysis
 batch_correct_counts <- function(
   moo,
   count_type = "norm",

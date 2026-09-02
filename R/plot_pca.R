@@ -188,6 +188,7 @@ build_pca_hover_text <- function(
 #' @rdname plot_pca_2d
 #' @aliases plot_pca_2d
 #' @export
+#' @family moo methods
 plot_pca_2d <- S7::new_generic(
   "plot_pca_2d",
   "moo_counts",
@@ -517,6 +518,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
 #' @aliases plot_pca_3d
 #' @param ... additional arguments passed to methods
 #' @export
+#' @family moo methods
 plot_pca_3d <- S7::new_generic(
   "plot_pca_3d",
   "moo_counts",

@@ -26,6 +26,7 @@
 #'   )
 #' head(moo@counts[["norm"]][["voom"]])
 #' @family moo methods
+#' @family main analysis
 normalize_counts <- function(
   moo,
   count_type = "filt",

@@ -27,15 +27,20 @@ column in the count data will be used.)}
 \item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
 }
 \value{
-A \code{multiOmicDataSet} object.
+A \link[MOObject:multiOmicDataSet]{MOObject::multiOmicDataSet} object.
 }
 \description{
-Construct a multiOmicDataSet object from data frames
+Wraps \code{\link[MOObject:create_multiOmicDataSet_from_dataframes]{MOObject::create_multiOmicDataSet_from_dataframes()}} to add a "colors" analysis if it is not already present.
 }
 \seealso{
 \code{\link[MOObject:create_multiOmicDataSet_from_dataframes]{MOObject::create_multiOmicDataSet_from_dataframes()}}
 
-Other moo constructors:
-\code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}}
+Other moo IO:
+\code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}},
+\code{\link[=multiOmicDataSet]{multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet]{read_multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet_properties]{read_multiOmicDataSet_properties()}},
+\code{\link[=write_multiOmicDataSet]{write_multiOmicDataSet()}},
+\code{\link[=write_multiOmicDataSet_properties]{write_multiOmicDataSet_properties()}}
 }
-\concept{moo constructors}
+\concept{moo IO}

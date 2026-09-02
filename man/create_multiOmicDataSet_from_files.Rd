@@ -33,15 +33,20 @@ If the files are in CSV format, set \code{delim = ','}; for TSV format, set \cod
 \item{...}{additional arguments forwarded to \code{readr::read_delim()}.}
 }
 \value{
-A \code{multiOmicDataSet} object.
+A \link[MOObject:multiOmicDataSet]{MOObject::multiOmicDataSet} object.
 }
 \description{
-Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).
+Wraps \code{\link[MOObject:create_multiOmicDataSet_from_files]{MOObject::create_multiOmicDataSet_from_files()}} to add a "colors" analysis if it is not already present.
 }
 \seealso{
 \code{\link[MOObject:create_multiOmicDataSet_from_files]{MOObject::create_multiOmicDataSet_from_files()}}
 
-Other moo constructors:
-\code{\link[=create_multiOmicDataSet_from_dataframes]{create_multiOmicDataSet_from_dataframes()}}
+Other moo IO:
+\code{\link[=create_multiOmicDataSet_from_dataframes]{create_multiOmicDataSet_from_dataframes()}},
+\code{\link[=multiOmicDataSet]{multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet]{read_multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet_properties]{read_multiOmicDataSet_properties()}},
+\code{\link[=write_multiOmicDataSet]{write_multiOmicDataSet()}},
+\code{\link[=write_multiOmicDataSet_properties]{write_multiOmicDataSet_properties()}}
 }
-\concept{moo constructors}
+\concept{moo IO}

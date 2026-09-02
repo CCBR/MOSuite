@@ -396,8 +396,10 @@ display_palette <- function(palette = mosuite_palette) {
     idx = factor(seq_len(n))
   )
 
-  p <- plot_palette(df) +
-    ggplot2::labs(title = "mosuite_palette")
+  p <- plot_palette(df)
+  if (all(palette == mosuite_palette)) {
+    p <- p + ggplot2::labs(title = "MOSuite palette")
+  }
 
   return(p)
 }

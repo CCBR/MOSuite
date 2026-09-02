@@ -51,7 +51,14 @@ export(write_multiOmicDataSet)
 export(write_multiOmicDataSet_properties)
 if (getRversion() < "4.3.0") importFrom("S7", "@")
 importFrom(DESeq2,DESeq)
-importFrom(MOObject,multiOmicDataSet)
+importFrom(MOObject,
+  extract_counts,
+  multiOmicDataSet,
+  read_multiOmicDataSet,
+  read_multiOmicDataSet_properties,
+  write_multiOmicDataSet,
+  write_multiOmicDataSet_properties
+)
 importFrom(dendextend,rotate)
 importFrom(matrixStats,rowVars)
 importFrom(rlang,

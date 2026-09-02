@@ -6,6 +6,8 @@
 #' @return multiOmicDataSet with cpm-transformed counts
 #' @export
 #'
+#' @family moo methods
+#'
 #' @examples
 #' sample_meta <- data.frame(
 #'   sample_id = c("KO_S3", "KO_S4", "WT_S1", "WT_S2"),

@@ -7,7 +7,7 @@
 write_multiOmicDataSet_properties(moo, output_dir = "moo")
 }
 \arguments{
-\item{moo}{\code{multiOmicDataSet} object to write properties from}
+\item{moo}{\link[MOObject]{multiOmicDataSet} object to write properties from}
 
 \item{output_dir}{Directory where the properties will be saved (default: "moo")}
 }
@@ -15,8 +15,17 @@ write_multiOmicDataSet_properties(moo, output_dir = "moo")
 Invisibly returns \code{output_dir}.
 }
 \description{
-Write multiOmicDataSet properties to individual files.
+Re-exported from \link[MOObject:write_multiOmicDataSet_properties]{MOObject::write_multiOmicDataSet_properties} -- view the MOObject docs for details.
 }
 \seealso{
 \code{\link[MOObject:write_multiOmicDataSet_properties]{MOObject::write_multiOmicDataSet_properties()}}
+
+Other moo IO:
+\code{\link[=create_multiOmicDataSet_from_dataframes]{create_multiOmicDataSet_from_dataframes()}},
+\code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}},
+\code{\link[=multiOmicDataSet]{multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet]{read_multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet_properties]{read_multiOmicDataSet_properties()}},
+\code{\link[=write_multiOmicDataSet]{write_multiOmicDataSet()}}
 }
+\concept{moo IO}

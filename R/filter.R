@@ -111,6 +111,7 @@
 #' head(moo@counts$filt)
 #'
 #' @family moo methods
+#' @family main analysis
 filter_counts <- function(
   moo,
   count_type = "clean",

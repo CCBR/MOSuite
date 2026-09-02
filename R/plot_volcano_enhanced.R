@@ -7,6 +7,7 @@
 #' @param moo_diff multiOmicDataSet or differential expression analysis result data frame.
 #'
 #' @export
+#' @family moo methods
 plot_volcano_enhanced <- S7::new_generic(
   "plot_volcano_enhanced",
   "moo_diff",
