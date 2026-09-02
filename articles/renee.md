@@ -2,6 +2,8 @@
 
 ``` r
 library(MOSuite)
+#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -137,7 +139,7 @@ moo <- moo |>
 #> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
 #> * filtering differential features
 #> 
-#> Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
+#> Total number of genes selected with adjpval < 0.05 and | logFC | > 1 is sum(selgenes)
 #> 
 #> Saving 7.29 x 4.51 in image
 
@@ -155,7 +157,7 @@ moo@counts$norm$voom |> head()
 
 ``` r
 str(moo)
-#> <MOSuite::multiOmicDataSet>
+#> <MOObject::multiOmicDataSet>
 #>  @ sample_meta: spc_tbl_ [4 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
 #>  $ sample_id: chr [1:4] "KO_S3" "KO_S4" "WT_S1" "WT_S2"
 #>  $ condition: chr [1:4] "knockout" "knockout" "wildtype" "wildtype"
@@ -165,9 +167,6 @@ str(moo)
 #>   ..   condition = col_character()
 #>   .. )
 #>  - attr(*, "problems")=<externalptr> 
-#>  @ annotation : tibble [58,929 × 2] (S3: tbl_df/tbl/data.frame)
-#>  $ gene_id : chr [1:58929] "ENSG00000121410.11" "ENSG00000268895.5" "ENSG00000148584.15" "ENSG00000175899.14" ...
-#>  $ GeneName: chr [1:58929] "A1BG" "A1BG-AS1" "A1CF" "A2M" ...
 #>  @ counts     :List of 4
 #>  .. $ raw  : tibble [58,929 × 5] (S3: tbl_df/tbl/data.frame)
 #>  ..  ..$ gene_id: chr [1:58929] "ENSG00000121410.11" "ENSG00000268895.5" "ENSG00000148584.15" "ENSG00000175899.14" ...
@@ -194,6 +193,9 @@ str(moo)
 #>  ..  .. ..$ KO_S4  : num [1:291] 12.35 12.77 8.82 9.61 8.82 ...
 #>  ..  .. ..$ WT_S1  : num [1:291] 8.82 12.35 8.82 8.82 8.82 ...
 #>  ..  .. ..$ WT_S2  : num [1:291] 10 12.24 8.82 8.82 8.82 ...
+#>  @ annotation : tibble [58,929 × 2] (S3: tbl_df/tbl/data.frame)
+#>  $ gene_id : chr [1:58929] "ENSG00000121410.11" "ENSG00000268895.5" "ENSG00000148584.15" "ENSG00000175899.14" ...
+#>  $ GeneName: chr [1:58929] "A1BG" "A1BG-AS1" "A1CF" "A2M" ...
 #>  @ analyses   :List of 3
 #>  .. $ colors   :List of 2
 #>  ..  ..$ sample_id: Named chr [1:4] "#5954d6" "#e1562c" "#b80058" "#00c6f8"

@@ -60,8 +60,8 @@ filter_diff(
 
 - significance_cutoff:
 
-  Features will only be kept if their `significance_column` is less then
-  this cutoff threshold
+  Features will only be kept if their `significance_column` is less than
+  the cutoff threshold (exclusive)
 
 - change_column:
 
@@ -70,7 +70,7 @@ filter_diff(
 - change_cutoff:
 
   Features will only be kept if the absolute value of their
-  `change_column` is greater than or equal to this cutoff threshold
+  `change_column` is greater than the cutoff threshold (exclusive)
 
 - filtering_mode:
 
@@ -172,17 +172,32 @@ filter_diff(
 
 Other moo methods:
 [`batch_correct_counts()`](https://ccbr.github.io/MOSuite/reference/batch_correct_counts.md),
+[`calc_cpm()`](https://ccbr.github.io/MOSuite/reference/calc_cpm.md),
 [`clean_raw_counts()`](https://ccbr.github.io/MOSuite/reference/clean_raw_counts.md),
 [`diff_counts()`](https://ccbr.github.io/MOSuite/reference/diff_counts.md),
+[`extract_counts()`](https://ccbr.github.io/MOSuite/reference/extract_counts.md),
 [`filter_counts()`](https://ccbr.github.io/MOSuite/reference/filter_counts.md),
 [`normalize_counts()`](https://ccbr.github.io/MOSuite/reference/normalize_counts.md),
 [`plot_corr_heatmap()`](https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap.md),
 [`plot_expr_heatmap()`](https://ccbr.github.io/MOSuite/reference/plot_expr_heatmap.md),
 [`plot_histogram()`](https://ccbr.github.io/MOSuite/reference/plot_histogram.md),
 [`plot_pca()`](https://ccbr.github.io/MOSuite/reference/plot_pca.md),
+[`plot_pca_2d()`](https://ccbr.github.io/MOSuite/reference/plot_pca_2d.md),
+[`plot_pca_3d()`](https://ccbr.github.io/MOSuite/reference/plot_pca_3d.md),
 [`plot_read_depth()`](https://ccbr.github.io/MOSuite/reference/plot_read_depth.md),
+[`plot_venn_diagram()`](https://ccbr.github.io/MOSuite/reference/plot_venn_diagram.md),
+[`plot_volcano_enhanced()`](https://ccbr.github.io/MOSuite/reference/plot_volcano_enhanced.md),
+[`plot_volcano_summary()`](https://ccbr.github.io/MOSuite/reference/plot_volcano_summary.md),
 [`run_deseq2()`](https://ccbr.github.io/MOSuite/reference/run_deseq2.md),
-[`set_color_pal()`](https://ccbr.github.io/MOSuite/reference/set_color_pal.md)
+[`set_color_pal()`](https://ccbr.github.io/MOSuite/reference/set_color_pal.md),
+[`set_default_colors()`](https://ccbr.github.io/MOSuite/reference/set_default_colors.md)
+
+Other main analysis:
+[`batch_correct_counts()`](https://ccbr.github.io/MOSuite/reference/batch_correct_counts.md),
+[`clean_raw_counts()`](https://ccbr.github.io/MOSuite/reference/clean_raw_counts.md),
+[`diff_counts()`](https://ccbr.github.io/MOSuite/reference/diff_counts.md),
+[`filter_counts()`](https://ccbr.github.io/MOSuite/reference/filter_counts.md),
+[`normalize_counts()`](https://ccbr.github.io/MOSuite/reference/normalize_counts.md)
 
 ## Examples
 
@@ -215,7 +230,7 @@ moo <- multiOmicDataSet(
 #> Joining with `by = join_by(Gene)`
 #> Joining with `by = join_by(Gene)`
 #> * filtering differential features
-#> Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is sum(selgenes)
+#> Total number of genes selected with adjpval < 0.05 and | logFC | > 1 is sum(selgenes)
 #> Saving 6.67 x 6.67 in image
 head(moo@analyses$diff_filt)
 #>            Gene B-A_FC B-A_logFC B-A_tstat B-A_pval B-A_adjpval C-A_FC

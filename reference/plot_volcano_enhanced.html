@@ -9,7 +9,7 @@ An S7 generic with methods for multiOmicDataSet and data.frame."><meta property=
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@ An S7 generic with methods for multiOmicDataSet and data.frame."><meta property=
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Enhanced Volcano Plot</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.4.1/R/plot_volcano_enhanced.R" class="external-link"><code>R/plot_volcano_enhanced.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.5.0/R/plot_volcano_enhanced.R" class="external-link"><code>R/plot_volcano_enhanced.R</code></a></small>
       <div class="d-none name"><code>plot_volcano_enhanced.Rd</code></div>
     </div>
 
@@ -82,8 +82,8 @@ An S7 generic with methods for <code>multiOmicDataSet</code> and <code>data.fram
 <span>  color_of_features_meeting_only_signif_threshold <span class="op">=</span> <span class="st">"royalblue"</span>,</span>
 <span>  color_for_features_meeting_pvalue_and_foldchange_thresholds <span class="op">=</span> <span class="st">"red2"</span>,</span>
 <span>  graphics_device <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span>,</span>
-<span>  image_width <span class="op">=</span> <span class="fl">3000</span>,</span>
-<span>  image_height <span class="op">=</span> <span class="fl">3000</span>,</span>
+<span>  image_width <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  image_height <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  dpi <span class="op">=</span> <span class="fl">300</span>,</span>
 <span>  use_default_grid_layout <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  number_of_rows_in_grid_layout <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -95,7 +95,7 @@ An S7 generic with methods for <code>multiOmicDataSet</code> and <code>data.fram
 <span>  plot_filename <span class="op">=</span> <span class="st">"volcano_enhanced.png"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## S7 method for class &lt;MOSuite::multiOmicDataSet&gt;</span></span>
+<span><span class="co">## S7 method for class &lt;MOObject::multiOmicDataSet&gt;</span></span>
 <span><span class="fu">plot_volcano_enhanced</span><span class="op">(</span></span>
 <span>  <span class="va">moo_diff</span>,</span>
 <span>  feature_id_colname <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -130,8 +130,8 @@ An S7 generic with methods for <code>multiOmicDataSet</code> and <code>data.fram
 <span>  color_of_features_meeting_only_signif_threshold <span class="op">=</span> <span class="st">"royalblue"</span>,</span>
 <span>  color_for_features_meeting_pvalue_and_foldchange_thresholds <span class="op">=</span> <span class="st">"red2"</span>,</span>
 <span>  graphics_device <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span>,</span>
-<span>  image_width <span class="op">=</span> <span class="fl">3000</span>,</span>
-<span>  image_height <span class="op">=</span> <span class="fl">3000</span>,</span>
+<span>  image_width <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  image_height <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  dpi <span class="op">=</span> <span class="fl">300</span>,</span>
 <span>  use_default_grid_layout <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  number_of_rows_in_grid_layout <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -178,8 +178,8 @@ An S7 generic with methods for <code>multiOmicDataSet</code> and <code>data.fram
 <span>  color_of_features_meeting_only_signif_threshold <span class="op">=</span> <span class="st">"royalblue"</span>,</span>
 <span>  color_for_features_meeting_pvalue_and_foldchange_thresholds <span class="op">=</span> <span class="st">"red2"</span>,</span>
 <span>  graphics_device <span class="op">=</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span>,</span>
-<span>  image_width <span class="op">=</span> <span class="fl">3000</span>,</span>
-<span>  image_height <span class="op">=</span> <span class="fl">3000</span>,</span>
+<span>  image_width <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  image_height <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  dpi <span class="op">=</span> <span class="fl">300</span>,</span>
 <span>  use_default_grid_layout <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  number_of_rows_in_grid_layout <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -221,12 +221,14 @@ then <code>_pval</code>, for each contrast in <code>change_colname</code>.</p></
 
 
 <dt id="arg-signif-threshold">signif_threshold<a class="anchor" aria-label="anchor" href="#arg-signif-threshold"></a></dt>
-<dd><p>Numeric significance threshold (p-value or adjusted p-value cutoff). Default: 0.05</p></dd>
+<dd><p>Numeric significance threshold (p-value or adjusted p-value cutoff). Features meet this
+threshold when their value is less than the cutoff (exclusive). Default: 0.05</p></dd>
 
 
 <dt id="arg-change-threshold">change_threshold<a class="anchor" aria-label="anchor" href="#arg-change-threshold"></a></dt>
 <dd><p>Numeric value specifying the fold change cutoff for significance (i.e. filters on
-<code>change_colname</code>)</p></dd>
+<code>change_colname</code>). Features meet this threshold when the absolute value is greater than the cutoff (exclusive).
+Default: 1.0</p></dd>
 
 
 <dt id="arg-value-to-sort-the-output-dataset">value_to_sort_the_output_dataset<a class="anchor" aria-label="anchor" href="#arg-value-to-sort-the-output-dataset"></a></dt>
@@ -345,11 +347,11 @@ and fold change thresholds.</p></dd>
 
 
 <dt id="arg-image-width">image_width<a class="anchor" aria-label="anchor" href="#arg-image-width"></a></dt>
-<dd><p>output image width in pixels - only used if save_plots is TRUE</p></dd>
+<dd><p>output image width in inches - only used if save_plots is TRUE. Default: 10</p></dd>
 
 
 <dt id="arg-image-height">image_height<a class="anchor" aria-label="anchor" href="#arg-image-height"></a></dt>
-<dd><p>output image height in pixels - only used if save_plots is TRUE</p></dd>
+<dd><p>output image height in inches - only used if save_plots is TRUE. Default: 10</p></dd>
 
 
 <dt id="arg-dpi">dpi<a class="anchor" aria-label="anchor" href="#arg-dpi"></a></dt>
@@ -391,6 +393,30 @@ is set to <code>TRUE</code>. Default is <code>FALSE</code>.</p></dd>
 separately, the comparison name is appended before the file extension.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other moo methods:
+<code><a href="batch_correct_counts.html">batch_correct_counts()</a></code>,
+<code><a href="calc_cpm.html">calc_cpm()</a></code>,
+<code><a href="clean_raw_counts.html">clean_raw_counts()</a></code>,
+<code><a href="diff_counts.html">diff_counts()</a></code>,
+<code><a href="extract_counts.html">extract_counts()</a></code>,
+<code><a href="filter_counts.html">filter_counts()</a></code>,
+<code><a href="filter_diff.html">filter_diff()</a></code>,
+<code><a href="normalize_counts.html">normalize_counts()</a></code>,
+<code><a href="plot_corr_heatmap.html">plot_corr_heatmap()</a></code>,
+<code><a href="plot_expr_heatmap.html">plot_expr_heatmap()</a></code>,
+<code><a href="plot_histogram.html">plot_histogram()</a></code>,
+<code><a href="plot_pca.html">plot_pca()</a></code>,
+<code><a href="plot_pca_2d.html">plot_pca_2d()</a></code>,
+<code><a href="plot_pca_3d.html">plot_pca_3d()</a></code>,
+<code><a href="plot_read_depth.html">plot_read_depth()</a></code>,
+<code><a href="plot_venn_diagram.html">plot_venn_diagram()</a></code>,
+<code><a href="plot_volcano_summary.html">plot_volcano_summary()</a></code>,
+<code><a href="run_deseq2.html">run_deseq2()</a></code>,
+<code><a href="set_color_pal.html">set_color_pal()</a></code>,
+<code><a href="set_default_colors.html">set_default_colors()</a></code></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

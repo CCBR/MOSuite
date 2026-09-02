@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,135 +38,7 @@
     </div>
 
     <div class="section level2">
-      <h2 id="multiomicdataset">multiOmicDataSet<a class="anchor" aria-label="anchor" href="#multiomicdataset"></a></h2>
-
-
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="create_multiOmicDataSet_from_dataframes.html">create_multiOmicDataSet_from_dataframes()</a></code>
-
-        </dt>
-        <dd>Construct a multiOmicDataSet object from data frames</dd>
-
-        <dt>
-
-          <code><a href="create_multiOmicDataSet_from_files.html">create_multiOmicDataSet_from_files()</a></code>
-
-        </dt>
-        <dd>Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).</dd>
-
-        <dt>
-
-          <code><a href="extract_counts.html">extract_counts()</a></code>
-
-        </dt>
-        <dd>Extract count data</dd>
-
-        <dt>
-
-          <code><a href="multiOmicDataSet.html">multiOmicDataSet()</a></code>
-
-        </dt>
-        <dd>multiOmicDataSet class</dd>
-
-        <dt>
-
-          <code><a href="plot_corr_heatmap-multiOmicDataSet.html">plot_corr_heatmap,MOSuite::multiOmicDataSet-method</a></code> <code><a href="plot_corr_heatmap-multiOmicDataSet.html">plot_corr_heatmap.multiOmicDataSet</a></code>
-
-        </dt>
-        <dd>Plot correlation heatmap for multiOmicDataSet</dd>
-
-        <dt>
-
-          <code><a href="plot_expr_heatmap.html">plot_expr_heatmap()</a></code>
-
-        </dt>
-        <dd>Plot expression heatmap</dd>
-
-        <dt>
-
-          <code><a href="plot_histogram.multiOmicDataSet.html">plot_histogram,MOSuite::multiOmicDataSet-method</a></code> <code><a href="plot_histogram.multiOmicDataSet.html">plot_histogram.multiOmicDataSet</a></code>
-
-        </dt>
-        <dd>Plot histogram for multiOmicDataSet</dd>
-
-        <dt>
-
-          <code><a href="plot_pca.multiOmicDataSet.html">plot_pca,MOSuite::multiOmicDataSet-method</a></code> <code><a href="plot_pca.multiOmicDataSet.html">plot_pca.multiOmicDataSet</a></code>
-
-        </dt>
-        <dd>Plot 2D or 3D PCA for multiOmicDataset</dd>
-
-        <dt>
-
-          <code><a href="plot_pca_2d.html">plot_pca_2d()</a></code>
-
-        </dt>
-        <dd>Perform and plot a 2D Principal Components Analysis</dd>
-
-        <dt>
-
-          <code><a href="plot_pca_3d.html">plot_pca_3d()</a></code>
-
-        </dt>
-        <dd>Perform and plot a 3D Principal Components Analysis</dd>
-
-        <dt>
-
-          <code><a href="plot_read_depth.multiOmicDataSet.html">plot_read_depth,MOSuite::multiOmicDataSet-method</a></code> <code><a href="plot_read_depth.multiOmicDataSet.html">plot_read_depth.multiOmicDataSet</a></code>
-
-        </dt>
-        <dd>Plot read depth for multiOmicDataSet</dd>
-
-        <dt>
-
-          <code><a href="plot_venn_diagram.html">plot_venn_diagram()</a></code>
-
-        </dt>
-        <dd>Plot a venn diagram, UpSet plot, or table of intersections</dd>
-
-        <dt>
-
-          <code><a href="plot_volcano_enhanced.html">plot_volcano_enhanced()</a></code>
-
-        </dt>
-        <dd>Enhanced Volcano Plot</dd>
-
-        <dt>
-
-          <code><a href="plot_volcano_summary.html">plot_volcano_summary()</a></code>
-
-        </dt>
-        <dd>Volcano Plot - Summary</dd>
-
-        <dt>
-
-          <code><a href="read_multiOmicDataSet.html">read_multiOmicDataSet()</a></code>
-
-        </dt>
-        <dd>Read a multiOmicDataSet from disk</dd>
-
-        <dt>
-
-          <code><a href="write_multiOmicDataSet.html">write_multiOmicDataSet()</a></code>
-
-        </dt>
-        <dd>Write a multiOmicDataSet to disk as an RDS file</dd>
-
-        <dt>
-
-          <code><a href="write_multiOmicDataSet_properties.html">write_multiOmicDataSet_properties()</a></code>
-
-        </dt>
-        <dd>Write multiOmicDataSet properties to disk as CSV files</dd>
-      </dl></div><div class="section level2">
-      <h2 id="main-functions">Main functions<a class="anchor" aria-label="anchor" href="#main-functions"></a></h2>
+      <h2 id="main-analysis-functions">Main analysis functions<a class="anchor" aria-label="anchor" href="#main-analysis-functions"></a></h2>
 
       <div class="section-desc"><p>See <code><a href="../articles/intro.html">vignette('intro')</a></code> for recommended usage</p></div>
 
@@ -198,6 +70,127 @@
 
         <dt>
 
+          <code><a href="filter_counts.html">filter_counts()</a></code>
+
+        </dt>
+        <dd>Filter low counts</dd>
+
+        <dt>
+
+          <code><a href="filter_diff.html">filter_diff()</a></code>
+
+        </dt>
+        <dd>Filter features from differential analysis based on statistical significance</dd>
+
+        <dt>
+
+          <code><a href="normalize_counts.html">normalize_counts()</a></code>
+
+        </dt>
+        <dd>Normalize counts</dd>
+      </dl></div><div class="section level2">
+      <h2 id="multiomicdataset-class">multiOmicDataSet class<a class="anchor" aria-label="anchor" href="#multiomicdataset-class"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+      <h3 id="multiomicdataset-constructors-readers-writers">multiOmicDataSet constructors, readers, &amp; writers<a class="anchor" aria-label="anchor" href="#multiomicdataset-constructors-readers-writers"></a></h3>
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="create_multiOmicDataSet_from_dataframes.html">create_multiOmicDataSet_from_dataframes()</a></code>
+
+        </dt>
+        <dd>Construct a multiOmicDataSet object from data frames</dd>
+
+        <dt>
+
+          <code><a href="create_multiOmicDataSet_from_files.html">create_multiOmicDataSet_from_files()</a></code>
+
+        </dt>
+        <dd>Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).</dd>
+
+        <dt>
+
+          <code><a href="multiOmicDataSet.html">multiOmicDataSet()</a></code>
+
+        </dt>
+        <dd><code>multiOmicDataSet</code> class</dd>
+
+        <dt>
+
+          <code><a href="read_multiOmicDataSet.html">read_multiOmicDataSet()</a></code>
+
+        </dt>
+        <dd>Read a multiOmicDataSet from RDS</dd>
+
+        <dt>
+
+          <code><a href="read_multiOmicDataSet_properties.html">read_multiOmicDataSet_properties()</a></code>
+
+        </dt>
+        <dd>Read multiOmicDataSet properties from individual files.</dd>
+
+        <dt>
+
+          <code><a href="write_multiOmicDataSet.html">write_multiOmicDataSet()</a></code>
+
+        </dt>
+        <dd>Write a multiOmicDataSet to RDS</dd>
+
+        <dt>
+
+          <code><a href="write_multiOmicDataSet_properties.html">write_multiOmicDataSet_properties()</a></code>
+
+        </dt>
+        <dd>Write multiOmicDataSet properties to individual files.</dd>
+      </dl></div><div class="section level2">
+
+      <h3 id="multiomicdataset-methods">multiOmicDataSet methods<a class="anchor" aria-label="anchor" href="#multiomicdataset-methods"></a></h3>
+      <div class="section-desc"><p>All other functions that accept a <code>multiOmicDataSet</code> as the first argument.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="batch_correct_counts.html">batch_correct_counts()</a></code>
+
+        </dt>
+        <dd>Perform batch correction</dd>
+
+        <dt>
+
+          <code><a href="calc_cpm.html">calc_cpm()</a></code>
+
+        </dt>
+        <dd>Calculate counts-per-million (CPM) on raw counts in a multiOmicDataSet</dd>
+
+        <dt>
+
+          <code><a href="clean_raw_counts.html">clean_raw_counts()</a></code>
+
+        </dt>
+        <dd>Clean Raw Counts</dd>
+
+        <dt>
+
+          <code><a href="diff_counts.html">diff_counts()</a></code>
+
+        </dt>
+        <dd>Differential expression analysis</dd>
+
+        <dt>
+
           <code><a href="extract_counts.html">extract_counts()</a></code>
 
         </dt>
@@ -212,6 +205,13 @@
 
         <dt>
 
+          <code><a href="filter_diff.html">filter_diff()</a></code>
+
+        </dt>
+        <dd>Filter features from differential analysis based on statistical significance</dd>
+
+        <dt>
+
           <code><a href="normalize_counts.html">normalize_counts()</a></code>
 
         </dt>
@@ -219,10 +219,87 @@
 
         <dt>
 
-          <code><a href="filter_diff.html">filter_diff()</a></code>
+          <code><a href="plot_corr_heatmap.html">plot_corr_heatmap()</a></code>
 
         </dt>
-        <dd>Filter features from differential analysis based on statistical significance</dd>
+        <dd>Plot correlation heatmap</dd>
+
+        <dt>
+
+          <code><a href="plot_expr_heatmap.html">plot_expr_heatmap()</a></code>
+
+        </dt>
+        <dd>Plot expression heatmap</dd>
+
+        <dt>
+
+          <code><a href="plot_histogram.html">plot_histogram()</a></code>
+
+        </dt>
+        <dd>Plot histogram</dd>
+
+        <dt>
+
+          <code><a href="plot_pca.html">plot_pca()</a></code>
+
+        </dt>
+        <dd>Perform and plot a Principal Components Analysis</dd>
+
+        <dt>
+
+          <code><a href="plot_pca_2d.html">plot_pca_2d()</a></code>
+
+        </dt>
+        <dd>Perform and plot a 2D Principal Components Analysis</dd>
+
+        <dt>
+
+          <code><a href="plot_pca_3d.html">plot_pca_3d()</a></code>
+
+        </dt>
+        <dd>Perform and plot a 3D Principal Components Analysis</dd>
+
+        <dt>
+
+          <code><a href="plot_read_depth.html">plot_read_depth()</a></code>
+
+        </dt>
+        <dd>Plot read depth as a bar plot</dd>
+
+        <dt>
+
+          <code><a href="plot_venn_diagram.html">plot_venn_diagram()</a></code>
+
+        </dt>
+        <dd>Plot a venn diagram, UpSet plot, or table of intersections</dd>
+
+        <dt>
+
+          <code><a href="plot_volcano_enhanced.html">plot_volcano_enhanced()</a></code>
+
+        </dt>
+        <dd>Enhanced Volcano Plot</dd>
+
+        <dt>
+
+          <code><a href="plot_volcano_summary.html">plot_volcano_summary()</a></code>
+
+        </dt>
+        <dd>Volcano Plot - Summary</dd>
+
+        <dt>
+
+          <code><a href="set_color_pal.html">set_color_pal()</a></code>
+
+        </dt>
+        <dd>Set color palette for a single group/column</dd>
+
+        <dt>
+
+          <code><a href="set_default_colors.html">set_default_colors()</a></code>
+
+        </dt>
+        <dd>Set default colors on a multiOmicDataSet</dd>
       </dl></div><div class="section level2">
       <h2 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a></h2>
 
@@ -298,6 +375,22 @@
 
         <dt>
 
+          <code><a href="render_report.html">render_report()</a></code>
+
+        </dt>
+        <dd>Render the template report</dd>
+      </dl></div><div class="section level2">
+
+      <h3 id="color-palette">Color palette<a class="anchor" aria-label="anchor" href="#color-palette"></a></h3>
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
           <code><a href="display_colors.html">display_colors()</a></code>
 
         </dt>
@@ -333,6 +426,13 @@
 
         <dt>
 
+          <code><a href="set_default_colors.html">set_default_colors()</a></code>
+
+        </dt>
+        <dd>Set default colors on a multiOmicDataSet</dd>
+
+        <dt>
+
           <code><a href="display_palette.html">display_palette()</a></code>
 
         </dt>
@@ -344,13 +444,85 @@
 
         </dt>
         <dd>Default MOSuite color palette</dd>
+      </dl></div><div class="section level2">
+
+      <h3 id="low-level-plot-helpers">Low-level plot helpers<a class="anchor" aria-label="anchor" href="#low-level-plot-helpers"></a></h3>
+      <div class="section-desc"><p>These functions are called by the main visualization functions.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="plot_corr_heatmap-data.frame.html">plot_corr_heatmap,data.frame-method</a></code> <code><a href="plot_corr_heatmap-data.frame.html">plot_corr_heatmap.data.frame</a></code>
+
+        </dt>
+        <dd>Plot correlation heatmap for counts dataframe</dd>
 
         <dt>
 
-          <code><a href="render_report.html">render_report()</a></code>
+          <code><a href="plot_corr_heatmap-multiOmicDataSet.html">plot_corr_heatmap,MOObject::multiOmicDataSet-method</a></code> <code><a href="plot_corr_heatmap-multiOmicDataSet.html">plot_corr_heatmap.multiOmicDataSet</a></code>
 
         </dt>
-        <dd>Render the template report</dd>
+        <dd>Plot correlation heatmap for multiOmicDataSet</dd>
+
+        <dt>
+
+          <code><a href="plot_histogram.data.frame.html">plot_histogram,data.frame-method</a></code> <code><a href="plot_histogram.data.frame.html">plot_histogram.data.frame</a></code>
+
+        </dt>
+        <dd>Plot histogram for counts dataframe</dd>
+
+        <dt>
+
+          <code><a href="plot_histogram.multiOmicDataSet.html">plot_histogram,MOObject::multiOmicDataSet-method</a></code> <code><a href="plot_histogram.multiOmicDataSet.html">plot_histogram.multiOmicDataSet</a></code>
+
+        </dt>
+        <dd>Plot histogram for multiOmicDataSet</dd>
+
+        <dt>
+
+          <code><a href="plot_pca.data.frame.html">plot_pca,data.frame-method</a></code> <code><a href="plot_pca.data.frame.html">plot_pca.data.frame</a></code>
+
+        </dt>
+        <dd>Plot 2D or 3D PCA for counts dataframe</dd>
+
+        <dt>
+
+          <code><a href="plot_pca.multiOmicDataSet.html">plot_pca,MOObject::multiOmicDataSet-method</a></code> <code><a href="plot_pca.multiOmicDataSet.html">plot_pca.multiOmicDataSet</a></code>
+
+        </dt>
+        <dd>Plot 2D or 3D PCA for multiOmicDataset</dd>
+
+        <dt>
+
+          <code><a href="plot_pca_2d.html">plot_pca_2d()</a></code>
+
+        </dt>
+        <dd>Perform and plot a 2D Principal Components Analysis</dd>
+
+        <dt>
+
+          <code><a href="plot_pca_3d.html">plot_pca_3d()</a></code>
+
+        </dt>
+        <dd>Perform and plot a 3D Principal Components Analysis</dd>
+
+        <dt>
+
+          <code><a href="plot_read_depth.data.frame.html">plot_read_depth,data.frame-method</a></code> <code><a href="plot_read_depth.data.frame.html">plot_read_depth.data.frame</a></code>
+
+        </dt>
+        <dd>Plot read depth for <code>data.frame</code></dd>
+
+        <dt>
+
+          <code><a href="plot_read_depth.multiOmicDataSet.html">plot_read_depth,MOObject::multiOmicDataSet-method</a></code> <code><a href="plot_read_depth.multiOmicDataSet.html">plot_read_depth.multiOmicDataSet</a></code>
+
+        </dt>
+        <dd>Plot read depth for multiOmicDataSet</dd>
       </dl></div><div class="section level2">
       <h2 id="misc-helpers-utilities">Misc. helpers &amp; utilities<a class="anchor" aria-label="anchor" href="#misc-helpers-utilities"></a></h2>
 
@@ -512,9 +684,9 @@
         </dt>
         <dd>MOSuite Options</dd>
       </dl></div><div class="section level2">
+      <h2 id="re-exports">Re-exports<a class="anchor" aria-label="anchor" href="#re-exports"></a></h2>
 
-      <h3 id="low-level-plot-helpers">Low-level plot helpers<a class="anchor" aria-label="anchor" href="#low-level-plot-helpers"></a></h3>
-      <div class="section-desc"><p>These functions are called by the main visualization functions.</p></div>
+
 
       <dl></dl></div><div class="section level2">
 
@@ -523,73 +695,10 @@
 
       <dl><dt>
 
-          <code><a href="plot_corr_heatmap-data.frame.html">plot_corr_heatmap,data.frame-method</a></code> <code><a href="plot_corr_heatmap-data.frame.html">plot_corr_heatmap.data.frame</a></code>
+          <code><a href="reexports.html">reexports</a></code> <code><a href="reexports.html">:=</a></code> <code><a href="reexports.html">!!</a></code> <code><a href="reexports.html">.data</a></code> <code><a href="reexports.html">%||%</a></code>
 
         </dt>
-        <dd>Plot correlation heatmap for counts dataframe</dd>
-
-        <dt>
-
-          <code><a href="plot_corr_heatmap-multiOmicDataSet.html">plot_corr_heatmap,MOSuite::multiOmicDataSet-method</a></code> <code><a href="plot_corr_heatmap-multiOmicDataSet.html">plot_corr_heatmap.multiOmicDataSet</a></code>
-
-        </dt>
-        <dd>Plot correlation heatmap for multiOmicDataSet</dd>
-
-        <dt>
-
-          <code><a href="plot_histogram.data.frame.html">plot_histogram,data.frame-method</a></code> <code><a href="plot_histogram.data.frame.html">plot_histogram.data.frame</a></code>
-
-        </dt>
-        <dd>Plot histogram for counts dataframe</dd>
-
-        <dt>
-
-          <code><a href="plot_histogram.multiOmicDataSet.html">plot_histogram,MOSuite::multiOmicDataSet-method</a></code> <code><a href="plot_histogram.multiOmicDataSet.html">plot_histogram.multiOmicDataSet</a></code>
-
-        </dt>
-        <dd>Plot histogram for multiOmicDataSet</dd>
-
-        <dt>
-
-          <code><a href="plot_pca.data.frame.html">plot_pca,data.frame-method</a></code> <code><a href="plot_pca.data.frame.html">plot_pca.data.frame</a></code>
-
-        </dt>
-        <dd>Plot 2D or 3D PCA for counts dataframe</dd>
-
-        <dt>
-
-          <code><a href="plot_pca.multiOmicDataSet.html">plot_pca,MOSuite::multiOmicDataSet-method</a></code> <code><a href="plot_pca.multiOmicDataSet.html">plot_pca.multiOmicDataSet</a></code>
-
-        </dt>
-        <dd>Plot 2D or 3D PCA for multiOmicDataset</dd>
-
-        <dt>
-
-          <code><a href="plot_pca_2d.html">plot_pca_2d()</a></code>
-
-        </dt>
-        <dd>Perform and plot a 2D Principal Components Analysis</dd>
-
-        <dt>
-
-          <code><a href="plot_pca_3d.html">plot_pca_3d()</a></code>
-
-        </dt>
-        <dd>Perform and plot a 3D Principal Components Analysis</dd>
-
-        <dt>
-
-          <code><a href="plot_read_depth.data.frame.html">plot_read_depth,data.frame-method</a></code> <code><a href="plot_read_depth.data.frame.html">plot_read_depth.data.frame</a></code>
-
-        </dt>
-        <dd>Plot read depth for <code>data.frame</code></dd>
-
-        <dt>
-
-          <code><a href="plot_read_depth.multiOmicDataSet.html">plot_read_depth,MOSuite::multiOmicDataSet-method</a></code> <code><a href="plot_read_depth.multiOmicDataSet.html">plot_read_depth.multiOmicDataSet</a></code>
-
-        </dt>
-        <dd>Plot read depth for multiOmicDataSet</dd>
+        <dd>Objects exported from other packages</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

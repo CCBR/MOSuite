@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MOSuite</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,19 +35,34 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.4.1/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/CCBR/MOSuite/blob/v0.5.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.0" id="mosuite-050">MOSuite 0.5.0<a class="anchor" aria-label="anchor" href="#mosuite-050"></a></h2>
+<ul><li>The <code>multiOmicDataSet</code> class has been moved to a new package, <code>MOObject</code>. (<a href="https://github.com/CCBR/MOSuite/issues/277" class="external-link">#277</a>, <a href="https://github.com/kelly-sovacool" class="external-link">@kelly-sovacool</a>)
+<ul><li>Ensure backward compatibility by coercing legacy MOSuite MOO objects when read/loaded. (<a href="https://github.com/CCBR/MOSuite/issues/281" class="external-link">#281</a>, <a href="https://github.com/kelly-sovacool" class="external-link">@kelly-sovacool</a>)</li>
+</ul></li>
+<li>Harmonize Volcano Plot output dimensions as physical inches with 300 DPI defaults for Enhanced and Summary plots. (<a href="https://github.com/CCBR/MOSuite/issues/274" class="external-link">#274</a>, <a href="https://github.com/TJoshMeyer" class="external-link">@TJoshMeyer</a>)</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.2" id="mosuite-042">MOSuite 0.4.2<a class="anchor" aria-label="anchor" href="#mosuite-042"></a></h2>
+<ul><li>Align Volcano Plot threshold comparisons across labeling, coloring, and summary filtering, and use resolved column names for classification. (<a href="https://github.com/CCBR/MOSuite/issues/266" class="external-link">#266</a>, <a href="https://github.com/TJoshMeyer" class="external-link">@TJoshMeyer</a>)</li>
+<li>
+<code><a href="../reference/normalize_counts.html">normalize_counts()</a></code> now uses normalized counts instead of filtered counts for the correlation heatmap so it matches the PCA and histogram outputs. (<a href="https://github.com/CCBR/MOSuite/issues/269" class="external-link">#269</a>,
+<ol class="example" style="list-style-type: decimal"><li>
+</li></ol></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.1" id="mosuite-041">MOSuite 0.4.1<a class="anchor" aria-label="anchor" href="#mosuite-041"></a></h2>
-<ul><li>Fix how <code><a href="../reference/plot_volcano_summary.html">plot_volcano_summary()</a></code> &amp; <code>plot_volcano_enhanced</code> handle detecting column names for features, significance, and fold-change. <code><a href="../reference/plot_volcano_summary.html">plot_volcano_summary()</a></code> plot now uses <code><a href="../reference/plot_volcano_enhanced.html">plot_volcano_enhanced()</a></code> for rendering. (<a href="https://github.com/CCBR/MOSuite/issues/239" class="external-link">#239</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)</li>
+<ul><li>Fix how <code><a href="../reference/plot_volcano_summary.html">plot_volcano_summary()</a></code> &amp; <code>plot_volcano_enhanced</code> handle detecting column names for features, significance, and fold-change. <code><a href="../reference/plot_volcano_summary.html">plot_volcano_summary()</a></code> plot now uses <code><a href="../reference/plot_volcano_enhanced.html">plot_volcano_enhanced()</a></code> for rendering. (<a href="https://github.com/CCBR/MOSuite/issues/239" class="external-link">#239</a>, 1)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.0" id="mosuite-040">MOSuite 0.4.0<a class="anchor" aria-label="anchor" href="#mosuite-040"></a></h2>
-<ul><li>Update PCA label, point-size, and histogram behavior. (<a href="https://github.com/CCBR/MOSuite/issues/230" class="external-link">#230</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)</li>
-<li>Add optional count log-transform controls for PCA plots. (<a href="https://github.com/CCBR/MOSuite/issues/234" class="external-link">#234</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)</li>
-<li>Add a post-clean CPM histogram output in <code><a href="../reference/clean_raw_counts.html">clean_raw_counts()</a></code>. (<a href="https://github.com/CCBR/MOSuite/issues/234" class="external-link">#234</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)</li>
-<li>Improvements to plot colors: (<a href="https://github.com/CCBR/MOSuite/issues/223" class="external-link">#223</a>, <a href="https://github.com/phoman14" class="external-link">@phoman14</a>)
+<ul><li>Update PCA label, point-size, and histogram behavior. (<a href="https://github.com/CCBR/MOSuite/issues/230" class="external-link">#230</a>, 1)</li>
+<li>Add optional count log-transform controls for PCA plots. (<a href="https://github.com/CCBR/MOSuite/issues/234" class="external-link">#234</a>, 1)</li>
+<li>Add a post-clean CPM histogram output in <code><a href="../reference/clean_raw_counts.html">clean_raw_counts()</a></code>. (<a href="https://github.com/CCBR/MOSuite/issues/234" class="external-link">#234</a>, 1)</li>
+<li>Improvements to plot colors: (<a href="https://github.com/CCBR/MOSuite/issues/223" class="external-link">#223</a>, 1)
 <ul><li>Align plot color defaults with the MOSuite Code Ocean capsule defaults while preserving fallback random colors when a requested palette is too short.</li>
 <li>Improve top and bottom legend wrapping and automatic legend text sizing for PCA and histogram plots with many or long labels.</li>
 <li>Add optional group coloring to <code><a href="../reference/plot_read_depth.html">plot_read_depth()</a></code> and the <code><a href="../reference/clean_raw_counts.html">clean_raw_counts()</a></code> read-depth output while preserving the single-color default when no group is selected.</li>

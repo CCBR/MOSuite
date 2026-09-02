@@ -6,7 +6,8 @@
 
 ## PR Checklist
 
-(_(Strikethrough) any points that are not applicable.)
+(_(Strikethrough) any points that are not applicable. Check boxes only,
+do not append descriptions.)
 
 - This comment contains a description of changes with justifications,
   with any relevant issues linked.

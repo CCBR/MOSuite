@@ -1,5 +1,31 @@
 # Changelog
 
+## MOSuite 0.5.0
+
+- The `multiOmicDataSet` class has been moved to a new package,
+  `MOObject`. ([\#277](https://github.com/CCBR/MOSuite/issues/277),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+  - Ensure backward compatibility by coercing legacy MOSuite MOO objects
+    when read/loaded.
+    ([\#281](https://github.com/CCBR/MOSuite/issues/281),
+    [@kelly-sovacool](https://github.com/kelly-sovacool))
+- Harmonize Volcano Plot output dimensions as physical inches with 300
+  DPI defaults for Enhanced and Summary plots.
+  ([\#274](https://github.com/CCBR/MOSuite/issues/274),
+  [@TJoshMeyer](https://github.com/TJoshMeyer))
+
+## MOSuite 0.4.2
+
+- Align Volcano Plot threshold comparisons across labeling, coloring,
+  and summary filtering, and use resolved column names for
+  classification. ([\#266](https://github.com/CCBR/MOSuite/issues/266),
+  [@TJoshMeyer](https://github.com/TJoshMeyer))
+- [`normalize_counts()`](https://ccbr.github.io/MOSuite/reference/normalize_counts.md)
+  now uses normalized counts instead of filtered counts for the
+  correlation heatmap so it matches the PCA and histogram outputs.
+  ([\#269](https://github.com/CCBR/MOSuite/issues/269),
+  1.  
+
 ## MOSuite 0.4.1
 
 - Fix how
@@ -10,23 +36,19 @@
   plot now uses
   [`plot_volcano_enhanced()`](https://ccbr.github.io/MOSuite/reference/plot_volcano_enhanced.md)
   for rendering. ([\#239](https://github.com/CCBR/MOSuite/issues/239),
-  [@phoman14](https://github.com/phoman14))
+  1)
 
 ## MOSuite 0.4.0
 
 - Update PCA label, point-size, and histogram behavior.
-  ([\#230](https://github.com/CCBR/MOSuite/issues/230),
-  [@phoman14](https://github.com/phoman14))
+  ([\#230](https://github.com/CCBR/MOSuite/issues/230), 1)
 - Add optional count log-transform controls for PCA plots.
-  ([\#234](https://github.com/CCBR/MOSuite/issues/234),
-  [@phoman14](https://github.com/phoman14))
+  ([\#234](https://github.com/CCBR/MOSuite/issues/234), 1)
 - Add a post-clean CPM histogram output in
   [`clean_raw_counts()`](https://ccbr.github.io/MOSuite/reference/clean_raw_counts.md).
-  ([\#234](https://github.com/CCBR/MOSuite/issues/234),
-  [@phoman14](https://github.com/phoman14))
+  ([\#234](https://github.com/CCBR/MOSuite/issues/234), 1)
 - Improvements to plot colors:
-  ([\#223](https://github.com/CCBR/MOSuite/issues/223),
-  [@phoman14](https://github.com/phoman14))
+  ([\#223](https://github.com/CCBR/MOSuite/issues/223), 1)
   - Align plot color defaults with the MOSuite Code Ocean capsule
     defaults while preserving fallback random colors when a requested
     palette is too short.

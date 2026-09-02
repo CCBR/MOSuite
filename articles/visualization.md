@@ -2,6 +2,8 @@
 
 ``` r
 library(MOSuite)
+#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 ```
 
 ## Default plots from main functions
@@ -131,7 +133,7 @@ moo <- moo |> filter_diff()
 #> Joining with `by = join_by(GeneName)`
 #> Joining with `by = join_by(GeneName)`
 #> * filtering differential features
-#> Total number of genes selected with adjpval < 0.05 and | logFC | ≥ 1 is
+#> Total number of genes selected with adjpval < 0.05 and | logFC | > 1 is
 #> sum(selgenes)
 ```
 

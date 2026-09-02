@@ -36,9 +36,9 @@ Plot histogram for multiOmicDataSet
 generic
 
 Other plotters for multiOmicDataSets:
-[`plot_corr_heatmap,MOSuite::multiOmicDataSet-method`](https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap-multiOmicDataSet.md),
-[`plot_pca,MOSuite::multiOmicDataSet-method`](https://ccbr.github.io/MOSuite/reference/plot_pca.multiOmicDataSet.md),
-[`plot_read_depth,MOSuite::multiOmicDataSet-method`](https://ccbr.github.io/MOSuite/reference/plot_read_depth.multiOmicDataSet.md)
+[`plot_corr_heatmap,MOObject::multiOmicDataSet-method`](https://ccbr.github.io/MOSuite/reference/plot_corr_heatmap-multiOmicDataSet.md),
+[`plot_pca,MOObject::multiOmicDataSet-method`](https://ccbr.github.io/MOSuite/reference/plot_pca.multiOmicDataSet.md),
+[`plot_read_depth,MOObject::multiOmicDataSet-method`](https://ccbr.github.io/MOSuite/reference/plot_read_depth.multiOmicDataSet.md)
 
 ## Examples
 
