@@ -82,12 +82,31 @@ S7::method(plot_pca, multiOmicDataSet) <- function(
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
+
+  # when no explicit color_values are provided, use stored colors if present,
+  # otherwise recreate defaults from sample metadata.
+  dots <- list(...)
+  if (is.null(dots$color_values)) {
+    group_colname <- dots$group_colname %||% "Group"
+    dots$color_values <- get_moo_default_colors(
+      moo = moo_counts,
+      colname = group_colname
+    )
+  }
+
+  # Forward all user-supplied arguments (including the injected color_values)
+  # to the data.frame dispatch without dropping or renaming any entries.
   return(
-    plot_pca(
-      counts_dat,
-      sample_metadata = moo_counts@sample_meta,
-      principal_components = principal_components,
-      ...
+    do.call(
+      plot_pca,
+      c(
+        list(
+          moo_counts = counts_dat,
+          sample_metadata = moo_counts@sample_meta,
+          principal_components = principal_components
+        ),
+        dots
+      )
     )
   )
 }
@@ -169,6 +188,7 @@ build_pca_hover_text <- function(
 #' @rdname plot_pca_2d
 #' @aliases plot_pca_2d
 #' @export
+#' @family moo methods
 plot_pca_2d <- S7::new_generic(
   "plot_pca_2d",
   "moo_counts",
@@ -234,7 +254,11 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
-  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
+  color_values <- color_values %||%
+    get_moo_default_colors(
+      moo = moo_counts,
+      colname = group_colname
+    )
   return(plot_pca_2d(
     counts_dat,
     sample_metadata = moo_counts@sample_meta,
@@ -264,7 +288,7 @@ S7::method(plot_pca_2d, multiOmicDataSet) <- function(
 
 #' Perform and plot a 2D Principal Components Analysis
 #'
-#' @inheritParams create_multiOmicDataSet_from_dataframes
+#' @inheritParams MOObject::create_multiOmicDataSet_from_dataframes
 #' @inheritParams plot_histogram
 #' @inheritParams plot_expr_heatmap
 #' @inheritParams filter_counts
@@ -494,6 +518,7 @@ S7::method(plot_pca_2d, S7::class_data.frame) <- function(
 #' @aliases plot_pca_3d
 #' @param ... additional arguments passed to methods
 #' @export
+#' @family moo methods
 plot_pca_3d <- S7::new_generic(
   "plot_pca_3d",
   "moo_counts",
@@ -551,7 +576,11 @@ S7::method(plot_pca_3d, multiOmicDataSet) <- function(
   ...
 ) {
   counts_dat <- extract_counts(moo_counts, count_type, sub_count_type)
-  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
+  color_values <- color_values %||%
+    get_moo_default_colors(
+      moo = moo_counts,
+      colname = group_colname
+    )
   return(
     plot_pca_3d(
       counts_dat,

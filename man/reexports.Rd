@@ -7,7 +7,7 @@
 \alias{!!}
 \alias{.data}
 \alias{\%||\%}
-\title{walrus operator}
+\title{Objects exported from other packages}
 \keyword{internal}
 \description{
 These objects are imported from other packages. Follow the links

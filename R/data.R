@@ -69,12 +69,13 @@
 #'
 #' A character vector of 12 hex color codes used as the default palette throughout MOSuite plots.
 #' Colors are assigned to groups in the order they appear (or by factor level order).
+#' Use [set_default_colors()] to sett the mosuite palette for all metadata columns in a [multiOmicDataSet].
 #' Use [set_color_pal()] to override the palette for a specific metadata column.
 #'
 #' @format A character vector of length 12.
-#' @seealso [select_mosuite_colors()], [set_color_pal()]
+#' @seealso [select_mosuite_colors()], [set_color_pal()], [set_default_colors()]
 #' @keywords data
 #' @examples
 #' mosuite_palette
-#' scales::show_col(mosuite_palette)
+#' scales::show_col(mosuite_palette, ncol = length(mosuite_palette))
 "mosuite_palette"

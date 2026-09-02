@@ -28,44 +28,25 @@ first column in the sample metadata will be used.)}
 column in the count data will be used.)}
 
 \item{delim}{Delimiter used in the input files. Any delimiter accepted by \code{readr::read_delim()} can be used.
-If the files are in CSV format, set \code{delim = ','}; for TSV format, set \code{delim = '\\t'}.}
+If the files are in CSV format, set \code{delim = ','}; for TSV format, set \code{delim = '\t'}.}
 
 \item{...}{additional arguments forwarded to \code{readr::read_delim()}.}
 }
 \value{
-\link{multiOmicDataSet} object
+A \link[MOObject:multiOmicDataSet]{MOObject::multiOmicDataSet} object.
 }
 \description{
-Construct a multiOmicDataSet object from text files (e.g. TSV, CSV).
-}
-\examples{
-moo <- create_multiOmicDataSet_from_files(
-  sample_meta_filepath = system.file("extdata",
-    "sample_metadata.tsv.gz",
-    package = "MOSuite"
-  ),
-  feature_counts_filepath = system.file("extdata",
-    "RSEM.genes.expected_count.all_samples.txt.gz",
-    package = "MOSuite"
-  ),
-  delim = "\t"
-)
-moo@counts$raw |> head()
-moo@sample_meta
-
-moo_nidap <- create_multiOmicDataSet_from_files(
-  system.file("extdata", "nidap",
-    "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
-    package = "MOSuite"
-  ),
-  system.file("extdata", "nidap", "Raw_Counts.csv.gz", package = "MOSuite"),
-  delim = ","
-)
-
+Wraps \code{\link[MOObject:create_multiOmicDataSet_from_files]{MOObject::create_multiOmicDataSet_from_files()}} to add a "colors" analysis if it is not already present.
 }
 \seealso{
-Other moo constructors:
+\code{\link[MOObject:create_multiOmicDataSet_from_files]{MOObject::create_multiOmicDataSet_from_files()}}
+
+Other moo IO:
 \code{\link[=create_multiOmicDataSet_from_dataframes]{create_multiOmicDataSet_from_dataframes()}},
-\code{\link[=multiOmicDataSet]{multiOmicDataSet()}}
+\code{\link[=multiOmicDataSet]{multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet]{read_multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet_properties]{read_multiOmicDataSet_properties()}},
+\code{\link[=write_multiOmicDataSet]{write_multiOmicDataSet()}},
+\code{\link[=write_multiOmicDataSet_properties]{write_multiOmicDataSet_properties()}}
 }
-\concept{moo constructors}
+\concept{moo IO}

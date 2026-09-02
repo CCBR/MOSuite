@@ -2,18 +2,30 @@
 % Please edit documentation in R/0_mo-class.R
 \name{write_multiOmicDataSet}
 \alias{write_multiOmicDataSet}
-\title{Write a multiOmicDataSet to disk as an RDS file}
+\title{Write a multiOmicDataSet to RDS}
 \usage{
 write_multiOmicDataSet(moo, filepath = "moo.rds")
 }
 \arguments{
-\item{moo}{\link{multiOmicDataSet} object to serialize}
+\item{moo}{\link[MOObject]{multiOmicDataSet} object to serialize}
 
 \item{filepath}{Path to the RDS file to write (default: "moo.rds")}
 }
 \value{
-Invisibly returns \code{filepath}
+Invisibly returns \code{filepath}.
 }
 \description{
-Write a multiOmicDataSet to disk as an RDS file
+Re-exported from \link[MOObject:write_multiOmicDataSet]{MOObject::write_multiOmicDataSet} -- view the MOObject docs for details.
 }
+\seealso{
+\code{\link[MOObject:write_multiOmicDataSet]{MOObject::write_multiOmicDataSet()}}
+
+Other moo IO:
+\code{\link[=create_multiOmicDataSet_from_dataframes]{create_multiOmicDataSet_from_dataframes()}},
+\code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}},
+\code{\link[=multiOmicDataSet]{multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet]{read_multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet_properties]{read_multiOmicDataSet_properties()}},
+\code{\link[=write_multiOmicDataSet_properties]{write_multiOmicDataSet_properties()}}
+}
+\concept{moo IO}

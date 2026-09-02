@@ -2,23 +2,30 @@
 % Please edit documentation in R/0_mo-class.R
 \name{write_multiOmicDataSet_properties}
 \alias{write_multiOmicDataSet_properties}
-\alias{write_multiOmicDataSet_properties,MOSuite::multiOmicDataSet-method}
-\title{Write multiOmicDataSet properties to disk as CSV files}
+\title{Write multiOmicDataSet properties to individual files.}
 \usage{
-write_multiOmicDataSet_properties(moo, output_dir = "moo")
-
-## S7 method for class <MOSuite::multiOmicDataSet>
 write_multiOmicDataSet_properties(moo, output_dir = "moo")
 }
 \arguments{
-\item{moo}{\code{multiOmicDataSet} object to write properties from}
+\item{moo}{\link[MOObject]{multiOmicDataSet} object to write properties from}
 
 \item{output_dir}{Directory where the properties will be saved (default: "moo")}
 }
 \value{
-Invisibly returns the \code{output_dir} where the files were saved
+Invisibly returns \code{output_dir}.
 }
 \description{
-Writes the properties of a multiOmicDataSet object to disk as separate files in output_dir.
-Properties that are data frames are saved as CSV files, while all other objects are saved as RDS files.
+Re-exported from \link[MOObject:write_multiOmicDataSet_properties]{MOObject::write_multiOmicDataSet_properties} -- view the MOObject docs for details.
 }
+\seealso{
+\code{\link[MOObject:write_multiOmicDataSet_properties]{MOObject::write_multiOmicDataSet_properties()}}
+
+Other moo IO:
+\code{\link[=create_multiOmicDataSet_from_dataframes]{create_multiOmicDataSet_from_dataframes()}},
+\code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}},
+\code{\link[=multiOmicDataSet]{multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet]{read_multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet_properties]{read_multiOmicDataSet_properties()}},
+\code{\link[=write_multiOmicDataSet]{write_multiOmicDataSet()}}
+}
+\concept{moo IO}

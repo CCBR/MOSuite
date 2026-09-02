@@ -27,37 +27,20 @@ column in the count data will be used.)}
 \item{count_type}{type to assign the values of \code{counts_dat} to in the \code{counts} slot}
 }
 \value{
-\link{multiOmicDataSet} object
+A \link[MOObject:multiOmicDataSet]{MOObject::multiOmicDataSet} object.
 }
 \description{
-Construct a multiOmicDataSet object from data frames
-}
-\examples{
-sample_meta <- data.frame(
-  sample_id = c("KO_S3", "KO_S4", "WT_S1", "WT_S2"),
-  condition = factor(
-    c("knockout", "knockout", "wildtype", "wildtype"),
-    levels = c("wildtype", "knockout")
-  )
-)
-moo <- create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts)
-head(moo@sample_meta)
-head(moo@counts$raw)
-head(moo@annotation)
-
-sample_meta_nidap <- readr::read_csv(system.file("extdata", "nidap",
-  "Sample_Metadata_Bulk_RNA-seq_Training_Dataset_CCBR.csv.gz",
-  package = "MOSuite"
-))
-raw_counts_nidap <- readr::read_csv(system.file("extdata", "nidap", "Raw_Counts.csv.gz",
-  package = "MOSuite"
-))
-moo_nidap <- create_multiOmicDataSet_from_dataframes(sample_meta_nidap, raw_counts_nidap)
-
+Wraps \code{\link[MOObject:create_multiOmicDataSet_from_dataframes]{MOObject::create_multiOmicDataSet_from_dataframes()}} to add a "colors" analysis if it is not already present.
 }
 \seealso{
-Other moo constructors:
+\code{\link[MOObject:create_multiOmicDataSet_from_dataframes]{MOObject::create_multiOmicDataSet_from_dataframes()}}
+
+Other moo IO:
 \code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}},
-\code{\link[=multiOmicDataSet]{multiOmicDataSet()}}
+\code{\link[=multiOmicDataSet]{multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet]{read_multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet_properties]{read_multiOmicDataSet_properties()}},
+\code{\link[=write_multiOmicDataSet]{write_multiOmicDataSet()}},
+\code{\link[=write_multiOmicDataSet_properties]{write_multiOmicDataSet_properties()}}
 }
-\concept{moo constructors}
+\concept{moo IO}

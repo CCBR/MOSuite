@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_heatmap.R
 \name{plot_expr_heatmap}
 \alias{plot_expr_heatmap}
-\alias{plot_expr_heatmap,MOSuite::multiOmicDataSet-method}
+\alias{plot_expr_heatmap,MOObject::multiOmicDataSet-method}
 \alias{plot_expr_heatmap,data.frame-method}
 \title{Plot expression heatmap}
 \usage{
@@ -57,7 +57,7 @@ plot_expr_heatmap(
   ...
 )
 
-## S7 method for class <MOSuite::multiOmicDataSet>
+## S7 method for class <MOObject::multiOmicDataSet>
 plot_expr_heatmap(
   moo_counts,
   count_type,
@@ -355,17 +355,25 @@ Other heatmaps:
 
 Other moo methods:
 \code{\link[=batch_correct_counts]{batch_correct_counts()}},
+\code{\link[=calc_cpm]{calc_cpm()}},
 \code{\link[=clean_raw_counts]{clean_raw_counts()}},
 \code{\link[=diff_counts]{diff_counts()}},
+\code{\link[=extract_counts]{extract_counts()}},
 \code{\link[=filter_counts]{filter_counts()}},
 \code{\link[=filter_diff]{filter_diff()}},
 \code{\link[=normalize_counts]{normalize_counts()}},
 \code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
 \code{\link[=plot_histogram]{plot_histogram()}},
 \code{\link[=plot_pca]{plot_pca()}},
+\code{\link[=plot_pca_2d]{plot_pca_2d()}},
+\code{\link[=plot_pca_3d]{plot_pca_3d()}},
 \code{\link[=plot_read_depth]{plot_read_depth()}},
+\code{\link[=plot_venn_diagram]{plot_venn_diagram()}},
+\code{\link[=plot_volcano_enhanced]{plot_volcano_enhanced()}},
+\code{\link[=plot_volcano_summary]{plot_volcano_summary()}},
 \code{\link[=run_deseq2]{run_deseq2()}},
-\code{\link[=set_color_pal]{set_color_pal()}}
+\code{\link[=set_color_pal]{set_color_pal()}},
+\code{\link[=set_default_colors]{set_default_colors()}}
 }
 \concept{heatmaps}
 \concept{moo methods}

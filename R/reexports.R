@@ -1,19 +1,15 @@
-#' walrus operator
 #' @importFrom rlang :=
 #' @export
 rlang::`:=`
 
-#' bang-bang
 #' @importFrom rlang !!
 #' @export
 rlang::`!!`
 
-#' rlang data pronoun
 #' @importFrom rlang .data
 #' @export
 rlang::.data
 
-#' default for null values
 #' @importFrom rlang %||%
 #' @export
 rlang::`%||%`
