@@ -22,6 +22,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
   sample_metadata = as.data.frame(nidap_sample_metadata),
   counts_dat = as.data.frame(nidap_raw_counts)
 ) |>
+  set_default_colors() |>
   clean_raw_counts() |>
   filter_counts(group_colname = "Group") |>
   normalize_counts(group_colname = "Group") |>
@@ -173,7 +174,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
 
 ``` r
 str(moo_nidap)
-#> <MOSuite::multiOmicDataSet>
+#> <MOObject::multiOmicDataSet>
 #>  @ sample_meta:'data.frame': 9 obs. of  5 variables:
 #>  .. $ Sample   : chr  "A1" "A2" "A3" "B1" ...
 #>  .. $ Group    : chr  "A" "A" "A" "B" ...
@@ -197,35 +198,6 @@ str(moo_nidap)
 #>  ..  ..$ delim  : chr ","
 #>  ..  ..- attr(*, "class")= chr "col_spec"
 #>  .. - attr(*, "problems")=<externalptr> 
-#>  @ annotation :'data.frame': 43280 obs. of  1 variable:
-#>  .. $ GeneName: chr  "RP23-271O17.1" "Gm26206" "Xkr4" "RP23-317L18.1" ...
-#>  .. - attr(*, "spec")=List of 3
-#>  ..  ..$ cols   :List of 10
-#>  ..  .. ..$ GeneName: list()
-#>  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_character" "collector"
-#>  ..  .. ..$ A1      : list()
-#>  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. ..$ A2      : list()
-#>  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. ..$ A3      : list()
-#>  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. ..$ B1      : list()
-#>  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. ..$ B2      : list()
-#>  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. ..$ B3      : list()
-#>  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. ..$ C1      : list()
-#>  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. ..$ C2      : list()
-#>  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. ..$ C3      : list()
-#>  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  ..$ default: list()
-#>  ..  .. ..- attr(*, "class")= chr [1:2] "collector_guess" "collector"
-#>  ..  ..$ delim  : chr ","
-#>  ..  ..- attr(*, "class")= chr "col_spec"
-#>  .. - attr(*, "problems")=<externalptr> 
 #>  @ counts     :List of 5
 #>  .. $ raw  :'data.frame':    43280 obs. of  10 variables:
 #>  ..  ..$ GeneName: chr [1:43280] "RP23-271O17.1" "Gm26206" "Xkr4" "RP23-317L18.1" ...
@@ -238,33 +210,6 @@ str(moo_nidap)
 #>  ..  ..$ C1      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...
 #>  ..  ..$ C2      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...
 #>  ..  ..$ C3      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...
-#>  ..  ..- attr(*, "spec")=List of 3
-#>  ..  .. ..$ cols   :List of 10
-#>  ..  .. .. ..$ GeneName: list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_character" "collector"
-#>  ..  .. .. ..$ A1      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ A2      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ A3      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ B1      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ B2      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ B3      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ C1      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ C2      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ C3      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. ..$ default: list()
-#>  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_guess" "collector"
-#>  ..  .. ..$ delim  : chr ","
-#>  ..  .. ..- attr(*, "class")= chr "col_spec"
-#>  ..  ..- attr(*, "problems")=<externalptr> 
 #>  .. $ clean:'data.frame':    43280 obs. of  10 variables:
 #>  ..  ..$ GeneName: chr [1:43280] "RP23-271O17.1" "Gm26206" "Xkr4" "RP23-317L18.1" ...
 #>  ..  ..$ A1      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...
@@ -276,33 +221,6 @@ str(moo_nidap)
 #>  ..  ..$ C1      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...
 #>  ..  ..$ C2      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...
 #>  ..  ..$ C3      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...
-#>  ..  ..- attr(*, "spec")=List of 3
-#>  ..  .. ..$ cols   :List of 10
-#>  ..  .. .. ..$ GeneName: list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_character" "collector"
-#>  ..  .. .. ..$ A1      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ A2      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ A3      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ B1      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ B2      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ B3      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ C1      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ C2      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ C3      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. ..$ default: list()
-#>  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_guess" "collector"
-#>  ..  .. ..$ delim  : chr ","
-#>  ..  .. ..- attr(*, "class")= chr "col_spec"
-#>  ..  ..- attr(*, "problems")=<externalptr> 
 #>  .. $ filt :'data.frame':    7943 obs. of  10 variables:
 #>  ..  ..$ GeneName: chr [1:7943] "Mrpl15" "Lypla1" "Tcea1" "Atp6v1h" ...
 #>  ..  ..$ A1      : num [1:7943] 1245 1483 1381 1033 666 ...
@@ -314,33 +232,6 @@ str(moo_nidap)
 #>  ..  ..$ C1      : num [1:7943] 1058 991 2391 2436 774 ...
 #>  ..  ..$ C2      : num [1:7943] 1732 1101 916 1321 1921 ...
 #>  ..  ..$ C3      : num [1:7943] 1531 2352 2261 1018 2660 ...
-#>  ..  ..- attr(*, "spec")=List of 3
-#>  ..  .. ..$ cols   :List of 10
-#>  ..  .. .. ..$ GeneName: list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_character" "collector"
-#>  ..  .. .. ..$ A1      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ A2      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ A3      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ B1      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ B2      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ B3      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ C1      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ C2      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. .. ..$ C3      : list()
-#>  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"
-#>  ..  .. ..$ default: list()
-#>  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_guess" "collector"
-#>  ..  .. ..$ delim  : chr ","
-#>  ..  .. ..- attr(*, "class")= chr "col_spec"
-#>  ..  ..- attr(*, "problems")=<externalptr> 
 #>  .. $ norm :List of 1
 #>  ..  ..$ voom:'data.frame':  7943 obs. of  10 variables:
 #>  ..  .. ..$ GeneName: chr [1:7943] "Mrpl15" "Lypla1" "Tcea1" "Atp6v1h" ...
@@ -364,6 +255,8 @@ str(moo_nidap)
 #>  ..  ..$ C1      : num [1:7943] 6.21 6.13 7.13 7.13 6.06 ...
 #>  ..  ..$ C2      : num [1:7943] 6.87 6.32 6.32 6.69 6.88 ...
 #>  ..  ..$ C3      : num [1:7943] 6.48 7.04 7.18 6.1 7.1 ...
+#>  @ annotation :'data.frame': 43280 obs. of  1 variable:
+#>  .. $ GeneName: chr  "RP23-271O17.1" "Gm26206" "Xkr4" "RP23-317L18.1" ...
 #>  @ analyses   :List of 3
 #>  .. $ colors   :List of 5
 #>  ..  ..$ Sample   : Named chr [1:9] "#5954d6" "#e1562c" "#b80058" "#00c6f8" ...

@@ -90,6 +90,7 @@
 <span>  sample_metadata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_sample_metadata</span><span class="op">)</span>,</span>
 <span>  counts_dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">nidap_raw_counts</span><span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/set_default_colors.html">set_default_colors</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/clean_raw_counts.html">clean_raw_counts</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/filter_counts.html">filter_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/normalize_counts.html">normalize_counts</a></span><span class="op">(</span>group_colname <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -226,7 +227,7 @@
 </h2>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">moo_nidap</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;MOSuite::multiOmicDataSet&gt;</span></span>
+<span><span class="co">#&gt; &lt;MOObject::multiOmicDataSet&gt;</span></span>
 <span><span class="co">#&gt;  @ sample_meta:'data.frame': 9 obs. of  5 variables:</span></span>
 <span><span class="co">#&gt;  .. $ Sample   : chr  "A1" "A2" "A3" "B1" ...</span></span>
 <span><span class="co">#&gt;  .. $ Group    : chr  "A" "A" "A" "B" ...</span></span>
@@ -250,35 +251,6 @@
 <span><span class="co">#&gt;  ..  ..$ delim  : chr ","</span></span>
 <span><span class="co">#&gt;  ..  ..- attr(*, "class")= chr "col_spec"</span></span>
 <span><span class="co">#&gt;  .. - attr(*, "problems")=&lt;externalptr&gt; </span></span>
-<span><span class="co">#&gt;  @ annotation :'data.frame': 43280 obs. of  1 variable:</span></span>
-<span><span class="co">#&gt;  .. $ GeneName: chr  "RP23-271O17.1" "Gm26206" "Xkr4" "RP23-317L18.1" ...</span></span>
-<span><span class="co">#&gt;  .. - attr(*, "spec")=List of 3</span></span>
-<span><span class="co">#&gt;  ..  ..$ cols   :List of 10</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ GeneName: list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_character" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ A1      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ A2      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ A3      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ B1      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ B2      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ B3      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ C1      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ C2      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ C3      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  ..$ default: list()</span></span>
-<span><span class="co">#&gt;  ..  .. ..- attr(*, "class")= chr [1:2] "collector_guess" "collector"</span></span>
-<span><span class="co">#&gt;  ..  ..$ delim  : chr ","</span></span>
-<span><span class="co">#&gt;  ..  ..- attr(*, "class")= chr "col_spec"</span></span>
-<span><span class="co">#&gt;  .. - attr(*, "problems")=&lt;externalptr&gt; </span></span>
 <span><span class="co">#&gt;  @ counts     :List of 5</span></span>
 <span><span class="co">#&gt;  .. $ raw  :'data.frame':    43280 obs. of  10 variables:</span></span>
 <span><span class="co">#&gt;  ..  ..$ GeneName: chr [1:43280] "RP23-271O17.1" "Gm26206" "Xkr4" "RP23-317L18.1" ...</span></span>
@@ -291,33 +263,6 @@
 <span><span class="co">#&gt;  ..  ..$ C1      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
 <span><span class="co">#&gt;  ..  ..$ C2      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
 <span><span class="co">#&gt;  ..  ..$ C3      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
-<span><span class="co">#&gt;  ..  ..- attr(*, "spec")=List of 3</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ cols   :List of 10</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ GeneName: list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_character" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ A1      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ A2      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ A3      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ B1      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ B2      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ B3      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ C1      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ C2      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ C3      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ default: list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_guess" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ delim  : chr ","</span></span>
-<span><span class="co">#&gt;  ..  .. ..- attr(*, "class")= chr "col_spec"</span></span>
-<span><span class="co">#&gt;  ..  ..- attr(*, "problems")=&lt;externalptr&gt; </span></span>
 <span><span class="co">#&gt;  .. $ clean:'data.frame':    43280 obs. of  10 variables:</span></span>
 <span><span class="co">#&gt;  ..  ..$ GeneName: chr [1:43280] "RP23-271O17.1" "Gm26206" "Xkr4" "RP23-317L18.1" ...</span></span>
 <span><span class="co">#&gt;  ..  ..$ A1      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
@@ -329,33 +274,6 @@
 <span><span class="co">#&gt;  ..  ..$ C1      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
 <span><span class="co">#&gt;  ..  ..$ C2      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
 <span><span class="co">#&gt;  ..  ..$ C3      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
-<span><span class="co">#&gt;  ..  ..- attr(*, "spec")=List of 3</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ cols   :List of 10</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ GeneName: list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_character" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ A1      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ A2      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ A3      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ B1      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ B2      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ B3      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ C1      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ C2      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ C3      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ default: list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_guess" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ delim  : chr ","</span></span>
-<span><span class="co">#&gt;  ..  .. ..- attr(*, "class")= chr "col_spec"</span></span>
-<span><span class="co">#&gt;  ..  ..- attr(*, "problems")=&lt;externalptr&gt; </span></span>
 <span><span class="co">#&gt;  .. $ filt :'data.frame':    7943 obs. of  10 variables:</span></span>
 <span><span class="co">#&gt;  ..  ..$ GeneName: chr [1:7943] "Mrpl15" "Lypla1" "Tcea1" "Atp6v1h" ...</span></span>
 <span><span class="co">#&gt;  ..  ..$ A1      : num [1:7943] 1245 1483 1381 1033 666 ...</span></span>
@@ -367,33 +285,6 @@
 <span><span class="co">#&gt;  ..  ..$ C1      : num [1:7943] 1058 991 2391 2436 774 ...</span></span>
 <span><span class="co">#&gt;  ..  ..$ C2      : num [1:7943] 1732 1101 916 1321 1921 ...</span></span>
 <span><span class="co">#&gt;  ..  ..$ C3      : num [1:7943] 1531 2352 2261 1018 2660 ...</span></span>
-<span><span class="co">#&gt;  ..  ..- attr(*, "spec")=List of 3</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ cols   :List of 10</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ GeneName: list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_character" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ A1      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ A2      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ A3      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ B1      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ B2      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ B3      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ C1      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ C2      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..$ C3      : list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. .. ..- attr(*, "class")= chr [1:2] "collector_double" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ default: list()</span></span>
-<span><span class="co">#&gt;  ..  .. .. ..- attr(*, "class")= chr [1:2] "collector_guess" "collector"</span></span>
-<span><span class="co">#&gt;  ..  .. ..$ delim  : chr ","</span></span>
-<span><span class="co">#&gt;  ..  .. ..- attr(*, "class")= chr "col_spec"</span></span>
-<span><span class="co">#&gt;  ..  ..- attr(*, "problems")=&lt;externalptr&gt; </span></span>
 <span><span class="co">#&gt;  .. $ norm :List of 1</span></span>
 <span><span class="co">#&gt;  ..  ..$ voom:'data.frame':  7943 obs. of  10 variables:</span></span>
 <span><span class="co">#&gt;  ..  .. ..$ GeneName: chr [1:7943] "Mrpl15" "Lypla1" "Tcea1" "Atp6v1h" ...</span></span>
@@ -417,6 +308,8 @@
 <span><span class="co">#&gt;  ..  ..$ C1      : num [1:7943] 6.21 6.13 7.13 7.13 6.06 ...</span></span>
 <span><span class="co">#&gt;  ..  ..$ C2      : num [1:7943] 6.87 6.32 6.32 6.69 6.88 ...</span></span>
 <span><span class="co">#&gt;  ..  ..$ C3      : num [1:7943] 6.48 7.04 7.18 6.1 7.1 ...</span></span>
+<span><span class="co">#&gt;  @ annotation :'data.frame': 43280 obs. of  1 variable:</span></span>
+<span><span class="co">#&gt;  .. $ GeneName: chr  "RP23-271O17.1" "Gm26206" "Xkr4" "RP23-317L18.1" ...</span></span>
 <span><span class="co">#&gt;  @ analyses   :List of 3</span></span>
 <span><span class="co">#&gt;  .. $ colors   :List of 5</span></span>
 <span><span class="co">#&gt;  ..  ..$ Sample   : Named chr [1:9] "#5954d6" "#e1562c" "#b80058" "#00c6f8" ...</span></span>

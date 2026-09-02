@@ -1,31 +1,35 @@
-# Calculate counts-per-million (CPM) on raw counts in a multiOmicDataSet
+# Set default colors on a multiOmicDataSet
 
-Calculate counts-per-million (CPM) on raw counts in a multiOmicDataSet
+Populates `moo@analyses$colors` using
+[`get_colors_lst()`](https://ccbr.github.io/MOSuite/dev/reference/get_colors_lst.md)
+with the default MOSuite palette.
 
 ## Usage
 
 ``` r
-calc_cpm(moo, ...)
+set_default_colors(moo, palette = mosuite_palette)
 ```
 
 ## Arguments
 
 - moo:
 
-  multiOmicDataSet object
+  `multiOmicDataSet` object.
 
-- ...:
+- palette:
 
-  additional arguments to pass to edgeR::cpm()
+  Character vector of colors to assign. Defaults to `mosuite_palette`.
 
 ## Value
 
-multiOmicDataSet with cpm-transformed counts
+`moo` with constructor-style default colors set at
+`moo@analyses$colors`.
 
 ## See also
 
 Other moo methods:
 [`batch_correct_counts()`](https://ccbr.github.io/MOSuite/dev/reference/batch_correct_counts.md),
+[`calc_cpm()`](https://ccbr.github.io/MOSuite/dev/reference/calc_cpm.md),
 [`clean_raw_counts()`](https://ccbr.github.io/MOSuite/dev/reference/clean_raw_counts.md),
 [`diff_counts()`](https://ccbr.github.io/MOSuite/dev/reference/diff_counts.md),
 [`extract_counts()`](https://ccbr.github.io/MOSuite/dev/reference/extract_counts.md),
@@ -43,27 +47,17 @@ Other moo methods:
 [`plot_volcano_enhanced()`](https://ccbr.github.io/MOSuite/dev/reference/plot_volcano_enhanced.md),
 [`plot_volcano_summary()`](https://ccbr.github.io/MOSuite/dev/reference/plot_volcano_summary.md),
 [`run_deseq2()`](https://ccbr.github.io/MOSuite/dev/reference/run_deseq2.md),
-[`set_color_pal()`](https://ccbr.github.io/MOSuite/dev/reference/set_color_pal.md),
-[`set_default_colors()`](https://ccbr.github.io/MOSuite/dev/reference/set_default_colors.md)
+[`set_color_pal()`](https://ccbr.github.io/MOSuite/dev/reference/set_color_pal.md)
 
 ## Examples
 
 ``` r
-sample_meta <- data.frame(
-  sample_id = c("KO_S3", "KO_S4", "WT_S1", "WT_S2"),
-  condition = factor(
-    c("knockout", "knockout", "wildtype", "wildtype"),
-    levels = c("wildtype", "knockout")
-  )
+moo <- multiOmicDataSet(
+  sample_metadata = as.data.frame(nidap_sample_metadata),
+  anno_dat = data.frame(),
+  counts_lst = list("raw" = as.data.frame(nidap_raw_counts))
 )
-moo <- create_multiOmicDataSet_from_dataframes(sample_meta, gene_counts) |>
-  calc_cpm()
-head(moo@counts$cpm)
-#>              gene_id KO_S3 KO_S4 WT_S1 WT_S2
-#> 1 ENSG00000121410.11     0     0     0     0
-#> 2  ENSG00000268895.5     0     0     0     0
-#> 3 ENSG00000148584.15     0     0     0     0
-#> 4 ENSG00000175899.14     0     0     0     0
-#> 5  ENSG00000245105.3     0     0     0     0
-#> 6 ENSG00000166535.20     0     0     0     0
+moo <- set_default_colors(moo)
+names(moo@analyses$colors)
+#> [1] "Sample"    "Group"     "Replicate" "Batch"     "Label"    
 ```
