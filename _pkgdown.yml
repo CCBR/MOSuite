@@ -3,8 +3,8 @@ template:
   bootstrap: 5
   bslib:
     bootswatch: yeti
-    primary: "#296b7f"
-    secondary: "#7cc349"
+    primary: "#2A7386"
+    secondary: "#82C04D"
     base_font: {google: "Roboto"}
     heading_font: {google: "Roboto"}
     code_font: {google: "Roboto Mono"}
