@@ -1,5 +1,7 @@
 ## MOSuite development version
 
+## MOSuite 0.5.0
+
 - The `multiOmicDataSet` class has been moved to a new package, `MOObject`. (#277, @kelly-sovacool)
   - Ensure backward compatibility by coercing legacy MOSuite MOO objects when read/loaded. (#281, @kelly-sovacool)
 - Harmonize Volcano Plot output dimensions as physical inches with 300 DPI defaults for Enhanced and Summary plots. (#274, @TJoshMeyer)
