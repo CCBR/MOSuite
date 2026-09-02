@@ -18,7 +18,7 @@ Use \code{\link[=set_color_pal]{set_color_pal()}} to override the palette for a 
 }
 \examples{
 mosuite_palette
-display_colors(mosuite_palette)
+scales::show_col(mosuite_palette, ncol = length(mosuite_palette))
 }
 \seealso{
 \code{\link[=select_mosuite_colors]{select_mosuite_colors()}}, \code{\link[=set_color_pal]{set_color_pal()}}, \code{\link[=set_default_colors]{set_default_colors()}}

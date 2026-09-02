@@ -77,5 +77,5 @@
 #' @keywords data
 #' @examples
 #' mosuite_palette
-#' display_colors(mosuite_palette)
+#' scales::show_col(mosuite_palette, ncol = length(mosuite_palette))
 "mosuite_palette"
