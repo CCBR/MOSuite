@@ -7,7 +7,7 @@
 write_multiOmicDataSet_properties(moo, output_dir = "moo")
 }
 \arguments{
-\item{moo}{\code{multiOmicDataSet} object to write properties from}
+\item{moo}{\link[MOObject]{multiOmicDataSet} object to write properties from}
 
 \item{output_dir}{Directory where the properties will be saved (default: "moo")}
 }
