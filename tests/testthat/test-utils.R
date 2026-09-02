@@ -195,7 +195,7 @@ test_that("setup_capsule_environment returns invisibly", {
   expect_named(result, c("results_dir", "plots_dir"))
 })
 
-# Tests for load_moo_from_data_dir
+
 test_that("load_moo_from_data_dir stops when no .rds files found", {
   tmpdir <- tempfile()
   dir.create(tmpdir)
@@ -212,19 +212,47 @@ test_that("load_moo_from_data_dir loads valid MOO object", {
   dir.create(tmpdir)
   on.exit(unlink(tmpdir, recursive = TRUE))
 
-  # Create a mock multiOmicDataSet object
-  moo <- structure(
-    list(data = "test"),
-    class = c("multiOmicDataSet", "MOSuite::multiOmicDataSet")
-  )
+  moo <- create_tiny_moo("test")
 
   rds_file <- file.path(tmpdir, "test.rds")
   readr::write_rds(moo, rds_file)
 
   result <- load_moo_from_data_dir(data_dir = tmpdir)
 
-  expect_s3_class(result, "multiOmicDataSet")
-  expect_equal(result$data, "test")
+  expect_true(S7::S7_inherits(result, multiOmicDataSet))
+  expect_equal(result@analyses$tag, "test")
+})
+
+test_that("load_moo_from_data_dir accepts legacy MOSuite class label", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+  on.exit(unlink(tmpdir, recursive = TRUE))
+
+  legacy_file <- test_path("data", "moo.rds")
+  rds_file <- file.path(tmpdir, "legacy.rds")
+  file.copy(legacy_file, rds_file)
+
+  result <- load_moo_from_data_dir(data_dir = tmpdir)
+
+  expect_true(S7::S7_inherits(result, multiOmicDataSet))
+  expect_equal(class(result)[1], "MOObject::multiOmicDataSet")
+})
+
+test_that("load_moo_from_data_dir accepts MOObject S7 class label", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+  on.exit(unlink(tmpdir, recursive = TRUE))
+
+  moo <- create_tiny_moo("new")
+
+  rds_file <- file.path(tmpdir, "new.rds")
+  readr::write_rds(moo, rds_file)
+
+  result <- load_moo_from_data_dir(data_dir = tmpdir)
+
+  expect_equal(result@analyses$tag, "new")
+  expect_true(S7::S7_inherits(result, multiOmicDataSet))
+  expect_equal(class(result)[1], "MOObject::multiOmicDataSet")
 })
 
 test_that("load_moo_from_data_dir stops for invalid class", {
@@ -240,7 +268,7 @@ test_that("load_moo_from_data_dir stops for invalid class", {
 
   expect_error(
     load_moo_from_data_dir(data_dir = tmpdir),
-    "The input is not a multiOmicDataSet"
+    "RDS does not contain a multiOmicDataSet"
   )
 })
 
@@ -251,18 +279,15 @@ test_that("load_moo_from_data_dir finds file recursively", {
   dir.create(subdir)
   on.exit(unlink(tmpdir, recursive = TRUE))
 
-  # Create a mock multiOmicDataSet in subdirectory
-  moo <- structure(
-    list(data = "test"),
-    class = c("multiOmicDataSet", "MOSuite::multiOmicDataSet")
-  )
+  moo <- create_tiny_moo("test")
 
   rds_file <- file.path(subdir, "test.rds")
   readr::write_rds(moo, rds_file)
 
   result <- load_moo_from_data_dir(data_dir = tmpdir)
 
-  expect_s3_class(result, "multiOmicDataSet")
+  expect_true(S7::S7_inherits(result, multiOmicDataSet))
+  expect_equal(result@analyses$tag, "test")
 })
 
 test_that("load_moo_from_data_dir uses first matching file", {
@@ -270,15 +295,8 @@ test_that("load_moo_from_data_dir uses first matching file", {
   dir.create(tmpdir)
   on.exit(unlink(tmpdir, recursive = TRUE))
 
-  # Create two mock multiOmicDataSet objects
-  moo1 <- structure(
-    list(data = "first"),
-    class = c("multiOmicDataSet", "MOSuite::multiOmicDataSet")
-  )
-  moo2 <- structure(
-    list(data = "second"),
-    class = c("multiOmicDataSet", "MOSuite::multiOmicDataSet")
-  )
+  moo1 <- create_tiny_moo("first")
+  moo2 <- create_tiny_moo("second")
 
   rds_file1 <- file.path(tmpdir, "a_test.rds")
   rds_file2 <- file.path(tmpdir, "z_test.rds")
@@ -287,9 +305,8 @@ test_that("load_moo_from_data_dir uses first matching file", {
 
   result <- load_moo_from_data_dir(data_dir = tmpdir)
 
-  # Should load one of them (order may vary, so just check it's valid)
-  expect_s3_class(result, "multiOmicDataSet")
-  expect_true(result$data %in% c("first", "second"))
+  expect_true(S7::S7_inherits(result, multiOmicDataSet))
+  expect_true(result@analyses$tag %in% c("first", "second"))
 })
 
 test_that("load_moo_from_data_dir prints message", {
@@ -297,11 +314,7 @@ test_that("load_moo_from_data_dir prints message", {
   dir.create(tmpdir)
   on.exit(unlink(tmpdir, recursive = TRUE))
 
-  # Create a mock multiOmicDataSet object
-  moo <- structure(
-    list(data = "test"),
-    class = c("multiOmicDataSet", "MOSuite::multiOmicDataSet")
-  )
+  moo <- create_tiny_moo("test")
 
   rds_file <- file.path(tmpdir, "test.rds")
   readr::write_rds(moo, rds_file)

@@ -362,6 +362,14 @@ test_that("read_multiOmicDataSet validates input", {
   )
 })
 
+test_that("read_multiOmicDataSet coerces legacy MOSuite class labels", {
+  legacy_file <- test_path("data", "moo.rds")
+  moo_read <- read_multiOmicDataSet(legacy_file)
+
+  expect_true(S7::S7_inherits(moo_read, multiOmicDataSet))
+  expect_equal(class(moo_read)[1], "MOObject::multiOmicDataSet")
+})
+
 test_that("write and read preserves complex moo with analyses", {
   moo_complex <- multiOmicDataSet(
     sample_metadata = as.data.frame(nidap_sample_metadata),
