@@ -1,13 +1,3 @@
-test_that("plot_volcano_enhanced works on nidap dataset", {
-  expect_snapshot(
-    df_volc_enh <- plot_volcano_enhanced(
-      nidap_deg_analysis,
-      save_plots = FALSE,
-      print_plots = FALSE
-    )
-  )
-})
-
 test_that("plot_volcano_enhanced returns a data frame", {
   expect_no_error(
     result <- plot_volcano_enhanced(

@@ -1,6 +1,7 @@
 ## MOSuite development version
 
 - Harmonize Volcano Plot output dimensions as physical inches with 300 DPI defaults for Enhanced and Summary plots. (#274, @TJoshMeyer)
+- Build Venn and Intersection plots directly from per-contrast differential expression results, with configurable strict significance and fold-change thresholds and optional contrast selection. (#278, @TJoshMeyer)
 
 ## MOSuite 0.4.2
 

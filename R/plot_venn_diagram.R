@@ -4,9 +4,18 @@
 #' tested contrasts). This Venn diagram is available for up to five sets; Intersection plot is available for any number
 #' of sets. Specific sets can be selected for the visualizations and the returned dataset may include all (default) or
 #' specified intersections.
-#' An S7 generic with methods for `multiOmicDataSet` and `data.frame`.
+#' An S7 generic for `multiOmicDataSet` inputs.
 #'
-#' @param moo_diff_summary_dat multiOmicDataSet or summarized differential expression analysis data frame.
+#' @param moo_diff_summary_dat multiOmicDataSet containing per-contrast differential expression results.
+#' @param feature_id_colname Feature identifier column in each contrast result. Defaults to the first column.
+#' @param signif_colname Significance column in each contrast result. Default: `"adjpval"`.
+#' @param signif_threshold Features pass the significance threshold when their value is less than this cutoff
+#'   (exclusive). Default: `0.05`.
+#' @param change_colname Log fold-change column in each contrast result. Default: `"logFC"`.
+#' @param change_threshold Features pass the fold-change threshold when their absolute value is greater than this
+#'   cutoff (exclusive). Default: `1.0`.
+#' @param select_contrasts Contrast names to include. If empty, all available contrasts are used.
+#' @inheritParams plot_venn_sets
 #'
 #' @export
 plot_venn_diagram <- S7::new_generic(
@@ -15,7 +24,10 @@ plot_venn_diagram <- S7::new_generic(
   function(
     moo_diff_summary_dat,
     feature_id_colname = NULL,
-    contrasts_colname = "Contrast",
+    signif_colname = "adjpval",
+    signif_threshold = 0.05,
+    change_colname = "logFC",
+    change_threshold = 1.0,
     select_contrasts = c(),
     plot_type = "Venn diagram",
     intersection_ids = c(),
@@ -60,7 +72,10 @@ plot_venn_diagram <- S7::new_generic(
 S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
   moo_diff_summary_dat,
   feature_id_colname = NULL,
-  contrasts_colname = "Contrast",
+  signif_colname = "adjpval",
+  signif_threshold = 0.05,
+  change_colname = "logFC",
+  change_threshold = 1.0,
   select_contrasts = c(),
   plot_type = "Venn diagram",
   intersection_ids = c(),
@@ -97,55 +112,80 @@ S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
   save_plots = options::opt("save_plots"),
   plots_subdir = "diff"
 ) {
+  diff_results <- moo_diff_summary_dat@analyses$diff
+  if (!is.list(diff_results) || length(diff_results) == 0) {
+    stop(
+      "No per-contrast differential expression results found in moo@analyses$diff"
+    )
+  }
+  if (length(select_contrasts) > 0) {
+    missing_contrasts <- setdiff(select_contrasts, names(diff_results))
+    if (length(missing_contrasts) > 0) {
+      stop(glue::glue(
+        "Selected contrasts not found: {paste(missing_contrasts, collapse = ', ')}"
+      ))
+    }
+    diff_results <- diff_results[select_contrasts]
+  }
+  if (is.null(feature_id_colname)) {
+    feature_id_colname <- names(diff_results[[1]])[1]
+  }
+
+  venn_sets <- lapply(diff_results, function(diff_result) {
+    required_columns <- c(feature_id_colname, signif_colname, change_colname)
+    missing_columns <- setdiff(required_columns, names(diff_result))
+    if (length(missing_columns) > 0) {
+      stop(glue::glue(
+        "Required DEG columns not found: {paste(missing_columns, collapse = ', ')}"
+      ))
+    }
+    is_significant <- !is.na(diff_result[[signif_colname]]) &
+      diff_result[[signif_colname]] < signif_threshold
+    has_change <- !is.na(diff_result[[change_colname]]) &
+      abs(diff_result[[change_colname]]) > change_threshold
+    return(unique(diff_result[[feature_id_colname]][
+      is_significant & has_change
+    ]))
+  })
+
   return(
-    moo_diff_summary_dat@analyses$diff |>
-      join_dfs_wide() |>
-      plot_volcano_summary(print_plots = FALSE, save_plots = FALSE) |>
-      plot_venn_diagram(
-        feature_id_colname,
-        contrasts_colname,
-        select_contrasts,
-        plot_type,
-        intersection_ids,
-        venn_force_unique,
-        venn_numbers_format,
-        venn_significant_digits,
-        venn_fill_colors,
-        venn_fill_transparency,
-        venn_border_colors,
-        venn_font_size_for_category_names,
-        venn_category_names_distance,
-        venn_category_names_position,
-        venn_font_size_for_counts,
-        venn_outer_margin,
-        intersections_order,
-        display_empty_intersections,
-        intersection_bar_color,
-        intersection_point_size,
-        intersection_line_width,
-        table_font_size,
-        table_content,
-        graphics_device,
-        dpi,
-        image_width,
-        image_height,
-        plot_filename,
-        print_plots,
-        save_plots,
-        plots_subdir,
-      )
+    plot_venn_sets(
+      venn_sets = venn_sets,
+      plot_type = plot_type,
+      intersection_ids = intersection_ids,
+      venn_force_unique = venn_force_unique,
+      venn_numbers_format = venn_numbers_format,
+      venn_significant_digits = venn_significant_digits,
+      venn_fill_colors = venn_fill_colors,
+      venn_fill_transparency = venn_fill_transparency,
+      venn_border_colors = venn_border_colors,
+      venn_font_size_for_category_names = venn_font_size_for_category_names,
+      venn_category_names_distance = venn_category_names_distance,
+      venn_category_names_position = venn_category_names_position,
+      venn_font_size_for_counts = venn_font_size_for_counts,
+      venn_outer_margin = venn_outer_margin,
+      intersections_order = intersections_order,
+      display_empty_intersections = display_empty_intersections,
+      intersection_bar_color = intersection_bar_color,
+      intersection_point_size = intersection_point_size,
+      intersection_line_width = intersection_line_width,
+      table_font_size = table_font_size,
+      table_content = table_content,
+      graphics_device = graphics_device,
+      dpi = dpi,
+      image_width = image_width,
+      image_height = image_height,
+      plot_filename = plot_filename,
+      print_plots = print_plots,
+      save_plots = save_plots,
+      plots_subdir = plots_subdir
+    )
   )
 }
 
-#' @inheritParams option_params
-#' @inheritParams filter_counts
-#' @inheritParams plot_volcano_enhanced
-#' @inheritParams plot_volcano_summary
+#' Build Venn or UpSet intersections from feature sets
 #'
-#' @param moo_diff_summary_dat Summarized differential expression analysis
-#' @param contrasts_colname Name of the column in `moo_diff_summary_dat` that contains the contrast names (default:
-#'   "Contrast")
-#' @param select_contrasts A vector of contrast names to select for the plot. If empty, all contrasts are used.
+#' @param venn_sets Named list of feature identifier vectors, one per contrast.
 #' @param plot_type Type of plot to generate: "Venn diagram" or "Intersection plot". Default: "Venn diagram"
 #' @param intersection_ids A vector of intersection IDs to select for the plot. If empty, all intersections are used.
 #' @param venn_force_unique If TRUE, forces unique elements in the Venn diagram. Default: TRUE
@@ -169,18 +209,19 @@ S7::method(plot_venn_diagram, multiOmicDataSet) <- function(
 #' @param intersection_line_width Width of the lines in the intersection plot. Default: 0.5
 #' @param table_font_size Font size for the table in the plot. Default: 3
 #' @param table_content Content of the table in the plot. Default: NULL
+#' @param graphics_device Graphics device used to save the plot. Default: `grDevices::png`
+#' @param dpi Dots per inch of the saved plot. Default: 300
+#' @param image_width Saved plot width in pixels. Default: 4000
+#' @param image_height Saved plot height in pixels. Default: 3000
+#' @param plot_filename Filename for the saved plot. Default: `"venn_diagram.png"`
+#' @param print_plots Whether to print plots. Default: `options::opt("print_plots")`
+#' @param save_plots Whether to save plots. Default: `options::opt("save_plots")`
+#' @param plots_subdir Subdirectory for saved plots. Default: `"diff"`
 #'
-#' @keywords plotters
+#' @keywords internal
 #'
-#' @examples
-#' plot_venn_diagram(nidap_volcano_summary_dat, print_plots = TRUE)
-#'
-#' @rdname plot_venn_diagram
-S7::method(plot_venn_diagram, S7::class_data.frame) <- function(
-  moo_diff_summary_dat,
-  feature_id_colname = NULL,
-  contrasts_colname = "Contrast",
-  select_contrasts = c(),
+plot_venn_sets <- function(
+  venn_sets,
   plot_type = "Venn diagram",
   intersection_ids = c(),
   venn_force_unique = TRUE,
@@ -224,34 +265,12 @@ S7::method(plot_venn_diagram, S7::class_data.frame) <- function(
     "UpSetR"
   ))
 
-  if (nrow(moo_diff_summary_dat) == 0) {
-    stop("Dataframe is empty")
+  if (
+    !is.list(venn_sets) || length(venn_sets) == 0 || is.null(names(venn_sets))
+  ) {
+    stop("venn_sets must be a non-empty named list")
   }
-
-  ### PH:
-  # Input - DEG table from Volcano Summary, I think we need to make this function more generic.
-  #    The input should be the Limma DEG table and maybe be used with the DEG Gene List Template
-  # Output - Venn Diagram Figure + Venn table
-  # Purpose - compare DEGS from different Comparisons
-
-  input_dataset <- as.data.frame(moo_diff_summary_dat)
-  if (is.null(feature_id_colname)) {
-    feature_id_colname <- colnames(moo_diff_summary_dat)[1]
-  }
-
-  ### PH: Create venn Table from DEG table
-
-  # SET INPUT ====
-
-  # select required columns
-  set_elements <- input_dataset[, feature_id_colname]
-  set_names <- input_dataset[, contrasts_colname]
-
-  # prepare format - R list
-  vlist <- split(set_elements, set_names)
-  if (!is.null(select_contrasts)) {
-    vlist <- vlist[select_contrasts]
-  }
+  vlist <- venn_sets
   num_categories <- length(vlist)
   if (num_categories == 0) {
     stop("Zero categories found")
@@ -279,11 +298,7 @@ S7::method(plot_venn_diagram, S7::class_data.frame) <- function(
   if (num_categories > 1) {
     sets <- fromList(vlist)
 
-    if (!is.null(select_contrasts)) {
-      Intersection <- sets[, match(select_contrasts, colnames(sets))]
-    } else {
-      Intersection <- sets
-    }
+    Intersection <- sets
 
     # generate intersection frequency table and gene list (all intersections for the output dataset/table not the plot)
     intersection_matrix <- Intersection
@@ -334,7 +349,7 @@ S7::method(plot_venn_diagram, S7::class_data.frame) <- function(
 
   # returned intersections
 
-  if (!is.null(intersection_ids)) {
+  if (length(intersection_ids) > 0) {
     intersection_ids <- sort(as.numeric(intersection_ids))
     tabsel <- tab[tab$Id %in% intersection_ids, ]
     Intersectionsel <- Intersection[Intersection$Id %in% intersection_ids, ]
@@ -397,7 +412,7 @@ S7::method(plot_venn_diagram, S7::class_data.frame) <- function(
     pSet <- UpSetR::upset(
       sets,
       nsets = num_categories,
-      sets = select_contrasts,
+      sets = names(vlist),
       order.by = intersections_order,
       nintersects = NA,
       text.scale = 2,
