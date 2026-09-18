@@ -40,10 +40,11 @@
 
 <div id="copilot-instructions-for-ccbr-repositories" class="section level1">
 
+<p>If the repo contains an <code>AGENTS.md</code> file, refer to that file instead of this one. <code>AGENTS.md</code> takes precedence over <code>.github/copilot-instructions.md</code>.</p>
 <div class="section level2">
 <h2 id="reviewer-guidance-what-to-look-for-in-prs">Reviewer guidance (what to look for in PRs)<a class="anchor" aria-label="anchor" href="#reviewer-guidance-what-to-look-for-in-prs"></a></h2>
 <ul><li>Reviewers must validate enforcement rules: no secrets, container specified, and reproducibility pins.</li>
-<li>If code is AI-generated, reviewers must ensure the author documents what was changed and why, and that the PR is labeled <code>generated-by-AI</code>.</li>
+<li>If code is AI-generated, reviewers must ensure the author documents what was changed and why, and that the PR is labeled <code>AI-assisted</code>.</li>
 <li>Reviewers should verify license headers and ownership metadata (for example, <code>CODEOWNERS</code>) are present.</li>
 <li>Reviews must read the code and verify that it adheres to the project’s coding standards, guidelines, and best practices in software engineering.</li>
 </ul></div>
@@ -58,7 +59,7 @@
 <li>
 <strong>Secrets scan</strong>: run <code>TruffleHog</code> or <code>Gitleaks</code> on PRs to detect accidental credentials.</li>
 <li>
-<strong>AI usage label</strong>: if AI usage is declared, an Action should add <code>generated-by-AI</code> label (create this label if it does not exist); the PR body should end with the italicized Markdown line: <em>Generated using AI</em>, and any associated commit messages should end with the plain footer line: <code>Generated using AI</code>.</li>
+<strong>AI usage label</strong>: if AI usage is declared, an Action should add <code>AI-assisted</code> label (create this label if it does not exist); the PR body should end with the italicized Markdown line: <em>AI-assisted</em>, and any associated commit messages should end with the plain footer line: <code>_AI-assisted_: &lt;model&gt;</code> (fill in <model> with the actual model, e.g. Claude Sonnet 5, if known.</model></li>
 </ol><p><em>Sample GH Action check (concept): if AI usage is declared, require an AI-assistance disclosure field in the PR body.</em></p>
 </div>
 <div class="section level2">

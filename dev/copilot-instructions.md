@@ -1,12 +1,15 @@
 # CoPilot Instructions for CCBR Repositories
 
+If the repo contains an `AGENTS.md` file, refer to that file instead of
+this one. `AGENTS.md` takes precedence over
+`.github/copilot-instructions.md`.
+
 ## Reviewer guidance (what to look for in PRs)
 
 - Reviewers must validate enforcement rules: no secrets, container
   specified, and reproducibility pins.
 - If code is AI-generated, reviewers must ensure the author documents
-  what was changed and why, and that the PR is labeled
-  `generated-by-AI`.
+  what was changed and why, and that the PR is labeled `AI-assisted`.
 - Reviewers should verify license headers and ownership metadata (for
   example, `CODEOWNERS`) are present.
 - Reviews must read the code and verify that it adheres to the project’s
@@ -27,10 +30,11 @@
 4.  **Secrets scan**: run `TruffleHog` or `Gitleaks` on PRs to detect
     accidental credentials.
 5.  **AI usage label**: if AI usage is declared, an Action should add
-    `generated-by-AI` label (create this label if it does not exist);
-    the PR body should end with the italicized Markdown line: *Generated
-    using AI*, and any associated commit messages should end with the
-    plain footer line: `Generated using AI`.
+    `AI-assisted` label (create this label if it does not exist); the PR
+    body should end with the italicized Markdown line: *AI-assisted*,
+    and any associated commit messages should end with the plain footer
+    line: `_AI-assisted_: <model>` (fill in with the actual model,
+    e.g. Claude Sonnet 5, if known.
 
 *Sample GH Action check (concept): if AI usage is declared, require an
 AI-assistance disclosure field in the PR body.*
