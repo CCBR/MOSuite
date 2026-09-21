@@ -31,10 +31,11 @@ RUN apt-get update && apt-get upgrade -y && \
 
 ENV PATH="/opt/pyenv/bin:/opt/:$PATH"
 
-# own layer so this (source-only, very slow on arm64) build is cached
-# independently of any change to the package
-RUN Rscript -e "install.packages('pak', repos = 'https://cloud.r-project.org')" && \
-    Rscript -e "pak::pkg_install(c('devtools', 'tidyverse'))"
+# Keep the devtools/tidyverse install in its own layer so it (source-only and
+# slow on arm64) is cached independently of any change to the package.
+# pak is installed from r-lib's prebuilt binaries; a CRAN source build fails.
+RUN Rscript -e 'install.packages("pak", repos = sprintf("https://r-lib.github.io/p/pak/stable/%s/%s/%s", .Platform$pkgType, R.Version()$os, R.Version()$arch))' && \
+    Rscript -e 'pak::pkg_install(c("devtools", "tidyverse"))'
 
 # install package dependencies, but not the R package itself.
 # --mount avoids copying the context into the image; mounting only DESCRIPTION
