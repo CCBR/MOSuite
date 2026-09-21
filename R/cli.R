@@ -218,7 +218,12 @@ cli_from_json <- function(method, json, debug = FALSE) {
         "moo_input_rds must be included in the JSON because `{first_arg}` is required for {method}()"
       )
     )
-    fcn_args[[first_arg]] <- readr::read_rds(json_args[["moo_input_rds"]])
+    input_obj <- if (identical(first_arg, "moo")) {
+      read_multiOmicDataSet(json_args[["moo_input_rds"]])
+    } else {
+      readr::read_rds(json_args[["moo_input_rds"]])
+    }
+    fcn_args[[first_arg]] <- input_obj
   }
   # all other json keys should be arguments for the method
   json_args <- json_args |>

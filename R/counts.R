@@ -6,6 +6,8 @@
 #' @return multiOmicDataSet with cpm-transformed counts
 #' @export
 #'
+#' @family moo methods
+#'
 #' @examples
 #' sample_meta <- data.frame(
 #'   sample_id = c("KO_S3", "KO_S4", "WT_S1", "WT_S2"),
@@ -33,7 +35,7 @@ S7::method(calc_cpm, multiOmicDataSet) <- function(
 
 #' Calculate CPM on a data frame
 #'
-#' @inheritParams create_multiOmicDataSet_from_dataframes
+#' @inheritParams MOObject::create_multiOmicDataSet_from_dataframes
 #' @param dat data frame of counts with a gene column
 #' @param ... additional arguments to pass to edger::cpm()
 #'
@@ -61,7 +63,7 @@ calc_cpm_df <- function(dat, feature_id_colname = "gene_id", ...) {
 
 #' Log-transform count columns in a data frame
 #'
-#' @inheritParams create_multiOmicDataSet_from_dataframes
+#' @inheritParams MOObject::create_multiOmicDataSet_from_dataframes
 #' @param counts_dat data frame of feature counts.
 #' @param sample_colnames optional vector of sample columns to transform. If `NULL`, all columns except
 #'   `feature_id_colname` are transformed.
@@ -140,7 +142,7 @@ resolve_log_transform_base <- function(base) {
 
 #' Convert a data frame of gene counts to a matrix
 #'
-#' @inheritParams create_multiOmicDataSet_from_dataframes
+#' @inheritParams MOObject::create_multiOmicDataSet_from_dataframes
 #' @param counts_tbl expected feature counts as a dataframe or tibble, with all columns except `feature_id_colname`
 #'
 #' @return matrix of gene counts with rows as gene IDs

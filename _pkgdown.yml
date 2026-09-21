@@ -3,8 +3,8 @@ template:
   bootstrap: 5
   bslib:
     bootswatch: yeti
-    primary: "#296b7f"
-    secondary: "#7cc349"
+    primary: "#2A7386"
+    secondary: "#82C04D"
     base_font: {google: "Roboto"}
     heading_font: {google: "Roboto"}
     code_font: {google: "Roboto Mono"}
@@ -41,20 +41,33 @@ articles:
   - memory
 
 reference:
-- title: multiOmicDataSet
-  contents: contains("multiOmicDataSet")
-- title: Main functions
+- title: Main analysis functions
   desc: See `vignette('intro')` for recommended usage
   contents:
-    - ends_with("_counts")
-    - -has_keyword("data")
-    - filter_diff
+    - has_concept("main analysis")
+- title: multiOmicDataSet class
+- subtitle: multiOmicDataSet constructors, readers, & writers
+  contents:
+    - has_concept("moo IO")
+- subtitle: multiOmicDataSet methods
+  desc: All other functions that accept a `multiOmicDataSet` as the first argument.
+  contents:
+    - has_concept("moo methods")
+    - -has_concept("moo IO")
 - title: Visualization
   contents:
     - has_keyword("plotters")
+    - render_report
+- subtitle: Color palette
+  contents:
     - contains("color")
     - contains("palette")
-    - render_report
+- subtitle: Low-level plot helpers
+  desc: |
+    These functions are called by the main visualization functions.
+  contents:
+    - starts_with("plot_")
+    - -has_keyword("plotters")
 - title: Misc. helpers & utilities
   contents:
     - starts_with('calc_')
@@ -65,9 +78,6 @@ reference:
 - title: Options
   contents:
     - options
-- subtitle: Low-level plot helpers
-  desc: |
-    These functions are called by the main visualization functions.
+- title: Re-exports
   contents:
-    - starts_with("plot_")
-    - -has_keyword("plotters")
+    - reexports

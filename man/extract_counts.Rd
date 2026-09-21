@@ -2,12 +2,8 @@
 % Please edit documentation in R/0_mo-class.R
 \name{extract_counts}
 \alias{extract_counts}
-\alias{extract_counts,MOSuite::multiOmicDataSet-method}
 \title{Extract count data}
 \usage{
-extract_counts(moo, count_type, sub_count_type = NULL)
-
-## S7 method for class <MOSuite::multiOmicDataSet>
 extract_counts(moo, count_type, sub_count_type = NULL)
 }
 \arguments{
@@ -18,29 +14,35 @@ extract_counts(moo, count_type, sub_count_type = NULL)
 \item{sub_count_type}{if \code{count_type} is a list, specify the sub count type within the list
 (\code{moo@counts[[count_type]][[sub_count_type]]}). (Default: \code{NULL})}
 }
+\value{
+A data frame of counts.
+}
 \description{
-Extract count data
+Re-exported from \link[MOObject:extract_counts]{MOObject::extract_counts} -- view the MOObject docs for details.
 }
-\examples{
-moo <- multiOmicDataSet(
-  sample_metadata = as.data.frame(nidap_sample_metadata),
-  anno_dat = data.frame(),
-  counts_lst = list(
-    "raw" = as.data.frame(nidap_raw_counts),
-    "clean" = as.data.frame(nidap_clean_raw_counts),
-    "filt" = as.data.frame(nidap_filtered_counts),
-    "norm" = list(
-      "voom" = as.data.frame(nidap_norm_counts)
-    )
-  )
-)
+\seealso{
+\code{\link[MOObject:extract_counts]{MOObject::extract_counts()}}
 
-moo |>
-  extract_counts("filt") |>
-  head()
-
-moo |>
-  extract_counts("norm", "voom") |>
-  head()
-
+Other moo methods:
+\code{\link[=batch_correct_counts]{batch_correct_counts()}},
+\code{\link[=calc_cpm]{calc_cpm()}},
+\code{\link[=clean_raw_counts]{clean_raw_counts()}},
+\code{\link[=diff_counts]{diff_counts()}},
+\code{\link[=filter_counts]{filter_counts()}},
+\code{\link[=filter_diff]{filter_diff()}},
+\code{\link[=normalize_counts]{normalize_counts()}},
+\code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
+\code{\link[=plot_expr_heatmap]{plot_expr_heatmap()}},
+\code{\link[=plot_histogram]{plot_histogram()}},
+\code{\link[=plot_pca]{plot_pca()}},
+\code{\link[=plot_pca_2d]{plot_pca_2d()}},
+\code{\link[=plot_pca_3d]{plot_pca_3d()}},
+\code{\link[=plot_read_depth]{plot_read_depth()}},
+\code{\link[=plot_venn_diagram]{plot_venn_diagram()}},
+\code{\link[=plot_volcano_enhanced]{plot_volcano_enhanced()}},
+\code{\link[=plot_volcano_summary]{plot_volcano_summary()}},
+\code{\link[=run_deseq2]{run_deseq2()}},
+\code{\link[=set_color_pal]{set_color_pal()}},
+\code{\link[=set_default_colors]{set_default_colors()}}
 }
+\concept{moo methods}

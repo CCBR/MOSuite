@@ -9,6 +9,7 @@
 #' @param moo_diff multiOmicDataSet or differential expression analysis result data frame.
 #'
 #' @export
+#' @family moo methods
 plot_volcano_summary <- S7::new_generic(
   "plot_volcano_summary",
   "moo_diff",
@@ -49,8 +50,8 @@ plot_volcano_summary <- S7::new_generic(
     axis_tick_lab_size = 16,
     add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
     graphics_device = grDevices::png,
-    image_width = 15,
-    image_height = 15,
+    image_width = 10,
+    image_height = 10,
     dpi = 300,
     use_default_grid_layout = TRUE,
     number_of_rows_in_grid_layout = 1,
@@ -101,8 +102,8 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
   axis_tick_lab_size = 16,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
-  image_width = 15,
-  image_height = 15,
+  image_width = 10,
+  image_height = 10,
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = 1,
@@ -174,7 +175,8 @@ S7::method(plot_volcano_summary, multiOmicDataSet) <- function(
 #'   per contrast (e.g. `c("B-A_adjpval", "C-A_adjpval")`). Defaults to `NULL`,
 #'   which auto-detects corresponding columns by checking for `_adjpval` first,
 #'   then `_pval`, for each contrast in `change_colname`.
-#' @param signif_threshold Numeric significance threshold (p-value or adjusted p-value cutoff). Default: 0.05
+#' @param signif_threshold Numeric significance threshold (p-value or adjusted p-value cutoff). Features meet this
+#'   threshold when their value is less than the cutoff (exclusive). Default: 0.05
 #' @param add_features Add custom_gene_list To Labels. Set TRUE when you want to label a specific set of features
 #'   (features) in the "custom_gene_list" parameter" IN ADDITION to the number of features you set in the "Number of
 #'   Features to Label" parameter.
@@ -263,8 +265,8 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   axis_tick_lab_size = 16,
   add_deg_columns = c("FC", "logFC", "tstat", "pval", "adjpval"),
   graphics_device = grDevices::png,
-  image_width = 15,
-  image_height = 15,
+  image_width = 10,
+  image_height = 10,
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = 1,
@@ -274,6 +276,7 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
   plots_subdir = "diff"
 ) {
   abort_packages_not_installed("EnhancedVolcano")
+  sig_fc_color <- color_for_features_meeting_pvalue_and_foldchange_thresholds
   diff_dat <- as.data.frame(moo_diff)
 
   ## -------------------------------- ##
@@ -360,8 +363,8 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
     plot_signif_colnames <- c(plot_signif_colnames, pvalcol)
 
     filtered_features <- feature_ids[
-      diff_dat[, pvalcol] < signif_threshold &
-        abs(diff_dat[, new_contrast_label]) > change_threshold
+      diff_dat[[pvalcol]] < signif_threshold &
+        abs(diff_dat[[new_contrast_label]]) > change_threshold
     ]
     repeated_column <- rep(contrast, length(filtered_features))
 
@@ -433,10 +436,10 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
     color_of_non_significant_features = color_of_non_significant_features,
     color_of_logfold_change_threshold_line = color_of_logfold_change_threshold_line,
     color_of_features_meeting_only_signif_threshold = color_of_features_meeting_only_signif_threshold,
-    color_for_features_meeting_pvalue_and_foldchange_thresholds = color_for_features_meeting_pvalue_and_foldchange_thresholds,
+    color_for_features_meeting_pvalue_and_foldchange_thresholds = sig_fc_color,
     graphics_device = graphics_device,
-    image_width = image_width * dpi,
-    image_height = image_height * dpi,
+    image_width = image_width,
+    image_height = image_height,
     dpi = dpi,
     use_default_grid_layout = use_default_grid_layout,
     number_of_rows_in_grid_layout = number_of_rows_in_grid_layout,
@@ -478,9 +481,9 @@ S7::method(plot_volcano_summary, S7::class_data.frame) <- function(
       filename = file.path(plots_subdir, plot_filename),
       print_plots = print_plots,
       save_plots = save_plots,
-      units = "px",
-      width = image_width * dpi * ncols,
-      height = image_height * dpi * nrows,
+      units = "in",
+      width = image_width * ncols,
+      height = image_height * nrows,
       dpi = dpi,
       device = graphics_device
     )

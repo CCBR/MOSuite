@@ -361,3 +361,39 @@ test_that("set_color_pal overrides the color palette", {
     )
   )
 })
+
+test_that("set_default_colors adds constructor-style default colors", {
+  moo <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list("raw" = as.data.frame(nidap_raw_counts))
+  )
+
+  expect_null(moo@analyses$colors)
+
+  moo <- set_default_colors(moo)
+
+  expect_equal(
+    moo@analyses$colors,
+    get_colors_lst(as.data.frame(nidap_sample_metadata))
+  )
+})
+
+test_that("set_default_colors matches legacy constructor behavior", {
+  moo_direct <- multiOmicDataSet(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    anno_dat = data.frame(),
+    counts_lst = list("raw" = as.data.frame(nidap_raw_counts))
+  )
+  moo_direct@analyses$foo <- "bar"
+
+  moo_direct <- set_default_colors(moo_direct)
+
+  moo_ctor <- create_multiOmicDataSet_from_dataframes(
+    sample_metadata = as.data.frame(nidap_sample_metadata),
+    counts_dat = as.data.frame(nidap_raw_counts)
+  )
+
+  expect_equal(moo_direct@analyses$colors, moo_ctor@analyses$colors)
+  expect_equal(moo_direct@analyses$foo, "bar")
+})

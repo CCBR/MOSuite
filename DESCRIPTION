@@ -1,6 +1,6 @@
 Package: MOSuite
 Title: R package for differential multi-omics analysis
-Version: 0.4.1.9001
+Version: 0.5.0.9000
 Authors@R: c(
     person("Kelly", "Sovacool", , "kelly.sovacool@nih.gov", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3283-829X")),
@@ -38,6 +38,7 @@ Imports:
     limma,
     matrixStats,
     methods,
+    MOObject (>= 0.5.0),
     options,
     plotly,
     purrr,
@@ -80,6 +81,8 @@ Suggests:
     V8,
     VennDiagram,
     withr
+Remotes:
+    CCBR/MOObject
 VignetteBuilder:
     knitr
 biocViews:

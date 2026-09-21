@@ -1,5 +1,18 @@
 ## MOSuite development version
 
+## MOSuite 0.5.0
+
+- The `multiOmicDataSet` class has been moved to a new package, `MOObject`. (#277, @kelly-sovacool)
+  - Ensure backward compatibility by coercing legacy MOSuite MOO objects when read/loaded. (#281, @kelly-sovacool)
+- Harmonize Volcano Plot output dimensions as physical inches with 300 DPI defaults for Enhanced and Summary plots. (#274, @TJoshMeyer)
+
+## MOSuite 0.4.2
+
+- Align Volcano Plot threshold comparisons across labeling, coloring, and summary filtering, and use resolved column names for classification. (#266, @TJoshMeyer)
+- `normalize_counts()` now uses normalized counts instead of filtered counts for
+  the correlation heatmap so it matches the PCA and histogram outputs. (#269,
+  @phoman14)
+
 ## MOSuite 0.4.1
 
 - Fix how `plot_volcano_summary()` & `plot_volcano_enhanced` handle detecting column names for features, significance, and fold-change. `plot_volcano_summary()` plot now uses `plot_volcano_enhanced()` for rendering. (#239, @phoman14)

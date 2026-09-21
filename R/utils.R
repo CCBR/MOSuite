@@ -231,13 +231,8 @@ load_moo_from_data_dir <- function(data_dir = file.path("..", "data")) {
   }
 
   moo_filename <- moo_files[1]
-  moo <- readr::read_rds(moo_filename)
-
   message(glue::glue("Reading multiOmicDataSet from {moo_filename}"))
-
-  if (!inherits(moo, "MOSuite::multiOmicDataSet")) {
-    stop(glue::glue("The input is not a multiOmicDataSet. class: {class(moo)}"))
-  }
+  moo <- read_multiOmicDataSet(moo_filename)
 
   return(moo)
 }

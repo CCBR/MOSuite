@@ -9,6 +9,7 @@
 #' @param moo_diff_summary_dat multiOmicDataSet or summarized differential expression analysis data frame.
 #'
 #' @export
+#' @family moo methods
 plot_venn_diagram <- S7::new_generic(
   "plot_venn_diagram",
   "moo_diff_summary_dat",

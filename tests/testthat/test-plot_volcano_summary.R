@@ -28,6 +28,33 @@ test_that("plot_volcano_summary respects non-Gene feature ID column", {
   expect_false("Gene" %in% colnames(df_volc_sum))
 })
 
+test_that("plot_volcano_summary excludes features on exact thresholds", {
+  boundary_data <- data.frame(
+    Gene = c("both_boundary", "p_boundary", "fc_boundary", "neither"),
+    `B-A_logFC` = c(1, 0.5, 1, 0.5),
+    `B-A_pval` = c(0.05, 0.05, 0.06, 0.06),
+    `B-A_tstat` = c(2, 2, 2, 2),
+    check.names = FALSE
+  )
+
+  result <- plot_volcano_summary(
+    boundary_data,
+    feature_id_colname = "Gene",
+    change_colname = "B-A_logFC",
+    signif_colname = "B-A_pval",
+    add_deg_columns = "none",
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  expect_false(
+    any(
+      c("both_boundary", "p_boundary", "fc_boundary", "neither") %in%
+        result$Gene
+    )
+  )
+})
+
 test_that("plot_volcano_summary only forwards custom labels when requested", {
   options(mosuite_test_select_labels = list())
   trace(
@@ -213,65 +240,6 @@ test_that("plot_volcano_summary uses comparison titles without subtitles", {
     function(x) is.null(x$subtitle),
     logical(1)
   )))
-})
-
-test_that("plot_volcano_summary combines enhanced plots into one grid figure", {
-  options(mosuite_test_plot_output_args = list())
-  trace(
-    ggplot2::ggsave,
-    tracer = quote({
-      options(
-        mosuite_test_plot_output_args = append(
-          getOption("mosuite_test_plot_output_args"),
-          list(list(
-            width = width,
-            height = height,
-            units = units,
-            dpi = dpi,
-            filename = filename
-          ))
-        )
-      )
-    }),
-    print = FALSE
-  )
-  on.exit(untrace(ggplot2::ggsave), add = TRUE)
-  on.exit(options(mosuite_test_plot_output_args = NULL), add = TRUE)
-
-  plots_dir <- tempfile("volcano-summary-grid-output-")
-  dir.create(plots_dir)
-  on.exit(unlink(plots_dir, recursive = TRUE), add = TRUE)
-
-  result <- plot_volcano_summary(
-    nidap_deg_analysis,
-    image_width = 1,
-    image_height = 2,
-    dpi = 100,
-    draw_connectors = FALSE,
-    use_default_grid_layout = FALSE,
-    number_of_rows_in_grid_layout = 1,
-    save_plots = TRUE,
-    print_plots = FALSE,
-    plots_subdir = plots_dir
-  )
-
-  expect_s3_class(result, "data.frame")
-  captured_output_args <- getOption("mosuite_test_plot_output_args")
-  expect_length(captured_output_args, 1)
-  expect_equal(captured_output_args[[1]]$width, 300)
-  expect_equal(captured_output_args[[1]]$height, 200)
-  expect_equal(captured_output_args[[1]]$units, "px")
-  expect_equal(captured_output_args[[1]]$dpi, 100)
-  expect_match(
-    captured_output_args[[1]]$filename,
-    basename(plots_dir),
-    fixed = TRUE
-  )
-  expect_match(
-    captured_output_args[[1]]$filename,
-    "volcano_summary.png",
-    fixed = TRUE
-  )
 })
 
 test_that("plot_volcano_summary displays selected genes", {
