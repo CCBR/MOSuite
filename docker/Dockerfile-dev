@@ -1,5 +1,6 @@
 ARG R_VERSION=4.4
-FROM rocker/tidyverse:${R_VERSION}
+# rstudio (not tidyverse/verse) is the only rocker variant published for arm64
+FROM rocker/rstudio:${R_VERSION}
 
 ARG R_VERSION
 ENV R_VERSION=${R_VERSION}
@@ -30,7 +31,14 @@ RUN apt-get update && apt-get upgrade -y && \
 
 ENV PATH="/opt/pyenv/bin:/opt/:$PATH"
 
-# install package dependencies, but not the R package itself
-# using --mount avoids copying the context into the image
-RUN --mount=type=bind,source=.,target=/opt/MOSuite \
-    Rscript /opt/MOSuite/docker/install_dev.R
+# own layer so this (source-only, very slow on arm64) build is cached
+# independently of any change to the package
+RUN Rscript -e "install.packages('pak', repos = 'https://cloud.r-project.org')" && \
+    Rscript -e "pak::pkg_install(c('devtools', 'tidyverse'))"
+
+# install package dependencies, but not the R package itself.
+# --mount avoids copying the context into the image; mounting only DESCRIPTION
+# keeps unrelated code changes from invalidating the layer cache
+RUN --mount=type=bind,source=DESCRIPTION,target=/opt/MOSuite/DESCRIPTION \
+    --mount=type=bind,source=docker/install_dev.R,target=/opt/install_dev.R \
+    Rscript /opt/install_dev.R
