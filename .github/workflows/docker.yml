@@ -4,75 +4,169 @@ on:
   workflow_dispatch:
     inputs:
       docker_image_tag:
-        description: "Tag to apply to the built docker image (e.g. 'v0.3.0'). If not
+        description:
+          "Tag to apply to the built docker image (e.g. 'v0.3.0'). If not
           specified, it will be determined from the DESCRIPTION file."
         required: false
         default: ""
   release:
-    types: [ published ]
+    types: [published]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  R_VERSION: 4.4
   CONTEXT: "./"
   NAMESPACE: "nciccbr"
+
 jobs:
-  build-docker:
+  vars:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.vars.outputs.version }}
+      r_version: ${{ steps.vars.outputs.r_version }}
+      date: ${{ steps.vars.outputs.date }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref_name }}
+      - name: prepare variables
+        id: vars
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REF_NAME: ${{ github.ref_name }}
+          INPUT_TAG: ${{ inputs.docker_image_tag }}
+        run: |
+          if [ "${EVENT_NAME}" = "release" ]; then
+            version="${REF_NAME}"
+          elif [ -n "${INPUT_TAG}" ]; then
+            version="${INPUT_TAG}"
+          else
+            version="$(grep '^Version:' ./DESCRIPTION | sed 's/Version: /v/')"
+          fi
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+          # fetch R version: get the previous release version from r-hub API.
+          # staying one version behind release helps wait for packages to catch
+          # up so we're not on the bleeding edge.
+          echo "r_version=$(curl -fsSL https://api.r-hub.io/rversions/r-oldrel | jq -r '.version')" >> "$GITHUB_OUTPUT"
+
+          echo "date=$(date +"%Y-%m-%d")" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: vars
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [mosuite, mosuite-minimal, mosuite-dev]
+        platform: [linux/amd64, linux/arm64]
+        exclude:
+          # the nciccbr/ccbr_ubuntu_24.04 base image is only published for amd64
+          - image: mosuite
+            platform: linux/arm64
+          - image: mosuite-minimal
+            platform: linux/arm64
+        include:
+          - image: mosuite
+            dockerfile: docker/Dockerfile
+          - image: mosuite-minimal
+            dockerfile: docker/Dockerfile-minimal
+          - image: mosuite-dev
+            dockerfile: docker/Dockerfile-dev
+          # build natively per arch; emulating R package compilation is too slow
+          - platform: linux/amd64
+            platform_pair: linux-amd64
+            runner: ubuntu-latest
+          - platform: linux/arm64
+            platform_pair: linux-arm64
+            runner: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push by digest
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ env.CONTEXT }}
+          file: ${{ matrix.dockerfile }}
+          platforms: ${{ matrix.platform }}
+          build-args: |
+            BUILD_DATE=${{ needs.vars.outputs.date }}
+            BUILD_TAG=${{ needs.vars.outputs.version }}
+            REPONAME=${{ matrix.image }}
+            R_VERSION=${{ needs.vars.outputs.r_version }}
+          # registry cache rather than type=gha: these layers are far larger
+          # than the 10 GB GitHub Actions cache quota
+          cache-from: type=registry,ref=${{ env.NAMESPACE }}/${{ matrix.image
+            }}:buildcache-${{ matrix.platform_pair }}
+          cache-to: type=registry,ref=${{ env.NAMESPACE }}/${{ matrix.image
+            }}:buildcache-${{ matrix.platform_pair
+            }},mode=max,image-manifest=true,oci-mediatypes=true
+          outputs: type=image,name=${{ env.NAMESPACE }}/${{ matrix.image
+            }},push-by-digest=true,name-canonical=true,push=true
+      - name: Export digest
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          mkdir -p /tmp/digests
+          touch "/tmp/digests/${DIGEST#sha256:}"
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        with:
+          # '.' separator: 'digests-mosuite-*' would also match mosuite-minimal
+          name: digests.${{ matrix.image }}.${{ matrix.platform_pair }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  merge:
+    needs: [vars, build]
     runs-on: ubuntu-latest
     permissions:
       contents: read
     strategy:
       fail-fast: false
       matrix:
-        config:
-          - { dockerfile_path: "docker/Dockerfile", image_name: "mosuite" }
-          - { dockerfile_path: "docker/Dockerfile_minimal", image_name: "mosuite-minimal" }
+        image: [mosuite, mosuite-minimal, mosuite-dev]
     steps:
-      - uses: actions/checkout@v6
+      - name: Download digests
+        uses: actions/download-artifact@v4
         with:
-          ref: ${{ github.ref_name }}
-      - name: prepare variables
-        id: vars
-        run: |
-          image_name="${{ matrix.config.image_name }}"
-
-          if [ "${{ github.event_name }}" = "release" ]; then
-            version="${{ github.ref_name }}"
-          elif [ -n "${{ github.event.inputs.docker_image_tag }}" ]; then
-            version="${{ github.event.inputs.docker_image_tag }}"
-          else
-            version="$(grep 'Version:' ./DESCRIPTION | sed 's/Version: /v/')"
-          fi
-
-          docker_tags="${NAMESPACE}/${image_name}:${version}"
-          if [ "${{ github.event_name }}" = "release" ]; then
-            docker_tags="${docker_tags},${NAMESPACE}/${image_name}:latest"
-          fi
-
-          echo "date=$(date +"%Y-%m-%d")" >> "$GITHUB_OUTPUT"
-          echo "dockerfile_path=${{ matrix.config.dockerfile_path }}" >> "$GITHUB_OUTPUT"
-          echo "image_name=${image_name}" >> "$GITHUB_OUTPUT"
-          echo "version=${version}" >> "$GITHUB_OUTPUT"
-          echo "docker_tags=${docker_tags}" >> "$GITHUB_OUTPUT"
-
+          path: /tmp/digests
+          pattern: digests.${{ matrix.image }}.*
+          merge-multiple: true
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Login to DockerHub
-        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.vars.outputs.docker_tags }}
-          context: ${{ env.CONTEXT }}
-          file: ${{ steps.vars.outputs.dockerfile_path }}
-          build-args: |
-            BUILD_DATE=${{ steps.vars.outputs.date }}
-            BUILD_TAG=${{ steps.vars.outputs.version }}
-            REPONAME=${{ steps.vars.outputs.image_name }}
-            R_VERSION=${{ env.R_VERSION }}
+      - name: Create manifest list and push
+        working-directory: /tmp/digests
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          IMAGE: ${{ env.NAMESPACE }}/${{ matrix.image }}
+          VERSION: ${{ needs.vars.outputs.version }}
+        run: |
+          tags=(-t "${IMAGE}:${VERSION}")
+          if [ "${EVENT_NAME}" = "release" ]; then
+            tags+=(-t "${IMAGE}:latest")
+          fi
+          docker buildx imagetools create "${tags[@]}" \
+            $(printf "${IMAGE}@sha256:%s " *)
+          docker buildx imagetools inspect "${IMAGE}:${VERSION}"

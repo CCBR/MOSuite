@@ -1,0 +1,45 @@
+ARG R_VERSION=4.4
+# rstudio (not tidyverse/verse) is the only rocker variant published for arm64
+FROM rocker/rstudio:${R_VERSION}
+
+ARG R_VERSION
+ENV R_VERSION=${R_VERSION}
+
+# build time variables
+ARG BUILD_DATE="000000"
+ENV BUILD_DATE=${BUILD_DATE}
+ARG BUILD_TAG="000000"
+ENV BUILD_TAG=${BUILD_TAG}
+ARG REPONAME="000000"
+ENV REPONAME=${REPONAME}
+
+# install python, pip, pre-commit, zsh
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
+      openssh-client \
+      python3-pip python3-dev python3-venv && \
+    python3 -m venv /opt/pyenv && \
+    /opt/pyenv/bin/pip3 install --no-cache-dir --upgrade pip && \
+    /opt/pyenv/bin/pip3 install --no-cache-dir pre-commit && \
+    sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.2.1/zsh-in-docker.sh)" -- \
+      -p git -p ssh-agent && \
+      chsh -s /bin/zsh && \
+    rm -rf ~/.cache/pip* && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    apt-get autoclean && apt-get autoremove -y && \
+    rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+ENV PATH="/opt/pyenv/bin:/opt/:$PATH"
+
+# Keep the devtools/tidyverse install in its own layer so it (source-only and
+# slow on arm64) is cached independently of any change to the package.
+# pak is installed from r-lib's prebuilt binaries; a CRAN source build fails.
+RUN Rscript -e 'install.packages("pak", repos = sprintf("https://r-lib.github.io/p/pak/stable/%s/%s/%s", .Platform$pkgType, R.Version()$os, R.Version()$arch))' && \
+    Rscript -e 'pak::pkg_install(c("devtools", "tidyverse"))'
+
+# install package dependencies, but not the R package itself.
+# --mount avoids copying the context into the image; mounting only DESCRIPTION
+# keeps unrelated code changes from invalidating the layer cache
+RUN --mount=type=bind,source=DESCRIPTION,target=/opt/MOSuite/DESCRIPTION \
+    --mount=type=bind,source=docker/install_dev.R,target=/opt/install_dev.R \
+    Rscript /opt/install_dev.R
