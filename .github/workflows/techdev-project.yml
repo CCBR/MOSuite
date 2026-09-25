@@ -21,14 +21,14 @@ jobs:
       - name: Generate a token
         id: generate-token
         if: ${{ inputs.github-token == '' }}
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.CCBR_BOT_APP_ID }}
+          client-id: ${{ vars.CCBR_BOT_APP_ID }}
           private-key: ${{ secrets.CCBR_BOT_PRIVATE_KEY }}
           owner: CCBR
 
       - name: Add to CCBR techdev project
-        uses: actions/add-to-project@v1.0.2
+        uses: actions/add-to-project@v2.0.0
         with:
           project-url: https://github.com/orgs/CCBR/projects/17
           github-token: ${{ steps.generate-token.outputs.token }}
@@ -40,14 +40,14 @@ jobs:
       - name: Generate a token
         id: generate-token
         if: ${{ inputs.github-token == '' }}
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.CCBR_BOT_APP_ID }}
+          client-id: ${{ vars.CCBR_BOT_APP_ID }}
           private-key: ${{ secrets.CCBR_BOT_PRIVATE_KEY }}
           owner: NIDAP-Community
 
       - name: Add to NIDAP MOSuite project
-        uses: actions/add-to-project@v1.0.2
+        uses: actions/add-to-project@v2.0.0
         with:
           project-url: https://github.com/orgs/NIDAP-Community/projects/3
           github-token: ${{ steps.generate-token.outputs.token }}
