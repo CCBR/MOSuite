@@ -1,3 +1,7 @@
 {
-    "image": "nciccbr/mosuite-dev:v0.5.0.9000"
+  "build": {
+    "dockerfile": "../docker/Dockerfile-dev",
+    "context": "..",
+    "cacheFrom": "nciccbr/mosuite-dev"
+  }
 }
