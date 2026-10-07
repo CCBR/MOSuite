@@ -27,8 +27,7 @@ for detailed instructions on how to contribute to MOSuite.
 - Check for user approval before running commit commands. The `git commit` command should be shown expanded (with the full `-m` message text visible), not collapsed or abbreviated, so the user can see the exact message before it runs.
 - If approval has not been given, proceed with code changes and tests only; do not commit.
 - Commit messages must follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) (as enforced in `CONTRIBUTING.md`).
-- Generate messages from staged changes only (`git diff --staged`); do not include unrelated work.
-- Commits should be atomic: one logical change per commit.
+- Commits should be atomic: one logical change per commit; do not include unrelated work.
 - If mixed changes are present, split into multiple logical commits; the number of commits does not need to equal the number of files changed.
 - Before staging, review `git status` and `git diff` to confirm the change set is small enough to describe in one sentence; if not, it likely needs to be split.
 - Do not blanket-stage with `git add .` or `git add -A`; stage files or hunks individually (`git add <file>`, `git add -p`) so unrelated changes are not swept into the same commit.
