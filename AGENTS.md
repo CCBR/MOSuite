@@ -95,3 +95,5 @@ Example:
 
 - Fix bug in `detect_absolute_paths()` to ignore comments. (#123, @github-username)
 ```
+<!-- >>> quiver managed v1 >>> -->
+<!-- <<< quiver managed v1 <<< -->

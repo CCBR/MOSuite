@@ -1,0 +1,3 @@
+schema-version: 1
+config-path: quiver.yml
+managed-skills: {}
