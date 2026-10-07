@@ -30,6 +30,8 @@ RUN apt-get update && apt-get upgrade -y && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 ENV PATH="/opt/pyenv/bin:/opt/:$PATH"
+# P3M may serve source packages in place of binaries; their LinkingTo deps are then needed
+ENV PKG_INCLUDE_LINKINGTO=TRUE
 
 # Keep the devtools/tidyverse install in its own layer so it (source-only and
 # slow on arm64) is cached independently of any change to the package.
