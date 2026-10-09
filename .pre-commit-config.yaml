@@ -1,5 +1,7 @@
 default_install_hook_types: [pre-commit, commit-msg]
 default_stages: [pre-commit]
+ci:
+  skip: [parsable-R, use-tidy-description, lintr]
 exclude: |
   (?x)(
       ^assets/|
@@ -26,11 +28,11 @@ repos:
         args: ["-I=.github/WORDLIST.txt"]
   # R formatting
   - repo: https://github.com/posit-dev/air-pre-commit
-    rev: 0.11.0
+    rev: 0.12.0
     hooks:
       - id: air-format
   - repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.4.3.9029
+    rev: v0.4.3.9030 # a62d29d6b2c785637593e03010c5cac7c2916777 # v0.4.3.9029
     hooks:
       - id: parsable-R
       - id: use-tidy-description

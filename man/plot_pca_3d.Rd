@@ -32,7 +32,7 @@ plot_pca_3d(
 )
 
 ## S7 method for class <MOObject::multiOmicDataSet>
-plot_pca_3d(
+\special{plot_pca_3d(
   moo_counts,
   count_type = NULL,
   sub_count_type = NULL,
@@ -55,10 +55,10 @@ plot_pca_3d(
   save_plots = options::opt("save_plots"),
   plots_subdir = "pca",
   ...
-)
+)}
 
 ## S7 method for class <data.frame>
-plot_pca_3d(
+\special{plot_pca_3d(
   moo_counts,
   count_type = NULL,
   sub_count_type = NULL,
@@ -81,7 +81,7 @@ plot_pca_3d(
   save_plots = options::opt("save_plots"),
   plots_subdir = "pca",
   ...
-)
+)}
 }
 \arguments{
 \item{moo_counts}{counts dataframe}
