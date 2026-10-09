@@ -1,0 +1,41 @@
+# Everything excluded here is either generated output or already dropped by
+# .Rbuildignore, so R CMD build / devtools::test are unaffected.
+# man/figures is tracked and IS needed, so figures dirs are listed explicitly.
+
+.git
+.gitattributes
+.gitignore
+.dockerignore
+
+# .Rprofile is ADDed by the Dockerfiles, so exclude the contents, not the dir
+.github/*
+!.github/.Rprofile
+
+.devcontainer
+.posit
+.pre-commit-config.yaml
+.prettierignore
+.prettierrc
+.Rproj.user
+.vscode
+
+data-raw
+docs
+Meta
+README_files
+
+figures
+inst/quarto/figures
+inst/quarto/report_files
+tests/testthat/figures
+vignettes/figures
+
+.DS_Store
+.Rdata
+.Rhistory
+log.txt
+moo_input.rds
+plot-volc-enh.json
+volc-sum-params.json
+**/Rplots.pdf
+**/VennDiagram.*.log

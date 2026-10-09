@@ -53,8 +53,10 @@ RUN mamba install -y -c conda-forge \
   && conda clean -afy
 
 # install R package
-COPY . /opt2/MOSuite
-RUN R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com', upgrade='never')" && \
+# --mount avoids baking a copy of the source into the image; rw lets the test
+# suite write to the mount (discarded afterwards)
+RUN --mount=type=bind,source=.,target=/opt2/MOSuite,rw \
+  R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com', upgrade='never')" && \
   R -e "library(MOSuite); devtools::test('/opt2/MOSuite')" && \
   R -s -e "readr::write_csv(tibble::as_tibble(installed.packages()), '/data2/r-packages_mosuite.csv')"
 
