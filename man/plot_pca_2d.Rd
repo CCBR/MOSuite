@@ -36,7 +36,7 @@ plot_pca_2d(
 )
 
 ## S7 method for class <MOObject::multiOmicDataSet>
-plot_pca_2d(
+\special{plot_pca_2d(
   moo_counts,
   count_type = NULL,
   sub_count_type = NULL,
@@ -63,10 +63,10 @@ plot_pca_2d(
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   ...
-)
+)}
 
 ## S7 method for class <data.frame>
-plot_pca_2d(
+\special{plot_pca_2d(
   moo_counts,
   count_type = NULL,
   sub_count_type = NULL,
@@ -93,7 +93,7 @@ plot_pca_2d(
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   ...
-)
+)}
 }
 \arguments{
 \item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts

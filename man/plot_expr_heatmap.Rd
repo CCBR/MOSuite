@@ -58,7 +58,7 @@ plot_expr_heatmap(
 )
 
 ## S7 method for class <MOObject::multiOmicDataSet>
-plot_expr_heatmap(
+\special{plot_expr_heatmap(
   moo_counts,
   count_type,
   sub_count_type = NULL,
@@ -107,10 +107,10 @@ plot_expr_heatmap(
   save_plots = options::opt("save_plots"),
   plots_subdir = "heatmap",
   ...
-)
+)}
 
 ## S7 method for class <data.frame>
-plot_expr_heatmap(
+\special{plot_expr_heatmap(
   moo_counts,
   count_type,
   sub_count_type = NULL,
@@ -159,7 +159,7 @@ plot_expr_heatmap(
   save_plots = options::opt("save_plots"),
   plots_subdir = "heatmap",
   ...
-)
+)}
 }
 \arguments{
 \item{moo_counts}{counts dataframe or \code{multiOmicDataSet} containing \code{count_type} & \code{sub_count_type} in the counts

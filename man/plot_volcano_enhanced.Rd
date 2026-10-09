@@ -54,7 +54,7 @@ plot_volcano_enhanced(
 )
 
 ## S7 method for class <MOObject::multiOmicDataSet>
-plot_volcano_enhanced(
+\special{plot_volcano_enhanced(
   moo_diff,
   feature_id_colname = NULL,
   change_colname = NULL,
@@ -99,10 +99,10 @@ plot_volcano_enhanced(
   save_plots = options::opt("save_plots"),
   plots_subdir = "diff",
   plot_filename = "volcano_enhanced.png"
-)
+)}
 
 ## S7 method for class <data.frame>
-plot_volcano_enhanced(
+\special{plot_volcano_enhanced(
   moo_diff,
   feature_id_colname = NULL,
   change_colname = NULL,
@@ -147,7 +147,7 @@ plot_volcano_enhanced(
   save_plots = options::opt("save_plots"),
   plots_subdir = "diff",
   plot_filename = "volcano_enhanced.png"
-)
+)}
 }
 \arguments{
 \item{moo_diff}{Differential expression analysis result from one or more contrasts. This must be a dataframe.}

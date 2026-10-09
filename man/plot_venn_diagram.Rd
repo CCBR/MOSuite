@@ -43,7 +43,7 @@ plot_venn_diagram(
 )
 
 ## S7 method for class <MOObject::multiOmicDataSet>
-plot_venn_diagram(
+\special{plot_venn_diagram(
   moo_diff_summary_dat,
   feature_id_colname = NULL,
   contrasts_colname = "Contrast",
@@ -77,10 +77,10 @@ plot_venn_diagram(
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   plots_subdir = "diff"
-)
+)}
 
 ## S7 method for class <data.frame>
-plot_venn_diagram(
+\special{plot_venn_diagram(
   moo_diff_summary_dat,
   feature_id_colname = NULL,
   contrasts_colname = "Contrast",
@@ -114,7 +114,7 @@ plot_venn_diagram(
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   plots_subdir = "diff"
-)
+)}
 }
 \arguments{
 \item{moo_diff_summary_dat}{Summarized differential expression analysis}

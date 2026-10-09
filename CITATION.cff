@@ -639,7 +639,7 @@ references:
   title: colorspace
   abstract: 'colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes'
   notes: Suggests
-  url: https://colorspace.R-Forge.R-project.org/
+  url: https://zeileis.codeberg.page/colorspace/
   repository: https://CRAN.R-project.org/package=colorspace
   authors:
   - family-names: Ihaka

@@ -55,7 +55,7 @@ plot_volcano_summary(
 )
 
 ## S7 method for class <MOObject::multiOmicDataSet>
-plot_volcano_summary(
+\special{plot_volcano_summary(
   moo_diff,
   feature_id_colname = NULL,
   change_colname = NULL,
@@ -101,10 +101,10 @@ plot_volcano_summary(
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   plots_subdir = "diff"
-)
+)}
 
 ## S7 method for class <data.frame>
-plot_volcano_summary(
+\special{plot_volcano_summary(
   moo_diff,
   feature_id_colname = NULL,
   change_colname = NULL,
@@ -150,7 +150,7 @@ plot_volcano_summary(
   print_plots = options::opt("print_plots"),
   save_plots = options::opt("save_plots"),
   plots_subdir = "diff"
-)
+)}
 }
 \arguments{
 \item{moo_diff}{multiOmicDataSet or differential expression analysis result data frame.}
