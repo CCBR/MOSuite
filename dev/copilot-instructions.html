@@ -141,8 +141,7 @@
 <li>If mixed changes are present, split into multiple logical commits; the number of commits does not need to equal the number of files changed.</li>
 <li>Subject format must be: <code>&lt;type&gt;(optional-scope): short imperative summary</code> (&lt;=72 chars), e.g., <code>fix(profile): update release table parser</code>.</li>
 <li>Add a body only when needed to explain <strong>why</strong> and notable impact; never include secrets, tokens, PHI, or large diffs.</li>
-<li>For AI-assisted commits, add this final italicized footer line in the commit message body: <em>commit message is ai-generated</em>
-</li>
+<li>For AI-assisted commits, add this final italicized footer line to the end commit message body: <code>_AI-assisted_: &lt;model&gt;</code> (fill in <model> with the actual model, e.g. Claude Sonnet 5, if known.</model></li>
 </ul><p>Suggested prompt for AI tools:</p>
 <pre class="text"><code>Create a Conventional Commit message from this staged diff.
 Rules:

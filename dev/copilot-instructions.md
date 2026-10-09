@@ -157,8 +157,9 @@ AI-assistance disclosure field in the PR body.*
   e.g., `fix(profile): update release table parser`.
 - Add a body only when needed to explain **why** and notable impact;
   never include secrets, tokens, PHI, or large diffs.
-- For AI-assisted commits, add this final italicized footer line in the
-  commit message body: *commit message is ai-generated*
+- For AI-assisted commits, add this final italicized footer line to the
+  end commit message body: `_AI-assisted_: <model>` (fill in with the
+  actual model, e.g. Claude Sonnet 5, if known.
 
 Suggested prompt for AI tools:
 
