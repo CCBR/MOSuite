@@ -3,7 +3,7 @@ name: add-changelog-entry
 description: >-
   Add or update a project's changelog entry in NEWS.md or CHANGELOG.md. Use for user-facing features and bug fixes, or when asked to edit, draft, or review a changelog. Do not use for developer-only changes.
 metadata:
-  quiver-version: "1.0.0"
+  quiver-version: "1"
   quiver-authors: "kelly-sovacool"
   quiver-reviewers: "kopardev"
 ---
