@@ -25,11 +25,9 @@ ENV PKG_INCLUDE_LINKINGTO=TRUE
 # --mount avoids baking a copy of the source into the image; rw lets the test
 # suite write to the mount (discarded afterwards)
 RUN --mount=type=bind,source=.,target=/opt/MOSuite,rw \
+  --mount=type=bind,source=docker/install_main.R,target=/opt/install_main.R \
   Rscript -e 'install.packages("pak", repos = sprintf("https://r-lib.github.io/p/pak/stable/%s/%s/%s", .Platform$pkgType, R.Version()$os, R.Version()$arch))' && \
-  Rscript -e 'pak::pkg_install(c("devtools", "readr", "tibble"))' && \
-  Rscript -e 'pak::pkg_install("local::/opt/MOSuite", dependencies = TRUE, upgrade = FALSE)' && \
-  Rscript -e "library(MOSuite); devtools::test('/opt/MOSuite')" && \
-  Rscript -e "readr::write_csv(tibble::as_tibble(installed.packages()), '/data/r-packages_mosuite.csv')"
+  Rscript /opt/install_main.R
 
 # add mosuite exec to the path
 RUN Rscript -e 'executable <- system.file("exec", "mosuite", package = "MOSuite", mustWork = TRUE); Sys.chmod(executable, mode = "0755"); stopifnot(file.symlink(executable, "/usr/local/bin/mosuite"))' && \
