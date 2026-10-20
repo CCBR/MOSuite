@@ -101,12 +101,16 @@ cd MOSuite
 
 - In an R console, install the R development dependencies with
   `devtools::install_dev_deps()`.
-- Alternatively, we have a docker container available with MOSuite’s
-  dependencies installed:
-  [`docker://nciccbr/mosuite-minmal:latest`](https://hub.docker.com/r/nciccbr/mosuite-minimal).
-  You can launch the container using your preferred engine (e.g. Docker,
-  Podman, apptainer/singularity) with your clone of the repo mounted
-  while developing your contributions.
+- Alternatively, we have a [Dev
+  Container](https://ccbr.github.io/HowTos/docs/containers/dev-containers/)
+  configuration for use with VS Code. We also maintain container images:
+  - [`docker://nciccbr/mosuite:latest`](https://hub.docker.com/r/nciccbr/mosuite)
+    with MOSuite installed.
+  - [`docker://nciccbr/mosuite-minimal:latest`](https://hub.docker.com/r/nciccbr/mosuite-minimal)
+    with MOSuite’s dependencies and development tools (but not MOSuite).
+    You can launch the container using your preferred engine
+    (e.g. Docker, Podman, apptainer/singularity) with your clone of the
+    repo mounted while developing your contributions.
 
 Before you make any changes, make sure the package passes R CMD check by
 running `devtools::check()`. If R CMD check doesn’t pass cleanly, it’s a

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">MOSuite</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.5.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.5.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,12 @@
 <div class="section level4">
 <h4 id="r-dependencies">R dependencies<a class="anchor" aria-label="anchor" href="#r-dependencies"></a></h4>
 <ul><li>In an R console, install the R development dependencies with <code>devtools::install_dev_deps()</code>.</li>
-<li>Alternatively, we have a docker container available with MOSuite’s dependencies installed: <a href="https://hub.docker.com/r/nciccbr/mosuite-minimal" class="external-link"><code>docker://nciccbr/mosuite-minmal:latest</code></a>. You can launch the container using your preferred engine (e.g. Docker, Podman, apptainer/singularity) with your clone of the repo mounted while developing your contributions.</li>
+<li>Alternatively, we have a <a href="https://ccbr.github.io/HowTos/docs/containers/dev-containers/" class="external-link">Dev Container</a> configuration for use with VS Code. We also maintain container images:
+<ul><li>
+<a href="https://hub.docker.com/r/nciccbr/mosuite" class="external-link"><code>docker://nciccbr/mosuite:latest</code></a> with MOSuite installed.</li>
+<li>
+<a href="https://hub.docker.com/r/nciccbr/mosuite-minimal" class="external-link"><code>docker://nciccbr/mosuite-minimal:latest</code></a> with MOSuite’s dependencies and development tools (but not MOSuite). You can launch the container using your preferred engine (e.g. Docker, Podman, apptainer/singularity) with your clone of the repo mounted while developing your contributions.</li>
+</ul></li>
 </ul><p>Before you make any changes, make sure the package passes R CMD check by running <code>devtools::check()</code>. If R CMD check doesn’t pass cleanly, it’s a good idea to <strong>ask for help before continuing</strong>.</p>
 </div>
 <div class="section level4">
