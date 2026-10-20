@@ -114,29 +114,12 @@ jobs:
           IMAGE: ${{ env.NAMESPACE }}/${{ matrix.image }}@${{ steps.build.outputs.digest }}
           IMAGE_KIND: ${{ matrix.image }}
         run: |
-          docker run --rm --entrypoint /bin/bash \
+          docker run --rm \
             -e IMAGE_KIND="${IMAGE_KIND}" \
             -v "${GITHUB_WORKSPACE}/DESCRIPTION:/tmp/MOSuite-DESCRIPTION:ro" \
-            "${IMAGE}" -c '
-            set -eu
-            Rscript -e '\''stopifnot(
-              description <- read.dcf("/tmp/MOSuite-DESCRIPTION", fields =
-                c("Depends", "Imports", "LinkingTo")),
-              dependency_fields <- description[1L, ],
-              dependency_fields <- dependency_fields[!is.na(dependency_fields)],
-              dependency_specs <- trimws(unlist(strsplit(
-                paste(dependency_fields, collapse = ","), ",", fixed = TRUE
-              ))),
-              dependency_names <- unique(trimws(sub(
-                "[[:space:]]*[(].*$", "", dependency_specs
-              ))),
-              dependency_names <- setdiff(dependency_names, c("R", "MOSuite")),
-              all(vapply(dependency_names,
-                requireNamespace, logical(1), quietly = TRUE)),
-              requireNamespace("MOSuite", quietly = TRUE) ==
-                (Sys.getenv("IMAGE_KIND") == "mosuite")
-            )'\''
-          '
+            -v "${GITHUB_WORKSPACE}/docker/check-image-packages.R:/tmp/check-image-packages.R:ro" \
+            "${IMAGE}" Rscript /tmp/check-image-packages.R \
+            "${IMAGE_KIND}" /tmp/MOSuite-DESCRIPTION
       - name: Export digest
         env:
           DIGEST: ${{ steps.build.outputs.digest }}
