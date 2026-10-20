@@ -27,7 +27,7 @@ ENV PKG_INCLUDE_LINKINGTO=TRUE
 RUN --mount=type=bind,source=.,target=/opt/MOSuite,rw \
   Rscript -e 'install.packages("pak", repos = sprintf("https://r-lib.github.io/p/pak/stable/%s/%s/%s", .Platform$pkgType, R.Version()$os, R.Version()$arch))' && \
   Rscript -e 'pak::pkg_install(c("devtools", "readr", "tibble"))' && \
-  Rscript -e "devtools::install_local('/opt/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com', upgrade='never')" && \
+  Rscript -e 'pak::pkg_install("local::/opt/MOSuite", dependencies = TRUE, upgrade = FALSE)' && \
   Rscript -e "library(MOSuite); devtools::test('/opt/MOSuite')" && \
   Rscript -e "readr::write_csv(tibble::as_tibble(installed.packages()), '/data/r-packages_mosuite.csv')"
 
