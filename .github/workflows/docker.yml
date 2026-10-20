@@ -64,28 +64,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: [mosuite, mosuite-minimal, mosuite-dev]
+        image: [mosuite, mosuite-minimal]
         platform: [linux/amd64, linux/arm64]
-        exclude:
-          # the nciccbr/ccbr_ubuntu_24.04 base image is only published for amd64
-          - image: mosuite
-            platform: linux/arm64
-          - image: mosuite-minimal
-            platform: linux/arm64
         include:
           - image: mosuite
             dockerfile: docker/Dockerfile
           - image: mosuite-minimal
             dockerfile: docker/Dockerfile-minimal
-          - image: mosuite-dev
-            dockerfile: docker/Dockerfile-dev
-          # build natively per arch; emulating R package compilation is too slow
           - platform: linux/amd64
             platform_pair: linux-amd64
             runner: ubuntu-latest
           - platform: linux/arm64
             platform_pair: linux-arm64
-            runner: ubuntu-24.04-arm
+            runner: ubuntu-26.04-arm
     steps:
       - uses: actions/checkout@v7
         with:
@@ -118,6 +109,34 @@ jobs:
             }},mode=max,image-manifest=true,oci-mediatypes=true
           outputs: type=image,name=${{ env.NAMESPACE }}/${{ matrix.image
             }},push-by-digest=true,name-canonical=true,push=true
+      - name: Check image packages
+        env:
+          IMAGE: ${{ env.NAMESPACE }}/${{ matrix.image }}@${{ steps.build.outputs.digest }}
+          IMAGE_KIND: ${{ matrix.image }}
+        run: |
+          docker run --rm --entrypoint /bin/bash \
+            -e IMAGE_KIND="${IMAGE_KIND}" \
+            -v "${GITHUB_WORKSPACE}/DESCRIPTION:/tmp/MOSuite-DESCRIPTION:ro" \
+            "${IMAGE}" -c '
+            set -eu
+            Rscript -e '\''stopifnot(
+              description <- read.dcf("/tmp/MOSuite-DESCRIPTION", fields =
+                c("Depends", "Imports", "LinkingTo")),
+              dependency_fields <- description[1L, ],
+              dependency_fields <- dependency_fields[!is.na(dependency_fields)],
+              dependency_specs <- trimws(unlist(strsplit(
+                paste(dependency_fields, collapse = ","), ",", fixed = TRUE
+              ))),
+              dependency_names <- unique(trimws(sub(
+                "[[:space:]]*[(].*$", "", dependency_specs
+              ))),
+              dependency_names <- setdiff(dependency_names, c("R", "MOSuite")),
+              all(vapply(dependency_names,
+                requireNamespace, logical(1), quietly = TRUE)),
+              requireNamespace("MOSuite", quietly = TRUE) ==
+                (Sys.getenv("IMAGE_KIND") == "mosuite")
+            )'\''
+          '
       - name: Export digest
         env:
           DIGEST: ${{ steps.build.outputs.digest }}
@@ -141,7 +160,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: [mosuite, mosuite-minimal, mosuite-dev]
+        image: [mosuite, mosuite-minimal]
     steps:
       - uses: actions/checkout@v7
       - name: Download digests
@@ -172,15 +191,3 @@ jobs:
           docker buildx imagetools create "${tags[@]}" \
             $(printf "${IMAGE}@sha256:%s " *)
           docker buildx imagetools inspect "${IMAGE}:${VERSION}"
-      - name: Build and push
-        uses: docker/build-push-action@v7
-        with:
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.vars.outputs.docker_tags }}
-          context: ${{ env.CONTEXT }}
-          file: ${{ steps.vars.outputs.dockerfile_path }}
-          build-args: |
-            BUILD_DATE=${{ steps.vars.outputs.date }}
-            BUILD_TAG=${{ steps.vars.outputs.version }}
-            REPONAME=${{ steps.vars.outputs.image_name }}
-            R_VERSION=${{ env.R_VERSION }}

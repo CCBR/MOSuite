@@ -1,6 +1,6 @@
 {
   "build": {
-    "dockerfile": "../docker/Dockerfile-dev",
+    "dockerfile": "../docker/Dockerfile-minimal",
     "context": ".."
   },
   "features": {

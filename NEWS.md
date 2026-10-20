@@ -1,5 +1,7 @@
 ## MOSuite development version
 
+- Container images now use Rocker and support Linux AMD64 and ARM64. (#259, @kelly-sovacool)
+
 ## MOSuite 0.5.0
 
 - The `multiOmicDataSet` class has been moved to a new package, `MOObject`. (#277, @kelly-sovacool)

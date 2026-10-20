@@ -1,4 +1,9 @@
-FROM nciccbr/ccbr_ubuntu_24.04:v1
+ARG R_VERSION=4.5
+FROM rocker/r-ver:${R_VERSION}
+
+ARG R_VERSION
+ENV R_VERSION=${R_VERSION}
+ARG QUARTO_VERSION=1.10.19
 
 # build time variables
 ARG BUILD_DATE="000000"
@@ -8,67 +13,34 @@ ENV BUILD_TAG=${BUILD_TAG}
 ARG REPONAME="000000"
 ENV REPONAME=${REPONAME}
 
-ARG R_VERSION=4.4
-ENV R_VERSION=${R_VERSION}
+RUN apt-get update && \
+  apt-get install -y --no-install-recommends ca-certificates git pandoc && \
+  apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# install conda packages
-RUN mamba install -y -c conda-forge \
-    r-base=${R_VERSION} \
-    r-argparse \
-    r-amap \
-    r-broom \
-    r-cffr \
-    r-colorspace \
-    r-dendextend \
-    r-devtools \
-    r-ggplot2 \
-    r-dplyr \
-    r-ggrepel \
-    r-gridExtra \
-    r-here \
-    r-matrix \
-    r-mgcv \
-    r-pak \
-    r-patchwork \
-    r-plotly \
-    r-rcolorbrewer \
-    r-readr \
-    r-remotes \
-    r-rmarkdown \
-    r-survival \
-    r-upsetr \
-    r-viridis \
-    bioconductor-annotationdbi \
-    bioconductor-annotate \
-    bioconductor-complexheatmap \
-    bioconductor-delayedarray \
-    bioconductor-deseq2 \
-    bioconductor-edger \
-    bioconductor-genomicranges \
-    bioconductor-keggrest \
-    bioconductor-limma \
-    bioconductor-s4arrays \
-    bioconductor-summarizedexperiment \
-    bioconductor-sva \
-  && conda clean -afy
+RUN /rocker_scripts/install_quarto.sh "${QUARTO_VERSION}"
+
+ENV PKG_INCLUDE_LINKINGTO=TRUE
 
 # install R package
 # --mount avoids baking a copy of the source into the image; rw lets the test
 # suite write to the mount (discarded afterwards)
-RUN --mount=type=bind,source=.,target=/opt2/MOSuite,rw \
-  R -e "devtools::install_local('/opt2/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com', upgrade='never')" && \
-  R -e "library(MOSuite); devtools::test('/opt2/MOSuite')" && \
-  R -s -e "readr::write_csv(tibble::as_tibble(installed.packages()), '/data2/r-packages_mosuite.csv')"
+RUN --mount=type=bind,source=.,target=/opt/MOSuite,rw \
+  Rscript -e 'install.packages("pak", repos = sprintf("https://r-lib.github.io/p/pak/stable/%s/%s/%s", .Platform$pkgType, R.Version()$os, R.Version()$arch))' && \
+  Rscript -e 'pak::pkg_install(c("devtools", "readr", "tibble"))' && \
+  Rscript -e "devtools::install_local('/opt/MOSuite', dependencies = TRUE, repos='http://cran.rstudio.com', upgrade='never')" && \
+  Rscript -e "library(MOSuite); devtools::test('/opt/MOSuite')" && \
+  Rscript -e "readr::write_csv(tibble::as_tibble(installed.packages()), '/data/r-packages_mosuite.csv')"
 
 # add mosuite exec to the path
-RUN chmod -R +x /opt2/conda/lib/R/library/MOSuite/exec
-ENV PATH="$PATH:/opt2/conda/lib/R/library/MOSuite/exec"
-RUN mosuite --help
+RUN Rscript -e 'executable <- system.file("exec", "mosuite", package = "MOSuite", mustWork = TRUE); Sys.chmod(executable, mode = "0755"); stopifnot(file.symlink(executable, "/usr/local/bin/mosuite"))' && \
+  mosuite --help
 
 # copy .Rprofile to R_HOME
-ADD .github/.Rprofile /opt2/conda/lib/R/
+RUN --mount=type=bind,source=.github/.Rprofile,target=/opt/mosuite.Rprofile \
+  cat /opt/mosuite.Rprofile >> "${R_HOME}/etc/Rprofile.site"
 
 # cleanup
 WORKDIR /data2
 RUN apt-get clean && apt-get purge \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+CMD ["/bin/bash"]
