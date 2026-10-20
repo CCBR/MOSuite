@@ -9,6 +9,12 @@ if (!is.null(cran) && grepl("__linux__", cran, fixed = TRUE)) {
 
 pak::pkg_install(c("devtools", "readr", "tibble"))
 pak::pkg_install("local::/opt/MOSuite", dependencies = TRUE, upgrade = FALSE)
+Sys.setenv(
+  CI = "true",
+  OTEL_TRACES_EXPORTER = "none",
+  OTEL_LOGS_EXPORTER = "none",
+  OTEL_METRICS_EXPORTER = "none"
+)
 devtools::test("/opt/MOSuite", stop_on_failure = TRUE)
 
 dir.create("/data", showWarnings = FALSE)
