@@ -28,11 +28,11 @@ repos:
         args: ["-I=.github/WORDLIST.txt"]
   # R formatting
   - repo: https://github.com/posit-dev/air-pre-commit
-    rev: 0.12.0
+    rev: 0.13.0
     hooks:
       - id: air-format
   - repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.4.3.9032 # a62d29d6b2c785637593e03010c5cac7c2916777 # v0.4.3.9029
+    rev: v0.4.3.9034 # a62d29d6b2c785637593e03010c5cac7c2916777 # v0.4.3.9029
     hooks:
       - id: parsable-R
       - id: use-tidy-description
@@ -41,7 +41,7 @@ repos:
         verbose: true
   # enforce commit format
   - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: conventional-pre-commit
         stages: [commit-msg]
