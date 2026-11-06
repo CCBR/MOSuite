@@ -224,10 +224,12 @@ approve & merge it if the PR meets quality standards.
 
 ## Onboarding checklist for new developers
 
-- Read `.github/CONTRIBUTING.md` and `.github/copilot-instructions.md`.
-- Configure VSCode workspace to open `copilot-instructions.md` by
-  default (so Copilot Chat sees it).
-- Install pre-commit and run `pre-commit install`.
+Read `.github/CONTRIBUTING.md` and `.github/copilot-instructions.md`.
+
+Configure VSCode workspace to open `copilot-instructions.md` by default
+(so Copilot Chat sees it).
+
+Install pre-commit and run `pre-commit install`.
 
 ## Appendix: VSCode snippet (drop into `.vscode/snippets/craft.code-snippets`)
 
