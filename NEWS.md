@@ -1,5 +1,7 @@
 ## MOSuite development version
 
+- Fix Venn intersection summaries when contrasts have identical
+  significant-gene sets.
 - Container images now use Rocker and support Linux AMD64 and ARM64. (#259, @kelly-sovacool)
 
 ## MOSuite 0.5.0
