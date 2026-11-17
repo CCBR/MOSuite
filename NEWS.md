@@ -1,7 +1,7 @@
 ## MOSuite development version
 
 - Report an error instead of choosing the first file when the MOO loader
-  finds multiple RDS inputs.
+  finds multiple RDS inputs. (#295, @TJoshMeyer)
 - Container images now use Rocker and support Linux AMD64 and ARM64. (#259, @kelly-sovacool)
 
 ## MOSuite 0.5.0
