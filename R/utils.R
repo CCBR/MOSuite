@@ -204,8 +204,9 @@ setup_capsule_environment <- function(
 
 #' Load multiOmicDataSet from data directory
 #'
-#' Searches the ../data directory for .rds files and loads the first matching
-#' multiOmicDataSet object. Validates that the loaded object is of the correct class.
+#' Searches recursively for a single .rds file and loads its multiOmicDataSet.
+#' An error is raised if no files or multiple files are found, or if the object
+#' is not a multiOmicDataSet.
 #'
 #' @param data_dir path to data directory containing .rds file (default: `../data`)
 #'
@@ -228,6 +229,14 @@ load_moo_from_data_dir <- function(data_dir = file.path("..", "data")) {
 
   if (length(moo_files) == 0) {
     stop(glue::glue("No files matching regex: {regex_moo}"))
+  }
+  if (length(moo_files) > 1) {
+    stop(
+      "Multiple RDS files found: ",
+      paste(moo_files, collapse = ", "),
+      ". Remove extra RDS files and attach only the intended result.",
+      call. = FALSE
+    )
   }
 
   moo_filename <- moo_files[1]
