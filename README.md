@@ -44,10 +44,19 @@ remotes::install_github("CCBR/MOSuite", dependencies = TRUE, ref = "v0.3.0")
 There is also a Docker container available at
 [dockerhub](https://hub.docker.com/r/nciccbr/mosuite) and
 [ghcr](https://ghcr.io/ccbr/mosuite) to use with your preferred
-container engine:
+container engine.
+
+dockerhub:
 
 ``` sh
-apptainer exec docker://ghcr.io/nciccbr/mosuite:v0.5.0 R -s -e \
+apptainer exec docker://nciccbr/mosuite:v0.5.0 R -s -e \
+  'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'
+```
+
+ghcr:
+
+``` sh
+apptainer exec docker://ghcr.io/ccbr/mosuite:v0.5.0 R -s -e \
   'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'
 ```
 
