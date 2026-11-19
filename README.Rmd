@@ -23,6 +23,8 @@ R package for differential multi-omics analysis
 [![CodeQL](https://github.com/CCBR/MOSuite/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/CCBR/MOSuite/actions/workflows/github-code-scanning/codeql)
 [![version](https://img.shields.io/github/v/release/ccbr/mosuite)](https://github.com/CCBR/MOSuite/releases/latest)
 [![docker](https://img.shields.io/docker/v/nciccbr/mosuite?logo=docker&label=docker&color=blue)](https://hub.docker.com/r/nciccbr/mosuite)
+[![GHCR](https://img.shields.io/badge/GHCR-mosuite-blue?logo=github)](https://github.com/CCBR/MOSuite/pkgs/container/mosuite)
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16371580.svg)](https://doi.org/10.5281/zenodo.16371580)
 <!-- badges: end -->
 
@@ -48,10 +50,20 @@ Or install a specific version:
 remotes::install_github("CCBR/MOSuite", dependencies = TRUE, ref = "v0.3.0")
 ```
 
-There is also a Docker container available at <https://hub.docker.com/r/nciccbr/mosuite>
+There is also a Docker container available at [dockerhub](https://hub.docker.com/r/nciccbr/mosuite) and [ghcr](https://ghcr.io/ccbr/mosuite) to use with your preferred container engine.
 
+The `mosuite` and `mosuite-minimal` GHCR packages are public and can be pulled
+anonymously.
+
+dockerhub:
 ```sh
-singularity exec docker://nciccbr/mosuite:v0.3.0 R -s -e \
+apptainer exec docker://nciccbr/mosuite:v0.5.0 R -s -e \
+  'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'
+```
+
+ghcr:
+```sh
+apptainer exec docker://ghcr.io/ccbr/mosuite:v0.5.0 R -s -e \
   'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'
 ```
 
