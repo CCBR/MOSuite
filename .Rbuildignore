@@ -1,5 +1,6 @@
 ^_pkgdown\.yml$
 ^[.]?air[.]toml$
+^\.dockerignore$
 ^\.github$
 ^\.lintr$
 ^\.posit$
@@ -38,4 +39,4 @@
 VennDiagram.*\.log
 ^\.posit/assistant$
 ^AGENTS\.md$
-^.devcontainer/$
+^\.devcontainer$

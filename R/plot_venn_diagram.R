@@ -296,13 +296,13 @@ S7::method(plot_venn_diagram, S7::class_data.frame) <- function(
       return(sprintf("(%s)", paste(x, collapse = " ")))
     })
     tab <- table(Intersection)
-    tab <- tab[order(tab)]
+    tab <- tab[order(tab), drop = FALSE]
     nn <- stringr::str_count(names(tab), pattern = "\\{\\}")
-    tab <- tab[order(nn, decreasing = FALSE)]
+    tab <- tab[order(nn, decreasing = FALSE), drop = FALSE]
     names(tab) <- gsub("\\{\\} | \\{\\}|\\{\\} |\\{\\} \\{\\}", "", names(tab))
     names(tab) <- sub("\\( ", "(", names(tab))
     names(tab) <- gsub(" ", " \u2229 ", names(tab))
-    tab <- tab[names(tab) != "()"] |>
+    tab <- tab[names(tab) != "()", drop = FALSE] |>
       data.frame() |>
       dplyr::rename("Intersection" = Var1, "Size" = Freq) |>
       tibble::rownames_to_column("Id") |>
