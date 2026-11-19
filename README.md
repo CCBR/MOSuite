@@ -46,6 +46,9 @@ There is also a Docker container available at
 [ghcr](https://ghcr.io/ccbr/mosuite) to use with your preferred
 container engine.
 
+The `mosuite` and `mosuite-minimal` GHCR packages are public and can be
+pulled anonymously.
+
 dockerhub:
 
 ``` sh

@@ -52,6 +52,9 @@ remotes::install_github("CCBR/MOSuite", dependencies = TRUE, ref = "v0.3.0")
 
 There is also a Docker container available at [dockerhub](https://hub.docker.com/r/nciccbr/mosuite) and [ghcr](https://ghcr.io/ccbr/mosuite) to use with your preferred container engine.
 
+The `mosuite` and `mosuite-minimal` GHCR packages are public and can be pulled
+anonymously.
+
 dockerhub:
 ```sh
 apptainer exec docker://nciccbr/mosuite:v0.5.0 R -s -e \

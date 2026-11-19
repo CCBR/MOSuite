@@ -5,14 +5,14 @@ on:
     inputs:
       docker_image_tag:
         description:
-          "Prerelease tag to apply to the built docker image (e.g.
-          'v0.3.0-alpha' or 'v0.3.0.9000'). Must use X.Y.Z-<prerelease> or
-          X.Y.Z.<number>, with an optional v prefix. If not specified, it
-          will be determined from the DESCRIPTION file."
+          "Prerelease tag to apply to the built docker image (e.g. 'v0.3.0.9000' or
+          'v0.3.0-my-feature'). Must be a valid docker tag and must not match an
+          existing GitHub release tag. If not specified, it will be
+          determined from the DESCRIPTION file."
         required: false
         default: ""
   release:
-    types: [published]
+    types: [published, released]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -24,6 +24,8 @@ env:
 
 jobs:
   vars:
+    # Stable publications also emit "released"; run only that event for stable releases.
+    if: github.event_name != 'release' || github.event.action != 'published' || github.event.release.prerelease
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -41,6 +43,8 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           REF_NAME: ${{ github.ref_name }}
           INPUT_TAG: ${{ inputs.docker_image_tag }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           if [ "${EVENT_NAME}" = "release" ]; then
             version="${REF_NAME}"
@@ -49,11 +53,23 @@ jobs:
           else
             version="$(grep '^Version:' ./DESCRIPTION | sed 's/Version: /v/')"
           fi
-          if [ "${EVENT_NAME}" = "workflow_dispatch" ] &&
-            { [[ ! "${version}" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9][a-zA-Z0-9._-]*|\.[0-9]+)$ ]] ||
-              [ "${#version}" -gt 128 ]; }; then
-            echo "::error::Manual runs require a prerelease tag of at most 128 characters (e.g. v0.3.0-alpha or v0.3.0.9000); got '${version}'"
-            exit 1
+          if [ "${EVENT_NAME}" = "workflow_dispatch" ]; then
+            if [[ ! "${version}" =~ ^[A-Za-z0-9_][A-Za-z0-9_.-]{0,127}$ ]]; then
+              echo "::error::'${version}' is not a valid docker tag"
+              exit 1
+            fi
+            if [ "${version}" = "latest" ] || [[ "${version}" == buildcache-* ]]; then
+              echo "::error::'${version}' is reserved for release and cache images"
+              exit 1
+            fi
+            # don't let manual builds overwrite images published for a release
+            if err="$(gh api "repos/${GH_REPO}/releases/tags/${version}" 2>&1 >/dev/null)"; then
+              echo "::error::'${version}' is an existing release tag; choose a different tag for manual builds"
+              exit 1
+            elif [[ "${err}" != *"HTTP 404"* ]]; then
+              echo "::error::Could not check whether '${version}' is a release tag: ${err}"
+              exit 1
+            fi
           fi
           echo "version=${version}" >> "$GITHUB_OUTPUT"
 
