@@ -67,6 +67,7 @@
 <p>R package for differential multi-omics analysis</p>
 <!-- badges: start -->
 
+<p><a href="https://doi.org/10.5281/zenodo.16371580" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.16371580.svg" alt="DOI"></a> <!-- badges: end --></p>
 <p>Multi-Omics Suite provides a suite of functions to clean, filter, batch-correct, normalize, visualize, and perform differential expression analysis. While the package is designed for differential <a href="https://github.com/CCBR/RENEE" class="external-link">RNA-seq</a> analysis and multi-omics datasets, it can be used for any data represented in a counts table. See the website for more information, documentation, and examples: <a href="https://ccbr.github.io/MOSuite/" class="uri">https://ccbr.github.io/MOSuite/</a></p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -78,9 +79,14 @@
 <p>Or install a specific version:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CCBR/MOSuite"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span>, ref <span class="op">=</span> <span class="st">"v0.3.0"</span><span class="op">)</span></span></code></pre></div>
-<p>There is also a Docker container available at <a href="https://hub.docker.com/r/nciccbr/mosuite" class="external-link uri">https://hub.docker.com/r/nciccbr/mosuite</a></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">singularity</span> exec docker://nciccbr/mosuite:v0.3.0 R <span class="at">-s</span> <span class="at">-e</span> <span class="dt">\</span></span>
+<p>There is also a Docker container available at <a href="https://hub.docker.com/r/nciccbr/mosuite" class="external-link">dockerhub</a> and <a href="https://ghcr.io/ccbr/mosuite" class="external-link">ghcr</a> to use with your preferred container engine.</p>
+<p>The <code>mosuite</code> and <code>mosuite-minimal</code> GHCR packages are public and can be pulled anonymously.</p>
+<p>dockerhub:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">apptainer</span> exec docker://nciccbr/mosuite:v0.5.0 R <span class="at">-s</span> <span class="at">-e</span> <span class="dt">\</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="st">'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'</span></span></code></pre></div>
+<p>ghcr:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">apptainer</span> exec docker://ghcr.io/ccbr/mosuite:v0.5.0 R <span class="at">-s</span> <span class="at">-e</span> <span class="dt">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="st">'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -156,7 +162,7 @@
 <li><a href="https://github.com/CCBR/MOSuite/actions/workflows/github-code-scanning/codeql" class="external-link"><img src="https://github.com/CCBR/MOSuite/actions/workflows/github-code-scanning/codeql/badge.svg" alt="CodeQL"></a></li>
 <li><a href="https://github.com/CCBR/MOSuite/releases/latest" class="external-link"><img src="https://img.shields.io/github/v/release/ccbr/mosuite" alt="version"></a></li>
 <li><a href="https://hub.docker.com/r/nciccbr/mosuite" class="external-link"><img src="https://img.shields.io/docker/v/nciccbr/mosuite?logo=docker&amp;label=docker&amp;color=blue" alt="docker"></a></li>
-<li><a href="https://doi.org/10.5281/zenodo.16371580" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.16371580.svg" alt="DOI"></a></li>
+<li><a href="https://github.com/CCBR/MOSuite/pkgs/container/mosuite" class="external-link"><img src="https://img.shields.io/badge/GHCR-mosuite-blue?logo=github" alt="GHCR"></a></li>
 </ul>
 </div>
 
