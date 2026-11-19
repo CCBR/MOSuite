@@ -30,6 +30,23 @@ test_that("plot_venn_diagram raises condition for empty df", {
   )
 })
 
+test_that("identical contrast memberships retain a single intersection", {
+  genes <- paste0("gene", seq_len(4))
+  memberships <- data.frame(
+    GeneName = rep(genes, 2),
+    Contrast = rep(c("B_X-A_X", "B_X-C_X"), each = length(genes))
+  )
+  result <- plot_venn_diagram(
+    memberships,
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+  expect_setequal(result$Gene, genes)
+  expect_identical(unique(result$Id), 1)
+  expect_equal(unique(result$Size), length(genes))
+  expect_length(unique(result$Intersection), 1)
+})
+
 test_that("intersection matrix assignment avoids recursive evaluation error", {
   # This test demonstrates the fix for the recursive default argument reference error
   # The error occurred with this pattern:
