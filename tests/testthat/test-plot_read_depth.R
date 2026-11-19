@@ -88,3 +88,24 @@ test_that("plot_read_depth extends undersupplied group colors", {
     c("blue", "#e1562c", "#b80058")
   )
 })
+
+test_that("plot_read_depth uses constructor-style default colors for colorless moo objects", {
+  moo <- multiOmicDataSet(
+    sample_metadata = nidap_sample_metadata,
+    anno_dat = data.frame(),
+    counts_lst = list("raw" = nidap_raw_counts)
+  )
+
+  plot <- plot_read_depth(
+    moo,
+    count_type = "raw",
+    sample_id_colname = "Sample",
+    group_colname = "Group"
+  )
+
+  built <- ggplot2::ggplot_build(plot)
+  expect_equal(
+    unique(built$data[[1]]$fill),
+    unname(get_moo_default_colors(moo, "Group"))
+  )
+})

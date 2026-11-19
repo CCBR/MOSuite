@@ -494,3 +494,36 @@ test_that("filter_diff accepts valid plot_type values", {
     moo |> filter_diff(plot_type = "pie")
   )
 })
+
+test_that("filter_diff excludes exact boundary values using strict comparisons", {
+  options(moo_print_plots = FALSE)
+  boundary_df <- data.frame(
+    Gene = c(
+      "both_boundary",
+      "p_boundary",
+      "fc_boundary",
+      "strict_hit",
+      "neither"
+    ),
+    `B-A_FC` = c(2, 1.414, 2, 2.3, 1.414),
+    `B-A_logFC` = c(1.0, 0.5, 1.0, 1.2, 0.5),
+    `B-A_tstat` = c(2.0, 1.0, 2.0, 2.5, 1.0),
+    `B-A_pval` = c(0.05, 0.05, 0.06, 0.04, 0.06),
+    `B-A_adjpval` = c(0.05, 0.05, 0.06, 0.04, 0.06),
+    check.names = FALSE
+  )
+  moo <- moo_nidap
+  moo@analyses$diff <- list("B-A" = boundary_df)
+  out <- filter_diff(
+    moo,
+    feature_id_colname = "Gene",
+    significance_column = "adjpval",
+    significance_cutoff = 0.05,
+    change_column = "logFC",
+    change_cutoff = 1.0,
+    filtering_mode = "any",
+    print_plots = FALSE,
+    save_plots = FALSE
+  )
+  expect_equal(out@analyses$diff_filt$Gene, "strict_hit")
+})

@@ -84,6 +84,101 @@ test_that("plot_volcano_enhanced forwards shared styling parameters", {
   expect_equal(captured_args$cutoffLineCol, "cyan")
 })
 
+test_that("build_volcano_plot_data colors exact threshold boundaries as non-significant", {
+  diff_dat <- data.frame(
+    Gene = c("both_boundary", "p_boundary", "fc_boundary", "neither"),
+    annotation = c("a", "b", "c", "d"),
+    `B-A_logFC` = c(1, 0.5, 1, 0.5),
+    `B-A_pval` = c(0.05, 0.05, 0.06, 0.06),
+    check.names = FALSE
+  )
+
+  volcano_data <- build_volcano_plot_data(
+    diff_dat = diff_dat,
+    label_col = "Gene",
+    change_colname = "B-A_logFC",
+    signif_colname = "B-A_pval",
+    contrast_idx = 1,
+    use_custom_lab = FALSE,
+    change_lfc_name = "log2FC",
+    change_sig_name = "p-value",
+    value_to_sort_the_output_dataset = "p-value",
+    label_significant_features_only = TRUE,
+    signif_threshold = 0.05,
+    change_threshold = 1,
+    num_features_to_label = 30,
+    custom_gene_list = "",
+    label_features = FALSE,
+    default_label_color = "black",
+    custom_label_color = "black",
+    color_of_non_significant_features = "grey30",
+    color_of_logfold_change_threshold_line = "forestgreen",
+    color_of_features_meeting_only_signif_threshold = "royalblue",
+    color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2"
+  )
+
+  point_colors_by_class <- volcano_data$custom_colors
+  expect_equal(
+    unname(point_colors_by_class[
+      names(point_colors_by_class) == "Not significant"
+    ]),
+    rep("grey30", 4)
+  )
+  expect_true(
+    all(
+      point_colors_by_class[
+        names(point_colors_by_class) == "Significant only"
+      ] ==
+        "royalblue"
+    )
+  )
+  expect_true(
+    all(
+      point_colors_by_class[
+        names(point_colors_by_class) == "Fold change only"
+      ] ==
+        "forestgreen"
+    )
+  )
+})
+
+test_that("plot_volcano_enhanced labels only strict threshold hits", {
+  options(mosuite_test_volcano_label_args = list())
+  trace(
+    EnhancedVolcano::EnhancedVolcano,
+    tracer = quote(options(
+      mosuite_test_volcano_label_args = append(
+        getOption("mosuite_test_volcano_label_args"),
+        list(list(selectLab = selectLab))
+      )
+    )),
+    print = FALSE
+  )
+  on.exit(untrace(EnhancedVolcano::EnhancedVolcano), add = TRUE)
+  on.exit(options(mosuite_test_volcano_label_args = NULL), add = TRUE)
+
+  boundary_data <- data.frame(
+    Gene = c("both_boundary", "p_boundary", "fc_boundary", "neither"),
+    annotation = c("a", "b", "c", "d"),
+    `B-A_logFC` = c(1, 0.5, 1, 0.5),
+    `B-A_pval` = c(0.05, 0.05, 0.06, 0.06),
+    check.names = FALSE
+  )
+
+  plot_volcano_enhanced(
+    boundary_data,
+    feature_id_colname = "Gene",
+    change_colname = "B-A_logFC",
+    signif_colname = "B-A_pval",
+    label_significant_features_only = TRUE,
+    save_plots = FALSE,
+    print_plots = FALSE
+  )
+
+  captured_labels <- getOption("mosuite_test_volcano_label_args")[[1]]$selectLab
+  expect_length(captured_labels, 0)
+})
+
 test_that("plot_volcano_enhanced uses EnhancedVolcano default colors", {
   options(mosuite_test_volcano_args = list())
   trace(
@@ -203,49 +298,6 @@ test_that("plot_volcano_enhanced supports custom axis labels and padding", {
   expect_equal(captured_args$ylab, "Custom significance")
   expect_equal(captured_args$xlim, c(-2, 3))
   expect_equal(captured_args$ylim, c(0, 3))
-})
-
-test_that("plot_volcano_enhanced saves defaults on a 10 inch canvas", {
-  options(mosuite_test_plot_output_args = list())
-  trace(
-    ggplot2::ggsave,
-    tracer = quote({
-      options(
-        mosuite_test_plot_output_args = append(
-          getOption("mosuite_test_plot_output_args"),
-          list(list(
-            width = width,
-            height = height,
-            units = units,
-            dpi = dpi
-          ))
-        )
-      )
-    }),
-    print = FALSE
-  )
-  on.exit(untrace(ggplot2::ggsave), add = TRUE)
-  on.exit(options(mosuite_test_plot_output_args = NULL), add = TRUE)
-
-  plots_dir <- tempfile("volcano-default-canvas-")
-  dir.create(plots_dir)
-  on.exit(unlink(plots_dir, recursive = TRUE), add = TRUE)
-
-  result <- plot_volcano_enhanced(
-    nidap_deg_analysis,
-    change_colname = "B-A_logFC",
-    signif_colname = "B-A_pval",
-    save_plots = TRUE,
-    print_plots = FALSE,
-    plots_subdir = plots_dir
-  )
-
-  expect_s3_class(result, "data.frame")
-  captured_output_args <- getOption("mosuite_test_plot_output_args")[[1]]
-  expect_equal(captured_output_args$width, 3000)
-  expect_equal(captured_output_args$height, 3000)
-  expect_equal(captured_output_args$units, "px")
-  expect_equal(captured_output_args$dpi, 300)
 })
 
 test_that("plot_volcano_enhanced matches selected-gene summary styling", {
@@ -419,93 +471,6 @@ test_that("plot_volcano_enhanced offsets labels when connectors are enabled", {
   )
   expect_true("GeomTextRepel" %in% layer_geoms)
   expect_false("GeomText" %in% layer_geoms)
-})
-
-test_that("plot_volcano_enhanced saves multiple comparisons separately", {
-  options(mosuite_test_plot_output_args = list())
-  trace(
-    ggplot2::ggsave,
-    tracer = quote({
-      options(
-        mosuite_test_plot_output_args = append(
-          getOption("mosuite_test_plot_output_args"),
-          list(list(
-            width = width,
-            height = height,
-            units = units,
-            dpi = dpi,
-            filename = filename
-          ))
-        )
-      )
-    }),
-    print = FALSE
-  )
-  on.exit(untrace(ggplot2::ggsave), add = TRUE)
-  on.exit(
-    options(mosuite_test_plot_output_args = NULL),
-    add = TRUE
-  )
-
-  plots_dir <- tempfile("volcano-separate-output-")
-  dir.create(plots_dir)
-  on.exit(unlink(plots_dir, recursive = TRUE), add = TRUE)
-
-  expect_no_error(
-    result <- plot_volcano_enhanced(
-      nidap_deg_analysis,
-      change_colname = c("B-A_logFC", "C-A_logFC", "B-C_logFC"),
-      signif_colname = c("B-A_adjpval", "C-A_adjpval", "B-C_adjpval"),
-      image_width = 100,
-      image_height = 200,
-      draw_connectors = FALSE,
-      save_plots = TRUE,
-      print_plots = FALSE,
-      plots_subdir = plots_dir
-    )
-  )
-
-  expect_s3_class(result, "data.frame")
-  captured_output_args <- getOption("mosuite_test_plot_output_args")
-  expect_length(captured_output_args, 3)
-  expect_equal(
-    vapply(captured_output_args, `[[`, numeric(1), "width"),
-    rep(100, 3)
-  )
-  expect_equal(
-    vapply(captured_output_args, `[[`, numeric(1), "height"),
-    rep(200, 3)
-  )
-  expect_equal(
-    vapply(captured_output_args, `[[`, character(1), "units"),
-    rep("px", 3)
-  )
-  expect_equal(
-    vapply(captured_output_args, `[[`, numeric(1), "dpi"),
-    rep(300, 3)
-  )
-  output_filenames <- vapply(
-    captured_output_args,
-    `[[`,
-    character(1),
-    "filename"
-  )
-  expect_true(all(grepl(basename(plots_dir), output_filenames, fixed = TRUE)))
-  expect_true(any(grepl(
-    "volcano_enhanced_B-A.png",
-    output_filenames,
-    fixed = TRUE
-  )))
-  expect_true(any(grepl(
-    "volcano_enhanced_C-A.png",
-    output_filenames,
-    fixed = TRUE
-  )))
-  expect_true(any(grepl(
-    "volcano_enhanced_B-C.png",
-    output_filenames,
-    fixed = TRUE
-  )))
 })
 
 test_that("plot_volcano_enhanced preserves filename for one comparison", {

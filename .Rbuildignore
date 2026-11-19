@@ -1,5 +1,6 @@
 ^_pkgdown\.yml$
 ^[.]?air[.]toml$
+^\.dockerignore$
 ^\.github$
 ^\.lintr$
 ^\.posit$
@@ -30,6 +31,7 @@
 ^Rplots\.pdf$
 ^SECURITY\.md$
 ^tests/figures$
+^tests/testthat/figures/var
 ^vignettes/cli\.Rmd$
 ^vignettes/figures/$
 ^vignettes/memory\.Rmd$
@@ -37,4 +39,4 @@
 VennDiagram.*\.log
 ^\.posit/assistant$
 ^AGENTS\.md$
-^.devcontainer/$
+^\.devcontainer$

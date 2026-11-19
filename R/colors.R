@@ -1,5 +1,193 @@
 utils::globalVariables("mosuite_palette")
 
+#' Set default colors on a multiOmicDataSet
+#'
+#' Populates `moo@analyses$colors` using `get_colors_lst()` with the default MOSuite palette.
+#'
+#' @inheritParams get_colors_lst
+#' @param moo `multiOmicDataSet` object.
+#'
+#' @returns `moo` with constructor-style default colors set at
+#'   `moo@analyses$colors`.
+#' @export
+#'
+#' @examples
+#' moo <- multiOmicDataSet(
+#'   sample_metadata = as.data.frame(nidap_sample_metadata),
+#'   anno_dat = data.frame(),
+#'   counts_lst = list("raw" = as.data.frame(nidap_raw_counts))
+#' )
+#' moo <- set_default_colors(moo)
+#' names(moo@analyses$colors)
+#'
+#' @family moo methods
+set_default_colors <- S7::new_generic(
+  "set_default_colors",
+  "moo",
+  function(moo, palette = mosuite_palette) {
+    return(S7::S7_dispatch())
+  }
+)
+
+S7::method(set_default_colors, multiOmicDataSet) <- function(
+  moo,
+  palette = mosuite_palette
+) {
+  moo@analyses[["colors"]] <- get_colors_lst(
+    sample_metadata = moo@sample_meta,
+    palette = palette
+  )
+  return(moo)
+}
+
+#' Set color palette for a single group/column
+#'
+#' This allows you to set custom palettes individually for groups in the dataset
+#'
+#' @inheritParams get_colors_lst
+#'
+#' @param moo `multiOmicDataSet` object (see `create_multiOmicDataSet_from_dataframes()`)
+#' @param colname group column name to set the palette for
+#'
+#' @returns `moo` with colors updated at `moo@analyses$colors[[colname]]`
+#' @export
+#'
+#' @examples
+#' moo <- create_multiOmicDataSet_from_dataframes(
+#'   sample_metadata = as.data.frame(nidap_sample_metadata),
+#'   counts_dat = as.data.frame(nidap_raw_counts)
+#' )
+#' moo@analyses$colors$Group
+#' moo <- moo |> set_color_pal("Group", palette = RColorBrewer::brewer.pal(3, "Set2"))
+#' moo@analyses$colors$Group
+#'
+#' @family moo methods
+set_color_pal <- S7::new_generic(
+  "set_color_pal",
+  "moo",
+  function(moo, colname, palette = mosuite_palette) {
+    return(S7::S7_dispatch())
+  }
+)
+
+S7::method(set_color_pal, multiOmicDataSet) <- function(
+  moo,
+  colname,
+  palette = mosuite_palette
+) {
+  moo@analyses$colors[[colname]] <- get_colors_vctr(
+    dat = moo@sample_meta,
+    colname = colname,
+    palette = palette
+  )
+  return(moo)
+}
+
+#' Create named list of default colors for plotting
+#'
+#' @inheritParams MOObject::create_multiOmicDataSet_from_dataframes
+#'
+#' @param palette Character vector of colors to assign. Defaults to
+#'   `mosuite_palette`.
+#'
+#' @returns named list, with each column in `sample_metadata` containing a corresponding entry with a named vector of
+#'   colors
+#' @export
+#'
+#' @examples
+#' get_colors_lst(nidap_sample_metadata)
+#' get_colors_lst(nidap_sample_metadata, palette = RColorBrewer::brewer.pal(12, "Set3"))
+get_colors_lst <- function(
+  sample_metadata,
+  palette = mosuite_palette
+) {
+  dat_colnames <- colnames(sample_metadata)
+  n_palette <- length(palette)
+
+  color_offset <- 0L
+  color_lists <- vector("list", length(dat_colnames))
+  for (i in seq_along(dat_colnames)) {
+    colname <- dat_colnames[[i]]
+    n_obs <- length(get_observed_values(sample_metadata, colname))
+    # Only offset when the column is small enough that unique colors are available
+    use_offset <- n_obs <= n_palette / 2 && color_offset + n_obs <= n_palette
+    vctr <- get_colors_vctr(
+      dat = sample_metadata,
+      colname = colname,
+      palette = palette,
+      color_offset = if (use_offset) color_offset else 0L
+    )
+    if (use_offset) {
+      color_offset <- color_offset + n_obs
+    }
+    color_lists[[i]] <- vctr
+  }
+  names(color_lists) <- dat_colnames
+  return(color_lists)
+}
+
+#' Get constructor-style default colors for a multiOmicDataSet column
+#'
+#' Returns stored colors from `moo@analyses$colors[[colname]]` when available;
+#' otherwise recreates the default colors that MOSuite constructors assigned
+#' before the object class moved to MOObject.
+#'
+#' @param moo `multiOmicDataSet` object
+#' @param colname column name in `moo@sample_meta`
+#' @param palette Character vector of colors to assign. Defaults to
+#'   `mosuite_palette`.
+#'
+#' @returns Named character vector of colors, or `NULL` when `colname` is not
+#'   present in `moo@sample_meta`.
+#' @keywords internal
+get_moo_default_colors <- function(
+  moo,
+  colname,
+  palette = mosuite_palette
+) {
+  color_values <- get_moo_default_color_list(
+    moo = moo,
+    colnames = colname,
+    palette = palette
+  )[[1]]
+
+  return(color_values)
+}
+
+#' Get constructor-style default colors for multiple multiOmicDataSet columns
+#'
+#' Returns a named list of colors, one entry per requested column. Stored colors
+#' are preferred and missing entries fall back to constructor-style defaults.
+#'
+#' @inheritParams get_moo_default_colors
+#' @param colnames character vector of column names in `moo@sample_meta`
+#'
+#' @returns Named list of color vectors.
+#' @keywords internal
+get_moo_default_color_list <- function(
+  moo,
+  colnames,
+  palette = mosuite_palette
+) {
+  default_colors <- get_colors_lst(
+    sample_metadata = moo@sample_meta,
+    palette = palette
+  )
+
+  color_list <- lapply(colnames, function(colname) {
+    if (!(colname %in% colnames(moo@sample_meta))) {
+      output <- NULL
+    }
+
+    output <- moo@analyses$colors[[colname]] %||% default_colors[[colname]]
+    return(output)
+  })
+  names(color_list) <- colnames
+
+  return(color_list)
+}
+
+
 #' Get random colors.
 #'
 #' Note: this function is not guaranteed to create a color blind friendly
@@ -70,49 +258,6 @@ get_observed_values <- function(dat, colname) {
   return(unique(observed_values))
 }
 
-
-#' Create named list of default colors for plotting
-#'
-#' @inheritParams create_multiOmicDataSet_from_dataframes
-#'
-#' @param palette Character vector of colors to assign. Defaults to
-#'   `mosuite_palette`.
-#'
-#' @returns named list, with each column in `sample_metadata` containing a corresponding entry with a named vector of
-#'   colors
-#' @export
-#'
-#' @examples
-#' get_colors_lst(nidap_sample_metadata)
-#' get_colors_lst(nidap_sample_metadata, palette = RColorBrewer::brewer.pal(12, "Set3"))
-get_colors_lst <- function(
-  sample_metadata,
-  palette = mosuite_palette
-) {
-  dat_colnames <- colnames(sample_metadata)
-  n_palette <- length(palette)
-
-  color_offset <- 0L
-  color_lists <- vector("list", length(dat_colnames))
-  for (i in seq_along(dat_colnames)) {
-    colname <- dat_colnames[[i]]
-    n_obs <- length(get_observed_values(sample_metadata, colname))
-    # Only offset when the column is small enough that unique colors are available
-    use_offset <- n_obs <= n_palette / 2 && color_offset + n_obs <= n_palette
-    vctr <- get_colors_vctr(
-      dat = sample_metadata,
-      colname = colname,
-      palette = palette,
-      color_offset = if (use_offset) color_offset else 0L
-    )
-    if (use_offset) {
-      color_offset <- color_offset + n_obs
-    }
-    color_lists[[i]] <- vctr
-  }
-  names(color_lists) <- dat_colnames
-  return(color_lists)
-}
 
 #' Get vector of colors for observations in one column of a data frame
 #'
@@ -251,8 +396,10 @@ display_palette <- function(palette = mosuite_palette) {
     idx = factor(seq_len(n))
   )
 
-  p <- plot_palette(df) +
-    ggplot2::labs(title = "mosuite_palette")
+  p <- plot_palette(df)
+  if (all(palette == mosuite_palette)) {
+    p <- p + ggplot2::labs(title = "MOSuite palette")
+  }
 
   return(p)
 }
@@ -331,47 +478,4 @@ plot_palette <- function(dat) {
       plot.margin = ggplot2::margin(4, 4, 4, 4)
     )
   return(p)
-}
-
-#' Set color palette for a single group/column
-#'
-#' This allows you to set custom palettes individually for groups in the dataset
-#'
-#' @inheritParams get_colors_lst
-#'
-#' @param moo `multiOmicDataSet` object (see `create_multiOmicDataSet_from_dataframes()`)
-#' @param colname group column name to set the palette for
-#'
-#' @returns `moo` with colors updated at `moo@analyses$colors[[colname]]`
-#' @export
-#'
-#' @examples
-#' moo <- create_multiOmicDataSet_from_dataframes(
-#'   sample_metadata = as.data.frame(nidap_sample_metadata),
-#'   counts_dat = as.data.frame(nidap_raw_counts)
-#' )
-#' moo@analyses$colors$Group
-#' moo <- moo |> set_color_pal("Group", palette = RColorBrewer::brewer.pal(3, "Set2"))
-#' moo@analyses$colors$Group
-#'
-#' @family moo methods
-set_color_pal <- S7::new_generic(
-  "set_color_pal",
-  "moo",
-  function(moo, colname, palette = mosuite_palette) {
-    return(S7::S7_dispatch())
-  }
-)
-
-S7::method(set_color_pal, multiOmicDataSet) <- function(
-  moo,
-  colname,
-  palette = mosuite_palette
-) {
-  moo@analyses$colors[[colname]] <- get_colors_vctr(
-    dat = moo@sample_meta,
-    colname = colname,
-    palette = palette
-  )
-  return(moo)
 }

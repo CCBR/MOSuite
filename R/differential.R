@@ -19,6 +19,7 @@
 #' @export
 #'
 #' @family moo methods
+#' @family main analysis
 #'
 #' @examples
 #' moo <- multiOmicDataSet(
@@ -98,7 +99,7 @@ diff_counts <- function(
   contrast_colname <- contrast_colname |> unlist()
   contrasts <- contrasts |> unlist()
 
-  # TODO support tibbles
+  # TODO support tibbles (https://github.com/CCBR/MOSuite/issues/97)
   counts_dat <- counts_dat |> as.data.frame()
 
   if (is.null(sample_id_colname)) {
@@ -568,11 +569,11 @@ plot_mean_variance <- function(voom_elist) {
 #' @inheritParams option_params
 #' @inheritParams filter_counts
 #' @param significance_column Column name for significance, e.g. `"pval"` or `"pvaladj"` (default)
-#' @param significance_cutoff Features will only be kept if their `significance_column` is less then this cutoff
-#'   threshold
+#' @param significance_cutoff Features will only be kept if their `significance_column` is less than the cutoff
+#'   threshold (exclusive)
 #' @param change_column Column name for change, e.g. `"logFC"` (default)
-#' @param change_cutoff Features will only be kept if the absolute value of their `change_column` is greater than or
-#'   equal to this cutoff threshold
+#' @param change_cutoff Features will only be kept if the absolute value of their `change_column` is greater than the
+#'   cutoff threshold (exclusive)
 #' @param filtering_mode Accepted values: `"any"` or `"all"` to include features that meet the criteria in _any_
 #'   contrast or in _all_ contrasts
 #' @param include_estimates Column names of estimates to include. Default: `c("FC", "logFC", "tstat", "pval",
@@ -601,6 +602,7 @@ plot_mean_variance <- function(voom_elist) {
 #' @param plots_subdir subdirectory in where plots will be saved if `save_plots` is `TRUE`
 #'
 #' @family moo methods
+#' @family main analysis
 #'
 #' @export
 #'
@@ -744,7 +746,7 @@ filter_diff <- function(
 
   ## filter genes
   significant <- datsignif < significance_cutoff
-  changed <- abs(datchange) >= change_cutoff
+  changed <- abs(datchange) > change_cutoff
   if (filtering_mode == "any") {
     selgenes <- apply(significant & changed, 1, any)
     select_genes <- genes[selgenes]
@@ -763,7 +765,7 @@ filter_diff <- function(
   message(
     glue::glue(
       "Total number of genes selected with {significance_column} < {significance_cutoff}",
-      " and \u007c {change_column} \u007c \u2265 {change_cutoff} is sum(selgenes)"
+      " and \u007c {change_column} \u007c > {change_cutoff} is sum(selgenes)"
     )
   )
 
@@ -777,8 +779,8 @@ filter_diff <- function(
 
   ### PH: START Create DEG summary Barplot
   ## do plot
-  significant <- apply(datsignif, 2, function(x) x <= significance_cutoff)
-  changed <- apply(datchange, 2, function(x) abs(x) >= change_cutoff)
+  significant <- apply(datsignif, 2, function(x) x < significance_cutoff)
+  changed <- apply(datchange, 2, function(x) abs(x) > change_cutoff)
   dd <- significant & changed
   if (draw_bar_border) {
     bar_border <- "black"

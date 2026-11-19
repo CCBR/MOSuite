@@ -7,6 +7,7 @@
 #' @param moo_diff multiOmicDataSet or differential expression analysis result data frame.
 #'
 #' @export
+#' @family moo methods
 plot_volcano_enhanced <- S7::new_generic(
   "plot_volcano_enhanced",
   "moo_diff",
@@ -44,8 +45,8 @@ plot_volcano_enhanced <- S7::new_generic(
     color_of_features_meeting_only_signif_threshold = "royalblue",
     color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
     graphics_device = grDevices::png,
-    image_width = 3000,
-    image_height = 3000,
+    image_width = 10,
+    image_height = 10,
     dpi = 300,
     use_default_grid_layout = TRUE,
     number_of_rows_in_grid_layout = NULL,
@@ -95,8 +96,8 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
   color_of_features_meeting_only_signif_threshold = "royalblue",
   color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
   graphics_device = grDevices::png,
-  image_width = 3000,
-  image_height = 3000,
+  image_width = 10,
+  image_height = 10,
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = NULL,
@@ -107,6 +108,9 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
   plots_subdir = "diff",
   plot_filename = "volcano_enhanced.png"
 ) {
+  # Local alias for long parameter name to satisfy 120-character line length linter
+  sig_fc_color <- color_for_features_meeting_pvalue_and_foldchange_thresholds
+
   return(
     join_dfs_wide(moo_diff@analyses$diff) |>
       plot_volcano_enhanced(
@@ -140,7 +144,7 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
         color_of_non_significant_features = color_of_non_significant_features,
         color_of_logfold_change_threshold_line = color_of_logfold_change_threshold_line,
         color_of_features_meeting_only_signif_threshold = color_of_features_meeting_only_signif_threshold,
-        color_for_features_meeting_pvalue_and_foldchange_thresholds = color_for_features_meeting_pvalue_and_foldchange_thresholds,
+        color_for_features_meeting_pvalue_and_foldchange_thresholds = sig_fc_color,
         graphics_device = graphics_device,
         image_width = image_width,
         image_height = image_height,
@@ -168,9 +172,11 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
 #'   contrast (e.g. `c("B-A_adjpval", "C-A_adjpval")`). Defaults to `NULL`,
 #'   which auto-detects corresponding columns by checking for `_adjpval` first,
 #'   then `_pval`, for each contrast in `change_colname`.
-#' @param signif_threshold Numeric significance threshold (p-value or adjusted p-value cutoff). Default: 0.05
+#' @param signif_threshold Numeric significance threshold (p-value or adjusted p-value cutoff). Features meet this
+#'   threshold when their value is less than the cutoff (exclusive). Default: 0.05
 #' @param change_threshold Numeric value specifying the fold change cutoff for significance (i.e. filters on
-#'   `change_colname`)
+#'   `change_colname`). Features meet this threshold when the absolute value is greater than the cutoff (exclusive).
+#'   Default: 1.0
 #' @param value_to_sort_the_output_dataset How to sort the output dataset. Options are "fold-change", "p-value", or
 #'   "t-statistic".
 #' @param num_features_to_label Number of top features/genes to label in the volcano plot. Default is 30.
@@ -205,8 +211,8 @@ S7::method(plot_volcano_enhanced, multiOmicDataSet) <- function(
 #' @param color_for_features_meeting_pvalue_and_foldchange_thresholds Color of the features that meet both the p-value
 #'   and fold change thresholds.
 #' @param graphics_device passed to `ggsave(device)`. Default: `grDevices::png`
-#' @param image_width output image width in pixels - only used if save_plots is TRUE
-#' @param image_height output image height in pixels - only used if save_plots is TRUE
+#' @param image_width output image width in inches - only used if save_plots is TRUE. Default: 10
+#' @param image_height output image height in inches - only used if save_plots is TRUE. Default: 10
 #' @param dpi dots-per-inch of the output image (see `ggsave()`) - only used if save_plots is TRUE
 #' @param use_default_grid_layout Retained for compatibility. Grid layout is handled by `plot_volcano_summary()`.
 #' @param number_of_rows_in_grid_layout Retained for compatibility. Grid layout is handled by `plot_volcano_summary()`.
@@ -254,8 +260,8 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
   color_of_features_meeting_only_signif_threshold = "royalblue",
   color_for_features_meeting_pvalue_and_foldchange_thresholds = "red2",
   graphics_device = grDevices::png,
-  image_width = 3000,
-  image_height = 3000,
+  image_width = 10,
+  image_height = 10,
   dpi = 300,
   use_default_grid_layout = TRUE,
   number_of_rows_in_grid_layout = NULL,
@@ -291,110 +297,39 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
   for (i in seq_along(change_colname)) {
     ### PH: START Build table for Volcano plot
 
-    lfccol <- change_colname[i]
-    sigcol <- signif_colname[i]
-    columns_of_interest <- c(label_col, change_colname[i], signif_colname[i])
-    df <- diff_dat |>
-      dplyr::select(tidyselect::one_of(columns_of_interest)) |>
-      dplyr::mutate(
-        !!rlang::sym(lfccol) := tidyr::replace_na(!!rlang::sym(lfccol), 0)
-      ) |>
-      dplyr::mutate(
-        !!rlang::sym(sigcol) := tidyr::replace_na(!!rlang::sym(sigcol), 1)
-      )
-    # mutate(.data[[lfc.col[i]]] = replace_na(.data[[lfc.col[i]]], 0)) |>
-    # mutate(.data[[sig.col[i]]] = replace_na(.data[[sig.col[i]]], 1))
-    if (use_custom_lab == TRUE) {
-      lfc_name <- if (nchar(change_lfc_name) == 0) {
-        change_colname[i]
-      } else {
-        change_lfc_name
-      }
-      sig_name <- if (nchar(change_sig_name) == 0) {
-        signif_colname[i]
-      } else {
-        change_sig_name
-      }
-      colnames(df) <- c(label_col, lfc_name, sig_name)
-    } else {
-      lfc_name <- change_colname[i]
-      sig_name <- signif_colname[i]
-    }
-
-    ### PH: START Creating rank based on pvalue and fold change
-    # This is unique to this template and could be useful as a generic tool to create rankes for GSEA. Recommend
-    # extracting this function
-    group <- gsub("_pval|p_val_", "", sig_name)
-    rank[[i]] <- -log10(df[[sig_name]]) * sign(df[[lfc_name]])
-    names(rank)[i] <- paste0("C_", group, "_rank")
-    ### PH: End Creating rank based on pvalue and fold change
-
-    message(paste0("Genes in initial dataset: ", nrow(df), "\n"))
-
-    # Select top genes by logFC or Significance
-    contrast_label <- gsub("_logFC$", "", change_colname[i])
-    tstat_colname <- paste0(contrast_label, "_tstat")
-    if (value_to_sort_the_output_dataset == "fold-change") {
-      df <- df |> dplyr::arrange(dplyr::desc(.data[[lfc_name]]))
-    } else if (value_to_sort_the_output_dataset == "p-value") {
-      df <- df |> dplyr::arrange(.data[[sig_name]])
-    } else if (value_to_sort_the_output_dataset == "t-statistic") {
-      if (tstat_colname %in% colnames(diff_dat)) {
-        df <- df |>
-          dplyr::mutate(.mosuite_sort_tstat = diff_dat[[tstat_colname]]) |>
-          dplyr::arrange(dplyr::desc(abs(.data$.mosuite_sort_tstat))) |>
-          # Previous tidyselect form: dplyr::select(-.data$.mosuite_sort_tstat)
-          dplyr::select(-tidyselect::all_of(".mosuite_sort_tstat"))
-      } else {
-        warning(glue::glue(
-          "Could not find t-statistic column '{tstat_colname}'. Labels were not sorted by t-statistic."
-        ))
-      }
-    }
-
-    if (label_significant_features_only) {
-      df_sub <- df[
-        df[[sig_name]] <= signif_threshold &
-          abs(df[[lfc_name]]) >= change_threshold,
-      ]
-    } else {
-      df_sub <- df
-    }
-
-    genes_to_label <- as.character(df_sub[1:num_features_to_label, label_col])
-    split_values <- unlist(strsplit(gsub(",", " ", custom_gene_list), " "))
-    custom_labels <- split_values[split_values != ""]
-
-    filter <- custom_labels %in% df[, label_col]
-    missing_labels <- custom_labels[!filter]
-    custom_labels <- custom_labels[filter]
-
-    if (length(missing_labels) > 0) {
-      message(glue::glue(
-        ("Could not find missing labels:\t{paste(missing_labels, collapse = ', ')}")
-      ))
-    }
-
-    if (label_features) {
-      genes_to_label <- custom_labels
-    } else {
-      genes_to_label <- unique(append(genes_to_label, custom_labels))
-    }
-
-    labels_in_plot_order <- df[[label_col]][df[[label_col]] %in% genes_to_label]
-    label_colors <- rep(default_label_color, length(labels_in_plot_order))
-    label_colors[labels_in_plot_order %in% custom_labels] <- custom_label_color
-    if (length(label_colors) == 0) {
-      label_colors <- default_label_color
-    }
-
-    significant <- vector(length = nrow(df))
-    significant[] <- "Not significant"
-    significant[which(abs(df[, 2]) > change_threshold)] <- "Fold change only"
-    significant[which(df[, 3] < signif_threshold)] <- "Significant only"
-    significant[which(
-      abs(df[, 2]) > change_threshold & df[, 3] < signif_threshold
-    )] <- "Significant and fold change"
+    volcano_data <- build_volcano_plot_data(
+      diff_dat = diff_dat,
+      label_col = label_col,
+      change_colname = change_colname,
+      signif_colname = signif_colname,
+      contrast_idx = i,
+      use_custom_lab = use_custom_lab,
+      change_lfc_name = change_lfc_name,
+      change_sig_name = change_sig_name,
+      value_to_sort_the_output_dataset = value_to_sort_the_output_dataset,
+      label_significant_features_only = label_significant_features_only,
+      signif_threshold = signif_threshold,
+      change_threshold = change_threshold,
+      num_features_to_label = num_features_to_label,
+      custom_gene_list = custom_gene_list,
+      label_features = label_features,
+      default_label_color = default_label_color,
+      custom_label_color = custom_label_color,
+      color_of_non_significant_features = color_of_non_significant_features,
+      color_of_logfold_change_threshold_line = color_of_logfold_change_threshold_line,
+      color_of_features_meeting_only_signif_threshold = color_of_features_meeting_only_signif_threshold,
+      color_for_features_meeting_pvalue_and_foldchange_thresholds = color_for_features_meeting_pvalue_and_foldchange_thresholds
+    )
+    df <- volcano_data$df
+    lfc_name <- volcano_data$lfc_name
+    sig_name <- volcano_data$sig_name
+    group <- volcano_data$group
+    contrast_label <- volcano_data$contrast_label
+    rank[[i]] <- volcano_data$rank_vector
+    names(rank)[i] <- volcano_data$rank_name
+    genes_to_label <- volcano_data$genes_to_label
+    label_colors <- volcano_data$label_colors
+    custom_colors <- volcano_data$custom_colors
 
     ### PH: END Build table for Volcano plot
 
@@ -525,6 +460,7 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
         color_of_features_meeting_only_signif_threshold,
         color_for_features_meeting_pvalue_and_foldchange_thresholds
       ),
+      colCustom = custom_colors,
       cutoffLineCol = color_of_signif_threshold_line,
       shapeCustom = shapeCustom
     ) +
@@ -563,6 +499,7 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
           color_of_features_meeting_only_signif_threshold,
           color_for_features_meeting_pvalue_and_foldchange_thresholds
         ),
+        colCustom = custom_colors,
         cutoffLineCol = color_of_signif_threshold_line,
         shapeCustom = shapeCustom
       ) +
@@ -650,7 +587,7 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
       filename = file.path(plots_subdir, plot_output_filenames[[i]]),
       print_plots = print_plots,
       save_plots = save_plots,
-      units = "px",
+      units = "in",
       width = image_width,
       height = image_height,
       dpi = dpi,
@@ -661,4 +598,170 @@ S7::method(plot_volcano_enhanced, S7::class_data.frame) <- function(
   df_final <- cbind(diff_dat, do.call(cbind, rank))
   attr(df_final, "plots") <- plots_list
   return(df_final)
+}
+
+#' Build Volcano Plot Data
+#'
+#' Internal helper that prepares one-contrast volcano plotting data, labels,
+#' and color mappings.
+#'
+#' @inheritParams plot_volcano_enhanced
+#' @param diff_dat Differential-expression results as a data frame.
+#' @param label_col Name of the label/feature ID column in `diff_dat`.
+#' @param contrast_idx Index of the contrast currently being processed.
+#'
+#' @keywords internal
+build_volcano_plot_data <- function(
+  diff_dat,
+  label_col,
+  change_colname,
+  signif_colname,
+  contrast_idx,
+  use_custom_lab,
+  change_lfc_name,
+  change_sig_name,
+  value_to_sort_the_output_dataset,
+  label_significant_features_only,
+  signif_threshold,
+  change_threshold,
+  num_features_to_label,
+  custom_gene_list,
+  label_features,
+  default_label_color,
+  custom_label_color,
+  color_of_non_significant_features,
+  color_of_logfold_change_threshold_line,
+  color_of_features_meeting_only_signif_threshold,
+  color_for_features_meeting_pvalue_and_foldchange_thresholds
+) {
+  lfccol <- change_colname[contrast_idx]
+  sigcol <- signif_colname[contrast_idx]
+  columns_of_interest <- c(
+    label_col,
+    change_colname[contrast_idx],
+    signif_colname[contrast_idx]
+  )
+  df <- diff_dat |>
+    dplyr::select(tidyselect::one_of(columns_of_interest)) |>
+    dplyr::mutate(
+      !!rlang::sym(lfccol) := tidyr::replace_na(!!rlang::sym(lfccol), 0)
+    ) |>
+    dplyr::mutate(
+      !!rlang::sym(sigcol) := tidyr::replace_na(!!rlang::sym(sigcol), 1)
+    )
+  if (isTRUE(use_custom_lab)) {
+    lfc_name <- if (nchar(change_lfc_name) == 0) {
+      change_colname[contrast_idx]
+    } else {
+      change_lfc_name
+    }
+    sig_name <- if (nchar(change_sig_name) == 0) {
+      signif_colname[contrast_idx]
+    } else {
+      change_sig_name
+    }
+    colnames(df) <- c(label_col, lfc_name, sig_name)
+  } else {
+    lfc_name <- change_colname[contrast_idx]
+    sig_name <- signif_colname[contrast_idx]
+  }
+
+  group <- gsub("_pval|p_val_", "", sig_name)
+  rank_vector <- -log10(df[[sig_name]]) * sign(df[[lfc_name]])
+  rank_name <- paste0("C_", group, "_rank")
+
+  message(paste0("Genes in initial dataset: ", nrow(df), "\n"))
+
+  contrast_label <- gsub("_logFC$", "", change_colname[contrast_idx])
+  tstat_colname <- paste0(contrast_label, "_tstat")
+  if (value_to_sort_the_output_dataset == "fold-change") {
+    df <- df |> dplyr::arrange(dplyr::desc(.data[[lfc_name]]))
+  } else if (value_to_sort_the_output_dataset == "p-value") {
+    df <- df |> dplyr::arrange(.data[[sig_name]])
+  } else if (value_to_sort_the_output_dataset == "t-statistic") {
+    if (tstat_colname %in% colnames(diff_dat)) {
+      df <- df |>
+        dplyr::mutate(.mosuite_sort_tstat = diff_dat[[tstat_colname]]) |>
+        dplyr::arrange(dplyr::desc(abs(.data$.mosuite_sort_tstat))) |>
+        dplyr::select(-tidyselect::all_of(".mosuite_sort_tstat"))
+    } else {
+      warning(glue::glue(
+        "Could not find t-statistic column '{tstat_colname}'. Labels were not sorted by t-statistic."
+      ))
+    }
+  }
+
+  if (label_significant_features_only) {
+    df_sub <- df[
+      df[[sig_name]] < signif_threshold &
+        abs(df[[lfc_name]]) > change_threshold,
+    ]
+  } else {
+    df_sub <- df
+  }
+
+  if (nrow(df_sub) == 0) {
+    genes_to_label <- character(0)
+  } else {
+    genes_to_label <- as.character(df_sub[1:num_features_to_label, label_col])
+  }
+
+  split_values <- unlist(strsplit(gsub(",", " ", custom_gene_list), " "))
+  custom_labels <- split_values[split_values != ""]
+
+  custom_labels_found <- custom_labels %in% df[, label_col]
+  missing_labels <- custom_labels[!custom_labels_found]
+  custom_labels <- custom_labels[custom_labels_found]
+
+  if (length(missing_labels) > 0) {
+    message(glue::glue(
+      ("Could not find missing labels:\t{paste(missing_labels, collapse = ', ')}")
+    ))
+  }
+
+  if (label_features) {
+    genes_to_label <- custom_labels
+  } else {
+    genes_to_label <- unique(append(genes_to_label, custom_labels))
+  }
+
+  labels_in_plot_order <- df[[label_col]][df[[label_col]] %in% genes_to_label]
+  label_colors <- rep(default_label_color, length(labels_in_plot_order))
+  label_colors[labels_in_plot_order %in% custom_labels] <- custom_label_color
+  if (length(label_colors) == 0) {
+    label_colors <- default_label_color
+  }
+
+  significant <- vector(length = nrow(df))
+  significant[] <- "Not significant"
+  meets_change <- !is.na(df[[lfc_name]]) &
+    abs(df[[lfc_name]]) > change_threshold
+  meets_significance <- !is.na(df[[sig_name]]) &
+    df[[sig_name]] < signif_threshold
+  significant[meets_change] <- "Fold change only"
+  significant[meets_significance] <- "Significant only"
+  significant[meets_change & meets_significance] <-
+    "Significant and fold change"
+  color_values <- c(
+    "Not significant" = color_of_non_significant_features,
+    "Fold change only" = color_of_logfold_change_threshold_line,
+    "Significant only" = color_of_features_meeting_only_signif_threshold,
+    "Significant and fold change" = color_for_features_meeting_pvalue_and_foldchange_thresholds
+  )
+  custom_colors <- unname(color_values[significant])
+  names(custom_colors) <- significant
+
+  result <- list(
+    df = df,
+    lfc_name = lfc_name,
+    sig_name = sig_name,
+    group = group,
+    contrast_label = contrast_label,
+    rank_vector = rank_vector,
+    rank_name = rank_name,
+    genes_to_label = genes_to_label,
+    label_colors = label_colors,
+    custom_colors = custom_colors
+  )
+  return(result)
 }

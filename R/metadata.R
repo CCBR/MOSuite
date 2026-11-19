@@ -2,7 +2,7 @@
 #'
 #' @param meta_tbl tibble with `sample_id` column
 #'
-#' @inheritParams create_multiOmicDataSet_from_files
+#' @inheritParams MOObject::create_multiOmicDataSet_from_files
 #'
 #' @return dataframe where row names are the sample IDs
 #' @keywords internal

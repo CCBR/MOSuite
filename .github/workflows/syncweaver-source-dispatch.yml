@@ -50,8 +50,8 @@ jobs:
             echo "Error: orchestrator repository must be in OWNER/REPO format." >&2
             exit 1
           fi
-          if [[ -z "${{ vars.CCBR_BOT_APP_ID }}" ]]; then
-            echo "Error: vars.CCBR_BOT_APP_ID is required to generate a dispatch token." >&2
+          if [[ -z "${{ vars.CCBR_BOT_CLIENT_ID }}" ]]; then
+            echo "Error: vars.CCBR_BOT_CLIENT_ID is required to generate a dispatch token." >&2
             exit 1
           fi
           if [[ -z "${{ secrets.CCBR_BOT_PRIVATE_KEY }}" ]]; then
@@ -77,7 +77,7 @@ jobs:
         id: ccbr_bot
         uses: actions/create-github-app-token@v3
         with:
-          client-id: ${{ vars.CCBR_BOT_APP_ID }}
+          client-id: ${{ vars.CCBR_BOT_CLIENT_ID }}
           private-key: ${{ secrets.CCBR_BOT_PRIVATE_KEY }}
           owner: ${{ steps.orchestrator_repo.outputs.owner }}
           repositories: ${{ steps.orchestrator_repo.outputs.repository }}

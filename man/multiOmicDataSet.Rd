@@ -2,7 +2,7 @@
 % Please edit documentation in R/0_mo-class.R
 \name{multiOmicDataSet}
 \alias{multiOmicDataSet}
-\title{multiOmicDataSet class}
+\title{\code{multiOmicDataSet} class}
 \usage{
 multiOmicDataSet(sample_metadata, anno_dat, counts_lst, analyses_lst = list())
 }
@@ -19,30 +19,18 @@ the \code{sample_meta}.}
 
 \item{analyses_lst}{named list of analysis results, e.g. DESeq results object}
 }
-\value{
-A \code{multiOmicDataSet} S7 object.
-}
 \description{
-multiOmicDataSet class
+Re-exported from \link[MOObject:multiOmicDataSet]{MOObject::multiOmicDataSet} -- view the MOObject docs for details.
 }
 \seealso{
-Other moo constructors:
+\link[MOObject:multiOmicDataSet]{MOObject::multiOmicDataSet}
+
+Other moo IO:
 \code{\link[=create_multiOmicDataSet_from_dataframes]{create_multiOmicDataSet_from_dataframes()}},
-\code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}}
+\code{\link[=create_multiOmicDataSet_from_files]{create_multiOmicDataSet_from_files()}},
+\code{\link[=read_multiOmicDataSet]{read_multiOmicDataSet()}},
+\code{\link[=read_multiOmicDataSet_properties]{read_multiOmicDataSet_properties()}},
+\code{\link[=write_multiOmicDataSet]{write_multiOmicDataSet()}},
+\code{\link[=write_multiOmicDataSet_properties]{write_multiOmicDataSet_properties()}}
 }
-\concept{moo constructors}
-\section{Additional properties}{
-
-\describe{
-\item{\code{@sample_meta}}{sample metadata as a data frame or tibble. The first column is assumed to contain the sample
-IDs which must correspond to column names in the raw counts.}
-
-\item{\code{@annotation}}{data frame of feature annotations, such as gene symbols or any other information about the
-features in the counts list.}
-
-\item{\code{@counts}}{named list of counts data frames (e.g. \code{raw}, \code{clean}, \code{cpm}, \code{filt}, \code{norm}, \code{batch}). Each data
-frame is expected to contain a feature ID column as the first column, and all remaining columns are sample IDs.}
-
-\item{\code{@analyses}}{named list of analysis results (e.g. DESeq2 results, colors).}
-}}
-
+\concept{moo IO}

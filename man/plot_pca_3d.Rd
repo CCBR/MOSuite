@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_pca.R
 \name{plot_pca_3d}
 \alias{plot_pca_3d}
-\alias{plot_pca_3d,MOSuite::multiOmicDataSet-method}
+\alias{plot_pca_3d,MOObject::multiOmicDataSet-method}
 \alias{plot_pca_3d,data.frame-method}
 \title{Perform and plot a 3D Principal Components Analysis}
 \usage{
@@ -31,8 +31,8 @@ plot_pca_3d(
   ...
 )
 
-## S7 method for class <MOSuite::multiOmicDataSet>
-plot_pca_3d(
+## S7 method for class <MOObject::multiOmicDataSet>
+\special{plot_pca_3d(
   moo_counts,
   count_type = NULL,
   sub_count_type = NULL,
@@ -55,10 +55,10 @@ plot_pca_3d(
   save_plots = options::opt("save_plots"),
   plots_subdir = "pca",
   ...
-)
+)}
 
 ## S7 method for class <data.frame>
-plot_pca_3d(
+\special{plot_pca_3d(
   moo_counts,
   count_type = NULL,
   sub_count_type = NULL,
@@ -81,7 +81,7 @@ plot_pca_3d(
   save_plots = options::opt("save_plots"),
   plots_subdir = "pca",
   ...
-)
+)}
 }
 \arguments{
 \item{moo_counts}{counts dataframe}
@@ -144,9 +144,32 @@ Perform and plot a 3D Principal Components Analysis
 3D PCA for counts dataframe
 }
 \seealso{
+Other moo methods:
+\code{\link[=batch_correct_counts]{batch_correct_counts()}},
+\code{\link[=calc_cpm]{calc_cpm()}},
+\code{\link[=clean_raw_counts]{clean_raw_counts()}},
+\code{\link[=diff_counts]{diff_counts()}},
+\code{\link[=extract_counts]{extract_counts()}},
+\code{\link[=filter_counts]{filter_counts()}},
+\code{\link[=filter_diff]{filter_diff()}},
+\code{\link[=normalize_counts]{normalize_counts()}},
+\code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
+\code{\link[=plot_expr_heatmap]{plot_expr_heatmap()}},
+\code{\link[=plot_histogram]{plot_histogram()}},
+\code{\link[=plot_pca]{plot_pca()}},
+\code{\link[=plot_pca_2d]{plot_pca_2d()}},
+\code{\link[=plot_read_depth]{plot_read_depth()}},
+\code{\link[=plot_venn_diagram]{plot_venn_diagram()}},
+\code{\link[=plot_volcano_enhanced]{plot_volcano_enhanced()}},
+\code{\link[=plot_volcano_summary]{plot_volcano_summary()}},
+\code{\link[=run_deseq2]{run_deseq2()}},
+\code{\link[=set_color_pal]{set_color_pal()}},
+\code{\link[=set_default_colors]{set_default_colors()}}
+
 Other PCA functions:
 \code{\link[=calc_pca]{calc_pca()}},
 \code{\link[=plot_pca]{plot_pca()}},
 \code{\link[=plot_pca_2d]{plot_pca_2d()}}
 }
 \concept{PCA functions}
+\concept{moo methods}

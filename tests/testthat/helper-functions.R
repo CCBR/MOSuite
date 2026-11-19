@@ -1,4 +1,10 @@
 equal_dfs <- function(x, y) {
+  # Ignore readr parse metadata so comparisons focus on data content.
+  attr(x, "spec") <- NULL
+  attr(x, "problems") <- NULL
+  attr(y, "spec") <- NULL
+  attr(y, "problems") <- NULL
+
   return(all(
     class(x) == class(y),
     names(x) == names(y),
@@ -110,4 +116,23 @@ expect_histogram_layers_equal <- function(actual_plot, expected_plot) {
     histogram_layer_data(expected_plot),
     tolerance = 1e-8
   )
+}
+
+create_tiny_moo <- function(tag = "test") {
+  sample_metadata <- data.frame(sample_id = c("s1", "s2"), group = c("A", "B"))
+  counts_dat <- data.frame(
+    feature_id = c("g1", "g2"),
+    s1 = c(1, 2),
+    s2 = c(3, 4)
+  )
+  anno_dat <- data.frame(feature_id = c("g1", "g2"), symbol = c("G1", "G2"))
+
+  moo <- multiOmicDataSet(
+    sample_metadata = sample_metadata,
+    anno_dat = anno_dat,
+    counts_lst = list(raw = counts_dat)
+  )
+  moo@analyses$tag <- tag
+
+  return(moo)
 }

@@ -26,6 +26,7 @@
 #'   )
 #' head(moo@counts[["norm"]][["voom"]])
 #' @family moo methods
+#' @family main analysis
 normalize_counts <- function(
   moo,
   count_type = "filt",
@@ -104,13 +105,20 @@ normalize_counts <- function(
   message(paste0("Total number of features included: ", nrow(df.voom)))
   ### PH: END Limma Normalization
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
-    colors_for_plots <- colors_for_plots %||%
-      moo@analyses$colors[[group_colname]]
+    default_group_colors <- get_moo_default_colors(
+      moo = moo,
+      colname = group_colname
+    )
+    default_label_colors <- get_moo_default_colors(
+      moo = moo,
+      colname = label_colname
+    )
+    colors_for_plots <- colors_for_plots %||% default_group_colors
 
     if (isTRUE(color_histogram_by_group)) {
       colors_for_histogram <- colors_for_plots
     } else {
-      colors_for_histogram <- moo@analyses$colors[[label_colname]]
+      colors_for_histogram <- default_label_colors
     }
     pca_plot <- plot_pca(
       df.voom,
@@ -157,7 +165,7 @@ normalize_counts <- function(
     }
     if (isTRUE(plot_corr_matrix_heatmap)) {
       corHM_plot <- plot_corr_heatmap(
-        df.filt,
+        df.voom,
         sample_metadata = sample_metadata,
         sample_id_colname = sample_id_colname,
         feature_id_colname = feature_id_colname,

@@ -9,6 +9,15 @@ cli_exec <- function(clargs = commandArgs(trailingOnly = TRUE)) {
   return(invisible(cli_exec_impl(clargs)))
 }
 
+#' Internal implementation of CLI execution
+#'
+#' Parses command-line arguments and dispatches to the appropriate MOSuite
+#' function. Called by [cli_exec()].
+#'
+#' @param clargs character vector of command-line arguments.
+#'
+#' @return result of the dispatched MOSuite function call.
+#' @keywords internal
 cli_exec_impl <- function(clargs) {
   # check for tool called without arguments, or called with '--help'
   usage <- length(clargs) == 0 || clargs[1L] %in% c("help", "--help")
@@ -77,6 +86,15 @@ cli_exec_impl <- function(clargs) {
   return(do.call(args[[1L]], args[-1L], envir = globalenv()))
 }
 
+#' Print CLI usage information
+#'
+#' Writes a usage summary for the `mosuite` command-line tool to a connection,
+#' typically `stderr()`.
+#'
+#' @param con connection to write usage text to. Defaults to `stderr()`.
+#'
+#' @return invisibly returns `NULL`.
+#' @keywords internal
 cli_usage <- function(con = stderr()) {
   usage <- "
 Usage: mosuite [function] [--json=path/to/args.json]
@@ -104,10 +122,29 @@ Main functions:
   return(writeLines(usage, con = con))
 }
 
+#' Print help for a CLI method
+#'
+#' Displays the R help page for the named MOSuite function in the `MOSuite`
+#' package.
+#'
+#' @param method name of the MOSuite function to show help for.
+#'
+#' @return result of `print(utils::help(...))`, invisibly.
+#' @keywords internal
 cli_help <- function(method) {
   return(print(utils::help(method, package = "MOSuite")))
 }
 
+#' Build an unknown-command error message
+#'
+#' Constructs an error message for an unrecognised CLI method name, optionally
+#' suggesting similar exported function names based on edit distance.
+#'
+#' @param method the unrecognised method name supplied by the user.
+#' @param exports character vector of exported function names from MOSuite.
+#'
+#' @return character string with the error message.
+#' @keywords internal
 cli_unknown <- function(method, exports) {
   # report unknown command
   msg <- glue::glue("MOSuite: {method} is not a known function.")
@@ -125,6 +162,18 @@ cli_unknown <- function(method, exports) {
   return(msg)
 }
 
+#' Parse a single CLI argument string
+#'
+#' Converts a raw CLI argument string to an R value. Logical-like strings
+#' (`"true"`, `"false"`, etc.) are returned as `TRUE`/`FALSE`. Other strings
+#' are parsed as R expressions; if the result is a language object, the
+#' original string is returned as-is.
+#'
+#' @param text character string to parse.
+#'
+#' @return parsed R value, or `text` unchanged if parsing yields a language
+#'   object.
+#' @keywords internal
 cli_parse <- function(text) {
   # handle logical-like values up-front
   if (text %in% c("true", "True", "TRUE")) {
@@ -169,7 +218,12 @@ cli_from_json <- function(method, json, debug = FALSE) {
         "moo_input_rds must be included in the JSON because `{first_arg}` is required for {method}()"
       )
     )
-    fcn_args[[first_arg]] <- readr::read_rds(json_args[["moo_input_rds"]])
+    input_obj <- if (identical(first_arg, "moo")) {
+      read_multiOmicDataSet(json_args[["moo_input_rds"]])
+    } else {
+      readr::read_rds(json_args[["moo_input_rds"]])
+    }
+    fcn_args[[first_arg]] <- input_obj
   }
   # all other json keys should be arguments for the method
   json_args <- json_args |>

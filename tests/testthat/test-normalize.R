@@ -208,7 +208,10 @@ test_that("normalize_counts forwards plotting parameters", {
   expect_equal(histogram_args$legend_font_size, 11)
   expect_equal(histogram_args$legend_position, "right")
   expect_equal(histogram_args$number_of_legend_columns, 2)
-  expect_equal(histogram_args$color_values, moo@analyses[["colors"]][["Label"]])
+  expect_equal(
+    histogram_args$color_values,
+    get_moo_default_colors(moo, "Label")
+  )
 
   pca_args <- NULL
   normalize_counts(
@@ -320,7 +323,7 @@ test_that("normalize_counts handles histogram label combinations", {
     ) {
       group_colors
     } else {
-      moo@analyses[["colors"]][[expected_label_colname]]
+      get_moo_default_colors(moo, expected_label_colname)
     }
 
     expect_equal(pca_args$label_colname, combination$label_colname)

@@ -1,3 +1,11 @@
 {
-    "image": "nciccbr/mosuite-minimal:latest"
+  "build": {
+    "dockerfile": "../docker/Dockerfile-minimal",
+    "context": ".."
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    }
+  }
 }

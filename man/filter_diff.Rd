@@ -43,13 +43,13 @@ used.)}
 
 \item{significance_column}{Column name for significance, e.g. \code{"pval"} or \code{"pvaladj"} (default)}
 
-\item{significance_cutoff}{Features will only be kept if their \code{significance_column} is less then this cutoff
-threshold}
+\item{significance_cutoff}{Features will only be kept if their \code{significance_column} is less than the cutoff
+threshold (exclusive)}
 
 \item{change_column}{Column name for change, e.g. \code{"logFC"} (default)}
 
-\item{change_cutoff}{Features will only be kept if the absolute value of their \code{change_column} is greater than or
-equal to this cutoff threshold}
+\item{change_cutoff}{Features will only be kept if the absolute value of their \code{change_column} is greater than the
+cutoff threshold (exclusive)}
 
 \item{filtering_mode}{Accepted values: \code{"any"} or \code{"all"} to include features that meet the criteria in \emph{any}
 contrast or in \emph{all} contrasts}
@@ -129,16 +129,32 @@ head(moo@analyses$diff_filt)
 \seealso{
 Other moo methods:
 \code{\link[=batch_correct_counts]{batch_correct_counts()}},
+\code{\link[=calc_cpm]{calc_cpm()}},
 \code{\link[=clean_raw_counts]{clean_raw_counts()}},
 \code{\link[=diff_counts]{diff_counts()}},
+\code{\link[=extract_counts]{extract_counts()}},
 \code{\link[=filter_counts]{filter_counts()}},
 \code{\link[=normalize_counts]{normalize_counts()}},
 \code{\link[=plot_corr_heatmap]{plot_corr_heatmap()}},
 \code{\link[=plot_expr_heatmap]{plot_expr_heatmap()}},
 \code{\link[=plot_histogram]{plot_histogram()}},
 \code{\link[=plot_pca]{plot_pca()}},
+\code{\link[=plot_pca_2d]{plot_pca_2d()}},
+\code{\link[=plot_pca_3d]{plot_pca_3d()}},
 \code{\link[=plot_read_depth]{plot_read_depth()}},
+\code{\link[=plot_venn_diagram]{plot_venn_diagram()}},
+\code{\link[=plot_volcano_enhanced]{plot_volcano_enhanced()}},
+\code{\link[=plot_volcano_summary]{plot_volcano_summary()}},
 \code{\link[=run_deseq2]{run_deseq2()}},
-\code{\link[=set_color_pal]{set_color_pal()}}
+\code{\link[=set_color_pal]{set_color_pal()}},
+\code{\link[=set_default_colors]{set_default_colors()}}
+
+Other main analysis:
+\code{\link[=batch_correct_counts]{batch_correct_counts()}},
+\code{\link[=clean_raw_counts]{clean_raw_counts()}},
+\code{\link[=diff_counts]{diff_counts()}},
+\code{\link[=filter_counts]{filter_counts()}},
+\code{\link[=normalize_counts]{normalize_counts()}}
 }
+\concept{main analysis}
 \concept{moo methods}

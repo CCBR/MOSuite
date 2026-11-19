@@ -4,14 +4,11 @@
 \name{MOSuite-package}
 \alias{MOSuite}
 \alias{MOSuite-package}
-\title{MOSuite: R package for downstream multi-omics analysis}
+\title{MOSuite: R package for differential multi-omics analysis}
 \description{
-Designed for differential \href{https://github.com/CCBR/RENEE}{RNA-seq} analysis
-or any data represented in a counts table.
-}
-\details{
-See the website for more information, documentation, and examples:
-\url{https://ccbr.github.io/MOSuite}
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
+Multi-Omics Suite provides a suite of functions to clean, filter, batch-correct, normalize, visualize, and perform differential analysis. While the package is designed for differential RNA-seq analysis and multi-omics datasets, it can be used for any data represented in a counts table. See the website for more information, documentation, and examples at \url{https://ccbr.github.io/MOSuite/}.
 }
 \seealso{
 Useful links:

@@ -55,6 +55,7 @@
 #'   clean_raw_counts(sample_id_colname = "Sample", feature_id_colname = "GeneName")
 #' head(moo@counts$clean)
 #' @family moo methods
+#' @family main analysis
 clean_raw_counts <- function(
   moo,
   count_type = "raw",
@@ -82,12 +83,16 @@ clean_raw_counts <- function(
   }
   # Sample Read Counts Plot
   if (isTRUE(print_plots) || isTRUE(save_plots)) {
+    default_group_colors <- get_moo_default_colors(
+      moo = moo,
+      colname = group_colname
+    )
     read_plot <- plot_read_depth(
       counts_dat,
       sample_metadata = sample_metadata,
       sample_id_colname = sample_id_colname,
       group_colname = group_colname,
-      color_values = colors_for_plots
+      color_values = colors_for_plots %||% default_group_colors
     )
     print_or_save_plot(
       read_plot,
@@ -207,7 +212,7 @@ clean_raw_counts <- function(
       sample_id_colname = sample_id_colname,
       feature_id_colname = cpm_feature_id_colname,
       group_colname = group_colname,
-      color_values = colors_for_plots,
+      color_values = colors_for_plots %||% default_group_colors,
       color_by_group = color_cpm_histogram_by_group,
       x_axis_label = "CPM",
       use_log2_x_axis = TRUE

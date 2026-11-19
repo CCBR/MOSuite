@@ -94,7 +94,11 @@ S7::method(plot_read_depth, multiOmicDataSet) <- function(
   if (!isTRUE(color_by_group)) {
     return(plot_read_depth(counts_dat, ...))
   }
-  color_values <- color_values %||% moo_counts@analyses$colors[[group_colname]]
+  color_values <- color_values %||%
+    get_moo_default_colors(
+      moo = moo_counts,
+      colname = group_colname
+    )
   return(plot_read_depth(
     counts_dat,
     sample_metadata = moo_counts@sample_meta,

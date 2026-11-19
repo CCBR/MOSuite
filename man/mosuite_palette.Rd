@@ -13,13 +13,14 @@ mosuite_palette
 \description{
 A character vector of 12 hex color codes used as the default palette throughout MOSuite plots.
 Colors are assigned to groups in the order they appear (or by factor level order).
+Use \code{\link[=set_default_colors]{set_default_colors()}} to sett the mosuite palette for all metadata columns in a \link{multiOmicDataSet}.
 Use \code{\link[=set_color_pal]{set_color_pal()}} to override the palette for a specific metadata column.
 }
 \examples{
 mosuite_palette
-scales::show_col(mosuite_palette)
+scales::show_col(mosuite_palette, ncol = length(mosuite_palette))
 }
 \seealso{
-\code{\link[=select_mosuite_colors]{select_mosuite_colors()}}, \code{\link[=set_color_pal]{set_color_pal()}}
+\code{\link[=select_mosuite_colors]{select_mosuite_colors()}}, \code{\link[=set_color_pal]{set_color_pal()}}, \code{\link[=set_default_colors]{set_default_colors()}}
 }
 \keyword{data}
