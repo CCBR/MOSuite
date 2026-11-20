@@ -35,6 +35,9 @@ authors:
   given-names: Samantha
   email: samantha.chill@nih.gov
   orcid: https://orcid.org/0000-0002-8734-9875
+- family-names: Meyer
+  given-names: T. Joshua
+  email: thomas.meyer@nih.gov
 preferred-citation:
   type: manual
   title: 'MOSuite: R package for differential multi-omics analysis'

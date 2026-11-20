@@ -24,6 +24,11 @@
       "@type": "Person",
       "familyName": "Chill",
       "givenName": "Samantha"
+    },
+    {
+      "@type": "Person",
+      "familyName": "Meyer",
+      "givenName": "T. Joshua"
     }
   ],
   "codeRepository": "https://github.com/CCBR/MOSuite",
