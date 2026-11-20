@@ -37,5 +37,5 @@
   "license": "https://spdx.org/licenses/MIT",
   "name": "MOSuite: R package for differential multi-omics analysis",
   "url": "https://ccbr.github.io/MOSuite/",
-  "version": "0.5.0.9001"
+  "version": "0.5.1.9000"
 }
