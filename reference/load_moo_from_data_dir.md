@@ -1,8 +1,8 @@
 # Load multiOmicDataSet from data directory
 
-Searches the ../data directory for .rds files and loads the first
-matching multiOmicDataSet object. Validates that the loaded object is of
-the correct class.
+Searches recursively for a single .rds file and loads its
+multiOmicDataSet. An error is raised if no files or multiple files are
+found, or if the object is not a multiOmicDataSet.
 
 ## Usage
 

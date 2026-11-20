@@ -2,6 +2,8 @@
 
 R package for differential multi-omics analysis
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16371580.svg)](https://doi.org/10.5281/zenodo.16371580)
+
 Multi-Omics Suite provides a suite of functions to clean, filter,
 batch-correct, normalize, visualize, and perform differential expression
 analysis. While the package is designed for differential
@@ -27,10 +29,24 @@ remotes::install_github("CCBR/MOSuite", dependencies = TRUE, ref = "v0.3.0")
 ```
 
 There is also a Docker container available at
-<https://hub.docker.com/r/nciccbr/mosuite>
+[dockerhub](https://hub.docker.com/r/nciccbr/mosuite) and
+[ghcr](https://ghcr.io/ccbr/mosuite) to use with your preferred
+container engine.
+
+The `mosuite` and `mosuite-minimal` GHCR packages are public and can be
+pulled anonymously.
+
+dockerhub:
 
 ``` sh
-singularity exec docker://nciccbr/mosuite:v0.3.0 R -s -e \
+apptainer exec docker://nciccbr/mosuite:v0.5.0 R -s -e \
+  'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'
+```
+
+ghcr:
+
+``` sh
+apptainer exec docker://ghcr.io/ccbr/mosuite:v0.5.0 R -s -e \
   'cat("MOSuite version:", installed.packages()["MOSuite",][["Version"]])'
 ```
 

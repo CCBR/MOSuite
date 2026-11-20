@@ -1,5 +1,22 @@
 # Changelog
 
+## MOSuite 0.5.1
+
+- Report an error instead of choosing the first file when the MOO loader
+  finds multiple RDS inputs.
+  ([\#295](https://github.com/CCBR/MOSuite/issues/295),
+  [@TJoshMeyer](https://github.com/TJoshMeyer))
+- Fix Venn intersection summaries when contrasts have identical
+  significant-gene sets.
+  ([\#293](https://github.com/CCBR/MOSuite/issues/293),
+  [@TJoshMeyer](https://github.com/TJoshMeyer))
+- The container images now use Rocker and support Linux AMD64 and ARM64.
+  ([\#259](https://github.com/CCBR/MOSuite/issues/259),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+- The containers are now available in ghcr, in addition to dockerhub.
+  ([\#296](https://github.com/CCBR/MOSuite/issues/296),
+  [@kelly-sovacool](https://github.com/kelly-sovacool))
+
 ## MOSuite 0.5.0
 
 - The `multiOmicDataSet` class has been moved to a new package,
