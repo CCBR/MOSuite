@@ -2,6 +2,8 @@
 
 ``` r
 library(MOSuite)
+#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -173,7 +175,7 @@ moo_nidap <- create_multiOmicDataSet_from_dataframes(
 ``` r
 str(moo_nidap)
 #> <MOObject::multiOmicDataSet>
-#>  @ sample_meta:'data.frame': 9 obs. of  5 variables:
+#>  @ sample_meta: 'data.frame':    9 obs. of  5 variables:
 #>  .. $ Sample   : chr  "A1" "A2" "A3" "B1" ...
 #>  .. $ Group    : chr  "A" "A" "A" "B" ...
 #>  .. $ Replicate: num  1 2 3 1 2 3 1 2 3
@@ -196,7 +198,7 @@ str(moo_nidap)
 #>  ..  ..$ delim  : chr ","
 #>  ..  ..- attr(*, "class")= chr "col_spec"
 #>  .. - attr(*, "problems")=<externalptr> 
-#>  @ counts     :List of 5
+#>  @ counts     : List of 5
 #>  .. $ raw  :'data.frame':    43280 obs. of  10 variables:
 #>  ..  ..$ GeneName: chr [1:43280] "RP23-271O17.1" "Gm26206" "Xkr4" "RP23-317L18.1" ...
 #>  ..  ..$ A1      : num [1:43280] 0 0 0 0 0 0 0 0 0 0 ...
@@ -253,9 +255,9 @@ str(moo_nidap)
 #>  ..  ..$ C1      : num [1:7943] 6.21 6.13 7.13 7.13 6.06 ...
 #>  ..  ..$ C2      : num [1:7943] 6.87 6.32 6.32 6.69 6.88 ...
 #>  ..  ..$ C3      : num [1:7943] 6.48 7.04 7.18 6.1 7.1 ...
-#>  @ annotation :'data.frame': 43280 obs. of  1 variable:
+#>  @ annotation : 'data.frame':    43280 obs. of  1 variable:
 #>  .. $ GeneName: chr  "RP23-271O17.1" "Gm26206" "Xkr4" "RP23-317L18.1" ...
-#>  @ analyses   :List of 3
+#>  @ analyses   : List of 3
 #>  .. $ colors   :List of 5
 #>  ..  ..$ Sample   : Named chr [1:9] "#5954d6" "#e1562c" "#b80058" "#00c6f8" ...
 #>  ..  .. ..- attr(*, "names")= chr [1:9] "A1" "A2" "A3" "B1" ...
