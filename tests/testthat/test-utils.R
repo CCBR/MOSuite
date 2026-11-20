@@ -290,23 +290,38 @@ test_that("load_moo_from_data_dir finds file recursively", {
   expect_equal(result@analyses$tag, "test")
 })
 
-test_that("load_moo_from_data_dir uses first matching file", {
+test_that("load_moo_from_data_dir rejects multiple RDS files", {
   tmpdir <- tempfile()
   dir.create(tmpdir)
   on.exit(unlink(tmpdir, recursive = TRUE))
 
-  moo1 <- create_tiny_moo("first")
-  moo2 <- create_tiny_moo("second")
-
+  subdir <- file.path(tmpdir, "nested")
+  dir.create(subdir)
   rds_file1 <- file.path(tmpdir, "a_test.rds")
-  rds_file2 <- file.path(tmpdir, "z_test.rds")
-  readr::write_rds(moo1, rds_file1)
-  readr::write_rds(moo2, rds_file2)
+  rds_file2 <- file.path(subdir, "z_test.RDS")
+  readr::write_rds(create_tiny_moo("first"), rds_file1)
+  readr::write_rds(create_tiny_moo("second"), rds_file2)
 
-  result <- load_moo_from_data_dir(data_dir = tmpdir)
+  expect_error(load_moo_from_data_dir(data_dir = tmpdir), "Multiple RDS files")
+  expect_error(load_moo_from_data_dir(data_dir = tmpdir), "a_test.rds")
+  expect_error(load_moo_from_data_dir(data_dir = tmpdir), "z_test.RDS")
+  expect_error(load_moo_from_data_dir(data_dir = tmpdir), "Remove extra RDS")
+})
 
-  expect_true(S7::S7_inherits(result, multiOmicDataSet))
-  expect_true(result@analyses$tag %in% c("first", "second"))
+test_that("load_moo_from_data_dir rejects a MOO alongside non-MOO RDS files", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+  on.exit(unlink(tmpdir, recursive = TRUE))
+
+  moo <- create_tiny_moo("test")
+  readr::write_rds(moo, file.path(tmpdir, "moo.rds"))
+  write_multiOmicDataSet_properties(moo, file.path(tmpdir, "properties"))
+
+  expect_equal(
+    readr::read_rds(file.path(tmpdir, "properties", "analyses", "tag.rds")),
+    "test"
+  )
+  expect_error(load_moo_from_data_dir(data_dir = tmpdir), "Multiple RDS files")
 })
 
 test_that("load_moo_from_data_dir prints message", {
