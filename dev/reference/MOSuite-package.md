@@ -35,8 +35,8 @@ Authors:
 - Samantha Chill <samantha.chill@nih.gov>
   ([ORCID](https://orcid.org/0000-0002-8734-9875))
 
-Other contributors:
+- T. Joshua Meyer <thomas.meyer@nih.gov>
 
-- T. Joshua Meyer <thomas.meyer@nih.gov> \[contributor\]
+Other contributors:
 
 - CCR Collaborative Bioinformatics Resource \[copyright holder\]

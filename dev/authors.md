@@ -12,7 +12,7 @@
 
 - **Samantha Chill**. Author. [](https://orcid.org/0000-0002-8734-9875)
 
-- **T. Joshua Meyer**. Contributor.
+- **T. Joshua Meyer**. Author.
 
 - **[CCR Collaborative Bioinformatics
   Resource](https://github.com/CCBR)**. Copyright holder.

@@ -185,7 +185,7 @@ dat_volcano_enhanced <- moo |>
 #> Joining with `by = join_by(GeneName)`
 #> Joining with `by = join_by(GeneName)`
 #> Genes in initial dataset: 7943
-#> Max y: 4.56088783571371
+#> Max y: 4.56088783571365
 #> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
 #> ℹ Please use `linewidth` instead.
 #> ℹ The deprecated feature was likely used in the EnhancedVolcano package.
@@ -206,7 +206,7 @@ dat_volcano_enhanced <- moo |>
 #> 
 #> Genes in initial dataset: 7943
 #> 
-#> Max y: 4.3474406622796
+#> Max y: 4.34744066227959
 ```
 
 ![](visualization_files/figure-html/volcano_enhanced-1.png)![](visualization_files/figure-html/volcano_enhanced-2.png)![](visualization_files/figure-html/volcano_enhanced-3.png)
@@ -222,7 +222,7 @@ dat_volcano_enhanced_B_A <- moo@analyses$diff[["B-A"]] |>
     signif_colname = "adjpval"
   )
 #> Genes in initial dataset: 7943
-#> Max y: 4.56088783571371
+#> Max y: 4.56088783571365
 ```
 
 ![](visualization_files/figure-html/volcano_enhanced_single_contrast-1.png)
@@ -251,11 +251,11 @@ dat_volcano_summary <- moo |>
 #> Total number of features included in volcano plot: 7943
 #> Running Enhanced Volcano:
 #> Genes in initial dataset: 7943
-#> Max y: 4.56088783571371
+#> Max y: 4.56088783571365
 #> Genes in initial dataset: 7943
 #> Max y: 4.70280335204321
 #> Genes in initial dataset: 7943
-#> Max y: 4.3474406622796
+#> Max y: 4.34744066227959
 ```
 
 ![](visualization_files/figure-html/volcano_summary-1.png)
