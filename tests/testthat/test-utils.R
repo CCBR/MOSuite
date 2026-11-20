@@ -308,6 +308,22 @@ test_that("load_moo_from_data_dir rejects multiple RDS files", {
   expect_error(load_moo_from_data_dir(data_dir = tmpdir), "Remove extra RDS")
 })
 
+test_that("load_moo_from_data_dir rejects a MOO alongside non-MOO RDS files", {
+  tmpdir <- tempfile()
+  dir.create(tmpdir)
+  on.exit(unlink(tmpdir, recursive = TRUE))
+
+  moo <- create_tiny_moo("test")
+  readr::write_rds(moo, file.path(tmpdir, "moo.rds"))
+  write_multiOmicDataSet_properties(moo, file.path(tmpdir, "properties"))
+
+  expect_equal(
+    readr::read_rds(file.path(tmpdir, "properties", "analyses", "tag.rds")),
+    "test"
+  )
+  expect_error(load_moo_from_data_dir(data_dir = tmpdir), "Multiple RDS files")
+})
+
 test_that("load_moo_from_data_dir prints message", {
   tmpdir <- tempfile()
   dir.create(tmpdir)
