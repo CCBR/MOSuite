@@ -1,5 +1,7 @@
 ## MOSuite development version
 
+## MOSuite 0.5.1
+
 - Report an error instead of choosing the first file when the MOO loader
   finds multiple RDS inputs. (#295, @TJoshMeyer)
 - Fix Venn intersection summaries when contrasts have identical
